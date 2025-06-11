@@ -1,0 +1,78 @@
+{
+  "path": "$PRJ/examples/sensor_system.sv",
+  "modules": [
+    {
+      "name": "sensor_system",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reset_n"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "sensor_input",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "final_output",
+          "dim": "[7:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "interface_inst",
+          "module": "sensor_interface",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset_n",
+              "con": "reset_n"
+            },
+            {
+              "port": "sensor_input",
+              "con": "sensor_input"
+            },
+            {
+              "port": "data_valid",
+              "con": "interface_to_processor"
+            }
+          ]
+        },
+        {
+          "name": "processor_inst",
+          "module": "data_processor",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset_n",
+              "con": "reset_n"
+            },
+            {
+              "port": "sensor_data",
+              "con": "interface_to_processor"
+            },
+            {
+              "port": "processed_data",
+              "con": "final_output"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

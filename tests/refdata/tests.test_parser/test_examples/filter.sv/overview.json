@@ -1,0 +1,56 @@
+{
+  "path": "$PRJ/examples/filter.sv",
+  "modules": [
+    {
+      "name": "filter",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reset_n"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "raw_data",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "filtered_data",
+          "dim": "[7:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "fir_inst",
+          "module": "fir_filter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset_n",
+              "con": "reset_n"
+            },
+            {
+              "port": "data_in",
+              "con": "raw_data"
+            },
+            {
+              "port": "data_out",
+              "con": "filtered_data"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
