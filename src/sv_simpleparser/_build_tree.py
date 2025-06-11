@@ -21,10 +21,10 @@
 # SOFTWARE.
 
 import pathlib
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from anytree import Node, RenderTree
-from tqdm import tqdm
+from rich.progress import Progress
 
 from .datamodel import Module
 from .parser import parse_file
@@ -57,8 +57,16 @@ def _show_tree(file_path: pathlib.Path, top_name: str):
     with file_path.open("r") as file:
         file_list = [line.strip() for line in file if line.strip()]
 
-    with ProcessPoolExecutor() as executor:
-        results = list(tqdm(executor.map(parse_file, file_list), total=len(file_list)))
+    results = []
+    with Progress() as progress:
+        task = progress.add_task("Processing...", total=len(file_list))
+
+        with ProcessPoolExecutor() as executor:
+            futures = {executor.submit(parse_file, file): file for file in file_list}
+
+            for future in as_completed(futures):
+                results.append(future.result())
+                progress.update(task, advance=1)
 
     # Create a list with all parsed modules
     all_modules = [module for file in results for module in file.modules]
