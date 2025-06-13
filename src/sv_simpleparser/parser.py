@@ -57,19 +57,20 @@ class _ConDeclaration:
     comment: list[str] | None = None
     ifdefs: list[str] | None = None
 
-    def proc_tokens(self, token, string):
-        if token == ("Port",):
-            self.port = string
-        elif token == ("Connection",):
-            self.con = string
-        elif token == ("PortConnection",):
-            self.port = string
-            self.con = string
-        elif token == ("Comment",):
-            if self.comment is None:
-                self.comment = [string]
-            else:
-                self.comment.append(string)
+
+def _proc_con_tokens(con, token, string):
+    if token == ("Port",):
+        con.port = string
+    elif token == ("Connection",):
+        con.con = string
+    elif token == ("PortConnection",):
+        con.port = string
+        con.con = string
+    elif token == ("Comment",):
+        if con.comment is None:
+            con.comment = [string]
+        else:
+            con.comment.append(string)
 
 
 @dataclass
@@ -87,22 +88,23 @@ class _ModInstance:
     connections: list[_ConDeclaration] | None = None
     ifdefs: list[str] | None = None
 
-    def proc_tokens(self, token, string, ifdefs):
-        if token == Module.Body.Instance.Name:
-            self.name = string
-        elif token == Module.Body.Instance.Con.Start:
-            if self.connections is None:
-                self.connections = [_ConDeclaration(ifdefs=ifdefs)]
-            else:
-                self.connections.append(_ConDeclaration(ifdefs=ifdefs))
-        elif token == Module.Body.Instance.Con.OrderedConnection:
-            if self.connections is None:
-                self.connections = [_ConDeclaration(con=string, ifdefs=ifdefs)]
-            else:
-                self.connections.append(_ConDeclaration(con=string, ifdefs=ifdefs))
-        elif token[:4] == Module.Body.Instance.Con:
-            if self.connections is not None:  # Con.Comment can trigger this
-                self.connections[-1].proc_tokens(token[4:], string)
+
+def _proc_inst_tokens(mod, token, string, ifdefs):
+    if token == Module.Body.Instance.Name:
+        mod.name = string
+    elif token == Module.Body.Instance.Con.Start:
+        if mod.connections is None:
+            mod.connections = [_ConDeclaration(ifdefs=ifdefs)]
+        else:
+            mod.connections.append(_ConDeclaration(ifdefs=ifdefs))
+    elif token == Module.Body.Instance.Con.OrderedConnection:
+        if mod.connections is None:
+            mod.connections = [_ConDeclaration(con=string, ifdefs=ifdefs)]
+        else:
+            mod.connections.append(_ConDeclaration(con=string, ifdefs=ifdefs))
+    elif token[:4] == Module.Body.Instance.Con:
+        if mod.connections is not None:  # Con.Comment can trigger this
+            _proc_con_tokens(mod.connections[-1], token[4:], string)
 
 
 @dataclass
@@ -126,31 +128,32 @@ class _PortDeclaration:
     comment: list[str] | None = None
     ifdefs: list[str] | None = None
 
-    def proc_tokens(self, token, string, ifdefs):  # noqa: C901
-        """Processes Module.Port tokens and extract data."""
-        if token == Module.Port.PortDirection:
-            self.direction = string
-        elif token == Module.Port.Ptype:
-            self.ptype = string
-        elif token == Module.Port.Dtype:
-            self.dtype = string
-        elif token == Module.Port.PortName:
-            if self.name is None:
-                self.name = [string]
-                self.ifdefs = ifdefs
-            else:
-                self.name.append(string)
-        elif token == Module.Port.PortWidth:
-            # The dimension is packed if name is none, and unpacked if it is not None
-            if self.name is None:
-                self.dim = string
-            elif self.dim_unpacked is None:
-                self.dim_unpacked = string
-        elif token == Module.Port.Comment:
-            if self.comment is None:
-                self.comment = [string]
-            else:
-                self.comment.append(string)
+
+def _proc_port_tokens(port, token, string, ifdefs):  # noqa: C901
+    """Processes Module.Port tokens and extract data."""
+    if token == Module.Port.PortDirection:
+        port.direction = string
+    elif token == Module.Port.Ptype:
+        port.ptype = string
+    elif token == Module.Port.Dtype:
+        port.dtype = string
+    elif token == Module.Port.PortName:
+        if port.name is None:
+            port.name = [string]
+            port.ifdefs = ifdefs
+        else:
+            port.name.append(string)
+    elif token == Module.Port.PortWidth:
+        # The dimension is packed if name is none, and unpacked if it is not None
+        if port.name is None:
+            port.dim = string
+        elif port.dim_unpacked is None:
+            port.dim_unpacked = string
+    elif token == Module.Port.Comment:
+        if port.comment is None:
+            port.comment = [string]
+        else:
+            port.comment.append(string)
 
 
 @dataclass
@@ -172,29 +175,30 @@ class _ParamDeclaration:
     ifdefs: list[str] | None = None
     default: str = ""
 
-    def proc_tokens(self, token, string, ifdefs):
-        """Processes Module.Param tokens and extract data."""
-        if token == Module.Param.ParamType:
-            self.ptype = string
-        elif token == Module.Param.ParamName:
-            if self.name is None:
-                self.name = [string]
-                self.ifdefs = ifdefs
-            else:
-                self.name.append(string)
-        elif token == Module.Param.ParamWidth:
-            if self.name is None:
-                self.dim = string
-                self.ifdefs = ifdefs
-            elif self.dim_unpacked is None:
-                self.dim_unpacked = string
-        elif token == Module.Param.Comment:
-            if self.comment is None:
-                self.comment = [string]
-            else:
-                self.comment.append(string)
-        elif token == Module.Param.Value:
-            self.default += string
+
+def _proc_param_tokens(self, token, string, ifdefs):
+    """Processes Module.Param tokens and extract data."""
+    if token == Module.Param.ParamType:
+        self.ptype = string
+    elif token == Module.Param.ParamName:
+        if self.name is None:
+            self.name = [string]
+            self.ifdefs = ifdefs
+        else:
+            self.name.append(string)
+    elif token == Module.Param.ParamWidth:
+        if self.name is None:
+            self.dim = string
+            self.ifdefs = ifdefs
+        elif self.dim_unpacked is None:
+            self.dim_unpacked = string
+    elif token == Module.Param.Comment:
+        if self.comment is None:
+            self.comment = [string]
+        else:
+            self.comment.append(string)
+    elif token == Module.Param.Value:
+        self.default += string
 
 
 def _normalize_comments(comment: list[str]) -> tuple[str, ...]:
@@ -284,59 +288,61 @@ class _SvModule:
             )
             self.inst_lst.append(inst)
 
-    def proc_ifdef(self, token, string):
-        # Process the ifdef stack list
-        if token[-1] == "IFDEF":
-            self.ifdefs_stack.append(string)
-        elif token[-1] == "IFNDEF":
-            self.ifdefs_stack.append(_flip_ifdef(string))
-        elif token[-1] == "ELSIF":
-            self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
-            self.ifdefs_stack.append(string)
-        elif token[-1] == "ELSE":
-            self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
-        elif token[-1] == "ENDIF":
-            del self.ifdefs_stack[-self.ifdefs_pop_stack[-1] :]
 
-        # Process the pop stack list
-        if token[-1] in ["IFDEF", "IFNDEF"]:
-            self.ifdefs_pop_stack.append(1)
-        elif token[-1] in ["ELSIF"]:
-            self.ifdefs_pop_stack[-1] += 1
-        elif token[-1] in ["ENDIF"]:
-            del self.ifdefs_pop_stack[-1]
+def _proc_ifdef_tokens(self, token, string):
+    # Process the ifdef stack list
+    if token[-1] == "IFDEF":
+        self.ifdefs_stack.append(string)
+    elif token[-1] == "IFNDEF":
+        self.ifdefs_stack.append(_flip_ifdef(string))
+    elif token[-1] == "ELSIF":
+        self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
+        self.ifdefs_stack.append(string)
+    elif token[-1] == "ELSE":
+        self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
+    elif token[-1] == "ENDIF":
+        del self.ifdefs_stack[-self.ifdefs_pop_stack[-1] :]
 
-        LOGGER.debug(f"IFDEF stack: {self.ifdefs_stack}")
-        LOGGER.debug(f"IFDEF stack: {self.ifdefs_pop_stack}")
+    # Process the pop stack list
+    if token[-1] in ["IFDEF", "IFNDEF"]:
+        self.ifdefs_pop_stack.append(1)
+    elif token[-1] in ["ELSIF"]:
+        self.ifdefs_pop_stack[-1] += 1
+    elif token[-1] in ["ENDIF"]:
+        del self.ifdefs_pop_stack[-1]
 
-    def proc_tokens(self, token, string):
-        # Capture a new port declaration object if input/output keywords are found
-        if token[:2] == ("Module", "Port"):
-            if token[-1] == ("PortDirection"):
-                self.port_decl.append(_PortDeclaration(direction=string))
-            else:
-                self.port_decl[-1].proc_tokens(token, string, self.ifdefs_stack.copy())
+    LOGGER.debug(f"IFDEF stack: {self.ifdefs_stack}")
+    LOGGER.debug(f"IFDEF stack: {self.ifdefs_pop_stack}")
 
-        # Capture parameters, when Module.Param tokens are found
-        elif token[:2] == ("Module", "Param"):
-            if token is Module.Param:
-                self.param_decl.append(_ParamDeclaration())
-            else:
-                self.param_decl[-1].proc_tokens(token, string, self.ifdefs_stack.copy())
 
-        # Capture Modules
-        elif token[:2] == ("Module", "ModuleName"):
-            self.name = string
+def _proc_module_tokens(self, token, string):
+    # Capture a new port declaration object if input/output keywords are found
+    if token[:2] == ("Module", "Port"):
+        if token[-1] == ("PortDirection"):
+            self.port_decl.append(_PortDeclaration(direction=string))
+        else:
+            _proc_port_tokens(self.port_decl[-1], token, string, self.ifdefs_stack.copy())
 
-        # Capture instances
-        elif token[:3] == ("Module", "Body", "Instance"):
-            if token == Module.Body.Instance.Module:
-                self.inst_decl.append(_ModInstance(module=string, ifdefs=self.ifdefs_stack.copy()))
-            else:
-                self.inst_decl[-1].proc_tokens(token, string, self.ifdefs_stack.copy())
+    # Capture parameters, when Module.Param tokens are found
+    elif token[:2] == ("Module", "Param"):
+        if token is Module.Param:
+            self.param_decl.append(_ParamDeclaration())
+        else:
+            _proc_param_tokens(self.param_decl[-1], token, string, self.ifdefs_stack.copy())
 
-        elif token[:2] == ("Module", "IFDEF"):
-            self.proc_ifdef(token, string)
+    # Capture Modules
+    elif token[:2] == ("Module", "ModuleName"):
+        self.name = string
+
+    # Capture instances
+    elif token[:3] == ("Module", "Body", "Instance"):
+        if token == Module.Body.Instance.Module:
+            self.inst_decl.append(_ModInstance(module=string, ifdefs=self.ifdefs_stack.copy()))
+        else:
+            _proc_inst_tokens(self.inst_decl[-1], token, string, self.ifdefs_stack.copy())
+
+    elif token[:2] == ("Module", "IFDEF"):
+        _proc_ifdef_tokens(self, token, string)
 
 
 def parse_file(file_path: Path | str) -> dm.File:
@@ -395,7 +401,7 @@ def _parse_text(text: str):
         if token == Module.ModuleStart:
             module_lst.append(_SvModule())
         elif "Module" in token[:]:
-            module_lst[-1].proc_tokens(token, string)
+            _proc_module_tokens(module_lst[-1], token, string)
 
     for mod in module_lst:
         mod._gen_port_lst()
