@@ -58,15 +58,15 @@ class _ConDeclaration:
     ifdefs: list[str] | None = None
 
 
-def _proc_con_tokens(con, token, string):
-    if token == ("Port",):
+def _proc_con_tokens(con, tokens, string):
+    if tokens == ("Port",):
         con.port = string
-    elif token == ("Connection",):
+    elif tokens == ("Connection",):
         con.con = string
-    elif token == ("PortConnection",):
+    elif tokens == ("PortConnection",):
         con.port = string
         con.con = string
-    elif token == ("Comment",):
+    elif tokens == ("Comment",):
         if con.comment is None:
             con.comment = [string]
         else:
@@ -89,22 +89,22 @@ class _ModInstance:
     ifdefs: list[str] | None = None
 
 
-def _proc_inst_tokens(mod, token, string, ifdefs):
-    if token == Module.Body.Instance.Name:
+def _proc_inst_tokens(mod, tokens, string, ifdefs):
+    if tokens == Module.Body.Instance.Name:
         mod.name = string
-    elif token == Module.Body.Instance.Con.Start:
+    elif tokens == Module.Body.Instance.Con.Start:
         if mod.connections is None:
             mod.connections = [_ConDeclaration(ifdefs=ifdefs)]
         else:
             mod.connections.append(_ConDeclaration(ifdefs=ifdefs))
-    elif token == Module.Body.Instance.Con.OrderedConnection:
+    elif tokens == Module.Body.Instance.Con.OrderedConnection:
         if mod.connections is None:
             mod.connections = [_ConDeclaration(con=string, ifdefs=ifdefs)]
         else:
             mod.connections.append(_ConDeclaration(con=string, ifdefs=ifdefs))
-    elif token[:4] == Module.Body.Instance.Con:
+    elif tokens[:4] == Module.Body.Instance.Con:
         if mod.connections is not None:  # Con.Comment can trigger this
-            _proc_con_tokens(mod.connections[-1], token[4:], string)
+            _proc_con_tokens(mod.connections[-1], tokens[4:], string)
 
 
 @dataclass
@@ -129,27 +129,27 @@ class _PortDeclaration:
     ifdefs: list[str] | None = None
 
 
-def _proc_port_tokens(port, token, string, ifdefs):  # noqa: C901
+def _proc_port_tokens(port, tokens, string, ifdefs):  # noqa: C901
     """Processes Module.Port tokens and extract data."""
-    if token == Module.Port.PortDirection:
+    if tokens == Module.Port.PortDirection:
         port.direction = string
-    elif token == Module.Port.Ptype:
+    elif tokens == Module.Port.Ptype:
         port.ptype = string
-    elif token == Module.Port.Dtype:
+    elif tokens == Module.Port.Dtype:
         port.dtype = string
-    elif token == Module.Port.PortName:
+    elif tokens == Module.Port.PortName:
         if port.name is None:
             port.name = [string]
             port.ifdefs = ifdefs
         else:
             port.name.append(string)
-    elif token == Module.Port.PortWidth:
+    elif tokens == Module.Port.PortWidth:
         # The dimension is packed if name is none, and unpacked if it is not None
         if port.name is None:
             port.dim = string
         elif port.dim_unpacked is None:
             port.dim_unpacked = string
-    elif token == Module.Port.Comment:
+    elif tokens == Module.Port.Comment:
         if port.comment is None:
             port.comment = [string]
         else:
@@ -176,28 +176,28 @@ class _ParamDeclaration:
     default: str = ""
 
 
-def _proc_param_tokens(self, token, string, ifdefs):
+def _proc_param_tokens(self, tokens, string, ifdefs):
     """Processes Module.Param tokens and extract data."""
-    if token == Module.Param.ParamType:
+    if tokens == Module.Param.ParamType:
         self.ptype = string
-    elif token == Module.Param.ParamName:
+    elif tokens == Module.Param.ParamName:
         if self.name is None:
             self.name = [string]
             self.ifdefs = ifdefs
         else:
             self.name.append(string)
-    elif token == Module.Param.ParamWidth:
+    elif tokens == Module.Param.ParamWidth:
         if self.name is None:
             self.dim = string
             self.ifdefs = ifdefs
         elif self.dim_unpacked is None:
             self.dim_unpacked = string
-    elif token == Module.Param.Comment:
+    elif tokens == Module.Param.Comment:
         if self.comment is None:
             self.comment = [string]
         else:
             self.comment.append(string)
-    elif token == Module.Param.Value:
+    elif tokens == Module.Param.Value:
         self.default += string
 
 
@@ -215,7 +215,7 @@ def _flip_ifdef(param):
     return f"!{param}"  # Adds '!' prefix
 
 
-class _SvModule:
+class _Module:
     """Represents a complete SystemVerilog module with all its components.
 
     Attributes:
@@ -289,60 +289,60 @@ class _SvModule:
             self.inst_lst.append(inst)
 
 
-def _proc_ifdef_tokens(self, token, string):
+def _proc_ifdef_tokens(self, tokens, string):
     # Process the ifdef stack list
-    if token[-1] == "IFDEF":
+    if tokens[-1] == "IFDEF":
         self.ifdefs_stack.append(string)
-    elif token[-1] == "IFNDEF":
+    elif tokens[-1] == "IFNDEF":
         self.ifdefs_stack.append(_flip_ifdef(string))
-    elif token[-1] == "ELSIF":
+    elif tokens[-1] == "ELSIF":
         self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
         self.ifdefs_stack.append(string)
-    elif token[-1] == "ELSE":
+    elif tokens[-1] == "ELSE":
         self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
-    elif token[-1] == "ENDIF":
+    elif tokens[-1] == "ENDIF":
         del self.ifdefs_stack[-self.ifdefs_pop_stack[-1] :]
 
     # Process the pop stack list
-    if token[-1] in ["IFDEF", "IFNDEF"]:
+    if tokens[-1] in ["IFDEF", "IFNDEF"]:
         self.ifdefs_pop_stack.append(1)
-    elif token[-1] in ["ELSIF"]:
+    elif tokens[-1] in ["ELSIF"]:
         self.ifdefs_pop_stack[-1] += 1
-    elif token[-1] in ["ENDIF"]:
+    elif tokens[-1] in ["ENDIF"]:
         del self.ifdefs_pop_stack[-1]
 
     LOGGER.debug(f"IFDEF stack: {self.ifdefs_stack}")
     LOGGER.debug(f"IFDEF stack: {self.ifdefs_pop_stack}")
 
 
-def _proc_module_tokens(self, token, string):
+def _proc_module_tokens(self, tokens, string):
     # Capture a new port declaration object if input/output keywords are found
-    if token[:2] == ("Module", "Port"):
-        if token[-1] == ("PortDirection"):
+    if tokens[:2] == ("Module", "Port"):
+        if tokens[-1] == ("PortDirection"):
             self.port_decl.append(_PortDeclaration(direction=string))
         else:
-            _proc_port_tokens(self.port_decl[-1], token, string, self.ifdefs_stack.copy())
+            _proc_port_tokens(self.port_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
     # Capture parameters, when Module.Param tokens are found
-    elif token[:2] == ("Module", "Param"):
-        if token is Module.Param:
+    elif tokens[:2] == ("Module", "Param"):
+        if tokens is Module.Param:
             self.param_decl.append(_ParamDeclaration())
         else:
-            _proc_param_tokens(self.param_decl[-1], token, string, self.ifdefs_stack.copy())
+            _proc_param_tokens(self.param_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
     # Capture Modules
-    elif token[:2] == ("Module", "ModuleName"):
+    elif tokens[:2] == ("Module", "ModuleName"):
         self.name = string
 
     # Capture instances
-    elif token[:3] == ("Module", "Body", "Instance"):
-        if token == Module.Body.Instance.Module:
+    elif tokens[:3] == ("Module", "Body", "Instance"):
+        if tokens == Module.Body.Instance.Module:
             self.inst_decl.append(_ModInstance(module=string, ifdefs=self.ifdefs_stack.copy()))
         else:
-            _proc_inst_tokens(self.inst_decl[-1], token, string, self.ifdefs_stack.copy())
+            _proc_inst_tokens(self.inst_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
-    elif token[:2] == ("Module", "IFDEF"):
-        _proc_ifdef_tokens(self, token, string)
+    elif tokens[:2] == ("Module", "IFDEF"):
+        _proc_ifdef_tokens(self, tokens, string)
 
 
 def parse_file(file_path: Path | str) -> dm.File:
@@ -396,12 +396,12 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
 def _parse_text(text: str):
     lexer = SystemVerilogLexer()
     module_lst = []
-    for token, string in lexer.get_tokens(text):
+    for tokens, string in lexer.get_tokens(text):
         # New module was found
-        if token == Module.ModuleStart:
-            module_lst.append(_SvModule())
-        elif "Module" in token[:]:
-            _proc_module_tokens(module_lst[-1], token, string)
+        if tokens == Module.ModuleStart:
+            module_lst.append(_Module())
+        elif "Module" in tokens[:]:
+            _proc_module_tokens(module_lst[-1], tokens, string)
 
     for mod in module_lst:
         mod._gen_port_lst()
