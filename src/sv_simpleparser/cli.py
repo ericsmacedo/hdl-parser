@@ -30,6 +30,7 @@ from pydantic import BaseModel, ConfigDict
 from rich.console import Console
 from rich.logging import RichHandler
 
+from ._build_tree import _show_tree
 from ._gen_templates import gen_instance, gen_markdown_table
 from .parser import parse_file
 
@@ -157,3 +158,11 @@ def json(file_path: Path) -> None:
     """Dump All Extracted Information in a JSON file."""
     file = parse_file(file_path)
     print(file.overview)
+
+
+@cli.command()
+@arg_filepath
+@click.option("-t", "--top", required=True, help="Name of the top module")
+def show_tree(file_path: Path, top: str) -> None:
+    """Build a hierarchy tree from file containing a list of sv-files."""
+    _show_tree(file_path, top)

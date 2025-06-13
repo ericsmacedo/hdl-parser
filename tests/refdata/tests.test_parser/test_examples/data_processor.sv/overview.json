@@ -1,0 +1,56 @@
+{
+  "path": "$PRJ/examples/data_processor.sv",
+  "modules": [
+    {
+      "name": "data_processor",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reset_n"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "sensor_data",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "processed_data",
+          "dim": "[7:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "filter_inst",
+          "module": "filter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset_n",
+              "con": "reset_n"
+            },
+            {
+              "port": "raw_data",
+              "con": "sensor_data"
+            },
+            {
+              "port": "filtered_data",
+              "con": "processed_data"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
