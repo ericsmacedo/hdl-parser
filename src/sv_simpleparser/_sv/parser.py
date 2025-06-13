@@ -51,14 +51,14 @@ def _proc_inst_tokens(mod, tokens, string, ifdefs):
         mod.name = string
     elif tokens == Module.Body.Instance.Con.Start:
         if mod.connections is None:
-            mod.connections = [_dm.ConDeclaration(ifdefs=ifdefs)]
+            mod.connections = [_dm.ConDecl(ifdefs=ifdefs)]
         else:
-            mod.connections.append(_dm.ConDeclaration(ifdefs=ifdefs))
+            mod.connections.append(_dm.ConDecl(ifdefs=ifdefs))
     elif tokens == Module.Body.Instance.Con.OrderedConnection:
         if mod.connections is None:
-            mod.connections = [_dm.ConDeclaration(con=string, ifdefs=ifdefs)]
+            mod.connections = [_dm.ConDecl(con=string, ifdefs=ifdefs)]
         else:
-            mod.connections.append(_dm.ConDeclaration(con=string, ifdefs=ifdefs))
+            mod.connections.append(_dm.ConDecl(con=string, ifdefs=ifdefs))
     elif tokens[:4] == Module.Body.Instance.Con:
         if mod.connections is not None:  # Con.Comment can trigger this
             _proc_con_tokens(mod.connections[-1], tokens[4:], string)
@@ -146,14 +146,14 @@ def _proc_module_tokens(self, tokens, string):
     # Capture a new port declaration object if input/output keywords are found
     if tokens[:2] == ("Module", "Port"):
         if tokens[-1] == ("PortDirection"):
-            self.port_decl.append(_dm.PortDeclaration(direction=string))
+            self.port_decl.append(_dm.PortDecl(direction=string))
         else:
             _proc_port_tokens(self.port_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
     # Capture parameters, when Module.Param tokens are found
     elif tokens[:2] == ("Module", "Param"):
         if tokens is Module.Param:
-            self.param_decl.append(_dm.ParamDeclaration())
+            self.param_decl.append(_dm.ParamDecl())
         else:
             _proc_param_tokens(self.param_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
@@ -164,7 +164,7 @@ def _proc_module_tokens(self, tokens, string):
     # Capture instances
     elif tokens[:3] == ("Module", "Body", "Instance"):
         if tokens == Module.Body.Instance.Module:
-            self.inst_decl.append(_dm.ModInstance(module=string, ifdefs=self.ifdefs_stack.copy()))
+            self.inst_decl.append(_dm.InstDecl(module=string, ifdefs=self.ifdefs_stack.copy()))
         else:
             _proc_inst_tokens(self.inst_decl[-1], tokens, string, self.ifdefs_stack.copy())
 
