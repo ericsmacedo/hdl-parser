@@ -135,3 +135,4 @@ class ModuleInstance(_BaseModel):
     name: str
     module: str
     connections: tuple[Connection, ...] = ()
+    ifdefs: tuple[str, ...] = ()
