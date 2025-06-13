@@ -24,12 +24,13 @@
 
 from pathlib import Path
 
+from click.testing import CliRunner
 from pytest import mark
 from test2ref import assert_refdata, configure
 
 from sv_simpleparser.cli import cli
 
-from .conftest import EXAMPLES_PATH
+from .conftest import EXAMPLES_PATH, PRJ_PATH
 
 configure(ignore_spaces=True)
 
@@ -55,9 +56,10 @@ def test_gen_sv_instance(tmp_path, runner, example):
 @mark.parametrize("example", EXAMPLES)
 @mark.parametrize("pre", ((), ("--no-color",)))
 @mark.parametrize("post", ((), ("--level=4", "-s")))
-def test_info(tmp_path, runner, example, pre, post):
+def test_info(tmp_path, example, pre, post):
     """Test Info Command."""
-    result = runner.invoke(cli, [*pre, "info", str(example), *post])
+    runner = CliRunner()
+    result = runner.invoke(cli, [*pre, "info", str(example.relative_to(PRJ_PATH)), *post])
 
     assert result.exit_code == 0
     (tmp_path / "output.md").write_text(result.output)

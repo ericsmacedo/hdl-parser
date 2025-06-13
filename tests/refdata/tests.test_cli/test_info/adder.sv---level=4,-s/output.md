@@ -1,6 +1,6 @@
 #### Module `adder`
 
-Path `$PRJ/examples/adder.sv`
+Path `examples/adder.sv`
 
 ##### Parameters
                                                                            

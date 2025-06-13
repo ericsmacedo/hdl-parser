@@ -1,6 +1,6 @@
 #### Module `param_module`
 
-Path `$PRJ/examples/param_module.sv`
+Path `examples/param_module.sv`
 
 ##### Parameters
                                                                            
@@ -31,7 +31,7 @@ Path `$PRJ/examples/param_module.sv`
                                                                            
 #### Module `sub_module`
 
-Path `$PRJ/examples/param_module.sv`
+Path `examples/param_module.sv`
 
 ##### Parameters
                                                                            

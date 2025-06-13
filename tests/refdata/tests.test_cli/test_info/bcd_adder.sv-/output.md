@@ -1,6 +1,6 @@
 ## Module `bcd_adder`
 
-Path `$PRJ/examples/bcd_adder.sv`
+Path `examples/bcd_adder.sv`
 
 ### Ports
                                                                            
@@ -14,7 +14,7 @@ Path `$PRJ/examples/bcd_adder.sv`
                                                                            
 ## Module `tb_bcdadder`
 
-Path `$PRJ/examples/bcd_adder.sv`
+Path `examples/bcd_adder.sv`
 
 ### Ports
 
