@@ -30,10 +30,6 @@ The parser offers two methods:
 """
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from . import datamodel as dm
 
 
 @dataclass
@@ -115,21 +111,13 @@ class Module:
 
     Attributes:
         name: Name of the module
-        port_lst: List of Port objects
-        param_lst: List of Param objects
-        inst_list: List of ModuleInstance objects
         port_decl: List of PortDeclaration objects
         param_decl: List of ParamDeclaration objects
         inst_decl: List of instance declarations
     """
 
     def __init__(self) -> None:
-        self.name: str | None = None
-        self.port_lst: list[dm.Port] = []
-        self.param_lst: list[dm.Param] = []
-        self.inst_lst: list[dm.ModuleInstance] = []
-        self.inst_dict: dict[str, str] = {}
-
+        self.name: str = ""
         self.port_decl: list[PortDeclaration] = []
         self.param_decl: list[ParamDeclaration] = []
         self.inst_decl: list[ModInstance] = []

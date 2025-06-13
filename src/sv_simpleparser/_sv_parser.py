@@ -124,70 +124,6 @@ def _proc_param_tokens(self, tokens, string, ifdefs):
         self.default += string
 
 
-def _normalize_comments(comment: list[str]) -> tuple[str, ...]:
-    return tuple(line.replace("\n", " ").strip() for line in comment or ())
-
-
-def _normalize_defaults(default: str) -> str:
-    return default.rstrip("\n").strip()
-
-
-def _flip_ifdef(param):
-    if param.startswith("!"):
-        return param[1:]  # Removes '!' prefix
-    return f"!{param}"  # Adds '!' prefix
-
-
-def _gen_port_lst(mod):
-    for decl in mod.port_decl:
-        for name in decl.name:
-            port = dm.Port(
-                name=name,
-                direction=decl.direction,
-                ptype=decl.ptype or "",
-                dtype=decl.dtype or "",
-                dim=decl.dim or "",
-                dim_unpacked=decl.dim_unpacked or "",
-                comment=_normalize_comments(decl.comment),
-                ifdefs=tuple(decl.ifdefs),
-            )
-            mod.port_lst.append(port)
-
-
-def _gen_param_lst(mod):
-    for decl in mod.param_decl:
-        for name in decl.name:
-            param = dm.Param(
-                name=name,
-                ptype=decl.ptype or "",
-                dim=decl.dim or "",
-                dim_unpacked=decl.dim_unpacked or "",
-                comment=_normalize_comments(decl.comment),
-                default=_normalize_defaults(decl.default),
-                ifdefs=tuple(decl.ifdefs),
-            )
-            mod.param_lst.append(param)
-
-
-def _gen_inst_lst(mod):
-    for decl in mod.inst_decl:
-        inst = dm.ModuleInstance(
-            name=decl.name,
-            module=decl.module,
-            ifdefs=decl.ifdefs,
-            connections=tuple(
-                dm.Connection(
-                    port=con.port or "",
-                    con=con.con or "",
-                    comment=_normalize_comments(con.comment),
-                    ifdefs=tuple(con.ifdefs),
-                )
-                for con in decl.connections
-            ),
-        )
-        mod.inst_lst.append(inst)
-
-
 def _proc_ifdef_tokens(self, tokens, string):
     # Process the ifdef stack list
     if tokens[-1] == "IFDEF":
@@ -244,7 +180,68 @@ def _proc_module_tokens(self, tokens, string):
         _proc_ifdef_tokens(self, tokens, string)
 
 
-def parse_sv(text: str):
+def _normalize_comments(comment: list[str]) -> tuple[str, ...]:
+    return tuple(line.replace("\n", " ").strip() for line in comment or ())
+
+
+def _normalize_defaults(default: str) -> str:
+    return default.rstrip("\n").strip()
+
+
+def _flip_ifdef(param):
+    if param.startswith("!"):
+        return param[1:]  # Removes '!' prefix
+    return f"!{param}"  # Adds '!' prefix
+
+
+def _normalize_ports(mod):
+    for decl in mod.port_decl:
+        for name in decl.name:
+            yield dm.Port(
+                name=name,
+                direction=decl.direction,
+                ptype=decl.ptype or "",
+                dtype=decl.dtype or "",
+                dim=decl.dim or "",
+                dim_unpacked=decl.dim_unpacked or "",
+                comment=_normalize_comments(decl.comment),
+                ifdefs=tuple(decl.ifdefs),
+            )
+
+
+def _normalize_params(mod):
+    for decl in mod.param_decl:
+        for name in decl.name:
+            yield dm.Param(
+                name=name,
+                ptype=decl.ptype or "",
+                dim=decl.dim or "",
+                dim_unpacked=decl.dim_unpacked or "",
+                comment=_normalize_comments(decl.comment),
+                default=_normalize_defaults(decl.default),
+                ifdefs=tuple(decl.ifdefs),
+            )
+
+
+def _normalize_insts(mod):
+    for decl in mod.inst_decl:
+        yield dm.ModuleInstance(
+            name=decl.name,
+            module=decl.module,
+            ifdefs=decl.ifdefs,
+            connections=tuple(
+                dm.Connection(
+                    port=con.port or "",
+                    con=con.con or "",
+                    comment=_normalize_comments(con.comment),
+                    ifdefs=tuple(con.ifdefs),
+                )
+                for con in decl.connections
+            ),
+        )
+
+
+def parse_sv(text: str) -> tuple[dm.Module, ...]:
     lexer = SystemVerilogLexer()
     module_lst = []
     for tokens, string in lexer.get_tokens(text):
@@ -254,9 +251,12 @@ def parse_sv(text: str):
         elif "Module" in tokens[:]:
             _proc_module_tokens(module_lst[-1], tokens, string)
 
-    for mod in module_lst:
-        _gen_port_lst(mod)
-        _gen_param_lst(mod)
-        _gen_inst_lst(mod)
-
-    return module_lst
+    return tuple(
+        dm.Module(
+            name=mod.name,
+            params=tuple(_normalize_params(mod)),
+            ports=tuple(_normalize_ports(mod)),
+            insts=tuple(_normalize_insts(mod)),
+        )
+        for mod in module_lst
+    )

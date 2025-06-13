@@ -65,17 +65,7 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    module_lst = parse_sv(text)
-
-    modules = tuple(
-        dm.Module(
-            name=mod.name,
-            params=mod.param_lst,
-            ports=mod.port_lst,
-            insts=mod.inst_lst,
-        )
-        for mod in module_lst
-    )
+    modules = parse_sv(text)
 
     if not modules:
         raise RuntimeError("No module found.")
