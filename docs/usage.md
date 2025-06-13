@@ -12,7 +12,7 @@ There are two major use-cases:
 !!! example "Generate Markdown Table"
 
     ```bash
-    sv-simpleparser info examples/adder.sv > examples/adder.md
+    sv-simpleparser info -s examples/adder.sv > examples/adder.md
     ```
 
 ??? info "Markdown Table Code"

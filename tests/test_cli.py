@@ -53,15 +53,17 @@ def test_gen_sv_instance(tmp_path, runner, example):
 
 
 @mark.parametrize("example", EXAMPLES)
-@mark.parametrize("options", ((), ("--no-color",)))
-def test_info(tmp_path, runner, example, options):
+@mark.parametrize("pre", ((), ("--no-color",)))
+@mark.parametrize("post", ((), ("--level=4", "-s")))
+def test_info(tmp_path, runner, example, pre, post):
     """Test Info Command."""
-    result = runner.invoke(cli, [*options, "info", str(example)])
+    result = runner.invoke(cli, [*pre, "info", str(example), *post])
 
     assert result.exit_code == 0
     (tmp_path / "output.md").write_text(result.output)
 
-    assert_refdata(test_info, tmp_path, flavor=example.name)
+    posts = ",".join(post)
+    assert_refdata(test_info, tmp_path, flavor=f"{example.name}-{posts}")
 
 
 @mark.parametrize("example", EXAMPLES)

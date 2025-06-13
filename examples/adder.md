@@ -1,11 +1,15 @@
-                        `adder` Parameters                         
+## Module `adder`
+
+Path `examples/adder.sv`
+
+### Parameters
                                                                    
 | Name           | Dimension | Default | Functional Description   |
 |----------------|-----------|---------|--------------------------|
 | `DATA_WIDTH`   |           | `8`     | Width of input operands  |
 | `OUTPUT_WIDTH` |           | `4`     | Test configuration value |
                                                                    
-                               `adder` Interface                                
+### Ports
                                                                                 
 | Name          | Dimension          | I/O      | Functional Description       |
 |---------------|--------------------|----------|------------------------------|
@@ -17,3 +21,9 @@
 | `flag_u`      | `1`                | `input`  | Unpacked single bit          |
 | `arr_u [0:3]` | `[7:0]`            | `input`  | Unpacked byte array          |
                                                                                 
+### Submodules
+                                   
+| Name            | Module        |
+|-----------------|---------------|
+| `u_test_module` | `test_module` |
+                                   

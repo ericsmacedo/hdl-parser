@@ -48,30 +48,47 @@ def gen_instance(mod):
     return instance_file
 
 
-def gen_markdown_table(mod: Module, width: int | None = None) -> tuple[Table, Table]:
-    table = Table(title=f"`{mod.name}` Interface", box=box.MARKDOWN, width=width)
+def gen_markdown_table(module: Module, width: int | None = None) -> tuple[Table | None, Table | None, Table | None]:
+    if module.params:
+        params = Table(box=box.MARKDOWN, width=width)
 
-    table.add_column("Name", no_wrap=True)
-    table.add_column("Dimension", no_wrap=True)
-    table.add_column("I/O", no_wrap=True)
-    table.add_column("Functional Description")
+        params.add_column("Name", no_wrap=True)
+        params.add_column("Dimension", no_wrap=True)
+        params.add_column("Default", no_wrap=True)
+        params.add_column("Functional Description")
 
-    table_param = Table(title=f"`{mod.name}` Parameters", box=box.MARKDOWN, width=width)
+        for param in module.params:
+            param_name = f"{param.name} {param.dim_unpacked}" if param.dim_unpacked else param.name
+            dim = f"`{param.dim}`" if param.dim else ""
+            default = f"`{param.default}`" if param.default else ""
+            params.add_row(f"`{param_name}`", dim, default, "\n".join(param.comment or ()))
+    else:
+        params = None
 
-    table_param.add_column("Name", no_wrap=True)
-    table_param.add_column("Dimension", no_wrap=True)
-    table_param.add_column("Default", no_wrap=True)
-    table_param.add_column("Functional Description")
+    if module.ports:
+        ports = Table(box=box.MARKDOWN, width=width)
 
-    for port in mod.ports:
-        dim = port.dim or "1"
-        port_name = f"{port.name} {port.dim_unpacked}" if port.dim_unpacked else port.name
-        table.add_row(f"`{port_name}`", f"`{dim}`", f"`{port.direction}`", "\n".join(port.comment or ()))
+        ports.add_column("Name", no_wrap=True)
+        ports.add_column("Dimension", no_wrap=True)
+        ports.add_column("I/O", no_wrap=True)
+        ports.add_column("Functional Description")
 
-    for param in mod.params:
-        param_name = f"{param.name} {param.dim_unpacked}" if param.dim_unpacked else param.name
-        dim = f"`{param.dim}`" if param.dim else ""
-        default = f"`{param.default}`" if param.default else ""
-        table_param.add_row(f"`{param_name}`", dim, default, "\n".join(param.comment or ()))
+        for port in module.ports:
+            dim = port.dim or "1"
+            port_name = f"{port.name} {port.dim_unpacked}" if port.dim_unpacked else port.name
+            ports.add_row(f"`{port_name}`", f"`{dim}`", f"`{port.direction}`", "\n".join(port.comment or ()))
+    else:
+        ports = None
 
-    return table, table_param
+    if module.insts:
+        insts = Table(box=box.MARKDOWN, width=width)
+
+        insts.add_column("Name", no_wrap=True)
+        insts.add_column("Module", no_wrap=True)
+
+        for inst in module.insts:
+            insts.add_row(f"`{inst.name}`", f"`{inst.module}`")
+    else:
+        insts = None
+
+    return params, ports, insts

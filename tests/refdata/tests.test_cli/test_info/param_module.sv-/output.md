@@ -1,4 +1,8 @@
-                         `param_module` Parameters                         
+## Module `param_module`
+
+Path `$PRJ/examples/param_module.sv`
+
+### Parameters
                                                                            
 | Name               | Dimension   | Default  | Functional Description    |
 |--------------------|-------------|----------|---------------------------|
@@ -7,7 +11,7 @@
 | `INIT_VAL`         | `[7:0]`     | `8'hFF`  |                           |
 | `ENABLE_FEATURE`   |             | `1'b1`   |                           |
                                                                            
-                         `param_module` Interface                          
+### Ports
                                                                            
 | Name          | Dimension       | I/O        | Functional Description   |
 |---------------|-----------------|------------|--------------------------|
@@ -18,14 +22,18 @@
 | `data_out`    | `[WIDTH-1:0]`   | `output`   |                          |
 | `bidir_bus`   | `[DEPTH-1:0]`   | `inout`    |                          |
                                                                            
-                          `sub_module` Parameters                          
+## Module `sub_module`
+
+Path `$PRJ/examples/param_module.sv`
+
+### Parameters
                                                                            
 | Name            | Dimension    | Default   | Functional Description     |
 |-----------------|--------------|-----------|----------------------------|
 | `DATA_WIDTH`    |              | `8`       |                            |
 | `INIT_VALUE`    | `[7:0]`      | `0`       |                            |
                                                                            
-                          `sub_module` Interface                           
+### Ports
                                                                            
 |               |                      |          | Functional            |
 | Name          | Dimension            | I/O      | Description           |

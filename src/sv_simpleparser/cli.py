@@ -128,13 +128,36 @@ def gen_sv_instance(ctx, file_path):  # noqa: ARG001
     help="Enforce Table Width. Environment Variable SV_SIMPLEPARSER_WIDTH.",
     envvar="SV_SIMPLEPARSER_WIDTH",
 )
-def info(ctx: Ctx, file_path: Path, width: int | None = None) -> None:
+@click.option("--level", "-l", type=int, default=2, help="Markdown Header Level. Default 2. Means '##'")
+@click.option("--sub", "-s", is_flag=True, help="Show Submodules")
+def info(ctx: Ctx, file_path: Path, width: int | None = None, level: int = 2, sub: bool = False) -> None:
     """Creates Markdown Overview Tables."""
     file = parse_file(file_path)
+    pre = "#" * level
     for module in file.modules:
-        table_io, table_param = gen_markdown_table(module, width=width)
-        ctx.console.print(table_param)
-        ctx.console.print(table_io)
+        params, ports, insts = gen_markdown_table(module, width=width)
+        ctx.console.print(f"""\
+{pre} Module `{module.name}`
+
+Path `{file.path!s}`
+""")
+
+        if params:
+            ctx.console.print(f"{pre}# Parameters")
+            ctx.console.print(params)
+
+        ctx.console.print(f"{pre}# Ports")
+        if ports:
+            ctx.console.print(ports)
+        else:
+            ctx.console.print("\nNo Ports\n")
+
+        if sub:
+            ctx.console.print(f"{pre}# Submodules")
+            if insts:
+                ctx.console.print(insts)
+            else:
+                ctx.console.print("\nNo Submodules\n")
 
 
 @cli.command()
