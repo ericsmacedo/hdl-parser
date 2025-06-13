@@ -80,7 +80,9 @@ module top0(
    output [9:0] data_tx_2
 );
 
+`ifdef SYNTHESIS
 subcomponent subcomponent_instance_name (
   clk, rst_n, data_rx_1, data_tx ); 
+`endif
 
 endmodule

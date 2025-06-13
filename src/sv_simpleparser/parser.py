@@ -85,6 +85,7 @@ class _ModInstance:
     name: str | None = None
     module: str | None = None
     connections: list[_ConDeclaration] | None = None
+    ifdefs: list[str] | None = None
 
     def proc_tokens(self, token, string, ifdefs):
         if token == Module.Body.Instance.Name:
@@ -270,6 +271,7 @@ class _SvModule:
             inst = dm.ModuleInstance(
                 name=decl.name,
                 module=decl.module,
+                ifdefs=decl.ifdefs,
                 connections=tuple(
                     dm.Connection(
                         port=con.port or "",
@@ -329,7 +331,7 @@ class _SvModule:
         # Capture instances
         elif token[:3] == ("Module", "Body", "Instance"):
             if token == Module.Body.Instance.Module:
-                self.inst_decl.append(_ModInstance(module=string))
+                self.inst_decl.append(_ModInstance(module=string, ifdefs=self.ifdefs_stack.copy()))
             else:
                 self.inst_decl[-1].proc_tokens(token, string, self.ifdefs_stack.copy())
 
