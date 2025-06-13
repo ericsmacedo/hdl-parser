@@ -389,7 +389,6 @@ def _parse_text(text: str):
     lexer = SystemVerilogLexer()
     module_lst = []
     for token, string in lexer.get_tokens(text):
-        LOGGER.debug(f"({token}, {string})")
         # New module was found
         if token == Module.ModuleStart:
             module_lst.append(_SvModule())

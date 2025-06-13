@@ -39,10 +39,8 @@ from pygments.token import (
     Operator,
     Punctuation,
     String,
-    Text,
     Token,
     Whitespace,
-    _TokenType,
 )
 
 from ._token import Module, Port
@@ -818,7 +816,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         ],
         "param_value_delimiter": [
             include("comments_no_whitespace"),
-            (r"[{\[(]", Module.Param.Value, "param_value_delimiter"),
+            (r"[{\[(]", Module.Param.Value, "#push"),
             (r"[}\])]", Module.Param.Value, "#pop"),
             # detect strings "string"
             (r'"(?:\\.|[^"\\])*"', Module.Param.Value),
@@ -888,69 +886,15 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         # ],
     }
 
-    def get_tokens_unprocessed(self, text=None, context=None):  # noqa: C901, PLR0912, PLR0915
-        """Split ``text`` into (tokentype, text) pairs.
-
-        If ``context`` is given, use this lexer context instead.
-        """
-        tokendefs = self._tokens
-        if not context:
-            ctx = LexerContext(text, 0)
-            statetokens = tokendefs["root"]
-        else:
-            ctx = context
-            statetokens = tokendefs[ctx.stack[-1]]
-            text = ctx.text
-        while 1:
-            for rexmatch, action, new_state in statetokens:
-                m = rexmatch(text, ctx.pos, ctx.end)
-                if m:
-                    if action is not None:
-                        if type(action) is _TokenType:
-                            yield ctx.pos, action, m.group()
-                            ctx.pos = m.end()
-                        else:
-                            yield from action(self, m, ctx)
-                            if not new_state:
-                                # altered the state stack?
-                                statetokens = tokendefs[ctx.stack[-1]]
-                    # CAUTION: callback must set ctx.pos!
-                    if new_state is not None:
-                        LOGGER.debug(f"New State: {new_state}")
-                        # state transition
-                        if isinstance(new_state, tuple):
-                            for state in new_state:
-                                if state == "#pop":
-                                    if len(ctx.stack) > 1:
-                                        ctx.stack.pop()
-                                elif state == "#push":
-                                    ctx.stack.append(ctx.stack[-1])
-                                else:
-                                    ctx.stack.append(state)
-                        elif isinstance(new_state, int):
-                            # see RegexLexer for why this check is made
-                            if abs(new_state) >= len(ctx.stack):
-                                del ctx.stack[1:]
-                            else:
-                                del ctx.stack[new_state:]
-                        elif new_state == "#push":
-                            ctx.stack.append(ctx.stack[-1])
-                        else:
-                            raise RuntimeError(f"wrong state def: {new_state!r}")
-                        statetokens = tokendefs[ctx.stack[-1]]
-                    break
+    def get_tokens_unprocessed(self, text=None, context=None):
+        # Override get_tokens_unprocessed to add debug logic
+        # In debug mode, print (Token, match, state_stack)
+        self.ctx = context or LexerContext(text, 0)
+        stack = self.ctx.stack.copy()
+        for item in ExtendedRegexLexer.get_tokens_unprocessed(self, text, self.ctx):
+            if stack == self.ctx.stack:
+                LOGGER.debug(f'({item[1]}, "{item[2]}")')
             else:
-                try:
-                    if ctx.pos >= ctx.end:
-                        break
-                    if text[ctx.pos] == "\n":
-                        # at EOL, reset state to "root"
-                        ctx.stack = ["root"]
-                        statetokens = tokendefs["root"]
-                        yield ctx.pos, Text, "\n"
-                        ctx.pos += 1
-                        continue
-                    yield ctx.pos, Error, text[ctx.pos]
-                    ctx.pos += 1
-                except IndexError:
-                    break
+                LOGGER.debug(f'({item[1]}, "{item[2]}"),\n state stack: {self.ctx.stack}')
+                stack = self.ctx.stack.copy()
+            yield item
