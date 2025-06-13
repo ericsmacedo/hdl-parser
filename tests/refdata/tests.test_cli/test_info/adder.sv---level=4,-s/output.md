@@ -1,6 +1,6 @@
 #### Module `adder`
 
-Path `examples/adder.sv`
+Path `EXAMPLES/adder.sv`
 
 ##### Parameters
                                                                            

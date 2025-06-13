@@ -1,6 +1,6 @@
 ## Module `bcd_adder`
 
-Path `examples/bcd_adder.sv`
+Path `EXAMPLES/bcd_adder.sv`
 
 ### Ports
                                                                            
@@ -14,7 +14,7 @@ Path `examples/bcd_adder.sv`
                                                                            
 ## Module `tb_bcdadder`
 
-Path `examples/bcd_adder.sv`
+Path `EXAMPLES/bcd_adder.sv`
 
 ### Ports
 

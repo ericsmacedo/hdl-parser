@@ -1,6 +1,6 @@
 #### Module `param_module`
 
-Path `examples/param_module.sv`
+Path `EXAMPLES/param_module.sv`
 
 ##### Parameters
                                                                            
@@ -31,7 +31,7 @@ Path `examples/param_module.sv`
                                                                            
 #### Module `sub_module`
 
-Path `examples/param_module.sv`
+Path `EXAMPLES/param_module.sv`
 
 ##### Parameters
                                                                            

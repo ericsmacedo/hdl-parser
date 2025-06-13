@@ -65,7 +65,9 @@ def test_info(tmp_path, example, pre, post):
     (tmp_path / "output.md").write_text(result.output)
 
     posts = ",".join(post)
-    assert_refdata(test_info, tmp_path, flavor=f"{example.name}-{posts}")
+    assert_refdata(
+        test_info, tmp_path, flavor=f"{example.name}-{posts}", replacements=((Path("examples"), "EXAMPLES"),)
+    )
 
 
 @mark.parametrize("example", EXAMPLES)
