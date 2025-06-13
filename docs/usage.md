@@ -15,11 +15,17 @@ There are two major use-cases:
     sv-simpleparser info examples/adder.sv > examples/adder.md
     ```
 
-!!! info "Markdown Table"
+??? info "Markdown Table Code"
 
     ``` title="examples/adder.md"
     --8<-- "examples/adder.md"
     ```
+
+??? info "Markdown Table"
+
+    {%
+        include-markdown "../examples/adder.md"
+    %}
 
 ### JSON
 
@@ -29,7 +35,7 @@ There are two major use-cases:
     sv-simpleparser json examples/adder.sv > examples/adder.json
     ```
 
-!!! info "JSON File"
+??? info "JSON File"
 
     ``` title="examples/adder.json"
     --8<-- "examples/adder.json"

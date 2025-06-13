@@ -129,7 +129,7 @@ def gen_sv_instance(ctx, file_path):  # noqa: ARG001
     envvar="SV_SIMPLEPARSER_WIDTH",
 )
 def info(ctx: Ctx, file_path: Path, width: int | None = None) -> None:
-    """Outputs information about a SV file."""
+    """Creates Markdown Overview Tables."""
     file = parse_file(file_path)
     for module in file.modules:
         table_io, table_param = gen_markdown_table(module, width=width)

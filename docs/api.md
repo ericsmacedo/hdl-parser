@@ -18,7 +18,7 @@
     ...     for port in module.ports:
     ...         print("  ", repr(port))
     ...     for inst in  module.insts:
-    ...         print("  ", inst.module, inst.name)
+    ...         print("   Module:", inst.module, inst.name)
     ...         for con in inst.connections:
     ...             print("    ", con.port, con.con, con.comment)
     'adder'
@@ -31,7 +31,7 @@
        Port(direction='input', ptype='logic', dtype='', name='word_p', dim='[3:0][7:0]', dim_unpacked='', ifdefs=(), comment=('Packed 32-bit word (4 bytes)',))
        Port(direction='input', ptype='logic', dtype='', name='flag_u', dim='', dim_unpacked='', ifdefs=(), comment=('Unpacked single bit',))
        Port(direction='input', ptype='logic', dtype='', name='arr_u', dim='[7:0]', dim_unpacked='[0:3]', ifdefs=(), comment=('Unpacked byte array',))
-       test_module u_test_module
+       Module: test_module u_test_module
          test_input a_port ('Connected to a_port',)
          test_output b_port ('Connected to b_port',)
 
