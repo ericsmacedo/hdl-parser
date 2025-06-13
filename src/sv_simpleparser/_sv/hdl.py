@@ -43,9 +43,7 @@ from pygments.token import (
     Whitespace,
 )
 
-from ._token import Module, Port
-
-__all__ = ["SystemVerilogLexer"]
+from .token import Module, Port
 
 # Create a LOGGER for this module
 LOGGER = logging.getLogger(__name__)

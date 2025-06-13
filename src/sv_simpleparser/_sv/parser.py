@@ -21,20 +21,12 @@
 # SOFTWARE.
 
 
-"""The parser.
-
-The parser offers two methods:
-
-* [sv_simpleparser.parser.parse_file][]
-* [sv_simpleparser.parser.parse_text][]
-"""
-
 import logging
 
-from . import _datamodel as _dm
-from . import datamodel as dm
-from ._hdl import SystemVerilogLexer
-from ._token import Module
+from .. import _datamodel as _dm  # noqa: TID252
+from .. import datamodel as dm  # noqa: TID252
+from .hdl import SystemVerilogLexer
+from .token import Module
 
 LOGGER = logging.getLogger(__name__)
 
@@ -241,7 +233,7 @@ def _normalize_insts(mod):
         )
 
 
-def parse_sv(text: str) -> tuple[dm.Module, ...]:
+def parse(text: str) -> tuple[dm.Module, ...]:
     lexer = SystemVerilogLexer()
     module_lst = []
     for tokens, string in lexer.get_tokens(text):
