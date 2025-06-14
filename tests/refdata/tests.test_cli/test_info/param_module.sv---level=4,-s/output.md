@@ -1,4 +1,8 @@
-                         `param_module` Parameters                         
+#### Module `param_module`
+
+Path `EXAMPLES/param_module.sv`
+
+##### Parameters
                                                                            
 | Name               | Dimension   | Default  | Functional Description    |
 |--------------------|-------------|----------|---------------------------|
@@ -7,7 +11,7 @@
 | `INIT_VAL`         | `[7:0]`     | `8'hFF`  |                           |
 | `ENABLE_FEATURE`   |             | `1'b1`   |                           |
                                                                            
-                         `param_module` Interface                          
+##### Ports
                                                                            
 | Name          | Dimension       | I/O        | Functional Description   |
 |---------------|-----------------|------------|--------------------------|
@@ -18,14 +22,25 @@
 | `data_out`    | `[WIDTH-1:0]`   | `output`   |                          |
 | `bidir_bus`   | `[DEPTH-1:0]`   | `inout`    |                          |
                                                                            
-                          `sub_module` Parameters                          
+##### Submodules
+                                                                           
+| Name                                   | Module                         |
+|----------------------------------------|--------------------------------|
+| `u_sub_module`                         | `sub_module`                   |
+| `u_sub_module2`                        | `sub_module`                   |
+                                                                           
+#### Module `sub_module`
+
+Path `EXAMPLES/param_module.sv`
+
+##### Parameters
                                                                            
 | Name            | Dimension    | Default   | Functional Description     |
 |-----------------|--------------|-----------|----------------------------|
 | `DATA_WIDTH`    |              | `8`       |                            |
 | `INIT_VALUE`    | `[7:0]`      | `0`       |                            |
                                                                            
-                          `sub_module` Interface                           
+##### Ports
                                                                            
 |               |                      |          | Functional            |
 | Name          | Dimension            | I/O      | Description           |
@@ -36,3 +51,7 @@
 | `output_data` | `[DATA_WIDTH-1:0]`   | `output` |                       |
 | `config_bus`  | `[DATA_WIDTH/2-1:0]` | `inout`  |                       |
                                                                            
+##### Submodules
+
+No Submodules
+

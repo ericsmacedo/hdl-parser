@@ -1,11 +1,15 @@
-                            `adder` Parameters                             
+## Module `adder`
+
+Path `EXAMPLES/adder.sv`
+
+### Parameters
                                                                            
 | Name              | Dimension   | Default  | Functional Description     |
 |-------------------|-------------|----------|----------------------------|
 | `DATA_WIDTH`      |             | `8`      | Width of input operands    |
 | `OUTPUT_WIDTH`    |             | `4`      | Test configuration value   |
                                                                            
-                             `adder` Interface                             
+### Ports
                                                                            
 | Name          | Dimension          | I/O      | Functional Description  |
 |---------------|--------------------|----------|-------------------------|
