@@ -41,6 +41,11 @@ Installing it is pretty easy:
 pip install sv-simpleparser
 ```
 
+## Authors
+
+* [Eric Macedo](mailto:ericsmacedo@gmail.com)
+* [Daniel Jakschik](mailto:iccode17@gmail.com)
+
 ## Usage
 
 See [Usage Documentation](https://sv-simpleparser.readthedocs.io/en/stable/usage/)
