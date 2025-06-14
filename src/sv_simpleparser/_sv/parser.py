@@ -25,7 +25,7 @@ import logging
 
 from .. import _datamodel as _dm  # noqa: TID252
 from .. import datamodel as dm  # noqa: TID252
-from .hdl import SystemVerilogLexer
+from .lexer import SystemVerilogLexer
 from .token import Module
 
 LOGGER = logging.getLogger(__name__)
