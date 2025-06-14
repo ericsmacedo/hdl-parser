@@ -33,8 +33,10 @@ from pathlib import Path
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
+from ._vhdl.parser import parse as parse_vhdl
 
 
+# FIXME: Think how we want to differentiate between VHDL and SV
 def parse_file(file_path: Path | str) -> dm.File:
     """Parse a SystemVerilog file.
 
@@ -65,7 +67,10 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    modules = parse_sv(text)
+    if file_path and file_path.suffix in [".vhd", ".vhdl"]:
+        modules = parse_vhdl(text)
+    else:
+        modules = parse_sv(text)
 
     if not modules:
         raise RuntimeError("No module found.")
