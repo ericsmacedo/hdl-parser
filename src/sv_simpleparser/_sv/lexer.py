@@ -20,12 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Lexers for hardware descriptor languages (pygments.lexers.hdl).
-
-:copyright: Copyright 2006-2024 by the Pygments team, see AUTHORS.
-:license: BSD, see LICENSE for details.
-"""
-
 import logging
 import re
 
