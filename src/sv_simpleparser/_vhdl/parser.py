@@ -22,6 +22,7 @@
 
 
 import logging
+import re
 
 from .. import _datamodel as _dm  # noqa: TID252
 from .. import datamodel as dm  # noqa: TID252
@@ -35,17 +36,25 @@ direction_dict = {
     "in": "input",
     "out": "output",
     "inout": "inout",
-    "buffer": "output",
-    "linkage": "output",
+    "buffer": "buffer",
 }
 
 
 def _proc_port_tokens(port, tokens, string):
     """Processes Module.Port tokens and extract data."""
-    if tokens == Port.Mode:
+    if tokens == Port.Direction:
         port.direction = string
     elif tokens == Port.Name:
         port.name.append(string)
+    elif tokens == Port.PType:
+        port.ptype = string
+    elif tokens == Port.DType:
+        port.dtype = string
+    elif tokens == Port.Width:
+        if port.dim is None:
+            port.dim = string
+        else:
+            port.dim += string
     elif tokens == Port.Comment:
         if port.comment is None:
             port.comment = [string]
@@ -57,6 +66,8 @@ def _proc_param_tokens(param, tokens, string):
     """Processes Module.Param tokens and extract data."""
     if tokens == Gen.Name:
         param.name.append(string)
+    if tokens == Gen.PType:
+        param.ptype = string
     elif tokens == Gen.Value:
         param.default += string
     elif tokens == Gen.Comment:
@@ -88,15 +99,23 @@ def _normalize_defaults(default: str) -> str:
     return default.rstrip("\n").strip()
 
 
+def _normalize_dim(dim: str) -> str:
+    return f"[{re.sub(r'\s*(downto|to)\s*', ':', dim)}]" if dim else ""
+
+
+def _normalize_types(ptype: str) -> str:
+    return ptype.lower() if ptype else ""
+
+
 def _normalize_ports(mod):
     for decl in mod.port_decl:
         for name in decl.name:
             yield dm.Port(
                 name=name,
                 direction=direction_dict[decl.direction],
-                ptype=decl.ptype or "",
+                ptype=_normalize_types(decl.ptype),
                 dtype=decl.dtype or "",
-                dim=decl.dim or "",
+                dim=_normalize_dim(decl.dim) or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
                 ifdefs=tuple(decl.ifdefs),
@@ -108,7 +127,7 @@ def _normalize_params(mod):
         for name in decl.name:
             yield dm.Param(
                 name=name,
-                ptype=decl.ptype or "",
+                ptype=_normalize_types(decl.ptype),
                 dim=decl.dim or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),

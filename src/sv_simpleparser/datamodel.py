@@ -98,9 +98,9 @@ class Port(_BaseModel):
         comment: tuple of associated comments
     """
 
-    direction: Literal["input", "output", "inout"]
-    ptype: Literal["reg", "wire", "logic", ""] = ""
-    dtype: Literal["unsigned", "signed", ""] = ""
+    direction: Literal["input", "output", "inout", "buffer"]
+    ptype: str = ""  # Literal["reg", "wire", "logic", "std_logic", "std_logic_vector", "std_ulogic", ""] = ""
+    dtype: str = ""  # Literal["unsigned", "signed", ""] = ""
     name: str
     dim: str = ""
     dim_unpacked: str = ""
