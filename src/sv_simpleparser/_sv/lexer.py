@@ -37,7 +37,7 @@ from pygments.token import (
     Whitespace,
 )
 
-from .token import Module, Port
+from .token import IFDEF, Module, Port
 
 # Create a LOGGER for this module
 LOGGER = logging.getLogger(__name__)
@@ -245,6 +245,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             (r"[~!%^&*+=|?:<>/-]", Operator),
             (words(("inside", "dist"), suffix=r"\b"), Operator.Word),
             (r"[()\[\],.;\'$]", Punctuation),
+            include("ifdef"),
             (r"`[a-zA-Z_]\w*", Name.Constant),
             (r"\bmodule\b", Module.ModuleStart, ("module_body", "module_name")),
             keywords,
@@ -255,6 +256,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
                 r"(endclass\b)(?:(\s*)(:)(\s*)([a-zA-Z_]\w*))?",
                 bygroups(Keyword.Declaration, Whitespace, Punctuation, Whitespace, Name.Class),
             ),
+            # fmt: off
             variable_types,
             (
                 words(
@@ -286,6 +288,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
                 ),
                 Comment.Preproc,
             ),
+            # fmt: on
             (r"[a-zA-Z_]\w*:(?!:)", Name.Label),
             (r"\$?[a-zA-Z_]\w*", Name),
             (r"\\(\S+)", Name),
@@ -410,11 +413,11 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", comments_callback),
         ],
         "ifdef": [
-            (r"(`ifdef)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, Module.IFDEF.IFDEF)),
-            (r"(`ifndef)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, Module.IFDEF.IFNDEF)),
-            (r"(`else)", Module.IFDEF.ELSE),
-            (r"(`elsif)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, Module.IFDEF.ELSIF)),
-            (r"(`endif)", Module.IFDEF.ENDIF),
+            (r"(`ifdef)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, IFDEF.IFDEF)),
+            (r"(`ifndef)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, IFDEF.IFNDEF)),
+            (r"(`else)", IFDEF.ELSE),
+            (r"(`elsif)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, IFDEF.ELSIF)),
+            (r"(`endif)", IFDEF.ENDIF),
         ],
         "instance_connections": [
             include("comments"),

@@ -1,4 +1,5 @@
 
+`ifdef MOD
 module ifdef_example #(
 `ifdef BAR
   parameter PARAM0 = 0, // Parameter PARAM0
@@ -17,5 +18,6 @@ module ifdef_example #(
     output x_o  // Output x
 );
 
+`endif
 
 endmodule

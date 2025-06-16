@@ -34,3 +34,6 @@ PortDirection = Port.PortDirection
 PortType = Port.PortType
 PortWidth = Port.PortWidth
 PortName = Port.Name
+
+# ifdefs
+IFDEF = Token.IFDEF
