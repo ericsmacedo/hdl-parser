@@ -42,7 +42,7 @@ Lang: TypeAlias = Literal["sv", "vhdl"]
 LANGMAP: dict[str, Lang] = {
     ".sv": "sv",
     ".v": "sv",
-    ".vhd": "sv",
+    ".vhd": "vhdl",
     ".vhdl": "vhdl",
 }
 
