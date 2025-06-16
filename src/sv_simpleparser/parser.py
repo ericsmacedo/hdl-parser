@@ -30,18 +30,30 @@ The parser offers two methods:
 """
 
 from pathlib import Path
+from typing import Literal, TypeAlias
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
 from ._vhdl.parser import parse as parse_vhdl
 
+Lang: TypeAlias = Literal["sv", "vhdl"]
 
-# FIXME: Think how we want to differentiate between VHDL and SV
-def parse_file(file_path: Path | str) -> dm.File:
+LANGMAP: dict[str, Lang] = {
+    ".sv": "sv",
+    ".v": "sv",
+    ".vhd": "sv",
+    ".vhdl": "vhdl",
+}
+
+
+def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
     """Parse a SystemVerilog file.
 
     Args:
         file_path: Path to the SystemVerilog file.
+
+    Keyword Args:
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. Or 'sv' by default.
 
     Returns:
         Parsed Data
@@ -49,10 +61,10 @@ def parse_file(file_path: Path | str) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    return parse_text(file_path.read_text(), file_path=file_path)
+    return parse_text(file_path.read_text(), file_path=file_path, lang=lang)
 
 
-def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
+def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None = None) -> dm.File:
     """Parse a SystemVerilog text.
 
     Args:
@@ -60,6 +72,7 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
 
     Keyword Args:
         file_path: Related File Path.
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. Or 'sv' by default.
 
     Returns:
         Parsed Data
@@ -67,7 +80,10 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    if file_path and file_path.suffix in [".vhd", ".vhdl"]:
+    if lang is None and file_path:
+        lang = LANGMAP[file_path.suffix]
+
+    if lang == "vhdl":
         modules = parse_vhdl(text)
     else:
         modules = parse_sv(text)
