@@ -37,6 +37,7 @@ from ._sv.parser import parse as parse_sv
 from ._vhdl.parser import parse as parse_vhdl
 
 Lang: TypeAlias = Literal["sv", "vhdl"]
+"""Language."""
 
 LANGMAP: dict[str, Lang] = {
     ".sv": "sv",
@@ -47,13 +48,13 @@ LANGMAP: dict[str, Lang] = {
 
 
 def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
-    """Parse a SystemVerilog file.
+    """Parse a HDL (SystemVerilog or VHDL) file.
 
     Args:
-        file_path: Path to the SystemVerilog file.
+        file_path: Path to the file.
 
     Keyword Args:
-        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. Or 'sv' by default.
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
 
     Returns:
         Parsed Data
@@ -65,14 +66,14 @@ def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
 
 
 def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None = None) -> dm.File:
-    """Parse a SystemVerilog text.
+    """Parse HDL (SystemVerilog or VHDL) text.
 
     Args:
-        text: SystemVerilog Statements.
+        text: HDL Statements.
 
     Keyword Args:
         file_path: Related File Path.
-        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. Or 'sv' by default.
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
 
     Returns:
         Parsed Data
