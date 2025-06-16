@@ -29,7 +29,7 @@ from pytest import fixture
 
 PRJ_PATH = Path(__file__).parent.parent
 EXAMPLES_PATH = PRJ_PATH / "examples"
-EXAMPLES = tuple(sorted(EXAMPLES_PATH.glob("*.sv")))
+EXAMPLES = tuple(sorted(EXAMPLES_PATH.glob("*.*v"))) + tuple(sorted(EXAMPLES_PATH.glob("*.vhd*")))
 
 
 @fixture
