@@ -18,6 +18,5 @@ module ifdef_example #(
     output x_o  // Output x
 );
 
-`endif
-
 endmodule
+`endif
