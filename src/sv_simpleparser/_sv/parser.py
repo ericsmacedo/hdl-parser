@@ -116,47 +116,48 @@ def _proc_param_tokens(self, tokens, string, ifdefs):
         self.default += string
 
 
-def _proc_ifdef_tokens(self, tokens, string):
+def _proc_ifdef_tokens(tokens, string, ifdefs_stack, ifdefs_pop_stack):
     # Process the ifdef stack list
     if tokens[-1] == "IFDEF":
-        self.ifdefs_stack.append(string)
+        ifdefs_stack.append(string)
     elif tokens[-1] == "IFNDEF":
-        self.ifdefs_stack.append(_flip_ifdef(string))
+        ifdefs_stack.append(_flip_ifdef(string))
     elif tokens[-1] == "ELSIF":
-        self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
-        self.ifdefs_stack.append(string)
+        ifdefs_stack[-1] = _flip_ifdef(ifdefs_stack[-1])
+        ifdefs_stack.append(string)
     elif tokens[-1] == "ELSE":
-        self.ifdefs_stack[-1] = _flip_ifdef(self.ifdefs_stack[-1])
+        ifdefs_stack[-1] = _flip_ifdef(ifdefs_stack[-1])
     elif tokens[-1] == "ENDIF":
-        del self.ifdefs_stack[-self.ifdefs_pop_stack[-1] :]
+        del ifdefs_stack[-ifdefs_pop_stack[-1] :]
 
     # Process the pop stack list
     if tokens[-1] in ["IFDEF", "IFNDEF"]:
-        self.ifdefs_pop_stack.append(1)
+        ifdefs_pop_stack.append(1)
     elif tokens[-1] in ["ELSIF"]:
-        self.ifdefs_pop_stack[-1] += 1
+        ifdefs_pop_stack[-1] += 1
     elif tokens[-1] in ["ENDIF"]:
-        del self.ifdefs_pop_stack[-1]
+        del ifdefs_pop_stack[-1]
 
-    LOGGER.debug(f"IFDEF stack: {self.ifdefs_stack}")
-    LOGGER.debug(f"IFDEF stack: {self.ifdefs_pop_stack}")
+    LOGGER.debug(f"IFDEF stack: {ifdefs_stack}")
+    LOGGER.debug(f"IFDEF pop stack: {ifdefs_pop_stack}")
+
+    return ifdefs_stack, ifdefs_pop_stack
 
 
-def _proc_module_tokens(self, tokens, string):
+def _proc_module_tokens(self, tokens, string, ifdefs_stack):
     # Capture a new port declaration object if input/output keywords are found
     if tokens[:2] == ("Module", "Port"):
         if tokens[-1] == ("PortDirection"):
             self.port_decl.append(_dm.PortDecl(direction=string))
         else:
-            _proc_port_tokens(self.port_decl[-1], tokens, string, self.ifdefs_stack.copy())
+            _proc_port_tokens(self.port_decl[-1], tokens, string, ifdefs_stack)
 
     # Capture parameters, when Module.Param tokens are found
     elif tokens[:2] == ("Module", "Param"):
         if tokens is Module.Param:
             self.param_decl.append(_dm.ParamDecl())
         else:
-            _proc_param_tokens(self.param_decl[-1], tokens, string, self.ifdefs_stack.copy())
-
+            _proc_param_tokens(self.param_decl[-1], tokens, string, ifdefs_stack)
     # Capture Modules
     elif tokens[:2] == ("Module", "ModuleName"):
         self.name = string
@@ -164,12 +165,9 @@ def _proc_module_tokens(self, tokens, string):
     # Capture instances
     elif tokens[:3] == ("Module", "Body", "Instance"):
         if tokens == Module.Body.Instance.Module:
-            self.inst_decl.append(_dm.InstDecl(module=string, ifdefs=self.ifdefs_stack.copy()))
+            self.inst_decl.append(_dm.InstDecl(module=string, ifdefs=ifdefs_stack))
         else:
-            _proc_inst_tokens(self.inst_decl[-1], tokens, string, self.ifdefs_stack.copy())
-
-    elif tokens[:2] == ("Module", "IFDEF"):
-        _proc_ifdef_tokens(self, tokens, string)
+            _proc_inst_tokens(self.inst_decl[-1], tokens, string, ifdefs_stack)
 
 
 def _normalize_comments(comment: list[str]) -> tuple[str, ...]:
@@ -236,12 +234,17 @@ def _normalize_insts(mod):
 def parse(text: str) -> tuple[dm.Module, ...]:
     lexer = SystemVerilogLexer()
     module_lst = []
+    ifdefs_stack: list[str] = []
+    ifdefs_pop_stack: list[str] = []
+
     for tokens, string in lexer.get_tokens(text):
         # New module was found
         if tokens == Module.ModuleStart:
-            module_lst.append(_dm.Module())
+            module_lst.append(_dm.Module(ifdefs=ifdefs_stack.copy()))
+        elif "IFDEF" in tokens[:]:
+            _proc_ifdef_tokens(tokens, string, ifdefs_stack, ifdefs_pop_stack)
         elif "Module" in tokens[:]:
-            _proc_module_tokens(module_lst[-1], tokens, string)
+            _proc_module_tokens(module_lst[-1], tokens, string, ifdefs_stack=ifdefs_stack.copy())
 
     return tuple(
         dm.Module(
@@ -249,6 +252,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
             params=tuple(_normalize_params(mod)),
             ports=tuple(_normalize_ports(mod)),
             insts=tuple(_normalize_insts(mod)),
+            ifdefs=tuple(mod.ifdefs),
         )
         for mod in module_lst
     )
