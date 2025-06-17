@@ -93,6 +93,17 @@ def test_multiple(tmp_path, runner, cmd):
     assert_refdata(test_multiple, tmp_path, flavor=cmd)
 
 
+@mark.parametrize("cmd", ("info", "json"))
+def test_filelist(tmp_path, runner, cmd, examples):
+    """Test Command - Multiple Files."""
+    result = runner.invoke(cli, [cmd, "-f", str(examples / "filelist.f")])
+
+    assert result.exit_code == 0
+    (tmp_path / "output.txt").write_text(result.output)
+
+    assert_refdata(test_filelist, tmp_path, flavor=cmd)
+
+
 def test_cli_help_smoke(runner):
     """Test that help command works."""
     result = runner.invoke(cli, ["--help"])

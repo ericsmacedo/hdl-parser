@@ -31,6 +31,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 
 from ._gen_templates import gen_instance, gen_markdown_table
+from .filelistparser import parse_filelist
 from .parser import parse_file
 
 _LOGLEVELMAP = {
@@ -41,6 +42,9 @@ _LOGLEVELMAP = {
 
 
 arg_filepaths = click.argument("filepaths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path))
+opt_filelists = click.option(
+    "--filelist", "-f", type=click.Path(exists=True, readable=True, path_type=Path), multiple=True, help="Filelist"
+)
 
 
 def _create_console(**kwargs) -> Console:
@@ -108,10 +112,11 @@ pass_ctx = click.make_pass_decorator(Ctx)
 
 @cli.command()
 @arg_filepaths
+@opt_filelists
 @pass_ctx
-def gen_sv_instance(ctx, filepaths: tuple[Path, ...]):  # noqa: ARG001
+def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]):  # noqa: ARG001
     """Parses an SystemVerilog file and returns a instance of the module."""
-    for filepath in filepaths:
+    for filepath in _join_filepaths(filepaths, filelist):
         file = parse_file(filepath)
         for module in file.modules:
             instance = gen_instance(module)
@@ -120,6 +125,7 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...]):  # noqa: ARG001
 
 @cli.command()
 @arg_filepaths
+@opt_filelists
 @pass_ctx
 @click.option(
     "--width",
@@ -130,9 +136,16 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...]):  # noqa: ARG001
 )
 @click.option("--level", "-l", type=int, default=2, help="Markdown Header Level. Default 2. Means '##'")
 @click.option("--sub", "-s", is_flag=True, help="Show Submodules")
-def info(ctx: Ctx, filepaths: tuple[Path, ...], width: int | None = None, level: int = 2, sub: bool = False) -> None:
+def info(  # noqa: PLR0913
+    ctx: Ctx,
+    filepaths: tuple[Path, ...],
+    filelist: tuple[Path, ...],
+    width: int | None = None,
+    level: int = 2,
+    sub: bool = False,
+) -> None:
     """Creates Markdown Overview Tables."""
-    for filepath in filepaths:
+    for filepath in _join_filepaths(filepaths, filelist):
         file = parse_file(filepath)
         pre = "#" * level
         for module in file.modules:
@@ -163,8 +176,17 @@ Path `{file.path!s}`
 
 @cli.command()
 @arg_filepaths
-def json(filepaths: tuple[Path, ...]) -> None:
+@opt_filelists
+def json(filepaths: tuple[Path, ...], filelist: tuple[Path, ...]) -> None:
     """Dump All Extracted Information in a JSON file."""
-    for filepath in filepaths:
+    for filepath in _join_filepaths(filepaths, filelist):
         file = parse_file(filepath)
         print(file.overview)
+
+
+def _join_filepaths(filepaths: tuple[Path, ...], filelists: tuple[Path, ...]) -> list[Path]:
+    all_filepaths = list(filepaths)
+    all_incdirs: list[Path] = []
+    for filelist in filelists:
+        parse_filelist(all_filepaths, all_incdirs, filelist)
+    return all_filepaths
