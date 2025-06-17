@@ -40,6 +40,7 @@ EXAMPLES = (
     EXAMPLES_PATH / "adder.sv",
     EXAMPLES_PATH / "bcd_adder.sv",
 )
+REPLACEMENTS = ((Path("examples"), "EXAMPLES"),)
 
 
 @mark.parametrize("example", EXAMPLES)
@@ -65,9 +66,7 @@ def test_info(tmp_path, example, pre, post):
     (tmp_path / "output.md").write_text(result.output)
 
     posts = ",".join(post)
-    assert_refdata(
-        test_info, tmp_path, flavor=f"{example.name}-{posts}", replacements=((Path("examples"), "EXAMPLES"),)
-    )
+    assert_refdata(test_info, tmp_path, flavor=f"{example.name}-{posts}", replacements=REPLACEMENTS)
 
 
 @mark.parametrize("example", EXAMPLES)
@@ -90,7 +89,7 @@ def test_multiple(tmp_path, runner, cmd):
     assert result.exit_code == 0
     (tmp_path / "output.txt").write_text(result.output)
 
-    assert_refdata(test_multiple, tmp_path, flavor=cmd)
+    assert_refdata(test_multiple, tmp_path, flavor=cmd, replacements=REPLACEMENTS)
 
 
 @mark.parametrize("cmd", ("info", "json"))
@@ -102,7 +101,7 @@ def test_filelist(tmp_path, runner, cmd, examples):
     assert result.exit_code == 0
     (tmp_path / "output.txt").write_text(result.output)
 
-    assert_refdata(test_filelist, tmp_path, flavor=cmd)
+    assert_refdata(test_filelist, tmp_path, flavor=cmd, replacements=REPLACEMENTS)
 
 
 def test_cli_help_smoke(runner):
