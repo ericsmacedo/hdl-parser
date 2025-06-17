@@ -1,0 +1,144 @@
+## Module `adder`
+
+Path `EXAMPLES/adder.sv`
+
+### Parameters
+                                                                           
+| Name              | Dimension   | Default  | Functional Description     |
+|-------------------|-------------|----------|----------------------------|
+| `DATA_WIDTH`      |             | `8`      | Width of input operands    |
+| `OUTPUT_WIDTH`    |             | `4`      | Test configuration value   |
+                                                                           
+### Ports
+                                                                           
+| Name          | Dimension          | I/O      | Functional Description  |
+|---------------|--------------------|----------|-------------------------|
+| `A`           | `[DATA_WIDTH-1:0]` | `input`  | Packed input operand A  |
+| `B`           | `[DATA_WIDTH-1:0]` | `input`  | Packed input operand B  |
+| `X`           | `[DATA_WIDTH:0]`   | `output` | Packed sum output       |
+| `byte_p`      | `[7:0]`            | `input`  | Packed byte input       |
+| `word_p`      | `[3:0][7:0]`       | `input`  | Packed 32-bit word (4   |
+|               |                    |          | bytes)                  |
+| `flag_u`      | `1`                | `input`  | Unpacked single bit     |
+| `arr_u [0:3]` | `[7:0]`            | `input`  | Unpacked byte array     |
+                                                                           
+## Module `top1`
+
+Path `EXAMPLES/instances_example.sv`
+
+### Ports
+                                                                           
+| Name           | Dimension    | I/O        | Functional Description     |
+|----------------|--------------|------------|----------------------------|
+| `clk`          | `1`          | `input`    |                            |
+| `rst_n`        | `1`          | `input`    |                            |
+| `enable`       | `1`          | `input`    |                            |
+| `data_rx_1`    | `[9:0]`      | `input`    |                            |
+| `data_rx_2`    | `[9:0]`      | `input`    |                            |
+| `data_tx_2`    | `[9:0]`      | `output`   |                            |
+                                                                           
+## Module `top2`
+
+Path `EXAMPLES/instances_example.sv`
+
+### Ports
+                                                                           
+| Name           | Dimension    | I/O        | Functional Description     |
+|----------------|--------------|------------|----------------------------|
+| `clk`          | `1`          | `input`    |                            |
+| `rst_n`        | `1`          | `input`    |                            |
+| `enable`       | `1`          | `input`    |                            |
+| `data_rx_1`    | `[9:0]`      | `input`    |                            |
+| `data_rx_2`    | `[9:0]`      | `input`    |                            |
+| `data_tx_2`    | `[9:0]`      | `output`   |                            |
+                                                                           
+## Module `top3`
+
+Path `EXAMPLES/instances_example.sv`
+
+### Ports
+                                                                           
+| Name           | Dimension    | I/O        | Functional Description     |
+|----------------|--------------|------------|----------------------------|
+| `clk`          | `1`          | `input`    |                            |
+| `rst_n`        | `1`          | `input`    |                            |
+| `enable`       | `1`          | `input`    |                            |
+| `data_rx_1`    | `[9:0]`      | `input`    |                            |
+| `data_rx_2`    | `[9:0]`      | `input`    |                            |
+| `data_tx_2`    | `[9:0]`      | `output`   |                            |
+                                                                           
+## Module `top4`
+
+Path `EXAMPLES/instances_example.sv`
+
+### Ports
+                                                                           
+| Name           | Dimension    | I/O        | Functional Description     |
+|----------------|--------------|------------|----------------------------|
+| `clk`          | `1`          | `input`    |                            |
+| `rst_n`        | `1`          | `input`    |                            |
+| `enable`       | `1`          | `input`    |                            |
+| `data_rx_1`    | `[9:0]`      | `input`    |                            |
+| `data_rx_2`    | `[9:0]`      | `input`    |                            |
+| `data_tx_2`    | `[9:0]`      | `output`   |                            |
+                                                                           
+## Module `top0`
+
+Path `EXAMPLES/instances_example.sv`
+
+### Ports
+                                                                           
+| Name           | Dimension    | I/O        | Functional Description     |
+|----------------|--------------|------------|----------------------------|
+| `clk`          | `1`          | `input`    |                            |
+| `rst_n`        | `1`          | `input`    |                            |
+| `enable`       | `1`          | `input`    |                            |
+| `data_rx_1`    | `[9:0]`      | `input`    |                            |
+| `data_rx_2`    | `[9:0]`      | `input`    |                            |
+| `data_tx_2`    | `[9:0]`      | `output`   |                            |
+                                                                           
+## Module `packed_unpacked`
+
+Path `EXAMPLES/packed_unpacked.sv`
+
+### Parameters
+                                                                           
+| Name                  | Dimension    | Default | Functional Description |
+|-----------------------|--------------|---------|------------------------|
+| `P_VEC`               | `[4:0]`      | `0`     |                        |
+| `P_MATRIX`            | `[4:0][3:0]` | `0`     |                        |
+| `P_UNPACK [4:0]`      |              | `0`     |                        |
+| `P_VEC_UNPACK [4:0]`  | `[3:0]`      | `0`     |                        |
+                                                                           
+### Ports
+                                                                           
+| Name                 | Dimension    | I/O      | Functional Description |
+|----------------------|--------------|----------|------------------------|
+| `vec_i`              | `[4:0]`      | `input`  |                        |
+| `matrix_i`           | `[4:0][3:0]` | `input`  |                        |
+| `unpack_i [4:0]`     | `1`          | `input`  |                        |
+| `vec_unpack_i [4:0]` | `[3:0]`      | `input`  |                        |
+| `out_o`              | `1`          | `output` |                        |
+                                                                           
+## Module `bcd_adder`
+
+Path `EXAMPLES/bcd_adder.sv`
+
+### Ports
+                                                                           
+| Name      | Dimension     | I/O         | Functional Description        |
+|-----------|---------------|-------------|-------------------------------|
+| `a`       | `[3:0]`       | `input`     |                               |
+| `b`       | `[3:0]`       | `input`     |                               |
+| `cin`     | `1`           | `input`     |                               |
+| `sum`     | `[3:0]`       | `output`    |                               |
+| `cout`    | `1`           | `output`    |                               |
+                                                                           
+## Module `tb_bcdadder`
+
+Path `EXAMPLES/bcd_adder.sv`
+
+### Ports
+
+No Ports
+

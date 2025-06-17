@@ -19,28 +19,39 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Test Parser."""
 
-"""Easy-To-Use SystemVerilog Parser.
+from pathlib import Path
 
-Usage is simple. Parse your input with one of these methods:
+from sv_simpleparser import parse_filelist
 
-* [sv_simpleparser.parse_file][]
-* [sv_simpleparser.parse_text][]
 
-You receive a [sv_simpleparser.File][] object holding all information.
-"""
+def test_filelistparser(examples):
+    """Test FileList Parser."""
+    filelist = examples / "filelist.f"
+    filepaths = []
+    incdirs = []
+    parse_filelist(filepaths, incdirs, filelist)
+    assert filepaths == [
+        examples / "adder.sv",
+        examples / "instances_example.sv",
+        examples / "packed_unpacked.sv",
+        examples / "bcd_adder.sv",
+    ]
+    assert incdirs == [examples / "inc"]
 
-from .datamodel import File, Module, ModuleInstance, Param, Port
-from .filelistparser import parse_filelist
-from .parser import parse_file, parse_text
 
-__all__ = [
-    "File",
-    "Module",
-    "ModuleInstance",
-    "Param",
-    "Port",
-    "parse_file",
-    "parse_filelist",
-    "parse_text",
-]
+def test_filelistparser_rel(examples):
+    """Test FileList Parser."""
+    examples = examples.relative_to(Path().resolve())
+    filelist = examples / "filelist.f"
+    filepaths = []
+    incdirs = []
+    parse_filelist(filepaths, incdirs, filelist)
+    assert filepaths == [
+        examples / "adder.sv",
+        examples / "instances_example.sv",
+        examples / "packed_unpacked.sv",
+        examples / "bcd_adder.sv",
+    ]
+    assert incdirs == [examples / "inc"]

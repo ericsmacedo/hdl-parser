@@ -1,0 +1,349 @@
+{
+  "path": "EXAMPLES/param_module.sv",
+  "modules": [
+    {
+      "name": "param_module",
+      "params": [
+        {
+          "name": "WIDTH",
+          "default": "8",
+          "comment": [
+            "Width of the input data"
+          ]
+        },
+        {
+          "name": "DEPTH",
+          "default": "4"
+        },
+        {
+          "name": "INIT_VAL",
+          "dim": "[7:0]",
+          "default": "8'hFF"
+        },
+        {
+          "ptype": "logic",
+          "name": "ENABLE_FEATURE",
+          "default": "1'b1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "rst_n",
+          "comment": [
+            "active-low reset"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "data_in",
+          "dim": "[WIDTH-1:0]",
+          "comment": [
+            "Input data",
+            "other comment"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "reg",
+          "name": "data_out",
+          "dim": "[WIDTH-1:0]"
+        },
+        {
+          "direction": "inout",
+          "ptype": "wire",
+          "name": "bidir_bus",
+          "dim": "[DEPTH-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_sub_module",
+          "module": "sub_module",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk",
+              "comment": [
+                "comment",
+                "other comment"
+              ]
+            },
+            {
+              "port": "reset",
+              "con": "rst_n"
+            },
+            {
+              "port": "input_data",
+              "con": "data_in"
+            },
+            {
+              "port": "output_data",
+              "con": "internal_wire"
+            },
+            {
+              "port": "config_bus",
+              "con": "bidir_bus"
+            }
+          ]
+        },
+        {
+          "name": "u_sub_module2",
+          "module": "sub_module",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "rst_n"
+            },
+            {
+              "port": "input_data",
+              "con": "data_in[3:0]"
+            },
+            {
+              "port": "output_data"
+            },
+            {
+              "port": "config_bus",
+              "con": "bidir_bus[1:0]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sub_module",
+      "params": [
+        {
+          "name": "DATA_WIDTH",
+          "default": "8"
+        },
+        {
+          "name": "INIT_VALUE",
+          "dim": "[7:0]",
+          "default": "0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "reset"
+        },
+        {
+          "direction": "input",
+          "ptype": "wire",
+          "name": "input_data",
+          "dim": "[DATA_WIDTH-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "wire",
+          "name": "output_data",
+          "dim": "[DATA_WIDTH-1:0]"
+        },
+        {
+          "direction": "inout",
+          "ptype": "wire",
+          "name": "config_bus",
+          "dim": "[DATA_WIDTH/2-1:0]"
+        }
+      ]
+    }
+  ]
+}
+{
+  "path": "EXAMPLES/adder.sv",
+  "modules": [
+    {
+      "name": "adder",
+      "params": [
+        {
+          "ptype": "integer",
+          "name": "DATA_WIDTH",
+          "default": "8",
+          "comment": [
+            "Width of input operands"
+          ]
+        },
+        {
+          "ptype": "integer",
+          "name": "OUTPUT_WIDTH",
+          "default": "4",
+          "comment": [
+            "Test configuration value"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "dtype": "unsigned",
+          "name": "A",
+          "dim": "[DATA_WIDTH-1:0]",
+          "comment": [
+            "Packed input operand A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "dtype": "unsigned",
+          "name": "B",
+          "dim": "[DATA_WIDTH-1:0]",
+          "comment": [
+            "Packed input operand B"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "dtype": "unsigned",
+          "name": "X",
+          "dim": "[DATA_WIDTH:0]",
+          "comment": [
+            "Packed sum output"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "byte_p",
+          "dim": "[7:0]",
+          "comment": [
+            "Packed byte input"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "word_p",
+          "dim": "[3:0][7:0]",
+          "comment": [
+            "Packed 32-bit word (4 bytes)"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "flag_u",
+          "comment": [
+            "Unpacked single bit"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "arr_u",
+          "dim": "[7:0]",
+          "dim_unpacked": "[0:3]",
+          "comment": [
+            "Unpacked byte array"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_test_module",
+          "module": "test_module",
+          "connections": [
+            {
+              "port": "test_input",
+              "con": "a_port",
+              "comment": [
+                "Connected to a_port"
+              ]
+            },
+            {
+              "port": "test_output",
+              "con": "b_port",
+              "comment": [
+                "Connected to b_port"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{
+  "path": "EXAMPLES/bcd_adder.sv",
+  "modules": [
+    {
+      "name": "bcd_adder",
+      "ports": [
+        {
+          "direction": "input",
+          "name": "a",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "input",
+          "name": "b",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "input",
+          "name": "cin"
+        },
+        {
+          "direction": "output",
+          "name": "sum",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "name": "cout"
+        }
+      ]
+    },
+    {
+      "name": "tb_bcdadder",
+      "insts": [
+        {
+          "name": "uut",
+          "module": "bcd_adder",
+          "connections": [
+            {
+              "port": "a",
+              "con": "a"
+            },
+            {
+              "port": "b",
+              "con": "b"
+            },
+            {
+              "port": "cin",
+              "con": "cin"
+            },
+            {
+              "port": "sum",
+              "con": "sum"
+            },
+            {
+              "port": "cout",
+              "con": "cout"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
