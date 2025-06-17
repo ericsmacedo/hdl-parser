@@ -31,36 +31,30 @@ class ConDecl(_BaseModel):
     port: str = ""
     con: str = ""
     comment: list[str] | None = None
-    ifdefs: list[str] | None = None
 
 
 class InstDecl(_BaseModel):
     name: str | None = None
     module: str | None = None
     connections: list[ConDecl] | None = None
-    ifdefs: list[str] | None = None
 
 
 class PortDecl(_BaseModel):
-    direction: str | None = None
+    mode: str | None = None
     ptype: str | None = None
     dtype: str | None = None
     name: list[str] | None = None
     dim: str | None = None
     dim_unpacked: str | None = None
     comment: list[str] | None = None
-    ifdefs: list[str] | None = None
-    default: str = ""
 
 
 class ParamDecl(_BaseModel):
     ptype: str | None = None
-    dtype: str | None = None
     name: list[str] | None = None
     dim: str | None = None
     dim_unpacked: str | None = None
     comment: list[str] | None = None
-    ifdefs: list[str] | None = None
     default: str = ""
 
 
@@ -69,5 +63,9 @@ class Module(_BaseModel):
     port_decl: list[PortDecl] = []
     param_decl: list[ParamDecl] = []
     inst_decl: list[InstDecl] = []
-    ifdefs_stack: list = []
-    ifdefs_pop_stack: list = []
+
+
+class Component(_BaseModel):
+    name: str = ""
+    port_decl: list[PortDecl] = []
+    param_decl: list[ParamDecl] = []

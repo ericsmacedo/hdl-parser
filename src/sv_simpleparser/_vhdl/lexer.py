@@ -24,9 +24,9 @@ import logging
 import re
 
 from pygments.lexer import ExtendedRegexLexer, LexerContext, bygroups, include, words
-from pygments.token import Comment, Keyword, Name, Number, Operator, Punctuation, String, Whitespace
+from pygments.token import Keyword, Name, Number, Operator, Punctuation, String, Whitespace
 
-from .token import Architecture, Entity, Gen, Port
+from .token import Architecture, Component, Entity, Gen, Node, Port
 
 LOGGER = logging.getLogger(__name__)
 
@@ -57,55 +57,25 @@ types = (
     "std_logic", "std_logic_vector", "signed", "unsigned"
 )
 
-direction = (
-    "in", "out", "inout", "buffer",
+mode = (
+    "in", "out", "inout", "buffer", "linkage",
 )
 
 itf_obj_type = (
     "constant", "signal", "variable", "file",
 )
 
-dtype = (
-    "signed", "unsigned",
-)
 # fmt: on
-
-
-def comments_callback(lexer: ExtendedRegexLexer, match, ctx: LexerContext):  # noqa: ARG001
-    state_stack = ctx.stack
-
-    # The actual comment is located at group 2
-    match_string = match.group(2)
-    match_start = match.start(0)
-
-    if "port_clause" in state_stack:
-        yield match_start, Port.Comment, match_string
-    elif "generic_clause" in state_stack:
-        yield match_start, Gen.Comment, match_string
-    else:
-        yield match_start, Comment, match_string
-    ctx.pos = match.end()
-
-
-def value_callback(lexer: ExtendedRegexLexer, match, ctx: LexerContext):  # noqa: ARG001
-    prev_state = ctx.stack[-2]
-
-    if prev_state == "generic_value":
-        yield match, Gen.Value, match.group(0)
-    else:
-        yield match, Gen.Value, match.group(0)
-    ctx.pos = match.end()
 
 
 class VhdlLexer(ExtendedRegexLexer):
     """For VHDL source code."""
 
-    # name = 'vhdl'
-    # aliases = ['vhdl']
-    # filenames = ['*.vhdl', '*.vhd']
-    # mimetypes = ['text/x-vhdl']
-    # url = 'https://en.wikipedia.org/wiki/VHDL'
-    # version_added = '1.5'
+    name = "vhdl"
+    aliases = ["vhdl"]
+    filenames = ["*.vhdl", "*.vhd"]
+    mimetypes = ["text/x-vhdl"]
+    url = "https://en.wikipedia.org/wiki/VHDL"
     flags = re.MULTILINE | re.DOTALL | re.IGNORECASE
 
     tokens = {
@@ -126,9 +96,9 @@ class VhdlLexer(ExtendedRegexLexer):
             (words(("std", "ieee", "work"), suffix=r"\b"), Name.Namespace),
             # detect entity name
             (r"(entity)\s+(\w+)\s+(is)\s+", bygroups(Keyword, Entity.Name, Keyword), "entity_header"),
-            # TODO: add begin/end states
+            (r"(component)\s+(\w+)\s+(is)\s+", bygroups(Keyword, Component.Name, Keyword), "component_header"),
             (
-                r"architecture\s+(\w+)\s+of\s+(\w+)\s+is\s+",
+                r"architecture\s+(\w+)\s*of\s*(\w+)\s*is\s*",
                 bygroups(Architecture.Name, Architecture.Entity),
                 "architecture",
             ),
@@ -185,38 +155,53 @@ class VhdlLexer(ExtendedRegexLexer):
             (r"(end)\s+(\w+)\s*;", bygroups(Keyword, Entity.HeaderEnd), "#pop"),
             include("root"),
         ],
+        "component_header": [
+            (r"\s+", Whitespace),
+            include("comment"),
+            (r"\bport\b", Keyword, "port_clause"),
+            (r"\bgeneric\b", Keyword, "generic_clause"),
+            (r"(end)\s+(\w+)\s*;", bygroups(Keyword, Component.HeaderEnd), "#pop"),
+            include("root"),
+        ],
         "port_clause": [
             (r"\s+", Whitespace),
             include("comment"),
-            # port modes (vhdl std page 97)
-            (r"([a-zA-Z_]\w*)", Port.NewPortDecl, "port_declaration"),
-            (r";", Port.End),
+            (words(itf_obj_type, suffix=r"\b"), Port.PType),
+            (r"([a-zA-Z_]\w*)", Port.NewPortDecl, "obj_declaration"),
             (r"[(:,]", Punctuation),
             (r"\)\s*;", Port.ClauseEnd, "#pop"),
         ],
-        "port_declaration": [
+        "generic_clause": [
+            (r"\s+", Whitespace),
+            include("comment"),
+            (words(itf_obj_type, suffix=r"\b"), Gen.PType),
+            (r"([a-zA-Z_]\w*)", Gen.NewGenDecl, "obj_declaration"),
+            (r"[(:,]", Punctuation),
+            (r"\)\s*;", Gen.ClauseEnd, "#pop"),
+        ],
+        "obj_declaration": [
             # This states cover only port names. It will jump to port type once a ":"
             # is found
             (r"\s+", Whitespace),
             include("comment"),
-            (r"([a-zA-Z_]\w*)", Port.Name),
-            (r"\s*:\s*", Punctuation, "port_type"),
+            (r"([a-zA-Z_]\w*)", Node.Name),
+            (r"\s*:\s*", Punctuation, "obj_type"),
             (r"[,]", Punctuation),
         ],
-        "port_type": [
+        "obj_type": [
             (r"\s+", Whitespace),
             include("comment"),
             # port modes (vhdl std page 97)
-            (words(direction, prefix=r"\b", suffix=r"\b"), Port.Direction),
-            (r"(signed|unsigned)(\()", bygroups(Port.DType, Port.WidthStart), "port_width"),
-            (r"(\w+)(\()", bygroups(Port.Type, Port.WidthStart), "port_width"),
-            (words(types, prefix=r"\b", suffix=r"\b"), Port.PType),
-            (r";", Port.End, "#pop:2"),
+            (words(mode, prefix=r"\b", suffix=r"\b"), Node.Mode),
+            (r"(\w+)(\()", bygroups(Node.DType, Node.WidthStart), "obj_width"),
+            (words(types, prefix=r"\b", suffix=r"\b"), Node.DType),
+            (r":=", Node.ValueStart, "obj_value"),
+            (r";", Node.End, "#pop:2"),
             (r"[(:,]", Punctuation),
             # end of port declaration AND end of port clause
-            (r"\)\s*;", Port.ClauseEnd, "#pop:3"),
+            (r"\)\s*;", Node.ClauseEnd, "#pop:3"),
         ],
-        "port_width": [
+        "obj_width": [
             include("comment"),
             (r"[{\[(]", Port.Width, "value_delimiter"),
             (r"\w+", Port.Width),
@@ -225,53 +210,28 @@ class VhdlLexer(ExtendedRegexLexer):
             (r"[,);]", Port.WidthEnd, "#pop"),
             (r".", Port.Width),
         ],
-        "generic_clause": [
-            # This state should only cover generic names
-            (r"\s+", Whitespace),
+        "obj_value": [
             include("comment"),
-            (r"\(", Punctuation),
-            (r"([a-zA-Z_]\w*)", Gen.NewGenDecl, "gen_declaration"),
-            (r"\)\s*;", Gen.ClauseEnd, "#pop"),
-            # TODO: check if it can be removed
-        ],
-        "gen_declaration": [
-            (r"\s+", Whitespace),
-            include("comment"),
-            (words(itf_obj_type, prefix=r"\b", suffix=r"\b"), Gen.Other),
-            (r"\s*:\s*", Punctuation, "gen_type"),
-            (r"([a-zA-Z_]\w*)", Gen.Name),
-            (r"[,]", Punctuation),
-        ],
-        "gen_type": [
-            (r"\s+", Whitespace),
-            include("comment"),
-            (words(types, prefix=r"\b", suffix=r"\b"), Gen.PType),
-            (r":=", Gen.ValueStart, "generic_value"),
-            (r"\)\s*;", Gen.ClauseEnd, "#pop:3"),
-            (r";", Gen.End, "#pop:2"),
-        ],
-        "generic_value": [
-            include("comment"),
-            (r"[{\[(]", Gen.Value, "value_delimiter"),
-            (r"\w+", Gen.Value),
-            (r'"(?:\\.|[^"\\])*"', Gen.Value),
+            (r"[{\[(]", Node.Value, "value_delimiter"),
+            (r"\w+", Node.Value),
+            (r'"(?:\\.|[^"\\])*"', Node.Value),
             # end of generic_value, gen_declaration and genneric clause
-            (r"\)\s*;", Gen.ClauseEnd, "#pop:4"),
+            (r"\)\s*;", Node.ClauseEnd, "#pop:4"),
             (r"[;]", Punctuation, "#pop:3"),
-            (r".", Gen.Value),
+            (r".", Node.Value),
         ],
         "value_delimiter": [
             include("comment"),
-            (r"[{\[(]", value_callback, "#push"),
-            (r"[}\])]", value_callback, "#pop"),
-            (r"\w+", value_callback),
-            (r'"(?:\\.|[^"\\])*"', value_callback),
+            (r"[{\[(]", Node.Value, "#push"),
+            (r"[}\])]", Node.Value, "#pop"),
+            (r"\w+", Node.Value),
+            (r'"(?:\\.|[^"\\])*"', Node.Value),
             (r"[,);]", Punctuation, "#pop"),
-            (r".", value_callback),
+            (r".", Node.Value),
         ],
         "comment": [
-            (r"(--)(.*?)$", comments_callback),
-            (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", comments_callback),
+            (r"(--)(.*?)$", Node.Comment),
+            (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", Node.Comment),
         ],
     }
 
@@ -280,10 +240,30 @@ class VhdlLexer(ExtendedRegexLexer):
         # In debug mode, print (Token, match, state_stack)
         self.ctx = context or LexerContext(text, 0)
         stack = self.ctx.stack.copy()
-        for item in ExtendedRegexLexer.get_tokens_unprocessed(self, text, self.ctx):
-            if stack == self.ctx.stack:
-                LOGGER.debug(f'({item[1]}, "{item[2]}")')
+        for pos, token, string in ExtendedRegexLexer.get_tokens_unprocessed(self, text, self.ctx):
+            # This will replace the token "Node" by either Port or Gen, based on
+            # the states present in the state stack. This logic enable us to reuse
+            # states for both Ports and Generic declarations
+            if "Node" in token[:]:
+                if "port_clause" in stack:
+                    new_token = (
+                        *Port,
+                        token[1],
+                    )
+                elif "generic_clause" in stack:
+                    new_token = (
+                        *Gen,
+                        token[1],
+                    )
+                else:
+                    new_token = token
             else:
-                LOGGER.debug(f'state stack: {self.ctx.stack}\n({item[1]}, "{item[2]}")')
+                new_token = token
+
+            if stack == self.ctx.stack:
+                LOGGER.debug(f'({token}, "{string}")')
+            else:
+                LOGGER.debug(f'state stack: {self.ctx.stack}\n({token}, "{string}")')
                 stack = self.ctx.stack.copy()
-            yield item
+
+            yield (pos, new_token, string)

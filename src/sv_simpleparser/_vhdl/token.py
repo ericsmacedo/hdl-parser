@@ -24,8 +24,9 @@ from pygments.token import Token
 
 # information about module
 Entity = Token.Entity
-
 Architecture = Token.Architecture
+Component = Token.Component
+Node = Token.Node
 
 # information about ports
 Port = Entity.Port

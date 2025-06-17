@@ -1,0 +1,93 @@
+{
+  "path": "$PRJ/examples/uart_tx.vhd",
+  "modules": [
+    {
+      "name": "uart_tx",
+      "params": [
+        {
+          "name": "CLK_FREQ",
+          "default": "100_000_000",
+          "comment": [
+            "-- Clock frequency in Hz",
+            "-- (default: 100 MHz)"
+          ]
+        },
+        {
+          "name": "BAUD_RATE",
+          "default": "115_200",
+          "comment": [
+            "-- Baud rate (default: 115200)",
+            "-- Data bits (default: 8-bit)"
+          ]
+        },
+        {
+          "name": "DATA_WIDTH",
+          "default": "8+5",
+          "comment": [
+            "-- Parity mode: 0 = none, 1 = odd, 2 = even",
+            "--PARITY_MODE : natural range 0 to 2 := 0"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk",
+          "comment": [
+            "-- System clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk_2",
+          "comment": [
+            "-- System clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "-- active-high reset",
+            "-- Data interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "data_in",
+          "dim": "[DATA_WIDTH-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "data_valid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ready",
+          "comment": [
+            "-- Serial output"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "txd",
+          "comment": [
+            "-- Status signals"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "parity_error"
+        }
+      ]
+    }
+  ]
+}

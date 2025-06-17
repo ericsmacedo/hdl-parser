@@ -31,18 +31,10 @@ from .token import Entity, Gen, Port
 
 LOGGER = logging.getLogger(__name__)
 
-# TODO: Decide what to do with linkage and buffer
-direction_dict = {
-    "in": "input",
-    "out": "output",
-    "inout": "inout",
-    "buffer": "buffer",
-}
-
 
 def _proc_port_tokens(port, tokens, string):
     """Processes Module.Port tokens and extract data."""
-    if tokens == Port.Direction:
+    if tokens == Port.Mode:
         port.direction = string
     elif tokens == Port.Name:
         port.name.append(string)
@@ -70,6 +62,11 @@ def _proc_param_tokens(param, tokens, string):
         param.ptype = string
     elif tokens == Gen.Value:
         param.default += string
+    elif tokens == Gen.Width:
+        if param.dim is None:
+            param.dim = string
+        else:
+            param.dim += string
     elif tokens == Gen.Comment:
         if param.comment is None:
             param.comment = [string]
@@ -81,12 +78,12 @@ def _proc_module_tokens(self, tokens, string):
     # Capture a new port declaration object if input/output keywords are found
     if tokens[:2] == Port:
         if tokens[-1] == ("NewPortDecl"):
-            self.port_decl.append(_dm.PortDecl(name=[string], ifdefs=[]))
+            self.port_decl.append(_dm.PortDecl(name=[string]))
         elif self.port_decl:
             _proc_port_tokens(self.port_decl[-1], tokens, string)
     elif tokens[:2] == Gen:
         if tokens[-1] == ("NewGenDecl"):
-            self.param_decl.append(_dm.ParamDecl(name=[string], ifdefs=[]))
+            self.param_decl.append(_dm.ParamDecl(name=[string]))
         elif self.param_decl:
             _proc_param_tokens(self.param_decl[-1], tokens, string)
 
@@ -112,13 +109,12 @@ def _normalize_ports(mod):
         for name in decl.name:
             yield dm.Port(
                 name=name,
-                direction=direction_dict[decl.direction],
+                direction=decl.direction,
                 ptype=_normalize_types(decl.ptype),
-                dtype=decl.dtype or "",
+                dtype=_normalize_types(decl.dtype),
                 dim=_normalize_dim(decl.dim) or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
-                ifdefs=tuple(decl.ifdefs),
             )
 
 
@@ -132,7 +128,6 @@ def _normalize_params(mod):
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
                 default=_normalize_defaults(decl.default),
-                ifdefs=tuple(decl.ifdefs),
             )
 
 
@@ -141,13 +136,11 @@ def _normalize_insts(mod):
         yield dm.ModuleInstance(
             name=decl.name,
             module=decl.module,
-            ifdefs=decl.ifdefs,
             connections=tuple(
                 dm.Connection(
                     port=con.port or "",
                     con=con.con or "",
                     comment=_normalize_comments(con.comment),
-                    ifdefs=tuple(con.ifdefs),
                 )
                 for con in decl.connections
             ),

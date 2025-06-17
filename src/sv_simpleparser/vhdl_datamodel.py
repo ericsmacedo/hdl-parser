@@ -76,6 +76,7 @@ class Param(_BaseModel):
     """
 
     ptype: str = ""
+    dtype: str = ""
     name: str
     dim: str = ""
     dim_unpacked: str = ""
@@ -97,13 +98,13 @@ class Port(_BaseModel):
         comment: tuple of associated comments
     """
 
-    # FIXME: Decide for possible values (remove comments)
-    direction: str = ""  # Literal["input", "output", "inout", "buffer"]
-    ptype: str = ""  # Literal["reg", "wire", "logic", "std_logic", "std_logic_vector", "std_ulogic", ""] = ""
-    dtype: str = ""  # Literal["unsigned", "signed", ""] = ""
+    mode: str = ""
+    ptype: str = ""
+    dtype: str = ""
     name: str
     dim: str = ""
     dim_unpacked: str = ""
+    default: str = ""
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
 
