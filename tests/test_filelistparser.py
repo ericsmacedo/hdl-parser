@@ -21,11 +21,29 @@
 # SOFTWARE.
 """Test Parser."""
 
+from pathlib import Path
+
 from sv_simpleparser import parse_filelist
 
 
 def test_filelistparser(examples):
     """Test FileList Parser."""
+    filelist = examples / "filelist.f"
+    filepaths = []
+    incdirs = []
+    parse_filelist(filepaths, incdirs, filelist)
+    assert filepaths == [
+        examples / "adder.sv",
+        examples / "instances_example.sv",
+        examples / "packed_unpacked.sv",
+        examples / "bcd_adder.sv",
+    ]
+    assert incdirs == [examples / "inc"]
+
+
+def test_filelistparser_rel(examples):
+    """Test FileList Parser."""
+    examples = examples.relative_to(Path().resolve())
     filelist = examples / "filelist.f"
     filepaths = []
     incdirs = []
