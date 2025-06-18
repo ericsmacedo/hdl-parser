@@ -131,8 +131,8 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]
     "--width",
     "-w",
     type=int,
-    help="Enforce Table Width. Environment Variable SV_SIMPLEPARSER_WIDTH.",
-    envvar="SV_SIMPLEPARSER_WIDTH",
+    help="Enforce Table Width. Environment Variable HDL_PARSER_WIDTH.",
+    envvar="HDL_PARSER_WIDTH",
 )
 @click.option("--level", "-l", type=int, default=2, help="Markdown Header Level. Default 2. Means '##'")
 @click.option("--sub", "-s", is_flag=True, help="Show Submodules")

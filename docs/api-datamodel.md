@@ -1,2 +1,2 @@
 # Data Model
-::: sv_simpleparser.datamodel
+::: hdl_parser.datamodel

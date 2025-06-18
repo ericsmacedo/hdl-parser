@@ -3,6 +3,6 @@
 This page provides documentation for our command line tools.
 
 ::: mkdocs-click
-    :module: sv_simpleparser.cli
+    :module: hdl_parser.cli
     :command: cli
-    :prog_name: sv-simpleparser
+    :prog_name: hdl-parser

@@ -28,7 +28,7 @@ from click.testing import CliRunner
 from pytest import mark
 from test2ref import assert_refdata, configure
 
-from sv_simpleparser.cli import cli
+from hdl_parser.cli import cli
 
 from .conftest import EXAMPLES_PATH, PRJ_PATH
 

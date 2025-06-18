@@ -1,6 +1,6 @@
 # Application Programming Interface (API)
 
-::: sv_simpleparser
+::: hdl_parser
     options:
         members: []
 
@@ -8,9 +8,9 @@
 !!! example "Usage is simple"
 
     ```python
-    >>> import sv_simpleparser
+    >>> import hdl_parser
 
-    >>> file = sv_simpleparser.parse_file("examples/adder.sv")
+    >>> file = hdl_parser.parse_file("examples/adder.sv")
     >>> for module in file.modules:
     ...     print(repr(module.name))
     ...     for param in module.params:
