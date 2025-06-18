@@ -55,4 +55,4 @@ def runner_iso():
 @fixture(autouse=True)
 def enforce_terminal_size(monkeypatch):
     """Fix issue with varying terminal size."""
-    monkeypatch.setenv("SV_SIMPLEPARSER_WIDTH", "75")
+    monkeypatch.setenv("HDL_PARSER_WIDTH", "75")

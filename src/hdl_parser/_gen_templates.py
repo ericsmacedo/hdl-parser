@@ -27,7 +27,7 @@ from rich.table import Table, box
 
 from .datamodel import Module
 
-template_path = files("sv_simpleparser.Templates")
+template_path = files("hdl_parser.Templates")
 
 
 def gen_instance(mod):

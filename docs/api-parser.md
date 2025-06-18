@@ -1,2 +1,2 @@
 # Parser
-::: sv_simpleparser.parser
+::: hdl_parser.parser

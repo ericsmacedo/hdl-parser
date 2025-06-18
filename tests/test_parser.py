@@ -24,7 +24,7 @@
 from pytest import mark
 from test2ref import assert_refdata
 
-from sv_simpleparser import File, Module, Port, parse_file, parse_text
+from hdl_parser import File, Module, Port, parse_file, parse_text
 
 from .conftest import EXAMPLES
 

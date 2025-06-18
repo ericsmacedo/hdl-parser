@@ -12,7 +12,7 @@ There are two major use-cases:
 !!! example "Generate Markdown Table"
 
     ```bash
-    sv-simpleparser info -s examples/adder.sv > examples/adder.md
+    hdl-parser info -s examples/adder.sv > examples/adder.md
     ```
 
 ??? info "Markdown Table Code"
@@ -32,7 +32,7 @@ There are two major use-cases:
 !!! example "Generate JSON"
 
     ```bash
-    sv-simpleparser json examples/adder.sv > examples/adder.json
+    hdl-parser json examples/adder.sv > examples/adder.json
     ```
 
 ??? info "JSON File"

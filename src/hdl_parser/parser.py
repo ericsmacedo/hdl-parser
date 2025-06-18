@@ -25,8 +25,8 @@
 
 The parser offers two methods:
 
-* [sv_simpleparser.parser.parse_file][]
-* [sv_simpleparser.parser.parse_text][]
+* [hdl_parser.parser.parse_file][]
+* [hdl_parser.parser.parse_text][]
 """
 
 from pathlib import Path

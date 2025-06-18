@@ -23,7 +23,7 @@
 
 from pathlib import Path
 
-from sv_simpleparser import parse_filelist
+from hdl_parser import parse_filelist
 
 
 def test_filelistparser(examples):
