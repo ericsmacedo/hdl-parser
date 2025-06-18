@@ -20,39 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Test Fixtures."""
+from pygments.token import Token
 
-from pathlib import Path
+# information about module
+Entity = Token.Entity
+Architecture = Token.Architecture
+Component = Token.Component
+Node = Token.Node
 
-from click.testing import CliRunner
-from pytest import fixture
-
-PRJ_PATH = Path(__file__).parent.parent
-EXAMPLES_PATH = PRJ_PATH / "examples"
-EXAMPLES = tuple(sorted(EXAMPLES_PATH.glob("*.*v"))) + tuple(sorted(EXAMPLES_PATH.glob("*.vhd*")))
-
-
-@fixture
-def examples() -> Path:
-    """Path to Examples."""
-    return EXAMPLES_PATH
-
-
-@fixture
-def runner():
-    """CLI Runner."""
-    yield CliRunner()
-
-
-@fixture
-def runner_iso():
-    """CLI Runner."""
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        yield runner
-
-
-@fixture(autouse=True)
-def enforce_terminal_size(monkeypatch):
-    """Fix issue with varying terminal size."""
-    monkeypatch.setenv("SV_SIMPLEPARSER_WIDTH", "75")
+# information about ports
+Port = Entity.Port
+Gen = Entity.Gen

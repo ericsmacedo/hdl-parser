@@ -30,16 +30,31 @@ The parser offers two methods:
 """
 
 from pathlib import Path
+from typing import Literal, TypeAlias
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
+from ._vhdl.parser import parse as parse_vhdl
+
+Lang: TypeAlias = Literal["sv", "vhdl"]
+"""Language."""
+
+LANGMAP: dict[str, Lang] = {
+    ".sv": "sv",
+    ".v": "sv",
+    ".vhd": "vhdl",
+    ".vhdl": "vhdl",
+}
 
 
-def parse_file(file_path: Path | str) -> dm.File:
-    """Parse a SystemVerilog file.
+def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
+    """Parse a HDL (SystemVerilog or VHDL) file.
 
     Args:
-        file_path: Path to the SystemVerilog file.
+        file_path: Path to the file.
+
+    Keyword Args:
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
 
     Returns:
         Parsed Data
@@ -47,17 +62,18 @@ def parse_file(file_path: Path | str) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    return parse_text(file_path.read_text(), file_path=file_path)
+    return parse_text(file_path.read_text(), file_path=file_path, lang=lang)
 
 
-def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
-    """Parse a SystemVerilog text.
+def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None = None) -> dm.File:
+    """Parse HDL (SystemVerilog or VHDL) text.
 
     Args:
-        text: SystemVerilog Statements.
+        text: HDL Statements.
 
     Keyword Args:
         file_path: Related File Path.
+        lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
 
     Returns:
         Parsed Data
@@ -65,7 +81,13 @@ def parse_text(text: str, file_path: Path | str | None = None) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    modules = parse_sv(text)
+    if lang is None and file_path:
+        lang = LANGMAP[file_path.suffix]
+
+    if lang == "vhdl":
+        modules = parse_vhdl(text)
+    else:
+        modules = parse_sv(text)
 
     if not modules:
         raise RuntimeError("No module found.")

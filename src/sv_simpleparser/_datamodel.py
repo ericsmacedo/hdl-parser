@@ -42,7 +42,7 @@ class InstDecl(_BaseModel):
 
 
 class PortDecl(_BaseModel):
-    direction: str
+    direction: str | None = None
     ptype: str | None = None
     dtype: str | None = None
     name: list[str] | None = None
@@ -50,10 +50,12 @@ class PortDecl(_BaseModel):
     dim_unpacked: str | None = None
     comment: list[str] | None = None
     ifdefs: list[str] | None = None
+    default: str = ""
 
 
 class ParamDecl(_BaseModel):
     ptype: str | None = None
+    dtype: str | None = None
     name: list[str] | None = None
     dim: str | None = None
     dim_unpacked: str | None = None
