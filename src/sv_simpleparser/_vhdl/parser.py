@@ -97,7 +97,7 @@ def _normalize_defaults(default: str) -> str:
 
 
 def _normalize_dim(dim: str) -> str:
-    return f"[{re.sub(r'\s*(downto|to)\s*', ':', dim)}]" if dim else ""
+    return "[" + re.sub(r"\s*(downto|to)\s*", ":", dim) + "]" if dim else ""
 
 
 def _normalize_types(ptype: str) -> str:

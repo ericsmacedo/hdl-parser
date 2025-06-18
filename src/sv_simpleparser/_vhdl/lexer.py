@@ -244,21 +244,12 @@ class VhdlLexer(ExtendedRegexLexer):
             # This will replace the token "Node" by either Port or Gen, based on
             # the states present in the state stack. This logic enable us to reuse
             # states for both Ports and Generic declarations
+            mod_token = token
             if "Node" in token[:]:
                 if "port_clause" in stack:
-                    new_token = (
-                        *Port,
-                        token[1],
-                    )
+                    mod_token = (*Port, token[1])
                 elif "generic_clause" in stack:
-                    new_token = (
-                        *Gen,
-                        token[1],
-                    )
-                else:
-                    new_token = token
-            else:
-                new_token = token
+                    mod_token = (*Gen, token[1])
 
             if stack == self.ctx.stack:
                 LOGGER.debug(f'({token}, "{string}")')
@@ -266,4 +257,4 @@ class VhdlLexer(ExtendedRegexLexer):
                 LOGGER.debug(f'state stack: {self.ctx.stack}\n({token}, "{string}")')
                 stack = self.ctx.stack.copy()
 
-            yield (pos, new_token, string)
+            yield (pos, mod_token, string)
