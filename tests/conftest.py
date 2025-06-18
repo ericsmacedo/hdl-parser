@@ -41,6 +41,12 @@ def examples() -> Path:
 @fixture
 def runner():
     """CLI Runner."""
+    yield CliRunner()
+
+
+@fixture
+def runner_iso():
+    """CLI Runner."""
     runner = CliRunner()
     with runner.isolated_filesystem():
         yield runner

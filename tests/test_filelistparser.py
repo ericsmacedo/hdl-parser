@@ -19,21 +19,39 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+"""Test Parser."""
 
-from pygments.token import Token
+from pathlib import Path
 
-__all__ = ["Module", "Port"]
+from sv_simpleparser import parse_filelist
 
-# information about module
-Module = Token.Module
-ModuleName = Module.ModuleName
 
-# information about ports
-Port = Module.Port
-PortDirection = Port.PortDirection
-PortType = Port.PortType
-PortWidth = Port.PortWidth
-PortName = Port.Name
+def test_filelistparser(examples):
+    """Test FileList Parser."""
+    filelist = examples / "filelist.f"
+    filepaths = []
+    incdirs = []
+    parse_filelist(filepaths, incdirs, filelist)
+    assert filepaths == [
+        examples / "adder.sv",
+        examples / "instances_example.sv",
+        examples / "packed_unpacked.sv",
+        examples / "bcd_adder.sv",
+    ]
+    assert incdirs == [examples / "inc"]
 
-# ifdefs
-IFDEF = Token.IFDEF
+
+def test_filelistparser_rel(examples):
+    """Test FileList Parser."""
+    examples = examples.relative_to(Path().resolve())
+    filelist = examples / "filelist.f"
+    filepaths = []
+    incdirs = []
+    parse_filelist(filepaths, incdirs, filelist)
+    assert filepaths == [
+        examples / "adder.sv",
+        examples / "instances_example.sv",
+        examples / "packed_unpacked.sv",
+        examples / "bcd_adder.sv",
+    ]
+    assert incdirs == [examples / "inc"]

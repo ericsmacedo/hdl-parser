@@ -31,6 +31,7 @@ You receive a [sv_simpleparser.File][] object holding all information.
 """
 
 from .datamodel import File, Module, ModuleInstance, Param, Port
+from .filelistparser import parse_filelist
 from .parser import parse_file, parse_text
 
 __all__ = [
@@ -40,5 +41,6 @@ __all__ = [
     "Param",
     "Port",
     "parse_file",
+    "parse_filelist",
     "parse_text",
 ]

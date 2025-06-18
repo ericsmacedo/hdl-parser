@@ -69,5 +69,4 @@ class Module(_BaseModel):
     port_decl: list[PortDecl] = []
     param_decl: list[ParamDecl] = []
     inst_decl: list[InstDecl] = []
-    ifdefs_stack: list = []
-    ifdefs_pop_stack: list = []
+    ifdefs: list[str] = []

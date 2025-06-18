@@ -40,12 +40,13 @@ EXAMPLES = (
     EXAMPLES_PATH / "adder.sv",
     EXAMPLES_PATH / "bcd_adder.sv",
 )
+REPLACEMENTS = ((Path("examples"), "EXAMPLES"),)
 
 
 @mark.parametrize("example", EXAMPLES)
-def test_gen_sv_instance(tmp_path, runner, example):
+def test_gen_sv_instance(tmp_path, runner_iso, example):
     """Test Info Command."""
-    result = runner.invoke(cli, ["gen-sv-instance", str(example)])
+    result = runner_iso.invoke(cli, ["gen-sv-instance", str(example)])
 
     assert result.exit_code == 0
     (tmp_path / "output.txt").write_text(result.output)
@@ -65,9 +66,7 @@ def test_info(tmp_path, example, pre, post):
     (tmp_path / "output.md").write_text(result.output)
 
     posts = ",".join(post)
-    assert_refdata(
-        test_info, tmp_path, flavor=f"{example.name}-{posts}", replacements=((Path("examples"), "EXAMPLES"),)
-    )
+    assert_refdata(test_info, tmp_path, flavor=f"{example.name}-{posts}", replacements=REPLACEMENTS)
 
 
 @mark.parametrize("example", EXAMPLES)
@@ -79,6 +78,30 @@ def test_json(tmp_path, runner, example):
     (tmp_path / "output.json").write_text(result.output)
 
     assert_refdata(test_json, tmp_path, flavor=example.name)
+
+
+@mark.parametrize("cmd", ("info", "json"))
+def test_multiple(tmp_path, runner, cmd):
+    """Test Command - Multiple Files."""
+    examples = (str(example.relative_to(Path.cwd())) for example in EXAMPLES)
+    result = runner.invoke(cli, [cmd, *examples])
+
+    assert result.exit_code == 0
+    (tmp_path / "output.txt").write_text(result.output)
+
+    assert_refdata(test_multiple, tmp_path, flavor=cmd, replacements=REPLACEMENTS)
+
+
+@mark.parametrize("cmd", ("info", "json"))
+def test_filelist(tmp_path, runner, cmd, examples):
+    """Test Command - Multiple Files."""
+    examples = examples.relative_to(Path.cwd())
+    result = runner.invoke(cli, [cmd, "-f", str(examples / "filelist.f")])
+
+    assert result.exit_code == 0
+    (tmp_path / "output.txt").write_text(result.output)
+
+    assert_refdata(test_filelist, tmp_path, flavor=cmd, replacements=REPLACEMENTS)
 
 
 def test_cli_help_smoke(runner):

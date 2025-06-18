@@ -62,6 +62,7 @@ class Module(_BaseModel):
     params: tuple["Param", ...] = ()
     ports: tuple["Port", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
+    ifdefs: tuple[str, ...] = ()
 
 
 class Param(_BaseModel):
