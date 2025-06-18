@@ -23,7 +23,7 @@
 #
 
 [project]
-name = "sv-simpleparser"
+name = "hdl-parser"
 dynamic = ["version"]
 description = "Easy-To-Use SystemVerilog Parser"
 readme = "README.md"
@@ -50,9 +50,9 @@ dependencies = [
 keywords = ["SystemVerilog", "Verilog", "Parser"]
 
 [project.urls]
-"Homepage" = "https://github.com/ericsmacedo/sv-simpleparser"
-"Documentation" = "https://sv-simpleparser.readthedocs.io/en/stable/"
-"Bug Tracker" = "https://github.com/ericsmacedo/sv-simpleparser/issues"
+"Homepage" = "https://github.com/ericsmacedo/hdl-parser"
+"Documentation" = "https://hdl-parser.readthedocs.io/en/stable/"
+"Bug Tracker" = "https://github.com/ericsmacedo/hdl-parser/issues"
 
 [dependency-groups]
 dev = [
@@ -71,14 +71,14 @@ dev = [
 ]
 
 [project.scripts]
-sv-simpleparser = "sv_simpleparser.cli:cli"
+hdl-parser = "hdl_parser.cli:cli"
 
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.build]
-includes = ["src/sv_simpleparser"]
+includes = ["src/hdl_parser"]
 
 [tool.pdm.version]
 source = "scm"
@@ -185,7 +185,7 @@ convention = "google"
 
 [tool.pytest.ini_options]
 addopts ="""
-    --cov src/sv_simpleparser
+    --cov src/hdl_parser
     --cov-report term
     --cov-report html
     --doctest-glob=docs/*
@@ -200,7 +200,7 @@ filterwarnings = [
 
 [tool.coverage.run]
 omit = [
-    "src/sv_simpleparser/Templates/*"
+    "src/hdl_parser/Templates/*"
 ]
 
 [tool.coverage.report]

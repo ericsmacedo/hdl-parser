@@ -24,10 +24,10 @@
 
 Usage is simple. Parse your input with one of these methods:
 
-* [sv_simpleparser.parse_file][]
-* [sv_simpleparser.parse_text][]
+* [hdl_parser.parse_file][]
+* [hdl_parser.parse_text][]
 
-You receive a [sv_simpleparser.File][] object holding all information.
+You receive a [hdl_parser.File][] object holding all information.
 """
 
 from .datamodel import File, Module, ModuleInstance, Param, Port

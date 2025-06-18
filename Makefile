@@ -47,8 +47,8 @@ checktypes: .venv/.valid ## [ALL] Run Type-Checking via 'mypy'
 
 .PHONY: examples
 examples: .venv/.valid ## [ALL] Run Examples
-	${ENV} sv-simpleparser info examples/adder.sv -s > examples/adder.md
-	${ENV} sv-simpleparser json examples/adder.sv > examples/adder.json
+	${ENV} hdl-parser info examples/adder.sv -s > examples/adder.md
+	${ENV} hdl-parser json examples/adder.sv > examples/adder.json
 
 
 .PHONY: doc
@@ -63,7 +63,7 @@ doc-serve: .venv/.valid ## Start Local Documentation Server via 'mkdocs'
 
 .PHONY: code
 code:  ## Start Visual Studio Code
-	code sv-simpleparser.code-workspace &
+	code hdl-parser.code-workspace &
 
 
 .PHONY: clean
