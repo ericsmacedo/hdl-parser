@@ -61,7 +61,10 @@ def _proc_param_tokens(param, tokens, string):
     if tokens == Gen.PType:
         param.ptype = string
     elif tokens == Gen.Value:
-        param.default += string
+        if param.default is None:
+            param.default = [string]
+        else:
+            param.default[-1] += string
     elif tokens == Gen.Width:
         if param.dim is None:
             param.dim = string
@@ -127,7 +130,9 @@ def _normalize_params(mod):
                 dim=decl.dim or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
-                default=_normalize_defaults(decl.default),
+                default=_normalize_defaults(
+                    decl.default[-1]
+                ),  # FIXME: Correct this when/if vhdl has a different datamodel
             )
 
 

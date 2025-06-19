@@ -43,8 +43,10 @@ module test5 #(
     parameter P1,
     parameter P2 = 2,
     parameter P3,
-    parameter P4 = P2 * 2
-) ();
+    parameter P4 = P2 * 2, P5 = (P1 + 3)
+) (
+   input logic [P2-1:0] debug_port
+);
 
 endmodule
 
@@ -55,4 +57,37 @@ module test6 #(
     parameter SPECIAL = "!@#$%^&*()"
 ) ();
 
+endmodule
+
+
+module test7 #(
+    parameter addrwidth=12, datawidth_p=32
+) (
+    input logic clk,
+    input logic [addrwidth-1:0] addr,
+    output logic [datawidth_p-1:0] data_out
+);
+    
+    logic [datawidth_p-1:0] memory [0:(1<<addrwidth)-1];
+    
+    always_ff @(posedge clk) begin
+        data_out <= memory[addr];
+    end
+    
+endmodule
+
+module test8 (
+    input logic clk,
+    input logic [addrwidth-1:0] addr,
+    output logic [datawidth_p-1:0] data_out
+);
+    
+    parameter addrwidth=12, datawidth_p=32;
+    
+    logic [datawidth_p-1:0] memory [0:(1<<addrwidth)-1];
+    
+    always_ff @(posedge clk) begin
+        data_out <= memory[addr];
+    end
+    
 endmodule
