@@ -389,7 +389,8 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             (r"[{\[(]", Module.Param.Value, "param_value_delimiter"),
             # detect strings "string"
             (r'"(?:\\.|[^"\\])*"', Module.Param.Value),
-            (r"[,);]", Punctuation, "#pop"),
+            (r"[,]", Punctuation, "#pop"),
+            (r"[);]", Module.Param.DeclEnd, "#pop:2"),
             (r".", Module.Param.Value),
         ],
         "param_value_delimiter": [

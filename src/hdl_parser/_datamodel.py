@@ -61,7 +61,7 @@ class ParamDecl(_BaseModel):
     dim_unpacked: str | None = None
     comment: list[str] | None = None
     ifdefs: list[str] | None = None
-    default: str = ""
+    default: list[str] | None = None
 
 
 class Module(_BaseModel):

@@ -91,7 +91,7 @@ def _proc_port_tokens(port, tokens, string, ifdefs):  # noqa: C901
             port.comment.append(string)
 
 
-def _proc_param_tokens(self, tokens, string, ifdefs):
+def _proc_param_tokens(self, tokens, string, ifdefs):  # noqa: C901, PLR0912
     """Processes Module.Param tokens and extract data."""
     if tokens == Module.Param.ParamType:
         self.ptype = string
@@ -101,6 +101,10 @@ def _proc_param_tokens(self, tokens, string, ifdefs):
             self.ifdefs = ifdefs
         else:
             self.name.append(string)
+        if self.default is None:
+            self.default = [""]
+        else:
+            self.default.append("")
     elif tokens == Module.Param.ParamWidth:
         if self.name is None:
             self.dim = string
@@ -113,7 +117,7 @@ def _proc_param_tokens(self, tokens, string, ifdefs):
         else:
             self.comment.append(string)
     elif tokens == Module.Param.Value:
-        self.default += string
+        self.default[-1] += string
 
 
 def _proc_ifdef_tokens(tokens, string, ifdefs_stack, ifdefs_pop_stack):
@@ -201,14 +205,14 @@ def _normalize_ports(mod):
 
 def _normalize_params(mod):
     for decl in mod.param_decl:
-        for name in decl.name:
+        for name, default in zip(decl.name, decl.default, strict=False):
             yield dm.Param(
                 name=name,
                 ptype=decl.ptype or "",
                 dim=decl.dim or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
-                default=_normalize_defaults(decl.default),
+                default=_normalize_defaults(default),
                 ifdefs=tuple(decl.ifdefs),
             )
 

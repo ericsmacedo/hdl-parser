@@ -30,6 +30,10 @@ from .datamodel import Module
 template_path = files("hdl_parser.Templates")
 
 
+def escape_brackets(s):
+    return s.replace("[", r"\[") if s else "1"
+
+
 def gen_instance(mod):
     port_lst = [port.name for port in mod.ports]
     param_lst = [param.name for param in mod.params]
@@ -59,7 +63,7 @@ def gen_markdown_table(module: Module, width: int | None = None) -> tuple[Table 
 
         for param in module.params:
             param_name = f"{param.name} {param.dim_unpacked}" if param.dim_unpacked else param.name
-            dim = f"`{param.dim}`" if param.dim else ""
+            dim = f"`{escape_brackets(param.dim)}`" if param.dim else ""
             default = f"`{param.default}`" if param.default else ""
             params.add_row(f"`{param_name}`", dim, default, "\n".join(param.comment or ()))
     else:
@@ -74,7 +78,7 @@ def gen_markdown_table(module: Module, width: int | None = None) -> tuple[Table 
         ports.add_column("Functional Description")
 
         for port in module.ports:
-            dim = port.dim or "1"
+            dim = escape_brackets(port.dim) if port.dim else "1"
             port_name = f"{port.name} {port.dim_unpacked}" if port.dim_unpacked else port.name
             ports.add_row(f"`{port_name}`", f"`{dim}`", f"`{port.direction}`", "\n".join(port.comment or ()))
     else:
