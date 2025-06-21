@@ -37,7 +37,7 @@ from pygments.token import (
     Whitespace,
 )
 
-from .token import IFDEF, Module, Port
+from .token import IFDEF, Instance, Module, Node, Param, Port
 
 # Create a LOGGER for this module
 LOGGER = logging.getLogger(__name__)
@@ -176,8 +176,8 @@ def filter_instance_keywords_callback(lexer, match, ctx):  # noqa: ARG001
     connections = match.group(3)
 
     if instance_name not in keywords_types_tup and module_name not in keywords_types_tup:
-        yield match.start(1), Module.Body.Instance.Module, module_name
-        yield match.start(2), Module.Body.Instance.Name, instance_name
+        yield match.start(1), Instance.Module, module_name
+        yield match.start(2), Instance.Name, instance_name
         ctx.stack.append("instance_connections")
         ctx.pos = match.end(2)
     else:
@@ -185,24 +185,6 @@ def filter_instance_keywords_callback(lexer, match, ctx):  # noqa: ARG001
         yield match.start(2), Error, instance_name
         yield match.start(3), Error, connections
         ctx.pos = match.end()
-
-
-def comments_callback(lexer: ExtendedRegexLexer, match, ctx: LexerContext):  # noqa: ARG001
-    current_state = ctx.stack[-1]
-
-    # The actual comment is located at group 2
-    match_string = match.group(2)
-    match_start = match.start(0)
-
-    if current_state == "port_declaration":
-        yield match_start, Module.Port.Comment, match_string
-    elif current_state in ("param_declaration", "param_value", "param_value_delimiter"):
-        yield match_start, Module.Param.Comment, match_string
-    elif current_state == "instance_connections":
-        yield match_start, Module.Body.Instance.Con.Comment, match_string
-    else:
-        yield match_start, Comment, match_string
-    ctx.pos = match.end()
 
 
 class SystemVerilogLexer(ExtendedRegexLexer):
@@ -315,7 +297,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("comments"),
             include("ifdef"),
             (words(("input", "output", "inout"), prefix=r"\b", suffix=r"\b"), Port.PortDirection, "port_declaration"),
-            (r"\bparameter\b", Module.Param, "param_declaration"),
+            (r"\bparameter\b", Param, "param_declaration"),
             (r"\bbegin\b", Token.Begin, "begin"),
             keywords,
             builtin,
@@ -339,7 +321,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("comments"),
             include("ifdef"),
             (r"\bimport\b.*?;", Module.Other),  # Package import declaration
-            (r"\bparameter\b", Module.Param, "param_declaration"),  # Parameter declaration
+            (r"\bparameter\b", Param, "param_declaration"),  # Parameter declaration
             (
                 words(("input", "output", "inout"), prefix=r"\b", suffix=r"\b"),
                 Port.PortDirection,
@@ -370,15 +352,15 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("ifdef"),
             # Filter macros used for param declarations
             (r"`\w+\s*\(.*?\)", Module.Other),
-            (port_types, Module.Param.ParamType),
+            (port_types, Param.ParamType),
             # Match one or more brackets, indicating the param width
-            (r"((\[[^]]+\])+)", Module.Param.ParamWidth),
+            (r"((\[[^]]+\])+)", Param.ParamWidth),
             # param declaration ends with a ;, a ); or with the start of another port declaration
-            (r"\bparameter\b", Module.Param),
+            (r"\bparameter\b", Param),
             (r"\blocalparam\b", Keyword, "#pop"),
-            (r"=", Module.Param.Value.Start, "param_value"),  # Filter parameter values
+            (r"=", Param.Value.Start, "param_value"),  # Filter parameter values
             # (r'=\s*([\d\'hHbBdxXzZ?_][\w\'hHbBdxXzZ]*|"[^"]*")', Punctuation),  # Filter parameter values
-            (r"\$?[a-zA-Z_]\w*", Module.Param.ParamName),
+            (r"\$?[a-zA-Z_]\w*", Param.ParamName),
             (r"\)\s*;", Module.HeaderEnd, "#pop:2"),
             (r",", Punctuation),
             (r";", Punctuation, "#pop"),
@@ -386,32 +368,30 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         ],
         "param_value": [
             include("comments_no_whitespace"),
-            (r"[{\[(]", Module.Param.Value, "param_value_delimiter"),
+            (r"[{\[(]", Param.Value, "param_value_delimiter"),
             # detect strings "string"
-            (r'"(?:\\.|[^"\\])*"', Module.Param.Value),
+            (r'"(?:\\.|[^"\\])*"', Param.Value),
             (r"[,]", Punctuation, "#pop"),
-            (r"[);]", Module.Param.DeclEnd, "#pop:2"),
-            (r".", Module.Param.Value),
+            (r"[);]", Param.DeclEnd, "#pop:2"),
+            (r".", Param.Value),
         ],
         "param_value_delimiter": [
             include("comments_no_whitespace"),
-            (r"[{\[(]", Module.Param.Value, "#push"),
-            (r"[}\])]", Module.Param.Value, "#pop"),
+            (r"[{\[(]", Param.Value, "#push"),
+            (r"[}\])]", Param.Value, "#pop"),
             # detect strings "string"
-            (r'"(?:\\.|[^"\\])*"', Module.Param.Value),
+            (r'"(?:\\.|[^"\\])*"', Param.Value),
             # match any character inside delimiters as param value
-            (r".", Module.Param.Value),
+            (r".", Param.Value),
         ],
         "comments": [
             (r"\s+", Whitespace),
-            (r"(\\)(\n)", bygroups(String.Escape, Whitespace)),  # line continuation
-            (r"/(\\\n)?/(\n|(.|\n)*?[^\\]\n)", comments_callback),
-            (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", comments_callback),
+            include("comments_no_whitespace"),
         ],
         "comments_no_whitespace": [
             (r"(\\)(\n)", bygroups(String.Escape, Whitespace)),  # line continuation
-            (r"/(\\\n)?/(\n|(.|\n)*?[^\\]\n)", comments_callback),
-            (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", comments_callback),
+            (r"/(\\\n)?/(\n|(.|\n)*?[^\\]\n)", bygroups(None, Node.Comment)),
+            (r"/(\\\n)?[*]((.|\n)*?)[*](\\\n)?/", bygroups(None, Node.Comment, None)),
         ],
         "ifdef": [
             (r"(`ifdef)\s+([a-zA-Z_]\w*)", bygroups(Comment.Preproc, IFDEF.IFDEF)),
@@ -427,21 +407,19 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             # Filter macros used for port connections
             (r"`\w+\s*\(.*?\)", Module.Other),
             # autoconnect .*,
-            (r"\.[*]\s*,", Module.Body.Instance.Con.Autoconnect),
+            (r"\.[*]\s*,", Instance.Con.Autoconnect),
             # .port(connection),
             (
                 r"(\.)([a-zA-Z_]\w*)\s*\(\s*(.*?)\s*\)\s*,?",
-                bygroups(
-                    Module.Body.Instance.Con.Start, Module.Body.Instance.Con.Port, Module.Body.Instance.Con.Connection
-                ),
+                bygroups(Instance.Con.Start, Instance.Con.Port, Instance.Con.Connection),
             ),
             # .port,
             (
                 r"(\.)([a-zA-Z_]\w*)\s*,?",
-                bygroups(Module.Body.Instance.Con.Start, Module.Body.Instance.Con.PortConnection),
+                bygroups(Instance.Con.Start, Instance.Con.PortConnection),
             ),
             # connection by order: (port_a, port_b, port_c);
-            (r"([a-zA-Z_]\w*)\s*,?", Module.Body.Instance.Con.OrderedConnection),
+            (r"([a-zA-Z_]\w*)\s*,?", Instance.Con.OrderedConnection),
             # capture same name connection, example: .clk, .rst_b,
             (r"\s*\(\s*", Punctuation),
             (r"\)\s*;", Punctuation, "#pop"),
@@ -470,10 +448,20 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         # In debug mode, print (Token, match, state_stack)
         self.ctx = context or LexerContext(text, 0)
         stack = self.ctx.stack.copy()
-        for item in ExtendedRegexLexer.get_tokens_unprocessed(self, text, self.ctx):
+        for pos, token, string in ExtendedRegexLexer.get_tokens_unprocessed(self, text, self.ctx):
+            mod_token = token
+            if "Node" in token[:]:
+                if "port_declaration" in stack:
+                    mod_token = (*Port, token[1])
+                elif "param_declaration" in stack:
+                    mod_token = (*Param, token[1])
+                elif "instance_connections" in stack:
+                    mod_token = (*Instance.Con, token[1])
+
             if stack == self.ctx.stack:
-                LOGGER.debug(f'({item[1]}, "{item[2]}")')
+                LOGGER.debug(f'({token}, "{string}")')
             else:
-                LOGGER.debug(f'({item[1]}, "{item[2]}"),\n state stack: {self.ctx.stack}')
+                LOGGER.debug(f'state stack: {self.ctx.stack}\n({token}, "{string}")')
                 stack = self.ctx.stack.copy()
-            yield item
+
+            yield (pos, mod_token, string)
