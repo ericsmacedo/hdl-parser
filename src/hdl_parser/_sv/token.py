@@ -30,10 +30,9 @@ ModuleName = Module.ModuleName
 
 # information about ports
 Port = Module.Port
-PortDirection = Port.PortDirection
-PortType = Port.PortType
-PortWidth = Port.PortWidth
-PortName = Port.Name
+Param = Module.Param
+Instance = Module.Body.Instance
+Node = Token.Node
 
 # ifdefs
 IFDEF = Token.IFDEF
