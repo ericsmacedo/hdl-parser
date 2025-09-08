@@ -230,7 +230,7 @@ def _normalize_insts(mod):
                     comment=_normalize_comments(con.comment),
                     ifdefs=tuple(con.ifdefs),
                 )
-                for con in decl.connections
+                for con in (decl.connections or [])
             ),
         )
 

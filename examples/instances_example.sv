@@ -52,6 +52,8 @@ subcomponent subcomponent_instance_name (
   .data_tx  ( data_tx   )  // output [9:0]
 );
 
+subcomponent unconnected_instance ();
+
 endmodule
 
 module top4(
