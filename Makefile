@@ -47,8 +47,8 @@ checktypes: .venv/.valid ## [ALL] Run Type-Checking via 'mypy'
 
 .PHONY: examples
 examples: .venv/.valid ## [ALL] Run Examples
-	${ENV} hdl-parser info examples/adder.sv -s > examples/adder.md
-	${ENV} hdl-parser json examples/adder.sv > examples/adder.json
+	${ENV} hdl-parser info examples/sv/adder.sv -s > examples/sv/adder.md
+	${ENV} hdl-parser json examples/sv/adder.sv > examples/sv/adder.json
 
 
 .PHONY: doc

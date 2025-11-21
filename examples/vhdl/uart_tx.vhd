@@ -7,10 +7,10 @@ entity uart_tx is
     CLK_FREQ    : integer := 100_000_000; -- Clock frequency in Hz
                                           -- (default: 100 MHz)
     
-    BAUD_RATE   : integer := (115_200); -- Baud rate (default: 115200)
+    BAUD_RATE   : integer := 115_200; -- Baud rate (default: 115200)
     
     -- Data bits (default: 8-bit)
-    DATA_WIDTH  : positive := (8+5);
+    DATA_WIDTH  : positive := 8+5;
     
     -- Parity mode: 0 = none, 1 = odd, 2 = even
     --PARITY_MODE : natural range 0 to 2 := 0
