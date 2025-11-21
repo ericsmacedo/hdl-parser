@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Easy-To-Use SystemVerilog Parser.
+"""Easy-To-Use SystemVerilog and VHDL Parser.
 
 Usage is simple. Parse your input with one of these methods:
 
