@@ -13,7 +13,7 @@
 [![PRs done](https://img.shields.io/github/issues-pr-closed/ericsmacedo/hdl-parser.svg)](https://github.com/ericsmacedo/hdl-parser/pulls?q=is%3Apr+is%3Aclosed)
 
 
-# Easy-To-Use SystemVerilog and VHDL Parser
+# Easy-To-Use SystemVerilog Parser
 
 * [Documentation](https://hdl-parser.readthedocs.io/en/stable/)
 * [PyPI](https://pypi.org/project/hdl-parser/)
