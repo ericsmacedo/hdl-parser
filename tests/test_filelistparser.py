@@ -28,30 +28,30 @@ from hdl_parser import parse_filelist
 
 def test_filelistparser(examples):
     """Test FileList Parser."""
-    filelist = examples / "filelist.f"
+    filelist = examples / "sv" / "filelist.f"
     filepaths = []
     incdirs = []
     parse_filelist(filepaths, incdirs, filelist)
     assert filepaths == [
-        examples / "adder.sv",
-        examples / "instances_example.sv",
-        examples / "packed_unpacked.sv",
-        examples / "bcd_adder.sv",
+        examples / "sv" / "adder.sv",
+        examples / "sv" / "instances_example.sv",
+        examples / "sv" / "packed_unpacked.sv",
+        examples / "sv" / "bcd_adder.sv",
     ]
-    assert incdirs == [examples / "inc"]
+    assert incdirs == [examples / "sv" / "inc"]
 
 
 def test_filelistparser_rel(examples):
     """Test FileList Parser."""
     examples = examples.relative_to(Path().resolve())
-    filelist = examples / "filelist.f"
+    filelist = examples / "sv" / "filelist.f"
     filepaths = []
     incdirs = []
     parse_filelist(filepaths, incdirs, filelist)
     assert filepaths == [
-        examples / "adder.sv",
-        examples / "instances_example.sv",
-        examples / "packed_unpacked.sv",
-        examples / "bcd_adder.sv",
+        examples / "sv" / "adder.sv",
+        examples / "sv" / "instances_example.sv",
+        examples / "sv" / "packed_unpacked.sv",
+        examples / "sv" / "bcd_adder.sv",
     ]
-    assert incdirs == [examples / "inc"]
+    assert incdirs == [examples / "sv" / "inc"]

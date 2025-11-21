@@ -25,6 +25,7 @@
 from pathlib import Path
 
 from click.testing import CliRunner
+from contextlib_chdir import chdir
 from pytest import mark
 from test2ref import assert_refdata, configure
 
@@ -36,9 +37,9 @@ configure(ignore_spaces=True)
 
 # We are just testing a reduced set of examples here
 EXAMPLES = (
-    EXAMPLES_PATH / "param_module.sv",
-    EXAMPLES_PATH / "adder.sv",
-    EXAMPLES_PATH / "bcd_adder.sv",
+    EXAMPLES_PATH / "sv" / "param_module.sv",
+    EXAMPLES_PATH / "sv" / "adder.sv",
+    EXAMPLES_PATH / "sv" / "bcd_adder.sv",
 )
 REPLACEMENTS = ((Path("examples"), "EXAMPLES"),)
 
@@ -96,7 +97,7 @@ def test_multiple(tmp_path, runner, cmd):
 def test_filelist(tmp_path, runner, cmd, examples):
     """Test Command - Multiple Files."""
     examples = examples.relative_to(Path.cwd())
-    result = runner.invoke(cli, [cmd, "-f", str(examples / "filelist.f")])
+    result = runner.invoke(cli, [cmd, "-f", str(examples / "sv" / "filelist.f")])
 
     assert result.exit_code == 0
     (tmp_path / "output.txt").write_text(result.output)
@@ -111,12 +112,13 @@ def test_cli_help_smoke(runner):
     assert "Usage:" in result.output
 
 
-def test_empty(runner):
+def test_empty(tmp_path, runner):
     """Test Empty File Command."""
-    empty_file = Path("file.sv")
-    empty_file.touch()
+    with chdir(tmp_path):
+        empty_file = Path("file.sv")
+        empty_file.touch()
 
-    # Run the command
-    result = runner.invoke(cli, ["info", str(empty_file)])
+        # Run the command
+        result = runner.invoke(cli, ["info", str(empty_file)])
 
-    assert result.exit_code == 1
+        assert result.exit_code == 1

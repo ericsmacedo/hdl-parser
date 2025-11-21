@@ -10,7 +10,7 @@
     ```python
     >>> import hdl_parser
 
-    >>> file = hdl_parser.parse_file("examples/adder.sv")
+    >>> file = hdl_parser.parse_file("examples/sv/adder.sv")
     >>> for module in file.modules:
     ...     print(repr(module.name))
     ...     for param in module.params:

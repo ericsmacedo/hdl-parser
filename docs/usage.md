@@ -12,19 +12,19 @@ There are two major use-cases:
 !!! example "Generate Markdown Table"
 
     ```bash
-    hdl-parser info -s examples/adder.sv > examples/adder.md
+    hdl-parser info -s examples/sv/adder.sv > examples/sv/adder.md
     ```
 
 ??? info "Markdown Table Code"
 
-    ``` title="examples/adder.md"
-    --8<-- "examples/adder.md"
+    ``` title="examples/sv/adder.md"
+    --8<-- "examples/sv/adder.md"
     ```
 
 ??? info "Markdown Table"
 
     {%
-        include-markdown "../examples/adder.md"
+        include-markdown "../examples/sv/adder.md"
     %}
 
 ### JSON
@@ -32,11 +32,11 @@ There are two major use-cases:
 !!! example "Generate JSON"
 
     ```bash
-    hdl-parser json examples/adder.sv > examples/adder.json
+    hdl-parser json examples/sv/adder.sv > examples/sv/adder.json
     ```
 
 ??? info "JSON File"
 
-    ``` title="examples/adder.json"
-    --8<-- "examples/adder.json"
+    ``` title="examples/sv/adder.json"
+    --8<-- "examples/sv/adder.json"
     ```
