@@ -34,7 +34,6 @@ from typing import Literal, TypeAlias
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
-from ._vhdl.parser import parse as parse_vhdl
 
 Lang: TypeAlias = Literal["sv", "vhdl"]
 """Language."""
@@ -85,9 +84,9 @@ def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None
         lang = LANGMAP[file_path.suffix]
 
     if lang == "vhdl":
-        modules = parse_vhdl(text)
-    else:
-        modules = parse_sv(text)
+        raise RuntimeError("VHDL parsing is not supported yet.")
+        # modules = parse_vhdl(text)
+    modules = parse_sv(text)
 
     if not modules:
         raise RuntimeError("No module found.")
