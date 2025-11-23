@@ -23,8 +23,19 @@
 """Data Model."""
 
 from pathlib import Path
+from typing import Literal
 
 import pydantic as pyd
+
+# fmt: off
+PTYPE = Literal[
+    "bit", "byte", "chandle", "const", "event", "int", "integer", "logic",
+    "longint", "real", "realtime", "reg", "shortint", "shortreal", "signed",
+    "string", "time", "type", "unsigned", "var", "void",
+    "supply0", "supply1", "tri", "triand", "trior", "trireg",
+    "tri0", "tri1", "uwire", "wand", "wire", "wor", "",
+]
+# fmt: on
 
 
 class _BaseModel(pyd.BaseModel):
@@ -98,10 +109,9 @@ class Port(_BaseModel):
         comment: tuple of associated comments
     """
 
-    # FIXME: Decide for possible values (remove comments)
-    direction: str = ""  # Literal["input", "output", "inout", "buffer"]
-    ptype: str = ""  # Literal["reg", "wire", "logic", "std_logic", "std_logic_vector", "std_ulogic", ""] = ""
-    dtype: str = ""  # Literal["unsigned", "signed", ""] = ""
+    direction: Literal["input", "output", "inout", ""] = ""
+    ptype: PTYPE = ""
+    dtype: Literal["signed", "unsigned", ""] = ""
     name: str
     dim: str = ""
     dim_unpacked: str = ""
