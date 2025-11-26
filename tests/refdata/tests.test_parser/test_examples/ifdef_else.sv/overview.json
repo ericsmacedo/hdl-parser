@@ -1,0 +1,49 @@
+{
+  "path": "$PRJ/examples/sv/ifdef_else.sv",
+  "modules": [
+    {
+      "name": "ifdef_else",
+      "params": [
+        {
+          "name": "PARAM",
+          "default": "`MOD_PARAM",
+          "ifdefs": [
+            "MOD_PARAM"
+          ]
+        },
+        {
+          "name": "PARAM",
+          "default": "4",
+          "ifdefs": [
+            "!MOD_PARAM"
+          ]
+        },
+        {
+          "name": "PARAM2",
+          "default": "`MOD_PARAM2",
+          "ifdefs": [
+            "MOD_PARAM2"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "inp",
+          "dim": "[PARAM-1:0]",
+          "ifdefs": [
+            "MOD_PARAM2"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "outp",
+          "dim": "[PARAM-1:0]",
+          "ifdefs": [
+            "MOD_PARAM2"
+          ]
+        }
+      ]
+    }
+  ]
+}
