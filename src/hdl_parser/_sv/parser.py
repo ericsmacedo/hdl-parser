@@ -157,11 +157,14 @@ def _proc_module_tokens(self, tokens, string, ifdefs_stack):
             _proc_port_tokens(self.port_decl[-1], tokens, string, ifdefs_stack)
 
     # Capture parameters, when Module.Param tokens are found
-    elif tokens[:2] == ("Module", "Param"):
+    elif tokens[:2] in (("Module", "Param"), ("Module", "LocalParam")):
         if tokens is Module.Param:
             self.param_decl.append(_dm.ParamDecl())
+        elif tokens is Module.LocalParam:
+            self.param_decl.append(_dm.ParamDecl(is_local=True))
         else:
             _proc_param_tokens(self.param_decl[-1], tokens, string, ifdefs_stack)
+
     # Capture Modules
     elif tokens[:2] == ("Module", "ModuleName"):
         self.name = string
@@ -203,8 +206,14 @@ def _normalize_ports(mod):
             )
 
 
-def _normalize_params(mod):
+def _normalize_params(mod, local_only: bool = False):
     for decl in mod.param_decl:
+        if local_only and not decl.is_local:
+            continue
+
+        if not local_only and decl.is_local:
+            continue
+
         for name, default in zip(decl.name, decl.default, strict=False):
             yield dm.Param(
                 name=name,
@@ -254,6 +263,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
         dm.Module(
             name=mod.name,
             params=tuple(_normalize_params(mod)),
+            localparams=tuple(_normalize_params(mod, local_only=True)),
             ports=tuple(_normalize_ports(mod)),
             insts=tuple(_normalize_insts(mod)),
             ifdefs=tuple(mod.ifdefs),

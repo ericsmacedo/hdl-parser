@@ -1,0 +1,42 @@
+{
+  "path": "$PRJ/examples/sv/localparams.sv",
+  "modules": [
+    {
+      "name": "localparams",
+      "params": [
+        {
+          "ptype": "integer",
+          "name": "DATA_WIDTH",
+          "default": "8"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "dtype": "unsigned",
+          "name": "A",
+          "dim": "[DATA_WIDTH-1:0]"
+        },
+        {
+          "direction": "input",
+          "dtype": "unsigned",
+          "name": "B",
+          "dim": "[DATA_WIDTH-1:0]"
+        },
+        {
+          "direction": "output",
+          "dtype": "unsigned",
+          "name": "X",
+          "dim": "[MY_WIDTH-1:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "integer",
+          "name": "MY_WIDTH",
+          "default": "DATA_WIDTH + 1"
+        }
+      ]
+    }
+  ]
+}

@@ -54,6 +54,7 @@ class PortDecl(_BaseModel):
 
 
 class ParamDecl(_BaseModel):
+    is_local: bool = False
     ptype: str | None = None
     dtype: str | None = None
     name: list[str] | None = None
@@ -68,5 +69,6 @@ class Module(_BaseModel):
     name: str = ""
     port_decl: list[PortDecl] = []
     param_decl: list[ParamDecl] = []
+    localparam_decl: list[ParamDecl] = []
     inst_decl: list[InstDecl] = []
     ifdefs: list[str] = []

@@ -37,7 +37,7 @@ from pygments.token import (
     Whitespace,
 )
 
-from .token import IFDEF, Instance, Module, Node, Param, Port
+from .token import IFDEF, Instance, LocalParam, Module, Node, Param, Port
 
 # Create a LOGGER for this module
 LOGGER = logging.getLogger(__name__)
@@ -298,6 +298,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("ifdef"),
             (words(("input", "output", "inout"), prefix=r"\b", suffix=r"\b"), Port.PortDirection, "port_declaration"),
             (r"\bparameter\b", Param, "param_declaration"),
+            (r"\blocalparam\b", LocalParam, "param_declaration"),
             (r"\bbegin\b", Token.Begin, "begin"),
             keywords,
             builtin,
@@ -322,6 +323,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("ifdef"),
             (r"\bimport\b.*?;", Module.Other),  # Package import declaration
             (r"\bparameter\b", Param, "param_declaration"),  # Parameter declaration
+            (r"\blocalparam\b", LocalParam, "param_declaration"),  # Parameter declaration
             (
                 words(("input", "output", "inout"), prefix=r"\b", suffix=r"\b"),
                 Port.PortDirection,
@@ -357,7 +359,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             (r"((\[[^]]+\])+)", Param.ParamWidth),
             # param declaration ends with a ;, a ); or with the start of another port declaration
             (r"\bparameter\b", Param),
-            (r"\blocalparam\b", Keyword, "#pop"),
+            (r"\blocalparam\b", LocalParam),
             (r"=", Param.Value.Start, "param_value"),  # Filter parameter values
             # (r'=\s*([\d\'hHbBdxXzZ?_][\w\'hHbBdxXzZ]*|"[^"]*")', Punctuation),  # Filter parameter values
             (r"\$?[a-zA-Z_]\w*", Param.ParamName),
