@@ -369,6 +369,8 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         "param_value": [
             include("comments_no_whitespace"),
             (r"[{\[(]", Param.Value, "param_value_delimiter"),
+            include("ifdef"),  # added because of issue 69
+            (r"(?=\bparameter\b)", Param.DeclEnd, "#pop"),  # added because if issue 69
             # detect strings "string"
             (r'"(?:\\.|[^"\\])*"', Param.Value),
             (r"[,]", Punctuation, "#pop"),
