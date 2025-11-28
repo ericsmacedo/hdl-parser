@@ -31,6 +31,7 @@ ModuleName = Module.ModuleName
 # information about ports
 Port = Module.Port
 Param = Module.Param
+LocalParam = Module.LocalParam
 Instance = Module.Body.Instance
 Node = Token.Node
 
