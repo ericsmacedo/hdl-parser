@@ -13,6 +13,8 @@ module adder #(
   input  logic        [7:0]              arr_u [0:3] // Unpacked byte array
 );
 
+  localparam SUM_WIDTH = DATA_WIDTH + 1;
+
   assign X = A + B;
 
   logic a_port; // Test port A
