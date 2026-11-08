@@ -58,7 +58,7 @@ def _proc_param_tokens(param, tokens, string):
     """Processes Module.Param tokens and extract data."""
     if tokens == Gen.Name:
         param.name.append(string)
-    if tokens == Gen.PType:
+    elif tokens == Gen.PType:
         param.ptype = string
     elif tokens == Gen.Value:
         if param.default is None:
@@ -130,9 +130,8 @@ def _normalize_params(mod):
                 dim=decl.dim or "",
                 dim_unpacked=decl.dim_unpacked or "",
                 comment=_normalize_comments(decl.comment),
-                default=_normalize_defaults(
-                    decl.default[-1]
-                ),  # FIXME: Correct this when/if vhdl has a different datamodel
+                # FIXME: Correct this when/if vhdl has a different datamodel
+                default=_normalize_defaults(decl.default[-1] if decl.default else ""),
             )
 
 

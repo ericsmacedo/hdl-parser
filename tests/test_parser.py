@@ -83,3 +83,19 @@ endmodule
     ref = File(path=file_path, modules=ref.modules)
     assert ref == parse_text(text, file_path=file_path)
     assert ref == parse_text(text, file_path=str(file_path))
+
+
+def test_vhdl_generic_without_default():
+    """VHDL generic without default value."""
+    mod = parse_text("entity e is generic (W : integer); port (a : in std_logic); end entity;", lang="vhdl").modules[0]
+    assert mod.params[0].name == "W"
+    assert mod.params[0].default == ""
+
+
+def test_lang_detection():
+    """Language detection by suffix: case-insensitive, header files, sv fallback."""
+    vhdl = "entity e is port (a : in std_logic); end entity;"
+    assert parse_text(vhdl, file_path="X.VHD").modules[0].name == "e"
+    sv = "module m; endmodule"
+    for suffix in (".svh", ".vh", ".unknown"):
+        assert parse_text(sv, file_path=f"x{suffix}").modules[0].name == "m"

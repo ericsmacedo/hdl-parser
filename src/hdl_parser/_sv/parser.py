@@ -248,7 +248,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
     lexer = SystemVerilogLexer()
     module_lst = []
     ifdefs_stack: list[str] = []
-    ifdefs_pop_stack: list[str] = []
+    ifdefs_pop_stack: list[int] = []
 
     for tokens, string in lexer.get_tokens(text):
         # New module was found
