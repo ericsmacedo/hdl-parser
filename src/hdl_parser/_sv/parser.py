@@ -148,13 +148,24 @@ def _proc_ifdef_tokens(tokens, string, ifdefs_stack, ifdefs_pop_stack):
     return ifdefs_stack, ifdefs_pop_stack
 
 
+def _proc_port_decl_tokens(port_decl, tokens, string, ifdefs_stack):
+    if tokens == Module.Port.PortDirection:
+        port_decl.append(_dm.PortDecl(direction=string))
+        return
+    if tokens == Module.Port.Interface:
+        port_decl.append(_dm.PortDecl(direction="", ptype=string))
+        return
+    if tokens in (Module.Port.Ptype, Module.Port.Dtype) and port_decl[-1].name is not None:
+        # A new type after port names (`input logic a, my_t b`) starts a new declaration,
+        # which inherits the direction of the previous one.
+        port_decl.append(_dm.PortDecl(direction=port_decl[-1].direction))
+    _proc_port_tokens(port_decl[-1], tokens, string, ifdefs_stack)
+
+
 def _proc_module_tokens(self, tokens, string, ifdefs_stack):
     # Capture a new port declaration object if input/output keywords are found
     if tokens[:2] == ("Module", "Port"):
-        if tokens[-1] == ("PortDirection"):
-            self.port_decl.append(_dm.PortDecl(direction=string))
-        else:
-            _proc_port_tokens(self.port_decl[-1], tokens, string, ifdefs_stack)
+        _proc_port_decl_tokens(self.port_decl, tokens, string, ifdefs_stack)
 
     # Capture parameters, when Module.Param tokens are found
     elif tokens[:2] in (("Module", "Param"), ("Module", "LocalParam")):

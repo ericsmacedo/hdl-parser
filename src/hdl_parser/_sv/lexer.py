@@ -168,6 +168,16 @@ port_types = words(
 
 keywords_types_tup = keywords_tup + variable_types_tup
 
+_ident = r"[a-zA-Z_]\w*"
+_directions = r"(?:input|output|inout)\b"
+#: `my_t a`, `pkg::my_t [3:0] a`: identifier followed by another identifier (the port name)
+_user_type = rf"(?!{_directions}){_ident}(?:::{_ident})*(?=\s+(?:\[[^]]*\]\s*)*(?!{_directions}){_ident})"
+#: `axi_if.master bus`, `axi_if bus`: identifier (with optional modport) followed by the port name
+_interface_port = (
+    rf"(?!(?:{_directions}|parameter\b|localparam\b|import\b))({_ident}(?:\.{_ident})?)(\s+)"
+    rf"(?!{_directions})({_ident})(?=\s*(?:[,)\[]|//|/\*))"
+)
+
 
 def filter_instance_keywords_callback(lexer, match, ctx):  # noqa: ARG001
     """Callback used to filter false matches for the module instances."""
@@ -331,6 +341,8 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             ),  # Port declaration
             (r";", Module.ModuleHeaderEnd, "#pop"),
             (r"\)\s*;", Module.ModuleHeaderEnd, "#pop"),
+            # Interface port: interface_name[.modport_name] port_name
+            (_interface_port, bygroups(Port.Interface, Whitespace, Port.PortName)),
             (r"\$?[a-zA-Z_]\w*", Name),
             punctuation,
         ],
@@ -339,6 +351,10 @@ class SystemVerilogLexer(ExtendedRegexLexer):
             include("ifdef"),
             (words(("signed", "unsigned"), suffix=r"\b", prefix=r"\b"), Port.Dtype),
             (port_types, Port.Ptype),
+            # An interface port with modport (`axi_if.master bus`) ends the current port declaration
+            (rf"(?={_ident}\.{_ident}\s+{_ident})", Punctuation, "#pop"),
+            # User-defined (optionally package-scoped) type, followed by the port name
+            (_user_type, Port.Ptype),
             # Filter ports used for param declarations
             (r"((\[[^]]+\])+)", Port.PortWidth),  # Match one or more brackets, indicating the port width
             # port declaration ends with a ;, a ); or with the start of another port declaration
@@ -423,7 +439,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
                 bygroups(Instance.Con.Start, Instance.Con.PortConnection),
             ),
             # connection by order: (port_a, port_b, port_c);
-            (r"([a-zA-Z_]\w*)\s*,?", Instance.Con.OrderedConnection),
+            (r"([a-zA-Z_]\w*)\s*,?", bygroups(Instance.Con.OrderedConnection)),
             # capture same name connection, example: .clk, .rst_b,
             (r"\s*\(\s*", Punctuation),
             (r"\)\s*;", Punctuation, "#pop"),
