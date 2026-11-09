@@ -1,0 +1,60 @@
+{
+  "path": "$PRJ/examples/sv/multiple_modules.sv",
+  "modules": [
+    {
+      "name": "mod_a",
+      "ports": [
+        {
+          "direction": "input",
+          "name": "byte_t"
+        },
+        {
+          "direction": "input",
+          "name": "a"
+        },
+        {
+          "direction": "output",
+          "name": "byte_t"
+        },
+        {
+          "direction": "output",
+          "name": "b"
+        }
+      ]
+    },
+    {
+      "name": "mod_b",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "x"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "y"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_a",
+          "module": "mod_a",
+          "connections": [
+            {
+              "port": "a",
+              "con": "x"
+            },
+            {
+              "port": "b",
+              "con": "y"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mod_c"
+    }
+  ]
+}

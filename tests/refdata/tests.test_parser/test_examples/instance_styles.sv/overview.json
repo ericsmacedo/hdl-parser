@@ -1,0 +1,146 @@
+{
+  "path": "$PRJ/examples/sv/instance_styles.sv",
+  "modules": [
+    {
+      "name": "instance_styles",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_n"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "a",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "y",
+          "dim": "[7:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_named",
+          "module": "sub",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst_n",
+              "con": "rst_n"
+            },
+            {
+              "port": "d",
+              "con": "a"
+            },
+            {
+              "port": "q",
+              "con": "tmp0"
+            }
+          ]
+        },
+        {
+          "name": "u_ordered",
+          "module": "sub",
+          "connections": [
+            {
+              "con": "clk,"
+            },
+            {
+              "con": "rst_n,"
+            },
+            {
+              "con": "tmp0,"
+            },
+            {
+              "con": "tmp1"
+            }
+          ]
+        },
+        {
+          "name": "u_param",
+          "module": "sub",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst_n",
+              "con": "rst_n"
+            },
+            {
+              "port": "d",
+              "con": "tmp1"
+            },
+            {
+              "port": "q"
+            },
+            {
+              "port": "unused"
+            }
+          ]
+        },
+        {
+          "name": "u_param_ordered",
+          "module": "sub",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst_n",
+              "con": "rst_n"
+            },
+            {
+              "port": "d",
+              "con": "tmp1"
+            },
+            {
+              "port": "q",
+              "con": "y"
+            }
+          ]
+        },
+        {
+          "name": "u_expr",
+          "module": "sub",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst_n",
+              "con": "rst_n & en"
+            },
+            {
+              "port": "d",
+              "con": "{a[3:0], a[7:4]}"
+            },
+            {
+              "port": "q",
+              "con": "tmp1[7:0]"
+            }
+          ]
+        },
+        {
+          "name": "u_wild",
+          "module": "sub"
+        }
+      ]
+    }
+  ]
+}

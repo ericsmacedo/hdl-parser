@@ -1,0 +1,105 @@
+{
+  "path": "$PRJ/examples/sv/param_styles.sv",
+  "modules": [
+    {
+      "name": "param_styles",
+      "params": [
+        {
+          "name": "P_IMPLICIT",
+          "default": "1"
+        },
+        {
+          "ptype": "int",
+          "name": "P_INT",
+          "default": "32'd10",
+          "comment": [
+            "sized literal"
+          ]
+        },
+        {
+          "ptype": "integer",
+          "name": "P_A",
+          "default": "1",
+          "comment": [
+            "multiple names"
+          ]
+        },
+        {
+          "ptype": "integer",
+          "name": "P_B",
+          "default": "2",
+          "comment": [
+            "multiple names"
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "P_VEC",
+          "dim": "[7:0]",
+          "default": "8'hFF"
+        },
+        {
+          "ptype": "real",
+          "name": "P_REAL",
+          "default": "1.5"
+        },
+        {
+          "ptype": "string",
+          "name": "P_STR",
+          "default": "\"hello, world\""
+        },
+        {
+          "ptype": "int",
+          "name": "P_EXPR",
+          "default": "(P_A + P_B) * 2"
+        },
+        {
+          "ptype": "logic",
+          "name": "P_CONCAT",
+          "dim": "[3:0]",
+          "default": "{2'b10, 2'b01}"
+        },
+        {
+          "ptype": "int",
+          "name": "P_ARR",
+          "dim_unpacked": "[2]",
+          "default": "'{1, 2}"
+        },
+        {
+          "ptype": "int",
+          "name": "P_FUNC",
+          "default": "$clog2(P_INT)"
+        },
+        {
+          "name": "P_BODY",
+          "default": "3"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "d",
+          "dim": "[P_INT-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q",
+          "dim": "[P_INT-1:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "L_WIDTH",
+          "default": "P_INT * 2"
+        },
+        {
+          "name": "L_MSG",
+          "default": "\"local\""
+        }
+      ]
+    }
+  ]
+}
