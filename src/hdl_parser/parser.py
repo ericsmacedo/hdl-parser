@@ -41,7 +41,9 @@ Lang: TypeAlias = Literal["sv", "vhdl"]
 
 LANGMAP: dict[str, Lang] = {
     ".sv": "sv",
+    ".svh": "sv",
     ".v": "sv",
+    ".vh": "sv",
     ".vhd": "vhdl",
     ".vhdl": "vhdl",
 }
@@ -82,7 +84,7 @@ def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None
         file_path = Path(file_path)
 
     if lang is None and file_path:
-        lang = LANGMAP[file_path.suffix]
+        lang = LANGMAP.get(file_path.suffix.lower())
 
     if lang == "vhdl":
         modules = parse_vhdl(text)

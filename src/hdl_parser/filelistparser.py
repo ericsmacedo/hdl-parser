@@ -49,10 +49,6 @@ def parse_filelist(  # type: ignore[override]
     """
     with filepath.open(encoding="utf-8") as file:
         basepath = filepath.parent
-        _parse(filepaths, inc_dirs, basepath, file)
-
-    with filepath.open(encoding="utf-8") as file:
-        basepath = filepath.parent
         _parse(filepaths, inc_dirs, basepath, file, context=str(filepath))
 
 
