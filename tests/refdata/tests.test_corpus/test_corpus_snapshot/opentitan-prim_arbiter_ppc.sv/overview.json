@@ -1,0 +1,95 @@
+{
+  "path": "$PRJ/tests/corpus/opentitan/prim_arbiter_ppc.sv",
+  "modules": [
+    {
+      "name": "prim_arbiter_ppc",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "N",
+          "default": "8"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DW",
+          "default": "32",
+          "comment": [
+            "Configurations",
+            "EnDataPort: {0, 1}, if 0, input data will be ignored"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "EnDataPort",
+          "default": "1",
+          "comment": [
+            "Derived parameters"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "name": "req_chk_i",
+          "comment": [
+            "Used for gating assertions. Drive to 1 during normal",
+            "operation."
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "req_i",
+          "dim": "[ N-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "data_i",
+          "dim": "[DW-1:0]",
+          "dim_unpacked": "[N]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "gnt_o",
+          "dim": "[ N-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "idx_o",
+          "dim": "[IdxW-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[DW-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "ready_i"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "IdxW",
+          "default": "$clog2(N)"
+        }
+      ]
+    }
+  ]
+}

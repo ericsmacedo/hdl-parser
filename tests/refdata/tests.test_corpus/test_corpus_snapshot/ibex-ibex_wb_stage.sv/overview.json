@@ -1,0 +1,247 @@
+{
+  "path": "$PRJ/tests/corpus/ibex/ibex_wb_stage.sv",
+  "modules": [
+    {
+      "name": "ibex_wb_stage",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "DummyInstructions",
+          "default": "1'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "en_wb_i"
+        },
+        {
+          "direction": "input",
+          "name": "ibex_pkg"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pc_id_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_is_compressed_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_perf_count_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_is_cheriot_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_load_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_store_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ready_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_write_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "outstanding_load_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "outstanding_store_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "pc_wb_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_instr_ret_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_instr_ret_compressed_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_instr_ret_wb_spec_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_instr_ret_compressed_wb_spec_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_waddr_id_i",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_wdata_id_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_we_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_rf_we_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_rf_wdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "name": "cap_t"
+        },
+        {
+          "direction": "input",
+          "name": "cheriot_rf_wcap_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_wdata_lsu_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "name": "cap_t"
+        },
+        {
+          "direction": "input",
+          "name": "rf_wcap_lsu_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_we_lsu_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_wdata_fwd_wb_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "name": "cap_t"
+        },
+        {
+          "direction": "output",
+          "name": "rf_wcap_fwd_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_waddr_wb_o",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_wdata_wb_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "name": "cap_t"
+        },
+        {
+          "direction": "output",
+          "name": "rf_wcap_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_we_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dummy_instr_wb_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_resp_valid_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_resp_err_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_done_wb_o"
+        }
+      ]
+    }
+  ]
+}

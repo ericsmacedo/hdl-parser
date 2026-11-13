@@ -1,0 +1,58 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/lzc.sv",
+  "modules": [
+    {
+      "name": "lzc",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "WIDTH",
+          "default": "2",
+          "comment": [
+            "/ Mode selection: 0 -> trailing zero, 1 -> leading zero"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "MODE",
+          "default": "1'b0",
+          "comment": [
+            "/ Dependent parameter. Do **not** change!",
+            "/",
+            "/ Width of the output signal with the zero count."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "CNT_WIDTH",
+          "default": "cf_math_pkg::idx_width(WIDTH)"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_i",
+          "dim": "[WIDTH-1:0]",
+          "comment": [
+            "/ Count of the leading / trailing zeros."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cnt_o",
+          "dim": "[CNT_WIDTH-1:0]",
+          "comment": [
+            "/ Counter is empty: Asserted if all bits in in_i are zero."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "empty_o"
+        }
+      ]
+    }
+  ]
+}

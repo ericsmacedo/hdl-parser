@@ -1,0 +1,212 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/rr_arb_tree.sv",
+  "modules": [
+    {
+      "name": "rr_arb_tree",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "NumIn",
+          "default": "64",
+          "comment": [
+            "/ Data width of the payload in bits. Not needed if `DataType` is overwritten."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DataWidth",
+          "default": "32",
+          "comment": [
+            "/ Data type of the payload, can be overwritten with custom type. Only use of `DataWidth`."
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "DataType",
+          "default": "logic [DataWidth-1:0]",
+          "comment": [
+            "/ The `ExtPrio` option allows to override the internal round robin counter via the",
+            "/ `rr_i` signal. This can be useful in case multiple arbiters need to have",
+            "/ rotating priorities that are operating in lock-step. If static priority arbitration",
+            "/ is needed, just connect `rr_i` to '0.",
+            "/",
+            "/ Set to 1'b1 to enable."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "ExtPrio",
+          "default": "1'b0",
+          "comment": [
+            "/ If `AxiVldRdy` is set, the req/gnt signals are compliant with the AXI style vld/rdy",
+            "/ handshake. Namely, upstream vld (req) must not depend on rdy (gnt), as it can be deasserted",
+            "/ again even though vld is asserted. Enabling `AxiVldRdy` leads to a reduction of arbiter",
+            "/ delay and area.",
+            "/",
+            "/ Set to `1'b1` to treat req/gnt as vld/rdy."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "AxiVldRdy",
+          "default": "1'b0",
+          "comment": [
+            "/ The `LockIn` option prevents the arbiter from changing the arbitration",
+            "/ decision when the arbiter is disabled. I.e., the index of the first request",
+            "/ that wins the arbitration will be locked in case the destination is not",
+            "/ able to grant the request in the same cycle.",
+            "/",
+            "/ Set to `1'b1` to enable."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "LockIn",
+          "default": "1'b0",
+          "comment": [
+            "/ When set, ensures that throughput gets distributed evenly between all inputs.",
+            "/",
+            "/ Set to `1'b0` to disable."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "FairArb",
+          "default": "1'b1",
+          "comment": [
+            "/ Dependent parameter, do **not** overwrite.",
+            "/ Width of the arbitration priority signal and the arbitrated index."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "IdxWidth",
+          "default": "(NumIn > 32'd1) ? unsigned'($clog2(NumIn)) : 32'd1",
+          "comment": [
+            "/ Dependent parameter, do **not** overwrite.",
+            "/ Type for defining the arbitration priority and arbitrated index signal."
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "idx_t",
+          "default": "logic [IdxWidth-1:0]"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "/ Asynchronous reset, active low."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "/ Clears the arbiter state. Only used if `ExtPrio` is `1'b0` or `LockIn` is `1'b1`."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "flush_i",
+          "comment": [
+            "/ External round-robin priority. Only used if `ExtPrio` is `1'b1.`"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "idx_t",
+          "comment": [
+            "/ Input requests arbitration."
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "rr_i",
+          "comment": [
+            "/ Input requests arbitration."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "req_i",
+          "dim": "[NumIn-1:0]",
+          "comment": [
+            "verilator lint_off UNOPTFLAT",
+            "/ Input request is granted."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "gnt_o",
+          "dim": "[NumIn-1:0]",
+          "comment": [
+            "verilator lint_on UNOPTFLAT",
+            "/ Input data for arbitration."
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "DataType",
+          "dim_unpacked": "[NumIn-1:0]",
+          "comment": [
+            "/ Output request is valid."
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "data_i",
+          "dim_unpacked": "[NumIn-1:0]",
+          "comment": [
+            "/ Output request is valid."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "req_o",
+          "comment": [
+            "/ Output request is granted."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "gnt_i",
+          "comment": [
+            "/ Output data."
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "DataType",
+          "comment": [
+            "/ Index from which input the data came from."
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "data_o",
+          "comment": [
+            "/ Index from which input the data came from."
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "idx_t"
+        },
+        {
+          "direction": "output",
+          "name": "idx_o"
+        }
+      ]
+    }
+  ]
+}

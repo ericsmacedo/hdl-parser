@@ -1,0 +1,36 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/popcount.sv",
+  "modules": [
+    {
+      "name": "popcount",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "INPUT_WIDTH",
+          "default": "256"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_i",
+          "dim": "[  INPUT_WIDTH-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "popcount_o",
+          "dim": "[PopcountWidth-1:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "unsigned",
+          "name": "PopcountWidth",
+          "default": "$clog2(INPUT_WIDTH) + 1"
+        }
+      ]
+    }
+  ]
+}

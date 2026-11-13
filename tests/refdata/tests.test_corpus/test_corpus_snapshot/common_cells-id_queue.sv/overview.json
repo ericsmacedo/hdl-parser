@@ -1,0 +1,170 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/id_queue.sv",
+  "modules": [
+    {
+      "name": "id_queue",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "ID_WIDTH",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "CAPACITY",
+          "default": "0"
+        },
+        {
+          "ptype": "bit",
+          "name": "FULL_BW",
+          "default": "0"
+        },
+        {
+          "ptype": "bit",
+          "name": "CUT_OUP_POP_INP_GNT",
+          "default": "0"
+        },
+        {
+          "ptype": "type",
+          "name": "data_t",
+          "default": "logic[31:0]",
+          "comment": [
+            "Dependent parameters, DO NOT OVERRIDE!"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "name": "id_t"
+        },
+        {
+          "direction": "input",
+          "name": "inp_id_i"
+        },
+        {
+          "direction": "input",
+          "name": "data_t"
+        },
+        {
+          "direction": "input",
+          "name": "inp_data_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "inp_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "inp_gnt_o"
+        },
+        {
+          "direction": "input",
+          "name": "data_t"
+        },
+        {
+          "direction": "input",
+          "name": "exists_data_i"
+        },
+        {
+          "direction": "input",
+          "name": "data_t"
+        },
+        {
+          "direction": "input",
+          "name": "exists_mask_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "exists_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "exists_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "exists_gnt_o"
+        },
+        {
+          "direction": "input",
+          "name": "id_t"
+        },
+        {
+          "direction": "input",
+          "name": "oup_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_pop_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_req_i"
+        },
+        {
+          "direction": "output",
+          "name": "data_t"
+        },
+        {
+          "direction": "output",
+          "name": "oup_data_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_data_valid_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_gnt_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "type",
+          "name": "id_t",
+          "default": "logic[ID_WIDTH-1:0]"
+        },
+        {
+          "ptype": "int",
+          "name": "NIds",
+          "default": "2**ID_WIDTH"
+        },
+        {
+          "ptype": "int",
+          "name": "HtCapacity",
+          "default": "(NIds <= CAPACITY) ? NIds : CAPACITY"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "HtIdxWidth",
+          "default": "cf_math_pkg::idx_width(HtCapacity)"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "LdIdxWidth",
+          "default": "cf_math_pkg::idx_width(CAPACITY)"
+        }
+      ]
+    }
+  ]
+}
