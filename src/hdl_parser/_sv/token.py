@@ -34,6 +34,7 @@ Param = Module.Param
 LocalParam = Module.LocalParam
 Instance = Module.Body.Instance
 Node = Token.Node
+Macro = Module.Macro
 
 # ifdefs
 IFDEF = Token.IFDEF
