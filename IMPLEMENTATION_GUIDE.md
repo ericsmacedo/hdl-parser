@@ -171,7 +171,7 @@ Suggested first wave, all parallel: A1, A2, A3, A4, D1 (after A1), E3, and the l
 
 - **Problem:** `parse_file()` and `parse_defines()` call `read_text()` with the platform default encoding. Old RTL with Latin-1 characters in comments raises `UnicodeDecodeError`.
 - **Fix:** `read_text(encoding="utf-8", errors="replace")` in both. Apply the same to `filepath.open(...)` in `filelistparser.py` (it already passes `encoding`; add `errors="replace"`).
-- **Test:** write a file with `b"// caf\xe9\nmodule m (input a);\nendmodule\n"` and parse it.
+- **Test:** write a file with `b"// \xe9\nmodule m (input a);\nendmodule\n"` and parse it.
 
 ### A5. Remove per-token debug overhead
 
