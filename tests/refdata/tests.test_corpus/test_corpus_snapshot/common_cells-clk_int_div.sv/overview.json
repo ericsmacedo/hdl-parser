@@ -1,0 +1,111 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/clk_int_div.sv",
+  "modules": [
+    {
+      "name": "clk_int_div",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "DIV_VALUE_WIDTH",
+          "default": "4",
+          "comment": [
+            "/ The default divider value which is used right after reset"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DEFAULT_DIV_VALUE",
+          "default": "0",
+          "comment": [
+            "/ If 1'b1, the output clock is enabled during async reset assertion"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "ENABLE_CLOCK_IN_RESET",
+          "default": "1'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "/ Active-high output clock enable. Controls a glitch-free clock gate so the",
+            "/ enable signal may be driven by combinational logic without introducing",
+            "/ glitches."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "en_i",
+          "comment": [
+            "/ If asserted (active-high) bypass the clock divider and drive clk_o",
+            "/ directly with clk_i."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_mode_en_i",
+          "comment": [
+            "/ Divider select value. The output clock has a frequency of f_clk_i/div_i.",
+            "/ For div_i == 0 or  div_i == 1, the output clock has the same frequency as",
+            "/ th input clock."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_i",
+          "dim": "[DIV_VALUE_WIDTH-1:0]",
+          "comment": [
+            "/ Valid handshake signal. Must not combinationally depend on `div_ready_o`.",
+            "/ Once asserted, the valid signal must not be deasserted until it is",
+            "/ accepted with `div_ready_o`."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "div_ready_o",
+          "comment": [
+            "/ Generated output clock. Given a glitch free input clock, the output clock",
+            "/ is guaranteed to be glitch free with 50% duty cycle, regardless the timing",
+            "/ of reconfiguration requests or en_i de/assetion. During the",
+            "/ reconfiguration, the output clock is gated with its next falling edge and",
+            "/ remains gated (idle-low) for at least one period of the new target output",
+            "/ period to filter out any glitches during the config transition."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "clk_o",
+          "comment": [
+            "/ Current value of the internal cycle counter. Might be usefull if you need",
+            "/ to do some phase shifting relative to the generated clock."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cycl_count_o",
+          "dim": "[DIV_VALUE_WIDTH-1:0]"
+        }
+      ]
+    }
+  ]
+}

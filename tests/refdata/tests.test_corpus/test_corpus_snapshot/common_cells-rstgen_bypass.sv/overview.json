@@ -1,0 +1,115 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/rstgen_bypass.sv",
+  "modules": [
+    {
+      "name": "rstgen_bypass",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "NumRegs",
+          "default": "4"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_test_mode_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_mode_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rst_no"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "init_no"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_tc_clk_mux2_rst_n",
+          "module": "tc_clk_mux2",
+          "connections": [
+            {
+              "port": "clk0_i",
+              "con": "rst_ni"
+            },
+            {
+              "port": "clk1_i",
+              "con": "rst_test_mode_ni"
+            },
+            {
+              "port": "clk_sel_i",
+              "con": "test_mode_i"
+            },
+            {
+              "port": "clk_o",
+              "con": "rst_n"
+            }
+          ]
+        },
+        {
+          "name": "i_tc_clk_mux2_rst_no",
+          "module": "tc_clk_mux2",
+          "connections": [
+            {
+              "port": "clk0_i",
+              "con": "synch_regs_q[NumRegs-1]"
+            },
+            {
+              "port": "clk1_i",
+              "con": "rst_test_mode_ni"
+            },
+            {
+              "port": "clk_sel_i",
+              "con": "test_mode_i"
+            },
+            {
+              "port": "clk_o",
+              "con": "rst_no"
+            }
+          ]
+        },
+        {
+          "name": "i_tc_clk_mux2_init_no",
+          "module": "tc_clk_mux2",
+          "connections": [
+            {
+              "port": "clk0_i",
+              "con": "synch_regs_q[NumRegs-1]"
+            },
+            {
+              "port": "clk1_i",
+              "con": "1'b1"
+            },
+            {
+              "port": "clk_sel_i",
+              "con": "test_mode_i"
+            },
+            {
+              "port": "clk_o",
+              "con": "init_no"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

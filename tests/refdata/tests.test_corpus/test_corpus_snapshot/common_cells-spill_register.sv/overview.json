@@ -1,0 +1,115 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/spill_register.sv",
+  "modules": [
+    {
+      "name": "spill_register",
+      "params": [
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic"
+        },
+        {
+          "ptype": "bit",
+          "name": "Bypass",
+          "default": "1'b0",
+          "comment": [
+            "make this spill register transparent"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ready_o"
+        },
+        {
+          "direction": "input",
+          "name": "T"
+        },
+        {
+          "direction": "input",
+          "name": "data_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ready_i"
+        },
+        {
+          "direction": "output",
+          "name": "T"
+        },
+        {
+          "direction": "output",
+          "name": "data_o"
+        }
+      ],
+      "insts": [
+        {
+          "name": "spill_register_flushable_i",
+          "module": "spill_register_flushable",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "valid_i"
+            },
+            {
+              "port": "flush_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "ready_o",
+              "con": "ready_o"
+            },
+            {
+              "port": "data_i",
+              "con": "data_i"
+            },
+            {
+              "port": "valid_o",
+              "con": "valid_o"
+            },
+            {
+              "port": "ready_i",
+              "con": "ready_i"
+            },
+            {
+              "port": "data_o",
+              "con": "data_o"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

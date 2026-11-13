@@ -1,0 +1,201 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/stream_fifo.sv",
+  "modules": [
+    {
+      "name": "stream_fifo",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "FALL_THROUGH",
+          "default": "1'b0",
+          "comment": [
+            "/ Default data width if the fifo is of type logic"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DATA_WIDTH",
+          "default": "32",
+          "comment": [
+            "/ Depth can be arbitrary from 0 to 2**32"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DEPTH",
+          "default": "8"
+        },
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic [DATA_WIDTH-1:0]",
+          "comment": [
+            "DO NOT OVERWRITE THIS PARAMETER"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "ADDR_DEPTH",
+          "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Asynchronous reset active low"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "flush_i",
+          "comment": [
+            "flush the fifo"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "testmode_i",
+          "comment": [
+            "test_mode to bypass clock gating"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "usage_o",
+          "dim": "[ADDR_DEPTH-1:0]",
+          "comment": [
+            "fill pointer",
+            "input interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "T",
+          "comment": [
+            "data to push into the fifo"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "data_i",
+          "comment": [
+            "data to push into the fifo"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "valid_i",
+          "comment": [
+            "input data valid"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ready_o",
+          "comment": [
+            "fifo is not full",
+            "output interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "T",
+          "comment": [
+            "output data"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "data_o",
+          "comment": [
+            "output data"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o",
+          "comment": [
+            "fifo is not empty"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ready_i",
+          "comment": [
+            "pop head from fifo"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "fifo_i",
+          "module": "fifo_v3",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "flush_i",
+              "con": "flush_i"
+            },
+            {
+              "port": "testmode_i",
+              "con": "testmode_i"
+            },
+            {
+              "port": "full_o",
+              "con": "full"
+            },
+            {
+              "port": "empty_o",
+              "con": "empty"
+            },
+            {
+              "port": "usage_o",
+              "con": "usage_o"
+            },
+            {
+              "port": "data_i",
+              "con": "data_i"
+            },
+            {
+              "port": "push_i",
+              "con": "push"
+            },
+            {
+              "port": "data_o",
+              "con": "data_o"
+            },
+            {
+              "port": "pop_i",
+              "con": "pop"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

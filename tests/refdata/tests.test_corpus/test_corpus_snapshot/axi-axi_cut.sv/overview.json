@@ -1,0 +1,467 @@
+{
+  "path": "$PRJ/tests/corpus/axi/axi_cut.sv",
+  "modules": [
+    {
+      "name": "axi_cut",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "Bypass",
+          "default": "1'b0",
+          "comment": [
+            "AXI channel structs"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "aw_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "w_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "b_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "ar_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "r_chan_t",
+          "default": "logic",
+          "comment": [
+            "AXI request & response structs"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "axi_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "axi_resp_t",
+          "default": "logic"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "salve port"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "axi_req_t"
+        },
+        {
+          "direction": "input",
+          "name": "slv_req_i"
+        },
+        {
+          "direction": "output",
+          "name": "axi_resp_t",
+          "comment": [
+            "master port"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "slv_resp_o",
+          "comment": [
+            "master port"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "axi_req_t"
+        },
+        {
+          "direction": "output",
+          "name": "mst_req_o"
+        },
+        {
+          "direction": "input",
+          "name": "axi_resp_t"
+        },
+        {
+          "direction": "input",
+          "name": "mst_resp_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_reg_aw",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.aw_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_resp_o.aw_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.aw"
+            },
+            {
+              "port": "valid_o",
+              "con": "mst_req_o.aw_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "mst_resp_i.aw_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "mst_req_o.aw"
+            }
+          ]
+        },
+        {
+          "name": "i_reg_w",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.w_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_resp_o.w_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.w"
+            },
+            {
+              "port": "valid_o",
+              "con": "mst_req_o.w_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "mst_resp_i.w_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "mst_req_o.w"
+            }
+          ]
+        },
+        {
+          "name": "i_reg_b",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "mst_resp_i.b_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "mst_req_o.b_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "mst_resp_i.b"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_resp_o.b_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_req_i.b_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_resp_o.b"
+            }
+          ]
+        },
+        {
+          "name": "i_reg_ar",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.ar_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_resp_o.ar_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.ar"
+            },
+            {
+              "port": "valid_o",
+              "con": "mst_req_o.ar_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "mst_resp_i.ar_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "mst_req_o.ar"
+            }
+          ]
+        },
+        {
+          "name": "i_reg_r",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "mst_resp_i.r_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "mst_req_o.r_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "mst_resp_i.r"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_resp_o.r_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_req_i.r_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_resp_o.r"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axi_cut_intf",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "BYPASS",
+          "default": "1'b0",
+          "comment": [
+            "The address width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "ADDR_WIDTH",
+          "default": "0",
+          "comment": [
+            "The data width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DATA_WIDTH",
+          "default": "0",
+          "comment": [
+            "The ID width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "ID_WIDTH",
+          "default": "0",
+          "comment": [
+            "The user data width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "USER_WIDTH",
+          "default": "0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "AXI_BUS"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_axi_cut",
+          "module": "axi_cut",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "slv_req"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "slv_resp"
+            },
+            {
+              "port": "mst_req_o",
+              "con": "mst_req"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "mst_resp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axi_lite_cut_intf",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "BYPASS",
+          "default": "1'b0",
+          "comment": [
+            "/ The address width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "ADDR_WIDTH",
+          "default": "0",
+          "comment": [
+            "/ The data width."
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DATA_WIDTH",
+          "default": "0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "AXI_LITE"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_axi_cut",
+          "module": "axi_cut",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "slv_req"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "slv_resp"
+            },
+            {
+              "port": "mst_req_o",
+              "con": "mst_req"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "mst_resp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

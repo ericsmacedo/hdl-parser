@@ -1,0 +1,381 @@
+{
+  "path": "$PRJ/tests/corpus/axi/axi_id_prepend.sv",
+  "modules": [
+    {
+      "name": "axi_id_prepend",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "NoBus",
+          "default": "1",
+          "comment": [
+            "Can take multiple axi busses"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "AxiIdWidthSlvPort",
+          "default": "4",
+          "comment": [
+            "AXI ID Width of the Slave Ports"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "AxiIdWidthMstPort",
+          "default": "6",
+          "comment": [
+            "AXI ID Width of the Master Ports"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "slv_aw_chan_t",
+          "default": "logic",
+          "comment": [
+            "AW Channel Type for slv port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "slv_w_chan_t",
+          "default": "logic",
+          "comment": [
+            "W Channel Type for slv port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "slv_b_chan_t",
+          "default": "logic",
+          "comment": [
+            "B Channel Type for slv port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "slv_ar_chan_t",
+          "default": "logic",
+          "comment": [
+            "AR Channel Type for slv port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "slv_r_chan_t",
+          "default": "logic",
+          "comment": [
+            "R Channel Type for slv port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "mst_aw_chan_t",
+          "default": "logic",
+          "comment": [
+            "AW Channel Type for mst port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "mst_w_chan_t",
+          "default": "logic",
+          "comment": [
+            "W Channel Type for mst port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "mst_b_chan_t",
+          "default": "logic",
+          "comment": [
+            "B Channel Type for mst port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "mst_ar_chan_t",
+          "default": "logic",
+          "comment": [
+            "AR Channel Type for mst port"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "mst_r_chan_t",
+          "default": "logic",
+          "comment": [
+            "R Channel Type for mst port",
+            "DEPENDENT PARAMETER DO NOT OVERWRITE!"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "PreIdWidth",
+          "default": "AxiIdWidthMstPort - AxiIdWidthSlvPort"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pre_id_i",
+          "dim": "[PreIdWidth-1:0]",
+          "comment": [
+            "ID to be prepended",
+            "slave port (input), connect master modules here",
+            "AW channel"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "slv_aw_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "slv_aw_chans_i",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "slv_aw_valids_i",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "slv_aw_readies_o",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "W channel"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "slv_w_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "slv_w_chans_i",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "slv_w_valids_i",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "slv_w_readies_o",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "B channel"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "slv_b_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "slv_b_chans_o",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "slv_b_valids_o",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "slv_b_readies_i",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "AR channel"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "slv_ar_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "slv_ar_chans_i",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "slv_ar_valids_i",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "slv_ar_readies_o",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "R channel"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "slv_r_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "slv_r_chans_o",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "slv_r_valids_o",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "slv_r_readies_i",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "master ports (output), connect slave modules here",
+            "AW channel"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "mst_aw_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "mst_aw_chans_o",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mst_aw_valids_o",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mst_aw_readies_i",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "W channel"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "mst_w_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "mst_w_chans_o",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mst_w_valids_o",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mst_w_readies_i",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "B channel"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "mst_b_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "mst_b_chans_i",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mst_b_valids_i",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mst_b_readies_o",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "AR channel"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "mst_ar_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "mst_ar_chans_o",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mst_ar_valids_o",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mst_ar_readies_i",
+          "dim": "[NoBus-1:0]",
+          "comment": [
+            "R channel"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "mst_r_chan_t",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "mst_r_chans_i",
+          "dim_unpacked": "[NoBus-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mst_r_valids_i",
+          "dim": "[NoBus-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mst_r_readies_o",
+          "dim": "[NoBus-1:0]"
+        }
+      ]
+    }
+  ]
+}

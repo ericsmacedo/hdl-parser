@@ -1,0 +1,98 @@
+{
+  "path": "$PRJ/tests/corpus/opentitan/prim_sync_reqack.sv",
+  "modules": [
+    {
+      "name": "prim_sync_reqack",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "EnRstChks",
+          "default": "1'b0",
+          "comment": [
+            "Enable reset-related assertion checks, disabled by default."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "EnRzHs",
+          "default": "1'b0",
+          "comment": [
+            "By Default, the faster NRZ handshake protocol",
+            "(EnRzHs = 0) is used. Enable the RZ handshake protocol",
+            "if the FSMs need to be partial-reset-safe."
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_src_i",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "rst_src_ni",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "clk_dst_i",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "rst_dst_ni",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "req_chk_i",
+          "comment": [
+            "Used for gating assertions. Drive to 1 during normal operation."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_req_i",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "src_ack_o",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dst_req_o",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_ack_i",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        }
+      ]
+    }
+  ]
+}

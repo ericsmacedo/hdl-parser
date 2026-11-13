@@ -1,0 +1,884 @@
+// Copyright lowRISC contributors.
+// Copyright 2018 ETH Zurich and University of Bologna, see also CREDITS.md.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+/**
+ * Arithmetic logic unit
+ */
+module ibex_alu #(
+  parameter ibex_pkg::rv32b_e RV32B = ibex_pkg::RV32BNone
+) (
+  input  ibex_pkg::alu_op_e operator_i,
+  input  logic [31:0]       operand_a_i,
+  input  logic [31:0]       operand_b_i,
+
+  input  logic [32:0]       multdiv_operand_a_i,
+  input  logic [32:0]       multdiv_operand_b_i,
+
+  input  logic              multdiv_sel_i,
+
+  output logic [31:0]       adder_result_o,
+  output logic [33:0]       adder_result_ext_o,
+
+  output logic [31:0]       result_o,
+  output logic              comparison_result_o,
+  output logic              is_equal_result_o
+);
+  import ibex_pkg::*;
+
+  logic [31:0] operand_a_rev;
+  logic [32:0] operand_b_neg;
+
+  // bit reverse operand_a for left shifts and bit counting
+  for (genvar k = 0; k < 32; k++) begin : gen_rev_operand_a
+    assign operand_a_rev[k] = operand_a_i[31-k];
+  end
+
+  ///////////
+  // Adder //
+  ///////////
+
+  logic        adder_op_a_shift1;
+  logic        adder_op_a_shift2;
+  logic        adder_op_a_shift3;
+  logic        adder_op_b_negate;
+  logic [32:0] adder_in_a, adder_in_b;
+  logic [31:0] adder_result;
+
+  always_comb begin
+    adder_op_a_shift1 = 1'b0;
+    adder_op_a_shift2 = 1'b0;
+    adder_op_a_shift3 = 1'b0;
+    adder_op_b_negate = 1'b0;
+    unique case (operator_i)
+      // Adder OPs
+      ALU_SUB,
+
+      // Comparator OPs
+      ALU_EQ,   ALU_NE,
+      ALU_GE,   ALU_GEU,
+      ALU_LT,   ALU_LTU,
+      ALU_SLT,  ALU_SLTU,
+
+      // MinMax OPs (RV32B Ops)
+      ALU_MIN,  ALU_MINU,
+      ALU_MAX,  ALU_MAXU: adder_op_b_negate = 1'b1;
+
+      // Address Calculation OPs (RV32B Ops)
+      ALU_SH1ADD: if (RV32B != RV32BNone) adder_op_a_shift1 = 1'b1;
+      ALU_SH2ADD: if (RV32B != RV32BNone) adder_op_a_shift2 = 1'b1;
+      ALU_SH3ADD: if (RV32B != RV32BNone) adder_op_a_shift3 = 1'b1;
+
+      default:;
+    endcase
+  end
+
+  // prepare operand a
+  always_comb begin
+    unique case (1'b1)
+      multdiv_sel_i:     adder_in_a = multdiv_operand_a_i;
+      adder_op_a_shift1: adder_in_a = {operand_a_i[30:0],2'b01};
+      adder_op_a_shift2: adder_in_a = {operand_a_i[29:0],3'b001};
+      adder_op_a_shift3: adder_in_a = {operand_a_i[28:0],4'b0001};
+      default:           adder_in_a = {operand_a_i,1'b1};
+    endcase
+  end
+
+  // prepare operand b
+  assign operand_b_neg = {operand_b_i,1'b0} ^ {33{1'b1}};
+  always_comb begin
+    unique case (1'b1)
+      multdiv_sel_i:     adder_in_b = multdiv_operand_b_i;
+      adder_op_b_negate: adder_in_b = operand_b_neg;
+      default:           adder_in_b = {operand_b_i, 1'b0};
+    endcase
+  end
+
+  // actual adder
+  assign adder_result_ext_o = $unsigned(adder_in_a) + $unsigned(adder_in_b);
+
+  assign adder_result       = adder_result_ext_o[32:1];
+
+  assign adder_result_o     = adder_result;
+
+  ////////////////
+  // Comparison //
+  ////////////////
+
+  logic is_equal;
+  logic is_greater_equal;  // handles both signed and unsigned forms
+  logic cmp_signed;
+
+  always_comb begin
+    unique case (operator_i)
+      ALU_GE,
+      ALU_LT,
+      ALU_SLT,
+      // RV32B only
+      ALU_MIN,
+      ALU_MAX: cmp_signed = 1'b1;
+
+      default: cmp_signed = 1'b0;
+    endcase
+  end
+
+  assign is_equal = (adder_result == 32'b0);
+  assign is_equal_result_o = is_equal;
+
+  // Is greater equal
+  always_comb begin
+    if ((operand_a_i[31] ^ operand_b_i[31]) == 1'b0) begin
+      is_greater_equal = (adder_result[31] == 1'b0);
+    end else begin
+      is_greater_equal = operand_a_i[31] ^ (cmp_signed);
+    end
+  end
+
+  // GTE unsigned:
+  // (a[31] == 1 && b[31] == 1) => adder_result[31] == 0
+  // (a[31] == 0 && b[31] == 0) => adder_result[31] == 0
+  // (a[31] == 1 && b[31] == 0) => 1
+  // (a[31] == 0 && b[31] == 1) => 0
+
+  // GTE signed:
+  // (a[31] == 1 && b[31] == 1) => adder_result[31] == 0
+  // (a[31] == 0 && b[31] == 0) => adder_result[31] == 0
+  // (a[31] == 1 && b[31] == 0) => 0
+  // (a[31] == 0 && b[31] == 1) => 1
+
+  // generate comparison result
+  logic cmp_result;
+
+  always_comb begin
+    unique case (operator_i)
+      ALU_EQ:             cmp_result =  is_equal;
+      ALU_NE:             cmp_result = ~is_equal;
+      ALU_GE,   ALU_GEU,
+      ALU_MAX,  ALU_MAXU: cmp_result = is_greater_equal; // RV32B only
+      ALU_LT,   ALU_LTU,
+      ALU_MIN,  ALU_MINU, //RV32B only
+      ALU_SLT,  ALU_SLTU: cmp_result = ~is_greater_equal;
+
+      default: cmp_result = is_equal;
+    endcase
+  end
+
+  assign comparison_result_o = cmp_result;
+
+  ///////////
+  // Shift //
+  ///////////
+
+  // The shifter structure consists of a funnel shifter: the 32-bit operand forms the lower half
+  // of the shifted vector, the upper half is filled with whatever has to be shifted in. Only the
+  // lower 32 bits of the result are used, so a right shift by up to 31 positions covers every
+  // shift and rotation. When the bitmanip extension is not configured the fill is a single
+  // replicated bit and the shifter degenerates to the classic 33-bit structure.
+  // The shifter is also used for single-bit instructions as detailed below.
+  //
+  // Standard Shifts
+  // ===============
+  // For standard shift instructions, the direction of the shift is to the right by default. For
+  // left shifts, the signal shift_left signal is set. If so, the operand is initially reversed,
+  // shifted to the right by the specified amount and shifted back again. For logical shifts the
+  // fill is zero, for arithmetic right shifts it is the sign bit of the operand.
+  //
+  // Rotations
+  // =========
+  // A rotation is a shift whose vacated bits are the bits shifted out, so it is obtained by
+  // filling the upper half of the shifted vector with the operand itself:
+  //
+  //   shift_amt = rs2 & 31;
+  //   ror        = {rs1, rs1} >> shift_amt;
+  //
+  // rol is the same operation on the bit-reversed operand with the result reversed back, and so
+  // reuses the reversal already present for left shifts:
+  //
+  //   rol(a, n) = reverse(ror(reverse(a), n))
+  //
+  // Single-Bit Instructions
+  // =======================
+  // Single bit instructions operate on bit operand_b_i[4:0] of operand_a_i.
+
+  // The operations bset, bclr and binv are implemented by generation of a bit-mask using the
+  // shifter structure. This is done by left-shifting the operand 32'h1 by the required amount.
+  // The signal shift_sbmode multiplexes the shifter input and sets the signal shift_left.
+  // Further processing is taken care of by a separate structure.
+  //
+  // For bext, the bit defined by operand_b_i[4:0] is to be returned. This is done by simply
+  // shifting operand_a_i to the right by the required amount and returning bit [0] of the result.
+
+  logic       shift_left;
+  logic       shift_arith;
+  logic       shift_sbmode;
+  logic       shift_rot;
+  logic [4:0] shift_amt;
+
+  logic [31:0] shift_operand;
+  logic [31:0] shift_fill;
+  logic [63:0] shift_result_ext;
+  logic [31:0] unused_shift_result_ext;
+  logic [31:0] shift_result;
+  logic [31:0] shift_result_rev;
+
+  assign shift_amt = operand_b_i[4:0];
+
+  // single-bit mode: shift
+  assign shift_sbmode = (RV32B != RV32BNone) ?
+      (operator_i == ALU_BSET) | (operator_i == ALU_BCLR) | (operator_i == ALU_BINV) : 1'b0;
+
+  // rotation mode: the bits shifted out are shifted back in at the top
+  assign shift_rot = (RV32B != RV32BNone) ?
+      (operator_i == ALU_ROL) | (operator_i == ALU_ROR) : 1'b0;
+
+  // left shift if this is:
+  // * a standard left shift (sll)
+  // * a rol, which is a ror on the bit-reversed operand
+  // * a single-bit instruction: bclr, bset, binv (excluding bext)
+  always_comb begin
+    unique case (operator_i)
+      ALU_SLL: shift_left = 1'b1;
+      ALU_ROL: shift_left = (RV32B != RV32BNone);
+      default: shift_left = 1'b0;
+    endcase
+    if (shift_sbmode) begin
+      shift_left = 1'b1;
+    end
+  end
+
+  assign shift_arith  = (operator_i == ALU_SRA);
+
+  // shifter structure.
+  always_comb begin
+    // select shifter input
+    // for sbmode and shift_left the corresponding bit-reversed input is chosen.
+    // shift_sbmode is tied to zero unless the bitmanip extension is enabled.
+    if (shift_sbmode) begin
+      shift_operand = 32'h8000_0000;
+    end else begin
+      shift_operand = shift_left ? operand_a_rev : operand_a_i;
+    end
+
+    if (shift_rot) begin
+      shift_fill = shift_operand;
+    end else begin
+      shift_fill = {32{shift_arith & shift_operand[31]}};
+    end
+
+    shift_result_ext = {shift_fill, shift_operand} >> shift_amt;
+
+    shift_result            = shift_result_ext[31:0];
+    unused_shift_result_ext = shift_result_ext[63:32];
+
+    for (int unsigned i = 0; i < 32; i++) begin
+      shift_result_rev[i] = shift_result[31-i];
+    end
+
+    shift_result = shift_left ? shift_result_rev : shift_result;
+
+  end
+
+  ///////////////////
+  // Bitwise Logic //
+  ///////////////////
+
+  logic bwlogic_or;
+  logic bwlogic_and;
+  logic [31:0] bwlogic_operand_b;
+  logic [31:0] bwlogic_or_result;
+  logic [31:0] bwlogic_and_result;
+  logic [31:0] bwlogic_xor_result;
+  logic [31:0] bwlogic_result;
+
+  logic bwlogic_op_b_negate;
+
+  always_comb begin
+    unique case (operator_i)
+      // Logic-with-negate OPs (RV32B Ops)
+      ALU_XNOR,
+      ALU_ORN,
+      ALU_ANDN: bwlogic_op_b_negate = (RV32B != RV32BNone) ? 1'b1 : 1'b0;
+      default:  bwlogic_op_b_negate = 1'b0;
+    endcase
+  end
+
+  assign bwlogic_operand_b = bwlogic_op_b_negate ? operand_b_neg[32:1] : operand_b_i;
+
+  assign bwlogic_or_result  = operand_a_i | bwlogic_operand_b;
+  assign bwlogic_and_result = operand_a_i & bwlogic_operand_b;
+  assign bwlogic_xor_result = operand_a_i ^ bwlogic_operand_b;
+
+  assign bwlogic_or  = (operator_i == ALU_OR)  | (operator_i == ALU_ORN);
+  assign bwlogic_and = (operator_i == ALU_AND) | (operator_i == ALU_ANDN);
+
+  always_comb begin
+    unique case (1'b1)
+      bwlogic_or:  bwlogic_result = bwlogic_or_result;
+      bwlogic_and: bwlogic_result = bwlogic_and_result;
+      default:     bwlogic_result = bwlogic_xor_result;
+    endcase
+  end
+
+  logic [5:0]  bitcnt_result;
+  logic [31:0] minmax_result;
+  logic [31:0] pack_result;
+  logic [31:0] sext_result;
+  logic [31:0] singlebit_result;
+  logic [31:0] rev_result;
+  logic [31:0] shuffle_result;
+  logic [31:0] xperm_result;
+  logic [31:0] clmul_result;
+
+  if (RV32B != RV32BNone) begin : g_alu_rvb
+
+    /////////////////
+    // Bitcounting //
+    /////////////////
+
+    // The bit-counter structure computes the number of set bits in its operand.
+    // For cpop, clz and ctz, only the end result is used.
+
+    logic        bitcnt_ctz;
+    logic        bitcnt_clz;
+    logic        bitcnt_cz;
+    logic [31:0] bitcnt_bits;
+    logic [31:0] bitcnt_mask_op;
+    logic [31:0] bitcnt_bit_mask;
+    logic [ 5:0] bitcnt_partial [32];
+
+
+    assign bitcnt_ctz    = operator_i == ALU_CTZ;
+    assign bitcnt_clz    = operator_i == ALU_CLZ;
+    assign bitcnt_cz     = bitcnt_ctz | bitcnt_clz;
+    assign bitcnt_result = bitcnt_partial[31];
+
+    // Bit-mask generation for clz and ctz:
+    // The bit mask is generated by spreading the lowest-order set bit in the operand to all
+    // higher order bits. The resulting mask is inverted to cover the lowest order zeros. In order
+    // to create the bit mask for leading zeros, the input operand needs to be reversed.
+    assign bitcnt_mask_op = bitcnt_clz ? operand_a_rev : operand_a_i;
+
+    always_comb begin
+      bitcnt_bit_mask = bitcnt_mask_op;
+      bitcnt_bit_mask |= bitcnt_bit_mask << 1;
+      bitcnt_bit_mask |= bitcnt_bit_mask << 2;
+      bitcnt_bit_mask |= bitcnt_bit_mask << 4;
+      bitcnt_bit_mask |= bitcnt_bit_mask << 8;
+      bitcnt_bit_mask |= bitcnt_bit_mask << 16;
+      bitcnt_bit_mask = ~bitcnt_bit_mask;
+    end
+
+    always_comb begin
+      if (bitcnt_cz) begin
+        bitcnt_bits = bitcnt_bit_mask & ~bitcnt_mask_op; // clz / ctz
+      end else begin
+        bitcnt_bits = operand_a_i;                       // cpop
+      end
+    end
+
+    // The parallel prefix counter is of the structure of a Brent-Kung Adder. In the first
+    // log2(width) stages, the sum of the n preceding bit lines is computed for the bit lines at
+    // positions 2**n-1 (power-of-two positions) where n denotes the current stage.
+    // In stage n=log2(width), the count for position width-1 (the MSB) is finished.
+    // For the intermediate values, an inverse adder tree then computes the bit counts for the bit
+    // lines at positions
+    // m = 2**(n-1) + i*2**(n-2), where i = [1 ... width / 2**(n-1)-1] and n = [log2(width) ... 2].
+    // Thus, at every subsequent stage the result of two previously unconnected sub-trees is
+    // summed, starting at the node summing bits [width/2-1 : 0] and [3*width/4-1: width/2]
+    // and moving to iteratively sum up all the sub-trees.
+    // The inverse adder tree thus features log2(width) - 1 stages the first of these stages is a
+    // single addition at position 3*width/4 - 1. It does not interfere with the last
+    // stage of the primary adder tree. These stages can thus be folded together, resulting in a
+    // total of 2*log2(width)-2 stages.
+    // For more details refer to R. Brent, H. T. Kung, "A Regular Layout for Parallel Adders",
+    // (1982).
+    // For a bitline at position p, only bits
+    // bitcnt_partial[max(i, such that p % log2(i) == 0)-1 : 0] are needed for generation of the
+    // butterfly network control signals. The adders in the intermediate value adder tree thus need
+    // not be full 5-bit adders. We leave the optimization to the synthesis tools.
+    //
+    // Consider the following 8-bit example for illustration.
+    //
+    // let bitcnt_bits = 8'babcdefgh.
+    //
+    //                   a  b  c  d  e  f  g  h
+    //                   | /:  | /:  | /:  | /:
+    //                   |/ :  |/ :  |/ :  |/ :
+    // stage 1:          +  :  +  :  +  :  +  :
+    //                   |  : /:  :  |  : /:  :
+    //                   |,--+ :  :  |,--+ :  :
+    // stage 2:          +  :  :  :  +  :  :  :
+    //                   |  :  |  : /:  :  :  :
+    //                   |,-----,--+ :  :  :  : ^-primary adder tree
+    // stage 3:          +  :  +  :  :  :  :  : -------------------------
+    //                   :  | /| /| /| /| /|  : ,-intermediate adder tree
+    //                   :  |/ |/ |/ |/ |/ :  :
+    // stage 4           :  +  +  +  +  +  :  :
+    //                   :  :  :  :  :  :  :  :
+    // bitcnt_partial[i] 7  6  5  4  3  2  1  0
+
+    always_comb begin
+      bitcnt_partial = '{default: '0};
+      // stage 1
+      for (int unsigned i = 1; i < 32; i += 2) begin
+        bitcnt_partial[i] = {5'h0, bitcnt_bits[i]} + {5'h0, bitcnt_bits[i-1]};
+      end
+      // stage 2
+      for (int unsigned i = 3; i < 32; i += 4) begin
+        bitcnt_partial[i] = bitcnt_partial[i-2] + bitcnt_partial[i];
+      end
+      // stage 3
+      for (int unsigned i = 7; i < 32; i += 8) begin
+        bitcnt_partial[i] = bitcnt_partial[i-4] + bitcnt_partial[i];
+      end
+      // stage 4
+      for (int unsigned i = 15; i < 32; i += 16) begin
+        bitcnt_partial[i] = bitcnt_partial[i-8] + bitcnt_partial[i];
+      end
+      // stage 5
+      bitcnt_partial[31] = bitcnt_partial[15] + bitcnt_partial[31];
+      // ^- primary adder tree
+      // -------------------------------
+      // ,-intermediate value adder tree
+      bitcnt_partial[23] = bitcnt_partial[15] + bitcnt_partial[23];
+
+      // stage 6
+      for (int unsigned i = 11; i < 32; i += 8) begin
+        bitcnt_partial[i] = bitcnt_partial[i-4] + bitcnt_partial[i];
+      end
+
+      // stage 7
+      for (int unsigned i = 5; i < 32; i += 4) begin
+        bitcnt_partial[i] = bitcnt_partial[i-2] + bitcnt_partial[i];
+      end
+      // stage 8
+      bitcnt_partial[0] = {5'h0, bitcnt_bits[0]};
+      for (int unsigned i = 2; i < 32; i += 2) begin
+        bitcnt_partial[i] = bitcnt_partial[i-1] + {5'h0, bitcnt_bits[i]};
+      end
+    end
+
+    ///////////////
+    // Min / Max //
+    ///////////////
+
+    assign minmax_result = cmp_result ? operand_a_i : operand_b_i;
+
+    //////////
+    // Pack //
+    //////////
+
+    logic packh;
+    assign packh = operator_i == ALU_PACKH;
+
+    always_comb begin
+      if (packh) begin
+        pack_result = {16'h0, operand_b_i[7:0], operand_a_i[7:0]}; // packh
+      end else begin
+        pack_result = {operand_b_i[15:0], operand_a_i[15:0]};      // pack
+      end
+    end
+
+    //////////
+    // Sext //
+    //////////
+
+    assign sext_result = (operator_i == ALU_SEXTB) ?
+        { {24{operand_a_i[7]}}, operand_a_i[7:0]} : { {16{operand_a_i[15]}}, operand_a_i[15:0]};
+
+    /////////////////////////////
+    // Single-bit Instructions //
+    /////////////////////////////
+
+    always_comb begin
+      unique case (operator_i)
+        ALU_BSET: singlebit_result = operand_a_i | shift_result;
+        ALU_BCLR: singlebit_result = operand_a_i & ~shift_result;
+        ALU_BINV: singlebit_result = operand_a_i ^ shift_result;
+        default:  singlebit_result = {31'h0, shift_result[0]}; // ALU_BEXT
+      endcase
+    end
+
+    //////////////////////////
+    // rev8 / brev8 / orc.b //
+    //////////////////////////
+
+    // The generalized-reverse / or-combine butterfly below implements the ratified subset only:
+    // rev8 and orc.b from Zbb, plus brev8 from Zbkb in the full configuration.
+
+    logic [4:0] rev_shift_amt;
+    logic orcb_op;
+
+    assign orcb_op = (operator_i == ALU_ORCB);
+    assign rev_shift_amt[2:0] =
+        (RV32B == RV32BFull) ? shift_amt[2:0] : {3{shift_amt[0]}};
+    assign rev_shift_amt[4:3] =
+        (RV32B == RV32BFull) ? shift_amt[4:3] : {2{shift_amt[3]}};
+
+    always_comb begin
+      rev_result = operand_a_i;
+
+      if (rev_shift_amt[0]) begin
+        rev_result = (orcb_op ? rev_result : 32'h0)       |
+                     ((rev_result & 32'h5555_5555) <<  1) |
+                     ((rev_result & 32'haaaa_aaaa) >>  1);
+      end
+
+      if (rev_shift_amt[1]) begin
+        rev_result = (orcb_op ? rev_result : 32'h0)       |
+                     ((rev_result & 32'h3333_3333) <<  2) |
+                     ((rev_result & 32'hcccc_cccc) >>  2);
+      end
+
+      if (rev_shift_amt[2]) begin
+        rev_result = (orcb_op ? rev_result : 32'h0)       |
+                     ((rev_result & 32'h0f0f_0f0f) <<  4) |
+                     ((rev_result & 32'hf0f0_f0f0) >>  4);
+      end
+
+      if (rev_shift_amt[3]) begin
+        rev_result = ((RV32B == RV32BFull) &&
+                      orcb_op ? rev_result : 32'h0) |
+                     ((rev_result & 32'h00ff_00ff) <<  8) |
+                     ((rev_result & 32'hff00_ff00) >>  8);
+      end
+
+      if (rev_shift_amt[4]) begin
+        rev_result = ((RV32B == RV32BFull) &&
+                      orcb_op ? rev_result : 32'h0) |
+                     ((rev_result & 32'h0000_ffff) << 16) |
+                     ((rev_result & 32'hffff_0000) >> 16);
+      end
+    end
+
+    if (RV32B == RV32BFull) begin : gen_alu_rvb_full
+
+      /////////////////
+      // Zip / Unzip //
+      /////////////////
+      // zip/unzip (Zbkb) are the shfli/unshfli shuffle network restricted to the
+      // shamt=0x0F (full) control value.
+
+      localparam logic [31:0] SHUFFLE_MASK_L [4] =
+          '{32'h00ff_0000, 32'h0f00_0f00, 32'h3030_3030, 32'h4444_4444};
+      localparam logic [31:0] SHUFFLE_MASK_R [4] =
+          '{32'h0000_ff00, 32'h00f0_00f0, 32'h0c0c_0c0c, 32'h2222_2222};
+
+      localparam logic [31:0] FLIP_MASK_L [4] =
+          '{32'h2200_1100, 32'h0044_0000, 32'h4411_0000, 32'h1100_0000};
+      localparam logic [31:0] FLIP_MASK_R [4] =
+          '{32'h0088_0044, 32'h0000_2200, 32'h0000_8822, 32'h0000_0088};
+
+      logic [31:0] SHUFFLE_MASK_NOT [4];
+      for(genvar i = 0; i < 4; i++) begin : gen_shuffle_mask_not
+        assign SHUFFLE_MASK_NOT[i] = ~(SHUFFLE_MASK_L[i] | SHUFFLE_MASK_R[i]);
+      end
+
+      logic shuffle_flip;
+      assign shuffle_flip = operator_i == ALU_UNZIP;
+
+      logic [3:0] shuffle_mode;
+
+      always_comb begin
+        shuffle_result = operand_a_i;
+
+        if (shuffle_flip) begin
+          shuffle_mode[3] = shift_amt[0];
+          shuffle_mode[2] = shift_amt[1];
+          shuffle_mode[1] = shift_amt[2];
+          shuffle_mode[0] = shift_amt[3];
+        end else begin
+          shuffle_mode = shift_amt[3:0];
+        end
+
+        if (shuffle_flip) begin
+          shuffle_result = (shuffle_result & 32'h8822_4411) |
+              ((shuffle_result << 6)  & FLIP_MASK_L[0]) |
+              ((shuffle_result >> 6)  & FLIP_MASK_R[0]) |
+              ((shuffle_result << 9)  & FLIP_MASK_L[1]) |
+              ((shuffle_result >> 9)  & FLIP_MASK_R[1]) |
+              ((shuffle_result << 15) & FLIP_MASK_L[2]) |
+              ((shuffle_result >> 15) & FLIP_MASK_R[2]) |
+              ((shuffle_result << 21) & FLIP_MASK_L[3]) |
+              ((shuffle_result >> 21) & FLIP_MASK_R[3]);
+        end
+
+        if (shuffle_mode[3]) begin
+          shuffle_result = (shuffle_result & SHUFFLE_MASK_NOT[0]) |
+              (((shuffle_result << 8) & SHUFFLE_MASK_L[0]) |
+              ((shuffle_result >> 8) & SHUFFLE_MASK_R[0]));
+        end
+        if (shuffle_mode[2]) begin
+          shuffle_result = (shuffle_result & SHUFFLE_MASK_NOT[1]) |
+              (((shuffle_result << 4) & SHUFFLE_MASK_L[1]) |
+              ((shuffle_result >> 4) & SHUFFLE_MASK_R[1]));
+        end
+        if (shuffle_mode[1]) begin
+          shuffle_result = (shuffle_result & SHUFFLE_MASK_NOT[2]) |
+              (((shuffle_result << 2) & SHUFFLE_MASK_L[2]) |
+              ((shuffle_result >> 2) & SHUFFLE_MASK_R[2]));
+        end
+        if (shuffle_mode[0]) begin
+          shuffle_result = (shuffle_result & SHUFFLE_MASK_NOT[3]) |
+              (((shuffle_result << 1) & SHUFFLE_MASK_L[3]) |
+              ((shuffle_result >> 1) & SHUFFLE_MASK_R[3]));
+        end
+
+        if (shuffle_flip) begin
+          shuffle_result = (shuffle_result & 32'h8822_4411) |
+              ((shuffle_result << 6)  & FLIP_MASK_L[0]) |
+              ((shuffle_result >> 6)  & FLIP_MASK_R[0]) |
+              ((shuffle_result << 9)  & FLIP_MASK_L[1]) |
+              ((shuffle_result >> 9)  & FLIP_MASK_R[1]) |
+              ((shuffle_result << 15) & FLIP_MASK_L[2]) |
+              ((shuffle_result >> 15) & FLIP_MASK_R[2]) |
+              ((shuffle_result << 21) & FLIP_MASK_L[3]) |
+              ((shuffle_result >> 21) & FLIP_MASK_R[3]);
+        end
+      end
+
+      //////////////
+      // Crossbar //
+      //////////////
+      // The crossbar permutation instructions xperm4/xperm8 (Zbkx) can be implemented using 8
+      // parallel 4-bit-wide, 8-input crossbars. Basically, we permute the 8 nibbles of operand_a_i
+      // based on operand_b_i.
+
+      // Generate selector indices and valid signals.
+      // - sel_n[x] indicates which nibble of operand_a_i is selected for output nibble x.
+      // - vld_n[x] indicates if the selection is valid.
+      logic  [7:0][2:0] sel_n; // nibbles
+      logic  [7:0]      vld_n; // nibbles
+      logic  [3:0][1:0] sel_b; // bytes
+      logic  [3:0]      vld_b; // bytes
+
+      // Per nibble, 3 bits are needed for the selection. Other bits must be zero.
+      // sel_n bit mask: 32'b0111_0111_0111_0111_0111_0111_0111_0111
+      // vld_n bit mask: 32'b1000_1000_1000_1000_1000_1000_1000_1000
+      for (genvar i = 0; i < 8; i++) begin : gen_sel_vld_n
+        assign sel_n[i] =   operand_b_i[i*4     +: 3];
+        assign vld_n[i] = ~|operand_b_i[i*4 + 3 +: 1];
+      end
+
+      // Per byte, 2 bits are needed for the selection. Other bits must be zero.
+      // sel_b bit mask: 32'b0000_0011_0000_0011_0000_0011_0000_0011
+      // vld_b bit mask: 32'b1111_1100_1111_1100_1111_1100_1111_1100
+      for (genvar i = 0; i < 4; i++) begin : gen_sel_vld_b
+        assign sel_b[i] =   operand_b_i[i*8     +: 2];
+        assign vld_b[i] = ~|operand_b_i[i*8 + 2 +: 6];
+      end
+
+      // Convert selector indices and valid signals to control the nibble-based
+      // crossbar logic.
+      logic [7:0][2:0] sel;
+      logic [7:0]      vld;
+      always_comb begin
+        unique case (operator_i)
+          ALU_XPERM4: begin
+            // No conversion needed.
+            sel = sel_n;
+            vld = vld_n;
+          end
+
+          ALU_XPERM8: begin
+            // Convert byte to nibble indices.
+            for (int b = 0; b < 4; b++) begin
+              sel[b*2 +  0] =   {sel_b[b], 1'b0};
+              sel[b*2 +  1] =   {sel_b[b], 1'b1};
+              vld[b*2 +: 2] = {2{vld_b[b]}};
+            end
+          end
+
+          default: begin
+            // Tie valid to zero to disable the crossbar unless we need it.
+            sel = sel_n;
+            vld = '0;
+          end
+        endcase
+      end
+
+      // The actual nibble-based crossbar logic.
+      logic [7:0][3:0] val_n;
+      logic [7:0][3:0] xperm_n;
+      assign val_n = operand_a_i;
+      for (genvar i = 0; i < 8; i++) begin : gen_xperm_n
+        assign xperm_n[i] = vld[i] ? val_n[sel[i]] : '0;
+      end
+      assign xperm_result = xperm_n;
+
+      /////////////////////////
+      // Carry-less Multiply //
+      /////////////////////////
+
+      // Carry-less multiplication can be understood as multiplication based on
+      // the addition interpreted as the bit-wise xor operation.
+      //
+      // Example: 1101 X 1011 = 1111111:
+      //
+      //       1011 X 1101
+      //       -----------
+      //              1101
+      //         xor 1101
+      //         ---------
+      //             10111
+      //        xor 0000
+      //        ----------
+      //            010111
+      //       xor 1101
+      //       -----------
+      //           1111111
+      //
+      // Architectural details:
+      //         A 32 x 32-bit array
+      //         [ operand_b[i] ? (operand_a << i) : '0 for i in 0 ... 31 ]
+      //         is generated. The entries of the array are pairwise 'xor-ed'
+      //         together in a 5-stage binary tree.
+
+      logic clmul_rmode;
+      logic clmul_hmode;
+      logic [31:0] clmul_op_a;
+      logic [31:0] clmul_op_b;
+      logic [31:0] operand_b_rev;
+      logic [31:0] clmul_and_stage[32];
+      logic [31:0] clmul_xor_stage1[16];
+      logic [31:0] clmul_xor_stage2[8];
+      logic [31:0] clmul_xor_stage3[4];
+      logic [31:0] clmul_xor_stage4[2];
+
+      logic [31:0] clmul_result_raw;
+      logic [31:0] clmul_result_rev;
+
+      for (genvar i = 0; i < 32; i++) begin : gen_rev_operand_b
+        assign operand_b_rev[i] = operand_b_i[31-i];
+      end
+
+      assign clmul_rmode = operator_i == ALU_CLMULR;
+      assign clmul_hmode = operator_i == ALU_CLMULH;
+
+      // Select clmul input
+      always_comb begin
+        clmul_op_a = clmul_rmode | clmul_hmode ? operand_a_rev : operand_a_i;
+        clmul_op_b = clmul_rmode | clmul_hmode ? operand_b_rev : operand_b_i;
+      end
+
+      for (genvar i = 0; i < 32; i++) begin : gen_clmul_and_op
+        assign clmul_and_stage[i] = clmul_op_b[i] ? clmul_op_a << i : '0;
+      end
+
+      for (genvar i = 0; i < 16; i++) begin : gen_clmul_xor_op_l1
+        assign clmul_xor_stage1[i] = clmul_and_stage[2*i] ^ clmul_and_stage[2*i+1];
+      end
+
+      for (genvar i = 0; i < 8; i++) begin : gen_clmul_xor_op_l2
+        assign clmul_xor_stage2[i] = clmul_xor_stage1[2*i] ^ clmul_xor_stage1[2*i+1];
+      end
+
+      for (genvar i = 0; i < 4; i++) begin : gen_clmul_xor_op_l3
+        assign clmul_xor_stage3[i] = clmul_xor_stage2[2*i] ^ clmul_xor_stage2[2*i+1];
+      end
+
+      for (genvar i = 0; i < 2; i++) begin : gen_clmul_xor_op_l4
+        assign clmul_xor_stage4[i] = clmul_xor_stage3[2*i] ^ clmul_xor_stage3[2*i+1];
+      end
+
+      assign clmul_result_raw = clmul_xor_stage4[0] ^ clmul_xor_stage4[1];
+
+      for (genvar i = 0; i < 32; i++) begin : gen_rev_clmul_result
+        assign clmul_result_rev[i] = clmul_result_raw[31-i];
+      end
+
+      // clmulr_result = rev(clmul(rev(a), rev(b)))
+      // clmulh_result = clmulr_result >> 1
+      always_comb begin
+        unique case (1'b1)
+          clmul_rmode: clmul_result = clmul_result_rev;
+          clmul_hmode: clmul_result = {1'b0, clmul_result_rev[31:1]};
+          default:     clmul_result = clmul_result_raw;
+        endcase
+      end
+    end else begin : gen_alu_rvb_not_full
+      assign shuffle_result       = '0;
+      assign xperm_result         = '0;
+      assign clmul_result         = '0;
+    end
+
+  end else begin : g_no_alu_rvb
+    // RV32B result signals
+    assign bitcnt_result       = '0;
+    assign minmax_result       = '0;
+    assign pack_result         = '0;
+    assign sext_result         = '0;
+    assign singlebit_result    = '0;
+    assign rev_result          = '0;
+    assign shuffle_result      = '0;
+    assign xperm_result        = '0;
+    assign clmul_result        = '0;
+  end
+
+  ////////////////
+  // Result mux //
+  ////////////////
+
+  always_comb begin
+    result_o   = '0;
+
+    unique case (operator_i)
+      // Bitwise Logic Operations (negate: RV32B)
+      ALU_XOR,  ALU_XNOR,
+      ALU_OR,   ALU_ORN,
+      ALU_AND,  ALU_ANDN: result_o = bwlogic_result;
+
+      // Adder Operations
+      ALU_ADD,  ALU_SUB,
+      // RV32B
+      ALU_SH1ADD, ALU_SH2ADD,
+      ALU_SH3ADD: result_o = adder_result;
+
+      // Shift and Rotate Operations (RV32B)
+      ALU_SLL,  ALU_SRL,
+      ALU_SRA,
+      ALU_ROL,  ALU_ROR: result_o = shift_result;
+
+      // Shuffle Operations (RV32B)
+      ALU_ZIP, ALU_UNZIP: result_o = shuffle_result;
+
+      // Crossbar Permutation Operations (RV32B)
+      ALU_XPERM4, ALU_XPERM8: result_o = xperm_result;
+
+      // Comparison Operations
+      ALU_EQ,   ALU_NE,
+      ALU_GE,   ALU_GEU,
+      ALU_LT,   ALU_LTU,
+      ALU_SLT,  ALU_SLTU: result_o = {31'h0,cmp_result};
+
+      // MinMax Operations (RV32B)
+      ALU_MIN,  ALU_MAX,
+      ALU_MINU, ALU_MAXU: result_o = minmax_result;
+
+      // Bitcount Operations (RV32B)
+      ALU_CLZ, ALU_CTZ,
+      ALU_CPOP: result_o = {26'h0, bitcnt_result};
+
+      // Pack Operations (RV32B)
+      ALU_PACK, ALU_PACKH: result_o = pack_result;
+
+      // Sign-Extend (RV32B)
+      ALU_SEXTB, ALU_SEXTH: result_o = sext_result;
+
+      // Single-Bit Bitmanip Operations (RV32B)
+      ALU_BSET, ALU_BCLR,
+      ALU_BINV, ALU_BEXT: result_o = singlebit_result;
+
+      // rev8 / brev8 / orc.b use shared reverse/or-combine datapath (RV32B)
+      ALU_REV8, ALU_BREV8, ALU_ORCB: result_o = rev_result;
+
+      // Carry-less Multiply Operations (RV32B)
+      ALU_CLMUL, ALU_CLMULR,
+      ALU_CLMULH: result_o = clmul_result;
+
+      default: ;
+    endcase
+  end
+
+endmodule

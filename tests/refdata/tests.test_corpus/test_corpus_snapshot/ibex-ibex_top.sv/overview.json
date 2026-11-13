@@ -1,0 +1,1125 @@
+{
+  "path": "$PRJ/tests/corpus/ibex/ibex_top.sv",
+  "modules": [
+    {
+      "name": "ibex_top",
+      "params": [
+        {
+          "name": "ibex_pkg"
+        },
+        {
+          "ptype": "bit",
+          "name": "PMPEnable",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "PMPGranularity",
+          "default": "0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "PMPNumRegions",
+          "default": "4"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "MHPMCounterNum",
+          "default": "0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "MHPMCounterWidth",
+          "default": "40"
+        },
+        {
+          "name": "ibex_pkg"
+        },
+        {
+          "ptype": "logic",
+          "name": "PMPRstAddr",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "ibex_pkg::PmpAddrRst"
+        },
+        {
+          "name": "ibex_pkg"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "CheriotRevBitmapAddrWidth",
+          "default": "32'd11"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "CheriotRevBitmapBaseAddr",
+          "default": "32'h0"
+        },
+        {
+          "ptype": "bit",
+          "name": "RV32E",
+          "default": "1'b0"
+        },
+        {
+          "name": "rv32m_e"
+        },
+        {
+          "name": "RV32M",
+          "default": "RV32MFast"
+        },
+        {
+          "name": "rv32b_e"
+        },
+        {
+          "name": "RV32B",
+          "default": "RV32BNone"
+        },
+        {
+          "name": "rv32zc_e"
+        },
+        {
+          "name": "RV32ZC",
+          "default": "RV32ZcaZcbZcmp"
+        },
+        {
+          "name": "regfile_e"
+        },
+        {
+          "name": "RegFile",
+          "default": "RegFileFF"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICache",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchPredictor",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "DbgTriggerEn",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DbgHwBreakNum",
+          "default": "1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SecureIbex",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "LockstepOffset",
+          "default": "1"
+        },
+        {
+          "ptype": "bit",
+          "name": "MemECC",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "MemDataWidth",
+          "default": "MemECC ? 32 + 7 : 32"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheScramble",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "ICacheScrNumPrinceRoundsHalf",
+          "default": "2"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheTweakInfection",
+          "default": "SecureIbex"
+        },
+        {
+          "name": "lfsr_seed_t"
+        },
+        {
+          "name": "RndCnstLfsrSeed",
+          "default": "RndCnstLfsrSeedDefault"
+        },
+        {
+          "name": "lfsr_perm_t"
+        },
+        {
+          "name": "RndCnstLfsrPerm",
+          "default": "RndCnstLfsrPermDefault"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DmBaseAddr",
+          "default": "32'h1A110000"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DmAddrMask",
+          "default": "32'h00000FFF"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DmHaltAddr",
+          "default": "32'h1A110800"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "DmExceptionAddr",
+          "default": "32'h1A110808",
+          "comment": [
+            "Default seed and nonce for scrambling"
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "RndCnstIbexKey",
+          "dim": "[SCRAMBLE_KEY_W-1:0]",
+          "default": "RndCnstIbexKeyDefault"
+        },
+        {
+          "ptype": "logic",
+          "name": "RndCnstIbexNonce",
+          "dim": "[SCRAMBLE_NONCE_W-1:0]",
+          "default": "RndCnstIbexNonceDefault",
+          "comment": [
+            "mvendorid: encoding of manufacturer/provider",
+            "0 indicates this field is not implemented. Ibex implementers may wish to set their",
+            "own JEDEC ID here."
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMvendorId",
+          "dim": "[31:0]",
+          "default": "32'b0",
+          "comment": [
+            "mimpid: encoding of processor implementation version",
+            "0 indicates this field is not implemented. Ibex implementers may wish to indicate an",
+            "RTL/netlist version here using their own unique encoding (e.g. 32 bits of the git hash of the",
+            "implemented commit)."
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMimpId",
+          "dim": "[31:0]",
+          "default": "32'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "enable all clock gates for testing"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_en_i"
+        },
+        {
+          "direction": "input",
+          "name": "prim_ram_1p_pkg"
+        },
+        {
+          "direction": "output",
+          "name": "prim_ram_1p_pkg"
+        },
+        {
+          "direction": "input",
+          "name": "prim_ram_1p_pkg"
+        },
+        {
+          "direction": "output",
+          "name": "prim_ram_1p_pkg"
+        },
+        {
+          "direction": "input",
+          "name": "ibex_mubi_t"
+        },
+        {
+          "direction": "input",
+          "name": "cheriot_enable_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "hart_id_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "boot_addr_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_heap_base_addr_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Instruction memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_err_i",
+          "comment": [
+            "Data memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_be_o",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_intg_o",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_tag_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_tag_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_err_i",
+          "comment": [
+            "TRVK revocation bitmap read interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "trvk_revbm_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "trvk_revbm_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_err_i",
+          "comment": [
+            "Interrupt inputs"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_software_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_timer_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_external_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_fast_i",
+          "dim": "[14:0]",
+          "comment": [
+            "non-maskeable interrupt"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_nm_i",
+          "comment": [
+            "Scrambling Interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_key_valid_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_key_i",
+          "dim": "[SCRAMBLE_KEY_W-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_nonce_i",
+          "dim": "[SCRAMBLE_NONCE_W-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "scramble_req_o",
+          "comment": [
+            "Debug Interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_req_i"
+        },
+        {
+          "direction": "output",
+          "name": "crash_dump_t"
+        },
+        {
+          "direction": "output",
+          "name": "crash_dump_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "double_fault_seen_o",
+          "comment": [
+            "RISC-V Formal Interface",
+            "Does not comply with the coding standards of _i/_o suffixes, but follows",
+            "the convention of RISC-V Formal Interface Specification."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_order",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_insn",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_trap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_halt",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_intr",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mode",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ixl",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "cap_t",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvfi_rs1_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "cap_t",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvfi_rs2_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "cap_t",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvfi_rd_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_addr",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_is_cap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "cap_t",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvfi_mem_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "cap_t",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvfi_mem_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_pre_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_post_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi_int",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_req",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_mode",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_rf_wr_suppress",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mcycle",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcounters",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcountersh",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_ic_scr_key_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_irq_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn",
+          "dim": "[15:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_last",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "comment": [
+            "CPU Control Signals"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "ibex_mubi_t"
+        },
+        {
+          "direction": "input",
+          "name": "fetch_enable_i"
+        },
+        {
+          "direction": "input",
+          "name": "ibex_mubi_t"
+        },
+        {
+          "direction": "input",
+          "name": "mcounteren_writable_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_minor_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_internal_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_bus_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "core_sleep_o",
+          "comment": [
+            "DFT bypass controls"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scan_rst_ni",
+          "comment": [
+            "Lockstep signals"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "ibex_mubi_t",
+          "comment": [
+            "Shadow core data interface outputs"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "lockstep_cmp_en_o",
+          "comment": [
+            "Shadow core data interface outputs"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_be_shadow_o",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_addr_shadow_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_shadow_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_intg_shadow_o",
+          "dim": "[6:0]",
+          "comment": [
+            "Shadow core instruction interface outputs"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_shadow_o",
+          "dim": "[31:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "bit",
+          "name": "Lockstep",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "Lockstep"
+        },
+        {
+          "ptype": "bit",
+          "name": "DummyInstructions",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "RegFileECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "RegFileLockstepECC",
+          "default": "Lockstep"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "RegFileDataWidth",
+          "default": "32"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "RegFileDataEccWidth",
+          "default": "32 + 7"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "RegFileCapEccWidth",
+          "default": "REGCAP_W + 7"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "BusSizeECC",
+          "default": "ICacheECC ? (BUS_SIZE + IC_DATA_ECC_SIZE) :\n                                                           BUS_SIZE"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "LineSizeECC",
+          "default": "BusSizeECC * IC_LINE_BEATS"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "TagSizeECC",
+          "default": "ICacheECC ? (IC_TAG_SIZE + IC_TAG_ECC_SIZE) :\n                                                           IC_TAG_SIZE"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "NumAddrScrRounds",
+          "default": "ICacheScramble ? 2 : 0"
+        },
+        {
+          "ptype": "unsigned",
+          "name": "MaxOutstandingDSideAccesses",
+          "default": "2"
+        }
+      ]
+    }
+  ]
+}

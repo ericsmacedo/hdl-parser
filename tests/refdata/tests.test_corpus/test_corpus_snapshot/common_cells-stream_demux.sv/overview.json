@@ -1,0 +1,53 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/stream_demux.sv",
+  "modules": [
+    {
+      "name": "stream_demux",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "N_OUP",
+          "default": "32'd1",
+          "comment": [
+            "/ Dependent parameters, DO NOT OVERRIDE!"
+          ]
+        },
+        {
+          "ptype": "unsigned",
+          "name": "LOG_N_OUP",
+          "default": "(N_OUP > 32'd1) ? unsigned'($clog2(N_OUP)) : 1'b1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "inp_valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "inp_ready_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_sel_i",
+          "dim": "[LOG_N_OUP-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_valid_o",
+          "dim": "[N_OUP-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_ready_i",
+          "dim": "[N_OUP-1:0]"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "path": "$PRJ/tests/corpus/opentitan/prim_edge_detector.sv",
+  "modules": [
+    {
+      "name": "prim_edge_detector",
+      "params": [
+        {
+          "ptype": "unsigned",
+          "name": "Width",
+          "default": "1"
+        },
+        {
+          "ptype": "logic",
+          "name": "ResetValue",
+          "dim": "[Width-1:0]",
+          "default": "'0",
+          "comment": [
+            "EnSync",
+            "",
+            "Enable Synchronizer to the input signal.",
+            "It is assumed that the input signal is glitch free (registered input)."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "EnSync",
+          "default": "1'b 1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "name": "d_i",
+          "dim": "[Width-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_sync_o",
+          "dim": "[Width-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_posedge_pulse_o",
+          "dim": "[Width-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_negedge_pulse_o",
+          "dim": "[Width-1:0]"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "path": "$PRJ/tests/corpus/ibex/ibex_prefetch_buffer.sv",
+  "modules": [
+    {
+      "name": "ibex_prefetch_buffer",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "1'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "req_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "branch_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "addr_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ready_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rdata_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "err_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "err_plus2_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_force_uc_i",
+          "comment": [
+            "goes to instruction memory / instruction cache"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_gnt_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_err_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rvalid_i",
+          "comment": [
+            "Prefetch Buffer Status"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "busy_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "unsigned",
+          "name": "NUM_REQS",
+          "default": "2"
+        }
+      ]
+    }
+  ]
+}

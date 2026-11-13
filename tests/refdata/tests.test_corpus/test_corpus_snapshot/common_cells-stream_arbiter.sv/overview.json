@@ -1,0 +1,129 @@
+{
+  "path": "$PRJ/tests/corpus/common_cells/stream_arbiter.sv",
+  "modules": [
+    {
+      "name": "stream_arbiter",
+      "params": [
+        {
+          "ptype": "type",
+          "name": "DATA_T",
+          "default": "logic",
+          "comment": [
+            "Vivado requires a default value for type parameters."
+          ]
+        },
+        {
+          "ptype": "integer",
+          "name": "N_INP",
+          "default": "-1",
+          "comment": [
+            "Synopsys DC requires a default value for parameters."
+          ]
+        },
+        {
+          "name": "ARBITER",
+          "default": "\"rr\"",
+          "comment": [
+            "\"rr\" or \"prio\""
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "name": "DATA_T",
+          "dim_unpacked": "[N_INP-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "inp_data_i",
+          "dim_unpacked": "[N_INP-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "inp_valid_i",
+          "dim": "[N_INP-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "inp_ready_o",
+          "dim": "[N_INP-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "DATA_T"
+        },
+        {
+          "direction": "output",
+          "name": "oup_data_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_valid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_ready_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_arb",
+          "module": "stream_arbiter_flushable",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "flush_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "inp_data_i",
+              "con": "inp_data_i"
+            },
+            {
+              "port": "inp_valid_i",
+              "con": "inp_valid_i"
+            },
+            {
+              "port": "inp_ready_o",
+              "con": "inp_ready_o"
+            },
+            {
+              "port": "oup_data_o",
+              "con": "oup_data_o"
+            },
+            {
+              "port": "oup_valid_o",
+              "con": "oup_valid_o"
+            },
+            {
+              "port": "oup_ready_i",
+              "con": "oup_ready_i"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
