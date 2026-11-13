@@ -61,7 +61,7 @@ _RE_STRING = r'"(?:\\.|[^"\\\n])*"'
 # comment within macro body. strings are matched too, to skip them.
 _RE_BODY_COMMENT = re.compile(rf"{_RE_STRING}|(?P<comment>//[^\n]*?)(?=\\?\r?\n|\Z)")
 _RE_CONTINUATION = re.compile(r"\\(\r?\n)")
-# identifier within macro body - but not macro names (leaded by a single backtick). strings are skipped.
+# identifier within macro body - but not macro names (preceded by a single backtick). strings are skipped.
 _RE_BODY_IDENT = re.compile(rf"{_RE_STRING}|(?<!(?<!`)`)\b(?P<ident>[a-zA-Z_]\w*)\b")
 _RE_IDENT = re.compile(r"[a-zA-Z_]\w*\Z")
 _OPEN = "([{"
