@@ -26,6 +26,7 @@ import logging
 from .. import _datamodel as _dm  # noqa: TID252
 from .. import datamodel as dm  # noqa: TID252
 from .lexer import SystemVerilogLexer
+from .preproc import Macros, expand, split_args
 from .token import Module
 
 LOGGER = logging.getLogger(__name__)
@@ -148,6 +149,13 @@ def _proc_ifdef_tokens(tokens, string, ifdefs_stack, ifdefs_pop_stack):
     return ifdefs_stack, ifdefs_pop_stack
 
 
+def _proc_macro_tokens(mod, tokens, string, ifdefs):
+    if tokens is Module.Macro.Name:
+        mod.macro_decl.append(_dm.MacroDecl(name=string, ifdefs=ifdefs))
+    else:
+        mod.macro_decl[-1].args = split_args(string)
+
+
 def _proc_module_tokens(self, tokens, string, ifdefs_stack):
     # Capture a new port declaration object if input/output keywords are found
     if tokens[:2] == ("Module", "Port"):
@@ -165,6 +173,9 @@ def _proc_module_tokens(self, tokens, string, ifdefs_stack):
         else:
             _proc_param_tokens(self.param_decl[-1], tokens, string, ifdefs_stack)
 
+    # Capture macros in the module header, which have not been expanded
+    elif tokens[:2] == ("Module", "Macro"):
+        _proc_macro_tokens(self, tokens, string, ifdefs_stack)
     # Capture Modules
     elif tokens[:2] == ("Module", "ModuleName"):
         self.name = string
@@ -244,7 +255,24 @@ def _normalize_insts(mod):
         )
 
 
-def parse(text: str) -> tuple[dm.Module, ...]:
+def _normalize_macros(mod, context: str):
+    for decl in mod.macro_decl:
+        LOGGER.warning(
+            "%s: module '%s': unknown macro `%s in module header. Ports or parameters may be missing.",
+            context,
+            mod.name,
+            decl.name,
+        )
+        yield dm.MacroCall(
+            name=decl.name,
+            args=None if decl.args is None else tuple(decl.args),
+            ifdefs=tuple(decl.ifdefs),
+        )
+
+
+def parse(text: str, macros: Macros | None = None, context: str = "") -> tuple[dm.Module, ...]:
+    context = context or "<text>"
+    text = expand(text, macros=macros, context=context)
     lexer = SystemVerilogLexer()
     module_lst = []
     ifdefs_stack: list[str] = []
@@ -267,6 +295,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
             ports=tuple(_normalize_ports(mod)),
             insts=tuple(_normalize_insts(mod)),
             ifdefs=tuple(mod.ifdefs),
+            unresolved_macros=tuple(_normalize_macros(mod, context)),
         )
         for mod in module_lst
     )

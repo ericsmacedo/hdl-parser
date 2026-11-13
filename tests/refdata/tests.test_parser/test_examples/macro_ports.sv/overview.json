@@ -1,0 +1,52 @@
+{
+  "path": "$PRJ/examples/sv/macro_ports.sv",
+  "modules": [
+    {
+      "name": "macro_ports",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "IN_WIDTH",
+          "default": "16"
+        },
+        {
+          "ptype": "int",
+          "name": "OUT_WIDTH",
+          "default": "8"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "busy_o",
+          "comment": [
+            "Busy"
+          ]
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "CLK_RST_PORTS"
+        },
+        {
+          "name": "STREAM_PORTS",
+          "args": [
+            "in",
+            "input",
+            "output",
+            "IN_WIDTH"
+          ]
+        },
+        {
+          "name": "STREAM_PORTS",
+          "args": [
+            "out",
+            "output",
+            "input"
+          ]
+        }
+      ]
+    }
+  ]
+}

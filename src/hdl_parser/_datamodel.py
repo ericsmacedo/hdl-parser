@@ -65,10 +65,17 @@ class ParamDecl(_BaseModel):
     default: list[str] | None = None
 
 
+class MacroDecl(_BaseModel):
+    name: str = ""
+    args: list[str] | None = None
+    ifdefs: list[str] | None = None
+
+
 class Module(_BaseModel):
     name: str = ""
     port_decl: list[PortDecl] = []
     param_decl: list[ParamDecl] = []
     localparam_decl: list[ParamDecl] = []
     inst_decl: list[InstDecl] = []
+    macro_decl: list[MacroDecl] = []
     ifdefs: list[str] = []

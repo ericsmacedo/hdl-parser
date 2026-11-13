@@ -37,7 +37,8 @@ from pygments.token import (
     Whitespace,
 )
 
-from .token import IFDEF, Instance, LocalParam, Module, Node, Param, Port
+from .preproc import find_closing
+from .token import IFDEF, Instance, LocalParam, Macro, Module, Node, Param, Port
 
 # Create a LOGGER for this module
 LOGGER = logging.getLogger(__name__)
@@ -187,6 +188,23 @@ def filter_instance_keywords_callback(lexer, match, ctx):  # noqa: ARG001
         ctx.pos = match.end()
 
 
+def header_macro_callback(lexer, match, ctx):  # noqa: ARG001
+    """Callback used to capture macros in the module header, which have not been expanded."""
+    yield match.start(1), Macro.Name, match.group(1)
+    ctx.pos = match.end()
+    # arguments
+    mat = _RE_SPACES.match(ctx.text, ctx.pos)
+    end = find_closing(ctx.text, mat.end())
+    if end is not None:
+        yield mat.end(), Macro.Args, ctx.text[mat.end() + 1 : end - 1]
+        ctx.pos = end
+
+
+# arguments have to start on the same line
+_RE_SPACES = re.compile(r"[ \t]*")
+header_macro = (r"`([a-zA-Z_]\w*)", header_macro_callback)
+
+
 class SystemVerilogLexer(ExtendedRegexLexer):
     """Extends verilog lexer to recognise all SystemVerilog keywords.
 
@@ -321,6 +339,7 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         "module_header": [
             include("comments"),
             include("ifdef"),
+            header_macro,
             (r"\bimport\b.*?;", Module.Other),  # Package import declaration
             (r"\bparameter\b", Param, "param_declaration"),  # Parameter declaration
             (r"\blocalparam\b", LocalParam, "param_declaration"),  # Parameter declaration
@@ -352,8 +371,8 @@ class SystemVerilogLexer(ExtendedRegexLexer):
         "param_declaration": [
             include("comments"),
             include("ifdef"),
-            # Filter macros used for param declarations
-            (r"`\w+\s*\(.*?\)", Module.Other),
+            # Capture macros used for param declarations
+            header_macro,
             (port_types, Param.ParamType),
             # Match one or more brackets, indicating the param width
             (r"((\[[^]]+\])+)", Param.ParamWidth),
