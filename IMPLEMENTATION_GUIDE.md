@@ -66,6 +66,24 @@ git diff tests/refdata
 
 Read the diff. Every change to an existing reference file must be a direct, intended consequence of your package, and you must list it in the PR description. An unexplained change is a regression.
 
+### Safety net
+
+Three checks protect against regressions. They exist because line coverage alone did not catch any of the bugs in `REVIEW.md`.
+
+- **Corpus tests** (`tests/test_corpus.py`): 54 real open-source files under `tests/corpus/` are snapshot-compared and checked against the structural invariants in `tests/invariants.py`. Never edit or reformat a corpus file.
+- **Known issues** (`KNOWN_ISSUES_SNAPSHOT` and `KNOWN_ISSUES_INVARIANTS` in `tests/test_corpus.py`): strict xfails for bugs that are not fixed yet. When your package fixes one, the test fails as XPASS: remove the entry, regenerate the reference data for that file and review it. Never add an entry to make your change pass; a new failure is a regression in your change.
+- **Benchmark** (`tests/test_benchmark.py`): fails when parsing gets more than 50% slower than the recorded baseline. Do not re-record the baseline to make a slowdown pass. Re-record only when a package intentionally changes speed, and say so in the PR.
+
+Corpus reference data changes follow the same rule as example reference data: every changed line must be an intended consequence of the package. For the corpus, open the source file and confirm that each added or removed port, parameter or instance is right.
+
+For any package that touches `_sv/lexer.py` or `_sv/parser.py`, also run the comparison tool on the corpus and paste its summary into the PR description:
+
+```bash
+uv run python tools/compare_refs.py --base main --quiet tests/corpus examples/sv
+```
+
+The repository owner runs the same tool on a private code base before merging; see `CONTRIBUTING.md`.
+
 ### Traps
 
 - Do not run `make pre-commit` or `pre-commit run --all-files` and commit the result blindly. The `insert-license` hook rewrites the copyright year in every file. Revert year-only changes in files you did not otherwise touch (`git checkout <file>`).
@@ -79,10 +97,11 @@ Read the diff. Every change to an existing reference file must be a direct, inte
 ### Definition of done
 
 1. A test reproduces the problem and now passes.
-2. All commands in "Commands" pass, with coverage of the files you touched not lower than before.
-3. Reference data changes are reviewed and explained.
-4. `docs/usage.md` or the relevant docstring is updated when behaviour visible to users changed.
-5. The matching row in `REVIEW.md` is not edited; note the fix in the PR description instead.
+2. Corpus tests pass, fixed entries are removed from the known-issue lists, and no entry was added.
+3. All commands in "Commands" pass, with coverage of the files you touched not lower than before.
+4. Reference data changes are reviewed and explained.
+5. `docs/usage.md` or the relevant docstring is updated when behaviour visible to users changed.
+6. The matching row in `REVIEW.md` is not edited; note the fix in the PR description instead.
 
 ## 4. Order of work and model assignment
 
@@ -90,6 +109,7 @@ Read the diff. Every change to an existing reference file must be a direct, inte
 
 | ID | Package | Size | Depends on | Touches `lexer.py` |
 |---|---|---|---|---|
+| A0 | Safety net: corpus, invariants, comparison tool, benchmark | Done | | no |
 | A1 | Filelist is parsed twice | Small | | no |
 | A2 | Unknown file suffix raises `KeyError` | Small | | no |
 | A3 | File without a module aborts the run | Small | | no |
@@ -118,6 +138,10 @@ Read the diff. Every change to an existing reference file must be a direct, inte
 
 Packages that touch `lexer.py` conflict with each other. Run them one after another in the order of the table, each starting from the merged result of the previous one. Packages that do not touch `lexer.py` can run in parallel with anything.
 
+A0 is already implemented and must be merged before any Large package starts.
+
+Packages that clear known-issue entries: A3 clears the package-only file (`ibex/ibex_pkg.sv`), C2 clears all user-defined-type and package-scoped-type entries. B3 has no entries to clear, because lost instances are invisible to the invariants; expect corpus reference data to gain instances instead.
+
 Suggested first wave, all parallel: A1, A2, A3, A4, D1 (after A1), E3, and the lexer chain starting with A5.
 
 ## 5. Group A: quick fixes
@@ -139,6 +163,7 @@ Suggested first wave, all parallel: A1, A2, A3, A4, D1 (after A1), E3, and the l
 - **Problem:** `parse_text()` raises `RuntimeError("No module found.")`. A package-only or interface-only file in a filelist aborts the whole CLI run.
 - **Owner decision, default chosen:** return `File(path=..., modules=())` and log at `INFO` level instead of raising.
 - **Fix:** remove the `raise`. In `cli.py` nothing else is needed: the loops over `file.modules` print nothing for an empty file.
+- **Corpus:** remove both `ibex/ibex_pkg.sv` entries from the known-issue lists and generate its reference data.
 - **Tests:** `tests/test_cli.py::test_empty` currently asserts `exit_code == 1`; change it to `0` with empty output. Add a parser test for a package-only text.
 - **Mention in the PR:** this is a public API behaviour change.
 
@@ -218,7 +243,7 @@ This package fixes two bugs with one mechanism.
   - A procedural statement without `begin` that contains `case ... endcase` ends at its first `;`, and the rest is lexed as module body. That is the same as today and acceptable. Do not try to parse `case`.
   - Instances inside a generate block must carry the right `ifdefs`.
 - **Tests:** instance in a generate `for`; in a generate `if ... else`; in nested generate blocks; `always_ff` with nested `begin`/`end` followed by an instance; `always_comb if (a) begin ... end else begin ... end` followed by an instance; a task and a function with ports followed by an instance, asserting the module ports are unchanged; the DPI import; a `fork ... join` in an `initial` block.
-- **Reference data:** existing examples may gain instances that were lost before. Each one must be a real instance in the source file.
+- **Reference data:** existing examples and many corpus files gain instances that were lost before. Each one must be a real instance in the source file; spot-check at least ten against the corpus sources and list them in the PR.
 
 ### B4. Parameter overrides on instances
 
@@ -256,6 +281,7 @@ This package fixes two bugs with one mechanism.
   - Check `gen-sv-instance` and `info` output for an interface port; an empty direction must not break the Markdown table.
 - **Tests:** every reproduction, plus `input a, b`, `input logic a, my_t b`, `input my_t a, b`, an interface array port `axi_if.master m_axi [4]`, and the non-ANSI header.
 - **Reference data:** `ptype` values of existing examples should not change. Explain any that do.
+- **Corpus:** this package must clear every "bug 6" and "bug 7" entry in `KNOWN_ISSUES_INVARIANTS`. If some remain, the design is not fully implemented. The corpus reference data of those files changes: the spurious type-named ports disappear and `ptype` gets filled.
 
 ### C3. Parameter type keywords
 
