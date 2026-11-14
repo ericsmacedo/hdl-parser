@@ -37,7 +37,8 @@ dispatched by their leading keyword: a new one is a function decorated with `_ha
 """
 
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
+from pathlib import Path
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
@@ -740,13 +741,16 @@ def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
     return tuple(mod.macros)
 
 
-def parse(text: str, macros: Macros | None = None, context: str = "") -> tuple[dm.Module, ...]:
+def parse(
+    text: str, macros: Macros | None = None, file_path: Path | None = None, inc_dirs: Iterable[Path] = ()
+) -> tuple[dm.Module, ...]:
     """Parse SystemVerilog `text` and return its modules.
 
-    Macros are expanded upfront, if they are defined within `text` or given by `macros`.
+    Macros are expanded upfront, if they are defined within `text`, within an included file or given by `macros`.
+    Included files are searched next to `file_path` and in `inc_dirs`.
     """
-    context = context or "<text>"
-    text = expand(text, macros=macros, context=context)
+    context = str(file_path) if file_path else "<text>"
+    text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs)
     return tuple(
         dm.Module(
             name=mod.name,

@@ -17,33 +17,59 @@
       ],
       "ports": [
         {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_valid"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_data",
+          "dim": "[IN_WIDTH-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "in_ready"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_valid"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_data",
+          "dim": "[8-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "out_ready"
+        },
+        {
           "direction": "output",
           "ptype": "logic",
           "name": "busy_o",
           "comment": [
             "Busy"
-          ]
-        }
-      ],
-      "unresolved_macros": [
-        {
-          "name": "CLK_RST_PORTS"
-        },
-        {
-          "name": "STREAM_PORTS",
-          "args": [
-            "in",
-            "input",
-            "output",
-            "IN_WIDTH"
-          ]
-        },
-        {
-          "name": "STREAM_PORTS",
-          "args": [
-            "out",
-            "output",
-            "input"
           ]
         }
       ]

@@ -28,13 +28,14 @@ The parser offers two methods:
 * [hdl_parser.parser.parse_file][]
 * [hdl_parser.parser.parse_text][]
 
-Macros are expanded, if they are defined in the same file or handed over via `macros`.
+Macros are expanded, if they are defined in the same file, in an included file or handed over via `macros`.
 Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 
 * [hdl_parser.parser.parse_defines][]
 * [hdl_parser.parser.parse_defines_text][]
 """
 
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Literal, TypeAlias
 
@@ -54,36 +55,47 @@ LANGMAP: dict[str, Lang] = {
 }
 
 
-def parse_defines(*file_paths: Path | str) -> dict[str, Macro]:
+def parse_defines(*file_paths: Path | str, inc_dirs: Iterable[Path | str] = ()) -> dict[str, Macro]:
     """Read `` `define `` macros from SystemVerilog files.
 
     Args:
         file_paths: Paths to the files, typically header files (`*.svh`).
 
+    Keyword Args:
+        inc_dirs: Include directories. Included files are searched next to the including file and here.
+
     Returns:
         Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
 
-    `` `include `` statements are not followed and `` `ifdef `` conditions are not evaluated.
+    `` `include `` statements are followed, but `` `ifdef `` conditions are not evaluated.
     Macros with conflicting definitions are skipped, later files do not override earlier ones.
     """
-    return parse_defines_text(*(Path(file_path).read_text() for file_path in file_paths))
+    return collect_defines(file_paths=map(Path, file_paths), inc_dirs=map(Path, inc_dirs))
 
 
-def parse_defines_text(*texts: str) -> dict[str, Macro]:
+def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = ()) -> dict[str, Macro]:
     """Read `` `define `` macros from SystemVerilog text.
 
     Args:
         texts: SystemVerilog Statements.
+
+    Keyword Args:
+        inc_dirs: Include directories. Included files are searched here.
 
     Returns:
         Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
 
     See [hdl_parser.parser.parse_defines][] for limitations.
     """
-    return collect_defines("\n".join(texts))
+    return collect_defines(texts=texts, inc_dirs=map(Path, inc_dirs))
 
 
-def parse_file(file_path: Path | str, lang: Lang | None = None, macros: Macros | None = None) -> dm.File:
+def parse_file(
+    file_path: Path | str,
+    lang: Lang | None = None,
+    macros: Macros | None = None,
+    inc_dirs: Iterable[Path | str] = (),
+) -> dm.File:
     """Parse a HDL (SystemVerilog or VHDL) file.
 
     Args:
@@ -91,7 +103,10 @@ def parse_file(file_path: Path | str, lang: Lang | None = None, macros: Macros |
 
     Keyword Args:
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
-        macros: Macros defined outside of this file. See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
+        macros: Macros defined outside of this file and its included files.
+                See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
+        inc_dirs: Include directories. Macros of included files are known. Included files are searched
+                  next to the file and here. SystemVerilog only.
 
     Returns:
         Parsed Data
@@ -99,11 +114,15 @@ def parse_file(file_path: Path | str, lang: Lang | None = None, macros: Macros |
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    return parse_text(file_path.read_text(), file_path=file_path, lang=lang, macros=macros)
+    return parse_text(file_path.read_text(), file_path=file_path, lang=lang, macros=macros, inc_dirs=inc_dirs)
 
 
 def parse_text(
-    text: str, file_path: Path | str | None = None, lang: Lang | None = None, macros: Macros | None = None
+    text: str,
+    file_path: Path | str | None = None,
+    lang: Lang | None = None,
+    macros: Macros | None = None,
+    inc_dirs: Iterable[Path | str] = (),
 ) -> dm.File:
     """Parse HDL (SystemVerilog or VHDL) text.
 
@@ -113,7 +132,10 @@ def parse_text(
     Keyword Args:
         file_path: Related File Path.
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
-        macros: Macros defined outside of this file. See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
+        macros: Macros defined outside of this text and its included files.
+                See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
+        inc_dirs: Include directories. Macros of included files are known. Included files are searched
+                  next to `file_path` and here. SystemVerilog only.
 
     Returns:
         Parsed Data
@@ -127,7 +149,7 @@ def parse_text(
     if lang == "vhdl":
         modules = parse_vhdl(text)
     else:
-        modules = parse_sv(text, macros=macros, context=str(file_path or ""))
+        modules = parse_sv(text, macros=macros, file_path=file_path, inc_dirs=map(Path, inc_dirs))
 
     if not modules:
         raise RuntimeError("No module found.")

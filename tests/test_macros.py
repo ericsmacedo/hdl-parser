@@ -392,30 +392,118 @@ EXAMPLE_PORTS = [
 
 
 def test_example():
-    """Example With And Without Macro File."""
+    """Example With Included Macro File."""
     module = parse_file(MACRO_PORTS_SV).modules[0]
     assert [param.name for param in module.params] == ["IN_WIDTH", "OUT_WIDTH"]
-    assert [port.name for port in module.ports] == ["busy_o"]
-    assert [macro.name for macro in module.unresolved_macros] == ["CLK_RST_PORTS", "STREAM_PORTS", "STREAM_PORTS"]
-
-    module = parse_file(MACRO_PORTS_SV, macros=parse_defines(MACROS_SVH)).modules[0]
     assert module.unresolved_macros == ()
-    assert _ports(MACRO_PORTS_SV.read_text(), macros=parse_defines(MACROS_SVH)) == EXAMPLE_PORTS
+    assert _ports(MACRO_PORTS_SV.read_text(), file_path=MACRO_PORTS_SV) == EXAMPLE_PORTS
     assert module.ports[0].comment == ("Clock",)
     assert module.ports[-1].comment == ("Busy",)
 
+    # text only: the included file cannot be located
+    text = MACRO_PORTS_SV.read_text()
+    module = parse_text(text).modules[0]
+    assert [port.name for port in module.ports] == ["busy_o"]
+    assert [macro.name for macro in module.unresolved_macros] == ["CLK_RST_PORTS", "STREAM_PORTS", "STREAM_PORTS"]
+    assert _ports(text, macros=parse_defines(MACROS_SVH)) == EXAMPLE_PORTS
+    assert _ports(text, inc_dirs=[MACROS_SVH.parent]) == EXAMPLE_PORTS
+
 
 @mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
-def test_cli(runner, cmd):
-    """Command Line Option --macro-file."""
-    result = runner.invoke(cli, [cmd, str(MACRO_PORTS_SV)])
-    assert result.exit_code == 0
-    assert "in_valid" not in result.output
+def test_cli(runner, tmp_path, cmd):
+    """Command Line Options --macro-file and --incdir."""
+    top = tmp_path / "top.sv"
+    top.write_text('`include "macros.svh"\nmodule top (`CLK_RST_PORTS, input logic a_i);\nendmodule\n')
+    filelist = tmp_path / "filelist.f"
+    filelist.write_text(f"+incdir+{MACROS_SVH.parent}\n")
 
-    result = runner.invoke(cli, [cmd, "--macro-file", str(MACROS_SVH), str(MACRO_PORTS_SV)])
+    result = runner.invoke(cli, [cmd, str(top)])
     assert result.exit_code == 0
-    for name in ("clk_i", "in_valid", "out_ready", "busy_o"):
-        assert name in result.output
+    assert "a_i" in result.output
+    assert "clk_i" not in result.output
+
+    for options in (
+        ("--macro-file", str(MACROS_SVH)),
+        ("--incdir", str(MACROS_SVH.parent)),
+        ("--filelist", str(filelist)),
+    ):
+        result = runner.invoke(cli, [cmd, *options, str(top)])
+        assert result.exit_code == 0
+        for name in ("clk_i", "rst_ni", "a_i"):
+            assert name in result.output
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# `include
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+def test_include(tmp_path, caplog):
+    """Macros Of Included Files Are Known."""
+    inc = tmp_path / "inc"
+    inc.mkdir()
+    (tmp_path / "local.svh").write_text('`include "common.svh"\n`define A input a\n')
+    (inc / "common.svh").write_text('`include "local.svh" // cyclic\n`include "common.svh"\n`define B input b\n')
+    top = tmp_path / "top.sv"
+    top.write_text(
+        '`include "local.svh"\n'
+        '`include "top.sv"\n'
+        '`include "missing.svh"\n'
+        '// `include "comment.svh"\n'
+        "`include `MACRO\n"
+        "module top (`A, `B);\n"
+        "endmodule\n"
+    )
+    (tmp_path / "comment.svh").write_text("`define A input not_included\n")
+
+    # 'common.svh' is not found
+    with caplog.at_level(logging.INFO):
+        module = parse_file(top).modules[0]
+    assert [port.name for port in module.ports] == ["a"]
+    assert module.unresolved_macros == (MacroCall(name="B"),)
+    assert "included file 'missing.svh' not found" in caplog.text
+    assert "local.svh: included file 'common.svh' not found" in caplog.text
+
+    for inc_dirs in ([inc], [str(inc)], [tmp_path / "missing", inc]):
+        module = parse_file(top, inc_dirs=inc_dirs).modules[0]
+        assert [port.name for port in module.ports] == ["a", "b"]
+        assert module.unresolved_macros == ()
+
+    assert tuple(parse_defines(top, inc_dirs=[inc])) == ("B", "A")
+    assert tuple(parse_defines_text(top.read_text(), inc_dirs=[tmp_path, inc])) == ("B", "A")
+    assert parse_defines_text(top.read_text()) == {}
+
+
+def test_include_precedence(tmp_path):
+    """Included Macros Conflicting With Local Ones Are Ambiguous, Macros Handed Over Win."""
+    (tmp_path / "inc.svh").write_text("`define P input a\n`define Q input q\n")
+    top = tmp_path / "top.sv"
+    top.write_text('`include "inc.svh"\n`define P input b\nmodule top (`P, `Q);\nendmodule\n')
+    module = parse_file(top).modules[0]
+    assert [port.name for port in module.ports] == ["q"]
+    assert module.unresolved_macros == (MacroCall(name="P"),)
+    module = parse_file(top, macros=parse_defines_text("`define P input c")).modules[0]
+    assert [port.name for port in module.ports] == ["c", "q"]
+
+
+def test_include_unreadable(tmp_path, caplog):
+    """Included Files Which Cannot Be Read Are Skipped."""
+    (tmp_path / "inc.svh").write_bytes(b"`define P input \xff\xfe\n")
+    top = tmp_path / "top.sv"
+    top.write_text('`include "inc.svh"\nmodule top (`P);\nendmodule\n')
+    module = parse_file(top).modules[0]
+    assert module.unresolved_macros == (MacroCall(name="P"),)
+    assert "cannot read included file" in caplog.text
+
+
+def test_conflict_is_reported_on_use(caplog):
+    """Conflicting Definitions Within The Parsed File Are Reported If The Macro Is Used."""
+    text = (
+        "`define W 8\n`define W 16\n`define X 1\n`define X 2\nmodule m (input [`W:0] a, input [`W:0] b);\nendmodule\n"
+    )
+    assert _ports(text) == ["input [`W:0] a", "input [`W:0] b"]
+    assert caplog.text.count("macro `W has conflicting definitions. Not expanded.") == 1
+    assert "`X" not in caplog.text
 
 
 def test_unresolved_multiline_args():

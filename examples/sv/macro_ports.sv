@@ -1,8 +1,6 @@
 // Macros defining parameters and ports in the module header.
 //
-// `CLK_RST_PORTS and `STREAM_PORTS are defined in 'macros.svh':
-//
-//     hdl-parser info --macro-file examples/sv/macros.svh examples/sv/macro_ports.sv
+// `CLK_RST_PORTS and `STREAM_PORTS are defined in the included 'macros.svh'.
 
 `include "macros.svh"
 

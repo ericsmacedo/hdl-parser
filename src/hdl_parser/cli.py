@@ -23,6 +23,7 @@
 
 import logging
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 
 import click
@@ -31,6 +32,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 
 from ._gen_templates import gen_instance, gen_markdown_table
+from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
 
@@ -52,6 +54,15 @@ opt_macro_files = click.option(
     type=click.Path(exists=True, readable=True, path_type=Path),
     multiple=True,
     help="File with `define macros. Can be given multiple times.",
+)
+opt_inc_dirs = click.option(
+    "--incdir",
+    "-I",
+    "inc_dirs",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    multiple=True,
+    help="Directory to search for included files, in addition to the ones of the filelists. "
+    "Can be given multiple times.",
 )
 
 
@@ -122,12 +133,17 @@ pass_ctx = click.make_pass_decorator(Ctx)
 @arg_filepaths
 @opt_filelists
 @opt_macro_files
+@opt_inc_dirs
 @pass_ctx
-def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...]):  # noqa: ARG001
+def gen_sv_instance(
+    ctx,  # noqa: ARG001
+    filepaths: tuple[Path, ...],
+    filelist: tuple[Path, ...],
+    macro_files: tuple[Path, ...],
+    inc_dirs: tuple[Path, ...],
+):
     """Parses an SystemVerilog file and returns a instance of the module."""
-    macros = parse_defines(*macro_files)
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath, macros=macros)
+    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
         for module in file.modules:
             instance = gen_instance(module)
             print(instance)
@@ -137,6 +153,7 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]
 @arg_filepaths
 @opt_filelists
 @opt_macro_files
+@opt_inc_dirs
 @pass_ctx
 @click.option(
     "--width",
@@ -152,14 +169,13 @@ def info(  # noqa: PLR0913
     filepaths: tuple[Path, ...],
     filelist: tuple[Path, ...],
     macro_files: tuple[Path, ...],
+    inc_dirs: tuple[Path, ...],
     width: int | None = None,
     level: int = 2,
     sub: bool = False,
 ) -> None:
     """Creates Markdown Overview Tables."""
-    macros = parse_defines(*macro_files)
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath, macros=macros)
+    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
         pre = "#" * level
         for module in file.modules:
             params, ports, insts = gen_markdown_table(module, width=width)
@@ -191,17 +207,22 @@ Path `{file.path!s}`
 @arg_filepaths
 @opt_filelists
 @opt_macro_files
-def json(filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...]) -> None:
+@opt_inc_dirs
+def json(
+    filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...], inc_dirs: tuple[Path, ...]
+) -> None:
     """Dump All Extracted Information in a JSON file."""
-    macros = parse_defines(*macro_files)
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath, macros=macros)
+    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
         print(file.overview)
 
 
-def _join_filepaths(filepaths: tuple[Path, ...], filelists: tuple[Path, ...]) -> list[Path]:
+def _parse_files(
+    filepaths: tuple[Path, ...], filelists: tuple[Path, ...], macro_files: tuple[Path, ...], inc_dirs: tuple[Path, ...]
+) -> Iterator[File]:
     all_filepaths = list(filepaths)
-    all_incdirs: list[Path] = []
+    all_inc_dirs = list(inc_dirs)
     for filelist in filelists:
-        parse_filelist(all_filepaths, all_incdirs, filelist)
-    return all_filepaths
+        parse_filelist(all_filepaths, all_inc_dirs, filelist)
+    macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs)
+    for filepath in all_filepaths:
+        yield parse_file(filepath, macros=macros, inc_dirs=all_inc_dirs)

@@ -28,18 +28,20 @@ instances, ...) visible to the parser:
 * `` `define `` collection (object-like and function-like, default arguments, line continuation)
 * expansion of known macros, everywhere except in comments and strings
 * argument substitution, token pasting (` `` `), stringification (`` `" ``) and nested macros
+* `` `include "file" `` is followed to collect the `` `define `` statements of the included file.
+  The included code itself is **not** inserted.
 
 Not supported by intention:
 
-* `` `include `` - provide the macro files explicitly instead
 * evaluation of `` `ifdef `` - a macro with conflicting definitions is never expanded
 * `` `undef ``
 """
 
 import logging
 import re
-from collections.abc import Iterator, Mapping
+from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import dataclass
+from pathlib import Path
 
 LOGGER = logging.getLogger(__name__)
 
@@ -50,6 +52,7 @@ _RE_SCAN = re.compile(
     r"""
       (?P<comment>//[^\n]*|/\*.*?\*/)
     | (?P<string>"(?:\\.|[^"\\\n])*")
+    | `include[ \t]*"(?P<include>[^"\n]*)"
     | `define[ \t]+(?P<dname>[a-zA-Z_]\w*)(?P<dbody>(?:\\\r?\n|[^\n])*)
     | `(?P<macro>[a-zA-Z_]\w*)
     """,
@@ -86,51 +89,110 @@ Macros = Mapping[str, Macro]
 """Macros by name."""
 
 
-def collect_defines(text: str, context: str = "") -> dict[str, Macro]:
-    """Collect all `` `define `` macros from `text`.
+class _Defines:
+    """Collects `` `define `` macros from text and all included files."""
 
+    def __init__(self, inc_dirs: Iterable[Path] = ()):
+        self.macros: dict[str, Macro] = {}
+        self.ambiguous: set[str] = set()
+        self.inc_dirs = tuple(inc_dirs)
+        self.files: set[Path] = set()
+
+    def read(self, file_path: Path) -> str | None:
+        """Read `file_path` and collect its macros. `None` if the file has been read already."""
+        resolved = file_path.resolve()
+        if resolved in self.files:
+            return None
+        self.files.add(resolved)
+        text = file_path.read_text()
+        self.collect(text, str(file_path), file_path.parent)
+        return text
+
+    def collect(self, text: str, context: str, basedir: Path | None = None) -> None:
+        """Collect macros from `text`. Files included relative to `basedir` or `inc_dirs` are read too."""
+        if "`define" not in text and "`include" not in text:
+            return
+        for mat in _RE_SCAN.finditer(text):
+            kind = mat.lastgroup
+            if kind == "dbody":
+                self._define(mat.group("dname"), mat.group("dbody"), context)
+            elif kind == "include":
+                self._include(mat.group("include"), context, basedir)
+
+    def _define(self, name: str, text: str, context: str) -> None:
+        if name in self.ambiguous:
+            return
+        macro = _parse_define(name, text)
+        if macro is None:
+            LOGGER.warning("%s: cannot parse definition of macro `%s. Skipped.", context, name)
+        elif self.macros.setdefault(name, macro) != macro:
+            LOGGER.debug("%s: macro `%s has conflicting definitions.", context, name)
+            self.ambiguous.add(name)
+            del self.macros[name]
+
+    def _include(self, name: str, context: str, basedir: Path | None) -> None:
+        dirs = self.inc_dirs if basedir is None else (basedir, *self.inc_dirs)
+        for directory in dirs:
+            file_path = directory / name
+            if file_path.is_file():
+                try:
+                    self.read(file_path)
+                except (OSError, UnicodeError) as exc:
+                    LOGGER.warning("%s: cannot read included file '%s': %s", context, file_path, exc)
+                return
+        LOGGER.info("%s: included file '%s' not found. Its macros are unknown.", context, name)
+
+
+def collect_defines(
+    texts: Iterable[str] = (), file_paths: Iterable[Path] = (), inc_dirs: Iterable[Path] = ()
+) -> dict[str, Macro]:
+    """Collect all `` `define `` macros from `texts` and `file_paths`.
+
+    Included files are searched next to the including file and in `inc_dirs`.
     Conditionals (`` `ifdef ``) are **not** evaluated.
     A macro which is defined multiple times with different content is ambiguous and therefore skipped.
     """
-    macros: dict[str, Macro] = {}
-    if "`define" not in text:
-        return macros
-    ambiguous = set()
-    for mat in _RE_SCAN.finditer(text):
-        name = mat.group("dname")
-        if not name or name in ambiguous:
-            continue
-        macro = _parse_define(name, mat.group("dbody"))
-        if macro is None:
-            LOGGER.warning("%s: cannot parse definition of macro `%s. Skipped.", context or "<text>", name)
-        elif macros.setdefault(name, macro) != macro:
-            LOGGER.warning("%s: macro `%s has conflicting definitions. Skipped.", context or "<text>", name)
-            ambiguous.add(name)
-            del macros[name]
-    return macros
+    defines = _Defines(inc_dirs)
+    for text in texts:
+        defines.collect(text, "<text>")
+    for file_path in file_paths:
+        defines.read(file_path)
+    for name in sorted(defines.ambiguous):
+        LOGGER.warning("macro `%s has conflicting definitions. Skipped.", name)
+    return defines.macros
 
 
-def expand(text: str, macros: Macros | None = None, context: str = "") -> str:
+def expand(
+    text: str, macros: Macros | None = None, file_path: Path | None = None, inc_dirs: Iterable[Path] = ()
+) -> str:
     """Expand macros.
 
-    Macros are taken from `macros` and from the `` `define `` statements within `text`.
+    Macros are taken from `macros`, from the `` `define `` statements within `text` and from the files
+    included by `text`. Included files are searched next to `file_path` and in `inc_dirs`.
     `macros` take precedence. Unknown macros are left untouched.
     """
     if "`" not in text:
         return text
-    all_macros = {**collect_defines(text, context=context), **(macros or {})}
-    if not all_macros:
+    context = str(file_path) if file_path else "<text>"
+    defines = _Defines(inc_dirs)
+    if file_path:
+        defines.files.add(file_path.resolve())
+    defines.collect(text, context, file_path.parent if file_path else None)
+    all_macros = {**defines.macros, **(macros or {})}
+    ambiguous = defines.ambiguous.difference(all_macros)
+    if not all_macros and not ambiguous:
         return text
     out: list[str] = []
-    _Expander(all_macros, context or "<text>", out).scan(text)
+    _Expander(all_macros, ambiguous, context, out).scan(text)
     return "".join(out)
 
 
 class _Expander:
     """Copies text to `out` and expands macros."""
 
-    def __init__(self, macros: Macros, context: str, out: list[str]):
+    def __init__(self, macros: Macros, ambiguous: set[str], context: str, out: list[str]):
         self.macros = macros
+        self.ambiguous = ambiguous
         self.context = context
         self.out = out
         self.active: list[str] = []
@@ -157,6 +219,10 @@ class _Expander:
         name = mat.group("macro")
         macro = self.macros.get(name)
         if macro is None:
+            if name in self.ambiguous:
+                # report once
+                self.ambiguous.remove(name)
+                LOGGER.warning("%s: macro `%s has conflicting definitions. Not expanded.", self.context, name)
             return None
         if name in self.active or len(self.active) >= _MAX_DEPTH:
             LOGGER.warning("%s: recursive macro `%s is not expanded.", self.context, name)
