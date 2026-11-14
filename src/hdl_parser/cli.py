@@ -129,10 +129,13 @@ class Ctx(BaseModel):
         return self
 
     def __exit__(self, exc_type, exc_value, tb):  # pragma: no cover
-        if exc_type:
+        # '--help' and usage errors are handled by click
+        if exc_type and not issubclass(exc_type, (click.exceptions.Exit, click.ClickException)):
             if exc_type is KeyboardInterrupt:
                 self.console.print("[red]Aborted.")
             else:
+                # tell the reason
+                LOGGER.error("%s: %s", exc_type.__name__, exc_value)
                 self.console.print("[red][bold]Failed.")
             sys.exit(1)
 
@@ -232,8 +235,6 @@ def _parse_files(  # noqa: PLR0913
     """Parse all files according to the options of `opt_parse`."""
     for option, value in (("--macro-file", macro_files), ("--resolve-ifdefs", resolve_ifdefs)):
         if value and not expand_macros:
-            # the context swallows the message
-            LOGGER.error("'%s' requires '--expand-macros'.", option)
             raise click.UsageError(f"'{option}' requires '--expand-macros'.")
     all_filepaths = list(filepaths)
     all_inc_dirs = list(inc_dirs)

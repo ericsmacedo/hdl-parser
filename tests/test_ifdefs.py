@@ -21,7 +21,6 @@
 # SOFTWARE.
 """Test Resolution Of `ifdef Conditions."""
 
-import logging
 from functools import partial
 
 from pytest import mark, raises
@@ -329,7 +328,7 @@ def test_requires_expand_macros():
 
 
 @mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
-def test_cli(runner, tmp_path, caplog, cmd):
+def test_cli(runner, tmp_path, cmd):
     """Command Line Option --resolve-ifdefs."""
     top = tmp_path / "top.sv"
     top.write_text("`define USE_AXI\n" + BUS)
@@ -352,7 +351,6 @@ def test_cli(runner, tmp_path, caplog, cmd):
         assert "psel" not in result.output
         assert "clk" in result.output
 
-    with caplog.at_level(logging.ERROR):
-        result = runner.invoke(cli, [cmd, "--resolve-ifdefs", str(top)])
-    assert result.exit_code == 1
-    assert "'--resolve-ifdefs' requires '--expand-macros'" in caplog.text
+    result = runner.invoke(cli, [cmd, "--resolve-ifdefs", str(top)])
+    assert result.exit_code == 2
+    assert "'--resolve-ifdefs' requires '--expand-macros'" in result.output

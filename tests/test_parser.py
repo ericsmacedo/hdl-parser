@@ -129,3 +129,10 @@ def test_parse_file_encoding(tmp_path):
 
     with raises(UnicodeDecodeError):
         parse_file(file_path, encoding="utf-8")
+
+
+def test_unknown_suffix(tmp_path):
+    """Files With Unknown Suffix Are SystemVerilog."""
+    file_path = tmp_path / "file.svh"
+    file_path.write_text("module m (input a);\nendmodule\n")
+    assert [module.name for module in parse_file(file_path).modules] == ["m"]

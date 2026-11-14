@@ -187,7 +187,7 @@ def parse_text(  # noqa: PLR0913
         file_path = Path(file_path)
 
     if lang is None and file_path:
-        lang = LANGMAP[file_path.suffix]
+        lang = LANGMAP.get(file_path.suffix)
 
     if lang == "vhdl":
         modules = parse_vhdl(text)

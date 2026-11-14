@@ -122,3 +122,32 @@ def test_empty(tmp_path, runner):
         result = runner.invoke(cli, ["info", str(empty_file)])
 
         assert result.exit_code == 1
+
+
+@mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
+def test_command_help(runner, cmd):
+    """The Help Of A Command Is No Failure."""
+    result = runner.invoke(cli, [cmd, "--help"])
+    assert result.exit_code == 0
+    assert "Usage:" in result.output
+    assert "Failed" not in result.output
+
+
+def test_usage_error(runner):
+    """Usage Errors Are Reported By Click."""
+    result = runner.invoke(cli, ["json", "--unknown-option"])
+    assert result.exit_code == 2
+    assert "No such option" in result.output
+    assert "Failed" not in result.output
+
+
+def test_failure_reason(runner, examples, caplog, monkeypatch):
+    """The Reason Of A Failure Is Reported."""
+
+    def parse_file(*args, **kwargs):
+        raise ValueError("something is wrong")
+
+    monkeypatch.setattr("hdl_parser.cli.parse_file", parse_file)
+    result = runner.invoke(cli, ["json", str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 1
+    assert "ValueError: something is wrong" in caplog.text

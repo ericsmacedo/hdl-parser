@@ -437,7 +437,7 @@ def test_example():
 
 
 @mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
-def test_cli(runner, tmp_path, caplog, cmd):
+def test_cli(runner, tmp_path, cmd):
     """Command Line Options --macro-file and --incdir."""
     top = tmp_path / "top.sv"
     top.write_text('`include "macros.svh"\nmodule top (`CLK_RST_PORTS, input logic a_i);\nendmodule\n')
@@ -451,8 +451,9 @@ def test_cli(runner, tmp_path, caplog, cmd):
         assert "clk_i" not in result.output
 
     result = runner.invoke(cli, [cmd, "--macro-file", str(MACROS_SVH), str(top)])
-    assert result.exit_code == 1
-    assert "'--macro-file' requires '--expand-macros'" in caplog.text
+    assert result.exit_code == 2
+    assert "'--macro-file' requires '--expand-macros'" in result.output
+    assert "Failed" not in result.output
 
     for options in (
         ("--macro-file", str(MACROS_SVH)),
