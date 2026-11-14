@@ -18,6 +18,7 @@ The include directory is `inc`.
 | `bus_select.sv` | A define of the configuration selects the definition of another macro |
 | `cond_ports.sv` | `` `ifdef ``, `` `ifndef ``, `` `elsif `` around parameters, ports, instances and modules |
 | `cond_in_macro.sv` | Conditions and defines within macros |
+| `cond_pasted.sv` | The name of a condition is built from an argument of the macro (`` `ifdef HAS_``feature ``) |
 | `nested_macros.sv` | Macros using macros, macros as arguments, default and empty arguments |
 | `nonansi_ports.sv` | Non-ANSI header, ports declared by macros in the module body |
 | `inst_macros.sv` | Instances and connections by macros |

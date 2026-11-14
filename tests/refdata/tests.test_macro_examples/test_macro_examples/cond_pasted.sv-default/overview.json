@@ -1,0 +1,57 @@
+{
+  "path": "$PRJ/examples/sv/macros/cond_pasted.sv",
+  "modules": [
+    {
+      "name": "cond_pasted",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "irq_o"
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "OPT_PORT",
+          "args": [
+            "UART",
+            "output logic uart_tx_o"
+          ]
+        },
+        {
+          "name": "OPT_PORT",
+          "args": [
+            "SPI",
+            "output logic spi_clk_o"
+          ]
+        },
+        {
+          "name": "OPT_PORT",
+          "args": [
+            "I2C",
+            "inout wire i2c_sda_io"
+          ]
+        },
+        {
+          "name": "IF_DEFINED",
+          "args": [
+            "HAS_UART",
+            "input logic uart_rx_i"
+          ]
+        },
+        {
+          "name": "IF_DEFINED",
+          "args": [
+            "HAS_CAN",
+            "input logic can_rx_i"
+          ]
+        }
+      ]
+    }
+  ]
+}
