@@ -140,6 +140,52 @@
           "id": "neorv32_trng.neotrng_inst",
           "name": "neoTRNG_inst",
           "module": "neoTRNG",
+          "params": [
+            {
+              "id": "neorv32_trng.neotrng_inst.num_cells",
+              "port": "NUM_CELLS",
+              "con": "NUM_RO",
+              "loc": {
+                "line": 147,
+                "col": 5,
+                "end_line": 147,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng_inst.num_inv_start",
+              "port": "NUM_INV_START",
+              "con": "num_inv_start_c",
+              "loc": {
+                "line": 148,
+                "col": 5,
+                "end_line": 148,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng_inst.num_raw_bits",
+              "port": "NUM_RAW_BITS",
+              "con": "num_raw_bits_c",
+              "loc": {
+                "line": 149,
+                "col": 5,
+                "end_line": 149,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng_inst.sim_mode",
+              "port": "SIM_MODE",
+              "con": "is_simulation_c",
+              "loc": {
+                "line": 150,
+                "col": 5,
+                "end_line": 150,
+                "end_col": 37
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_trng.neotrng_inst.clk_i",
@@ -208,6 +254,55 @@
           "id": "neorv32_trng.rnd_fifo_inst",
           "name": "rnd_fifo_inst",
           "module": "neorv32_prim_fifo",
+          "params": [
+            {
+              "id": "neorv32_trng.rnd_fifo_inst.awidth",
+              "port": "AWIDTH",
+              "con": "log2_fifo_size_c",
+              "loc": {
+                "line": 164,
+                "col": 5,
+                "end_line": 164,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "neorv32_trng.rnd_fifo_inst.dwidth",
+              "port": "DWIDTH",
+              "con": "8",
+              "loc": {
+                "line": 165,
+                "col": 5,
+                "end_line": 165,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "neorv32_trng.rnd_fifo_inst.outgate",
+              "port": "OUTGATE",
+              "con": "true",
+              "comment": [
+                "-- output zero if no data available"
+              ],
+              "loc": {
+                "line": 166,
+                "col": 5,
+                "end_line": 166,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "neorv32_trng.rnd_fifo_inst.asyncrd",
+              "port": "ASYNCRD",
+              "con": "false",
+              "loc": {
+                "line": 167,
+                "col": 5,
+                "end_line": 167,
+                "end_col": 21
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_trng.rnd_fifo_inst.clk_i",
@@ -481,6 +576,33 @@
           "id": "neotrng.neotrng_cell_inst",
           "name": "neoTRNG_cell_inst",
           "module": "neoTRNG_cell",
+          "params": [
+            {
+              "id": "neotrng.neotrng_cell_inst.num_inv",
+              "port": "NUM_INV",
+              "con": "NUM_INV_START + (2*i)",
+              "comment": [
+                "-- increasing (odd) ring-oscillator length"
+              ],
+              "loc": {
+                "line": 338,
+                "col": 7,
+                "end_line": 338,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell_inst.sim_mode",
+              "port": "SIM_MODE",
+              "con": "SIM_MODE",
+              "loc": {
+                "line": 339,
+                "col": 7,
+                "end_line": 339,
+                "end_col": 27
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neotrng.neotrng_cell_inst.clk_i",

@@ -125,8 +125,9 @@ class File(_BaseModel):
     | Module                                   | `top`                |
     | Parameter, local parameter, port         | `top.WIDTH`          |
     | Instance                                 | `top.u_sub`          |
-    | Connection by name                       | `top.u_sub.clk`      |
+    | Connection, parameter value by name      | `top.u_sub.clk`      |
     | Connection by order (first, second, ...) | `top.u_sub.#1`       |
+    | Parameter value by order                 | `top.u_sub.#p1`      |
     | Unresolved macro call in the header      | ``top.`PORTS``       |
 
     A name used again (i.e. in two `` `ifdef `` branches) gets a suffix: `top.a`, `top.a~2`.
@@ -177,6 +178,7 @@ class File(_BaseModel):
             yield from module.unresolved_macros
             for inst in module.insts:
                 yield inst
+                yield from inst.params
                 yield from inst.connections
 
     def find(self, id_: str) -> "Item | None":
@@ -269,12 +271,13 @@ class Port(_BaseModel):
 
 
 class Connection(_BaseModel):
-    """Connection.
+    """Connection Of A Port, Or Value Of A Parameter, Of An Instance.
 
     Attributes:
-        port: Port
-        con: Connection
+        port: Name of the port or parameter. Empty, if connected by order.
+        con: Connected expression, or value of the parameter.
         comment: Comment
+        ifdefs: Conditions the connection is made at.
         loc: Source Location: `.port(con)`, `port => con` or the expression of a connection by order.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
     """
@@ -293,7 +296,10 @@ class ModuleInstance(_BaseModel):
     Attributes:
         name: Module Instance Name
         module: Module Name
+        dim: Dimension of an array of instances: `[3:0]`.
+        params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.
         connections: Connections
+        ifdefs: Conditions the instance is created at.
         loc: Source Location of the instantiation. Instances created together share it.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
     """
@@ -301,6 +307,8 @@ class ModuleInstance(_BaseModel):
     id: str = ""
     name: str
     module: str
+    dim: str = ""
+    params: tuple[Connection, ...] = ()
     connections: tuple[Connection, ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None

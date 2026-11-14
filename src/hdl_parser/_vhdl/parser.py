@@ -228,8 +228,8 @@ def _is_component_instance(c: Cursor) -> bool:
     return toks[idx].text in _MAPPED and toks[idx].kind == KW and toks[idx + 1].text == "map"
 
 
-def _parse_port_map(c: Cursor, smap: SourceMap) -> list[dm.Connection]:
-    """Parse the parenthesized connections of an instance."""
+def _parse_map(c: Cursor, smap: SourceMap) -> list[dm.Connection]:
+    """Parse the parenthesized associations of a generic or port map."""
     cons: list[tuple[str, str, list[str], dm.Location]] = []
     opening = c.next()
     while True:
@@ -274,17 +274,16 @@ def _parse_instance(c: Cursor, label: Token, smap: SourceMap) -> dm.ModuleInstan
         module = c.next()
     if c.peek().text == "(":
         c.skip_balanced()
-    cons: list[dm.Connection] = []
+    maps: dict[str, list[dm.Connection]] = {"generic": [], "port": []}
     while c.peek().text in _MAPPED and c.peek(1).text == "map":
-        is_port = c.next().text == "port"
+        kind = c.next().text
         c.next()
         if c.peek().text != "(":
             break
-        if is_port:
-            cons += _parse_port_map(c, smap)
-        else:
-            c.skip_balanced()
-    return dm.ModuleInstance(name=label.text, module=module.text, connections=tuple(cons))
+        maps[kind] += _parse_map(c, smap)
+    return dm.ModuleInstance(
+        name=label.text, module=module.text, params=tuple(maps["generic"]), connections=tuple(maps["port"])
+    )
 
 
 def _parse_labeled(c: Cursor, unit: _Unit) -> None:

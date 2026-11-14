@@ -104,7 +104,7 @@ def _check_module(mod: Module, source: str) -> list[str]:  # noqa: C901, PLR0912
         errors += _check_ifdefs(inst.ifdefs, iwhere)
         if not re.search(rf"(?<![\w$]){re.escape(inst.name)}(?![\w$])", source):
             errors.append(f"{iwhere}: name not found in source")
-        for con in inst.connections:
+        for con in (*inst.params, *inst.connections):
             if con.port and not IDENT.match(con.port):
                 errors.append(f"{iwhere}: connection port {con.port!r} is not an identifier")
             if not _balanced(con.con):

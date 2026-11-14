@@ -208,6 +208,7 @@ def test_instances():
         ModuleInstance(
             name="u0",
             module="sub",
+            params=(Connection(port="W", con="8"),),
             connections=(
                 Connection(port="a", con="a", comment=("-- first",)),
                 Connection(port="b(3 downto 0)", con="to_sl(b)"),
@@ -220,7 +221,7 @@ def test_instances():
             module="sub",
             connections=(Connection(con="a"), Connection(con="b & c"), Connection(con="f(x, y)")),
         ),
-        ModuleInstance(name="u2", module="sub"),
+        ModuleInstance(name="u2", module="sub", params=(Connection(port="W", con="8"),)),
         ModuleInstance(name="u3", module="sub", connections=(Connection(port="a", con="a"),)),
         ModuleInstance(name="u4", module="sub_cfg", connections=(Connection(port="a", con="a"),)),
     )

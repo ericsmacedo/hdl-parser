@@ -144,16 +144,19 @@ endmodule
 
 
 def test_instances():
-    """Instance Arrays, Instance Lists And Nested Expressions."""
+    """Parameter Values, Instance Arrays, Instance Lists And Nested Expressions."""
     module = _parse("""
 module top;
     sub #(.P($clog2(N)), .T(logic [1:0])) u0 [3:0] (.a(b[1]), .c(f(d, e)), .g(), .h), u1 (i, {j, k}, l(1, 2));
 endmodule
 """)
+    params = (Connection(port="P", con="$clog2(N)"), Connection(port="T", con="logic [1:0]"))
     assert plain(module.insts) == (
         ModuleInstance(
             name="u0",
             module="sub",
+            dim="[3:0]",
+            params=params,
             connections=(
                 Connection(port="a", con="b[1]"),
                 Connection(port="c", con="f(d, e)"),
@@ -164,9 +167,21 @@ endmodule
         ModuleInstance(
             name="u1",
             module="sub",
+            # the parameter values apply to all instances
+            params=params,
             connections=(Connection(con="i"), Connection(con="{j, k}"), Connection(con="l(1, 2)")),
         ),
     )
+    assert [item.id for item in module.insts[0].params] == ["top.u0.P", "top.u0.T"]
+
+
+def test_instance_params_by_order():
+    """Parameter Values By Order."""
+    module = _parse("module top;\n  sub #(8, pkg::T) u0 (a, b);\n  sub #() u1 ();\nendmodule\n")
+    u0, u1 = module.insts
+    assert plain(u0.params) == (Connection(con="8"), Connection(con="pkg::T"))
+    assert [item.id for item in (*u0.params, *u0.connections)] == ["top.u0.#p1", "top.u0.#p2", "top.u0.#1", "top.u0.#2"]
+    assert u1.params == ()
 
 
 def test_generate():
