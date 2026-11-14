@@ -32,7 +32,7 @@ from rich.logging import RichHandler
 
 from ._gen_templates import gen_instance, gen_markdown_table
 from .filelistparser import parse_filelist
-from .parser import parse_file
+from .parser import parse_defines, parse_file
 
 _LOGLEVELMAP = {
     0: logging.WARNING,
@@ -44,6 +44,14 @@ _LOGLEVELMAP = {
 arg_filepaths = click.argument("filepaths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path))
 opt_filelists = click.option(
     "--filelist", "-f", type=click.Path(exists=True, readable=True, path_type=Path), multiple=True, help="Filelist"
+)
+opt_macro_files = click.option(
+    "--macro-file",
+    "-m",
+    "macro_files",
+    type=click.Path(exists=True, readable=True, path_type=Path),
+    multiple=True,
+    help="File with `define macros, which are used in module headers. Can be given multiple times.",
 )
 
 
@@ -113,11 +121,13 @@ pass_ctx = click.make_pass_decorator(Ctx)
 @cli.command()
 @arg_filepaths
 @opt_filelists
+@opt_macro_files
 @pass_ctx
-def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]):  # noqa: ARG001
+def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...]):  # noqa: ARG001
     """Parses an SystemVerilog file and returns a instance of the module."""
+    macros = parse_defines(*macro_files)
     for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+        file = parse_file(filepath, macros=macros)
         for module in file.modules:
             instance = gen_instance(module)
             print(instance)
@@ -126,6 +136,7 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]
 @cli.command()
 @arg_filepaths
 @opt_filelists
+@opt_macro_files
 @pass_ctx
 @click.option(
     "--width",
@@ -140,13 +151,15 @@ def info(  # noqa: PLR0913
     ctx: Ctx,
     filepaths: tuple[Path, ...],
     filelist: tuple[Path, ...],
+    macro_files: tuple[Path, ...],
     width: int | None = None,
     level: int = 2,
     sub: bool = False,
 ) -> None:
     """Creates Markdown Overview Tables."""
+    macros = parse_defines(*macro_files)
     for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+        file = parse_file(filepath, macros=macros)
         pre = "#" * level
         for module in file.modules:
             params, ports, insts = gen_markdown_table(module, width=width)
@@ -177,10 +190,12 @@ Path `{file.path!s}`
 @cli.command()
 @arg_filepaths
 @opt_filelists
-def json(filepaths: tuple[Path, ...], filelist: tuple[Path, ...]) -> None:
+@opt_macro_files
+def json(filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...]) -> None:
     """Dump All Extracted Information in a JSON file."""
+    macros = parse_defines(*macro_files)
     for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+        file = parse_file(filepath, macros=macros)
         print(file.overview)
 
 

@@ -27,19 +27,27 @@ Usage is simple. Parse your input with one of these methods:
 * [hdl_parser.parse_file][]
 * [hdl_parser.parse_text][]
 
+Macros in module headers are expanded. Macros from other files are read by
+
+* [hdl_parser.parse_defines][]
+
 You receive a [hdl_parser.File][] object holding all information.
 """
 
-from .datamodel import File, Module, ModuleInstance, Param, Port
+from .datamodel import File, MacroCall, Module, ModuleInstance, Param, Port
 from .filelistparser import parse_filelist
-from .parser import parse_file, parse_text
+from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_text
 
 __all__ = [
     "File",
+    "Macro",
+    "MacroCall",
     "Module",
     "ModuleInstance",
     "Param",
     "Port",
+    "parse_defines",
+    "parse_defines_text",
     "parse_file",
     "parse_filelist",
     "parse_text",

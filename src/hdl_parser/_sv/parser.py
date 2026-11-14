@@ -36,12 +36,16 @@ Supporting a new construct means adding one branch to the related `_parse_*` fun
 dispatched by their leading keyword: a new one is a function decorated with `_handles`.
 """
 
+import logging
 from collections.abc import Callable
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
 from .._tokens import EOF, ID, KW, OPEN, Cursor, Token  # noqa: TID252
+from .preproc import Macros, expand, split_args
 from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
+
+LOGGER = logging.getLogger(__name__)
 
 # Parsing never continues beyond these keywords
 _MODULE_START = frozenset(("module", "macromodule"))
@@ -174,6 +178,7 @@ class _Module(NamedTuple):
     params: list[_Decl]
     ports: list[_Decl]
     insts: list[_Inst]
+    macros: list[dm.MacroCall]
 
 
 # --- types and declarations ---
@@ -289,8 +294,22 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
     return decls
 
 
-def _parse_decl_list(c: Cursor, kind: str) -> list[_Decl]:
-    """Parse the parenthesized, comma separated parameter or port declarations of a module header."""
+def _parse_macro_call(c: Cursor) -> dm.MacroCall:
+    """Parse `` `NAME `` or `` `NAME(arguments) `` at the current position."""
+    tok = c.next()
+    args = None
+    if c.peek().text == "(":
+        start = c.pos + 1
+        c.skip_balanced()
+        args = tuple(split_args(c.text(start, c.pos - 1)))
+    return dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs)
+
+
+def _parse_decl_list(c: Cursor, kind: str, macros: list[dm.MacroCall]) -> list[_Decl]:
+    """Parse the parenthesized, comma separated parameter or port declarations of a module header.
+
+    Macros which have not been expanded and stand for declarations are added to `macros`.
+    """
     decls: list[_Decl] = []
     c.next()
     while True:
@@ -313,7 +332,9 @@ def _parse_decl_list(c: Cursor, kind: str) -> list[_Decl]:
                 decls += items
         if c.pos == pos:
             # nothing we understand
-            if tok.text in OPEN:
+            if tok.kind == MACRO:
+                macros.append(_parse_macro_call(c))
+            elif tok.text in OPEN:
                 c.skip_balanced()
             else:
                 c.next()
@@ -625,16 +646,16 @@ def _parse_module(c: Cursor) -> _Module | None:
         c.next()
     if c.peek().kind != ID:
         return None
-    mod = _Module(start, c.next().text, [], [], [])
+    mod = _Module(start, c.next().text, [], [], [], [])
     while c.peek().text == "import":
         c.skip_until(_SEMI)
         c.accept(";")
     if c.peek().text == "#" and c.peek(1).text == "(":
         c.next()
-        mod.params.extend(_parse_decl_list(c, "parameter"))
+        mod.params.extend(_parse_decl_list(c, "parameter", mod.macros))
     if c.peek().text == "(":
         # names of a non-ANSI port list have neither direction nor type
-        mod.ports.extend(decl for decl in _parse_decl_list(c, "") if decl.kind or decl.ptype)
+        mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod.macros) if decl.kind or decl.ptype)
     c.accept(";")
     _parse_body(c, mod)
     return mod
@@ -708,8 +729,24 @@ def _create_insts(insts: list[_Inst]) -> tuple[dm.ModuleInstance, ...]:
     )
 
 
-def parse(text: str) -> tuple[dm.Module, ...]:
-    """Parse SystemVerilog `text` and return its modules."""
+def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
+    for macro in mod.macros:
+        LOGGER.warning(
+            "%s: module '%s': unknown macro `%s in module header. Ports or parameters may be missing.",
+            context,
+            mod.name,
+            macro.name,
+        )
+    return tuple(mod.macros)
+
+
+def parse(text: str, macros: Macros | None = None, context: str = "") -> tuple[dm.Module, ...]:
+    """Parse SystemVerilog `text` and return its modules.
+
+    Macros are expanded upfront, if they are defined within `text` or given by `macros`.
+    """
+    context = context or "<text>"
+    text = expand(text, macros=macros, context=context)
     return tuple(
         dm.Module(
             name=mod.name,
@@ -718,6 +755,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
             ports=_create_ports(mod.ports),
             insts=_create_insts(mod.insts),
             ifdefs=mod.token.ifdefs,
+            unresolved_macros=_create_macros(mod, context),
         )
         for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
     )
