@@ -41,10 +41,9 @@ There are two major use-cases:
     --8<-- "examples/sv/adder.json"
     ```
 
-## Macros In Module Headers
+## Macros
 
-Macros which define ports or parameters in the module header are expanded,
-if their `` `define `` is known. Macros defined in the same file are always known.
+Macros are expanded, if their `` `define `` is known. So ports, parameters and instances created by macros are found. Macros defined in the same file are always known.
 Macros defined in other files have to be handed over, as `` `include `` statements are **not** followed:
 
 !!! example "Command Line"
@@ -99,7 +98,7 @@ STREAM_PORTS ('out', 'output', 'input')
 
 !!! info "Limitations"
 
-    * Macros are expanded within the module header only (parameter and port list), not in the module body.
+    * Unknown macros are reported for the module header only (parameter and port list), not for the module body.
     * `` `include `` statements are not followed. Use `--macro-file` / `parse_defines`.
     * `` `ifdef `` conditions are not evaluated. Include guards are fine,
       but a macro with different definitions is ambiguous and not expanded.

@@ -51,7 +51,7 @@ opt_macro_files = click.option(
     "macro_files",
     type=click.Path(exists=True, readable=True, path_type=Path),
     multiple=True,
-    help="File with `define macros, which are used in module headers. Can be given multiple times.",
+    help="File with `define macros. Can be given multiple times.",
 )
 
 

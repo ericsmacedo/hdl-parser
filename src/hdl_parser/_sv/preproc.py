@@ -22,11 +22,11 @@
 
 """Lightweight SystemVerilog Macro Expander.
 
-This is no full preprocessor. It does just enough to make macros which define ports or parameters
-in a module header visible to the parser:
+This is no full preprocessor. It does just enough to make code created by macros (ports, parameters,
+instances, ...) visible to the parser:
 
 * `` `define `` collection (object-like and function-like, default arguments, line continuation)
-* expansion of known macros **within module headers only**
+* expansion of known macros, everywhere except in comments and strings
 * argument substitution, token pasting (` `` `), stringification (`` `" ``) and nested macros
 
 Not supported by intention:
@@ -52,8 +52,6 @@ _RE_SCAN = re.compile(
     | (?P<string>"(?:\\.|[^"\\\n])*")
     | `define[ \t]+(?P<dname>[a-zA-Z_]\w*)(?P<dbody>(?:\\\r?\n|[^\n])*)
     | `(?P<macro>[a-zA-Z_]\w*)
-    | (?P<kw>\b(?:macromodule|module|import)\b)
-    | (?P<punct>[();])
     """,
     re.DOTALL | re.VERBOSE,
 )
@@ -113,7 +111,7 @@ def collect_defines(text: str, context: str = "") -> dict[str, Macro]:
 
 
 def expand(text: str, macros: Macros | None = None, context: str = "") -> str:
-    """Expand macros within module headers.
+    """Expand macros.
 
     Macros are taken from `macros` and from the `` `define `` statements within `text`.
     `macros` take precedence. Unknown macros are left untouched.
@@ -129,60 +127,30 @@ def expand(text: str, macros: Macros | None = None, context: str = "") -> str:
 
 
 class _Expander:
-    """Copies text to `out` and expands macros on module headers."""
+    """Copies text to `out` and expands macros."""
 
     def __init__(self, macros: Macros, context: str, out: list[str]):
         self.macros = macros
         self.context = context
         self.out = out
-        self.in_header = False
-        self.paren_level = 0
-        self.in_import = False
         self.active: list[str] = []
 
     def scan(self, text: str) -> None:
         pos = 0
         for mat in _RE_SCAN.finditer(text):
-            if mat.start() < pos:
-                continue  # part of macro call, which has been replaced
-            kind = mat.lastgroup
-            if kind == "kw":
-                self._handle_keyword(mat.group())
-            elif kind == "punct":
-                self._handle_punct(mat.group())
-            elif kind == "macro" and self.in_header:
-                result = self._expand_call(text, mat)
-                if result is not None:
-                    expanded, end = result
-                    self.out.append(text[pos : mat.start()])
-                    pos = end
-                    # the expanded text is scanned again: nested macros, and the header may end within the macro.
-                    self.active.append(mat.group("macro"))
-                    self.scan(expanded)
-                    self.active.pop()
+            if mat.lastgroup != "macro" or mat.start() < pos:
+                # no macro, or part of a macro call which has been replaced
+                continue
+            result = self._expand_call(text, mat)
+            if result is not None:
+                expanded, end = result
+                self.out.append(text[pos : mat.start()])
+                pos = end
+                # the expanded text is scanned again, to expand nested macros
+                self.active.append(mat.group("macro"))
+                self.scan(expanded)
+                self.active.pop()
         self.out.append(text[pos:])
-
-    def _handle_keyword(self, keyword: str) -> None:
-        if keyword == "import":
-            # 'module name import pkg::*; (' - this semicolon does not end the header
-            self.in_import = self.in_header and not self.paren_level
-        else:
-            self.in_header = True
-            self.paren_level = 0
-            self.in_import = False
-
-    def _handle_punct(self, punct: str) -> None:
-        if not self.in_header:
-            return
-        if punct == "(":
-            self.paren_level += 1
-        elif punct == ")":
-            self.paren_level -= 1
-        elif self.paren_level <= 0:
-            if self.in_import:
-                self.in_import = False
-            else:
-                self.in_header = False
 
     def _expand_call(self, text: str, mat: re.Match) -> tuple[str, int] | None:
         """Expand macro call at `mat`. Return expanded text and end position of the call within `text`."""

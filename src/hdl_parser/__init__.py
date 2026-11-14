@@ -27,7 +27,7 @@ Usage is simple. Parse your input with one of these methods:
 * [hdl_parser.parse_file][]
 * [hdl_parser.parse_text][]
 
-Macros in module headers are expanded. Macros from other files are read by
+Macros are expanded, if their definition is known. Macros from other files are read by
 
 * [hdl_parser.parse_defines][]
 

@@ -26,7 +26,7 @@
 * Extract Parameters
 * Extract Submodule Instances and their connections
 * `ifdef` support
-* Expansion of macros which define ports or parameters in the module header
+* Expansion of macros (ports, parameters and instances created by macros)
 * Standards: `IEEE 1800-2009 SystemVerilog`
 
 ## Limitations

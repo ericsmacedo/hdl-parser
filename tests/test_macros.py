@@ -255,47 +255,46 @@ endmodule
     )
 
 
-def test_header_end_in_macro():
-    """Macro Contains End Of Module Header."""
+def test_module_by_macro():
+    """Macro Creates Module Header Or The Entire Module."""
     text = """
 `define HEADER(name) module name (input logic clk);
-`define BODY_MACRO input logic not_a_port;
+`define MODULE(name) `HEADER(name) endmodule
 `HEADER(m)
-    `BODY_MACRO
 endmodule
+`MODULE(n)
 """
-    # `HEADER is outside of a module header and not expanded
-    assert expand(text) == text
-    text = """
-`define PORTS_END input logic clk);
-module m (`PORTS_END
-    `PORTS_END
-endmodule
-"""
-    assert expand(text).count("input logic clk);") == 2  # 1x define, 1x header
+    modules = parse_text(text).modules
+    assert [module.name for module in modules] == ["m", "n"]
+    assert [[port.name for port in module.ports] for module in modules] == [["clk"], ["clk"]]
 
 
-def test_header_only():
-    """Macros Are Expanded In Module Headers Only."""
+def test_body():
+    """Macros Are Expanded In The Module Body Too."""
     text = """
 `define SIG logic sig
 `define PORT input `SIG
-`define INST sub u_sub (.a(sig));
-module m import pkg::*; (`PORT);
-    `SIG;
-    `INST
+`define W 4
+`define INST(name) sub name (.a(sig), .b(`W));
+module m (a, b, sig);
+    `PORT;
+    input [`W-1:0] a;
+    output b;
+    localparam int L = `W;
+    `INST(u_sub0)
+    `INST(u_sub1)
+    `UNKNOWN(sig)
+    `UNKNOWN
 endmodule
-
-module n;
-    `SIG;
-endmodule : n
-
-`SIG;
 """
-    assert expand(text) == text.replace("(`PORT)", "(input logic sig)")
+    assert expand(text).partition("module m")[2].count("`") == 2
     module = parse_text(text).modules[0]
-    assert _ports(text) == ["input logic sig"]
-    assert module.insts == ()
+    assert _ports(text) == ["input logic sig", "input [4-1:0] a", "output b"]
+    assert [(param.name, param.default) for param in module.localparams] == [("L", "4")]
+    assert [inst.name for inst in module.insts] == ["u_sub0", "u_sub1"]
+    assert [(con.port, con.con) for con in module.insts[0].connections] == [("a", "sig"), ("b", "4")]
+    # unknown macros in the module body are not reported
+    assert module.unresolved_macros == ()
 
 
 def test_untouched():

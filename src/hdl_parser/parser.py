@@ -28,7 +28,7 @@ The parser offers two methods:
 * [hdl_parser.parser.parse_file][]
 * [hdl_parser.parser.parse_text][]
 
-Macros used in module headers are expanded, if they are defined in the same file or handed over via `macros`.
+Macros are expanded, if they are defined in the same file or handed over via `macros`.
 Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 
 * [hdl_parser.parser.parse_defines][]
