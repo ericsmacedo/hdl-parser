@@ -39,9 +39,8 @@ SV_EXAMPLES = tuple(path for path in EXAMPLES if path.suffix == ".sv")
 
 # Relative path (posix) -> reason. Entries are expected to fail; once the bug is fixed, the strict xfail flips the
 # test to failing (XPASS) and the entry has to be removed.
-_NO_MODULE = "package-only file raises RuntimeError('No module found.')"
-KNOWN_ISSUES_SNAPSHOT: dict[str, str] = {"ibex/ibex_pkg.sv": _NO_MODULE}
-KNOWN_ISSUES_INVARIANTS: dict[str, str] = {"ibex/ibex_pkg.sv": _NO_MODULE}
+KNOWN_ISSUES_SNAPSHOT: dict[str, str] = {}
+KNOWN_ISSUES_INVARIANTS: dict[str, str] = {}
 # Union, as documentation and for the report.
 KNOWN_ISSUES: dict[str, str] = {**KNOWN_ISSUES_SNAPSHOT, **KNOWN_ISSUES_INVARIANTS}
 

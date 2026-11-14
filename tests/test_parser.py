@@ -21,6 +21,8 @@
 # SOFTWARE.
 """Test Parser."""
 
+import logging
+
 from pytest import mark, raises
 from test2ref import assert_refdata
 
@@ -129,3 +131,14 @@ def test_parse_file_encoding(tmp_path):
 
     with raises(UnicodeDecodeError):
         parse_file(file_path, encoding="utf-8")
+
+
+@mark.parametrize("text", ["", "// comment", "package p;\n  typedef logic [3:0] t;\nendpackage\n", "module"])
+def test_no_module(tmp_path, caplog, text):
+    """Files Without Modules Are Fine."""
+    assert parse_text(text) == File(path=None, modules=())
+    file_path = tmp_path / "file.sv"
+    file_path.write_text(text)
+    with caplog.at_level(logging.INFO):
+        assert parse_file(file_path) == File(path=file_path, modules=())
+    assert f"{file_path}: no module found." in caplog.text

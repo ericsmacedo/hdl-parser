@@ -29,12 +29,15 @@ The parser offers two methods:
 * [hdl_parser.parser.parse_text][]
 """
 
+import logging
 from pathlib import Path
 from typing import Literal, TypeAlias
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
 from ._vhdl.parser import parse as parse_vhdl
+
+LOGGER = logging.getLogger(__name__)
 
 Lang: TypeAlias = Literal["sv", "vhdl"]
 """Language."""
@@ -90,7 +93,7 @@ def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
 
     Returns:
-        Parsed Data
+        Parsed Data. `modules` is empty, if there is no module (i.e. a file with packages only).
     """
     if isinstance(file_path, str):
         file_path = Path(file_path)
@@ -104,6 +107,7 @@ def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None
         modules = parse_sv(text)
 
     if not modules:
-        raise RuntimeError("No module found.")
+        # this is fine: packages, interfaces, included files, ...
+        LOGGER.info("%s: no module found.", file_path or "<text>")
 
     return dm.File(path=file_path, modules=modules)
