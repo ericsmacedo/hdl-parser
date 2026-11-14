@@ -594,3 +594,35 @@ def test_off_by_default(caplog):
 
     with raises(ValueError, match="'macros' requires 'expand_macros=True'"):
         hdl_parser.parse_text(text, macros=parse_defines(MACROS_SVH))
+
+
+def test_comments_in_args():
+    """Comments Within The Arguments Of A Macro Call Are No Arguments."""
+    text = """
+`define P(dir, name, width=8) dir logic [width-1:0] name
+module m (
+    `P(input,  // the direction, with (parenthesis
+       a,      /* name, with comma */
+       4),
+    `P(output, b /* the default width */),
+    `P(input, c, f("//", "/*"))
+);
+endmodule
+"""
+    assert _ports(text) == ["input logic [4-1:0] a", "output logic [8-1:0] b", 'input logic [f("//", "/*")-1:0] c']
+
+
+def test_macro_in_own_args():
+    """A Macro May Be Used Within Its Own Arguments."""
+    text = """
+`define W 4
+`define DOUBLE(x) (2*x)
+`define ADD(a, b=`DOUBLE(`W)) (a+b)
+module m (
+    input [`DOUBLE(`DOUBLE(`W)):0] a,
+    input [`ADD(`ADD(1, 2), `ADD(3)):0] b,
+    input [`DOUBLE(`UNKNOWN(`W)):0] c
+);
+endmodule
+"""
+    assert _ports(text) == ["input [(2*(2*4)):0] a", "input [((1+2)+(3+(2*4))):0] b", "input [(2*`UNKNOWN(4)):0] c"]

@@ -82,6 +82,8 @@ _RE_CONTINUATION = re.compile(r"\\(\r?\n)")
 # identifier within macro body - but not macro names (preceded by a single backtick). strings are skipped.
 _RE_BODY_IDENT = re.compile(rf"{_RE_STRING}|(?<!(?<!`)`)\b(?P<ident>[a-zA-Z_]\w*)\b")
 _RE_IDENT = re.compile(r"[a-zA-Z_]\w*\Z")
+# comment within the arguments of a macro call. strings are matched too, to skip them.
+_RE_ARG_COMMENT = re.compile(rf"(?P<string>{_RE_STRING})|//[^\n]*|/\*.*?\*/", re.DOTALL)
 # `define behind `ifndef: include guard or default value
 _RE_GUARD = re.compile(r"(?:\s|//[^\n]*|/\*.*?\*/)*`define[ \t]+([a-zA-Z_]\w*)", re.DOTALL)
 _OPEN = "([{"
@@ -353,10 +355,17 @@ class _Preprocessor:
         if end is None:
             LOGGER.warning("%s: macro `%s requires arguments. Not expanded.", context, name)
             return None
-        args = _bind_args(macro, split_args(text[start + 1 : end - 1]))
+        arg_text = _RE_ARG_COMMENT.sub(lambda mat: mat.group("string") or " ", text[start + 1 : end - 1])
+        args = _bind_args(macro, split_args(arg_text))
         if args is None:
             LOGGER.warning("%s: macro `%s is used with wrong number of arguments. Not expanded.", context, name)
             return None
+        # Macros within arguments are expanded first. So a macro may be used within its own arguments.
+        for pname, arg in args.items():
+            if "`" in arg:
+                out: list[str] = []
+                self.process(arg, context, out=out)
+                args[pname] = "".join(out)
         return _substitute(macro.body, args), end
 
 
@@ -439,7 +448,7 @@ def _skip_spaces(text: str, pos: int) -> int:
 
 
 def _iter_toplevel(text: str, pos: int = 0) -> Iterator[tuple[int, str, int]]:
-    """Iterate over `text` and yield `(pos, char, level)` for everything outside of strings."""
+    """Iterate over `text` and yield `(pos, char, level)` for everything outside of strings and comments."""
     level = 0
     end = len(text)
     while pos < end:
@@ -448,6 +457,13 @@ def _iter_toplevel(text: str, pos: int = 0) -> Iterator[tuple[int, str, int]]:
             pos += 1
             while pos < end and text[pos] != '"':
                 pos += 2 if text[pos] == "\\" else 1
+        elif char == "/" and text.startswith(("//", "/*"), pos):
+            # skip comment
+            if text[pos + 1] == "/":
+                stop = text.find("\n", pos)
+            else:
+                stop = text.find("*/", pos + 2) + 1
+            pos = stop if stop > 0 else end
         elif char in _OPEN:
             level += 1
             yield pos, char, level
