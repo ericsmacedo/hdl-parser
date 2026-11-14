@@ -733,7 +733,7 @@ def _create_insts(insts: list[_Inst]) -> tuple[dm.ModuleInstance, ...]:
 def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
     for macro in mod.macros:
         LOGGER.warning(
-            "%s: module '%s': unknown macro `%s in module header. Ports or parameters may be missing.",
+            "%s: module '%s': macro `%s in module header is not expanded. Ports or parameters may be missing.",
             context,
             mod.name,
             macro.name,
@@ -742,15 +742,20 @@ def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
 
 
 def parse(
-    text: str, macros: Macros | None = None, file_path: Path | None = None, inc_dirs: Iterable[Path] = ()
+    text: str,
+    file_path: Path | None = None,
+    expand_macros: bool = False,
+    macros: Macros | None = None,
+    inc_dirs: Iterable[Path] = (),
 ) -> tuple[dm.Module, ...]:
     """Parse SystemVerilog `text` and return its modules.
 
-    Macros are expanded upfront, if they are defined within `text`, within an included file or given by `macros`.
-    Included files are searched next to `file_path` and in `inc_dirs`.
+    With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
+    file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
     """
     context = str(file_path) if file_path else "<text>"
-    text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs)
+    if expand_macros:
+        text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs)
     return tuple(
         dm.Module(
             name=mod.name,

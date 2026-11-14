@@ -36,6 +36,8 @@ from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
 
+LOGGER = logging.getLogger(__name__)
+
 _LOGLEVELMAP = {
     0: logging.WARNING,
     1: logging.INFO,
@@ -47,13 +49,19 @@ arg_filepaths = click.argument("filepaths", nargs=-1, type=click.Path(exists=Tru
 opt_filelists = click.option(
     "--filelist", "-f", type=click.Path(exists=True, readable=True, path_type=Path), multiple=True, help="Filelist"
 )
+opt_expand_macros = click.option(
+    "--expand-macros",
+    "-e",
+    is_flag=True,
+    help="Expand macros which are defined in the file, its included files or the files given by '--macro-file'.",
+)
 opt_macro_files = click.option(
     "--macro-file",
     "-m",
     "macro_files",
     type=click.Path(exists=True, readable=True, path_type=Path),
     multiple=True,
-    help="File with `define macros. Can be given multiple times.",
+    help="File with `define macros. Requires '--expand-macros'. Can be given multiple times.",
 )
 opt_inc_dirs = click.option(
     "--incdir",
@@ -62,7 +70,7 @@ opt_inc_dirs = click.option(
     type=click.Path(exists=True, file_okay=False, path_type=Path),
     multiple=True,
     help="Directory to search for included files, in addition to the ones of the filelists. "
-    "Can be given multiple times.",
+    "Used by '--expand-macros'. Can be given multiple times.",
 )
 
 
@@ -132,18 +140,20 @@ pass_ctx = click.make_pass_decorator(Ctx)
 @cli.command()
 @arg_filepaths
 @opt_filelists
+@opt_expand_macros
 @opt_macro_files
 @opt_inc_dirs
 @pass_ctx
-def gen_sv_instance(
+def gen_sv_instance(  # noqa: PLR0913
     ctx,  # noqa: ARG001
     filepaths: tuple[Path, ...],
     filelist: tuple[Path, ...],
+    expand_macros: bool,
     macro_files: tuple[Path, ...],
     inc_dirs: tuple[Path, ...],
 ):
     """Parses an SystemVerilog file and returns a instance of the module."""
-    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
+    for file in _parse_files(filepaths, filelist, expand_macros, macro_files, inc_dirs):
         for module in file.modules:
             instance = gen_instance(module)
             print(instance)
@@ -152,6 +162,7 @@ def gen_sv_instance(
 @cli.command()
 @arg_filepaths
 @opt_filelists
+@opt_expand_macros
 @opt_macro_files
 @opt_inc_dirs
 @pass_ctx
@@ -168,6 +179,7 @@ def info(  # noqa: PLR0913
     ctx: Ctx,
     filepaths: tuple[Path, ...],
     filelist: tuple[Path, ...],
+    expand_macros: bool,
     macro_files: tuple[Path, ...],
     inc_dirs: tuple[Path, ...],
     width: int | None = None,
@@ -175,7 +187,7 @@ def info(  # noqa: PLR0913
     sub: bool = False,
 ) -> None:
     """Creates Markdown Overview Tables."""
-    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
+    for file in _parse_files(filepaths, filelist, expand_macros, macro_files, inc_dirs):
         pre = "#" * level
         for module in file.modules:
             params, ports, insts = gen_markdown_table(module, width=width)
@@ -206,23 +218,36 @@ Path `{file.path!s}`
 @cli.command()
 @arg_filepaths
 @opt_filelists
+@opt_expand_macros
 @opt_macro_files
 @opt_inc_dirs
 def json(
-    filepaths: tuple[Path, ...], filelist: tuple[Path, ...], macro_files: tuple[Path, ...], inc_dirs: tuple[Path, ...]
+    filepaths: tuple[Path, ...],
+    filelist: tuple[Path, ...],
+    expand_macros: bool,
+    macro_files: tuple[Path, ...],
+    inc_dirs: tuple[Path, ...],
 ) -> None:
     """Dump All Extracted Information in a JSON file."""
-    for file in _parse_files(filepaths, filelist, macro_files, inc_dirs):
+    for file in _parse_files(filepaths, filelist, expand_macros, macro_files, inc_dirs):
         print(file.overview)
 
 
 def _parse_files(
-    filepaths: tuple[Path, ...], filelists: tuple[Path, ...], macro_files: tuple[Path, ...], inc_dirs: tuple[Path, ...]
+    filepaths: tuple[Path, ...],
+    filelists: tuple[Path, ...],
+    expand_macros: bool,
+    macro_files: tuple[Path, ...],
+    inc_dirs: tuple[Path, ...],
 ) -> Iterator[File]:
+    if macro_files and not expand_macros:
+        # the context swallows the message
+        LOGGER.error("'--macro-file' requires '--expand-macros'.")
+        raise click.UsageError("'--macro-file' requires '--expand-macros'.")
     all_filepaths = list(filepaths)
     all_inc_dirs = list(inc_dirs)
     for filelist in filelists:
         parse_filelist(all_filepaths, all_inc_dirs, filelist)
     macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs)
     for filepath in all_filepaths:
-        yield parse_file(filepath, macros=macros, inc_dirs=all_inc_dirs)
+        yield parse_file(filepath, expand_macros=expand_macros, macros=macros, inc_dirs=all_inc_dirs)

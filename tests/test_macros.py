@@ -22,14 +22,20 @@
 """Test Macro Expansion."""
 
 import logging
+from functools import partial
 
-from pytest import mark
+from pytest import mark, raises
 
-from hdl_parser import Macro, MacroCall, Port, parse_defines, parse_defines_text, parse_file, parse_text
+import hdl_parser
+from hdl_parser import Macro, MacroCall, Port, parse_defines, parse_defines_text
 from hdl_parser._sv.preproc import expand
 from hdl_parser.cli import cli
 
 from .conftest import EXAMPLES_PATH
+
+# Macro expansion is off by default
+parse_file = partial(hdl_parser.parse_file, expand_macros=True)
+parse_text = partial(hdl_parser.parse_text, expand_macros=True)
 
 MACROS_SVH = EXAMPLES_PATH / "sv" / "macros.svh"
 MACRO_PORTS_SV = EXAMPLES_PATH / "sv" / "macro_ports.sv"
@@ -340,7 +346,7 @@ endmodule
     )
     assert _ports(text) == ["output logic q"]
     assert [param.name for param in module.params] == ["A"]
-    assert "file.sv: module 'm': unknown macro `AXI_PORTS in module header." in caplog.text
+    assert "file.sv: module 'm': macro `AXI_PORTS in module header is not expanded." in caplog.text
 
 
 @mark.parametrize(
@@ -410,24 +416,29 @@ def test_example():
 
 
 @mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
-def test_cli(runner, tmp_path, cmd):
+def test_cli(runner, tmp_path, caplog, cmd):
     """Command Line Options --macro-file and --incdir."""
     top = tmp_path / "top.sv"
     top.write_text('`include "macros.svh"\nmodule top (`CLK_RST_PORTS, input logic a_i);\nendmodule\n')
     filelist = tmp_path / "filelist.f"
     filelist.write_text(f"+incdir+{MACROS_SVH.parent}\n")
 
-    result = runner.invoke(cli, [cmd, str(top)])
-    assert result.exit_code == 0
-    assert "a_i" in result.output
-    assert "clk_i" not in result.output
+    for options in ((), ("--expand-macros",), ("--incdir", str(MACROS_SVH.parent))):
+        result = runner.invoke(cli, [cmd, *options, str(top)])
+        assert result.exit_code == 0
+        assert "a_i" in result.output
+        assert "clk_i" not in result.output
+
+    result = runner.invoke(cli, [cmd, "--macro-file", str(MACROS_SVH), str(top)])
+    assert result.exit_code == 1
+    assert "'--macro-file' requires '--expand-macros'" in caplog.text
 
     for options in (
         ("--macro-file", str(MACROS_SVH)),
         ("--incdir", str(MACROS_SVH.parent)),
         ("--filelist", str(filelist)),
     ):
-        result = runner.invoke(cli, [cmd, *options, str(top)])
+        result = runner.invoke(cli, [cmd, "--expand-macros", *options, str(top)])
         assert result.exit_code == 0
         for name in ("clk_i", "rst_ni", "a_i"):
             assert name in result.output
@@ -520,3 +531,29 @@ def test_type_macro_is_resolved():
     module = parse_text(text).modules[0]
     assert _ports(text) == ["input `MY_T a", "input `MY_T(3) b", "input c"]
     assert module.unresolved_macros == (MacroCall(name="PORTS"),)
+
+
+def test_off_by_default(caplog):
+    """Macros Are Not Expanded By Default, But Reported."""
+    text = "`define W 8\n`define PORTS input a\nmodule m (`PORTS, input [`W-1:0] b);\n    `PORTS;\nendmodule\n"
+    module = hdl_parser.parse_text(text).modules[0]
+    assert [(port.name, port.dim) for port in module.ports] == [("b", "[`W-1:0]")]
+    assert module.unresolved_macros == (MacroCall(name="PORTS"),)
+    assert "macro `PORTS in module header is not expanded" in caplog.text
+    assert [(port.name, port.dim) for port in parse_text(text).modules[0].ports] == [
+        ("a", ""),
+        ("b", "[8-1:0]"),
+        ("a", ""),
+    ]
+
+    module = hdl_parser.parse_file(MACRO_PORTS_SV, inc_dirs=[MACROS_SVH.parent]).modules[0]
+    assert [macro.name for macro in module.unresolved_macros] == [
+        "WIDTH_PARAM",
+        "WIDTH_PARAM",
+        "CLK_RST_PORTS",
+        "STREAM_PORTS",
+        "STREAM_PORTS",
+    ]
+
+    with raises(ValueError, match="'macros' requires 'expand_macros=True'"):
+        hdl_parser.parse_text(text, macros=parse_defines(MACROS_SVH))

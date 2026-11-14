@@ -28,7 +28,8 @@ The parser offers two methods:
 * [hdl_parser.parser.parse_file][]
 * [hdl_parser.parser.parse_text][]
 
-Macros are expanded, if they are defined in the same file, in an included file or handed over via `macros`.
+Macros are expanded on request (`expand_macros`), if they are defined in the same file, in an included file
+or handed over via `macros`.
 Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 
 * [hdl_parser.parser.parse_defines][]
@@ -93,6 +94,7 @@ def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = ()) -> dict
 def parse_file(
     file_path: Path | str,
     lang: Lang | None = None,
+    expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
 ) -> dm.File:
@@ -103,10 +105,12 @@ def parse_file(
 
     Keyword Args:
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
+        expand_macros: Expand macros with known definition. Macros defined in the file and in the files it
+                       includes are known. SystemVerilog only.
         macros: Macros defined outside of this file and its included files.
-                See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
-        inc_dirs: Include directories. Macros of included files are known. Included files are searched
-                  next to the file and here. SystemVerilog only.
+                See [hdl_parser.parser.parse_defines][]. Requires `expand_macros`.
+        inc_dirs: Include directories. Included files are searched next to the file and here.
+                  Used by `expand_macros` only.
 
     Returns:
         Parsed Data
@@ -114,13 +118,21 @@ def parse_file(
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    return parse_text(file_path.read_text(), file_path=file_path, lang=lang, macros=macros, inc_dirs=inc_dirs)
+    return parse_text(
+        file_path.read_text(),
+        file_path=file_path,
+        lang=lang,
+        expand_macros=expand_macros,
+        macros=macros,
+        inc_dirs=inc_dirs,
+    )
 
 
-def parse_text(
+def parse_text(  # noqa: PLR0913
     text: str,
     file_path: Path | str | None = None,
     lang: Lang | None = None,
+    expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
 ) -> dm.File:
@@ -132,14 +144,19 @@ def parse_text(
     Keyword Args:
         file_path: Related File Path.
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
+        expand_macros: Expand macros with known definition. Macros defined in the text and in the files it
+                       includes are known. SystemVerilog only.
         macros: Macros defined outside of this text and its included files.
-                See [hdl_parser.parser.parse_defines][]. SystemVerilog only.
-        inc_dirs: Include directories. Macros of included files are known. Included files are searched
-                  next to `file_path` and here. SystemVerilog only.
+                See [hdl_parser.parser.parse_defines][]. Requires `expand_macros`.
+        inc_dirs: Include directories. Included files are searched next to `file_path` and here.
+                  Used by `expand_macros` only.
 
     Returns:
         Parsed Data
     """
+    if macros and not expand_macros:
+        raise ValueError("'macros' requires 'expand_macros=True'.")
+
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
@@ -149,7 +166,9 @@ def parse_text(
     if lang == "vhdl":
         modules = parse_vhdl(text)
     else:
-        modules = parse_sv(text, macros=macros, file_path=file_path, inc_dirs=map(Path, inc_dirs))
+        modules = parse_sv(
+            text, file_path=file_path, expand_macros=expand_macros, macros=macros, inc_dirs=map(Path, inc_dirs)
+        )
 
     if not modules:
         raise RuntimeError("No module found.")

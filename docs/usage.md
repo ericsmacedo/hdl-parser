@@ -43,15 +43,16 @@ There are two major use-cases:
 
 ## Macros
 
-Macros are expanded, if their `` `define `` is known. So ports, parameters and instances created by macros are found.
+Macros are **not** expanded by default. On request (`--expand-macros`, `expand_macros=True`) macros are expanded,
+if their `` `define `` is known. So ports, parameters and instances created by macros are found.
 The macros defined in the same file and in the files it includes are known.
 Included files are searched next to the file and in the include directories (`--incdir`, `+incdir+` in filelists):
 
 !!! example "Command Line"
 
     ```bash
-    hdl-parser info examples/sv/macro_ports.sv
-    hdl-parser info --incdir path/to/inc top.sv
+    hdl-parser info --expand-macros examples/sv/macro_ports.sv
+    hdl-parser info --expand-macros --incdir path/to/inc top.sv
     ```
 
 !!! example "Python"
@@ -59,7 +60,7 @@ Included files are searched next to the file and in the include directories (`--
     ```python
     >>> import hdl_parser
 
-    >>> file = hdl_parser.parse_file("examples/sv/macro_ports.sv")
+    >>> file = hdl_parser.parse_file("examples/sv/macro_ports.sv", expand_macros=True)
     >>> for port in file.modules[0].ports:
     ...     print(f"{port.direction:6} {port.dim:14} {port.name}")
     input                 clk_i
@@ -72,7 +73,7 @@ Included files are searched next to the file and in the include directories (`--
     input                 out_ready
     output                busy_o
 
-    >>> file = hdl_parser.parse_file("top.sv", inc_dirs=["path/to/inc"])  # doctest: +SKIP
+    >>> file = hdl_parser.parse_file("top.sv", expand_macros=True, inc_dirs=["path/to/inc"])  # doctest: +SKIP
 
     ```
 
@@ -91,20 +92,20 @@ Macros which are not defined by the file or its included files, have to be hande
 !!! example "Command Line"
 
     ```bash
-    hdl-parser info --macro-file examples/sv/macros.svh top.sv
+    hdl-parser info --expand-macros --macro-file examples/sv/macros.svh top.sv
     ```
 
 !!! example "Python"
 
     ```python
     >>> macros = hdl_parser.parse_defines("examples/sv/macros.svh")
-    >>> file = hdl_parser.parse_text("module top (`CLK_RST_PORTS); endmodule", macros=macros)
+    >>> file = hdl_parser.parse_text("module top (`CLK_RST_PORTS); endmodule", expand_macros=True, macros=macros)
     >>> [port.name for port in file.modules[0].ports]
     ['clk_i', 'rst_ni']
 
     ```
 
-Macros in the module header which cannot be expanded are never dropped silently.
+Macros in the module header which are not expanded are never dropped silently.
 A warning is issued and they are listed in `unresolved_macros` of the module:
 
 ```python
