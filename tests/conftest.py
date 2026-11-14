@@ -44,14 +44,6 @@ def runner():
     yield CliRunner()
 
 
-@fixture
-def runner_iso():
-    """CLI Runner."""
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        yield runner
-
-
 @fixture(autouse=True)
 def enforce_terminal_size(monkeypatch):
     """Fix issue with varying terminal size."""
