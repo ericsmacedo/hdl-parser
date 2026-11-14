@@ -741,21 +741,23 @@ def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
     return tuple(mod.macros)
 
 
-def parse(
+def parse(  # noqa: PLR0913
     text: str,
     file_path: Path | None = None,
     expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path] = (),
+    resolve_ifdefs: bool = False,
 ) -> tuple[dm.Module, ...]:
     """Parse SystemVerilog `text` and return its modules.
 
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
+    With `resolve_ifdefs`, the `` `ifdef `` conditions on macros which are known to be defined are resolved.
     """
     context = str(file_path) if file_path else "<text>"
     if expand_macros:
-        text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs)
+        text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
     return tuple(
         dm.Module(
             name=mod.name,

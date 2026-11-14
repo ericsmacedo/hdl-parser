@@ -56,7 +56,9 @@ LANGMAP: dict[str, Lang] = {
 }
 
 
-def parse_defines(*file_paths: Path | str, inc_dirs: Iterable[Path | str] = ()) -> dict[str, Macro]:
+def parse_defines(
+    *file_paths: Path | str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
+) -> dict[str, Macro]:
     """Read `` `define `` macros from SystemVerilog files.
 
     Args:
@@ -64,17 +66,23 @@ def parse_defines(*file_paths: Path | str, inc_dirs: Iterable[Path | str] = ()) 
 
     Keyword Args:
         inc_dirs: Include directories. Included files are searched next to the including file and here.
+        resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
         Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
 
-    `` `include `` statements are followed, but `` `ifdef `` conditions are not evaluated.
-    Macros with conflicting definitions are skipped, later files do not override earlier ones.
+    The files are read in the given order, from top to bottom: a later `` `define `` replaces an earlier one,
+    `` `undef `` and `` `include `` statements are followed.
+    Macros with different definitions under unknown `` `ifdef `` conditions are skipped.
     """
-    return collect_defines(file_paths=map(Path, file_paths), inc_dirs=map(Path, inc_dirs))
+    return collect_defines(
+        file_paths=map(Path, file_paths), inc_dirs=map(Path, inc_dirs), resolve_ifdefs=resolve_ifdefs
+    )
 
 
-def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = ()) -> dict[str, Macro]:
+def parse_defines_text(
+    *texts: str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
+) -> dict[str, Macro]:
     """Read `` `define `` macros from SystemVerilog text.
 
     Args:
@@ -82,21 +90,23 @@ def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = ()) -> dict
 
     Keyword Args:
         inc_dirs: Include directories. Included files are searched here.
+        resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
         Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
 
     See [hdl_parser.parser.parse_defines][] for limitations.
     """
-    return collect_defines(texts=texts, inc_dirs=map(Path, inc_dirs))
+    return collect_defines(texts=texts, inc_dirs=map(Path, inc_dirs), resolve_ifdefs=resolve_ifdefs)
 
 
-def parse_file(
+def parse_file(  # noqa: PLR0913
     file_path: Path | str,
     lang: Lang | None = None,
     expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
+    resolve_ifdefs: bool = False,
 ) -> dm.File:
     """Parse a HDL (SystemVerilog or VHDL) file.
 
@@ -111,6 +121,9 @@ def parse_file(
                 See [hdl_parser.parser.parse_defines][]. Requires `expand_macros`.
         inc_dirs: Include directories. Included files are searched next to the file and here.
                   Used by `expand_macros` only.
+        resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined: code which is
+                        not compiled is removed, the remaining code is no longer tagged with this condition.
+                        Conditions on any other macro are kept. Requires `expand_macros`.
 
     Returns:
         Parsed Data
@@ -125,6 +138,7 @@ def parse_file(
         expand_macros=expand_macros,
         macros=macros,
         inc_dirs=inc_dirs,
+        resolve_ifdefs=resolve_ifdefs,
     )
 
 
@@ -135,6 +149,7 @@ def parse_text(  # noqa: PLR0913
     expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
+    resolve_ifdefs: bool = False,
 ) -> dm.File:
     """Parse HDL (SystemVerilog or VHDL) text.
 
@@ -150,12 +165,17 @@ def parse_text(  # noqa: PLR0913
                 See [hdl_parser.parser.parse_defines][]. Requires `expand_macros`.
         inc_dirs: Include directories. Included files are searched next to `file_path` and here.
                   Used by `expand_macros` only.
+        resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined: code which is
+                        not compiled is removed, the remaining code is no longer tagged with this condition.
+                        Conditions on any other macro are kept. Requires `expand_macros`.
 
     Returns:
         Parsed Data
     """
     if macros and not expand_macros:
         raise ValueError("'macros' requires 'expand_macros=True'.")
+    if resolve_ifdefs and not expand_macros:
+        raise ValueError("'resolve_ifdefs' requires 'expand_macros=True'.")
 
     if isinstance(file_path, str):
         file_path = Path(file_path)
@@ -167,7 +187,12 @@ def parse_text(  # noqa: PLR0913
         modules = parse_vhdl(text)
     else:
         modules = parse_sv(
-            text, file_path=file_path, expand_macros=expand_macros, macros=macros, inc_dirs=map(Path, inc_dirs)
+            text,
+            file_path=file_path,
+            expand_macros=expand_macros,
+            macros=macros,
+            inc_dirs=map(Path, inc_dirs),
+            resolve_ifdefs=resolve_ifdefs,
         )
 
     if not modules:

@@ -20,27 +20,41 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Lightweight SystemVerilog Macro Expander.
+"""Lightweight SystemVerilog Preprocessor.
 
 This is no full preprocessor. It does just enough to make code created by macros (ports, parameters,
-instances, ...) visible to the parser:
+instances, ...) visible to the parser.
 
-* `` `define `` collection (object-like and function-like, default arguments, line continuation)
-* expansion of known macros, everywhere except in comments and strings
-* argument substitution, token pasting (` `` `), stringification (`` `" ``) and nested macros
-* `` `include "file" `` is followed to collect the `` `define `` statements of the included file.
-  The included code itself is **not** inserted.
+The text is processed **once, from top to bottom**. On the way
 
-Not supported by intention:
+* `` `define `` and `` `undef `` update the table of known macros
+  (object-like and function-like, default arguments, line continuation),
+* `` `include "file" `` processes the included file at this point, to learn its macros.
+  The included code itself is **not** inserted,
+* known macros are replaced, everywhere except in comments and strings. This includes argument substitution,
+  token pasting (` `` `), stringification (`` `" ``) and nested macros. The replacement is processed
+  like any other text, so directives created by macros just work,
+* `` `ifdef `` conditions are resolved on request - but only the ones which are safe to resolve.
 
-* evaluation of `` `ifdef `` - a macro with conflicting definitions is never expanded
-* `` `undef ``
+Conditions:
+
+A macro we have seen the definition of **is** defined. A macro we have not seen the definition of is not
+necessarily undefined. It may be defined on the command line of the simulator, by the tool itself or by a file
+which has been compiled earlier. So a condition is
+
+* *true* (`` `ifdef X ``) or *false* (`` `ifndef X ``), if `X` is known to be defined: the code which is not
+  compiled is removed, including its `` `define `` statements. The directives are removed too.
+* *unknown* in any other case: everything is kept, the tokenizer tags the code with its condition. A macro
+  defined here is *conditional*: it is expanded, as long as there is no other definition with a different
+  body, but it is not known to be defined.
+
+Include guards and defaults (`` `ifndef X `` directly followed by `` `define X ``) are assumed to be compiled.
 """
 
 import logging
 import re
 from collections.abc import Iterable, Iterator, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 LOGGER = logging.getLogger(__name__)
@@ -53,7 +67,10 @@ _RE_SCAN = re.compile(
       (?P<comment>//[^\n]*|/\*.*?\*/)
     | (?P<string>"(?:\\.|[^"\\\n])*")
     | `include[ \t]*"(?P<include>[^"\n]*)"
-    | `define[ \t]+(?P<dname>[a-zA-Z_]\w*)(?P<dbody>(?:\\\r?\n|[^\n])*)
+    | `define[ \t]+(?P<dname>[a-zA-Z_]\w*)(?P<define>(?:\\\r?\n|[^\n])*)
+    | `undef[ \t]+(?P<undef>[a-zA-Z_]\w*)
+    | `(?P<cond>ifdef|ifndef|elsif)\b(?:\s*(?P<cname>[a-zA-Z_]\w*))?
+    | `(?P<condend>else|endif)\b
     | `(?P<macro>[a-zA-Z_]\w*)
     """,
     re.DOTALL | re.VERBOSE,
@@ -65,8 +82,15 @@ _RE_CONTINUATION = re.compile(r"\\(\r?\n)")
 # identifier within macro body - but not macro names (preceded by a single backtick). strings are skipped.
 _RE_BODY_IDENT = re.compile(rf"{_RE_STRING}|(?<!(?<!`)`)\b(?P<ident>[a-zA-Z_]\w*)\b")
 _RE_IDENT = re.compile(r"[a-zA-Z_]\w*\Z")
+# `define behind `ifndef: include guard or default value
+_RE_GUARD = re.compile(r"(?:\s|//[^\n]*|/\*.*?\*/)*`define[ \t]+([a-zA-Z_]\w*)", re.DOTALL)
 _OPEN = "([{"
 _CLOSE = ")]}"
+
+# Code is ...
+_ACTIVE = 0  # ... compiled
+_UNCERTAIN = 1  # ... compiled or not, it depends on an unknown condition
+_INACTIVE = 2  # ... not compiled
 
 
 @dataclass(frozen=True)
@@ -78,143 +102,227 @@ class Macro:
         body: Replacement text.
         params: Formal arguments as pairs of name and default (`None` for no default).
                 `None` for object-like macros (macros without arguments).
+        conditional: The macro is defined under an unknown `` `ifdef `` condition.
+                     It is expanded, but never used to resolve `` `ifdef `` conditions.
     """
 
     name: str
     body: str
     params: tuple[tuple[str, str | None], ...] | None = None
+    conditional: bool = field(default=False, compare=False)
 
 
 Macros = Mapping[str, Macro]
 """Macros by name."""
 
 
-class _Defines:
-    """Collects `` `define `` macros from text and all included files."""
+@dataclass
+class _Cond:
+    """One `` `ifdef `` ... `` `endif ``."""
 
-    def __init__(self, inc_dirs: Iterable[Path] = ()):
-        self.macros: dict[str, Macro] = {}
+    parent: int
+    """State of the code around."""
+    taken: bool = False
+    """One branch is known to be compiled. All following ones are not."""
+    unknown: bool = False
+    """One of the branches so far has an unknown condition."""
+    opened: bool = False
+    """One of the directives so far has been kept."""
+
+
+class _Preprocessor:
+    """Processes text from top to bottom.
+
+    Attributes:
+        macros: Known macros, at the current position.
+        ambiguous: Macros with different definitions under unknown conditions. They are not expanded.
+    """
+
+    def __init__(self, macros: Macros | None = None, inc_dirs: Iterable[Path] = (), resolve_ifdefs: bool = False):
+        self.macros: dict[str, Macro] = dict(macros or {})
         self.ambiguous: set[str] = set()
+        # macros handed over are never touched
+        self.fixed = frozenset(self.macros)
         self.inc_dirs = tuple(inc_dirs)
-        self.files: set[Path] = set()
+        self.resolve_ifdefs = resolve_ifdefs
+        self.state = _ACTIVE
+        self.conds: list[_Cond] = []
+        # macros which are just expanded, files which are just included, files which are done
+        self.expanding: list[str] = []
+        self.including: list[Path] = []
+        self.included: set[Path] = set()
 
-    def read(self, file_path: Path) -> str | None:
-        """Read `file_path` and collect its macros. `None` if the file has been read already."""
-        resolved = file_path.resolve()
-        if resolved in self.files:
-            return None
-        self.files.add(resolved)
+    def process_file(self, file_path: Path, out: list[str] | None = None) -> None:
+        """Process the file at `file_path`."""
         text = file_path.read_text()
-        self.collect(text, str(file_path), file_path.parent)
-        return text
+        self.including.append(file_path.resolve())
+        self.process(text, str(file_path), file_path.parent, out)
+        self.including.pop()
 
-    def collect(self, text: str, context: str, basedir: Path | None = None) -> None:
-        """Collect macros from `text`. Files included relative to `basedir` or `inc_dirs` are read too."""
-        if "`define" not in text and "`include" not in text:
-            return
+    def process(self, text: str, context: str, basedir: Path | None = None, out: list[str] | None = None) -> None:  # noqa: C901, PLR0912
+        """Process `text` and append the result to `out`.
+
+        Files are included relative to `basedir` and the include directories.
+        """
+        pos = 0
         for mat in _RE_SCAN.finditer(text):
             kind = mat.lastgroup
-            if kind == "dbody":
-                self._define(mat.group("dname"), mat.group("dbody"), context)
-            elif kind == "include":
+            start = mat.start()
+            if kind in ("comment", "string") or start < pos:
+                # nothing to do, or part of a macro call which has been replaced
+                continue
+            if kind in ("cond", "cname", "condend"):
+                # the state changes: flush
+                if out is not None and self.state != _INACTIVE:
+                    out.append(text[pos:start])
+                pos = mat.end()
+                if kind == "condend":
+                    directive = self._branch_end(mat.group("condend"), mat.group())
+                else:
+                    directive = self._branch(mat.group("cond"), mat.group("cname"), mat.group(), text, pos)
+                if out is not None:
+                    out.append(directive)
+            elif self.state == _INACTIVE:
+                pass
+            elif kind == "macro":
+                result = self._expand_call(text, mat, context)
+                if result is not None:
+                    expanded, end = result
+                    if out is not None:
+                        out.append(text[pos:start])
+                    pos = end
+                    # the replacement is processed like any other text
+                    self.expanding.append(mat.group("macro"))
+                    self.process(expanded, context, basedir, out)
+                    self.expanding.pop()
+            elif kind == "define":
+                self._define(mat.group("dname"), mat.group("define"), context)
+            elif kind == "undef":
+                self._undef(mat.group("undef"))
+            else:
                 self._include(mat.group("include"), context, basedir)
+        if out is not None and self.state != _INACTIVE:
+            out.append(text[pos:])
+
+    # --- conditions ---
+
+    def reset_conds(self) -> None:
+        """Forget all open conditions."""
+        self.conds.clear()
+        self.state = _ACTIVE
+
+    def _is_defined(self, name: str | None) -> bool:
+        """`name` is known to be defined."""
+        if not self.resolve_ifdefs or name is None:
+            return False
+        macro = self.macros.get(name)
+        return macro is not None and not macro.conditional
+
+    def _branch(  # noqa: C901, PLR0911
+        self, directive: str, name: str | None, original: str, text: str = "", pos: int = 0
+    ) -> str:
+        """Start the branch `directive` (`ifdef`, `ifndef`, `elsif` or `else`) and return the directive to be kept."""
+        if directive in ("ifdef", "ifndef"):
+            cond = _Cond(self.state)
+            self.conds.append(cond)
+        elif self.conds:
+            cond = self.conds[-1]
+        else:
+            # without `ifdef
+            return original
+        if cond.parent == _INACTIVE or cond.taken:
+            self.state = _INACTIVE
+            return ""
+        # true, false or unknown (None)
+        value = True if directive == "else" else None
+        if self._is_defined(name):
+            value = directive != "ifndef"
+        if value is False:
+            self.state = _INACTIVE
+            return ""
+        if value and not cond.unknown:
+            # this branch is compiled for sure
+            cond.taken = True
+            self.state = cond.parent
+            return ""
+        self.state = _UNCERTAIN
+        if value:
+            # compiled, if none of the unknown branches before is
+            cond.taken = True
+            return "`else"
+        opened = cond.opened
+        cond.opened = cond.unknown = True
+        if directive == "ifndef":
+            mat = _RE_GUARD.match(text, pos)
+            if mat and mat.group(1) == name:
+                # include guard or default
+                self.state = cond.parent
+        if directive == "elsif" and not opened:
+            # all branches before have been removed
+            return f"`ifdef {name or ''}"
+        return original
+
+    def _branch_end(self, directive: str, original: str) -> str:
+        """Handle `else` or `endif` and return the directive to be kept."""
+        if directive == "else":
+            return self._branch(directive, None, original)
+        if not self.conds:
+            return original
+        cond = self.conds.pop()
+        self.state = cond.parent
+        return original if cond.opened else ""
+
+    # --- macros ---
 
     def _define(self, name: str, text: str, context: str) -> None:
-        if name in self.ambiguous:
+        if name in self.fixed:
             return
         macro = _parse_define(name, text)
         if macro is None:
             LOGGER.warning("%s: cannot parse definition of macro `%s. Skipped.", context, name)
-        elif self.macros.setdefault(name, macro) != macro:
+        elif self.state == _ACTIVE:
+            self.ambiguous.discard(name)
+            self.macros[name] = macro
+        elif name not in self.ambiguous and self.macros.setdefault(name, replace(macro, conditional=True)) != macro:
             LOGGER.debug("%s: macro `%s has conflicting definitions.", context, name)
             self.ambiguous.add(name)
             del self.macros[name]
+
+    def _undef(self, name: str) -> None:
+        if name in self.fixed:
+            return
+        if self.state == _ACTIVE:
+            self.ambiguous.discard(name)
+            self.macros.pop(name, None)
+        elif name in self.macros:
+            # maybe it is gone
+            self.macros[name] = replace(self.macros[name], conditional=True)
 
     def _include(self, name: str, context: str, basedir: Path | None) -> None:
         dirs = self.inc_dirs if basedir is None else (basedir, *self.inc_dirs)
         for directory in dirs:
             file_path = directory / name
             if file_path.is_file():
-                try:
-                    self.read(file_path)
-                except (OSError, UnicodeError) as exc:
-                    LOGGER.warning("%s: cannot read included file '%s': %s", context, file_path, exc)
-                return
-        LOGGER.info("%s: included file '%s' not found. Its macros are unknown.", context, name)
+                break
+        else:
+            LOGGER.info("%s: included file '%s' not found. Its macros are unknown.", context, name)
+            return
+        resolved = file_path.resolve()
+        if resolved in self.included or resolved in self.including:
+            return
+        if self.state == _ACTIVE:
+            self.included.add(resolved)
+        state = self.state
+        depth = len(self.conds)
+        try:
+            self.process_file(file_path)
+        except (OSError, UnicodeError) as exc:
+            LOGGER.warning("%s: cannot read included file '%s': %s", context, file_path, exc)
+        # an included file never changes the conditions of the including one
+        del self.conds[depth:]
+        self.state = state
 
-
-def collect_defines(
-    texts: Iterable[str] = (), file_paths: Iterable[Path] = (), inc_dirs: Iterable[Path] = ()
-) -> dict[str, Macro]:
-    """Collect all `` `define `` macros from `texts` and `file_paths`.
-
-    Included files are searched next to the including file and in `inc_dirs`.
-    Conditionals (`` `ifdef ``) are **not** evaluated.
-    A macro which is defined multiple times with different content is ambiguous and therefore skipped.
-    """
-    defines = _Defines(inc_dirs)
-    for text in texts:
-        defines.collect(text, "<text>")
-    for file_path in file_paths:
-        defines.read(file_path)
-    for name in sorted(defines.ambiguous):
-        LOGGER.warning("macro `%s has conflicting definitions. Skipped.", name)
-    return defines.macros
-
-
-def expand(
-    text: str, macros: Macros | None = None, file_path: Path | None = None, inc_dirs: Iterable[Path] = ()
-) -> str:
-    """Expand macros.
-
-    Macros are taken from `macros`, from the `` `define `` statements within `text` and from the files
-    included by `text`. Included files are searched next to `file_path` and in `inc_dirs`.
-    `macros` take precedence. Unknown macros are left untouched.
-    """
-    if "`" not in text:
-        return text
-    context = str(file_path) if file_path else "<text>"
-    defines = _Defines(inc_dirs)
-    if file_path:
-        defines.files.add(file_path.resolve())
-    defines.collect(text, context, file_path.parent if file_path else None)
-    all_macros = {**defines.macros, **(macros or {})}
-    ambiguous = defines.ambiguous.difference(all_macros)
-    if not all_macros and not ambiguous:
-        return text
-    out: list[str] = []
-    _Expander(all_macros, ambiguous, context, out).scan(text)
-    return "".join(out)
-
-
-class _Expander:
-    """Copies text to `out` and expands macros."""
-
-    def __init__(self, macros: Macros, ambiguous: set[str], context: str, out: list[str]):
-        self.macros = macros
-        self.ambiguous = ambiguous
-        self.context = context
-        self.out = out
-        self.active: list[str] = []
-
-    def scan(self, text: str) -> None:
-        pos = 0
-        for mat in _RE_SCAN.finditer(text):
-            if mat.lastgroup != "macro" or mat.start() < pos:
-                # no macro, or part of a macro call which has been replaced
-                continue
-            result = self._expand_call(text, mat)
-            if result is not None:
-                expanded, end = result
-                self.out.append(text[pos : mat.start()])
-                pos = end
-                # the expanded text is scanned again, to expand nested macros
-                self.active.append(mat.group("macro"))
-                self.scan(expanded)
-                self.active.pop()
-        self.out.append(text[pos:])
-
-    def _expand_call(self, text: str, mat: re.Match) -> tuple[str, int] | None:
+    def _expand_call(self, text: str, mat: re.Match, context: str) -> tuple[str, int] | None:
         """Expand macro call at `mat`. Return expanded text and end position of the call within `text`."""
         name = mat.group("macro")
         macro = self.macros.get(name)
@@ -222,10 +330,10 @@ class _Expander:
             if name in self.ambiguous:
                 # report once
                 self.ambiguous.remove(name)
-                LOGGER.warning("%s: macro `%s has conflicting definitions. Not expanded.", self.context, name)
+                LOGGER.warning("%s: macro `%s has conflicting definitions. Not expanded.", context, name)
             return None
-        if name in self.active or len(self.active) >= _MAX_DEPTH:
-            LOGGER.warning("%s: recursive macro `%s is not expanded.", self.context, name)
+        if name in self.expanding or len(self.expanding) >= _MAX_DEPTH:
+            LOGGER.warning("%s: recursive macro `%s is not expanded.", context, name)
             return None
         if macro.params is None:
             return macro.body, mat.end()
@@ -233,13 +341,62 @@ class _Expander:
         start = _skip_spaces(text, mat.end())
         end = find_closing(text, start)
         if end is None:
-            LOGGER.warning("%s: macro `%s requires arguments. Not expanded.", self.context, name)
+            LOGGER.warning("%s: macro `%s requires arguments. Not expanded.", context, name)
             return None
         args = _bind_args(macro, split_args(text[start + 1 : end - 1]))
         if args is None:
-            LOGGER.warning("%s: macro `%s is used with wrong number of arguments. Not expanded.", self.context, name)
+            LOGGER.warning("%s: macro `%s is used with wrong number of arguments. Not expanded.", context, name)
             return None
         return _substitute(macro.body, args), end
+
+
+def collect_defines(
+    texts: Iterable[str] = (),
+    file_paths: Iterable[Path] = (),
+    inc_dirs: Iterable[Path] = (),
+    resolve_ifdefs: bool = False,
+) -> dict[str, Macro]:
+    """Collect all `` `define `` macros from `texts` and `file_paths`, in the given order.
+
+    Included files are searched next to the including file and in `inc_dirs`.
+    A macro which is defined with different content under unknown conditions is ambiguous and therefore skipped.
+    """
+    preproc = _Preprocessor(inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    for text in texts:
+        preproc.process(text, "<text>")
+        preproc.reset_conds()
+    for file_path in file_paths:
+        preproc.process_file(file_path)
+        preproc.reset_conds()
+    for name in sorted(preproc.ambiguous):
+        LOGGER.warning("macro `%s has conflicting definitions. Skipped.", name)
+    return preproc.macros
+
+
+def expand(
+    text: str,
+    macros: Macros | None = None,
+    file_path: Path | None = None,
+    inc_dirs: Iterable[Path] = (),
+    resolve_ifdefs: bool = False,
+) -> str:
+    """Expand macros and resolve `` `ifdef `` conditions (if `resolve_ifdefs`).
+
+    Macros are taken from `macros`, from the `` `define `` statements within `text` and from the files
+    included by `text`. Included files are searched next to `file_path` and in `inc_dirs`.
+    `macros` take precedence. Unknown macros are left untouched.
+    """
+    if "`" not in text:
+        return text
+    preproc = _Preprocessor(macros, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    out: list[str] = []
+    if file_path:
+        preproc.including.append(file_path.resolve())
+        preproc.process(text, str(file_path), file_path.parent, out)
+    else:
+        preproc.process(text, "<text>", None, out)
+    # most of the time, there is nothing to do
+    return text if len(out) == 1 else "".join(out)
 
 
 def _parse_define(name: str, text: str) -> Macro | None:

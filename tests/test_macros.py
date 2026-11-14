@@ -94,13 +94,32 @@ def test_define_in_comment_or_string():
 
 
 def test_define_conflict(caplog):
-    """Macros With Conflicting Definitions Are Skipped."""
+    """Macros With Different Definitions Under Unknown Conditions Are Skipped."""
     text = (
-        "`ifdef FPGA\n`define W 8\n`else\n`define W 16\n`endif\n`define W 32\n`define SAME 1\n`define SAME 1 // again\n"
+        "`ifdef FPGA\n`define W 8\n`else\n`define W 16\n`endif\n"
+        "`define SAME 1\n`ifdef A\n`define SAME 1 // again\n`endif\n"
     )
     macros = parse_defines_text(text)
     assert macros == {"SAME": Macro(name="SAME", body="1")}
     assert "macro `W has conflicting definitions" in caplog.text
+
+
+def test_define_order():
+    """Defines Are Processed In Order: The Last One Wins, `undef Is Followed."""
+    text = (
+        "`ifdef FPGA\n`define W 8\n`else\n`define W 16\n`endif\n`define W 32\n"
+        "`define X 1\n`define X 2\n`define Y\n`undef Y\n`undef Z\n"
+    )
+    assert parse_defines_text(text) == {"W": Macro(name="W", body="32"), "X": Macro(name="X", body="2")}
+    # in between
+    text = (
+        "`define P input a\nmodule m (`P);\nendmodule\n"
+        "`define P input b\nmodule n (`P);\nendmodule\n"
+        "`undef P\nmodule o (`P);\nendmodule\n"
+    )
+    modules = parse_text(text).modules
+    assert [[port.name for port in module.ports] for module in modules] == [["a"], ["b"], []]
+    assert modules[2].unresolved_macros == (MacroCall(name="P"),)
 
 
 def test_define_broken(caplog):
@@ -147,9 +166,10 @@ endmodule
 
 
 def test_define_after_use():
-    """Definition Order Does Not Matter."""
+    """A Macro Has To Be Defined Before Its Use."""
     text = "module m (`PORTS);\nendmodule\n`define PORTS input a, output b\n"
-    assert _ports(text) == ["input a", "output b"]
+    assert _ports(text) == []
+    assert parse_text(text).modules[0].unresolved_macros == (MacroCall(name="PORTS"),)
 
 
 def test_external_macros():
@@ -308,7 +328,7 @@ def test_untouched():
     text = "module m (input a);\nendmodule\n"
     assert expand(text) is text
     text = "`ifdef A\nmodule m (input a);\nendmodule\n`endif\n"
-    assert expand(text) is text
+    assert expand(text) == text
     # usage in comments and strings
     text = '`define A input b\nmodule m #(parameter string S = "`A") (/* `A */ input a // `A\n);\nendmodule\n'
     assert expand(text) == text
@@ -486,13 +506,12 @@ def test_include(tmp_path, caplog):
 
 
 def test_include_precedence(tmp_path):
-    """Included Macros Conflicting With Local Ones Are Ambiguous, Macros Handed Over Win."""
+    """Later Definitions Replace Included Ones, Macros Handed Over Win."""
     (tmp_path / "inc.svh").write_text("`define P input a\n`define Q input q\n")
     top = tmp_path / "top.sv"
     top.write_text('`include "inc.svh"\n`define P input b\nmodule top (`P, `Q);\nendmodule\n')
     module = parse_file(top).modules[0]
-    assert [port.name for port in module.ports] == ["q"]
-    assert module.unresolved_macros == (MacroCall(name="P"),)
+    assert [port.name for port in module.ports] == ["b", "q"]
     module = parse_file(top, macros=parse_defines_text("`define P input c")).modules[0]
     assert [port.name for port in module.ports] == ["c", "q"]
 
@@ -510,7 +529,8 @@ def test_include_unreadable(tmp_path, caplog):
 def test_conflict_is_reported_on_use(caplog):
     """Conflicting Definitions Within The Parsed File Are Reported If The Macro Is Used."""
     text = (
-        "`define W 8\n`define W 16\n`define X 1\n`define X 2\nmodule m (input [`W:0] a, input [`W:0] b);\nendmodule\n"
+        "`ifdef A\n`define W 8\n`define X 1\n`else\n`define W 16\n`define X 2\n`endif\n"
+        "module m (input [`W:0] a, input [`W:0] b);\nendmodule\n"
     )
     assert _ports(text) == ["input [`W:0] a", "input [`W:0] b"]
     assert caplog.text.count("macro `W has conflicting definitions. Not expanded.") == 1
