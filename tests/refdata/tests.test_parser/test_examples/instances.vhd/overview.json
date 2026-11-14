@@ -241,12 +241,12 @@
           }
         },
         {
-          "id": "instances.u_stage",
+          "id": "instances.g_stages.u_stage",
           "name": "u_stage",
           "module": "stage",
           "connections": [
             {
-              "id": "instances.u_stage.clk",
+              "id": "instances.g_stages.u_stage.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -257,7 +257,7 @@
               }
             },
             {
-              "id": "instances.u_stage.din",
+              "id": "instances.g_stages.u_stage.din",
               "port": "din",
               "con": "data(idx)",
               "loc": {
@@ -268,7 +268,7 @@
               }
             },
             {
-              "id": "instances.u_stage.dout",
+              "id": "instances.g_stages.u_stage.dout",
               "port": "dout",
               "con": "data(idx + 1)",
               "loc": {
@@ -279,6 +279,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_stages",
+              "cond": "idx in 3 to STAGES - 1"
+            }
+          ],
           "loc": {
             "line": 83,
             "col": 5,
@@ -287,12 +294,12 @@
           }
         },
         {
-          "id": "instances.u_parity",
+          "id": "instances.g_parity.u_parity",
           "name": "u_parity",
           "module": "parity_gen",
           "connections": [
             {
-              "id": "instances.u_parity.din",
+              "id": "instances.g_parity.u_parity.din",
               "port": "din",
               "con": "data(STAGES)",
               "loc": {
@@ -303,7 +310,7 @@
               }
             },
             {
-              "id": "instances.u_parity.parity",
+              "id": "instances.g_parity.u_parity.parity",
               "port": "parity",
               "con": "par",
               "loc": {
@@ -314,6 +321,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_parity",
+              "cond": "STAGES > 2"
+            }
+          ],
           "loc": {
             "line": 92,
             "col": 5,
@@ -322,12 +336,12 @@
           }
         },
         {
-          "id": "instances.u_sync",
+          "id": "instances.b_sync.u_sync",
           "name": "u_sync",
           "module": "sync",
           "connections": [
             {
-              "id": "instances.u_sync.clk",
+              "id": "instances.b_sync.u_sync.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -338,7 +352,7 @@
               }
             },
             {
-              "id": "instances.u_sync.din",
+              "id": "instances.b_sync.u_sync.din",
               "port": "din",
               "con": "rst",
               "loc": {
@@ -349,7 +363,7 @@
               }
             },
             {
-              "id": "instances.u_sync.dout",
+              "id": "instances.b_sync.u_sync.dout",
               "port": "dout",
               "con": "synced",
               "loc": {
@@ -358,6 +372,12 @@
                 "end_line": 107,
                 "end_col": 23
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "b_sync"
             }
           ],
           "loc": {

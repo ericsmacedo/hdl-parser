@@ -1033,12 +1033,12 @@
           }
         },
         {
-          "id": "axilitecrossbaripintegrator.u_mem~2",
+          "id": "axilitecrossbaripintegrator.gen_vec.u_mem",
           "name": "U_MEM",
           "module": "AxiDualPortRam",
           "params": [
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.addr_width_g",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.addr_width_g",
               "port": "ADDR_WIDTH_G",
               "con": "10",
               "loc": {
@@ -1049,7 +1049,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.data_width_g",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.data_width_g",
               "port": "DATA_WIDTH_G",
               "con": "32",
               "loc": {
@@ -1062,7 +1062,7 @@
           ],
           "connections": [
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axiclk",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axiclk",
               "port": "axiClk",
               "con": "axilClk",
               "loc": {
@@ -1073,7 +1073,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axirst",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axirst",
               "port": "axiRst",
               "con": "axilRst",
               "loc": {
@@ -1084,7 +1084,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axireadmaster",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axireadmaster",
               "port": "axiReadMaster",
               "con": "cascadeReadMasters(i)",
               "loc": {
@@ -1095,7 +1095,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axireadslave",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axireadslave",
               "port": "axiReadSlave",
               "con": "cascadeReadSlaves(i)",
               "loc": {
@@ -1106,7 +1106,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axiwritemaster",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axiwritemaster",
               "port": "axiWriteMaster",
               "con": "cascadeWriteMasters(i)",
               "loc": {
@@ -1117,7 +1117,7 @@
               }
             },
             {
-              "id": "axilitecrossbaripintegrator.u_mem~2.axiwriteslave",
+              "id": "axilitecrossbaripintegrator.gen_vec.u_mem.axiwriteslave",
               "port": "axiWriteSlave",
               "con": "cascadeWriteSlaves(i)",
               "loc": {
@@ -1126,6 +1126,13 @@
                 "end_line": 172,
                 "end_col": 52
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_VEC",
+              "cond": "i in NUM_CASCADE_MASTERS_C-1 downto 0"
             }
           ],
           "loc": {

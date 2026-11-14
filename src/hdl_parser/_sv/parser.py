@@ -66,12 +66,13 @@ _VALUE_STOPS = frozenset((",", ";", *_PARAMS, *_DIRECTIONS))
 
 _PROCEDURES = frozenset(("always", "always_comb", "always_ff", "always_latch", "initial", "final"))
 _ASSERTIONS = frozenset(("assert", "assume", "cover", "restrict", "expect"))
-_CONDITIONALS = frozenset(("if", "for", "case", "casex", "casez"))
+_CONDITIONALS = frozenset(("if", "for"))
+_CASE_GENERATES = frozenset(("case", "casex", "casez"))
 _CASES = frozenset(("case", "casex", "casez", "randcase"))
 _LOOPS = frozenset(("for", "while", "repeat", "foreach", "wait"))
 _PREFIXES = frozenset(("unique", "unique0", "priority", "forever", "else"))
 _JOINS = frozenset(("join", "join_any", "join_none"))
-_LABELED = frozenset(("begin", "end", "generate", "endgenerate", "endcase"))
+_LABELED = frozenset(("generate", "endgenerate"))
 # Blocks without anything to extract: start keyword -> end keyword
 _BLOCKS = {
     "function": "endfunction",
@@ -185,6 +186,7 @@ class _Inst(NamedTuple):
     last: Token
     name: Token
     module: Token
+    generates: tuple[dm.Generate, ...]
     dim: str
     params: list[_Con]
     cons: list[_Con]
@@ -211,6 +213,29 @@ class _Module:
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
     skipped: list[tuple[int, int]] = field(default_factory=list)
+    # generate constructs around the current position, and whether they end with the next item (no `begin`)
+    generates: list[dm.Generate] = field(default_factory=list)
+    single: list[bool] = field(default_factory=list)
+
+    def open_generate(self, generate: dm.Generate, single: bool = False) -> None:
+        """Enter `generate`. `single`: it has no `begin` and ends with the next item."""
+        self.generates.append(generate)
+        self.single.append(single)
+
+    def close_generate(self, kind: str | None = None) -> None:
+        """Leave the innermost block (of `kind`, if given)."""
+        self.close_single()
+        if self.generates and kind in (None, self.generates[-1].kind):
+            self.generates.pop()
+            self.single.pop()
+            # constructs without `begin` end with their block: if (A) for (...) begin ... end
+            self.close_single()
+
+    def close_single(self) -> None:
+        """Leave all constructs, which end with the item parsed last."""
+        while self.single and self.single[-1]:
+            self.generates.pop()
+            self.single.pop()
 
 
 # --- types and declarations ---
@@ -465,7 +490,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
     return cons
 
 
-def _parse_instances(c: Cursor) -> list[_Inst]:
+def _parse_instances(c: Cursor, generates: tuple[dm.Generate, ...]) -> list[_Inst]:
     """Parse `module_name [#(...)] instance_name [dims] (...) {, instance_name [dims] (...)};`."""
     insts: list[_Inst] = []
     c.sink = None
@@ -474,7 +499,7 @@ def _parse_instances(c: Cursor) -> list[_Inst]:
     while True:
         name = c.next()
         dim = _parse_dims(c)
-        insts.append(_Inst(module, name, name, module, dim, params, _parse_connections(c)))
+        insts.append(_Inst(module, name, name, module, generates, dim, params, _parse_connections(c)))
         if c.peek().text == "," and c.peek(1).kind == ID:
             c.next()
         else:
@@ -487,11 +512,12 @@ def _parse_instances(c: Cursor) -> list[_Inst]:
 # --- code without anything to extract ---
 
 
-def _skip_label(c: Cursor) -> None:
-    """Consume optional label: `begin : label`."""
+def _skip_label(c: Cursor) -> str:
+    """Consume optional label: `begin : label`. Return the label."""
     if c.peek().text == ":" and c.peek(1).kind == ID:
         c.next()
-        c.next()
+        return c.next().text
+    return ""
 
 
 def _skip_statement(c: Cursor) -> None:  # noqa: C901, PLR0911, PLR0912, PLR0915
@@ -612,12 +638,67 @@ def _handle_assertion(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_statement(c)
 
 
+# Generate constructs: the items within are parsed like any other item. The module knows the constructs around.
+
+
+def _parse_cond(c: Cursor) -> str:
+    """Parse the optional parenthesized condition of a generate construct."""
+    if c.peek().text != "(":
+        return ""
+    start = c.pos + 1
+    c.skip_balanced()
+    return c.text(start, c.pos - 1).strip()
+
+
+def _open_generate(c: Cursor, mod: _Module, kind: dm.GenerateKind, cond: str = "") -> None:
+    """Enter the generate construct `kind`: a block, if `begin` follows, or just the next item."""
+    if c.accept("begin"):
+        mod.open_generate(dm.Generate(kind=kind, name=_skip_label(c), cond=cond))
+    else:
+        mod.open_generate(dm.Generate(kind=kind, cond=cond), single=True)
+
+
 @_handles(*_CONDITIONALS)
-def _handle_conditional(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
-    """Generate construct: the items within are parsed like any other item."""
+def _handle_conditional(c: Cursor, mod: _Module) -> None:
+    """`if (...) [begin [: label]]` and `for (...) [begin [: label]]`."""
+    kind: dm.GenerateKind = "if" if c.next().text == "if" else "for"
+    _open_generate(c, mod, kind, _parse_cond(c))
+
+
+@_handles("else")
+def _handle_else(c: Cursor, mod: _Module) -> None:
+    """`else [begin [: label]]`. The `if` of `else if` is a generate construct on its own."""
     c.next()
-    if c.peek().text == "(":
-        c.skip_balanced()
+    if c.peek().text != "if":
+        _open_generate(c, mod, "else")
+
+
+@_handles(*_CASE_GENERATES)
+def _handle_case(c: Cursor, mod: _Module) -> None:
+    """`case (...)`, up to `endcase`."""
+    c.next()
+    mod.open_generate(dm.Generate(kind="case", cond=_parse_cond(c)))
+
+
+@_handles("endcase")
+def _handle_endcase(c: Cursor, mod: _Module) -> None:
+    c.next()
+    _skip_label(c)
+    mod.close_generate("case")
+
+
+@_handles("begin")
+def _handle_begin(c: Cursor, mod: _Module) -> None:
+    """`begin [: label]` on its own, i.e. as case item."""
+    c.next()
+    mod.open_generate(dm.Generate(kind="begin", name=_skip_label(c)))
+
+
+@_handles("end")
+def _handle_end(c: Cursor, mod: _Module) -> None:
+    c.next()
+    _skip_label(c)
+    mod.close_generate()
 
 
 @_handles(*_LABELED)
@@ -648,24 +729,31 @@ def _handle_declaration(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
 def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
     """Parse module item starting with an identifier."""
     if c.peek(1).text == ":":
-        # label
+        # label of a generate block: label : begin
+        name = c.next().text
         c.next()
-        c.next()
+        if c.accept("begin"):
+            mod.open_generate(dm.Generate(kind="begin", name=_skip_label(c) or name))
     elif _is_instance(c):
-        mod.insts.extend(_parse_instances(c))
+        mod.insts.extend(_parse_instances(c, tuple(mod.generates)))
     else:
         # declaration or statement, or the expression of a case-generate item
         c.skip_until(_LABEL_OR_SEMI)
         c.next()
 
 
-def _parse_body(c: Cursor, mod: _Module) -> None:
+def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
     """Parse module items up to `endmodule`.
 
     Items starting with a keyword are parsed by the related function of `_BODY_HANDLERS`.
     """
     handlers = _BODY_HANDLERS
+    depth = 0
     while True:
+        if len(mod.generates) == depth:
+            # the item parsed last did not open a generate construct: it ends the ones without `begin`
+            mod.close_single()
+        depth = len(mod.generates)
         tok = c.peek()
         text = tok.text
         kind = tok.kind
@@ -790,6 +878,7 @@ def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstanc
         dm.ModuleInstance(
             name=inst.name.text,
             module=inst.module.text,
+            generates=inst.generates,
             dim=inst.dim,
             params=_create_connections(inst.params, smap),
             connections=_create_connections(inst.cons, smap),

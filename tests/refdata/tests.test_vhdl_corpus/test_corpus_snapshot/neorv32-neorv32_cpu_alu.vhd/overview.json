@@ -572,12 +572,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst",
           "name": "cpu_alu_muldiv_inst",
           "module": "neorv32_cpu_alu_muldiv",
           "params": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.fast_mul_en",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.fast_mul_en",
               "port": "FAST_MUL_EN",
               "con": "FAST_MUL_EN",
               "comment": [
@@ -591,7 +591,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.fast_mul_regs",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.fast_mul_regs",
               "port": "FAST_MUL_REGS",
               "con": "FAST_MUL_REGS",
               "comment": [
@@ -605,7 +605,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.division_en",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.division_en",
               "port": "DIVISION_EN",
               "con": "RISCV_ISA_M",
               "comment": [
@@ -621,7 +621,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -635,7 +635,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.rstn_i",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -649,7 +649,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.ctrl_i",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl_i",
               "comment": [
@@ -664,7 +664,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -678,7 +678,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -693,7 +693,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.res_o",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.res_o",
               "port": "res_o",
               "con": "cp_result(1)",
               "comment": [
@@ -707,7 +707,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_muldiv_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_muldiv_enabled.cpu_alu_muldiv_inst.valid_o",
               "port": "valid_o",
               "con": "cp_valid(1)",
               "comment": [
@@ -721,6 +721,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_muldiv_enabled",
+              "cond": "RISCV_ISA_M or RISCV_ISA_Zmmul"
+            }
+          ],
           "loc": {
             "line": 174,
             "col": 5,
@@ -729,12 +736,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst",
           "name": "cpu_alu_bitmanip_inst",
           "module": "neorv32_cpu_alu_bitmanip",
           "params": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.fast_shift",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.fast_shift",
               "port": "FAST_SHIFT",
               "con": "FAST_SHIFT_EN",
               "comment": [
@@ -748,7 +755,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zba",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zba",
               "port": "ZBA",
               "con": "RISCV_ISA_Zba",
               "comment": [
@@ -762,7 +769,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbb",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbb",
               "port": "ZBB",
               "con": "RISCV_ISA_Zbb",
               "comment": [
@@ -776,7 +783,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbc",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbc",
               "port": "ZBC",
               "con": "RISCV_ISA_Zbc",
               "comment": [
@@ -790,7 +797,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbkb",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbkb",
               "port": "ZBKB",
               "con": "RISCV_ISA_Zbkb",
               "comment": [
@@ -804,7 +811,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbkc",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbkc",
               "port": "ZBKC",
               "con": "RISCV_ISA_Zbkc",
               "comment": [
@@ -818,7 +825,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbkx",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbkx",
               "port": "ZBKX",
               "con": "RISCV_ISA_Zbkx",
               "comment": [
@@ -832,7 +839,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.zbs",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.zbs",
               "port": "ZBS",
               "con": "RISCV_ISA_Zbs",
               "comment": [
@@ -848,7 +855,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -862,7 +869,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.rstn_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -876,7 +883,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.ctrl_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl_i",
               "comment": [
@@ -891,7 +898,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.less_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.less_i",
               "port": "less_i",
               "con": "cmp_lt",
               "comment": [
@@ -905,7 +912,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -919,7 +926,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -933,7 +940,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.shamt_i",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.shamt_i",
               "port": "shamt_i",
               "con": "opb(4 downto 0)",
               "comment": [
@@ -948,7 +955,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.res_o",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.res_o",
               "port": "res_o",
               "con": "cp_result(2)",
               "comment": [
@@ -962,7 +969,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_bitmanip_enabled.cpu_alu_bitmanip_inst.valid_o",
               "port": "valid_o",
               "con": "cp_valid(2)",
               "comment": [
@@ -976,6 +983,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_bitmanip_enabled",
+              "cond": "RISCV_ISA_Zba or RISCV_ISA_Zbb or RISCV_ISA_Zbc or RISCV_ISA_Zbkb or RISCV_ISA_Zbkc or RISCV_ISA_Zbkx or RISCV_ISA_Zbs"
+            }
+          ],
           "loc": {
             "line": 204,
             "col": 5,
@@ -984,12 +998,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_fpu_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst",
           "name": "cpu_alu_fpu_inst",
           "module": "neorv32_cpu_alu_fpu",
           "params": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.fpu_subnormal_support",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.fpu_subnormal_support",
               "port": "FPU_SUBNORMAL_SUPPORT",
               "con": "false",
               "comment": [
@@ -1005,7 +1019,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -1019,7 +1033,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.rstn_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -1033,7 +1047,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.ctrl_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl_i",
               "comment": [
@@ -1048,7 +1062,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.csr_we_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.csr_we_i",
               "port": "csr_we_i",
               "con": "fpu_csr_we",
               "comment": [
@@ -1062,7 +1076,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.csr_addr_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.csr_addr_i",
               "port": "csr_addr_i",
               "con": "ctrl_i.csr_addr(1 downto 0)",
               "comment": [
@@ -1076,7 +1090,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.csr_wdata_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.csr_wdata_i",
               "port": "csr_wdata_i",
               "con": "ctrl_i.csr_wdata",
               "comment": [
@@ -1090,7 +1104,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.csr_rdata_o",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.csr_rdata_o",
               "port": "csr_rdata_o",
               "con": "fpu_csr_rd",
               "comment": [
@@ -1105,7 +1119,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.equal_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.equal_i",
               "port": "equal_i",
               "con": "cmp_eq",
               "comment": [
@@ -1119,7 +1133,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.less_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.less_i",
               "port": "less_i",
               "con": "cmp_lt",
               "comment": [
@@ -1133,7 +1147,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -1147,7 +1161,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -1162,7 +1176,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.res_o",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.res_o",
               "port": "res_o",
               "con": "cp_result(3)",
               "comment": [
@@ -1176,7 +1190,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_fpu_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_fpu_enabled.cpu_alu_fpu_inst.valid_o",
               "port": "valid_o",
               "con": "cp_valid(3)",
               "comment": [
@@ -1190,6 +1204,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_fpu_enabled",
+              "cond": "RISCV_ISA_Zfinx"
+            }
+          ],
           "loc": {
             "line": 241,
             "col": 5,
@@ -1198,12 +1219,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_cfu_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst",
           "name": "cpu_alu_cfu_inst",
           "module": "neorv32_cpu_alu_cfu",
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -1217,7 +1238,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.rstn_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -1232,7 +1253,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.start_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.start_i",
               "port": "start_i",
               "con": "ctrl_i.alu_cp_cfu",
               "comment": [
@@ -1246,7 +1267,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.inst_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.inst_i",
               "port": "inst_i",
               "con": "cfu_inst",
               "comment": [
@@ -1260,7 +1281,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -1274,7 +1295,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -1289,7 +1310,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.result_o",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.result_o",
               "port": "result_o",
               "con": "cfu_res",
               "comment": [
@@ -1303,7 +1324,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cfu_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cpu_alu_cfu_inst.valid_o",
               "port": "valid_o",
               "con": "cfu_done",
               "comment": [
@@ -1317,6 +1338,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_cfu_enabled",
+              "cond": "RISCV_ISA_Xcfu"
+            }
+          ],
           "loc": {
             "line": 286,
             "col": 5,
@@ -1325,12 +1353,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_cond_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst",
           "name": "cpu_alu_cond_inst",
           "module": "neorv32_cpu_alu_cond",
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -1344,7 +1372,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.ctrl_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl_i",
               "comment": [
@@ -1359,7 +1387,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -1373,7 +1401,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -1388,7 +1416,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.res_o",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.res_o",
               "port": "res_o",
               "con": "cp_result(5)",
               "comment": [
@@ -1402,7 +1430,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_cond_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_cond_enabled.cpu_alu_cond_inst.valid_o",
               "port": "valid_o",
               "con": "cp_valid(5)",
               "comment": [
@@ -1416,6 +1444,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_cond_enabled",
+              "cond": "RISCV_ISA_Zicond"
+            }
+          ],
           "loc": {
             "line": 341,
             "col": 5,
@@ -1424,12 +1459,12 @@
           }
         },
         {
-          "id": "neorv32_cpu_alu.cpu_alu_crypto_inst",
+          "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst",
           "name": "cpu_alu_crypto_inst",
           "module": "neorv32_cpu_alu_crypto",
           "params": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.en_zknd",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.en_zknd",
               "port": "EN_ZKND",
               "con": "RISCV_ISA_Zknd",
               "comment": [
@@ -1443,7 +1478,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.en_zkne",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.en_zkne",
               "port": "EN_ZKNE",
               "con": "RISCV_ISA_Zkne",
               "comment": [
@@ -1457,7 +1492,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.en_zknh",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.en_zknh",
               "port": "EN_ZKNH",
               "con": "RISCV_ISA_Zknh",
               "comment": [
@@ -1471,7 +1506,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.en_zksed",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.en_zksed",
               "port": "EN_ZKSED",
               "con": "RISCV_ISA_Zksed",
               "comment": [
@@ -1485,7 +1520,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.en_zksh",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.en_zksh",
               "port": "EN_ZKSH",
               "con": "RISCV_ISA_Zksh",
               "comment": [
@@ -1501,7 +1536,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.clk_i",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -1515,7 +1550,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.rstn_i",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -1529,7 +1564,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.ctrl_i",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl_i",
               "comment": [
@@ -1544,7 +1579,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.rs1_i",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.rs1_i",
               "port": "rs1_i",
               "con": "rs1_i",
               "comment": [
@@ -1558,7 +1593,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.rs2_i",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.rs2_i",
               "port": "rs2_i",
               "con": "rs2_i",
               "comment": [
@@ -1573,7 +1608,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.res_o",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.res_o",
               "port": "res_o",
               "con": "cp_result(6)",
               "comment": [
@@ -1587,7 +1622,7 @@
               }
             },
             {
-              "id": "neorv32_cpu_alu.cpu_alu_crypto_inst.valid_o",
+              "id": "neorv32_cpu_alu.cpu_alu_crypto_enabled.cpu_alu_crypto_inst.valid_o",
               "port": "valid_o",
               "con": "cp_valid(6)",
               "comment": [
@@ -1599,6 +1634,13 @@
                 "end_line": 383,
                 "end_col": 29
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_crypto_enabled",
+              "cond": "RISCV_ISA_Zknd or RISCV_ISA_Zkne or RISCV_ISA_Zknh or RISCV_ISA_Zksed or RISCV_ISA_Zksh"
             }
           ],
           "loc": {

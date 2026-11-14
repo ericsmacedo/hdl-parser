@@ -41,7 +41,7 @@ are dispatched by their leading keyword: a new one is a function decorated with 
 
 import re
 from collections.abc import Callable, Iterator
-from typing import NamedTuple
+from typing import NamedTuple, cast
 
 from .. import datamodel as dm  # noqa: TID252
 from .._diagnostics import Diagnostics, shorten  # noqa: TID252
@@ -86,7 +86,18 @@ class _Decl(NamedTuple):
 class _Unit:
     """Entity With The Instances Of Its Architectures."""
 
-    __slots__ = ("arch_loc", "depth", "diagnostics", "generics", "insts", "loc", "name", "ports", "smap")
+    __slots__ = (
+        "arch_loc",
+        "diagnostics",
+        "generates",
+        "generics",
+        "insts",
+        "label",
+        "loc",
+        "name",
+        "ports",
+        "smap",
+    )
 
     def __init__(self, name: str, smap: SourceMap, diagnostics: Diagnostics):
         self.name = name
@@ -95,8 +106,9 @@ class _Unit:
         self.generics: list[_Decl] = []
         self.ports: list[_Decl] = []
         self.insts: list[dm.ModuleInstance] = []
-        # nesting level of generate and block statements
-        self.depth = 0
+        # generate and block statements around the current position, and the label parsed last
+        self.generates: list[dm.Generate] = []
+        self.label = ""
         # entity, and first architecture
         self.loc: dm.Location | None = None
         self.arch_loc: dm.Location | None = None
@@ -293,6 +305,7 @@ def _parse_labeled(c: Cursor, unit: _Unit) -> None:
     tok = c.peek()
     if tok.kind == KW:
         if tok.text not in _INSTANCES:
+            unit.label = label.text
             return
         c.next()
     elif tok.kind != ID or not _is_component_instance(c):
@@ -301,7 +314,8 @@ def _parse_labeled(c: Cursor, unit: _Unit) -> None:
     c.skip_until(_SEMI)
     c.accept(";")
     if inst:
-        unit.insts.append(inst.model_copy(update={"loc": unit.smap.span(label, _last(c), label)}))
+        update = {"loc": unit.smap.span(label, _last(c), label), "generates": tuple(unit.generates)}
+        unit.insts.append(inst.model_copy(update=update))
 
 
 # --- architecture ---
@@ -401,16 +415,18 @@ def _handle_block(c: Cursor, unit: _Unit) -> None:
     if c.peek().text == "(":
         c.skip_balanced()
     c.accept("is")
-    unit.depth += 1
+    unit.generates.append(dm.Generate(kind="block", name=unit.label))
 
 
 @_handles("for", "if", "case")
 def _handle_generate(c: Cursor, unit: _Unit) -> None:
     """`for|if|case ... generate ... end generate [label];`. The items within are parsed like any other item."""
-    c.next()
+    kind = cast("dm.GenerateKind", c.next().text)
+    start = c.pos
     c.skip_until(_SEMI_OR_GENERATE)
-    if c.accept("generate"):
-        unit.depth += 1
+    if c.peek().text == "generate":
+        unit.generates.append(dm.Generate(kind=kind, name=unit.label, cond=c.text(start, c.pos).strip()))
+        c.next()
     else:
         # configuration specification: for all : comp use entity work.comp;
         c.accept(";")
@@ -439,8 +455,9 @@ def _parse_end(c: Cursor, unit: _Unit) -> bool:
     c.next()
     nxt = c.peek()
     if nxt.text in _NESTED:
-        unit.depth = max(unit.depth - 1, 0)
-    elif not unit.depth and (nxt.kind != KW or nxt.text == "architecture"):
+        if unit.generates:
+            unit.generates.pop()
+    elif not unit.generates and (nxt.kind != KW or nxt.text == "architecture"):
         return True
     # everything else is the end of something within, i.e. the alternative of a generate
     _skip_statement(c)
@@ -453,7 +470,7 @@ def _parse_architecture(c: Cursor, unit: _Unit) -> bool:
     Items starting with a keyword are parsed by the related function of `_HANDLERS`.
     """
     handlers = _HANDLERS
-    unit.depth = 0
+    unit.generates = []
     while True:
         tok = c.peek()
         kind = tok.kind

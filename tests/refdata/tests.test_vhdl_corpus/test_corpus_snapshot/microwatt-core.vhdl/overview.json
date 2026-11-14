@@ -2096,12 +2096,12 @@
           }
         },
         {
-          "id": "core.fpu_0",
+          "id": "core.with_fpu.fpu_0",
           "name": "fpu_0",
           "module": "fpu",
           "connections": [
             {
-              "id": "core.fpu_0.clk",
+              "id": "core.with_fpu.fpu_0.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -2112,7 +2112,7 @@
               }
             },
             {
-              "id": "core.fpu_0.rst",
+              "id": "core.with_fpu.fpu_0.rst",
               "port": "rst",
               "con": "rst_fpu",
               "loc": {
@@ -2123,7 +2123,7 @@
               }
             },
             {
-              "id": "core.fpu_0.flush_in",
+              "id": "core.with_fpu.fpu_0.flush_in",
               "port": "flush_in",
               "con": "flush",
               "loc": {
@@ -2134,7 +2134,7 @@
               }
             },
             {
-              "id": "core.fpu_0.e_in",
+              "id": "core.with_fpu.fpu_0.e_in",
               "port": "e_in",
               "con": "execute1_to_fpu",
               "loc": {
@@ -2145,7 +2145,7 @@
               }
             },
             {
-              "id": "core.fpu_0.e_out",
+              "id": "core.with_fpu.fpu_0.e_out",
               "port": "e_out",
               "con": "fpu_to_execute1",
               "loc": {
@@ -2156,7 +2156,7 @@
               }
             },
             {
-              "id": "core.fpu_0.w_out",
+              "id": "core.with_fpu.fpu_0.w_out",
               "port": "w_out",
               "con": "fpu_to_writeback",
               "loc": {
@@ -2165,6 +2165,13 @@
                 "end_line": 431,
                 "end_col": 42
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "with_fpu",
+              "cond": "HAS_FPU"
             }
           ],
           "loc": {

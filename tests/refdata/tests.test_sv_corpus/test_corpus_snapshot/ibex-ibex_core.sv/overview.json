@@ -2071,12 +2071,12 @@
       ],
       "insts": [
         {
-          "id": "ibex_core.u_fetch_enable_buf",
+          "id": "ibex_core.g_core_busy_secure.u_fetch_enable_buf",
           "name": "u_fetch_enable_buf",
           "module": "prim_buf",
           "params": [
             {
-              "id": "ibex_core.u_fetch_enable_buf.Width",
+              "id": "ibex_core.g_core_busy_secure.u_fetch_enable_buf.Width",
               "port": "Width",
               "con": "NumBusyBits",
               "loc": {
@@ -2089,7 +2089,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_core.u_fetch_enable_buf.in_i",
+              "id": "ibex_core.g_core_busy_secure.u_fetch_enable_buf.in_i",
               "port": "in_i",
               "con": "{$bits(ibex_mubi_t){ctrl_busy, if_busy, lsu_busy}}",
               "loc": {
@@ -2100,7 +2100,7 @@
               }
             },
             {
-              "id": "ibex_core.u_fetch_enable_buf.out_o",
+              "id": "ibex_core.g_core_busy_secure.u_fetch_enable_buf.out_o",
               "port": "out_o",
               "con": "busy_bits_buf",
               "loc": {
@@ -2109,6 +2109,13 @@
                 "end_line": 504,
                 "end_col": 28
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_core_busy_secure",
+              "cond": "SecureIbex"
             }
           ],
           "loc": {
@@ -5268,12 +5275,12 @@
           }
         },
         {
-          "id": "ibex_core.u_ibex_cheriot_ex",
+          "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex",
           "name": "u_ibex_cheriot_ex",
           "module": "ibex_cheriot_ex",
           "params": [
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.WritebackStage",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.WritebackStage",
               "port": "WritebackStage",
               "con": "WritebackStage",
               "loc": {
@@ -5286,7 +5293,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.clk_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -5297,7 +5304,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rst_ni",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -5308,7 +5315,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_enable_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_enable_i",
               "port": "cheriot_enable_i",
               "con": "cheriot_enable_i",
               "loc": {
@@ -5319,7 +5326,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.debug_mode_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.debug_mode_i",
               "port": "debug_mode_i",
               "con": "debug_mode",
               "loc": {
@@ -5330,7 +5337,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.fwd_we_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.fwd_we_i",
               "port": "fwd_we_i",
               "con": "rf_write_wb",
               "loc": {
@@ -5341,7 +5348,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.fwd_waddr_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.fwd_waddr_i",
               "port": "fwd_waddr_i",
               "con": "rf_waddr_wb",
               "loc": {
@@ -5352,7 +5359,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.fwd_wdata_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.fwd_wdata_i",
               "port": "fwd_wdata_i",
               "con": "rf_wdata_fwd_wb",
               "loc": {
@@ -5363,7 +5370,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.fwd_wcap_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.fwd_wcap_i",
               "port": "fwd_wcap_i",
               "con": "rf_wcap_fwd_wb",
               "loc": {
@@ -5374,7 +5381,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_raddr_a_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_raddr_a_i",
               "port": "rf_raddr_a_i",
               "con": "rf_raddr_a",
               "loc": {
@@ -5385,7 +5392,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_rdata_a_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_rdata_a_i",
               "port": "rf_rdata_a_i",
               "con": "rf_rdata_a",
               "loc": {
@@ -5396,7 +5403,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_rcap_a_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_rcap_a_i",
               "port": "rf_rcap_a_i",
               "con": "rf_rcap_a",
               "loc": {
@@ -5407,7 +5414,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_raddr_b_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_raddr_b_i",
               "port": "rf_raddr_b_i",
               "con": "rf_raddr_b",
               "loc": {
@@ -5418,7 +5425,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_rdata_b_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_rdata_b_i",
               "port": "rf_rdata_b_i",
               "con": "rf_rdata_b",
               "loc": {
@@ -5429,7 +5436,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_rcap_b_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_rcap_b_i",
               "port": "rf_rcap_b_i",
               "con": "rf_rcap_b",
               "loc": {
@@ -5440,7 +5447,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rf_waddr_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rf_waddr_i",
               "port": "rf_waddr_i",
               "con": "rf_waddr_id",
               "loc": {
@@ -5451,7 +5458,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.pcc_cap_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.pcc_cap_i",
               "port": "pcc_cap_i",
               "con": "pcc_cap_r",
               "loc": {
@@ -5462,7 +5469,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.pcc_cap_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.pcc_cap_o",
               "port": "pcc_cap_o",
               "con": "pcc_cap_w",
               "loc": {
@@ -5473,7 +5480,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.pc_id_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.pc_id_i",
               "port": "pc_id_i",
               "con": "pc_id",
               "loc": {
@@ -5484,7 +5491,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.branch_req_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.branch_req_o",
               "port": "branch_req_o",
               "con": "cheriot_branch_req",
               "loc": {
@@ -5495,7 +5502,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.branch_req_spec_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.branch_req_spec_o",
               "port": "branch_req_spec_o",
               "con": "cheriot_branch_req_spec",
               "loc": {
@@ -5506,7 +5513,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.branch_target_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.branch_target_o",
               "port": "branch_target_o",
               "con": "branch_target_ex_cheriot",
               "loc": {
@@ -5517,7 +5524,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_exec_id_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_exec_id_i",
               "port": "cheriot_exec_id_i",
               "con": "cheriot_exec_id",
               "loc": {
@@ -5528,7 +5535,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.instr_valid_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.instr_valid_i",
               "port": "instr_valid_i",
               "con": "instr_valid_id",
               "loc": {
@@ -5539,7 +5546,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.instr_first_cycle_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.instr_first_cycle_i",
               "port": "instr_first_cycle_i",
               "con": "instr_first_cycle_id",
               "loc": {
@@ -5550,7 +5557,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.instr_is_cheriot_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.instr_is_cheriot_i",
               "port": "instr_is_cheriot_i",
               "con": "instr_is_cheriot_id",
               "loc": {
@@ -5561,7 +5568,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.instr_is_rv32lsu_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.instr_is_rv32lsu_i",
               "port": "instr_is_rv32lsu_i",
               "con": "instr_is_rv32lsu_id",
               "loc": {
@@ -5572,7 +5579,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.instr_is_compressed_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.instr_is_compressed_i",
               "port": "instr_is_compressed_i",
               "con": "instr_is_compressed_id",
               "loc": {
@@ -5583,7 +5590,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_imm12_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_imm12_i",
               "port": "cheriot_imm12_i",
               "con": "cheriot_imm12",
               "loc": {
@@ -5594,7 +5601,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_imm20_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_imm20_i",
               "port": "cheriot_imm20_i",
               "con": "cheriot_imm20",
               "loc": {
@@ -5605,7 +5612,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_imm21_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_imm21_i",
               "port": "cheriot_imm21_i",
               "con": "cheriot_imm21",
               "loc": {
@@ -5616,7 +5623,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_operator_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_operator_i",
               "port": "cheriot_operator_i",
               "con": "cheriot_operator",
               "loc": {
@@ -5627,7 +5634,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_cs2_dec_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_cs2_dec_i",
               "port": "cheriot_cs2_dec_i",
               "con": "cheriot_cs2_dec",
               "loc": {
@@ -5638,7 +5645,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_cap_field_sel_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_cap_field_sel_i",
               "port": "cheriot_cap_field_sel_i",
               "con": "cheriot_cap_field_sel",
               "loc": {
@@ -5649,7 +5656,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_adder_a_sel_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_adder_a_sel_i",
               "port": "cheriot_adder_a_sel_i",
               "con": "cheriot_adder_a_sel",
               "loc": {
@@ -5660,7 +5667,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_adder_b_sel_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_adder_b_sel_i",
               "port": "cheriot_adder_b_sel_i",
               "con": "cheriot_adder_b_sel",
               "loc": {
@@ -5671,7 +5678,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_setaddr_sel_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_setaddr_sel_i",
               "port": "cheriot_setaddr_sel_i",
               "con": "cheriot_setaddr_sel",
               "loc": {
@@ -5682,7 +5689,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_setbounds_sel_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_setbounds_sel_i",
               "port": "cheriot_setbounds_sel_i",
               "con": "cheriot_setbounds_sel",
               "loc": {
@@ -5693,7 +5700,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_rf_we_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_rf_we_o",
               "port": "cheriot_rf_we_o",
               "con": "cheriot_rf_we",
               "loc": {
@@ -5704,7 +5711,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.result_data_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.result_data_o",
               "port": "result_data_o",
               "con": "cheriot_result_data",
               "loc": {
@@ -5715,7 +5722,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.result_cap_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.result_cap_o",
               "port": "result_cap_o",
               "con": "cheriot_result_cap",
               "loc": {
@@ -5726,7 +5733,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_ex_valid_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_ex_valid_o",
               "port": "cheriot_ex_valid_o",
               "con": "cheriot_ex_valid",
               "loc": {
@@ -5737,7 +5744,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_ex_err_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_ex_err_o",
               "port": "cheriot_ex_err_o",
               "con": "cheriot_ex_err",
               "loc": {
@@ -5748,7 +5755,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_ex_err_info_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_ex_err_info_o",
               "port": "cheriot_ex_err_info_o",
               "con": "cheriot_ex_err_info",
               "loc": {
@@ -5759,7 +5766,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_wb_err_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_wb_err_o",
               "port": "cheriot_wb_err_o",
               "con": "cheriot_wb_err",
               "loc": {
@@ -5770,7 +5777,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.cheriot_wb_err_info_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.cheriot_wb_err_info_o",
               "port": "cheriot_wb_err_info_o",
               "con": "cheriot_wb_err_info",
               "loc": {
@@ -5781,7 +5788,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_req_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_req_o",
               "port": "lsu_req_o",
               "con": "lsu_req",
               "loc": {
@@ -5792,7 +5799,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_is_cap_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_is_cap_o",
               "port": "lsu_is_cap_o",
               "con": "lsu_is_cap",
               "loc": {
@@ -5803,7 +5810,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_lc_clrperm_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_lc_clrperm_o",
               "port": "lsu_lc_clrperm_o",
               "con": "lsu_lc_clrperm",
               "loc": {
@@ -5814,7 +5821,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_cheriot_err_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_cheriot_err_o",
               "port": "lsu_cheriot_err_o",
               "con": "lsu_cheriot_err",
               "loc": {
@@ -5825,7 +5832,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_we_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_we_o",
               "port": "lsu_we_o",
               "con": "lsu_we",
               "loc": {
@@ -5836,7 +5843,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_addr_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_addr_o",
               "port": "lsu_addr_o",
               "con": "lsu_addr",
               "loc": {
@@ -5847,7 +5854,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_type_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_type_o",
               "port": "lsu_type_o",
               "con": "lsu_type",
               "loc": {
@@ -5858,7 +5865,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_wdata_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_wdata_o",
               "port": "lsu_wdata_o",
               "con": "lsu_wdata",
               "loc": {
@@ -5869,7 +5876,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_wcap_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_wcap_o",
               "port": "lsu_wcap_o",
               "con": "lsu_wcap",
               "loc": {
@@ -5880,7 +5887,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.lsu_sign_ext_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.lsu_sign_ext_o",
               "port": "lsu_sign_ext_o",
               "con": "lsu_sign_ext",
               "loc": {
@@ -5891,7 +5898,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.addr_incr_req_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.addr_incr_req_i",
               "port": "addr_incr_req_i",
               "con": "lsu_addr_incr_req",
               "loc": {
@@ -5902,7 +5909,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.addr_last_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.addr_last_i",
               "port": "addr_last_i",
               "con": "lsu_addr_last",
               "loc": {
@@ -5913,7 +5920,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_req_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_req_i",
               "port": "rv32_lsu_req_i",
               "con": "rv32_lsu_req",
               "loc": {
@@ -5924,7 +5931,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_we_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_we_i",
               "port": "rv32_lsu_we_i",
               "con": "rv32_lsu_we",
               "loc": {
@@ -5935,7 +5942,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_type_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_type_i",
               "port": "rv32_lsu_type_i",
               "con": "rv32_lsu_type",
               "loc": {
@@ -5946,7 +5953,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_wdata_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_wdata_i",
               "port": "rv32_lsu_wdata_i",
               "con": "rv32_lsu_wdata",
               "loc": {
@@ -5957,7 +5964,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_sign_ext_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_sign_ext_i",
               "port": "rv32_lsu_sign_ext_i",
               "con": "rv32_lsu_sign_ext",
               "loc": {
@@ -5968,7 +5975,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_lsu_addr_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_lsu_addr_i",
               "port": "rv32_lsu_addr_i",
               "con": "alu_adder_result_ex",
               "loc": {
@@ -5979,7 +5986,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_addr_incr_req_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_addr_incr_req_o",
               "port": "rv32_addr_incr_req_o",
               "con": "rv32_lsu_addr_incr_req",
               "loc": {
@@ -5990,7 +5997,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.rv32_addr_last_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.rv32_addr_last_o",
               "port": "rv32_addr_last_o",
               "con": "rv32_lsu_addr_last",
               "loc": {
@@ -6001,7 +6008,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_rdata_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_rdata_i",
               "port": "csr_rdata_i",
               "con": "cheriot_csr_rdata",
               "loc": {
@@ -6012,7 +6019,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_rcap_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_rcap_i",
               "port": "csr_rcap_i",
               "con": "cheriot_csr_rcap",
               "loc": {
@@ -6023,7 +6030,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_mstatus_mie_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_mstatus_mie_i",
               "port": "csr_mstatus_mie_i",
               "con": "csr_mstatus_mie",
               "loc": {
@@ -6034,7 +6041,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_access_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_access_o",
               "port": "csr_access_o",
               "con": "cheriot_csr_access",
               "loc": {
@@ -6045,7 +6052,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_addr_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_addr_o",
               "port": "csr_addr_o",
               "con": "cheriot_csr_addr",
               "loc": {
@@ -6056,7 +6063,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_wdata_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_wdata_o",
               "port": "csr_wdata_o",
               "con": "cheriot_csr_wdata",
               "loc": {
@@ -6067,7 +6074,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_wcap_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_wcap_o",
               "port": "csr_wcap_o",
               "con": "cheriot_csr_wcap",
               "loc": {
@@ -6078,7 +6085,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_op_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_op_o",
               "port": "csr_op_o",
               "con": "cheriot_csr_op",
               "loc": {
@@ -6089,7 +6096,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_op_en_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_op_en_o",
               "port": "csr_op_en_o",
               "con": "cheriot_csr_op_en",
               "loc": {
@@ -6100,7 +6107,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_set_mie_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_set_mie_o",
               "port": "csr_set_mie_o",
               "con": "cheriot_csr_set_mie",
               "loc": {
@@ -6111,7 +6118,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_clr_mie_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_clr_mie_o",
               "port": "csr_clr_mie_o",
               "con": "cheriot_csr_clr_mie",
               "loc": {
@@ -6122,7 +6129,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_mshwm_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_mshwm_i",
               "port": "csr_mshwm_i",
               "con": "csr_mshwm",
               "loc": {
@@ -6133,7 +6140,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_mshwmb_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_mshwmb_i",
               "port": "csr_mshwmb_i",
               "con": "csr_mshwmb",
               "loc": {
@@ -6144,7 +6151,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_mshwm_set_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_mshwm_set_o",
               "port": "csr_mshwm_set_o",
               "con": "csr_mshwm_set",
               "loc": {
@@ -6155,7 +6162,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_mshwm_new_o",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_mshwm_new_o",
               "port": "csr_mshwm_new_o",
               "con": "csr_mshwm_new",
               "loc": {
@@ -6166,7 +6173,7 @@
               }
             },
             {
-              "id": "ibex_core.u_ibex_cheriot_ex.csr_dbg_tclr_fault_i",
+              "id": "ibex_core.g_cheriot_ex.u_ibex_cheriot_ex.csr_dbg_tclr_fault_i",
               "port": "csr_dbg_tclr_fault_i",
               "con": "csr_dbg_tclr_fault",
               "loc": {
@@ -6175,6 +6182,13 @@
                 "end_line": 992,
                 "end_col": 52
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_ex",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
             }
           ],
           "loc": {
@@ -7170,12 +7184,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_ecc_enc",
+          "id": "ibex_core.gen_regfile_ecc.regfile_ecc_enc",
           "name": "regfile_ecc_enc",
           "module": "prim_secded_inv_39_32_enc",
           "connections": [
             {
-              "id": "ibex_core.regfile_ecc_enc.data_i",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_enc.data_i",
               "port": "data_i",
               "con": "rf_wdata_wb",
               "loc": {
@@ -7186,7 +7200,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_enc.data_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_enc.data_o",
               "port": "data_o",
               "con": "rf_wdata_wb_ecc_o",
               "loc": {
@@ -7197,6 +7211,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            }
+          ],
           "loc": {
             "line": 1217,
             "col": 5,
@@ -7205,12 +7226,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_ecc_dec_a",
+          "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_a",
           "name": "regfile_ecc_dec_a",
           "module": "prim_secded_inv_39_32_dec",
           "connections": [
             {
-              "id": "ibex_core.regfile_ecc_dec_a.data_i",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_a.data_i",
               "port": "data_i",
               "con": "rf_rdata_a_ecc_i",
               "loc": {
@@ -7221,7 +7242,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_a.data_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_a.data_o",
               "port": "data_o",
               "loc": {
                 "line": 1225,
@@ -7231,7 +7252,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_a.syndrome_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_a.syndrome_o",
               "port": "syndrome_o",
               "loc": {
                 "line": 1226,
@@ -7241,7 +7262,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_a.err_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_a.err_o",
               "port": "err_o",
               "con": "rf_ecc_err_a",
               "loc": {
@@ -7252,6 +7273,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            }
+          ],
           "loc": {
             "line": 1223,
             "col": 5,
@@ -7260,12 +7288,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_ecc_dec_b",
+          "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_b",
           "name": "regfile_ecc_dec_b",
           "module": "prim_secded_inv_39_32_dec",
           "connections": [
             {
-              "id": "ibex_core.regfile_ecc_dec_b.data_i",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_b.data_i",
               "port": "data_i",
               "con": "rf_rdata_b_ecc_i",
               "loc": {
@@ -7276,7 +7304,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_b.data_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_b.data_o",
               "port": "data_o",
               "loc": {
                 "line": 1231,
@@ -7286,7 +7314,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_b.syndrome_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_b.syndrome_o",
               "port": "syndrome_o",
               "loc": {
                 "line": 1232,
@@ -7296,7 +7324,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_ecc_dec_b.err_o",
+              "id": "ibex_core.gen_regfile_ecc.regfile_ecc_dec_b.err_o",
               "port": "err_o",
               "con": "rf_ecc_err_b",
               "loc": {
@@ -7307,6 +7335,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            }
+          ],
           "loc": {
             "line": 1229,
             "col": 5,
@@ -7315,12 +7350,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_cap_ecc_enc",
+          "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_enc",
           "name": "regfile_cap_ecc_enc",
           "module": "prim_secded_inv_64_57_enc",
           "connections": [
             {
-              "id": "ibex_core.regfile_cap_ecc_enc.data_i",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_enc.data_i",
               "port": "data_i",
               "con": "{22'b0, cheriot_regcap_to_vec(rf_wcap_wb)}",
               "loc": {
@@ -7331,7 +7366,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_enc.data_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_enc.data_o",
               "port": "data_o",
               "con": "wcap_ecc_tmp",
               "loc": {
@@ -7342,6 +7377,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            },
+            {
+              "kind": "if",
+              "name": "gen_cheriot_cap_ecc",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
           "loc": {
             "line": 1248,
             "col": 7,
@@ -7350,12 +7397,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_cap_ecc_dec_a",
+          "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_a",
           "name": "regfile_cap_ecc_dec_a",
           "module": "prim_secded_inv_64_57_dec",
           "connections": [
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_a.data_i",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_a.data_i",
               "port": "data_i",
               "con": "{rf_rcap_a_ecc_i[RegFileCapEccWidth-1:REGCAP_W], 22'b0,\n                     rf_rcap_a_ecc_i[REGCAP_W-1:0]}",
               "loc": {
@@ -7366,7 +7413,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_a.data_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_a.data_o",
               "port": "data_o",
               "loc": {
                 "line": 1262,
@@ -7376,7 +7423,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_a.syndrome_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_a.syndrome_o",
               "port": "syndrome_o",
               "loc": {
                 "line": 1263,
@@ -7386,7 +7433,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_a.err_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_a.err_o",
               "port": "err_o",
               "con": "rf_cap_ecc_err_a",
               "loc": {
@@ -7397,6 +7444,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            },
+            {
+              "kind": "if",
+              "name": "gen_cheriot_cap_ecc",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
           "loc": {
             "line": 1259,
             "col": 7,
@@ -7405,12 +7464,12 @@
           }
         },
         {
-          "id": "ibex_core.regfile_cap_ecc_dec_b",
+          "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_b",
           "name": "regfile_cap_ecc_dec_b",
           "module": "prim_secded_inv_64_57_dec",
           "connections": [
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_b.data_i",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_b.data_i",
               "port": "data_i",
               "con": "{rf_rcap_b_ecc_i[RegFileCapEccWidth-1:REGCAP_W], 22'b0,\n                     rf_rcap_b_ecc_i[REGCAP_W-1:0]}",
               "loc": {
@@ -7421,7 +7480,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_b.data_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_b.data_o",
               "port": "data_o",
               "loc": {
                 "line": 1269,
@@ -7431,7 +7490,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_b.syndrome_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_b.syndrome_o",
               "port": "syndrome_o",
               "loc": {
                 "line": 1270,
@@ -7441,7 +7500,7 @@
               }
             },
             {
-              "id": "ibex_core.regfile_cap_ecc_dec_b.err_o",
+              "id": "ibex_core.gen_regfile_ecc.gen_cheriot_cap_ecc.regfile_cap_ecc_dec_b.err_o",
               "port": "err_o",
               "con": "rf_cap_ecc_err_b",
               "loc": {
@@ -7450,6 +7509,18 @@
                 "end_line": 1271,
                 "end_col": 38
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ecc",
+              "cond": "RegFileECC"
+            },
+            {
+              "kind": "if",
+              "name": "gen_cheriot_cap_ecc",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
             }
           ],
           "loc": {
@@ -8750,12 +8821,12 @@
           }
         },
         {
-          "id": "ibex_core.pmp_i",
+          "id": "ibex_core.g_pmp.pmp_i",
           "name": "pmp_i",
           "module": "ibex_pmp",
           "params": [
             {
-              "id": "ibex_core.pmp_i.DmBaseAddr",
+              "id": "ibex_core.g_pmp.pmp_i.DmBaseAddr",
               "port": "DmBaseAddr",
               "con": "DmBaseAddr",
               "loc": {
@@ -8766,7 +8837,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.DmAddrMask",
+              "id": "ibex_core.g_pmp.pmp_i.DmAddrMask",
               "port": "DmAddrMask",
               "con": "DmAddrMask",
               "loc": {
@@ -8777,7 +8848,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.PMPGranularity",
+              "id": "ibex_core.g_pmp.pmp_i.PMPGranularity",
               "port": "PMPGranularity",
               "con": "PMPGranularity",
               "loc": {
@@ -8788,7 +8859,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.PMPNumChan",
+              "id": "ibex_core.g_pmp.pmp_i.PMPNumChan",
               "port": "PMPNumChan",
               "con": "PMPNumChan",
               "loc": {
@@ -8799,7 +8870,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.PMPNumRegions",
+              "id": "ibex_core.g_pmp.pmp_i.PMPNumRegions",
               "port": "PMPNumRegions",
               "con": "PMPNumRegions",
               "comment": [
@@ -8815,7 +8886,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_core.pmp_i.csr_pmp_cfg_i",
+              "id": "ibex_core.g_pmp.pmp_i.csr_pmp_cfg_i",
               "port": "csr_pmp_cfg_i",
               "con": "csr_pmp_cfg",
               "loc": {
@@ -8826,7 +8897,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.csr_pmp_addr_i",
+              "id": "ibex_core.g_pmp.pmp_i.csr_pmp_addr_i",
               "port": "csr_pmp_addr_i",
               "con": "csr_pmp_addr",
               "loc": {
@@ -8837,7 +8908,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.csr_pmp_mseccfg_i",
+              "id": "ibex_core.g_pmp.pmp_i.csr_pmp_mseccfg_i",
               "port": "csr_pmp_mseccfg_i",
               "con": "csr_pmp_mseccfg",
               "loc": {
@@ -8848,7 +8919,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.debug_mode_i",
+              "id": "ibex_core.g_pmp.pmp_i.debug_mode_i",
               "port": "debug_mode_i",
               "con": "debug_mode",
               "loc": {
@@ -8859,7 +8930,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.priv_mode_i",
+              "id": "ibex_core.g_pmp.pmp_i.priv_mode_i",
               "port": "priv_mode_i",
               "con": "pmp_priv_lvl",
               "comment": [
@@ -8873,7 +8944,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.pmp_req_addr_i",
+              "id": "ibex_core.g_pmp.pmp_i.pmp_req_addr_i",
               "port": "pmp_req_addr_i",
               "con": "pmp_req_addr",
               "loc": {
@@ -8884,7 +8955,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.pmp_req_type_i",
+              "id": "ibex_core.g_pmp.pmp_i.pmp_req_type_i",
               "port": "pmp_req_type_i",
               "con": "pmp_req_type",
               "loc": {
@@ -8895,7 +8966,7 @@
               }
             },
             {
-              "id": "ibex_core.pmp_i.pmp_req_err_o",
+              "id": "ibex_core.g_pmp.pmp_i.pmp_req_err_o",
               "port": "pmp_req_err_o",
               "con": "pmp_req_err_raw",
               "loc": {
@@ -8904,6 +8975,13 @@
                 "end_line": 1628,
                 "end_col": 42
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_pmp",
+              "cond": "PMPEnable"
             }
           ],
           "loc": {

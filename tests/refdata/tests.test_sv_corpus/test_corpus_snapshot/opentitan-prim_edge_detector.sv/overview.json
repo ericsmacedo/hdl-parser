@@ -126,12 +126,12 @@
       ],
       "insts": [
         {
-          "id": "prim_edge_detector.u_sync",
+          "id": "prim_edge_detector.g_sync.u_sync",
           "name": "u_sync",
           "module": "prim_flop_2sync",
           "params": [
             {
-              "id": "prim_edge_detector.u_sync.Width",
+              "id": "prim_edge_detector.g_sync.u_sync.Width",
               "port": "Width",
               "con": "Width",
               "loc": {
@@ -142,7 +142,7 @@
               }
             },
             {
-              "id": "prim_edge_detector.u_sync.ResetValue",
+              "id": "prim_edge_detector.g_sync.u_sync.ResetValue",
               "port": "ResetValue",
               "con": "ResetValue",
               "loc": {
@@ -155,7 +155,7 @@
           ],
           "connections": [
             {
-              "id": "prim_edge_detector.u_sync.clk_i",
+              "id": "prim_edge_detector.g_sync.u_sync.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -166,7 +166,7 @@
               }
             },
             {
-              "id": "prim_edge_detector.u_sync.rst_ni",
+              "id": "prim_edge_detector.g_sync.u_sync.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -177,7 +177,7 @@
               }
             },
             {
-              "id": "prim_edge_detector.u_sync.d_i",
+              "id": "prim_edge_detector.g_sync.u_sync.d_i",
               "port": "d_i",
               "con": "d_i",
               "loc": {
@@ -188,7 +188,7 @@
               }
             },
             {
-              "id": "prim_edge_detector.u_sync.q_o",
+              "id": "prim_edge_detector.g_sync.u_sync.q_o",
               "port": "q_o",
               "con": "q_sync_d",
               "loc": {
@@ -197,6 +197,13 @@
                 "end_line": 38,
                 "end_col": 22
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_sync",
+              "cond": "EnSync"
             }
           ],
           "loc": {

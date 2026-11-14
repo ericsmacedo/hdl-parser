@@ -188,12 +188,12 @@
       ],
       "insts": [
         {
-          "id": "axiads42lb69pll.ibufgds_0",
+          "id": "axiads42lb69pll.gen_pll.ibufgds_0",
           "name": "IBUFGDS_0",
           "module": "IBUFGDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.ibufgds_0.i",
+              "id": "axiads42lb69pll.gen_pll.ibufgds_0.i",
               "port": "I",
               "con": "adcClkFbP",
               "loc": {
@@ -204,7 +204,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_0.ib",
+              "id": "axiads42lb69pll.gen_pll.ibufgds_0.ib",
               "port": "IB",
               "con": "adcClkFbN",
               "loc": {
@@ -215,7 +215,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_0.o",
+              "id": "axiads42lb69pll.gen_pll.ibufgds_0.o",
               "port": "O",
               "con": "clkFeedBackIn",
               "loc": {
@@ -226,6 +226,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 63,
             "col": 7,
@@ -234,12 +241,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.mmcme2_adv_0",
+          "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0",
           "name": "MMCME2_ADV_0",
           "module": "MMCME2_ADV",
           "params": [
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.bandwidth",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.bandwidth",
               "port": "BANDWIDTH",
               "con": "\"LOW\"",
               "loc": {
@@ -250,7 +257,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout4_cascade",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout4_cascade",
               "port": "CLKOUT4_CASCADE",
               "con": "false",
               "loc": {
@@ -261,7 +268,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.compensation",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.compensation",
               "port": "COMPENSATION",
               "con": "\"ZHOLD\"",
               "loc": {
@@ -272,7 +279,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.startup_wait",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.startup_wait",
               "port": "STARTUP_WAIT",
               "con": "false",
               "loc": {
@@ -283,7 +290,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.divclk_divide",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.divclk_divide",
               "port": "DIVCLK_DIVIDE",
               "con": "1",
               "loc": {
@@ -294,7 +301,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbout_mult_f",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbout_mult_f",
               "port": "CLKFBOUT_MULT_F",
               "con": "ADC_CLK_PERIOD_NS_C",
               "loc": {
@@ -305,7 +312,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbout_phase",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbout_phase",
               "port": "CLKFBOUT_PHASE",
               "con": "0.000",
               "loc": {
@@ -316,7 +323,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbout_use_fine_ps",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbout_use_fine_ps",
               "port": "CLKFBOUT_USE_FINE_PS",
               "con": "false",
               "loc": {
@@ -327,7 +334,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkin1_period",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkin1_period",
               "port": "CLKIN1_PERIOD",
               "con": "ADC_CLK_PERIOD_NS_C",
               "loc": {
@@ -338,7 +345,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.ref_jitter1",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.ref_jitter1",
               "port": "REF_JITTER1",
               "con": "0.100",
               "loc": {
@@ -351,7 +358,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbout",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbout",
               "port": "CLKFBOUT",
               "con": "clkFeedBack",
               "loc": {
@@ -362,7 +369,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfboutb",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfboutb",
               "port": "CLKFBOUTB",
               "con": "open",
               "loc": {
@@ -373,7 +380,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout0",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout0",
               "port": "CLKOUT0",
               "con": "open",
               "loc": {
@@ -384,7 +391,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout0b",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout0b",
               "port": "CLKOUT0B",
               "con": "open",
               "loc": {
@@ -395,7 +402,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout1",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout1",
               "port": "CLKOUT1",
               "con": "open",
               "loc": {
@@ -406,7 +413,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout1b",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout1b",
               "port": "CLKOUT1B",
               "con": "open",
               "loc": {
@@ -417,7 +424,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout2",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout2",
               "port": "CLKOUT2",
               "con": "open",
               "loc": {
@@ -428,7 +435,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout2b",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout2b",
               "port": "CLKOUT2B",
               "con": "open",
               "loc": {
@@ -439,7 +446,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout3",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout3",
               "port": "CLKOUT3",
               "con": "open",
               "loc": {
@@ -450,7 +457,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout3b",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout3b",
               "port": "CLKOUT3B",
               "con": "open",
               "loc": {
@@ -461,7 +468,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout4",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout4",
               "port": "CLKOUT4",
               "con": "open",
               "loc": {
@@ -472,7 +479,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout5",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout5",
               "port": "CLKOUT5",
               "con": "open",
               "loc": {
@@ -483,7 +490,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkout6",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkout6",
               "port": "CLKOUT6",
               "con": "open",
               "comment": [
@@ -497,7 +504,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbin",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbin",
               "port": "CLKFBIN",
               "con": "clkFeedBackIn",
               "loc": {
@@ -508,7 +515,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkin1",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkin1",
               "port": "CLKIN1",
               "con": "adcClk",
               "loc": {
@@ -519,7 +526,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkin2",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkin2",
               "port": "CLKIN2",
               "con": "'0'",
               "comment": [
@@ -533,7 +540,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkinsel",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkinsel",
               "port": "CLKINSEL",
               "con": "'1'",
               "comment": [
@@ -547,7 +554,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.daddr",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.daddr",
               "port": "DADDR",
               "con": "(others => '0')",
               "loc": {
@@ -558,7 +565,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.dclk",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.dclk",
               "port": "DCLK",
               "con": "'0'",
               "loc": {
@@ -569,7 +576,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.den",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.den",
               "port": "DEN",
               "con": "'0'",
               "loc": {
@@ -580,7 +587,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.di",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.di",
               "port": "DI",
               "con": "(others => '0')",
               "loc": {
@@ -591,7 +598,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.do",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.do",
               "port": "DO",
               "con": "open",
               "loc": {
@@ -602,7 +609,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.drdy",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.drdy",
               "port": "DRDY",
               "con": "open",
               "loc": {
@@ -613,7 +620,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.dwe",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.dwe",
               "port": "DWE",
               "con": "'0'",
               "comment": [
@@ -627,7 +634,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.psclk",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.psclk",
               "port": "PSCLK",
               "con": "'0'",
               "loc": {
@@ -638,7 +645,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.psen",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.psen",
               "port": "PSEN",
               "con": "'0'",
               "loc": {
@@ -649,7 +656,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.psincdec",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.psincdec",
               "port": "PSINCDEC",
               "con": "'0'",
               "loc": {
@@ -660,7 +667,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.psdone",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.psdone",
               "port": "PSDONE",
               "con": "open",
               "comment": [
@@ -674,7 +681,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.locked",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.locked",
               "port": "LOCKED",
               "con": "open",
               "loc": {
@@ -685,7 +692,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkinstopped",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkinstopped",
               "port": "CLKINSTOPPED",
               "con": "open",
               "loc": {
@@ -696,7 +703,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.clkfbstopped",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.clkfbstopped",
               "port": "CLKFBSTOPPED",
               "con": "open",
               "loc": {
@@ -707,7 +714,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.pwrdwn",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.pwrdwn",
               "port": "PWRDWN",
               "con": "'0'",
               "loc": {
@@ -718,7 +725,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.mmcme2_adv_0.rst",
+              "id": "axiads42lb69pll.gen_pll.mmcme2_adv_0.rst",
               "port": "RST",
               "con": "adcRst",
               "loc": {
@@ -729,6 +736,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 69,
             "col": 7,
@@ -737,12 +751,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.bufh_0",
+          "id": "axiads42lb69pll.gen_pll.bufh_0",
           "name": "BUFH_0",
           "module": "BUFH",
           "connections": [
             {
-              "id": "axiads42lb69pll.bufh_0.i",
+              "id": "axiads42lb69pll.gen_pll.bufh_0.i",
               "port": "I",
               "con": "clkFeedBack",
               "loc": {
@@ -753,7 +767,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.bufh_0.o",
+              "id": "axiads42lb69pll.gen_pll.bufh_0.o",
               "port": "O",
               "con": "clkFeedBackOut",
               "loc": {
@@ -764,6 +778,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 122,
             "col": 7,
@@ -772,12 +793,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.clkoutbufdiff_0",
+          "id": "axiads42lb69pll.gen_pll.clkoutbufdiff_0",
           "name": "ClkOutBufDiff_0",
           "module": "ClkOutBufDiff",
           "connections": [
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_0.clkin",
+              "id": "axiads42lb69pll.gen_pll.clkoutbufdiff_0.clkin",
               "port": "clkIn",
               "con": "clkFeedBackOut",
               "loc": {
@@ -788,7 +809,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_0.clkoutp",
+              "id": "axiads42lb69pll.gen_pll.clkoutbufdiff_0.clkoutp",
               "port": "clkOutP",
               "con": "adcClkP",
               "loc": {
@@ -799,7 +820,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_0.clkoutn",
+              "id": "axiads42lb69pll.gen_pll.clkoutbufdiff_0.clkoutn",
               "port": "clkOutN",
               "con": "adcClkN",
               "loc": {
@@ -810,6 +831,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 127,
             "col": 7,
@@ -818,12 +846,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.synchronizeroneshot_0",
+          "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0",
           "name": "SynchronizerOneShot_0",
           "module": "SynchronizerOneShot",
           "params": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_0.tpd_g",
+              "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -834,7 +862,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_0.bypass_sync_g",
+              "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0.bypass_sync_g",
               "port": "BYPASS_SYNC_G",
               "con": "false",
               "loc": {
@@ -847,7 +875,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_0.clk",
+              "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0.clk",
               "port": "clk",
               "con": "clkFeedBackOut",
               "loc": {
@@ -858,7 +886,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_0.datain",
+              "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0.datain",
               "port": "dataIn",
               "con": "adcSync",
               "loc": {
@@ -869,7 +897,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_0.dataout",
+              "id": "axiads42lb69pll.gen_pll.synchronizeroneshot_0.dataout",
               "port": "dataOut",
               "con": "sync",
               "loc": {
@@ -880,6 +908,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 133,
             "col": 7,
@@ -888,12 +923,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.oddr_0",
+          "id": "axiads42lb69pll.gen_pll.oddr_0",
           "name": "ODDR_0",
           "module": "ODDR",
           "params": [
             {
-              "id": "axiads42lb69pll.oddr_0.ddr_clk_edge",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.ddr_clk_edge",
               "port": "DDR_CLK_EDGE",
               "con": "\"OPPOSITE_EDGE\"",
               "comment": [
@@ -907,7 +942,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.init",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.init",
               "port": "INIT",
               "con": "'0'",
               "comment": [
@@ -921,7 +956,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.srtype",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.srtype",
               "port": "SRTYPE",
               "con": "\"SYNC\"",
               "loc": {
@@ -934,7 +969,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.oddr_0.d1",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.d1",
               "port": "D1",
               "con": "sync",
               "comment": [
@@ -948,7 +983,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.d2",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.d2",
               "port": "D2",
               "con": "sync",
               "comment": [
@@ -962,7 +997,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.q",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.q",
               "port": "Q",
               "con": "syncOut",
               "comment": [
@@ -976,7 +1011,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.c",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.c",
               "port": "C",
               "con": "clkFeedBackOut",
               "comment": [
@@ -990,7 +1025,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.ce",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.ce",
               "port": "CE",
               "con": "'1'",
               "comment": [
@@ -1004,7 +1039,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.r",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.r",
               "port": "R",
               "con": "'0'",
               "comment": [
@@ -1018,7 +1053,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_0.s",
+              "id": "axiads42lb69pll.gen_pll.oddr_0.s",
               "port": "S",
               "con": "'0'",
               "loc": {
@@ -1029,6 +1064,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 142,
             "col": 7,
@@ -1037,12 +1079,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.obufds_0",
+          "id": "axiads42lb69pll.gen_pll.obufds_0",
           "name": "OBUFDS_0",
           "module": "OBUFDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.obufds_0.i",
+              "id": "axiads42lb69pll.gen_pll.obufds_0.i",
               "port": "I",
               "con": "syncOut",
               "loc": {
@@ -1053,7 +1095,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_0.o",
+              "id": "axiads42lb69pll.gen_pll.obufds_0.o",
               "port": "O",
               "con": "adcSyncP",
               "loc": {
@@ -1064,7 +1106,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_0.ob",
+              "id": "axiads42lb69pll.gen_pll.obufds_0.ob",
               "port": "OB",
               "con": "adcSyncN",
               "loc": {
@@ -1075,6 +1117,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 156,
             "col": 7,
@@ -1083,12 +1132,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.clkoutbufdiff_1",
+          "id": "axiads42lb69pll.gen_no_pll.clkoutbufdiff_1",
           "name": "ClkOutBufDiff_1",
           "module": "ClkOutBufDiff",
           "connections": [
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1.clkin",
+              "id": "axiads42lb69pll.gen_no_pll.clkoutbufdiff_1.clkin",
               "port": "clkIn",
               "con": "adcClk",
               "loc": {
@@ -1099,7 +1148,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1.rstin",
+              "id": "axiads42lb69pll.gen_no_pll.clkoutbufdiff_1.rstin",
               "port": "rstIn",
               "con": "adcRst",
               "loc": {
@@ -1110,7 +1159,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1.clkoutp",
+              "id": "axiads42lb69pll.gen_no_pll.clkoutbufdiff_1.clkoutp",
               "port": "clkOutP",
               "con": "adcClkP",
               "loc": {
@@ -1121,7 +1170,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1.clkoutn",
+              "id": "axiads42lb69pll.gen_no_pll.clkoutbufdiff_1.clkoutn",
               "port": "clkOutN",
               "con": "adcClkN",
               "loc": {
@@ -1132,6 +1181,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 168,
             "col": 7,
@@ -1140,12 +1196,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.synchronizeroneshot_1",
+          "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1",
           "name": "SynchronizerOneShot_1",
           "module": "SynchronizerOneShot",
           "params": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1.tpd_g",
+              "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -1156,7 +1212,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1.bypass_sync_g",
+              "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1.bypass_sync_g",
               "port": "BYPASS_SYNC_G",
               "con": "true",
               "loc": {
@@ -1169,7 +1225,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1.clk",
+              "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1.clk",
               "port": "clk",
               "con": "adcClk",
               "loc": {
@@ -1180,7 +1236,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1.datain",
+              "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1.datain",
               "port": "dataIn",
               "con": "adcSync",
               "loc": {
@@ -1191,7 +1247,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1.dataout",
+              "id": "axiads42lb69pll.gen_no_pll.synchronizeroneshot_1.dataout",
               "port": "dataOut",
               "con": "sync",
               "loc": {
@@ -1202,6 +1258,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 175,
             "col": 7,
@@ -1210,12 +1273,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.oddr_1",
+          "id": "axiads42lb69pll.gen_no_pll.oddr_1",
           "name": "ODDR_1",
           "module": "ODDR",
           "params": [
             {
-              "id": "axiads42lb69pll.oddr_1.ddr_clk_edge",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.ddr_clk_edge",
               "port": "DDR_CLK_EDGE",
               "con": "\"OPPOSITE_EDGE\"",
               "comment": [
@@ -1229,7 +1292,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.init",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.init",
               "port": "INIT",
               "con": "'0'",
               "comment": [
@@ -1243,7 +1306,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.srtype",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.srtype",
               "port": "SRTYPE",
               "con": "\"SYNC\"",
               "loc": {
@@ -1256,7 +1319,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.oddr_1.d1",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.d1",
               "port": "D1",
               "con": "sync",
               "comment": [
@@ -1270,7 +1333,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.d2",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.d2",
               "port": "D2",
               "con": "sync",
               "comment": [
@@ -1284,7 +1347,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.q",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.q",
               "port": "Q",
               "con": "syncOut",
               "comment": [
@@ -1298,7 +1361,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.c",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.c",
               "port": "C",
               "con": "adcClk",
               "comment": [
@@ -1312,7 +1375,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.ce",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.ce",
               "port": "CE",
               "con": "'1'",
               "comment": [
@@ -1326,7 +1389,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.r",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.r",
               "port": "R",
               "con": "'0'",
               "comment": [
@@ -1340,7 +1403,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddr_1.s",
+              "id": "axiads42lb69pll.gen_no_pll.oddr_1.s",
               "port": "S",
               "con": "'0'",
               "loc": {
@@ -1351,6 +1414,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 184,
             "col": 7,
@@ -1359,12 +1429,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.obufds_1",
+          "id": "axiads42lb69pll.gen_no_pll.obufds_1",
           "name": "OBUFDS_1",
           "module": "OBUFDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.obufds_1.i",
+              "id": "axiads42lb69pll.gen_no_pll.obufds_1.i",
               "port": "I",
               "con": "syncOut",
               "loc": {
@@ -1375,7 +1445,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_1.o",
+              "id": "axiads42lb69pll.gen_no_pll.obufds_1.o",
               "port": "O",
               "con": "adcSyncP",
               "loc": {
@@ -1386,7 +1456,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_1.ob",
+              "id": "axiads42lb69pll.gen_no_pll.obufds_1.ob",
               "port": "OB",
               "con": "adcSyncN",
               "loc": {
@@ -1397,6 +1467,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
           "loc": {
             "line": 198,
             "col": 7,
@@ -1405,12 +1482,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.ibufgds_1",
+          "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.ibufgds_1",
           "name": "IBUFGDS_1",
           "module": "IBUFGDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.ibufgds_1.i",
+              "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.ibufgds_1.i",
               "port": "I",
               "con": "adcClkFbP",
               "loc": {
@@ -1421,7 +1498,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1.ib",
+              "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.ibufgds_1.ib",
               "port": "IB",
               "con": "adcClkFbN",
               "loc": {
@@ -1432,7 +1509,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1.o",
+              "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.ibufgds_1.o",
               "port": "O",
               "con": "adcInClk",
               "loc": {
@@ -1443,6 +1520,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_FBCLK",
+              "cond": "(USE_FBCLK_G = true)"
+            }
+          ],
           "loc": {
             "line": 206,
             "col": 10,
@@ -1451,12 +1540,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.bufg_1",
+          "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.bufg_1",
           "name": "BUFG_1",
           "module": "BUFG",
           "connections": [
             {
-              "id": "axiads42lb69pll.bufg_1.i",
+              "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.bufg_1.i",
               "port": "I",
               "con": "adcInClk",
               "loc": {
@@ -1467,7 +1556,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.bufg_1.o",
+              "id": "axiads42lb69pll.gen_no_pll.gen_fbclk.bufg_1.o",
               "port": "O",
               "con": "adcClock",
               "loc": {
@@ -1478,6 +1567,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_FBCLK",
+              "cond": "(USE_FBCLK_G = true)"
+            }
+          ],
           "loc": {
             "line": 212,
             "col": 10,
@@ -1486,12 +1587,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.ibufgds_1~2",
+          "id": "axiads42lb69pll.gen_no_pll.gen_no_fbclk.ibufgds_1",
           "name": "IBUFGDS_1",
           "module": "IBUFGDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.ibufgds_1~2.i",
+              "id": "axiads42lb69pll.gen_no_pll.gen_no_fbclk.ibufgds_1.i",
               "port": "I",
               "con": "adcClkFbP",
               "loc": {
@@ -1502,7 +1603,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~2.ib",
+              "id": "axiads42lb69pll.gen_no_pll.gen_no_fbclk.ibufgds_1.ib",
               "port": "IB",
               "con": "adcClkFbN",
               "loc": {
@@ -1513,7 +1614,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~2.o",
+              "id": "axiads42lb69pll.gen_no_pll.gen_no_fbclk.ibufgds_1.o",
               "port": "O",
               "con": "open",
               "loc": {
@@ -1524,6 +1625,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_NO_FBCLK",
+              "cond": "(USE_FBCLK_G = false)"
+            }
+          ],
           "loc": {
             "line": 220,
             "col": 10,
@@ -1532,12 +1645,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.clkoutbufdiff_1~2",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1",
           "name": "ClkOutBufDiff_1",
           "module": "ClkOutBufDiff",
           "params": [
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1~2.xil_device_g",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1.xil_device_g",
               "port": "XIL_DEVICE_G",
               "con": "XIL_DEVICE_G",
               "loc": {
@@ -1550,7 +1663,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1~2.clkin",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1.clkin",
               "port": "clkIn",
               "con": "adcClk",
               "loc": {
@@ -1561,7 +1674,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1~2.rstin",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1.rstin",
               "port": "rstIn",
               "con": "adcRst",
               "loc": {
@@ -1572,7 +1685,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1~2.clkoutp",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1.clkoutp",
               "port": "clkOutP",
               "con": "adcClkP",
               "loc": {
@@ -1583,7 +1696,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.clkoutbufdiff_1~2.clkoutn",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.clkoutbufdiff_1.clkoutn",
               "port": "clkOutN",
               "con": "adcClkN",
               "loc": {
@@ -1594,6 +1707,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            }
+          ],
           "loc": {
             "line": 234,
             "col": 7,
@@ -1602,12 +1722,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.synchronizeroneshot_1~2",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1",
           "name": "SynchronizerOneShot_1",
           "module": "SynchronizerOneShot",
           "params": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1~2.tpd_g",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -1618,7 +1738,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1~2.bypass_sync_g",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1.bypass_sync_g",
               "port": "BYPASS_SYNC_G",
               "con": "true",
               "loc": {
@@ -1631,7 +1751,7 @@
           ],
           "connections": [
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1~2.clk",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1.clk",
               "port": "clk",
               "con": "adcClk",
               "loc": {
@@ -1642,7 +1762,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1~2.datain",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1.datain",
               "port": "dataIn",
               "con": "adcSync",
               "loc": {
@@ -1653,7 +1773,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.synchronizeroneshot_1~2.dataout",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.synchronizeroneshot_1.dataout",
               "port": "dataOut",
               "con": "sync",
               "loc": {
@@ -1664,6 +1784,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            }
+          ],
           "loc": {
             "line": 243,
             "col": 7,
@@ -1672,12 +1799,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.oddre1_1",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1",
           "name": "ODDRE1_1",
           "module": "ODDRE1",
           "connections": [
             {
-              "id": "axiads42lb69pll.oddre1_1.d1",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1.d1",
               "port": "D1",
               "con": "sync",
               "comment": [
@@ -1691,7 +1818,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddre1_1.d2",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1.d2",
               "port": "D2",
               "con": "sync",
               "comment": [
@@ -1705,7 +1832,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddre1_1.q",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1.q",
               "port": "Q",
               "con": "syncOut",
               "comment": [
@@ -1719,7 +1846,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddre1_1.c",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1.c",
               "port": "C",
               "con": "adcClk",
               "comment": [
@@ -1733,7 +1860,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.oddre1_1.sr",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.oddre1_1.sr",
               "port": "SR",
               "con": "'0'",
               "loc": {
@@ -1744,6 +1871,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            }
+          ],
           "loc": {
             "line": 252,
             "col": 7,
@@ -1752,12 +1886,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.obufds_1~2",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.obufds_1",
           "name": "OBUFDS_1",
           "module": "OBUFDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.obufds_1~2.i",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.obufds_1.i",
               "port": "I",
               "con": "syncOut",
               "loc": {
@@ -1768,7 +1902,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_1~2.o",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.obufds_1.o",
               "port": "O",
               "con": "adcSyncP",
               "loc": {
@@ -1779,7 +1913,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.obufds_1~2.ob",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.obufds_1.ob",
               "port": "OB",
               "con": "adcSyncN",
               "loc": {
@@ -1790,6 +1924,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            }
+          ],
           "loc": {
             "line": 260,
             "col": 7,
@@ -1798,12 +1939,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.ibufgds_1~3",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.ibufgds_1",
           "name": "IBUFGDS_1",
           "module": "IBUFGDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.ibufgds_1~3.i",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.ibufgds_1.i",
               "port": "I",
               "con": "adcClkFbP",
               "loc": {
@@ -1814,7 +1955,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~3.ib",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.ibufgds_1.ib",
               "port": "IB",
               "con": "adcClkFbN",
               "loc": {
@@ -1825,7 +1966,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~3.o",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.ibufgds_1.o",
               "port": "O",
               "con": "adcInClk",
               "loc": {
@@ -1836,6 +1977,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_FBCLK",
+              "cond": "(USE_FBCLK_G = true)"
+            }
+          ],
           "loc": {
             "line": 267,
             "col": 10,
@@ -1844,12 +1997,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.bufg_1~2",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.bufg_1",
           "name": "BUFG_1",
           "module": "BUFG",
           "connections": [
             {
-              "id": "axiads42lb69pll.bufg_1~2.i",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.bufg_1.i",
               "port": "I",
               "con": "adcInClk",
               "loc": {
@@ -1860,7 +2013,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.bufg_1~2.o",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_fbclk.bufg_1.o",
               "port": "O",
               "con": "adcClock",
               "loc": {
@@ -1871,6 +2024,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_FBCLK",
+              "cond": "(USE_FBCLK_G = true)"
+            }
+          ],
           "loc": {
             "line": 273,
             "col": 10,
@@ -1879,12 +2044,12 @@
           }
         },
         {
-          "id": "axiads42lb69pll.ibufgds_1~4",
+          "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_no_fbclk.ibufgds_1",
           "name": "IBUFGDS_1",
           "module": "IBUFGDS",
           "connections": [
             {
-              "id": "axiads42lb69pll.ibufgds_1~4.i",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_no_fbclk.ibufgds_1.i",
               "port": "I",
               "con": "adcClkFbP",
               "loc": {
@@ -1895,7 +2060,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~4.ib",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_no_fbclk.ibufgds_1.ib",
               "port": "IB",
               "con": "adcClkFbN",
               "loc": {
@@ -1906,7 +2071,7 @@
               }
             },
             {
-              "id": "axiads42lb69pll.ibufgds_1~4.o",
+              "id": "axiads42lb69pll.gen_ultrascale_no_pll.gen_no_fbclk.ibufgds_1.o",
               "port": "O",
               "con": "open",
               "loc": {
@@ -1915,6 +2080,18 @@
                 "end_line": 284,
                 "end_col": 26
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_NO_FBCLK",
+              "cond": "(USE_FBCLK_G = false)"
             }
           ],
           "loc": {

@@ -2247,12 +2247,12 @@
       ],
       "insts": [
         {
-          "id": "ibex_top.u_prim_core_busy_flop",
+          "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop",
           "name": "u_prim_core_busy_flop",
           "module": "prim_flop",
           "params": [
             {
-              "id": "ibex_top.u_prim_core_busy_flop.Width",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.Width",
               "port": "Width",
               "con": "$bits(ibex_mubi_t)",
               "loc": {
@@ -2263,7 +2263,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_core_busy_flop.ResetValue",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.ResetValue",
               "port": "ResetValue",
               "con": "IbexMuBiOff",
               "loc": {
@@ -2276,7 +2276,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_prim_core_busy_flop.clk_i",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -2287,7 +2287,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_core_busy_flop.rst_ni",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -2298,7 +2298,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_core_busy_flop.d_i",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.d_i",
               "port": "d_i",
               "con": "core_busy_d",
               "loc": {
@@ -2309,7 +2309,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_core_busy_flop.q_o",
+              "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop.q_o",
               "port": "q_o",
               "con": "core_busy_q",
               "loc": {
@@ -2318,6 +2318,13 @@
                 "end_line": 312,
                 "end_col": 27
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_clock_en_secure",
+              "cond": "SecureIbex"
             }
           ],
           "loc": {
@@ -4223,12 +4230,12 @@
           }
         },
         {
-          "id": "ibex_top.register_file_i",
+          "id": "ibex_top.gen_regfile_ff.register_file_i",
           "name": "register_file_i",
           "module": "ibex_register_file_ff",
           "params": [
             {
-              "id": "ibex_top.register_file_i.BaseIsa",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.BaseIsa",
               "port": "BaseIsa",
               "con": "BaseIsa",
               "loc": {
@@ -4239,7 +4246,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.RV32E",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.RV32E",
               "port": "RV32E",
               "con": "RV32E",
               "loc": {
@@ -4250,7 +4257,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.DataWidth",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.DataWidth",
               "port": "DataWidth",
               "con": "RegFileDataWidth",
               "loc": {
@@ -4261,7 +4268,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.DummyInstructions",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.DummyInstructions",
               "port": "DummyInstructions",
               "con": "DummyInstructions",
               "loc": {
@@ -4272,7 +4279,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.WordZeroVal",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.WordZeroVal",
               "port": "WordZeroVal",
               "con": "RegFileDataWidth'(prim_secded_pkg::SecdedInv3932ZeroWord)",
               "loc": {
@@ -4285,7 +4292,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.register_file_i.clk_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.clk_i",
               "port": "clk_i",
               "con": "clk",
               "loc": {
@@ -4296,7 +4303,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.rst_ni",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -4307,7 +4314,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.test_en_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.test_en_i",
               "port": "test_en_i",
               "con": "test_en_i",
               "loc": {
@@ -4318,7 +4325,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.dummy_instr_id_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.dummy_instr_id_i",
               "port": "dummy_instr_id_i",
               "con": "dummy_instr_id",
               "loc": {
@@ -4329,7 +4336,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.dummy_instr_wb_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.dummy_instr_wb_i",
               "port": "dummy_instr_wb_i",
               "con": "dummy_instr_wb",
               "loc": {
@@ -4340,7 +4347,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.cheriot_enable_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.cheriot_enable_i",
               "port": "cheriot_enable_i",
               "con": "cheriot_enable_i",
               "loc": {
@@ -4351,7 +4358,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.raddr_a_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.raddr_a_i",
               "port": "raddr_a_i",
               "con": "rf_raddr_a",
               "loc": {
@@ -4362,7 +4369,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.rdata_a_o",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.rdata_a_o",
               "port": "rdata_a_o",
               "con": "rf_rdata_a",
               "loc": {
@@ -4373,7 +4380,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.rcap_a_o",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.rcap_a_o",
               "port": "rcap_a_o",
               "con": "rf_rcap_a",
               "loc": {
@@ -4384,7 +4391,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.raddr_b_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.raddr_b_i",
               "port": "raddr_b_i",
               "con": "rf_raddr_b",
               "loc": {
@@ -4395,7 +4402,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.rdata_b_o",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.rdata_b_o",
               "port": "rdata_b_o",
               "con": "rf_rdata_b",
               "loc": {
@@ -4406,7 +4413,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.rcap_b_o",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.rcap_b_o",
               "port": "rcap_b_o",
               "con": "rf_rcap_b",
               "loc": {
@@ -4417,7 +4424,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.waddr_a_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.waddr_a_i",
               "port": "waddr_a_i",
               "con": "rf_waddr_wb",
               "loc": {
@@ -4428,7 +4435,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.wdata_a_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.wdata_a_i",
               "port": "wdata_a_i",
               "con": "rf_wdata_wb",
               "loc": {
@@ -4439,7 +4446,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.wcap_a_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.wcap_a_i",
               "port": "wcap_a_i",
               "con": "rf_wcap",
               "loc": {
@@ -4450,7 +4457,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i.we_a_i",
+              "id": "ibex_top.gen_regfile_ff.register_file_i.we_a_i",
               "port": "we_a_i",
               "con": "rf_we_wb",
               "loc": {
@@ -4461,6 +4468,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_ff",
+              "cond": "RegFile == RegFileFF"
+            }
+          ],
           "loc": {
             "line": 534,
             "col": 5,
@@ -4469,12 +4483,12 @@
           }
         },
         {
-          "id": "ibex_top.register_file_i~2",
+          "id": "ibex_top.gen_regfile_fpga.register_file_i",
           "name": "register_file_i",
           "module": "ibex_register_file_fpga",
           "params": [
             {
-              "id": "ibex_top.register_file_i~2.BaseIsa",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.BaseIsa",
               "port": "BaseIsa",
               "con": "BaseIsa",
               "loc": {
@@ -4485,7 +4499,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.RV32E",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.RV32E",
               "port": "RV32E",
               "con": "RV32E",
               "loc": {
@@ -4496,7 +4510,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.DataWidth",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.DataWidth",
               "port": "DataWidth",
               "con": "RegFileDataWidth",
               "loc": {
@@ -4507,7 +4521,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.DummyInstructions",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.DummyInstructions",
               "port": "DummyInstructions",
               "con": "DummyInstructions",
               "loc": {
@@ -4518,7 +4532,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.WordZeroVal",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.WordZeroVal",
               "port": "WordZeroVal",
               "con": "RegFileDataWidth'(prim_secded_pkg::SecdedInv3932ZeroWord)",
               "loc": {
@@ -4531,7 +4545,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.register_file_i~2.clk_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.clk_i",
               "port": "clk_i",
               "con": "clk",
               "loc": {
@@ -4542,7 +4556,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.rst_ni",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -4553,7 +4567,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.test_en_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.test_en_i",
               "port": "test_en_i",
               "con": "test_en_i",
               "loc": {
@@ -4564,7 +4578,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.dummy_instr_id_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.dummy_instr_id_i",
               "port": "dummy_instr_id_i",
               "con": "dummy_instr_id",
               "loc": {
@@ -4575,7 +4589,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.dummy_instr_wb_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.dummy_instr_wb_i",
               "port": "dummy_instr_wb_i",
               "con": "dummy_instr_wb",
               "loc": {
@@ -4586,7 +4600,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.cheriot_enable_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.cheriot_enable_i",
               "port": "cheriot_enable_i",
               "con": "cheriot_enable_i",
               "loc": {
@@ -4597,7 +4611,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.raddr_a_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.raddr_a_i",
               "port": "raddr_a_i",
               "con": "rf_raddr_a",
               "loc": {
@@ -4608,7 +4622,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.rdata_a_o",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.rdata_a_o",
               "port": "rdata_a_o",
               "con": "rf_rdata_a",
               "loc": {
@@ -4619,7 +4633,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.rcap_a_o",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.rcap_a_o",
               "port": "rcap_a_o",
               "con": "rf_rcap_a",
               "loc": {
@@ -4630,7 +4644,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.raddr_b_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.raddr_b_i",
               "port": "raddr_b_i",
               "con": "rf_raddr_b",
               "loc": {
@@ -4641,7 +4655,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.rdata_b_o",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.rdata_b_o",
               "port": "rdata_b_o",
               "con": "rf_rdata_b",
               "loc": {
@@ -4652,7 +4666,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.rcap_b_o",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.rcap_b_o",
               "port": "rcap_b_o",
               "con": "rf_rcap_b",
               "loc": {
@@ -4663,7 +4677,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.waddr_a_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.waddr_a_i",
               "port": "waddr_a_i",
               "con": "rf_waddr_wb",
               "loc": {
@@ -4674,7 +4688,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.wdata_a_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.wdata_a_i",
               "port": "wdata_a_i",
               "con": "rf_wdata_wb",
               "loc": {
@@ -4685,7 +4699,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.wcap_a_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.wcap_a_i",
               "port": "wcap_a_i",
               "con": "rf_wcap",
               "loc": {
@@ -4696,7 +4710,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~2.we_a_i",
+              "id": "ibex_top.gen_regfile_fpga.register_file_i.we_a_i",
               "port": "we_a_i",
               "con": "rf_we_wb",
               "loc": {
@@ -4707,6 +4721,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_fpga",
+              "cond": "RegFile == RegFileFPGA"
+            }
+          ],
           "loc": {
             "line": 562,
             "col": 5,
@@ -4715,12 +4736,12 @@
           }
         },
         {
-          "id": "ibex_top.register_file_i~3",
+          "id": "ibex_top.gen_regfile_latch.register_file_i",
           "name": "register_file_i",
           "module": "ibex_register_file_latch",
           "params": [
             {
-              "id": "ibex_top.register_file_i~3.BaseIsa",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.BaseIsa",
               "port": "BaseIsa",
               "con": "BaseIsa",
               "loc": {
@@ -4731,7 +4752,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.RV32E",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.RV32E",
               "port": "RV32E",
               "con": "RV32E",
               "loc": {
@@ -4742,7 +4763,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.DataWidth",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.DataWidth",
               "port": "DataWidth",
               "con": "RegFileDataWidth",
               "loc": {
@@ -4753,7 +4774,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.DummyInstructions",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.DummyInstructions",
               "port": "DummyInstructions",
               "con": "DummyInstructions",
               "loc": {
@@ -4764,7 +4785,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.WordZeroVal",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.WordZeroVal",
               "port": "WordZeroVal",
               "con": "RegFileDataWidth'(prim_secded_pkg::SecdedInv3932ZeroWord)",
               "loc": {
@@ -4777,7 +4798,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.register_file_i~3.clk_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.clk_i",
               "port": "clk_i",
               "con": "clk",
               "loc": {
@@ -4788,7 +4809,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.rst_ni",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -4799,7 +4820,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.test_en_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.test_en_i",
               "port": "test_en_i",
               "con": "test_en_i",
               "loc": {
@@ -4810,7 +4831,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.dummy_instr_id_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.dummy_instr_id_i",
               "port": "dummy_instr_id_i",
               "con": "dummy_instr_id",
               "loc": {
@@ -4821,7 +4842,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.dummy_instr_wb_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.dummy_instr_wb_i",
               "port": "dummy_instr_wb_i",
               "con": "dummy_instr_wb",
               "loc": {
@@ -4832,7 +4853,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.cheriot_enable_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.cheriot_enable_i",
               "port": "cheriot_enable_i",
               "con": "cheriot_enable_i",
               "loc": {
@@ -4843,7 +4864,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.raddr_a_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.raddr_a_i",
               "port": "raddr_a_i",
               "con": "rf_raddr_a",
               "loc": {
@@ -4854,7 +4875,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.rdata_a_o",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.rdata_a_o",
               "port": "rdata_a_o",
               "con": "rf_rdata_a",
               "loc": {
@@ -4865,7 +4886,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.rcap_a_o",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.rcap_a_o",
               "port": "rcap_a_o",
               "con": "rf_rcap_a",
               "loc": {
@@ -4876,7 +4897,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.raddr_b_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.raddr_b_i",
               "port": "raddr_b_i",
               "con": "rf_raddr_b",
               "loc": {
@@ -4887,7 +4908,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.rdata_b_o",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.rdata_b_o",
               "port": "rdata_b_o",
               "con": "rf_rdata_b",
               "loc": {
@@ -4898,7 +4919,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.rcap_b_o",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.rcap_b_o",
               "port": "rcap_b_o",
               "con": "rf_rcap_b",
               "loc": {
@@ -4909,7 +4930,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.waddr_a_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.waddr_a_i",
               "port": "waddr_a_i",
               "con": "rf_waddr_wb",
               "loc": {
@@ -4920,7 +4941,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.wdata_a_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.wdata_a_i",
               "port": "wdata_a_i",
               "con": "rf_wdata_wb",
               "loc": {
@@ -4931,7 +4952,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.wcap_a_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.wcap_a_i",
               "port": "wcap_a_i",
               "con": "rf_wcap",
               "loc": {
@@ -4942,7 +4963,7 @@
               }
             },
             {
-              "id": "ibex_top.register_file_i~3.we_a_i",
+              "id": "ibex_top.gen_regfile_latch.register_file_i.we_a_i",
               "port": "we_a_i",
               "con": "rf_we_wb",
               "loc": {
@@ -4953,6 +4974,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_regfile_latch",
+              "cond": "RegFile == RegFileLatch"
+            }
+          ],
           "loc": {
             "line": 590,
             "col": 5,
@@ -4961,12 +4989,12 @@
           }
         },
         {
-          "id": "ibex_top.tag_bank",
+          "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank",
           "name": "tag_bank",
           "module": "prim_ram_1p_scr",
           "params": [
             {
-              "id": "ibex_top.tag_bank.Width",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.Width",
               "port": "Width",
               "con": "TagSizeECC",
               "loc": {
@@ -4977,7 +5005,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.Depth",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.Depth",
               "port": "Depth",
               "con": "IC_NUM_LINES",
               "loc": {
@@ -4988,7 +5016,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.DataBitsPerMask",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.DataBitsPerMask",
               "port": "DataBitsPerMask",
               "con": "TagSizeECC",
               "loc": {
@@ -4999,7 +5027,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.EnableParity",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.EnableParity",
               "port": "EnableParity",
               "con": "0",
               "loc": {
@@ -5010,7 +5038,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.NumPrinceRoundsHalf",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.NumPrinceRoundsHalf",
               "port": "NumPrinceRoundsHalf",
               "con": "ICacheScrNumPrinceRoundsHalf",
               "loc": {
@@ -5021,7 +5049,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.NumAddrScrRounds",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.NumAddrScrRounds",
               "port": "NumAddrScrRounds",
               "con": "NumAddrScrRounds",
               "loc": {
@@ -5034,7 +5062,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.tag_bank.clk_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -5045,7 +5073,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.rst_ni",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -5056,7 +5084,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.key_valid_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.key_valid_i",
               "port": "key_valid_i",
               "con": "scramble_key_valid_q",
               "loc": {
@@ -5067,7 +5095,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.key_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.key_i",
               "port": "key_i",
               "con": "scramble_key_q",
               "loc": {
@@ -5078,7 +5106,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.nonce_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.nonce_i",
               "port": "nonce_i",
               "con": "scramble_nonce_q",
               "loc": {
@@ -5089,7 +5117,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.req_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.req_i",
               "port": "req_i",
               "con": "ic_tag_req[way]",
               "loc": {
@@ -5100,7 +5128,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.gnt_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.gnt_o",
               "port": "gnt_o",
               "loc": {
                 "line": 706,
@@ -5110,7 +5138,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.write_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.write_i",
               "port": "write_i",
               "con": "ic_tag_write",
               "loc": {
@@ -5121,7 +5149,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.addr_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.addr_i",
               "port": "addr_i",
               "con": "ic_tag_addr",
               "loc": {
@@ -5132,7 +5160,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.wdata_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.wdata_i",
               "port": "wdata_i",
               "con": "ic_tag_wdata",
               "loc": {
@@ -5143,7 +5171,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.wmask_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.wmask_i",
               "port": "wmask_i",
               "con": "{TagSizeECC{1'b1}}",
               "loc": {
@@ -5154,7 +5182,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.intg_error_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.intg_error_i",
               "port": "intg_error_i",
               "con": "1'b0",
               "loc": {
@@ -5165,7 +5193,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.rdata_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.rdata_o",
               "port": "rdata_o",
               "con": "ic_tag_rdata[way]",
               "loc": {
@@ -5176,7 +5204,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.rvalid_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.rvalid_o",
               "port": "rvalid_o",
               "loc": {
                 "line": 714,
@@ -5186,7 +5214,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.raddr_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.raddr_o",
               "port": "raddr_o",
               "loc": {
                 "line": 715,
@@ -5196,7 +5224,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.rerror_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.rerror_o",
               "port": "rerror_o",
               "loc": {
                 "line": 716,
@@ -5206,7 +5234,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.cfg_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.cfg_i",
               "port": "cfg_i",
               "con": "ram_cfg_icache_tag_i[way]",
               "loc": {
@@ -5217,7 +5245,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.cfg_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.cfg_o",
               "port": "cfg_o",
               "con": "ram_cfg_icache_tag_o[way]",
               "loc": {
@@ -5228,7 +5256,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.wr_collision_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.wr_collision_o",
               "port": "wr_collision_o",
               "loc": {
                 "line": 719,
@@ -5238,7 +5266,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.write_pending_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.write_pending_o",
               "port": "write_pending_o",
               "loc": {
                 "line": 720,
@@ -5248,7 +5276,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank.alert_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.tag_bank.alert_o",
               "port": "alert_o",
               "con": "icache_tag_alert[way]",
               "loc": {
@@ -5259,6 +5287,23 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "if",
+              "name": "gen_scramble_rams",
+              "cond": "ICacheScramble"
+            }
+          ],
           "loc": {
             "line": 689,
             "col": 9,
@@ -5267,12 +5312,12 @@
           }
         },
         {
-          "id": "ibex_top.data_bank",
+          "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank",
           "name": "data_bank",
           "module": "prim_ram_1p_scr",
           "params": [
             {
-              "id": "ibex_top.data_bank.Width",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.Width",
               "port": "Width",
               "con": "LineSizeECC",
               "loc": {
@@ -5283,7 +5328,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.Depth",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.Depth",
               "port": "Depth",
               "con": "IC_NUM_LINES",
               "loc": {
@@ -5294,7 +5339,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.DataBitsPerMask",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.DataBitsPerMask",
               "port": "DataBitsPerMask",
               "con": "LineSizeECC",
               "loc": {
@@ -5305,7 +5350,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.ReplicateKeyStream",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.ReplicateKeyStream",
               "port": "ReplicateKeyStream",
               "con": "1",
               "loc": {
@@ -5316,7 +5361,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.EnableParity",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.EnableParity",
               "port": "EnableParity",
               "con": "0",
               "loc": {
@@ -5327,7 +5372,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.NumPrinceRoundsHalf",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.NumPrinceRoundsHalf",
               "port": "NumPrinceRoundsHalf",
               "con": "ICacheScrNumPrinceRoundsHalf",
               "loc": {
@@ -5338,7 +5383,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.NumAddrScrRounds",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.NumAddrScrRounds",
               "port": "NumAddrScrRounds",
               "con": "NumAddrScrRounds",
               "loc": {
@@ -5351,7 +5396,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.data_bank.clk_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -5362,7 +5407,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.rst_ni",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -5373,7 +5418,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.key_valid_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.key_valid_i",
               "port": "key_valid_i",
               "con": "scramble_key_valid_q",
               "loc": {
@@ -5384,7 +5429,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.key_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.key_i",
               "port": "key_i",
               "con": "scramble_key_q",
               "loc": {
@@ -5395,7 +5440,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.nonce_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.nonce_i",
               "port": "nonce_i",
               "con": "scramble_nonce_q",
               "loc": {
@@ -5406,7 +5451,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.req_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.req_i",
               "port": "req_i",
               "con": "ic_data_req[way]",
               "loc": {
@@ -5417,7 +5462,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.gnt_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.gnt_o",
               "port": "gnt_o",
               "loc": {
                 "line": 744,
@@ -5427,7 +5472,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.write_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.write_i",
               "port": "write_i",
               "con": "ic_data_write",
               "loc": {
@@ -5438,7 +5483,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.addr_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.addr_i",
               "port": "addr_i",
               "con": "ic_data_addr",
               "loc": {
@@ -5449,7 +5494,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.wdata_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.wdata_i",
               "port": "wdata_i",
               "con": "ic_data_wdata",
               "loc": {
@@ -5460,7 +5505,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.wmask_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.wmask_i",
               "port": "wmask_i",
               "con": "{LineSizeECC{1'b1}}",
               "loc": {
@@ -5471,7 +5516,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.intg_error_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.intg_error_i",
               "port": "intg_error_i",
               "con": "1'b0",
               "loc": {
@@ -5482,7 +5527,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.rdata_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.rdata_o",
               "port": "rdata_o",
               "con": "ic_data_rdata[way]",
               "loc": {
@@ -5493,7 +5538,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.rvalid_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.rvalid_o",
               "port": "rvalid_o",
               "loc": {
                 "line": 752,
@@ -5503,7 +5548,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.raddr_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.raddr_o",
               "port": "raddr_o",
               "loc": {
                 "line": 753,
@@ -5513,7 +5558,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.rerror_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.rerror_o",
               "port": "rerror_o",
               "loc": {
                 "line": 754,
@@ -5523,7 +5568,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.cfg_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.cfg_i",
               "port": "cfg_i",
               "con": "ram_cfg_icache_data_i[way]",
               "loc": {
@@ -5534,7 +5579,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.cfg_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.cfg_o",
               "port": "cfg_o",
               "con": "ram_cfg_icache_data_o[way]",
               "loc": {
@@ -5545,7 +5590,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.wr_collision_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.wr_collision_o",
               "port": "wr_collision_o",
               "loc": {
                 "line": 757,
@@ -5555,7 +5600,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.write_pending_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.write_pending_o",
               "port": "write_pending_o",
               "loc": {
                 "line": 758,
@@ -5565,7 +5610,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank.alert_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.data_bank.alert_o",
               "port": "alert_o",
               "con": "icache_data_alert[way]",
               "loc": {
@@ -5576,6 +5621,23 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "if",
+              "name": "gen_scramble_rams",
+              "cond": "ICacheScramble"
+            }
+          ],
           "loc": {
             "line": 726,
             "col": 9,
@@ -5584,12 +5646,12 @@
           }
         },
         {
-          "id": "ibex_top.tag_bank~2",
+          "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank",
           "name": "tag_bank",
           "module": "prim_ram_1p",
           "params": [
             {
-              "id": "ibex_top.tag_bank~2.Width",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.Width",
               "port": "Width",
               "con": "TagSizeECC",
               "loc": {
@@ -5600,7 +5662,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.Depth",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.Depth",
               "port": "Depth",
               "con": "IC_NUM_LINES",
               "loc": {
@@ -5611,7 +5673,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.DataBitsPerMask",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.DataBitsPerMask",
               "port": "DataBitsPerMask",
               "con": "TagSizeECC",
               "loc": {
@@ -5624,7 +5686,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.tag_bank~2.clk_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -5635,7 +5697,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.rst_ni",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -5646,7 +5708,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.req_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.req_i",
               "port": "req_i",
               "con": "ic_tag_req[way]",
               "loc": {
@@ -5657,7 +5719,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.write_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.write_i",
               "port": "write_i",
               "con": "ic_tag_write",
               "loc": {
@@ -5668,7 +5730,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.addr_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.addr_i",
               "port": "addr_i",
               "con": "ic_tag_addr",
               "loc": {
@@ -5679,7 +5741,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.wdata_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.wdata_i",
               "port": "wdata_i",
               "con": "ic_tag_wdata",
               "loc": {
@@ -5690,7 +5752,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.wmask_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.wmask_i",
               "port": "wmask_i",
               "con": "{TagSizeECC{1'b1}}",
               "loc": {
@@ -5701,7 +5763,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.rdata_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.rdata_o",
               "port": "rdata_o",
               "con": "ic_tag_rdata[way]",
               "loc": {
@@ -5712,7 +5774,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.cfg_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.cfg_i",
               "port": "cfg_i",
               "con": "ram_cfg_icache_tag_i[way]",
               "loc": {
@@ -5723,7 +5785,7 @@
               }
             },
             {
-              "id": "ibex_top.tag_bank~2.cfg_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.tag_bank.cfg_o",
               "port": "cfg_o",
               "con": "ram_cfg_icache_tag_o[way]",
               "loc": {
@@ -5734,6 +5796,22 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "else",
+              "name": "gen_noscramble_rams"
+            }
+          ],
           "loc": {
             "line": 796,
             "col": 9,
@@ -5742,12 +5820,12 @@
           }
         },
         {
-          "id": "ibex_top.data_bank~2",
+          "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank",
           "name": "data_bank",
           "module": "prim_ram_1p",
           "params": [
             {
-              "id": "ibex_top.data_bank~2.Width",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.Width",
               "port": "Width",
               "con": "LineSizeECC",
               "loc": {
@@ -5758,7 +5836,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.Depth",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.Depth",
               "port": "Depth",
               "con": "IC_NUM_LINES",
               "loc": {
@@ -5769,7 +5847,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.DataBitsPerMask",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.DataBitsPerMask",
               "port": "DataBitsPerMask",
               "con": "LineSizeECC",
               "loc": {
@@ -5782,7 +5860,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.data_bank~2.clk_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -5793,7 +5871,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.rst_ni",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -5804,7 +5882,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.req_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.req_i",
               "port": "req_i",
               "con": "ic_data_req[way]",
               "loc": {
@@ -5815,7 +5893,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.write_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.write_i",
               "port": "write_i",
               "con": "ic_data_write",
               "loc": {
@@ -5826,7 +5904,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.addr_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.addr_i",
               "port": "addr_i",
               "con": "ic_data_addr",
               "loc": {
@@ -5837,7 +5915,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.wdata_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.wdata_i",
               "port": "wdata_i",
               "con": "ic_data_wdata",
               "loc": {
@@ -5848,7 +5926,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.wmask_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.wmask_i",
               "port": "wmask_i",
               "con": "{LineSizeECC{1'b1}}",
               "loc": {
@@ -5859,7 +5937,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.rdata_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.rdata_o",
               "port": "rdata_o",
               "con": "ic_data_rdata[way]",
               "loc": {
@@ -5870,7 +5948,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.cfg_i",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.cfg_i",
               "port": "cfg_i",
               "con": "ram_cfg_icache_data_i[way]",
               "loc": {
@@ -5881,7 +5959,7 @@
               }
             },
             {
-              "id": "ibex_top.data_bank~2.cfg_o",
+              "id": "ibex_top.gen_rams.gen_rams_inner.gen_noscramble_rams.data_bank.cfg_o",
               "port": "cfg_o",
               "con": "ram_cfg_icache_data_o[way]",
               "loc": {
@@ -5892,6 +5970,22 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "else",
+              "name": "gen_noscramble_rams"
+            }
+          ],
           "loc": {
             "line": 817,
             "col": 9,
@@ -5900,12 +5994,12 @@
           }
         },
         {
-          "id": "ibex_top.u_prim_buf_data_wdata_intg",
+          "id": "ibex_top.gen_mem_wdata_ecc.u_prim_buf_data_wdata_intg",
           "name": "u_prim_buf_data_wdata_intg",
           "module": "prim_buf",
           "params": [
             {
-              "id": "ibex_top.u_prim_buf_data_wdata_intg.Width",
+              "id": "ibex_top.gen_mem_wdata_ecc.u_prim_buf_data_wdata_intg.Width",
               "port": "Width",
               "con": "7",
               "loc": {
@@ -5918,7 +6012,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_prim_buf_data_wdata_intg.in_i",
+              "id": "ibex_top.gen_mem_wdata_ecc.u_prim_buf_data_wdata_intg.in_i",
               "port": "in_i",
               "con": "data_wdata_core[MemDataWidth-1:32]",
               "loc": {
@@ -5929,7 +6023,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_buf_data_wdata_intg.out_o",
+              "id": "ibex_top.gen_mem_wdata_ecc.u_prim_buf_data_wdata_intg.out_o",
               "port": "out_o",
               "con": "trvk_wdata_intg",
               "loc": {
@@ -5940,6 +6034,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mem_wdata_ecc",
+              "cond": "MemECC"
+            }
+          ],
           "loc": {
             "line": 864,
             "col": 5,
@@ -5948,12 +6049,12 @@
           }
         },
         {
-          "id": "ibex_top.u_signals_prim_buf",
+          "id": "ibex_top.gen_lockstep.u_signals_prim_buf",
           "name": "u_signals_prim_buf",
           "module": "prim_buf",
           "params": [
             {
-              "id": "ibex_top.u_signals_prim_buf.Width",
+              "id": "ibex_top.gen_lockstep.u_signals_prim_buf.Width",
               "port": "Width",
               "con": "NumBufferBits",
               "loc": {
@@ -5966,7 +6067,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_signals_prim_buf.in_i",
+              "id": "ibex_top.gen_lockstep.u_signals_prim_buf.in_i",
               "port": "in_i",
               "con": "buf_in",
               "loc": {
@@ -5977,7 +6078,7 @@
               }
             },
             {
-              "id": "ibex_top.u_signals_prim_buf.out_o",
+              "id": "ibex_top.gen_lockstep.u_signals_prim_buf.out_o",
               "port": "out_o",
               "con": "buf_out",
               "loc": {
@@ -5988,6 +6089,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
           "loc": {
             "line": 1114,
             "col": 5,
@@ -5996,12 +6104,12 @@
           }
         },
         {
-          "id": "ibex_top.u_tag_prim_buf",
+          "id": "ibex_top.gen_lockstep.gen_ways.u_tag_prim_buf",
           "name": "u_tag_prim_buf",
           "module": "prim_buf",
           "params": [
             {
-              "id": "ibex_top.u_tag_prim_buf.Width",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_tag_prim_buf.Width",
               "port": "Width",
               "con": "TagSizeECC",
               "loc": {
@@ -6014,7 +6122,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_tag_prim_buf.in_i",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_tag_prim_buf.in_i",
               "port": "in_i",
               "con": "ic_tag_rdata[k]",
               "loc": {
@@ -6025,7 +6133,7 @@
               }
             },
             {
-              "id": "ibex_top.u_tag_prim_buf.out_o",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_tag_prim_buf.out_o",
               "port": "out_o",
               "con": "ic_tag_rdata_local[k]",
               "loc": {
@@ -6036,6 +6144,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            },
+            {
+              "kind": "for",
+              "name": "gen_ways",
+              "cond": "genvar k = 0; k < IC_NUM_WAYS; k++"
+            }
+          ],
           "loc": {
             "line": 1122,
             "col": 7,
@@ -6044,12 +6164,12 @@
           }
         },
         {
-          "id": "ibex_top.u_data_prim_buf",
+          "id": "ibex_top.gen_lockstep.gen_ways.u_data_prim_buf",
           "name": "u_data_prim_buf",
           "module": "prim_buf",
           "params": [
             {
-              "id": "ibex_top.u_data_prim_buf.Width",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_data_prim_buf.Width",
               "port": "Width",
               "con": "LineSizeECC",
               "loc": {
@@ -6062,7 +6182,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_data_prim_buf.in_i",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_data_prim_buf.in_i",
               "port": "in_i",
               "con": "ic_data_rdata[k]",
               "loc": {
@@ -6073,7 +6193,7 @@
               }
             },
             {
-              "id": "ibex_top.u_data_prim_buf.out_o",
+              "id": "ibex_top.gen_lockstep.gen_ways.u_data_prim_buf.out_o",
               "port": "out_o",
               "con": "ic_data_rdata_local[k]",
               "loc": {
@@ -6084,6 +6204,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            },
+            {
+              "kind": "for",
+              "name": "gen_ways",
+              "cond": "genvar k = 0; k < IC_NUM_WAYS; k++"
+            }
+          ],
           "loc": {
             "line": 1126,
             "col": 7,
@@ -6092,12 +6224,12 @@
           }
         },
         {
-          "id": "ibex_top.u_ibex_lockstep",
+          "id": "ibex_top.gen_lockstep.u_ibex_lockstep",
           "name": "u_ibex_lockstep",
           "module": "ibex_lockstep",
           "params": [
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPEnable",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPEnable",
               "port": "PMPEnable",
               "con": "PMPEnable",
               "loc": {
@@ -6108,7 +6240,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPGranularity",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPGranularity",
               "port": "PMPGranularity",
               "con": "PMPGranularity",
               "loc": {
@@ -6119,7 +6251,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPNumRegions",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPNumRegions",
               "port": "PMPNumRegions",
               "con": "PMPNumRegions",
               "loc": {
@@ -6130,7 +6262,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPRstCfg",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPRstCfg",
               "port": "PMPRstCfg",
               "con": "PMPRstCfg",
               "loc": {
@@ -6141,7 +6273,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPRstAddr",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPRstAddr",
               "port": "PMPRstAddr",
               "con": "PMPRstAddr",
               "loc": {
@@ -6152,7 +6284,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.PMPRstMsecCfg",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.PMPRstMsecCfg",
               "port": "PMPRstMsecCfg",
               "con": "PMPRstMsecCfg",
               "loc": {
@@ -6163,7 +6295,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.MHPMCounterNum",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.MHPMCounterNum",
               "port": "MHPMCounterNum",
               "con": "MHPMCounterNum",
               "loc": {
@@ -6174,7 +6306,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.MHPMCounterWidth",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.MHPMCounterWidth",
               "port": "MHPMCounterWidth",
               "con": "MHPMCounterWidth",
               "loc": {
@@ -6185,7 +6317,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RV32E",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RV32E",
               "port": "RV32E",
               "con": "RV32E",
               "loc": {
@@ -6196,7 +6328,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RV32M",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RV32M",
               "port": "RV32M",
               "con": "RV32M",
               "loc": {
@@ -6207,7 +6339,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RV32B",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RV32B",
               "port": "RV32B",
               "con": "RV32B",
               "loc": {
@@ -6218,7 +6350,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RV32ZC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RV32ZC",
               "port": "RV32ZC",
               "con": "RV32ZC",
               "loc": {
@@ -6229,7 +6361,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.BranchTargetALU",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.BranchTargetALU",
               "port": "BranchTargetALU",
               "con": "BranchTargetALU",
               "loc": {
@@ -6240,7 +6372,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ICache",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ICache",
               "port": "ICache",
               "con": "ICache",
               "loc": {
@@ -6251,7 +6383,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ICacheECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ICacheECC",
               "port": "ICacheECC",
               "con": "ICacheECC",
               "loc": {
@@ -6262,7 +6394,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ICacheTweakInfection",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ICacheTweakInfection",
               "port": "ICacheTweakInfection",
               "con": "ICacheTweakInfection",
               "loc": {
@@ -6273,7 +6405,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.BusSizeECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.BusSizeECC",
               "port": "BusSizeECC",
               "con": "BusSizeECC",
               "loc": {
@@ -6284,7 +6416,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.TagSizeECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.TagSizeECC",
               "port": "TagSizeECC",
               "con": "TagSizeECC",
               "loc": {
@@ -6295,7 +6427,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.LineSizeECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.LineSizeECC",
               "port": "LineSizeECC",
               "con": "LineSizeECC",
               "loc": {
@@ -6306,7 +6438,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.BranchPredictor",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.BranchPredictor",
               "port": "BranchPredictor",
               "con": "BranchPredictor",
               "loc": {
@@ -6317,7 +6449,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DbgTriggerEn",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DbgTriggerEn",
               "port": "DbgTriggerEn",
               "con": "DbgTriggerEn",
               "loc": {
@@ -6328,7 +6460,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DbgHwBreakNum",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DbgHwBreakNum",
               "port": "DbgHwBreakNum",
               "con": "DbgHwBreakNum",
               "loc": {
@@ -6339,7 +6471,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.WritebackStage",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.WritebackStage",
               "port": "WritebackStage",
               "con": "WritebackStage",
               "loc": {
@@ -6350,7 +6482,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ResetAll",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ResetAll",
               "port": "ResetAll",
               "con": "ResetAll",
               "loc": {
@@ -6361,7 +6493,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RndCnstLfsrSeed",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RndCnstLfsrSeed",
               "port": "RndCnstLfsrSeed",
               "con": "RndCnstLfsrSeed",
               "loc": {
@@ -6372,7 +6504,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RndCnstLfsrPerm",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RndCnstLfsrPerm",
               "port": "RndCnstLfsrPerm",
               "con": "RndCnstLfsrPerm",
               "loc": {
@@ -6383,7 +6515,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.SecureIbex",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.SecureIbex",
               "port": "SecureIbex",
               "con": "SecureIbex",
               "loc": {
@@ -6394,7 +6526,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.LockstepOffset",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.LockstepOffset",
               "port": "LockstepOffset",
               "con": "LockstepOffset",
               "loc": {
@@ -6405,7 +6537,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DummyInstructions",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DummyInstructions",
               "port": "DummyInstructions",
               "con": "DummyInstructions",
               "loc": {
@@ -6416,7 +6548,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RegFileECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RegFileECC",
               "port": "RegFileECC",
               "con": "RegFileLockstepECC",
               "loc": {
@@ -6427,7 +6559,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RegFileDataWidth",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RegFileDataWidth",
               "port": "RegFileDataWidth",
               "con": "RegFileDataWidth",
               "loc": {
@@ -6438,7 +6570,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RegFileDataEccWidth",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RegFileDataEccWidth",
               "port": "RegFileDataEccWidth",
               "con": "RegFileDataEccWidth",
               "loc": {
@@ -6449,7 +6581,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RegFileCapEccWidth",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RegFileCapEccWidth",
               "port": "RegFileCapEccWidth",
               "con": "RegFileCapEccWidth",
               "loc": {
@@ -6460,7 +6592,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.RegFile",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.RegFile",
               "port": "RegFile",
               "con": "RegFile",
               "loc": {
@@ -6471,7 +6603,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.MemECC",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.MemECC",
               "port": "MemECC",
               "con": "MemECC",
               "loc": {
@@ -6482,7 +6614,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DmBaseAddr",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DmBaseAddr",
               "port": "DmBaseAddr",
               "con": "DmBaseAddr",
               "loc": {
@@ -6493,7 +6625,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DmAddrMask",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DmAddrMask",
               "port": "DmAddrMask",
               "con": "DmAddrMask",
               "loc": {
@@ -6504,7 +6636,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DmHaltAddr",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DmHaltAddr",
               "port": "DmHaltAddr",
               "con": "DmHaltAddr",
               "loc": {
@@ -6515,7 +6647,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.DmExceptionAddr",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.DmExceptionAddr",
               "port": "DmExceptionAddr",
               "con": "DmExceptionAddr",
               "loc": {
@@ -6526,7 +6658,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.CsrMvendorId",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.CsrMvendorId",
               "port": "CsrMvendorId",
               "con": "CsrMvendorId",
               "loc": {
@@ -6537,7 +6669,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.CsrMimpId",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.CsrMimpId",
               "port": "CsrMimpId",
               "con": "CsrMimpId",
               "loc": {
@@ -6548,7 +6680,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.BaseIsa",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.BaseIsa",
               "port": "BaseIsa",
               "con": "BaseIsa",
               "loc": {
@@ -6561,7 +6693,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.u_ibex_lockstep.clk_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.clk_i",
               "port": "clk_i",
               "con": "clk",
               "loc": {
@@ -6572,7 +6704,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rst_ni",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -6583,7 +6715,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.hart_id_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.hart_id_i",
               "port": "hart_id_i",
               "con": "hart_id_local",
               "loc": {
@@ -6594,7 +6726,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.boot_addr_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.boot_addr_i",
               "port": "boot_addr_i",
               "con": "boot_addr_local",
               "loc": {
@@ -6605,7 +6737,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.cheriot_enable_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.cheriot_enable_i",
               "port": "cheriot_enable_i",
               "con": "cheriot_enable_local",
               "loc": {
@@ -6616,7 +6748,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_req_i",
               "port": "instr_req_i",
               "con": "instr_req_local",
               "loc": {
@@ -6627,7 +6759,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_gnt_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_gnt_i",
               "port": "instr_gnt_i",
               "con": "instr_gnt_local",
               "loc": {
@@ -6638,7 +6770,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_rvalid_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_rvalid_i",
               "port": "instr_rvalid_i",
               "con": "instr_rvalid_local",
               "loc": {
@@ -6649,7 +6781,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_addr_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_addr_i",
               "port": "instr_addr_i",
               "con": "instr_addr_local",
               "loc": {
@@ -6660,7 +6792,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_rdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_rdata_i",
               "port": "instr_rdata_i",
               "con": "instr_rdata_local",
               "loc": {
@@ -6671,7 +6803,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_err_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_err_i",
               "port": "instr_err_i",
               "con": "instr_err_local",
               "loc": {
@@ -6682,7 +6814,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_req_i",
               "port": "data_req_i",
               "con": "data_req_local",
               "loc": {
@@ -6693,7 +6825,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_gnt_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_gnt_i",
               "port": "data_gnt_i",
               "con": "data_gnt_local",
               "loc": {
@@ -6704,7 +6836,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_rvalid_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_rvalid_i",
               "port": "data_rvalid_i",
               "con": "data_rvalid_local",
               "loc": {
@@ -6715,7 +6847,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_we_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_we_i",
               "port": "data_we_i",
               "con": "data_we_local",
               "loc": {
@@ -6726,7 +6858,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_be_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_be_i",
               "port": "data_be_i",
               "con": "data_be_local",
               "loc": {
@@ -6737,7 +6869,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_addr_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_addr_i",
               "port": "data_addr_i",
               "con": "data_addr_local",
               "loc": {
@@ -6748,7 +6880,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_wdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_wdata_i",
               "port": "data_wdata_i",
               "con": "data_wdata_local",
               "loc": {
@@ -6759,7 +6891,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_tag_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_tag_i",
               "port": "data_tag_i",
               "con": "data_tag_local",
               "loc": {
@@ -6770,7 +6902,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_rdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_rdata_i",
               "port": "data_rdata_i",
               "con": "data_rdata_local",
               "loc": {
@@ -6781,7 +6913,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_rdata_tag_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_rdata_tag_i",
               "port": "data_rdata_tag_i",
               "con": "data_rdata_tag_local",
               "loc": {
@@ -6792,7 +6924,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_err_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_err_i",
               "port": "data_err_i",
               "con": "data_err_local",
               "loc": {
@@ -6803,7 +6935,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_raddr_a_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_raddr_a_i",
               "port": "rf_raddr_a_i",
               "con": "rf_raddr_a_local",
               "loc": {
@@ -6814,7 +6946,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_raddr_b_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_raddr_b_i",
               "port": "rf_raddr_b_i",
               "con": "rf_raddr_b_local",
               "loc": {
@@ -6825,7 +6957,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_waddr_wb_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_waddr_wb_i",
               "port": "rf_waddr_wb_i",
               "con": "rf_waddr_wb_local",
               "loc": {
@@ -6836,7 +6968,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_we_wb_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_we_wb_i",
               "port": "rf_we_wb_i",
               "con": "rf_we_wb_local",
               "loc": {
@@ -6847,7 +6979,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_wdata_wb_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_wdata_wb_i",
               "port": "rf_wdata_wb_i",
               "con": "rf_wdata_wb_local",
               "loc": {
@@ -6858,7 +6990,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_rdata_a_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_rdata_a_i",
               "port": "rf_rdata_a_i",
               "con": "rf_rdata_a_local",
               "loc": {
@@ -6869,7 +7001,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_rdata_b_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_rdata_b_i",
               "port": "rf_rdata_b_i",
               "con": "rf_rdata_b_local",
               "loc": {
@@ -6880,7 +7012,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_wcap_wb_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_wcap_wb_i",
               "port": "rf_wcap_wb_i",
               "con": "rf_wcap_local",
               "loc": {
@@ -6891,7 +7023,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_rcap_a_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_rcap_a_i",
               "port": "rf_rcap_a_i",
               "con": "rf_rcap_a_local",
               "loc": {
@@ -6902,7 +7034,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.rf_rcap_b_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.rf_rcap_b_i",
               "port": "rf_rcap_b_i",
               "con": "rf_rcap_b_local",
               "loc": {
@@ -6913,7 +7045,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_tag_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_tag_req_i",
               "port": "ic_tag_req_i",
               "con": "ic_tag_req_local",
               "loc": {
@@ -6924,7 +7056,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_tag_write_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_tag_write_i",
               "port": "ic_tag_write_i",
               "con": "ic_tag_write_local",
               "loc": {
@@ -6935,7 +7067,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_tag_addr_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_tag_addr_i",
               "port": "ic_tag_addr_i",
               "con": "ic_tag_addr_local",
               "loc": {
@@ -6946,7 +7078,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_tag_wdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_tag_wdata_i",
               "port": "ic_tag_wdata_i",
               "con": "ic_tag_wdata_local",
               "loc": {
@@ -6957,7 +7089,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_tag_rdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_tag_rdata_i",
               "port": "ic_tag_rdata_i",
               "con": "ic_tag_rdata_local",
               "loc": {
@@ -6968,7 +7100,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_data_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_data_req_i",
               "port": "ic_data_req_i",
               "con": "ic_data_req_local",
               "loc": {
@@ -6979,7 +7111,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_data_write_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_data_write_i",
               "port": "ic_data_write_i",
               "con": "ic_data_write_local",
               "loc": {
@@ -6990,7 +7122,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_data_addr_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_data_addr_i",
               "port": "ic_data_addr_i",
               "con": "ic_data_addr_local",
               "loc": {
@@ -7001,7 +7133,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_data_wdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_data_wdata_i",
               "port": "ic_data_wdata_i",
               "con": "ic_data_wdata_local",
               "loc": {
@@ -7012,7 +7144,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_data_rdata_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_data_rdata_i",
               "port": "ic_data_rdata_i",
               "con": "ic_data_rdata_local",
               "loc": {
@@ -7023,7 +7155,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_scr_key_valid_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_scr_key_valid_i",
               "port": "ic_scr_key_valid_i",
               "con": "scramble_key_valid_local",
               "loc": {
@@ -7034,7 +7166,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.ic_scr_key_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.ic_scr_key_req_i",
               "port": "ic_scr_key_req_i",
               "con": "ic_scr_key_req_local",
               "loc": {
@@ -7045,7 +7177,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_software_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_software_i",
               "port": "irq_software_i",
               "con": "irq_software_local",
               "loc": {
@@ -7056,7 +7188,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_timer_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_timer_i",
               "port": "irq_timer_i",
               "con": "irq_timer_local",
               "loc": {
@@ -7067,7 +7199,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_external_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_external_i",
               "port": "irq_external_i",
               "con": "irq_external_local",
               "loc": {
@@ -7078,7 +7210,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_fast_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_fast_i",
               "port": "irq_fast_i",
               "con": "irq_fast_local",
               "loc": {
@@ -7089,7 +7221,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_nm_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_nm_i",
               "port": "irq_nm_i",
               "con": "irq_nm_local",
               "loc": {
@@ -7100,7 +7232,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.irq_pending_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.irq_pending_i",
               "port": "irq_pending_i",
               "con": "irq_pending_local",
               "loc": {
@@ -7111,7 +7243,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.debug_req_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.debug_req_i",
               "port": "debug_req_i",
               "con": "debug_req_local",
               "loc": {
@@ -7122,7 +7254,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.crash_dump_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.crash_dump_i",
               "port": "crash_dump_i",
               "con": "crash_dump_local",
               "loc": {
@@ -7133,7 +7265,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.double_fault_seen_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.double_fault_seen_i",
               "port": "double_fault_seen_i",
               "con": "double_fault_seen_local",
               "loc": {
@@ -7144,7 +7276,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.fetch_enable_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.fetch_enable_i",
               "port": "fetch_enable_i",
               "con": "fetch_enable_local",
               "loc": {
@@ -7155,7 +7287,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.mcounteren_writable_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.mcounteren_writable_i",
               "port": "mcounteren_writable_i",
               "con": "mcounteren_writable_local",
               "loc": {
@@ -7166,7 +7298,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.alert_minor_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.alert_minor_o",
               "port": "alert_minor_o",
               "con": "lockstep_alert_minor_local",
               "loc": {
@@ -7177,7 +7309,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.alert_major_internal_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.alert_major_internal_o",
               "port": "alert_major_internal_o",
               "con": "lockstep_alert_major_internal_local",
               "loc": {
@@ -7188,7 +7320,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.alert_major_bus_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.alert_major_bus_o",
               "port": "alert_major_bus_o",
               "con": "lockstep_alert_major_bus_local",
               "loc": {
@@ -7199,7 +7331,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.core_busy_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.core_busy_i",
               "port": "core_busy_i",
               "con": "core_busy_local",
               "loc": {
@@ -7210,7 +7342,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.test_en_i",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.test_en_i",
               "port": "test_en_i",
               "con": "test_en_i",
               "loc": {
@@ -7221,7 +7353,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.scan_rst_ni",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.scan_rst_ni",
               "port": "scan_rst_ni",
               "con": "scan_rst_ni",
               "loc": {
@@ -7232,7 +7364,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.lockstep_cmp_en_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.lockstep_cmp_en_o",
               "port": "lockstep_cmp_en_o",
               "con": "lockstep_cmp_en_o",
               "loc": {
@@ -7243,7 +7375,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_req_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_req_shadow_o",
               "port": "data_req_shadow_o",
               "con": "data_req_shadow_o",
               "loc": {
@@ -7254,7 +7386,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_we_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_we_shadow_o",
               "port": "data_we_shadow_o",
               "con": "data_we_shadow_o",
               "loc": {
@@ -7265,7 +7397,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_be_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_be_shadow_o",
               "port": "data_be_shadow_o",
               "con": "data_be_shadow_o",
               "loc": {
@@ -7276,7 +7408,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_addr_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_addr_shadow_o",
               "port": "data_addr_shadow_o",
               "con": "data_addr_shadow_o",
               "loc": {
@@ -7287,7 +7419,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_wdata_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_wdata_shadow_o",
               "port": "data_wdata_shadow_o",
               "con": "data_wdata_shadow_o",
               "loc": {
@@ -7298,7 +7430,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.data_wdata_intg_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.data_wdata_intg_shadow_o",
               "port": "data_wdata_intg_shadow_o",
               "con": "data_wdata_intg_shadow_o",
               "loc": {
@@ -7309,7 +7441,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_req_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_req_shadow_o",
               "port": "instr_req_shadow_o",
               "con": "instr_req_shadow_o",
               "loc": {
@@ -7320,7 +7452,7 @@
               }
             },
             {
-              "id": "ibex_top.u_ibex_lockstep.instr_addr_shadow_o",
+              "id": "ibex_top.gen_lockstep.u_ibex_lockstep.instr_addr_shadow_o",
               "port": "instr_addr_shadow_o",
               "con": "instr_addr_shadow_o",
               "loc": {
@@ -7331,6 +7463,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
           "loc": {
             "line": 1135,
             "col": 5,
@@ -7339,12 +7478,12 @@
           }
         },
         {
-          "id": "ibex_top.u_prim_buf_alert_minor",
+          "id": "ibex_top.gen_lockstep.u_prim_buf_alert_minor",
           "name": "u_prim_buf_alert_minor",
           "module": "prim_buf",
           "connections": [
             {
-              "id": "ibex_top.u_prim_buf_alert_minor.in_i",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_minor.in_i",
               "port": "in_i",
               "con": "lockstep_alert_minor_local",
               "loc": {
@@ -7355,7 +7494,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_buf_alert_minor.out_o",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_minor.out_o",
               "port": "out_o",
               "con": "lockstep_alert_minor",
               "loc": {
@@ -7366,6 +7505,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
           "loc": {
             "line": 1261,
             "col": 5,
@@ -7374,12 +7520,12 @@
           }
         },
         {
-          "id": "ibex_top.u_prim_buf_alert_major_internal",
+          "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_internal",
           "name": "u_prim_buf_alert_major_internal",
           "module": "prim_buf",
           "connections": [
             {
-              "id": "ibex_top.u_prim_buf_alert_major_internal.in_i",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_internal.in_i",
               "port": "in_i",
               "con": "lockstep_alert_major_internal_local",
               "loc": {
@@ -7390,7 +7536,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_buf_alert_major_internal.out_o",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_internal.out_o",
               "port": "out_o",
               "con": "lockstep_alert_major_internal",
               "loc": {
@@ -7401,6 +7547,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
           "loc": {
             "line": 1266,
             "col": 5,
@@ -7409,12 +7562,12 @@
           }
         },
         {
-          "id": "ibex_top.u_prim_buf_alert_major_bus",
+          "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_bus",
           "name": "u_prim_buf_alert_major_bus",
           "module": "prim_buf",
           "connections": [
             {
-              "id": "ibex_top.u_prim_buf_alert_major_bus.in_i",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_bus.in_i",
               "port": "in_i",
               "con": "lockstep_alert_major_bus_local",
               "loc": {
@@ -7425,7 +7578,7 @@
               }
             },
             {
-              "id": "ibex_top.u_prim_buf_alert_major_bus.out_o",
+              "id": "ibex_top.gen_lockstep.u_prim_buf_alert_major_bus.out_o",
               "port": "out_o",
               "con": "lockstep_alert_major_bus",
               "loc": {
@@ -7436,6 +7589,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
           "loc": {
             "line": 1271,
             "col": 5,
@@ -7444,12 +7604,12 @@
           }
         },
         {
-          "id": "ibex_top.i_ibex_trvk",
+          "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk",
           "name": "i_ibex_trvk",
           "module": "ibex_trvk",
           "params": [
             {
-              "id": "ibex_top.i_ibex_trvk.NumOutstanding",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.NumOutstanding",
               "port": "NumOutstanding",
               "con": "MaxOutstandingDSideAccesses",
               "loc": {
@@ -7460,7 +7620,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.MemECC",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.MemECC",
               "port": "MemECC",
               "con": "MemECC",
               "loc": {
@@ -7471,7 +7631,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.RevBitmapAddrWidth",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.RevBitmapAddrWidth",
               "port": "RevBitmapAddrWidth",
               "con": "CheriotRevBitmapAddrWidth",
               "loc": {
@@ -7482,7 +7642,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.RevBitmapBaseAddr",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.RevBitmapBaseAddr",
               "port": "RevBitmapBaseAddr",
               "con": "CheriotRevBitmapBaseAddr",
               "loc": {
@@ -7495,7 +7655,7 @@
           ],
           "connections": [
             {
-              "id": "ibex_top.i_ibex_trvk.clk_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.clk_i",
               "port": "clk_i",
               "con": "clk",
               "loc": {
@@ -7506,7 +7666,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.rst_ni",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -7517,7 +7677,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.heap_base_addr_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.heap_base_addr_i",
               "port": "heap_base_addr_i",
               "con": "trvk_heap_base_addr_i",
               "loc": {
@@ -7528,7 +7688,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_req_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_req_i",
               "port": "upstream_req_i",
               "con": "trvk_req",
               "loc": {
@@ -7539,7 +7699,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_gnt_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_gnt_o",
               "port": "upstream_gnt_o",
               "con": "trvk_gnt",
               "loc": {
@@ -7550,7 +7710,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_rvalid_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_rvalid_o",
               "port": "upstream_rvalid_o",
               "con": "trvk_rvalid",
               "loc": {
@@ -7561,7 +7721,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_we_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_we_i",
               "port": "upstream_we_i",
               "con": "trvk_we",
               "loc": {
@@ -7572,7 +7732,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_be_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_be_i",
               "port": "upstream_be_i",
               "con": "trvk_be",
               "loc": {
@@ -7583,7 +7743,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_addr_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_addr_i",
               "port": "upstream_addr_i",
               "con": "trvk_addr",
               "loc": {
@@ -7594,7 +7754,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_wdata_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_wdata_i",
               "port": "upstream_wdata_i",
               "con": "trvk_wdata",
               "loc": {
@@ -7605,7 +7765,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_wdata_intg_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_wdata_intg_i",
               "port": "upstream_wdata_intg_i",
               "con": "trvk_wdata_intg",
               "loc": {
@@ -7616,7 +7776,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_rdata_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_rdata_o",
               "port": "upstream_rdata_o",
               "con": "trvk_rdata",
               "loc": {
@@ -7627,7 +7787,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_rdata_intg_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_rdata_intg_o",
               "port": "upstream_rdata_intg_o",
               "con": "trvk_rdata_intg",
               "loc": {
@@ -7638,7 +7798,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_err_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_err_o",
               "port": "upstream_err_o",
               "con": "trvk_err",
               "loc": {
@@ -7649,7 +7809,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_tag_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_tag_i",
               "port": "upstream_tag_i",
               "con": "trvk_wtag",
               "loc": {
@@ -7660,7 +7820,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.upstream_tag_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.upstream_tag_o",
               "port": "upstream_tag_o",
               "con": "trvk_rtag",
               "loc": {
@@ -7671,7 +7831,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_req_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_req_o",
               "port": "downstream_req_o",
               "con": "data_req_o",
               "loc": {
@@ -7682,7 +7842,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_gnt_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_gnt_i",
               "port": "downstream_gnt_i",
               "con": "data_gnt_i",
               "loc": {
@@ -7693,7 +7853,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_rvalid_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_rvalid_i",
               "port": "downstream_rvalid_i",
               "con": "data_rvalid_i",
               "loc": {
@@ -7704,7 +7864,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_we_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_we_o",
               "port": "downstream_we_o",
               "con": "data_we_o",
               "loc": {
@@ -7715,7 +7875,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_be_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_be_o",
               "port": "downstream_be_o",
               "con": "data_be_o",
               "loc": {
@@ -7726,7 +7886,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_addr_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_addr_o",
               "port": "downstream_addr_o",
               "con": "data_addr_o",
               "loc": {
@@ -7737,7 +7897,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_wdata_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_wdata_o",
               "port": "downstream_wdata_o",
               "con": "data_wdata_o",
               "loc": {
@@ -7748,7 +7908,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_wdata_intg_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_wdata_intg_o",
               "port": "downstream_wdata_intg_o",
               "con": "data_wdata_intg_o",
               "loc": {
@@ -7759,7 +7919,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_rdata_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_rdata_i",
               "port": "downstream_rdata_i",
               "con": "data_rdata_i",
               "loc": {
@@ -7770,7 +7930,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_rdata_intg_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_rdata_intg_i",
               "port": "downstream_rdata_intg_i",
               "con": "data_rdata_intg_i",
               "loc": {
@@ -7781,7 +7941,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_err_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_err_i",
               "port": "downstream_err_i",
               "con": "data_err_i",
               "loc": {
@@ -7792,7 +7952,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_tag_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_tag_o",
               "port": "downstream_tag_o",
               "con": "data_tag_o",
               "loc": {
@@ -7803,7 +7963,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.downstream_tag_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.downstream_tag_i",
               "port": "downstream_tag_i",
               "con": "data_tag_i",
               "loc": {
@@ -7814,7 +7974,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_req_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_req_o",
               "port": "revbm_req_o",
               "con": "trvk_revbm_req_o",
               "loc": {
@@ -7825,7 +7985,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_gnt_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_gnt_i",
               "port": "revbm_gnt_i",
               "con": "trvk_revbm_gnt_i",
               "loc": {
@@ -7836,7 +7996,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_rvalid_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_rvalid_i",
               "port": "revbm_rvalid_i",
               "con": "trvk_revbm_rvalid_i",
               "loc": {
@@ -7847,7 +8007,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_addr_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_addr_o",
               "port": "revbm_addr_o",
               "con": "trvk_revbm_addr_o",
               "loc": {
@@ -7858,7 +8018,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_rdata_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_rdata_i",
               "port": "revbm_rdata_i",
               "con": "trvk_revbm_rdata_i",
               "loc": {
@@ -7869,7 +8029,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_rdata_intg_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_rdata_intg_i",
               "port": "revbm_rdata_intg_i",
               "con": "trvk_revbm_rdata_intg_i",
               "loc": {
@@ -7880,7 +8040,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_err_i",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_err_i",
               "port": "revbm_err_i",
               "con": "trvk_revbm_err_i",
               "loc": {
@@ -7891,7 +8051,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_data_intg_error_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_data_intg_error_o",
               "port": "revbm_data_intg_error_o",
               "con": "trvk_revbm_data_intg_error",
               "loc": {
@@ -7902,7 +8062,7 @@
               }
             },
             {
-              "id": "ibex_top.i_ibex_trvk.revbm_device_error_o",
+              "id": "ibex_top.gen_cheriot_trvk.i_ibex_trvk.revbm_device_error_o",
               "port": "revbm_device_error_o",
               "con": "trvk_revbm_device_error",
               "loc": {
@@ -7913,6 +8073,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_cheriot_trvk",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
           "loc": {
             "line": 1301,
             "col": 5,
@@ -7921,12 +8088,12 @@
           }
         },
         {
-          "id": "ibex_top.u_data_intg_dec",
+          "id": "ibex_top.g_mem_ecc_asserts.u_data_intg_dec",
           "name": "u_data_intg_dec",
           "module": "prim_secded_inv_39_32_dec",
           "connections": [
             {
-              "id": "ibex_top.u_data_intg_dec.data_i",
+              "id": "ibex_top.g_mem_ecc_asserts.u_data_intg_dec.data_i",
               "port": "data_i",
               "con": "data_rdata_core",
               "ifdefs": [
@@ -7940,7 +8107,7 @@
               }
             },
             {
-              "id": "ibex_top.u_data_intg_dec.data_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_data_intg_dec.data_o",
               "port": "data_o",
               "ifdefs": [
                 "INC_ASSERT"
@@ -7953,7 +8120,7 @@
               }
             },
             {
-              "id": "ibex_top.u_data_intg_dec.syndrome_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_data_intg_dec.syndrome_o",
               "port": "syndrome_o",
               "ifdefs": [
                 "INC_ASSERT"
@@ -7966,7 +8133,7 @@
               }
             },
             {
-              "id": "ibex_top.u_data_intg_dec.err_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_data_intg_dec.err_o",
               "port": "err_o",
               "con": "data_ecc_err",
               "ifdefs": [
@@ -7980,6 +8147,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_mem_ecc_asserts",
+              "cond": "MemECC"
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -7991,12 +8165,12 @@
           }
         },
         {
-          "id": "ibex_top.u_instr_intg_dec",
+          "id": "ibex_top.g_mem_ecc_asserts.u_instr_intg_dec",
           "name": "u_instr_intg_dec",
           "module": "prim_secded_inv_39_32_dec",
           "connections": [
             {
-              "id": "ibex_top.u_instr_intg_dec.data_i",
+              "id": "ibex_top.g_mem_ecc_asserts.u_instr_intg_dec.data_i",
               "port": "data_i",
               "con": "instr_rdata_core",
               "ifdefs": [
@@ -8010,7 +8184,7 @@
               }
             },
             {
-              "id": "ibex_top.u_instr_intg_dec.data_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_instr_intg_dec.data_o",
               "port": "data_o",
               "ifdefs": [
                 "INC_ASSERT"
@@ -8023,7 +8197,7 @@
               }
             },
             {
-              "id": "ibex_top.u_instr_intg_dec.syndrome_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_instr_intg_dec.syndrome_o",
               "port": "syndrome_o",
               "ifdefs": [
                 "INC_ASSERT"
@@ -8036,7 +8210,7 @@
               }
             },
             {
-              "id": "ibex_top.u_instr_intg_dec.err_o",
+              "id": "ibex_top.g_mem_ecc_asserts.u_instr_intg_dec.err_o",
               "port": "err_o",
               "con": "instr_ecc_err",
               "ifdefs": [
@@ -8048,6 +8222,13 @@
                 "end_line": 1660,
                 "end_col": 34
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_mem_ecc_asserts",
+              "cond": "MemECC"
             }
           ],
           "ifdefs": [

@@ -240,12 +240,12 @@
           }
         },
         {
-          "id": "neorv32_clint.neorv32_clint_mtimecmp_inst",
+          "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst",
           "name": "neorv32_clint_mtimecmp_inst",
           "module": "neorv32_clint_mtimecmp",
           "connections": [
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.clk_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -256,7 +256,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.rstn_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -267,7 +267,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.mtime_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.mtime_i",
               "port": "mtime_i",
               "con": "mtime",
               "loc": {
@@ -278,7 +278,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.we_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.we_i",
               "port": "we_i",
               "con": "mtimecmp_we(i)",
               "loc": {
@@ -289,7 +289,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.re_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.re_i",
               "port": "re_i",
               "con": "mtimecmp_re(i)",
               "loc": {
@@ -300,7 +300,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.addr_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.addr_i",
               "port": "addr_i",
               "con": "bus_req_i.addr(2)",
               "loc": {
@@ -311,7 +311,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.wdata_i",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.wdata_i",
               "port": "wdata_i",
               "con": "bus_req_i.data",
               "loc": {
@@ -322,7 +322,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.rdata_o",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.rdata_o",
               "port": "rdata_o",
               "con": "mtimecmp_rd(i)",
               "loc": {
@@ -333,7 +333,7 @@
               }
             },
             {
-              "id": "neorv32_clint.neorv32_clint_mtimecmp_inst.mti_o",
+              "id": "neorv32_clint.neorv32_clint_mtimecmp_gen.neorv32_clint_mtimecmp_inst.mti_o",
               "port": "mti_o",
               "con": "mti_o(i)",
               "loc": {
@@ -342,6 +342,13 @@
                 "end_line": 119,
                 "end_col": 26
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_mtimecmp_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
             }
           ],
           "loc": {

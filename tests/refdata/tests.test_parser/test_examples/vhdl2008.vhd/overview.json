@@ -73,12 +73,12 @@
       ],
       "insts": [
         {
-          "id": "vhdl2008.u_fast",
+          "id": "vhdl2008.g_mode.u_fast",
           "name": "u_fast",
           "module": "fast",
           "connections": [
             {
-              "id": "vhdl2008.u_fast.clk",
+              "id": "vhdl2008.g_mode.u_fast.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -89,7 +89,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_fast.din",
+              "id": "vhdl2008.g_mode.u_fast.din",
               "port": "din",
               "con": "din",
               "loc": {
@@ -100,7 +100,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_fast.dout",
+              "id": "vhdl2008.g_mode.u_fast.dout",
               "port": "dout",
               "con": "a",
               "loc": {
@@ -111,6 +111,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_mode",
+              "cond": "g_fast : MODE = 0"
+            }
+          ],
           "loc": {
             "line": 25,
             "col": 5,
@@ -119,12 +126,12 @@
           }
         },
         {
-          "id": "vhdl2008.u_small",
+          "id": "vhdl2008.g_mode.u_small",
           "name": "u_small",
           "module": "small",
           "connections": [
             {
-              "id": "vhdl2008.u_small.clk",
+              "id": "vhdl2008.g_mode.u_small.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -135,7 +142,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_small.din",
+              "id": "vhdl2008.g_mode.u_small.din",
               "port": "din",
               "con": "din",
               "loc": {
@@ -146,7 +153,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_small.dout",
+              "id": "vhdl2008.g_mode.u_small.dout",
               "port": "dout",
               "con": "tmp",
               "loc": {
@@ -157,6 +164,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_mode",
+              "cond": "g_fast : MODE = 0"
+            }
+          ],
           "loc": {
             "line": 30,
             "col": 5,
@@ -165,12 +179,12 @@
           }
         },
         {
-          "id": "vhdl2008.u_reg",
+          "id": "vhdl2008.g_sel.u_reg",
           "name": "u_reg",
           "module": "reg",
           "params": [
             {
-              "id": "vhdl2008.u_reg.data_t",
+              "id": "vhdl2008.g_sel.u_reg.data_t",
               "port": "data_t",
               "con": "data_t",
               "loc": {
@@ -183,7 +197,7 @@
           ],
           "connections": [
             {
-              "id": "vhdl2008.u_reg.clk",
+              "id": "vhdl2008.g_sel.u_reg.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -194,7 +208,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_reg.din",
+              "id": "vhdl2008.g_sel.u_reg.din",
               "port": "din",
               "con": "a",
               "loc": {
@@ -205,7 +219,7 @@
               }
             },
             {
-              "id": "vhdl2008.u_reg.dout",
+              "id": "vhdl2008.g_sel.u_reg.dout",
               "port": "dout",
               "con": "b",
               "loc": {
@@ -214,6 +228,13 @@
                 "end_line": 43,
                 "end_col": 50
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "case",
+              "name": "g_sel",
+              "cond": "MODE"
             }
           ],
           "loc": {

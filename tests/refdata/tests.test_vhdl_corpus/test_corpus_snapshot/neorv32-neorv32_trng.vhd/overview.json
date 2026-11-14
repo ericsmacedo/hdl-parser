@@ -573,12 +573,12 @@
       ],
       "insts": [
         {
-          "id": "neotrng.neotrng_cell_inst",
+          "id": "neotrng.entropy_cell_gen.neotrng_cell_inst",
           "name": "neoTRNG_cell_inst",
           "module": "neoTRNG_cell",
           "params": [
             {
-              "id": "neotrng.neotrng_cell_inst.num_inv",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.num_inv",
               "port": "NUM_INV",
               "con": "NUM_INV_START + (2*i)",
               "comment": [
@@ -592,7 +592,7 @@
               }
             },
             {
-              "id": "neotrng.neotrng_cell_inst.sim_mode",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.sim_mode",
               "port": "SIM_MODE",
               "con": "SIM_MODE",
               "loc": {
@@ -605,7 +605,7 @@
           ],
           "connections": [
             {
-              "id": "neotrng.neotrng_cell_inst.clk_i",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -616,7 +616,7 @@
               }
             },
             {
-              "id": "neotrng.neotrng_cell_inst.rstn_i",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -627,7 +627,7 @@
               }
             },
             {
-              "id": "neotrng.neotrng_cell_inst.en_i",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.en_i",
               "port": "en_i",
               "con": "cell_en_in(i)",
               "loc": {
@@ -638,7 +638,7 @@
               }
             },
             {
-              "id": "neotrng.neotrng_cell_inst.en_o",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.en_o",
               "port": "en_o",
               "con": "cell_en_out(i)",
               "loc": {
@@ -649,7 +649,7 @@
               }
             },
             {
-              "id": "neotrng.neotrng_cell_inst.rnd_o",
+              "id": "neotrng.entropy_cell_gen.neotrng_cell_inst.rnd_o",
               "port": "rnd_o",
               "con": "cell_rnd(i)",
               "loc": {
@@ -658,6 +658,13 @@
                 "end_line": 346,
                 "end_col": 28
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "entropy_cell_gen",
+              "cond": "i in 0 to NUM_CELLS-1"
             }
           ],
           "loc": {
