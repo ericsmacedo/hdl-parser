@@ -44,7 +44,6 @@ from collections.abc import Callable, Iterator
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
-from .._ids import Scope  # noqa: TID252
 from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token, Tokens  # noqa: TID252
 from .tokenizer import tokenize
 
@@ -83,24 +82,6 @@ class _Decl(NamedTuple):
     loc: dm.Location
 
 
-class _Con(NamedTuple):
-    """One Connection Of An Instance."""
-
-    port: str
-    con: str
-    comment: list[str]
-    loc: dm.Location
-
-
-class _Inst(NamedTuple):
-    """One Instance."""
-
-    name: str
-    module: str
-    cons: list[_Con]
-    loc: dm.Location
-
-
 class _Unit:
     """Entity With The Instances Of Its Architectures."""
 
@@ -111,7 +92,7 @@ class _Unit:
         self.smap = smap
         self.generics: list[_Decl] = []
         self.ports: list[_Decl] = []
-        self.insts: list[_Inst] = []
+        self.insts: list[dm.ModuleInstance] = []
         # nesting level of generate and block statements
         self.depth = 0
         # entity, and first architecture
@@ -235,9 +216,9 @@ def _is_component_instance(c: Cursor) -> bool:
     return toks[idx].text in _MAPPED and toks[idx].kind == KW and toks[idx + 1].text == "map"
 
 
-def _parse_port_map(c: Cursor, smap: SourceMap) -> list[_Con]:
+def _parse_port_map(c: Cursor, smap: SourceMap) -> list[dm.Connection]:
     """Parse the parenthesized connections of an instance."""
-    cons: list[_Con] = []
+    cons: list[tuple[str, str, list[str], dm.Location]] = []
     c.next()
     while True:
         tok = c.peek()
@@ -263,12 +244,13 @@ def _parse_port_map(c: Cursor, smap: SourceMap) -> list[_Con]:
             # nothing we understand
             c.next()
             continue
-        cons.append(_Con(port, c.text(start, c.pos).strip(), comment, smap.span(first, _last(c))))
+        cons.append((port, c.text(start, c.pos).strip(), comment, smap.span(first, _last(c))))
     c.sink = None
-    return cons
+    # the comments are complete now
+    return [dm.Connection(port=port, con=con, comment=tuple(comment), loc=loc) for port, con, comment, loc in cons]
 
 
-def _parse_instance(c: Cursor, smap: SourceMap) -> tuple[Token, list[_Con]] | None:
+def _parse_instance(c: Cursor, label: Token, smap: SourceMap) -> dm.ModuleInstance | None:
     """Parse `name [(architecture)] [generic map (...)] [port map (...)];` behind `label : [entity|component]`."""
     if c.peek().kind != ID:
         return None
@@ -279,7 +261,7 @@ def _parse_instance(c: Cursor, smap: SourceMap) -> tuple[Token, list[_Con]] | No
         module = c.next()
     if c.peek().text == "(":
         c.skip_balanced()
-    cons: list[_Con] = []
+    cons: list[dm.Connection] = []
     while c.peek().text in _MAPPED and c.peek(1).text == "map":
         is_port = c.next().text == "port"
         c.next()
@@ -289,7 +271,7 @@ def _parse_instance(c: Cursor, smap: SourceMap) -> tuple[Token, list[_Con]] | No
             cons += _parse_port_map(c, smap)
         else:
             c.skip_balanced()
-    return module, cons
+    return dm.ModuleInstance(name=label.text, module=module.text, connections=tuple(cons))
 
 
 def _parse_labeled(c: Cursor, unit: _Unit) -> None:
@@ -303,12 +285,11 @@ def _parse_labeled(c: Cursor, unit: _Unit) -> None:
         c.next()
     elif tok.kind != ID or not _is_component_instance(c):
         return
-    inst = _parse_instance(c, unit.smap)
+    inst = _parse_instance(c, label, unit.smap)
     c.skip_until(_SEMI)
     c.accept(";")
     if inst:
-        module, cons = inst
-        unit.insts.append(_Inst(label.text, module.text, cons, unit.smap.span(label, _last(c), label)))
+        unit.insts.append(inst.model_copy(update={"loc": unit.smap.span(label, _last(c), label)}))
 
 
 # --- architecture ---
@@ -560,69 +541,36 @@ def _parse_units(tokens: Tokens) -> list[_Unit]:
 # --- data model ---
 
 
-def _create_insts(insts: list[_Inst], scope: Scope) -> tuple[dm.ModuleInstance, ...]:
-    result = []
-    for inst in insts:
-        inst_id = scope.id(inst.name)
-        cons = scope.scope(inst_id)
-        result.append(
-            dm.ModuleInstance(
-                id=inst_id,
-                name=inst.name,
-                module=inst.module,
-                connections=tuple(
-                    dm.Connection(
-                        id=cons.connection_id(con.port),
-                        port=con.port,
-                        con=con.con,
-                        comment=tuple(con.comment),
-                        loc=con.loc,
-                    )
-                    for con in inst.cons
-                ),
-                loc=inst.loc,
-            )
-        )
-    return tuple(result)
-
-
-def _create_module(unit: _Unit, files: Scope) -> dm.Module:
-    mod_id = files.id(unit.name)
-    scope = files.scope(mod_id)
-    return dm.Module(
-        id=mod_id,
-        name=unit.name,
-        params=tuple(
-            dm.Param(
-                id=scope.id(decl.name),
-                name=decl.name,
-                ptype=decl.ptype,
-                dim=decl.dim,
-                default=decl.default,
-                comment=tuple(decl.comment),
-                loc=decl.loc,
-            )
-            for decl in unit.generics
-        ),
-        ports=tuple(
-            dm.Port(
-                id=scope.id(decl.name),
-                name=decl.name,
-                direction=decl.direction or "in",
-                ptype=decl.ptype,
-                dtype=decl.dtype,
-                dim=decl.dim,
-                comment=tuple(decl.comment),
-                loc=decl.loc,
-            )
-            for decl in unit.ports
-        ),
-        insts=_create_insts(unit.insts, scope),
-        loc=unit.loc or unit.arch_loc,
-    )
-
-
 def parse(text: str) -> tuple[dm.Module, ...]:
     """Parse VHDL `text` and return its entities as modules."""
-    files = Scope(casefold=True)
-    return tuple(_create_module(unit, files) for unit in _parse_units(tokenize(text)))
+    return tuple(
+        dm.Module(
+            name=unit.name,
+            params=tuple(
+                dm.Param(
+                    name=decl.name,
+                    ptype=decl.ptype,
+                    dim=decl.dim,
+                    default=decl.default,
+                    comment=tuple(decl.comment),
+                    loc=decl.loc,
+                )
+                for decl in unit.generics
+            ),
+            ports=tuple(
+                dm.Port(
+                    name=decl.name,
+                    direction=decl.direction or "in",
+                    ptype=decl.ptype,
+                    dtype=decl.dtype,
+                    dim=decl.dim,
+                    comment=tuple(decl.comment),
+                    loc=decl.loc,
+                )
+                for decl in unit.ports
+            ),
+            insts=tuple(unit.insts),
+            loc=unit.loc or unit.arch_loc,
+        )
+        for unit in _parse_units(tokenize(text))
+    )

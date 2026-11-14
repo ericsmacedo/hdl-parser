@@ -42,6 +42,7 @@ from pathlib import Path
 from typing import Literal, TypeAlias
 
 from . import datamodel as dm
+from ._ids import assign_ids
 from ._sv.parser import parse as parse_sv
 from ._sv.preproc import Macro, Macros, collect_defines, read_text
 from ._vhdl.parser import parse as parse_vhdl
@@ -193,7 +194,7 @@ def parse_text(  # noqa: PLR0913
         lang = LANGMAP.get(file_path.suffix)
 
     if lang == "vhdl":
-        modules = parse_vhdl(text)
+        modules = assign_ids(parse_vhdl(text), casefold=True)
     else:
         modules = parse_sv(
             text,
@@ -203,6 +204,7 @@ def parse_text(  # noqa: PLR0913
             inc_dirs=map(Path, inc_dirs),
             resolve_ifdefs=resolve_ifdefs,
         )
+        modules = assign_ids(modules)
 
     if not modules:
         # this is fine: packages, interfaces, included files, ...

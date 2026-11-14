@@ -22,55 +22,69 @@
 
 """Identifiers.
 
-The parsers create the `id` of all items with a [Scope][hdl_parser._ids.Scope] per module and instance.
-See [hdl_parser.datamodel.File][] for the format.
+Set the `id` of all items, after parsing. See [hdl_parser.datamodel.File][] for the format.
 """
 
 import re
+from collections.abc import Iterable
+
+from . import datamodel as dm
 
 _ESCAPE = re.compile(r"[.:#~%\s]")
 
 
-def escape(name: str) -> str:
-    """Percent-encode the separators within `name`."""
-    return _ESCAPE.sub(lambda mat: f"%{ord(mat.group()):02X}", name)
+class _Scope:
+    """Names Within A File, A Module Or An Instance. A name used again gets a suffix: `a`, `a~2`."""
 
+    __slots__ = ("_prefix", "_seen")
 
-class Scope:
-    """Names Within A Module, An Instance Or A File. A name used again gets a suffix: `a`, `a~2`.
-
-    Args:
-        prefix: Identifier of the scope, `None` for the top level.
-        casefold: Names are case insensitive (VHDL).
-    """
-
-    __slots__ = ("_casefold", "_position", "_prefix", "_seen")
-
-    def __init__(self, prefix: str | None = None, casefold: bool = False):
+    def __init__(self, prefix: str | None = None):
         self._prefix = "" if prefix is None else f"{prefix}."
-        self._casefold = casefold
         self._seen: dict[str, int] = {}
-        self._position = 0
 
-    def _unique(self, local: str) -> str:
+    def id(self, local: str) -> str:
         count = self._seen[local] = self._seen.get(local, 0) + 1
         return f"{self._prefix}{local}" if count == 1 else f"{self._prefix}{local}~{count}"
 
-    def id(self, name: str) -> str:
-        """Identifier of the item `name`."""
-        return self._unique(escape(name.lower() if self._casefold else name))
 
-    def macro_id(self, name: str) -> str:
-        """Identifier of a call of the macro `name`."""
-        return self._unique(f"`{escape(name)}")
+def assign_ids(modules: Iterable[dm.Module], casefold: bool = False) -> tuple[dm.Module, ...]:
+    """Return `modules` with the `id` of all items set. `casefold`: names are case insensitive (VHDL)."""
 
-    def connection_id(self, port: str) -> str:
-        """Identifier of a connection to `port`, by position if `port` is empty."""
-        if port:
-            return self.id(port)
-        self._position += 1
-        return self._unique(f"#{self._position}")
+    def name(text: str) -> str:
+        # percent-encode the separators
+        return _ESCAPE.sub(lambda mat: f"%{ord(mat.group()):02X}", text.lower() if casefold else text)
 
-    def scope(self, id_: str) -> "Scope":
-        """Scope of the item with identifier `id_`."""
-        return Scope(id_, self._casefold)
+    def named(items, scope):
+        return tuple(item.model_copy(update={"id": scope.id(name(item.name))}) for item in items)
+
+    def instance(inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
+        inst_id = scope.id(name(inst.name))
+        cons = _Scope(inst_id)
+        position = 0
+        connections = []
+        for con in inst.connections:
+            if con.port:
+                con_id = cons.id(name(con.port))
+            else:
+                position += 1
+                con_id = cons.id(f"#{position}")
+            connections.append(con.model_copy(update={"id": con_id}))
+        return inst.model_copy(update={"id": inst_id, "connections": tuple(connections)})
+
+    files = _Scope()
+    result = []
+    for mod in modules:
+        mod_id = files.id(name(mod.name))
+        scope = _Scope(mod_id)
+        update = {
+            "id": mod_id,
+            "params": named(mod.params, scope),
+            "localparams": named(mod.localparams, scope),
+            "ports": named(mod.ports, scope),
+            "insts": tuple(instance(inst, scope) for inst in mod.insts),
+            "unresolved_macros": tuple(
+                macro.model_copy(update={"id": scope.id(f"`{name(macro.name)}")}) for macro in mod.unresolved_macros
+            ),
+        }
+        result.append(mod.model_copy(update=update))
+    return tuple(result)

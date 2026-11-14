@@ -43,7 +43,6 @@ from pathlib import Path
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
-from .._ids import Scope  # noqa: TID252
 from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token  # noqa: TID252
 from .preproc import Macros, expand_mapped, split_args
 from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
@@ -719,10 +718,9 @@ def _parse_modules(c: Cursor) -> list[_Module]:
 # --- data model ---
 
 
-def _create_params(decls: list[_Decl], kind: str, smap: SourceMap, scope: Scope) -> tuple[dm.Param, ...]:
+def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.Param, ...]:
     return tuple(
         dm.Param(
-            id=scope.id(decl.name.text),
             name=decl.name.text,
             ptype=decl.ptype,
             dim=decl.dim,
@@ -737,10 +735,9 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap, scope: Scope)
     )
 
 
-def _create_ports(decls: list[_Decl], smap: SourceMap, scope: Scope) -> tuple[dm.Port, ...]:
+def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     return tuple(
         dm.Port(
-            id=scope.id(decl.name.text),
             name=decl.name.text,
             direction=decl.kind,
             ptype=decl.ptype,
@@ -755,35 +752,29 @@ def _create_ports(decls: list[_Decl], smap: SourceMap, scope: Scope) -> tuple[dm
     )
 
 
-def _create_insts(insts: list[_Inst], smap: SourceMap, scope: Scope) -> tuple[dm.ModuleInstance, ...]:
-    result = []
-    for inst in insts:
-        inst_id = scope.id(inst.name.text)
-        cons = scope.scope(inst_id)
-        result.append(
-            dm.ModuleInstance(
-                id=inst_id,
-                name=inst.name.text,
-                module=inst.module.text,
-                ifdefs=inst.module.ifdefs,
-                connections=tuple(
-                    dm.Connection(
-                        id=cons.connection_id(con.port),
-                        port=con.port,
-                        con=con.con,
-                        comment=tuple(con.comment),
-                        ifdefs=con.first.ifdefs,
-                        loc=smap.span(con.first, con.last),
-                    )
-                    for con in inst.cons
-                ),
-                loc=smap.span(inst.first, inst.last, inst.name),
-            )
+def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstance, ...]:
+    return tuple(
+        dm.ModuleInstance(
+            name=inst.name.text,
+            module=inst.module.text,
+            ifdefs=inst.module.ifdefs,
+            connections=tuple(
+                dm.Connection(
+                    port=con.port,
+                    con=con.con,
+                    comment=tuple(con.comment),
+                    ifdefs=con.first.ifdefs,
+                    loc=smap.span(con.first, con.last),
+                )
+                for con in inst.cons
+            ),
+            loc=smap.span(inst.first, inst.last, inst.name),
         )
-    return tuple(result)
+        for inst in insts
+    )
 
 
-def _create_macros(mod: _Module, context: str, smap: SourceMap, scope: Scope) -> tuple[dm.MacroCall, ...]:
+def _create_macros(mod: _Module, context: str, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
     for macro in mod.macros:
         LOGGER.warning(
             "%s: module '%s': macro `%s in module header is not expanded. Ports or parameters may be missing.",
@@ -791,10 +782,7 @@ def _create_macros(mod: _Module, context: str, smap: SourceMap, scope: Scope) ->
             mod.name.text,
             macro.call.name,
         )
-    return tuple(
-        macro.call.model_copy(update={"id": scope.macro_id(macro.call.name), "loc": smap.span(macro.first, macro.last)})
-        for macro in mod.macros
-    )
+    return tuple(macro.call.model_copy(update={"loc": smap.span(macro.first, macro.last)}) for macro in mod.macros)
 
 
 def parse(  # noqa: PLR0913
@@ -820,22 +808,16 @@ def parse(  # noqa: PLR0913
         smap = SourceMap(source, segments)
     else:
         smap = SourceMap(text)
-    modules = []
-    files = Scope()
-    for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS)):
-        mod_id = files.id(mod.name.text)
-        scope = files.scope(mod_id)
-        modules.append(
-            dm.Module(
-                id=mod_id,
-                name=mod.name.text,
-                params=_create_params(mod.params, "parameter", smap, scope),
-                localparams=_create_params(mod.params, "localparam", smap, scope),
-                ports=_create_ports(mod.ports, smap, scope),
-                insts=_create_insts(mod.insts, smap, scope),
-                ifdefs=mod.first.ifdefs,
-                unresolved_macros=_create_macros(mod, context, smap, scope),
-                loc=smap.span(mod.first, mod.last, mod.name),
-            )
+    return tuple(
+        dm.Module(
+            name=mod.name.text,
+            params=_create_params(mod.params, "parameter", smap),
+            localparams=_create_params(mod.params, "localparam", smap),
+            ports=_create_ports(mod.ports, smap),
+            insts=_create_insts(mod.insts, smap),
+            ifdefs=mod.first.ifdefs,
+            unresolved_macros=_create_macros(mod, context, smap),
+            loc=smap.span(mod.first, mod.last, mod.name),
         )
-    return tuple(modules)
+        for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
+    )
