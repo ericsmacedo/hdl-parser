@@ -1,0 +1,109 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_alu.sv",
+  "modules": [
+    {
+      "name": "ibex_alu",
+      "params": [
+        {
+          "ptype": "ibex_pkg::rv32b_e",
+          "name": "RV32B",
+          "default": "ibex_pkg::RV32BNone"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::alu_op_e",
+          "name": "operator_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "operand_a_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "operand_b_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_operand_a_i",
+          "dim": "[32:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_operand_b_i",
+          "dim": "[32:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_sel_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "adder_result_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "adder_result_ext_o",
+          "dim": "[33:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "result_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "comparison_result_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "is_equal_result_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "logic",
+          "name": "SHUFFLE_MASK_L",
+          "dim": "[31:0]",
+          "dim_unpacked": "[4]",
+          "default": "'{32'h00ff_0000, 32'h0f00_0f00, 32'h3030_3030, 32'h4444_4444}"
+        },
+        {
+          "ptype": "logic",
+          "name": "SHUFFLE_MASK_R",
+          "dim": "[31:0]",
+          "dim_unpacked": "[4]",
+          "default": "'{32'h0000_ff00, 32'h00f0_00f0, 32'h0c0c_0c0c, 32'h2222_2222}"
+        },
+        {
+          "ptype": "logic",
+          "name": "FLIP_MASK_L",
+          "dim": "[31:0]",
+          "dim_unpacked": "[4]",
+          "default": "'{32'h2200_1100, 32'h0044_0000, 32'h4411_0000, 32'h1100_0000}"
+        },
+        {
+          "ptype": "logic",
+          "name": "FLIP_MASK_R",
+          "dim": "[31:0]",
+          "dim_unpacked": "[4]",
+          "default": "'{32'h0088_0044, 32'h0000_2200, 32'h0000_8822, 32'h0000_0088}"
+        }
+      ]
+    }
+  ]
+}

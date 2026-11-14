@@ -21,7 +21,7 @@
 # SOFTWARE.
 """Test Parser."""
 
-from pytest import mark
+from pytest import mark, raises
 from test2ref import assert_refdata
 
 from hdl_parser import File, Module, Port, parse_file, parse_text
@@ -83,3 +83,49 @@ endmodule
     ref = File(path=file_path, modules=ref.modules)
     assert ref == parse_text(text, file_path=file_path)
     assert ref == parse_text(text, file_path=str(file_path))
+
+
+LATIN1_VHDL = """\
+-- Author: Andr\u00e9
+entity top is
+  port (
+    clk : in std_logic -- 25 \u00b0C clock
+  );
+end entity;
+"""
+
+
+def test_parse_file_latin1(tmp_path):
+    """Latin-1 Encoded File Falls Back From UTF-8."""
+    file_path = tmp_path / "top.vhd"
+    file_path.write_bytes(LATIN1_VHDL.encode("latin-1"))
+    assert b"\xe9" in file_path.read_bytes()
+
+    file = parse_file(file_path)
+
+    assert [module.name for module in file.modules] == ["top"]
+    (port,) = file.modules[0].ports
+    assert port.name == "clk"
+    assert port.comment == ("-- 25 \u00b0C clock",)
+
+
+def test_parse_file_utf8(tmp_path):
+    """UTF-8 Encoded File Keeps Non-ASCII Comment Text."""
+    file_path = tmp_path / "top.vhd"
+    file_path.write_bytes(LATIN1_VHDL.encode("utf-8"))
+
+    file = parse_file(file_path)
+
+    assert file.modules[0].ports[0].comment == ("-- 25 \u00b0C clock",)
+
+
+def test_parse_file_encoding(tmp_path):
+    """Explicit Encoding Is Used Strictly."""
+    file_path = tmp_path / "top.vhd"
+    file_path.write_bytes(LATIN1_VHDL.encode("latin-1"))
+
+    file = parse_file(file_path, encoding="latin-1")
+    assert file.modules[0].ports[0].comment == ("-- 25 \u00b0C clock",)
+
+    with raises(UnicodeDecodeError):
+        parse_file(file_path, encoding="utf-8")

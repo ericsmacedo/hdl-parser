@@ -23,6 +23,7 @@
 
 import logging
 from functools import partial
+from pathlib import Path
 
 from pytest import mark, raises
 
@@ -516,12 +517,28 @@ def test_include_precedence(tmp_path):
     assert [port.name for port in module.ports] == ["c", "q"]
 
 
-def test_include_unreadable(tmp_path, caplog):
-    """Included Files Which Cannot Be Read Are Skipped."""
-    (tmp_path / "inc.svh").write_bytes(b"`define P input \xff\xfe\n")
+def test_include_encoding(tmp_path):
+    """Included Files Are Read As UTF-8 With Fallback To Latin-1."""
+    (tmp_path / "inc.svh").write_bytes("`define P input a /* \xe4 */\n".encode("latin-1"))
     top = tmp_path / "top.sv"
     top.write_text('`include "inc.svh"\nmodule top (`P);\nendmodule\n')
-    module = parse_file(top).modules[0]
+    port = parse_file(top).modules[0].ports[0]
+    assert (port.name, port.comment) == ("a", ("\xe4",))
+    assert parse_defines(tmp_path / "inc.svh")["P"].body == "input a /* \xe4 */"
+
+
+def test_include_unreadable(tmp_path, caplog, monkeypatch):
+    """Included Files Which Cannot Be Read Are Skipped."""
+    (tmp_path / "inc.svh").write_text("`define P input a\n")
+    top = tmp_path / "top.sv"
+    top.write_text('`include "inc.svh"\nmodule top (`P);\nendmodule\n')
+    text = top.read_text()
+
+    def read_text(self, *args, **kwargs):
+        raise PermissionError(f"Permission denied: {self}")
+
+    monkeypatch.setattr(Path, "read_text", read_text)
+    module = parse_text(text, file_path=top).modules[0]
     assert module.unresolved_macros == (MacroCall(name="P"),)
     assert "cannot read included file" in caplog.text
 

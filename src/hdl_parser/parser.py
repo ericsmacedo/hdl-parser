@@ -42,7 +42,7 @@ from typing import Literal, TypeAlias
 
 from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
-from ._sv.preproc import Macro, Macros, collect_defines
+from ._sv.preproc import Macro, Macros, collect_defines, read_text
 from ._vhdl.parser import parse as parse_vhdl
 
 Lang: TypeAlias = Literal["sv", "vhdl"]
@@ -103,6 +103,7 @@ def parse_defines_text(
 def parse_file(  # noqa: PLR0913
     file_path: Path | str,
     lang: Lang | None = None,
+    encoding: str | None = None,
     expand_macros: bool = False,
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
@@ -115,12 +116,17 @@ def parse_file(  # noqa: PLR0913
 
     Keyword Args:
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
+        encoding: File encoding. By default the file is read as UTF-8, with a fallback to
+                  Latin-1 if it is not valid UTF-8 (common for legacy HDL sources with
+                  non-ASCII characters in comments). If given, the encoding is used strictly
+                  and a `UnicodeDecodeError` is raised on invalid input.
         expand_macros: Expand macros with known definition. Macros defined in the file and in the files it
                        includes are known. SystemVerilog only.
         macros: Macros defined outside of this file and its included files.
                 See [hdl_parser.parser.parse_defines][]. Requires `expand_macros`.
         inc_dirs: Include directories. Included files are searched next to the file and here.
-                  Used by `expand_macros` only.
+                  Used by `expand_macros` only. Included files are always read as UTF-8 with a fallback
+                  to Latin-1.
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined: code which is
                         not compiled is removed, the remaining code is no longer tagged with this condition.
                         Conditions on any other macro are kept. Requires `expand_macros`.
@@ -132,7 +138,7 @@ def parse_file(  # noqa: PLR0913
         file_path = Path(file_path)
 
     return parse_text(
-        file_path.read_text(),
+        read_text(file_path, encoding),
         file_path=file_path,
         lang=lang,
         expand_macros=expand_macros,

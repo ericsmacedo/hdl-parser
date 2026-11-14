@@ -1,0 +1,124 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_fetch_fifo.sv",
+  "modules": [
+    {
+      "name": "ibex_fetch_fifo",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "NUM_REQS",
+          "default": "2"
+        },
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "1'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "control signals"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clear_i",
+          "comment": [
+            "clears the contents of the FIFO"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "busy_o",
+          "dim": "[NUM_REQS-1:0]",
+          "comment": [
+            "input port"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_valid_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_addr_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_err_i",
+          "comment": [
+            "force unaligned compressed based on CHERIoT bounds check"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_force_uc_i",
+          "comment": [
+            "output port"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_valid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "out_ready_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_rdata_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_err_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_err_plus2_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "DEPTH",
+          "default": "NUM_REQS+1"
+        }
+      ]
+    }
+  ]
+}

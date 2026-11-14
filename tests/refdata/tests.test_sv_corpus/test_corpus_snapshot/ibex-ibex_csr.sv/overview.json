@@ -1,0 +1,60 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_csr.sv",
+  "modules": [
+    {
+      "name": "ibex_csr",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "Width",
+          "default": "32"
+        },
+        {
+          "ptype": "bit",
+          "name": "ShadowCopy",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ResetValue",
+          "dim": "[Width-1:0]",
+          "default": "'0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "wr_data_i",
+          "dim": "[Width-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "wr_en_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rd_data_o",
+          "dim": "[Width-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rd_error_o"
+        }
+      ]
+    }
+  ]
+}

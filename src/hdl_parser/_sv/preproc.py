@@ -93,6 +93,16 @@ _UNCERTAIN = 1  # ... compiled or not, it depends on an unknown condition
 _INACTIVE = 2  # ... not compiled
 
 
+def read_text(file_path: Path, encoding: str | None = None) -> str:
+    """Read `file_path` as UTF-8 with Latin-1 fallback, or strictly with `encoding` if given."""
+    if encoding is not None:
+        return file_path.read_text(encoding=encoding)
+    try:
+        return file_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return file_path.read_text(encoding="latin-1")
+
+
 @dataclass(frozen=True)
 class Macro:
     """A `` `define `` Macro.
@@ -154,7 +164,7 @@ class _Preprocessor:
 
     def process_file(self, file_path: Path, out: list[str] | None = None) -> None:
         """Process the file at `file_path`."""
-        text = file_path.read_text()
+        text = read_text(file_path)
         self.including.append(file_path.resolve())
         self.process(text, str(file_path), file_path.parent, out)
         self.including.pop()
@@ -316,7 +326,7 @@ class _Preprocessor:
         depth = len(self.conds)
         try:
             self.process_file(file_path)
-        except (OSError, UnicodeError) as exc:
+        except OSError as exc:
             LOGGER.warning("%s: cannot read included file '%s': %s", context, file_path, exc)
         # an included file never changes the conditions of the including one
         del self.conds[depth:]

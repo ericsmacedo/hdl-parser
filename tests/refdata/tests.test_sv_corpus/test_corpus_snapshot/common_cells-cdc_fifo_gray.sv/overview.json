@@ -1,0 +1,495 @@
+{
+  "path": "$PRJ/tests/corpus/sv/common_cells/cdc_fifo_gray.sv",
+  "modules": [
+    {
+      "name": "cdc_fifo_gray",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "WIDTH",
+          "default": "1",
+          "comment": [
+            "/ The data type of the payload transported by the FIFO."
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic [WIDTH-1:0]",
+          "comment": [
+            "/ The FIFO's depth given as 2**LOG_DEPTH."
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "LOG_DEPTH",
+          "default": "3",
+          "comment": [
+            "/ The number of synchronization registers to insert on the async pointers."
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "SYNC_STAGES",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "T",
+          "name": "src_data_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "src_ready_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_clk_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "T",
+          "name": "dst_data_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dst_valid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_ready_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_src",
+          "module": "cdc_fifo_gray_src",
+          "connections": [
+            {
+              "port": "src_rst_ni",
+              "con": "src_rst_ni"
+            },
+            {
+              "port": "src_clk_i",
+              "con": "src_clk_i"
+            },
+            {
+              "port": "src_data_i",
+              "con": "src_data_i"
+            },
+            {
+              "port": "src_valid_i",
+              "con": "src_valid_i"
+            },
+            {
+              "port": "src_ready_o",
+              "con": "src_ready_o"
+            },
+            {
+              "port": "async_data_o",
+              "con": "async_data"
+            },
+            {
+              "port": "async_wptr_o",
+              "con": "async_wptr"
+            },
+            {
+              "port": "async_rptr_i",
+              "con": "async_rptr"
+            }
+          ]
+        },
+        {
+          "name": "i_dst",
+          "module": "cdc_fifo_gray_dst",
+          "connections": [
+            {
+              "port": "dst_rst_ni",
+              "con": "dst_rst_ni"
+            },
+            {
+              "port": "dst_clk_i",
+              "con": "dst_clk_i"
+            },
+            {
+              "port": "dst_data_o",
+              "con": "dst_data_o"
+            },
+            {
+              "port": "dst_valid_o",
+              "con": "dst_valid_o"
+            },
+            {
+              "port": "dst_ready_i",
+              "con": "dst_ready_i"
+            },
+            {
+              "port": "async_data_i",
+              "con": "async_data"
+            },
+            {
+              "port": "async_wptr_i",
+              "con": "async_wptr"
+            },
+            {
+              "port": "async_rptr_o",
+              "con": "async_rptr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cdc_fifo_gray_src",
+      "params": [
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic"
+        },
+        {
+          "ptype": "int",
+          "name": "LOG_DEPTH",
+          "default": "3"
+        },
+        {
+          "ptype": "int",
+          "name": "SYNC_STAGES",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "T",
+          "name": "src_data_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "src_ready_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "T",
+          "name": "async_data_o",
+          "dim": "[2**LOG_DEPTH-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "async_wptr_o",
+          "dim": "[LOG_DEPTH:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "async_rptr_i",
+          "dim": "[LOG_DEPTH:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "PtrWidth",
+          "default": "LOG_DEPTH+1"
+        },
+        {
+          "ptype": "logic",
+          "name": "PtrFull",
+          "dim": "[PtrWidth-1:0]",
+          "default": "(1 << LOG_DEPTH)"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_sync",
+          "module": "sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "src_clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "src_rst_ni"
+            },
+            {
+              "port": "serial_i",
+              "con": "async_rptr_i[i]"
+            },
+            {
+              "port": "serial_o",
+              "con": "rptr[i]"
+            }
+          ]
+        },
+        {
+          "name": "i_rptr_g2b",
+          "module": "gray_to_binary",
+          "connections": [
+            {
+              "port": "A",
+              "con": "rptr"
+            },
+            {
+              "port": "Z",
+              "con": "rptr_bin"
+            }
+          ]
+        },
+        {
+          "name": "i_wptr_g2b",
+          "module": "gray_to_binary",
+          "connections": [
+            {
+              "port": "A",
+              "con": "wptr_q"
+            },
+            {
+              "port": "Z",
+              "con": "wptr_bin"
+            }
+          ]
+        },
+        {
+          "name": "i_wptr_b2g",
+          "module": "binary_to_gray",
+          "connections": [
+            {
+              "port": "A",
+              "con": "wptr_next"
+            },
+            {
+              "port": "Z",
+              "con": "wptr_d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cdc_fifo_gray_dst",
+      "params": [
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic"
+        },
+        {
+          "ptype": "int",
+          "name": "LOG_DEPTH",
+          "default": "3"
+        },
+        {
+          "ptype": "int",
+          "name": "SYNC_STAGES",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_clk_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "T",
+          "name": "dst_data_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dst_valid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_ready_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "T",
+          "name": "async_data_i",
+          "dim": "[2**LOG_DEPTH-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "async_wptr_i",
+          "dim": "[LOG_DEPTH:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "async_rptr_o",
+          "dim": "[LOG_DEPTH:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "PtrWidth",
+          "default": "LOG_DEPTH+1"
+        },
+        {
+          "ptype": "logic",
+          "name": "PtrEmpty",
+          "dim": "[PtrWidth-1:0]",
+          "default": "'0"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_rptr_g2b",
+          "module": "gray_to_binary",
+          "connections": [
+            {
+              "port": "A",
+              "con": "rptr_q"
+            },
+            {
+              "port": "Z",
+              "con": "rptr_bin"
+            }
+          ]
+        },
+        {
+          "name": "i_rptr_b2g",
+          "module": "binary_to_gray",
+          "connections": [
+            {
+              "port": "A",
+              "con": "rptr_next"
+            },
+            {
+              "port": "Z",
+              "con": "rptr_d"
+            }
+          ]
+        },
+        {
+          "name": "i_sync",
+          "module": "sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "dst_clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "dst_rst_ni"
+            },
+            {
+              "port": "serial_i",
+              "con": "async_wptr_i[i]"
+            },
+            {
+              "port": "serial_o",
+              "con": "wptr[i]"
+            }
+          ]
+        },
+        {
+          "name": "i_wptr_g2b",
+          "module": "gray_to_binary",
+          "connections": [
+            {
+              "port": "A",
+              "con": "wptr"
+            },
+            {
+              "port": "Z",
+              "con": "wptr_bin"
+            }
+          ]
+        },
+        {
+          "name": "i_spill_register",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "dst_clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "dst_rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "dst_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "dst_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "dst_data"
+            },
+            {
+              "port": "valid_o",
+              "con": "dst_valid_o"
+            },
+            {
+              "port": "ready_i",
+              "con": "dst_ready_i"
+            },
+            {
+              "port": "data_o",
+              "con": "dst_data_o"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

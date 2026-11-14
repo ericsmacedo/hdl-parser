@@ -1,0 +1,544 @@
+{
+  "path": "$PRJ/tests/corpus/sv/axi/axi_to_axi_lite.sv",
+  "modules": [
+    {
+      "name": "axi_to_axi_lite",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "AxiAddrWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiDataWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiIdWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiUserWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiMaxWriteTxns",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiMaxReadTxns",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "bit",
+          "name": "FullBW",
+          "default": "0",
+          "comment": [
+            "ID Queue in Full BW mode in axi_burst_splitter"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "FallThrough",
+          "default": "1'b1",
+          "comment": [
+            "FIFOs in Fall through mode in ID reflect"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "full_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "full_resp_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "lite_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "lite_resp_t",
+          "default": "logic"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Asynchronous reset active low"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_i",
+          "comment": [
+            "Testmode enable",
+            "slave port full AXI4+ATOP"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "full_req_t",
+          "name": "slv_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "full_resp_t",
+          "name": "slv_resp_o",
+          "comment": [
+            "master port AXI4-Lite"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "lite_req_t",
+          "name": "mst_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "lite_resp_t",
+          "name": "mst_resp_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_axi_atop_filter",
+          "module": "axi_atop_filter",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "slv_req_i"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "slv_resp_o"
+            },
+            {
+              "port": "mst_req_o",
+              "con": "filtered_req"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "filtered_resp"
+            }
+          ]
+        },
+        {
+          "name": "i_axi_burst_splitter",
+          "module": "axi_burst_splitter",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "filtered_req"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "filtered_resp"
+            },
+            {
+              "port": "mst_req_o",
+              "con": "splitted_req"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "splitted_resp"
+            }
+          ]
+        },
+        {
+          "name": "i_axi_to_axi_lite_id_reflect",
+          "module": "axi_to_axi_lite_id_reflect",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_i",
+              "con": "test_i"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "splitted_req"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "splitted_resp"
+            },
+            {
+              "port": "mst_req_o",
+              "con": "mst_req_o"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "mst_resp_i"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axi_to_axi_lite_id_reflect",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "AxiIdWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiMaxWriteTxns",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiMaxReadTxns",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "bit",
+          "name": "FallThrough",
+          "default": "1'b1",
+          "comment": [
+            "FIFOs in fall through mode"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "full_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "full_resp_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "lite_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "lite_resp_t",
+          "default": "logic"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Asynchronous reset active low"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_i",
+          "comment": [
+            "Testmode enable",
+            "slave port full AXI"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "full_req_t",
+          "name": "slv_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "full_resp_t",
+          "name": "slv_resp_o",
+          "comment": [
+            "master port AXI LITE"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "lite_req_t",
+          "name": "mst_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "lite_resp_t",
+          "name": "mst_resp_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_aw_id_fifo",
+          "module": "fifo_v3",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "flush_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "testmode_i",
+              "con": "test_i"
+            },
+            {
+              "port": "full_o",
+              "con": "aw_full"
+            },
+            {
+              "port": "empty_o",
+              "con": "aw_empty"
+            },
+            {
+              "port": "usage_o",
+              "comment": [
+                "not used"
+              ]
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.aw.id"
+            },
+            {
+              "port": "push_i",
+              "con": "aw_push"
+            },
+            {
+              "port": "data_o",
+              "con": "aw_reflect_id"
+            },
+            {
+              "port": "pop_i",
+              "con": "aw_pop"
+            }
+          ]
+        },
+        {
+          "name": "i_ar_id_fifo",
+          "module": "fifo_v3",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "flush_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "testmode_i",
+              "con": "test_i"
+            },
+            {
+              "port": "full_o",
+              "con": "ar_full"
+            },
+            {
+              "port": "empty_o",
+              "con": "ar_empty"
+            },
+            {
+              "port": "usage_o",
+              "comment": [
+                "not used"
+              ]
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.ar.id"
+            },
+            {
+              "port": "push_i",
+              "con": "ar_push"
+            },
+            {
+              "port": "data_o",
+              "con": "ar_reflect_id"
+            },
+            {
+              "port": "pop_i",
+              "con": "ar_pop"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axi_to_axi_lite_intf",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "32'd0",
+          "comment": [
+            "/ Maximum number of outstanding writes."
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_MAX_WRITE_TXNS",
+          "default": "32'd1",
+          "comment": [
+            "/ Maximum number of outstanding reads."
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_MAX_READ_TXNS",
+          "default": "32'd1"
+        },
+        {
+          "ptype": "bit",
+          "name": "FALL_THROUGH",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "bit",
+          "name": "FULL_BW",
+          "default": "0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "testmode_i"
+        },
+        {
+          "ptype": "AXI_BUS.Slave",
+          "name": "slv"
+        },
+        {
+          "ptype": "AXI_LITE.Master",
+          "name": "mst"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_axi_to_axi_lite",
+          "module": "axi_to_axi_lite",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_i",
+              "con": "testmode_i",
+              "comment": [
+                "slave port full AXI4+ATOP"
+              ]
+            },
+            {
+              "port": "slv_req_i",
+              "con": "full_req"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "full_resp",
+              "comment": [
+                "master port AXI4-Lite"
+              ]
+            },
+            {
+              "port": "mst_req_o",
+              "con": "lite_req"
+            },
+            {
+              "port": "mst_resp_i",
+              "con": "lite_resp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

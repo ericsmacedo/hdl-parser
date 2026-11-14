@@ -1,0 +1,67 @@
+{
+  "path": "$PRJ/tests/corpus/sv/common_cells/rstgen.sv",
+  "modules": [
+    {
+      "name": "rstgen",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_mode_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rst_no"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "init_no"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_rstgen_bypass",
+          "module": "rstgen_bypass",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "rst_test_mode_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_mode_i",
+              "con": "test_mode_i"
+            },
+            {
+              "port": "rst_no",
+              "con": "rst_no"
+            },
+            {
+              "port": "init_no",
+              "con": "init_no"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

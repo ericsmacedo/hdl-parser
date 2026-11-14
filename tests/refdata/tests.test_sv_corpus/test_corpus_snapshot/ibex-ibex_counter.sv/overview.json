@@ -1,0 +1,88 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_counter.sv",
+  "modules": [
+    {
+      "name": "ibex_counter",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "CounterWidth",
+          "default": "32",
+          "comment": [
+            "When set `counter_val_upd_o` provides an incremented version of the counter value, otherwise",
+            "the output is hard-wired to 0. This is required to allow Xilinx DSP inference to work",
+            "correctly. When `ProvideValUpd` is set no DSPs are inferred."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "ProvideValUpd",
+          "default": "0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "counter_inc_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "counterh_we_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "counter_we_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "counter_val_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "counter_val_o",
+          "dim": "[63:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "counter_val_upd_o",
+          "dim": "[63:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "UseDsp",
+          "default": "CounterWidth < 49 ? \"yes\" : \"no\"",
+          "ifdefs": [
+            "FPGA_XILINX"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "UseDsp",
+          "default": "\"no\"",
+          "ifdefs": [
+            "!FPGA_XILINX"
+          ]
+        }
+      ]
+    }
+  ]
+}

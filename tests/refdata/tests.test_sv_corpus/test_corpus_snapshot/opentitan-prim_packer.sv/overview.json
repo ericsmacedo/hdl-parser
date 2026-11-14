@@ -1,0 +1,194 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/prim_packer.sv",
+  "modules": [
+    {
+      "name": "prim_packer",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "InW",
+          "default": "32"
+        },
+        {
+          "ptype": "int",
+          "name": "OutW",
+          "default": "32",
+          "comment": [
+            "If 1, The input/output are byte granularity"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "HintByteData",
+          "default": "0",
+          "comment": [
+            "Turn on protect against FI for the pos variable"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "EnProtection",
+          "default": "1'b 0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "name": "valid_i"
+        },
+        {
+          "direction": "input",
+          "name": "data_i",
+          "dim": "[InW-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "mask_i",
+          "dim": "[InW-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "ready_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[OutW-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mask_o",
+          "dim": "[OutW-1:0]"
+        },
+        {
+          "direction": "input",
+          "name": "ready_i"
+        },
+        {
+          "direction": "input",
+          "name": "flush_i",
+          "comment": [
+            "If 1, send out remnant and clear state"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "flush_done_o",
+          "comment": [
+            "When EnProtection is set, err_o raises an error case (position variable",
+            "mismatch)"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "err_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "Width",
+          "default": "InW + OutW"
+        },
+        {
+          "ptype": "int",
+          "name": "ConcatW",
+          "default": "Width + InW"
+        },
+        {
+          "ptype": "int",
+          "name": "PtrW",
+          "default": "$clog2(ConcatW+1)"
+        },
+        {
+          "ptype": "int",
+          "name": "IdxW",
+          "default": "prim_util_pkg::vbits(InW)"
+        },
+        {
+          "ptype": "int",
+          "name": "OnesCntW",
+          "default": "$clog2(InW+1)"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_pos",
+          "module": "prim_count",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "clr_i",
+              "con": "flush_done"
+            },
+            {
+              "port": "set_i",
+              "con": "cnt_set_en"
+            },
+            {
+              "port": "set_cnt_i",
+              "con": "cnt_set"
+            },
+            {
+              "port": "incr_en_i",
+              "con": "cnt_incr_en"
+            },
+            {
+              "port": "decr_en_i",
+              "con": "cnt_decr_en"
+            },
+            {
+              "port": "step_i",
+              "con": "cnt_step"
+            },
+            {
+              "port": "commit_i",
+              "con": "1'b1"
+            },
+            {
+              "port": "cnt_o",
+              "con": "pos_q",
+              "comment": [
+                "Current counter state"
+              ]
+            },
+            {
+              "port": "cnt_after_commit_o",
+              "comment": [
+                "Next counter state"
+              ]
+            },
+            {
+              "port": "err_o",
+              "con": "err_o"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
