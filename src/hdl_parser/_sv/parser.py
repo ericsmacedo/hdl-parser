@@ -32,10 +32,12 @@ it extracts information from. Everything else is skipped:
 * procedural code and other blocks are skipped up to their closing keyword,
 * nothing is ever skipped beyond `endmodule`.
 
-Supporting a new construct means adding one branch to the related `_parse_*` function.
+Supporting a new construct means adding one branch to the related `_parse_*` function. Module items are
+dispatched by their leading keyword: a new one is a function decorated with `_handles`.
 """
 
 from bisect import bisect_left
+from collections.abc import Callable
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
@@ -633,8 +635,98 @@ def _skip_statement(c: Cursor) -> None:  # noqa: C901, PLR0911, PLR0912, PLR0915
 # --- module ---
 
 
-def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901, PLR0912, PLR0915
-    """Parse module items up to `endmodule`."""
+_BodyHandler = Callable[[Cursor, _Module], None]
+# Module item parsers by their leading keyword
+_BODY_HANDLERS: dict[str, _BodyHandler] = {}
+
+
+def _handles(*keywords: str) -> Callable[[_BodyHandler], _BodyHandler]:
+    """Register the decorated function as parser of the module items starting with one of `keywords`."""
+
+    def decorator(func: _BodyHandler) -> _BodyHandler:
+        for keyword in keywords:
+            if keyword in _BODY_HANDLERS:
+                raise ValueError(f"Duplicate handler for {keyword!r}")
+            _BODY_HANDLERS[keyword] = func
+        return func
+
+    return decorator
+
+
+@_handles(*_DIRECTIONS)
+def _handle_port(c: Cursor, mod: _Module) -> None:
+    mod.ports.extend(_parse_item_decl(c))
+
+
+@_handles(*_PARAMS)
+def _handle_param(c: Cursor, mod: _Module) -> None:
+    mod.params.extend(_parse_item_decl(c))
+
+
+@_handles(*_PROCEDURES)
+def _handle_procedure(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.next()
+    _skip_statement(c)
+
+
+@_handles(*_ASSERTIONS)
+def _handle_assertion(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    _skip_statement(c)
+
+
+@_handles(*_CONDITIONALS)
+def _handle_conditional(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    """Generate construct: the items within are parsed like any other item."""
+    c.next()
+    if c.peek().text == "(":
+        c.skip_balanced()
+
+
+@_handles(*_LABELED)
+def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.next()
+    _skip_label(c)
+
+
+@_handles(*_BLOCKS)
+def _handle_block(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.skip_past(frozenset((_BLOCKS[c.peek().text],)))
+
+
+@_handles("default")
+def _handle_default(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    """`default clocking cb;` and `default disable iff (rst);`."""
+    c.next()
+    if c.peek().text == "disable" or (c.peek().text == "clocking" and c.peek(2).text == ";"):
+        c.skip_until(_SEMI)
+
+
+@_handles(*_DECLARATIONS)
+def _handle_declaration(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.skip_until(_SEMI)
+    c.accept(";")
+
+
+def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
+    """Parse module item starting with an identifier."""
+    if c.peek(1).text == ":":
+        # label
+        c.next()
+        c.next()
+    elif _is_instance(c):
+        mod.insts.extend(_parse_instances(c))
+    else:
+        # declaration or statement, or the expression of a case-generate item
+        c.skip_until(_LABEL_OR_SEMI)
+        c.next()
+
+
+def _parse_body(c: Cursor, mod: _Module) -> None:
+    """Parse module items up to `endmodule`.
+
+    Items starting with a keyword are parsed by the related function of `_BODY_HANDLERS`.
+    """
+    handlers = _BODY_HANDLERS
     while True:
         tok = c.peek()
         text = tok.text
@@ -646,56 +738,21 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901, PLR0912, PLR091
             if text in _MODULE_START:
                 # missing endmodule
                 return
-            if text in _DIRECTIONS:
-                mod.ports.extend(_parse_item_decl(c))
-            elif text in _PARAMS:
-                mod.params.extend(_parse_item_decl(c))
-            elif text in _PROCEDURES:
-                c.next()
-                _skip_statement(c)
-            elif text in _ASSERTIONS:
-                _skip_statement(c)
-            elif text in _CONDITIONALS:
-                # generate construct: the items within are parsed like any other item
-                c.next()
-                if c.peek().text == "(":
-                    c.skip_balanced()
-            elif text in _LABELED:
-                c.next()
-                _skip_label(c)
-            elif text in _BLOCKS:
-                c.skip_past(frozenset((_BLOCKS[text],)))
-            elif text == "default" and c.peek(1).text in ("clocking", "disable"):
-                # default clocking cb; default disable iff (rst);
-                c.next()
-                if c.peek().text == "disable" or c.peek(2).text == ";":
-                    c.skip_until(_SEMI)
-            elif text in _DECLARATIONS:
-                c.skip_until(_SEMI)
-                c.accept(";")
+            handler = handlers.get(text)
+            if handler:
+                handler(c, mod)
             else:
                 c.next()
         elif kind == ID:
-            if c.peek(1).text == ":":
-                # label
-                c.next()
-                c.next()
-            elif _is_instance(c):
-                mod.insts.extend(_parse_instances(c))
-            else:
-                # declaration or statement, or the expression of a case-generate item
-                c.skip_until(_LABEL_OR_SEMI)
-                c.next()
+            _parse_identifier_item(c, mod)
         elif kind == EOF:
             return
-        elif kind == MACRO:
-            c.next()
-            if c.peek().text == "(":
-                c.skip_balanced()
         elif text in _OPEN:
             c.skip_balanced()
         else:
             c.next()
+            if kind == MACRO and c.peek().text == "(":
+                c.skip_balanced()
 
 
 def _parse_module(c: Cursor) -> _Module | None:
