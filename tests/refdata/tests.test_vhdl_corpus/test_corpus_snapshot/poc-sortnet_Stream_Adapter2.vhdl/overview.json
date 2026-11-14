@@ -1,0 +1,508 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/sortnet_Stream_Adapter2.vhdl",
+  "modules": [
+    {
+      "name": "sortnet_Stream_Adapter2",
+      "params": [
+        {
+          "name": "STREAM_DATA_BITS",
+          "default": "32"
+        },
+        {
+          "name": "STREAM_META_BITS",
+          "default": "2"
+        },
+        {
+          "name": "DATA_COLUMNS",
+          "default": "2"
+        },
+        {
+          "name": "SORTNET_IMPL",
+          "default": "SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+        },
+        {
+          "name": "SORTNET_SIZE",
+          "default": "32"
+        },
+        {
+          "name": "SORTNET_KEY_BITS",
+          "default": "32"
+        },
+        {
+          "name": "SORTNET_DATA_BITS",
+          "default": "32"
+        },
+        {
+          "name": "SORTNET_REG_AFTER",
+          "default": "2"
+        },
+        {
+          "name": "MERGENET_STAGES",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Clock"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Reset"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Inverse"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "In_Valid"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "In_Data",
+          "dim": "[STREAM_DATA_BITS - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "In_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "In_SOF"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "In_IsKey"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "In_EOF"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "In_Ack"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Out_Valid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "Out_Data",
+          "dim": "[STREAM_DATA_BITS - 1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "Out_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Out_SOF"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Out_IsKey"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Out_EOF"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Out_Ack"
+        }
+      ],
+      "insts": [
+        {
+          "name": "gearup",
+          "module": "gearbox_up_cc",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "In_Sync",
+              "con": "SyncIn"
+            },
+            {
+              "port": "In_Data",
+              "con": "In_Data"
+            },
+            {
+              "port": "In_Meta",
+              "con": "MetaIn"
+            },
+            {
+              "port": "In_Valid",
+              "con": "In_Valid"
+            },
+            {
+              "port": "Out_Sync",
+              "con": "gearup_Sync"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "gearup_Valid"
+            },
+            {
+              "port": "Out_Data",
+              "con": "gearup_Data"
+            },
+            {
+              "port": "Out_Meta",
+              "con": "gearup_Meta"
+            },
+            {
+              "port": "Out_First",
+              "con": "gearup_First"
+            },
+            {
+              "port": "Out_Last",
+              "con": "gearup_Last"
+            }
+          ]
+        },
+        {
+          "name": "sort",
+          "module": "sortnet_OddEvenSort",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "Inverse",
+              "con": "Inverse"
+            },
+            {
+              "port": "In_Valid",
+              "con": "gearup_Valid"
+            },
+            {
+              "port": "In_IsKey",
+              "con": "gearup_Meta(META_ISKEY_BIT)"
+            },
+            {
+              "port": "In_Data",
+              "con": "DataInputMatrix"
+            },
+            {
+              "port": "In_Meta",
+              "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "sort_Valid"
+            },
+            {
+              "port": "Out_IsKey",
+              "con": "sort_IsKey"
+            },
+            {
+              "port": "Out_Data",
+              "con": "DataOutputMatrix"
+            },
+            {
+              "port": "Out_Meta",
+              "con": "sort_Meta"
+            }
+          ]
+        },
+        {
+          "name": "sort",
+          "module": "sortnet_OddEvenMergeSort",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "Inverse",
+              "con": "Inverse"
+            },
+            {
+              "port": "In_Valid",
+              "con": "gearup_Valid"
+            },
+            {
+              "port": "In_IsKey",
+              "con": "gearup_Meta(META_ISKEY_BIT)"
+            },
+            {
+              "port": "In_Data",
+              "con": "DataInputMatrix"
+            },
+            {
+              "port": "In_Meta",
+              "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "sort_Valid"
+            },
+            {
+              "port": "Out_IsKey",
+              "con": "sort_IsKey"
+            },
+            {
+              "port": "Out_Data",
+              "con": "DataOutputMatrix"
+            },
+            {
+              "port": "Out_Meta",
+              "con": "sort_Meta"
+            }
+          ]
+        },
+        {
+          "name": "sort",
+          "module": "sortnet_BitonicSort",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "Inverse",
+              "con": "Inverse"
+            },
+            {
+              "port": "In_Valid",
+              "con": "gearup_Valid"
+            },
+            {
+              "port": "In_IsKey",
+              "con": "gearup_Meta(META_ISKEY_BIT)"
+            },
+            {
+              "port": "In_Data",
+              "con": "DataInputMatrix"
+            },
+            {
+              "port": "In_Meta",
+              "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "sort_Valid"
+            },
+            {
+              "port": "Out_IsKey",
+              "con": "sort_IsKey"
+            },
+            {
+              "port": "Out_Data",
+              "con": "DataOutputMatrix"
+            },
+            {
+              "port": "Out_Meta",
+              "con": "sort_Meta"
+            }
+          ]
+        },
+        {
+          "name": "transform",
+          "module": "sortnet_Transform",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset",
+              "comment": [
+                "-- In_Sync\t\t=> '0',"
+              ]
+            },
+            {
+              "port": "In_Valid",
+              "con": "sort_Valid"
+            },
+            {
+              "port": "In_Data",
+              "con": "DataInputMatrix"
+            },
+            {
+              "port": "In_SOF",
+              "con": "sort_IsKey"
+            },
+            {
+              "port": "In_EOF",
+              "con": "'0'"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "transform_Valid"
+            },
+            {
+              "port": "Out_Data",
+              "con": "DataOutputMatrix"
+            },
+            {
+              "port": "Out_SOF",
+              "con": "transform_SOF"
+            },
+            {
+              "port": "Out_EOF",
+              "con": "transform_EOF"
+            }
+          ]
+        },
+        {
+          "name": "merge",
+          "module": "sortnet_MergeSort_Streamed",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "Inverse",
+              "con": "Inverse"
+            },
+            {
+              "port": "In_Valid",
+              "con": "MergeSortMatrix_Valid(i)"
+            },
+            {
+              "port": "In_Data",
+              "con": "MergeSortMatrix_Data(i)"
+            },
+            {
+              "port": "In_SOF",
+              "con": "MergeSortMatrix_SOF(i)"
+            },
+            {
+              "port": "In_IsKey",
+              "con": "'1'"
+            },
+            {
+              "port": "In_EOF",
+              "con": "MergeSortMatrix_EOF(i)"
+            },
+            {
+              "port": "In_Ack",
+              "con": "MergeSortMatrix_Ack(i)"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "MergeSortMatrix_Valid(i + 1)"
+            },
+            {
+              "port": "Out_Data",
+              "con": "MergeSortMatrix_Data(i + 1)"
+            },
+            {
+              "port": "Out_SOF",
+              "con": "MergeSortMatrix_SOF(i + 1)"
+            },
+            {
+              "port": "Out_IsKey",
+              "con": "open"
+            },
+            {
+              "port": "Out_EOF",
+              "con": "MergeSortMatrix_EOF(i + 1)"
+            },
+            {
+              "port": "Out_Ack",
+              "con": "MergeSortMatrix_Ack(i + 1)"
+            }
+          ]
+        },
+        {
+          "name": "geardown",
+          "module": "gearbox_down_cc",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "In_Sync",
+              "con": "merge_Sync"
+            },
+            {
+              "port": "In_Valid",
+              "con": "merge_Valid"
+            },
+            {
+              "port": "In_Next",
+              "con": "geardown_nxt"
+            },
+            {
+              "port": "In_Data",
+              "con": "merge_Data"
+            },
+            {
+              "port": "In_Meta",
+              "con": "merge_Meta"
+            },
+            {
+              "port": "Out_Sync",
+              "con": "open"
+            },
+            {
+              "port": "Out_Valid",
+              "con": "Out_Valid"
+            },
+            {
+              "port": "Out_Data",
+              "con": "Out_Data"
+            },
+            {
+              "port": "Out_Meta",
+              "con": "geardown_Meta"
+            },
+            {
+              "port": "Out_First",
+              "con": "geardown_First"
+            },
+            {
+              "port": "Out_Last",
+              "con": "geardown_Last"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

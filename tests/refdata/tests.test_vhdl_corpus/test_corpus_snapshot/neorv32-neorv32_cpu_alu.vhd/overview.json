@@ -1,0 +1,686 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_cpu_alu.vhd",
+  "modules": [
+    {
+      "name": "neorv32_cpu_alu",
+      "params": [
+        {
+          "name": "RISCV_ISA_M",
+          "comment": [
+            "-- mul/div extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zba",
+          "comment": [
+            "-- address-generation instruction"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbb",
+          "comment": [
+            "-- basic bit-manipulation instruction"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbc",
+          "comment": [
+            "-- carry-less multiplication instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkb",
+          "comment": [
+            "-- bit-manipulation instructions for cryptography"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkc",
+          "comment": [
+            "-- carry-less multiplication instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkx",
+          "comment": [
+            "-- cryptography crossbar permutation extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbs",
+          "comment": [
+            "-- single-bit instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zfinx",
+          "comment": [
+            "-- 32-bit floating-point extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zibi",
+          "comment": [
+            "-- branch with immediate"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zicond",
+          "comment": [
+            "-- integer conditional operations"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zknd",
+          "comment": [
+            "-- cryptography NIST AES decryption extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zkne",
+          "comment": [
+            "-- cryptography NIST AES encryption extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zknh",
+          "comment": [
+            "-- cryptography NIST hash extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zksed",
+          "comment": [
+            "-- ShangMi block cipher extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zksh",
+          "comment": [
+            "-- ShangMi hash extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zmmul",
+          "comment": [
+            "-- multiply-only M sub-extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Xcfu",
+          "comment": [
+            "-- custom (instr.) functions unit",
+            "-- Tuning Options --"
+          ]
+        },
+        {
+          "name": "FAST_MUL_EN",
+          "comment": [
+            "-- use DSPs for M extension's multiplier"
+          ]
+        },
+        {
+          "name": "FAST_MUL_REGS",
+          "comment": [
+            "-- number of fast multiplier register stages"
+          ]
+        },
+        {
+          "name": "FAST_SHIFT_EN",
+          "comment": [
+            "-- use barrel shifter for shift operations"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "ctrl_bus_t",
+          "name": "ctrl_i",
+          "comment": [
+            "-- main control bus",
+            "-- data input --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "rs1_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- register source 1"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "rs2_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- register source 2",
+            "-- data output --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_o",
+          "dim": "[1:0]",
+          "comment": [
+            "-- comparator status"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "res_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- ALU result"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "add_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- address computation result"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "csr_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- CSR read data",
+            "-- status --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "done_o",
+          "comment": [
+            "-- co-processor operation done?"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "cpu_alu_shifter_inst",
+          "module": "neorv32_cpu_alu_shifter",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "shamt_i",
+              "con": "opb(4 downto 0)",
+              "comment": [
+                "-- shift amount",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(0)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(0)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_muldiv_inst",
+          "module": "neorv32_cpu_alu_muldiv",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(1)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(1)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_bitmanip_inst",
+          "module": "neorv32_cpu_alu_bitmanip",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "less_i",
+              "con": "cmp_lt",
+              "comment": [
+                "-- compare less"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2"
+              ]
+            },
+            {
+              "port": "shamt_i",
+              "con": "opb(4 downto 0)",
+              "comment": [
+                "-- shift amount",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(2)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(2)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_fpu_inst",
+          "module": "neorv32_cpu_alu_fpu",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- CSR interface --"
+              ]
+            },
+            {
+              "port": "csr_we_i",
+              "con": "fpu_csr_we",
+              "comment": [
+                "-- write enable"
+              ]
+            },
+            {
+              "port": "csr_addr_i",
+              "con": "ctrl_i.csr_addr(1 downto 0)",
+              "comment": [
+                "-- address"
+              ]
+            },
+            {
+              "port": "csr_wdata_i",
+              "con": "ctrl_i.csr_wdata",
+              "comment": [
+                "-- write data"
+              ]
+            },
+            {
+              "port": "csr_rdata_o",
+              "con": "fpu_csr_rd",
+              "comment": [
+                "-- read data",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "equal_i",
+              "con": "cmp_eq",
+              "comment": [
+                "-- compare equal"
+              ]
+            },
+            {
+              "port": "less_i",
+              "con": "cmp_lt",
+              "comment": [
+                "-- compare less"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(3)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(3)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_cfu_inst",
+          "module": "neorv32_cpu_alu_cfu",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async",
+                "-- request"
+              ]
+            },
+            {
+              "port": "start_i",
+              "con": "ctrl_i.alu_cp_cfu",
+              "comment": [
+                "-- start trigger, single-shot"
+              ]
+            },
+            {
+              "port": "inst_i",
+              "con": "cfu_inst",
+              "comment": [
+                "-- instruction word"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2",
+                "-- response --"
+              ]
+            },
+            {
+              "port": "result_o",
+              "con": "cfu_res",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cfu_done",
+              "comment": [
+                "-- result valid, operation done"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_cond_inst",
+          "module": "neorv32_cpu_alu_cond",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(5)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(5)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_crypto_inst",
+          "module": "neorv32_cpu_alu_crypto",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl_i",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1_i",
+              "comment": [
+                "-- register source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2_i",
+              "comment": [
+                "-- register source 2",
+                "-- result and status --"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "cp_result(6)",
+              "comment": [
+                "-- operation result"
+              ]
+            },
+            {
+              "port": "valid_o",
+              "con": "cp_valid(6)",
+              "comment": [
+                "-- data output valid"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

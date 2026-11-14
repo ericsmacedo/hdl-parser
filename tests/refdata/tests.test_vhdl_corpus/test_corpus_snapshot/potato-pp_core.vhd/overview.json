@@ -1,0 +1,969 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_core.vhd",
+  "modules": [
+    {
+      "name": "pp_core",
+      "params": [
+        {
+          "name": "PROCESSOR_ID",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "--! Processor ID."
+          ]
+        },
+        {
+          "name": "RESET_ADDRESS",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "--! Address of the first instruction to execute."
+          ]
+        },
+        {
+          "name": "MTIME_DIVIDER",
+          "default": "5",
+          "comment": [
+            "--! Divider for the clock driving the MTIME counter"
+          ]
+        },
+        {
+          "name": "TIME_DIVIDER",
+          "default": "5",
+          "comment": [
+            "--! Divider for the clock dirivng the TIME counter"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk",
+          "comment": [
+            "--! Processor clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "--! Reset signal",
+            "-- Instruction memory interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "imem_address",
+          "dim": "[31:0]",
+          "comment": [
+            "--! Address of the next instruction"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "imem_data_in",
+          "dim": "[31:0]",
+          "comment": [
+            "--! Instruction input"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "imem_req"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "imem_ack",
+          "comment": [
+            "-- Data memory interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_address",
+          "dim": "[31:0]",
+          "comment": [
+            "--! Data address"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_in",
+          "dim": "[31:0]",
+          "comment": [
+            "--! Input from the data memory"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_out",
+          "dim": "[31:0]",
+          "comment": [
+            "--! Ouptut to the data memory"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_size",
+          "dim": "[1:0]",
+          "comment": [
+            "--! Size of the data, 1 = 8 bits, 2 = 16 bits, 0 = 32 bits."
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "dmem_read_req",
+          "comment": [
+            "--! Data memory read request"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "dmem_read_ack",
+          "comment": [
+            "--! Data memory read acknowledge"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "dmem_write_req",
+          "comment": [
+            "--! Data memory write request"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "dmem_write_ack",
+          "comment": [
+            "--! Data memory write acknowledge",
+            "-- Test interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "test_context",
+          "name": "test_context_out",
+          "comment": [
+            "--! Test context output.",
+            "-- External interrupt input:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "irq",
+          "dim": "[7:0]",
+          "comment": [
+            "--! IRQ inputs."
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "csr_unit",
+          "module": "pp_csr_unit",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "irq",
+              "con": "irq"
+            },
+            {
+              "port": "count_instruction",
+              "con": "wb_count_instruction"
+            },
+            {
+              "port": "test_context_out",
+              "con": "test_context_out"
+            },
+            {
+              "port": "read_address",
+              "con": "csr_read_address"
+            },
+            {
+              "port": "read_data_out",
+              "con": "csr_read_data"
+            },
+            {
+              "port": "write_address",
+              "con": "wb_csr_address"
+            },
+            {
+              "port": "write_data_in",
+              "con": "wb_csr_data"
+            },
+            {
+              "port": "write_mode",
+              "con": "wb_csr_write"
+            },
+            {
+              "port": "exception_context",
+              "con": "wb_exception_context"
+            },
+            {
+              "port": "exception_context_write",
+              "con": "wb_exception"
+            },
+            {
+              "port": "mie_out",
+              "con": "mie"
+            },
+            {
+              "port": "mtvec_out",
+              "con": "mtvec"
+            },
+            {
+              "port": "ie_out",
+              "con": "ie"
+            },
+            {
+              "port": "ie1_out",
+              "con": "ie1"
+            },
+            {
+              "port": "software_interrupt_out",
+              "con": "software_interrupt"
+            },
+            {
+              "port": "timer_interrupt_out",
+              "con": "timer_interrupt"
+            }
+          ]
+        },
+        {
+          "name": "regfile",
+          "module": "pp_register_file",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rs1_addr",
+              "con": "rs1_address"
+            },
+            {
+              "port": "rs2_addr",
+              "con": "rs2_address"
+            },
+            {
+              "port": "rs1_data",
+              "con": "rs1_data"
+            },
+            {
+              "port": "rs2_data",
+              "con": "rs2_data"
+            },
+            {
+              "port": "rd_addr",
+              "con": "wb_rd_address"
+            },
+            {
+              "port": "rd_data",
+              "con": "wb_rd_data"
+            },
+            {
+              "port": "rd_write",
+              "con": "wb_rd_write"
+            }
+          ]
+        },
+        {
+          "name": "fetch",
+          "module": "pp_fetch",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "imem_address",
+              "con": "imem_address"
+            },
+            {
+              "port": "imem_data_in",
+              "con": "imem_data_in"
+            },
+            {
+              "port": "imem_req",
+              "con": "imem_req"
+            },
+            {
+              "port": "imem_ack",
+              "con": "imem_ack"
+            },
+            {
+              "port": "stall",
+              "con": "stall_if"
+            },
+            {
+              "port": "flush",
+              "con": "flush_if"
+            },
+            {
+              "port": "branch",
+              "con": "branch_taken"
+            },
+            {
+              "port": "exception",
+              "con": "exception_taken"
+            },
+            {
+              "port": "branch_target",
+              "con": "branch_target"
+            },
+            {
+              "port": "evec",
+              "con": "exception_target"
+            },
+            {
+              "port": "instruction_data",
+              "con": "if_instruction"
+            },
+            {
+              "port": "instruction_address",
+              "con": "if_pc"
+            },
+            {
+              "port": "instruction_ready",
+              "con": "if_instruction_ready"
+            }
+          ]
+        },
+        {
+          "name": "decode",
+          "module": "pp_decode",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "flush",
+              "con": "flush_id"
+            },
+            {
+              "port": "stall",
+              "con": "stall_id"
+            },
+            {
+              "port": "instruction_data",
+              "con": "if_instruction"
+            },
+            {
+              "port": "instruction_address",
+              "con": "if_pc"
+            },
+            {
+              "port": "instruction_ready",
+              "con": "if_instruction_ready"
+            },
+            {
+              "port": "instruction_count",
+              "con": "if_count_instruction"
+            },
+            {
+              "port": "funct3",
+              "con": "id_funct3"
+            },
+            {
+              "port": "rs1_addr",
+              "con": "id_rs1_address"
+            },
+            {
+              "port": "rs2_addr",
+              "con": "id_rs2_address"
+            },
+            {
+              "port": "rd_addr",
+              "con": "id_rd_address"
+            },
+            {
+              "port": "csr_addr",
+              "con": "id_csr_address"
+            },
+            {
+              "port": "shamt",
+              "con": "id_shamt"
+            },
+            {
+              "port": "immediate",
+              "con": "id_immediate"
+            },
+            {
+              "port": "rd_write",
+              "con": "id_rd_write"
+            },
+            {
+              "port": "branch",
+              "con": "id_branch"
+            },
+            {
+              "port": "alu_x_src",
+              "con": "id_alu_x_src"
+            },
+            {
+              "port": "alu_y_src",
+              "con": "id_alu_y_src"
+            },
+            {
+              "port": "alu_op",
+              "con": "id_alu_op"
+            },
+            {
+              "port": "mem_op",
+              "con": "id_mem_op"
+            },
+            {
+              "port": "mem_size",
+              "con": "id_mem_size"
+            },
+            {
+              "port": "count_instruction",
+              "con": "id_count_instruction"
+            },
+            {
+              "port": "pc",
+              "con": "id_pc"
+            },
+            {
+              "port": "csr_write",
+              "con": "id_csr_write"
+            },
+            {
+              "port": "csr_use_imm",
+              "con": "id_csr_use_immediate"
+            },
+            {
+              "port": "decode_exception",
+              "con": "id_exception"
+            },
+            {
+              "port": "decode_exception_cause",
+              "con": "id_exception_cause"
+            }
+          ]
+        },
+        {
+          "name": "execute",
+          "module": "pp_execute",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "stall",
+              "con": "stall_ex"
+            },
+            {
+              "port": "flush",
+              "con": "flush_ex"
+            },
+            {
+              "port": "irq",
+              "con": "irq"
+            },
+            {
+              "port": "software_interrupt",
+              "con": "software_interrupt"
+            },
+            {
+              "port": "timer_interrupt",
+              "con": "timer_interrupt"
+            },
+            {
+              "port": "dmem_address",
+              "con": "ex_dmem_address"
+            },
+            {
+              "port": "dmem_data_size",
+              "con": "ex_dmem_data_size"
+            },
+            {
+              "port": "dmem_data_out",
+              "con": "ex_dmem_data_out"
+            },
+            {
+              "port": "dmem_read_req",
+              "con": "ex_dmem_read_req"
+            },
+            {
+              "port": "dmem_write_req",
+              "con": "ex_dmem_write_req"
+            },
+            {
+              "port": "rs1_addr_in",
+              "con": "rs1_address"
+            },
+            {
+              "port": "rs2_addr_in",
+              "con": "rs2_address"
+            },
+            {
+              "port": "rd_addr_in",
+              "con": "id_rd_address"
+            },
+            {
+              "port": "rd_addr_out",
+              "con": "ex_rd_address"
+            },
+            {
+              "port": "rs1_data_in",
+              "con": "rs1_data"
+            },
+            {
+              "port": "rs2_data_in",
+              "con": "rs2_data"
+            },
+            {
+              "port": "shamt_in",
+              "con": "id_shamt"
+            },
+            {
+              "port": "immediate_in",
+              "con": "id_immediate"
+            },
+            {
+              "port": "funct3_in",
+              "con": "id_funct3"
+            },
+            {
+              "port": "pc_in",
+              "con": "id_pc"
+            },
+            {
+              "port": "pc_out",
+              "con": "ex_pc"
+            },
+            {
+              "port": "csr_addr_in",
+              "con": "csr_read_address"
+            },
+            {
+              "port": "csr_addr_out",
+              "con": "ex_csr_address"
+            },
+            {
+              "port": "csr_write_in",
+              "con": "id_csr_write"
+            },
+            {
+              "port": "csr_write_out",
+              "con": "ex_csr_write"
+            },
+            {
+              "port": "csr_value_in",
+              "con": "csr_read_data"
+            },
+            {
+              "port": "csr_value_out",
+              "con": "ex_csr_data"
+            },
+            {
+              "port": "csr_use_immediate_in",
+              "con": "id_csr_use_immediate"
+            },
+            {
+              "port": "alu_op_in",
+              "con": "id_alu_op"
+            },
+            {
+              "port": "alu_x_src_in",
+              "con": "id_alu_x_src"
+            },
+            {
+              "port": "alu_y_src_in",
+              "con": "id_alu_y_src"
+            },
+            {
+              "port": "rd_write_in",
+              "con": "id_rd_write"
+            },
+            {
+              "port": "rd_write_out",
+              "con": "ex_rd_write"
+            },
+            {
+              "port": "rd_data_out",
+              "con": "ex_rd_data"
+            },
+            {
+              "port": "branch_in",
+              "con": "id_branch"
+            },
+            {
+              "port": "branch_out",
+              "con": "ex_branch"
+            },
+            {
+              "port": "mem_op_in",
+              "con": "id_mem_op"
+            },
+            {
+              "port": "mem_op_out",
+              "con": "ex_mem_op"
+            },
+            {
+              "port": "mem_size_in",
+              "con": "id_mem_size"
+            },
+            {
+              "port": "mem_size_out",
+              "con": "ex_mem_size"
+            },
+            {
+              "port": "count_instruction_in",
+              "con": "id_count_instruction"
+            },
+            {
+              "port": "count_instruction_out",
+              "con": "ex_count_instruction"
+            },
+            {
+              "port": "ie_in",
+              "con": "ie"
+            },
+            {
+              "port": "ie1_in",
+              "con": "ie1"
+            },
+            {
+              "port": "mie_in",
+              "con": "mie"
+            },
+            {
+              "port": "mtvec_in",
+              "con": "mtvec"
+            },
+            {
+              "port": "mtvec_out",
+              "con": "exception_target"
+            },
+            {
+              "port": "decode_exception_in",
+              "con": "id_exception"
+            },
+            {
+              "port": "decode_exception_cause_in",
+              "con": "id_exception_cause"
+            },
+            {
+              "port": "exception_out",
+              "con": "exception_taken"
+            },
+            {
+              "port": "exception_context_out",
+              "con": "ex_exception_context"
+            },
+            {
+              "port": "jump_out",
+              "con": "branch_taken"
+            },
+            {
+              "port": "jump_target_out",
+              "con": "branch_target"
+            },
+            {
+              "port": "mem_rd_write",
+              "con": "mem_rd_write"
+            },
+            {
+              "port": "mem_rd_addr",
+              "con": "mem_rd_address"
+            },
+            {
+              "port": "mem_rd_value",
+              "con": "mem_rd_data"
+            },
+            {
+              "port": "mem_csr_addr",
+              "con": "mem_csr_address"
+            },
+            {
+              "port": "mem_csr_write",
+              "con": "mem_csr_write"
+            },
+            {
+              "port": "mem_exception",
+              "con": "mem_exception"
+            },
+            {
+              "port": "wb_rd_write",
+              "con": "wb_rd_write"
+            },
+            {
+              "port": "wb_rd_addr",
+              "con": "wb_rd_address"
+            },
+            {
+              "port": "wb_rd_value",
+              "con": "wb_rd_data"
+            },
+            {
+              "port": "wb_csr_addr",
+              "con": "wb_csr_address"
+            },
+            {
+              "port": "wb_csr_write",
+              "con": "wb_csr_write"
+            },
+            {
+              "port": "wb_exception",
+              "con": "wb_exception"
+            },
+            {
+              "port": "mem_mem_op",
+              "con": "mem_mem_op"
+            },
+            {
+              "port": "hazard_detected",
+              "con": "hazard_detected"
+            }
+          ]
+        },
+        {
+          "name": "memory",
+          "module": "pp_memory",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "stall",
+              "con": "stall_mem"
+            },
+            {
+              "port": "dmem_data_in",
+              "con": "dmem_data_in"
+            },
+            {
+              "port": "dmem_read_ack",
+              "con": "dmem_read_ack"
+            },
+            {
+              "port": "dmem_write_ack",
+              "con": "dmem_write_ack"
+            },
+            {
+              "port": "pc",
+              "con": "ex_pc"
+            },
+            {
+              "port": "rd_write_in",
+              "con": "ex_rd_write"
+            },
+            {
+              "port": "rd_write_out",
+              "con": "mem_rd_write"
+            },
+            {
+              "port": "rd_data_in",
+              "con": "ex_rd_data"
+            },
+            {
+              "port": "rd_data_out",
+              "con": "mem_rd_data"
+            },
+            {
+              "port": "rd_addr_in",
+              "con": "ex_rd_address"
+            },
+            {
+              "port": "rd_addr_out",
+              "con": "mem_rd_address"
+            },
+            {
+              "port": "branch",
+              "con": "ex_branch"
+            },
+            {
+              "port": "mem_op_in",
+              "con": "ex_mem_op"
+            },
+            {
+              "port": "mem_op_out",
+              "con": "mem_mem_op"
+            },
+            {
+              "port": "mem_size_in",
+              "con": "ex_mem_size"
+            },
+            {
+              "port": "count_instr_in",
+              "con": "ex_count_instruction"
+            },
+            {
+              "port": "count_instr_out",
+              "con": "mem_count_instruction"
+            },
+            {
+              "port": "exception_in",
+              "con": "exception_taken"
+            },
+            {
+              "port": "exception_out",
+              "con": "mem_exception"
+            },
+            {
+              "port": "exception_context_in",
+              "con": "ex_exception_context"
+            },
+            {
+              "port": "exception_context_out",
+              "con": "mem_exception_context"
+            },
+            {
+              "port": "csr_addr_in",
+              "con": "ex_csr_address"
+            },
+            {
+              "port": "csr_addr_out",
+              "con": "mem_csr_address"
+            },
+            {
+              "port": "csr_write_in",
+              "con": "ex_csr_write"
+            },
+            {
+              "port": "csr_write_out",
+              "con": "mem_csr_write"
+            },
+            {
+              "port": "csr_data_in",
+              "con": "ex_csr_data"
+            },
+            {
+              "port": "csr_data_out",
+              "con": "mem_csr_data"
+            }
+          ]
+        },
+        {
+          "name": "writeback",
+          "module": "pp_writeback",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "count_instr_in",
+              "con": "mem_count_instruction"
+            },
+            {
+              "port": "count_instr_out",
+              "con": "wb_count_instruction"
+            },
+            {
+              "port": "exception_ctx_in",
+              "con": "mem_exception_context"
+            },
+            {
+              "port": "exception_ctx_out",
+              "con": "wb_exception_context"
+            },
+            {
+              "port": "exception_in",
+              "con": "mem_exception"
+            },
+            {
+              "port": "exception_out",
+              "con": "wb_exception"
+            },
+            {
+              "port": "csr_write_in",
+              "con": "mem_csr_write"
+            },
+            {
+              "port": "csr_write_out",
+              "con": "wb_csr_write"
+            },
+            {
+              "port": "csr_data_in",
+              "con": "mem_csr_data"
+            },
+            {
+              "port": "csr_data_out",
+              "con": "wb_csr_data"
+            },
+            {
+              "port": "csr_addr_in",
+              "con": "mem_csr_address"
+            },
+            {
+              "port": "csr_addr_out",
+              "con": "wb_csr_address"
+            },
+            {
+              "port": "rd_addr_in",
+              "con": "mem_rd_address"
+            },
+            {
+              "port": "rd_addr_out",
+              "con": "wb_rd_address"
+            },
+            {
+              "port": "rd_write_in",
+              "con": "mem_rd_write"
+            },
+            {
+              "port": "rd_write_out",
+              "con": "wb_rd_write"
+            },
+            {
+              "port": "rd_data_in",
+              "con": "mem_rd_data"
+            },
+            {
+              "port": "rd_data_out",
+              "con": "wb_rd_data"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

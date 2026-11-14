@@ -1,0 +1,351 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_prim.vhd",
+  "modules": [
+    {
+      "name": "neorv32_prim_fifo",
+      "params": [
+        {
+          "name": "AWIDTH",
+          "comment": [
+            "-- address width (= log2(number of FIFO entries))"
+          ]
+        },
+        {
+          "name": "DWIDTH",
+          "comment": [
+            "-- size of data elements in FIFO"
+          ]
+        },
+        {
+          "name": "OUTGATE",
+          "comment": [
+            "-- true = output zero if no data available"
+          ]
+        },
+        {
+          "name": "ASYNCRD",
+          "comment": [
+            "-- true = asynchronous read, false = synchronous read"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- async reset, low-active"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clear_i",
+          "comment": [
+            "-- sync reset, high-active"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "level_o",
+          "dim": "[AWIDTH:0]",
+          "comment": [
+            "-- fill level",
+            "-- write port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "wdata_i",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- write data"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "we_i",
+          "comment": [
+            "-- write enable"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "free_o",
+          "comment": [
+            "-- at least one entry is free when set",
+            "-- read port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "re_i",
+          "comment": [
+            "-- read enable"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata_o",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- read data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "avail_o",
+          "comment": [
+            "-- data available when set"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_prim_spram",
+      "params": [
+        {
+          "name": "AWIDTH",
+          "comment": [
+            "-- address width (number of bits)"
+          ]
+        },
+        {
+          "name": "DWIDTH",
+          "comment": [
+            "-- data width (number of bits)"
+          ]
+        },
+        {
+          "name": "OUTREG",
+          "comment": [
+            "-- add output register stage when true"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- clock, rising edge",
+            "-- read/write port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "en_i",
+          "comment": [
+            "-- access enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rw_i",
+          "comment": [
+            "-- 0=read, 1=write"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "addr_i",
+          "dim": "[AWIDTH-1:0]",
+          "comment": [
+            "-- address"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "data_i",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- write data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "data_o",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- read data"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_prim_mul",
+      "params": [
+        {
+          "name": "DWIDTH",
+          "comment": [
+            "-- operand width"
+          ]
+        },
+        {
+          "name": "NUM_REGS",
+          "default": "1",
+          "comment": [
+            "-- number of multiplier register stages"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- clock, rising edge",
+            "-- data path --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "en_i",
+          "comment": [
+            "-- enable input operand registers"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "opa_i",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- operand A"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "opas_i",
+          "comment": [
+            "-- operand A is a signed number"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "opb_i",
+          "dim": "[DWIDTH-1:0]",
+          "comment": [
+            "-- operand B"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "opbs_i",
+          "comment": [
+            "-- operand B is a signed number"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "res_o",
+          "dim": "[(2*DWIDTH)-1:0]",
+          "comment": [
+            "-- resulting product"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_prim_cnt",
+      "params": [
+        {
+          "name": "CWIDTH",
+          "comment": [
+            "-- actual counter width (0..64)"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- reset, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "inc_i",
+          "comment": [
+            "-- enable counter increment",
+            "-- read/write access --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "we_i",
+          "dim": "[1:0]",
+          "comment": [
+            "-- subword write enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "data_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- subword write data"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "oe_i",
+          "comment": [
+            "-- output enable"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "cnt_o",
+          "dim": "[63:0]",
+          "comment": [
+            "-- trimmed counter output"
+          ]
+        }
+      ]
+    }
+  ]
+}

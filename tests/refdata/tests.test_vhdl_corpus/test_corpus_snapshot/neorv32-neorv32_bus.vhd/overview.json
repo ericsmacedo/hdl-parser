@@ -1,0 +1,1111 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_bus.vhd",
+  "modules": [
+    {
+      "name": "neorv32_bus_switch",
+      "params": [
+        {
+          "name": "ROUND_ROBIN_EN",
+          "default": "false",
+          "comment": [
+            "-- enable round-robin arbitration"
+          ]
+        },
+        {
+          "name": "A_READ_ONLY",
+          "default": "false",
+          "comment": [
+            "-- set if port A is read-only"
+          ]
+        },
+        {
+          "name": "B_READ_ONLY",
+          "default": "false",
+          "comment": [
+            "-- set if port B is read-only"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "a_req_i",
+          "comment": [
+            "-- host port A request bus"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "a_rsp_o",
+          "comment": [
+            "-- host port A response bus"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "b_req_i",
+          "comment": [
+            "-- host port B request bus"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "b_rsp_o",
+          "comment": [
+            "-- host port B response bus"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "x_req_o",
+          "comment": [
+            "-- device port request bus"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "x_rsp_i",
+          "comment": [
+            "-- device port response bus"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_bus_reg",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async",
+            "-- bus ports --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "host_req_i",
+          "comment": [
+            "-- host request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "host_rsp_o",
+          "comment": [
+            "-- host response"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "device_req_o",
+          "comment": [
+            "-- device request"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "device_rsp_i",
+          "comment": [
+            "-- device response"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_bus_gateway",
+      "params": [
+        {
+          "name": "A_EN",
+          "comment": [
+            "-- port enable"
+          ]
+        },
+        {
+          "name": "A_BASE",
+          "dim": "[31:0]",
+          "comment": [
+            "-- port address space base address (aligned to size)"
+          ]
+        },
+        {
+          "name": "A_SIZE",
+          "comment": [
+            "-- port address space size in bytes (power of two)"
+          ]
+        },
+        {
+          "name": "A_TMO",
+          "comment": [
+            "-- port access timeout (power of two, 0 = disabled)",
+            "-- device port B --"
+          ]
+        },
+        {
+          "name": "B_EN"
+        },
+        {
+          "name": "B_BASE",
+          "dim": "[31:0]"
+        },
+        {
+          "name": "B_SIZE"
+        },
+        {
+          "name": "B_TMO",
+          "comment": [
+            "-- device port C --"
+          ]
+        },
+        {
+          "name": "C_EN"
+        },
+        {
+          "name": "C_BASE",
+          "dim": "[31:0]"
+        },
+        {
+          "name": "C_SIZE"
+        },
+        {
+          "name": "C_TMO",
+          "comment": [
+            "-- device port D --"
+          ]
+        },
+        {
+          "name": "D_EN"
+        },
+        {
+          "name": "D_BASE",
+          "dim": "[31:0]"
+        },
+        {
+          "name": "D_SIZE"
+        },
+        {
+          "name": "D_TMO",
+          "comment": [
+            "-- device port X (the void) --"
+          ]
+        },
+        {
+          "name": "X_EN"
+        },
+        {
+          "name": "X_TMO"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "term_o",
+          "comment": [
+            "-- terminate current bus access",
+            "-- host port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "req_i",
+          "comment": [
+            "-- host request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "rsp_o",
+          "comment": [
+            "-- host response",
+            "-- device/section ports --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "a_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "a_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "b_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "b_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "c_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "c_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "d_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "d_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "x_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "x_rsp_i"
+        }
+      ]
+    },
+    {
+      "name": "neorv32_bus_io_switch",
+      "params": [
+        {
+          "name": "DEV_SIZE",
+          "comment": [
+            "-- size of each IO device, has to be a power of two",
+            "-- device port enable and base address; enabled ports do not have to be contiguous --"
+          ]
+        },
+        {
+          "name": "DEV_00_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_00_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_01_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_01_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_02_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_02_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_03_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_03_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_04_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_04_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_05_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_05_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_06_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_06_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_07_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_07_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_08_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_08_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_09_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_09_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_10_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_10_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_11_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_11_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_12_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_12_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_13_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_13_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_14_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_14_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_15_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_15_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_16_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_16_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_17_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_17_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_18_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_18_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_19_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_19_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_20_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_20_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_21_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_21_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_22_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_22_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_23_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_23_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_24_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_24_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_25_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_25_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_26_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_26_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_27_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_27_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_28_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_28_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_29_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_29_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_30_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_30_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "DEV_31_EN",
+          "default": "false"
+        },
+        {
+          "name": "DEV_31_BASE",
+          "dim": "[31:0]",
+          "default": "(others => '0')"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async",
+            "-- host port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "main_req_i",
+          "comment": [
+            "-- host request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "main_rsp_o",
+          "comment": [
+            "-- host response",
+            "-- device ports --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_00_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_00_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_01_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_01_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_02_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_02_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_03_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_03_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_04_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_04_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_05_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_05_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_06_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_06_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_07_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_07_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_08_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_08_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_09_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_09_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_10_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_10_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_11_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_11_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_12_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_12_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_13_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_13_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_14_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_14_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_15_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_15_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_16_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_16_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_17_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_17_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_18_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_18_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_19_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_19_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_20_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_20_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_21_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_21_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_22_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_22_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_23_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_23_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_24_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_24_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_25_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_25_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_26_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_26_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_27_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_27_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_28_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_28_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_29_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_29_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_30_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_30_rsp_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dev_31_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dev_31_rsp_i"
+        }
+      ],
+      "insts": [
+        {
+          "name": "neorv32_bus_reg_inst",
+          "module": "neorv32_bus_reg",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- bus ports --"
+              ]
+            },
+            {
+              "port": "host_req_i",
+              "con": "main_req_i"
+            },
+            {
+              "port": "host_rsp_o",
+              "con": "main_rsp_o"
+            },
+            {
+              "port": "device_req_o",
+              "con": "main_req"
+            },
+            {
+              "port": "device_rsp_i",
+              "con": "main_rsp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_bus_amo_rmw",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async",
+            "-- core port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "core_req_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "core_rsp_o",
+          "comment": [
+            "-- system port --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "sys_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "sys_rsp_i"
+        }
+      ]
+    },
+    {
+      "name": "neorv32_bus_amo_rvs",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async",
+            "-- core port --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "core_req_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "core_rsp_o",
+          "comment": [
+            "-- system port --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "sys_req_o"
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "sys_rsp_i"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/LutRam.vhd",
+  "modules": [
+    {
+      "name": "LutRam",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "RST_POLARITY_G",
+          "default": "'1'",
+          "comment": [
+            "-- '1' for active high rst, '0' for active low"
+          ]
+        },
+        {
+          "name": "RST_ASYNC_G",
+          "default": "false"
+        },
+        {
+          "name": "REG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "MODE_G",
+          "default": "\"no-change\""
+        },
+        {
+          "name": "BYTE_WR_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "DATA_WIDTH_G",
+          "default": "16"
+        },
+        {
+          "name": "BYTE_WIDTH_G",
+          "default": "8"
+        },
+        {
+          "name": "ADDR_WIDTH_G",
+          "default": "4"
+        },
+        {
+          "name": "NUM_PORTS_G"
+        },
+        {
+          "name": "INIT_G",
+          "default": "\"0\""
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clka"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_a"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "wea"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "weaByte",
+          "dim": "[wordCount(DATA_WIDTH_G, BYTE_WIDTH_G)-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rsta"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addra",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "dina",
+          "dim": "[DATA_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "douta",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port B (Read Only, NUM_PORTS_G>=2)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkb"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_b"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rstb"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrb",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doutb",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port C (Read Only, NUM_PORTS_G>=3)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_c"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkc"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rstc"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrc",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doutc",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port D (Read Only, NUM_PORTS_G>=4)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_d"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkd"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rstd"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrd",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doutd",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port E (Read Only, NUM_PORTS_G>=5)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_e"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clke"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rste"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addre",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doute",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port F (Read Only, NUM_PORTS_G>=6)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_f"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkf"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rstf"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrf",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doutf",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port G (Read Only, NUM_PORTS_G>=7)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_g"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkg"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rstg"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrg",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "doutg",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "comment": [
+            "-- Port H (Read Only, NUM_PORTS_G>=8)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "en_h"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clkh"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "rsth"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "addrh",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "douth",
+          "dim": "[DATA_WIDTH_G-1:0]"
+        }
+      ]
+    }
+  ]
+}

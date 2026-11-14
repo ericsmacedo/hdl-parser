@@ -1,0 +1,97 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/xics.vhdl",
+  "modules": [
+    {
+      "name": "xics_icp",
+      "params": [
+        {
+          "name": "NCPUS",
+          "default": "1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst"
+        },
+        {
+          "direction": "in",
+          "dtype": "wb_io_master_out",
+          "name": "wb_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "ics_to_icp_t",
+          "name": "ics_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "core_irq_out",
+          "dim": "[NCPUS-1:0]"
+        }
+      ]
+    },
+    {
+      "name": "xics_ics",
+      "params": [
+        {
+          "name": "NCPUS",
+          "default": "1"
+        },
+        {
+          "name": "SRC_NUM",
+          "default": "16"
+        },
+        {
+          "name": "PRIO_BITS",
+          "default": "3"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst"
+        },
+        {
+          "direction": "in",
+          "dtype": "wb_io_master_out",
+          "name": "wb_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "int_level_in",
+          "dim": "[SRC_NUM - 1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "ics_to_icp_t",
+          "name": "icp_out"
+        }
+      ]
+    }
+  ]
+}

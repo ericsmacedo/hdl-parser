@@ -1,0 +1,818 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/JesdRxReg.vhd",
+  "modules": [
+    {
+      "name": "JesdRxReg",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "AXI_ADDR_WIDTH_G",
+          "default": "10",
+          "comment": [
+            "-- JESD",
+            "-- Number of RX lanes (1 to 32)"
+          ]
+        },
+        {
+          "name": "L_G",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiClk_i"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiRst_i",
+          "comment": [
+            "-- Axi-Lite Register Interface (locClk domain)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitereadmastertype",
+          "name": "axilReadMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitereadslavetype",
+          "name": "axilReadSlave"
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitewritemastertype",
+          "name": "axilWriteMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitewriteslavetype",
+          "name": "axilWriteSlave",
+          "comment": [
+            "-- JESD devClk"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "devClk_i"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "devRst_i",
+          "comment": [
+            "-- JESD registers",
+            "-- Status"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "sysrefRe_i"
+        },
+        {
+          "direction": "in",
+          "dtype": "rxstaturegisterarray",
+          "name": "statusRxArr_i",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv32array",
+          "name": "rawData_i",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- Control"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "sysrefDlyRx_o",
+          "dim": "[SYSRF_DLY_WIDTH_C-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "enableRx_o",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "replEnable_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "scrEnable_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "invertData_o",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv4array",
+          "name": "dlyTxArr_o",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- 1 to 16 clock cycles"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "aligntxarray",
+          "name": "alignTxArr_o",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- 0001, 0010, 0100, 1000"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "slv16array",
+          "name": "thresoldLowArr_o",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- Test signal threshold low"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "slv16array",
+          "name": "thresoldHighArr_o",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- Test signal threshold high"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "subClass_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "gtReset_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "clearErr_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "invertSync_o"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "linkErrMask_o",
+          "dim": "[5:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "rxPowerDown",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "rxPolarity",
+          "dim": "[L_G-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "U_JesdSysrefMon",
+          "module": "JesdSysrefMon",
+          "connections": [
+            {
+              "port": "devClk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "sysrefEdgeDet_i",
+              "con": "sysrefRe_i",
+              "comment": [
+                "-- Max/Min measurements  (axilClk domain)"
+              ]
+            },
+            {
+              "port": "axilClk",
+              "con": "axiClk_i"
+            },
+            {
+              "port": "statClr",
+              "con": "r.commonCtrl(3)"
+            },
+            {
+              "port": "sysRefPeriodmin",
+              "con": "sysRefPeriodmin"
+            },
+            {
+              "port": "sysRefPeriodmax",
+              "con": "sysRefPeriodmax"
+            }
+          ]
+        },
+        {
+          "name": "U_SyncStatusVector",
+          "module": "SyncStatusVector",
+          "connections": [
+            {
+              "port": "statusIn",
+              "con": "s_adcValids",
+              "comment": [
+                "-- Output Status bit Signals (rdClk domain)"
+              ]
+            },
+            {
+              "port": "statusOut",
+              "con": "open",
+              "comment": [
+                "-- Status Bit Counters Signals (rdClk domain)"
+              ]
+            },
+            {
+              "port": "cntRstIn",
+              "con": "r.commonCtrl(3)"
+            },
+            {
+              "port": "cntOut",
+              "con": "s_statusCnt",
+              "comment": [
+                "-- Clocks and Reset Ports"
+              ]
+            },
+            {
+              "port": "wrClk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rdClk",
+              "con": "axiClk_i"
+            }
+          ]
+        },
+        {
+          "name": "U_statusRxArr",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "axiClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "statusRxArr_i(i)"
+            },
+            {
+              "port": "dataOut",
+              "con": "s_statusRxArr(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_rawData",
+          "module": "SynchronizerFifo",
+          "connections": [
+            {
+              "port": "wr_clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "din",
+              "con": "rawData_i(i)"
+            },
+            {
+              "port": "rd_clk",
+              "con": "axiClk_i"
+            },
+            {
+              "port": "dout",
+              "con": "s_rawData(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_sysrefDlyRx",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.sysrefDlyRx"
+            },
+            {
+              "port": "dataOut",
+              "con": "sysrefDlyRx"
+            }
+          ]
+        },
+        {
+          "name": "U_sysrefDlyRx_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "sysrefDlyRx"
+            },
+            {
+              "port": "rstOut",
+              "con": "sysrefDlyRx_o"
+            }
+          ]
+        },
+        {
+          "name": "U_enableRx",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.enableRx"
+            },
+            {
+              "port": "dataOut",
+              "con": "enableRx"
+            }
+          ]
+        },
+        {
+          "name": "U_enableRx_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "enableRx"
+            },
+            {
+              "port": "rstOut",
+              "con": "enableRx_o"
+            }
+          ]
+        },
+        {
+          "name": "U_subClass",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(0)"
+            },
+            {
+              "port": "dataOut",
+              "con": "subClass"
+            }
+          ]
+        },
+        {
+          "name": "U_subClass_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "subClass"
+            },
+            {
+              "port": "rstOut",
+              "con": "subClass_o"
+            }
+          ]
+        },
+        {
+          "name": "U_replEnable",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(1)"
+            },
+            {
+              "port": "dataOut",
+              "con": "replEnable"
+            }
+          ]
+        },
+        {
+          "name": "U_replEnable_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "replEnable"
+            },
+            {
+              "port": "rstOut",
+              "con": "replEnable_o"
+            }
+          ]
+        },
+        {
+          "name": "U_gtReset",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(2)"
+            },
+            {
+              "port": "dataOut",
+              "con": "gtReset"
+            }
+          ]
+        },
+        {
+          "name": "U_gtReset_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "gtReset"
+            },
+            {
+              "port": "rstOut",
+              "con": "gtReset_o"
+            }
+          ]
+        },
+        {
+          "name": "U_clearErr",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(3)"
+            },
+            {
+              "port": "dataOut",
+              "con": "clearErr"
+            }
+          ]
+        },
+        {
+          "name": "U_clearErr_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "clearErr"
+            },
+            {
+              "port": "rstOut",
+              "con": "clearErr_o"
+            }
+          ]
+        },
+        {
+          "name": "U_invertSync",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(4)"
+            },
+            {
+              "port": "dataOut",
+              "con": "invertSync"
+            }
+          ]
+        },
+        {
+          "name": "U_invertSync_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "invertSync"
+            },
+            {
+              "port": "rstOut",
+              "con": "invertSync_o"
+            }
+          ]
+        },
+        {
+          "name": "U_scrEnable",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.commonCtrl(5)"
+            },
+            {
+              "port": "dataOut",
+              "con": "scrEnable"
+            }
+          ]
+        },
+        {
+          "name": "U_scrEnable_Pipeline",
+          "module": "RstPipeline",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "scrEnable"
+            },
+            {
+              "port": "rstOut",
+              "con": "scrEnable_o"
+            }
+          ]
+        },
+        {
+          "name": "U_linkErrMask",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.linkErrMask"
+            },
+            {
+              "port": "dataOut",
+              "con": "linkErrMask"
+            }
+          ]
+        },
+        {
+          "name": "U_linkErrMask_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "linkErrMask"
+            },
+            {
+              "port": "rstOut",
+              "con": "linkErrMask_o"
+            }
+          ]
+        },
+        {
+          "name": "U_invertData",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.invertData"
+            },
+            {
+              "port": "dataOut",
+              "con": "invertData"
+            }
+          ]
+        },
+        {
+          "name": "U_invertData_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "invertData"
+            },
+            {
+              "port": "rstOut",
+              "con": "invertData_o"
+            }
+          ]
+        },
+        {
+          "name": "U_dlyTxArr",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.testTXItf(i)(11 downto 8)"
+            },
+            {
+              "port": "dataOut",
+              "con": "dlyTxArr(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_dlyTxArr_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "dlyTxArr(i)"
+            },
+            {
+              "port": "rstOut",
+              "con": "dlyTxArr_o(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_alignTxArr",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.testTXItf(i) (GT_WORD_SIZE_C-1 downto 0)"
+            },
+            {
+              "port": "dataOut",
+              "con": "alignTxArr(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_alignTxArr_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "alignTxArr(i)"
+            },
+            {
+              "port": "rstOut",
+              "con": "alignTxArr_o(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_thresoldLowArr_A",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.testSigThr(i) (31 downto 16)"
+            },
+            {
+              "port": "dataOut",
+              "con": "thresoldHighArr(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_thresoldLowArr_A_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "thresoldHighArr(i)"
+            },
+            {
+              "port": "rstOut",
+              "con": "thresoldHighArr_o(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_thresoldLowArr_B",
+          "module": "SynchronizerVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "r.testSigThr(i) (15 downto 0)"
+            },
+            {
+              "port": "dataOut",
+              "con": "thresoldLowArr(i)"
+            }
+          ]
+        },
+        {
+          "name": "U_thresoldLowArr_B_Pipeline",
+          "module": "RstPipelineVector",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rstIn",
+              "con": "thresoldLowArr(i)"
+            },
+            {
+              "port": "rstOut",
+              "con": "thresoldLowArr_o(i)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

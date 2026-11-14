@@ -1,0 +1,206 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/fifo_cc_got.vhdl",
+  "modules": [
+    {
+      "name": "fifo_cc_got",
+      "params": [
+        {
+          "name": "D_BITS",
+          "comment": [
+            "-- Data Width"
+          ]
+        },
+        {
+          "name": "MIN_DEPTH",
+          "comment": [
+            "-- Minimum FIFO Depth"
+          ]
+        },
+        {
+          "name": "DATA_REG",
+          "default": "false",
+          "comment": [
+            "-- Store Data Content in Registers"
+          ]
+        },
+        {
+          "name": "STATE_REG",
+          "default": "false",
+          "comment": [
+            "-- Registered Full/Empty Indicators"
+          ]
+        },
+        {
+          "name": "OUTPUT_REG",
+          "default": "false",
+          "comment": [
+            "-- Registered FIFO Output"
+          ]
+        },
+        {
+          "name": "ESTATE_WR_BITS",
+          "default": "0",
+          "comment": [
+            "-- Empty State Bits"
+          ]
+        },
+        {
+          "name": "FSTATE_RD_BITS",
+          "default": "0",
+          "comment": [
+            "-- Full State Bits"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst",
+          "comment": [
+            "-- Writing Interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk",
+          "comment": [
+            "-- Writing Interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "put",
+          "comment": [
+            "-- Write Request"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "din",
+          "dim": "[D_BITS-1:0]",
+          "comment": [
+            "-- Input Data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "full"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "estate_wr",
+          "dim": "[imax(0, ESTATE_WR_BITS-1):0]",
+          "comment": [
+            "-- Reading Interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "got",
+          "comment": [
+            "-- Read Completed"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dout",
+          "dim": "[D_BITS-1:0]",
+          "comment": [
+            "-- Output Data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "valid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "fstate_rd",
+          "dim": "[imax(0, FSTATE_RD_BITS-1):0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "incIP",
+          "module": "arith_carrychain_inc",
+          "connections": [
+            {
+              "port": "X",
+              "con": "IP0_slv"
+            },
+            {
+              "port": "Y",
+              "con": "IP1_slv"
+            }
+          ]
+        },
+        {
+          "name": "incOP",
+          "module": "arith_carrychain_inc",
+          "connections": [
+            {
+              "port": "X",
+              "con": "OP0_slv"
+            },
+            {
+              "port": "Y",
+              "con": "OP1_slv"
+            }
+          ]
+        },
+        {
+          "name": "ram",
+          "module": "ocram_sdp",
+          "connections": [
+            {
+              "port": "wclk",
+              "con": "clk"
+            },
+            {
+              "port": "rclk",
+              "con": "clk"
+            },
+            {
+              "port": "wce",
+              "con": "'1'"
+            },
+            {
+              "port": "wa",
+              "con": "wa"
+            },
+            {
+              "port": "we",
+              "con": "we"
+            },
+            {
+              "port": "d",
+              "con": "din"
+            },
+            {
+              "port": "ra",
+              "con": "ra"
+            },
+            {
+              "port": "rce",
+              "con": "re"
+            },
+            {
+              "port": "q",
+              "con": "do"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

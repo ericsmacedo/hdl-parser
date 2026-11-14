@@ -1,0 +1,938 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/AxiResizeIpIntegrator.vhd",
+  "modules": [
+    {
+      "name": "AxiResizeIpIntegrator",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "ADDR_WIDTH_G",
+          "default": "16"
+        },
+        {
+          "name": "ID_WIDTH_G",
+          "default": "4"
+        },
+        {
+          "name": "SLAVE_DATA_BYTES_G",
+          "default": "4"
+        },
+        {
+          "name": "MASTER_DATA_BYTES_G",
+          "default": "8"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiClk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiRst"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWADDR",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWLEN",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWSIZE",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWBURST",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_AWLOCK"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWCACHE",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWPROT",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWREGION",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_AWQOS",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_AWVALID"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_AWREADY"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_WID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_WDATA",
+          "dim": "[(SLAVE_DATA_BYTES_G*8)-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_WSTRB",
+          "dim": "[SLAVE_DATA_BYTES_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_WLAST"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_WVALID"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_WREADY"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "S_AXI_BID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "S_AXI_BRESP",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_BVALID"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_BREADY"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARADDR",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARLEN",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARSIZE",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARBURST",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_ARLOCK"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARCACHE",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARPROT",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARREGION",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "S_AXI_ARQOS",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_ARVALID"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_ARREADY"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "S_AXI_RID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "S_AXI_RDATA",
+          "dim": "[(SLAVE_DATA_BYTES_G*8)-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "S_AXI_RRESP",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_RLAST"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "S_AXI_RVALID"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "S_AXI_RREADY"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWADDR",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWLEN",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWSIZE",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWBURST",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_AWLOCK"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWCACHE",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWPROT",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWREGION",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_AWQOS",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_AWVALID"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_AWREADY"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_WID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_WDATA",
+          "dim": "[(MASTER_DATA_BYTES_G*8)-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_WSTRB",
+          "dim": "[MASTER_DATA_BYTES_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_WLAST"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_WVALID"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_WREADY"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "M_AXI_BID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "M_AXI_BRESP",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_BVALID"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_BREADY"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARADDR",
+          "dim": "[ADDR_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARLEN",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARSIZE",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARBURST",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_ARLOCK"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARCACHE",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARPROT",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARREGION",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "M_AXI_ARQOS",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_ARVALID"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_ARREADY"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "M_AXI_RID",
+          "dim": "[ID_WIDTH_G-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "M_AXI_RDATA",
+          "dim": "[(MASTER_DATA_BYTES_G*8)-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "M_AXI_RRESP",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_RLAST"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "M_AXI_RVALID"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "M_AXI_RREADY"
+        }
+      ],
+      "insts": [
+        {
+          "name": "U_S",
+          "module": "SlaveAxiIpIntegrator",
+          "connections": [
+            {
+              "port": "S_AXI_ACLK",
+              "con": "axiClk"
+            },
+            {
+              "port": "S_AXI_ARESETN",
+              "con": "axiResetN"
+            },
+            {
+              "port": "S_AXI_AWID",
+              "con": "S_AXI_AWID"
+            },
+            {
+              "port": "S_AXI_AWADDR",
+              "con": "S_AXI_AWADDR"
+            },
+            {
+              "port": "S_AXI_AWLEN",
+              "con": "S_AXI_AWLEN"
+            },
+            {
+              "port": "S_AXI_AWSIZE",
+              "con": "S_AXI_AWSIZE"
+            },
+            {
+              "port": "S_AXI_AWBURST",
+              "con": "S_AXI_AWBURST"
+            },
+            {
+              "port": "S_AXI_AWLOCK",
+              "con": "'0' & S_AXI_AWLOCK"
+            },
+            {
+              "port": "S_AXI_AWCACHE",
+              "con": "S_AXI_AWCACHE"
+            },
+            {
+              "port": "S_AXI_AWPROT",
+              "con": "S_AXI_AWPROT"
+            },
+            {
+              "port": "S_AXI_AWREGION",
+              "con": "S_AXI_AWREGION"
+            },
+            {
+              "port": "S_AXI_AWQOS",
+              "con": "S_AXI_AWQOS"
+            },
+            {
+              "port": "S_AXI_AWVALID",
+              "con": "S_AXI_AWVALID"
+            },
+            {
+              "port": "S_AXI_AWREADY",
+              "con": "S_AXI_AWREADY"
+            },
+            {
+              "port": "S_AXI_WID",
+              "con": "S_AXI_WID"
+            },
+            {
+              "port": "S_AXI_WDATA",
+              "con": "S_AXI_WDATA"
+            },
+            {
+              "port": "S_AXI_WSTRB",
+              "con": "S_AXI_WSTRB"
+            },
+            {
+              "port": "S_AXI_WLAST",
+              "con": "S_AXI_WLAST"
+            },
+            {
+              "port": "S_AXI_WVALID",
+              "con": "S_AXI_WVALID"
+            },
+            {
+              "port": "S_AXI_WREADY",
+              "con": "S_AXI_WREADY"
+            },
+            {
+              "port": "S_AXI_BID",
+              "con": "S_AXI_BID"
+            },
+            {
+              "port": "S_AXI_BRESP",
+              "con": "S_AXI_BRESP"
+            },
+            {
+              "port": "S_AXI_BVALID",
+              "con": "S_AXI_BVALID"
+            },
+            {
+              "port": "S_AXI_BREADY",
+              "con": "S_AXI_BREADY"
+            },
+            {
+              "port": "S_AXI_ARID",
+              "con": "S_AXI_ARID"
+            },
+            {
+              "port": "S_AXI_ARADDR",
+              "con": "S_AXI_ARADDR"
+            },
+            {
+              "port": "S_AXI_ARLEN",
+              "con": "S_AXI_ARLEN"
+            },
+            {
+              "port": "S_AXI_ARSIZE",
+              "con": "S_AXI_ARSIZE"
+            },
+            {
+              "port": "S_AXI_ARBURST",
+              "con": "S_AXI_ARBURST"
+            },
+            {
+              "port": "S_AXI_ARLOCK",
+              "con": "'0' & S_AXI_ARLOCK"
+            },
+            {
+              "port": "S_AXI_ARCACHE",
+              "con": "S_AXI_ARCACHE"
+            },
+            {
+              "port": "S_AXI_ARPROT",
+              "con": "S_AXI_ARPROT"
+            },
+            {
+              "port": "S_AXI_ARREGION",
+              "con": "S_AXI_ARREGION"
+            },
+            {
+              "port": "S_AXI_ARQOS",
+              "con": "S_AXI_ARQOS"
+            },
+            {
+              "port": "S_AXI_ARVALID",
+              "con": "S_AXI_ARVALID"
+            },
+            {
+              "port": "S_AXI_ARREADY",
+              "con": "S_AXI_ARREADY"
+            },
+            {
+              "port": "S_AXI_RID",
+              "con": "S_AXI_RID"
+            },
+            {
+              "port": "S_AXI_RDATA",
+              "con": "S_AXI_RDATA"
+            },
+            {
+              "port": "S_AXI_RRESP",
+              "con": "S_AXI_RRESP"
+            },
+            {
+              "port": "S_AXI_RLAST",
+              "con": "S_AXI_RLAST"
+            },
+            {
+              "port": "S_AXI_RVALID",
+              "con": "S_AXI_RVALID"
+            },
+            {
+              "port": "S_AXI_RREADY",
+              "con": "S_AXI_RREADY"
+            },
+            {
+              "port": "axiClk",
+              "con": "open"
+            },
+            {
+              "port": "axiRst",
+              "con": "open"
+            },
+            {
+              "port": "axiReadMaster",
+              "con": "sAxiReadMaster"
+            },
+            {
+              "port": "axiReadSlave",
+              "con": "sAxiReadSlave"
+            },
+            {
+              "port": "axiWriteMaster",
+              "con": "sAxiWriteMaster"
+            },
+            {
+              "port": "axiWriteSlave",
+              "con": "sAxiWriteSlave"
+            }
+          ]
+        },
+        {
+          "name": "U_M",
+          "module": "MasterAxiIpIntegrator",
+          "connections": [
+            {
+              "port": "M_AXI_ACLK",
+              "con": "axiClk"
+            },
+            {
+              "port": "M_AXI_ARESETN",
+              "con": "axiResetN"
+            },
+            {
+              "port": "M_AXI_AWID",
+              "con": "M_AXI_AWID"
+            },
+            {
+              "port": "M_AXI_AWADDR",
+              "con": "M_AXI_AWADDR"
+            },
+            {
+              "port": "M_AXI_AWLEN",
+              "con": "M_AXI_AWLEN"
+            },
+            {
+              "port": "M_AXI_AWSIZE",
+              "con": "M_AXI_AWSIZE"
+            },
+            {
+              "port": "M_AXI_AWBURST",
+              "con": "M_AXI_AWBURST"
+            },
+            {
+              "port": "M_AXI_AWLOCK",
+              "con": "mAxiAwLock"
+            },
+            {
+              "port": "M_AXI_AWCACHE",
+              "con": "M_AXI_AWCACHE"
+            },
+            {
+              "port": "M_AXI_AWPROT",
+              "con": "M_AXI_AWPROT"
+            },
+            {
+              "port": "M_AXI_AWREGION",
+              "con": "M_AXI_AWREGION"
+            },
+            {
+              "port": "M_AXI_AWQOS",
+              "con": "M_AXI_AWQOS"
+            },
+            {
+              "port": "M_AXI_AWVALID",
+              "con": "M_AXI_AWVALID"
+            },
+            {
+              "port": "M_AXI_AWREADY",
+              "con": "M_AXI_AWREADY"
+            },
+            {
+              "port": "M_AXI_WID",
+              "con": "M_AXI_WID"
+            },
+            {
+              "port": "M_AXI_WDATA",
+              "con": "M_AXI_WDATA"
+            },
+            {
+              "port": "M_AXI_WSTRB",
+              "con": "M_AXI_WSTRB"
+            },
+            {
+              "port": "M_AXI_WLAST",
+              "con": "M_AXI_WLAST"
+            },
+            {
+              "port": "M_AXI_WVALID",
+              "con": "M_AXI_WVALID"
+            },
+            {
+              "port": "M_AXI_WREADY",
+              "con": "M_AXI_WREADY"
+            },
+            {
+              "port": "M_AXI_BID",
+              "con": "M_AXI_BID"
+            },
+            {
+              "port": "M_AXI_BRESP",
+              "con": "M_AXI_BRESP"
+            },
+            {
+              "port": "M_AXI_BVALID",
+              "con": "M_AXI_BVALID"
+            },
+            {
+              "port": "M_AXI_BREADY",
+              "con": "M_AXI_BREADY"
+            },
+            {
+              "port": "M_AXI_ARID",
+              "con": "M_AXI_ARID"
+            },
+            {
+              "port": "M_AXI_ARADDR",
+              "con": "M_AXI_ARADDR"
+            },
+            {
+              "port": "M_AXI_ARLEN",
+              "con": "M_AXI_ARLEN"
+            },
+            {
+              "port": "M_AXI_ARSIZE",
+              "con": "M_AXI_ARSIZE"
+            },
+            {
+              "port": "M_AXI_ARBURST",
+              "con": "M_AXI_ARBURST"
+            },
+            {
+              "port": "M_AXI_ARLOCK",
+              "con": "mAxiArLock"
+            },
+            {
+              "port": "M_AXI_ARCACHE",
+              "con": "M_AXI_ARCACHE"
+            },
+            {
+              "port": "M_AXI_ARPROT",
+              "con": "M_AXI_ARPROT"
+            },
+            {
+              "port": "M_AXI_ARREGION",
+              "con": "M_AXI_ARREGION"
+            },
+            {
+              "port": "M_AXI_ARQOS",
+              "con": "M_AXI_ARQOS"
+            },
+            {
+              "port": "M_AXI_ARVALID",
+              "con": "M_AXI_ARVALID"
+            },
+            {
+              "port": "M_AXI_ARREADY",
+              "con": "M_AXI_ARREADY"
+            },
+            {
+              "port": "M_AXI_RID",
+              "con": "M_AXI_RID"
+            },
+            {
+              "port": "M_AXI_RDATA",
+              "con": "M_AXI_RDATA"
+            },
+            {
+              "port": "M_AXI_RRESP",
+              "con": "M_AXI_RRESP"
+            },
+            {
+              "port": "M_AXI_RLAST",
+              "con": "M_AXI_RLAST"
+            },
+            {
+              "port": "M_AXI_RVALID",
+              "con": "M_AXI_RVALID"
+            },
+            {
+              "port": "M_AXI_RREADY",
+              "con": "M_AXI_RREADY"
+            },
+            {
+              "port": "axiClk",
+              "con": "open"
+            },
+            {
+              "port": "axiRst",
+              "con": "open"
+            },
+            {
+              "port": "axiReadMaster",
+              "con": "mAxiReadMaster"
+            },
+            {
+              "port": "axiReadSlave",
+              "con": "mAxiReadSlave"
+            },
+            {
+              "port": "axiWriteMaster",
+              "con": "mAxiWriteMaster"
+            },
+            {
+              "port": "axiWriteSlave",
+              "con": "mAxiWriteSlave"
+            }
+          ]
+        },
+        {
+          "name": "U_DUT",
+          "module": "AxiResize",
+          "connections": [
+            {
+              "port": "axiClk",
+              "con": "axiClk"
+            },
+            {
+              "port": "axiRst",
+              "con": "axiRst"
+            },
+            {
+              "port": "sAxiReadMaster",
+              "con": "sAxiReadMaster"
+            },
+            {
+              "port": "sAxiReadSlave",
+              "con": "sAxiReadSlave"
+            },
+            {
+              "port": "sAxiWriteMaster",
+              "con": "sAxiWriteMaster"
+            },
+            {
+              "port": "sAxiWriteSlave",
+              "con": "sAxiWriteSlave"
+            },
+            {
+              "port": "mAxiReadMaster",
+              "con": "mAxiReadMaster"
+            },
+            {
+              "port": "mAxiReadSlave",
+              "con": "mAxiReadSlave"
+            },
+            {
+              "port": "mAxiWriteMaster",
+              "con": "mAxiWriteMaster"
+            },
+            {
+              "port": "mAxiWriteSlave",
+              "con": "mAxiWriteSlave"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

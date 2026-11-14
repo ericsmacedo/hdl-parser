@@ -1,0 +1,72 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/cache_ram.vhdl",
+  "modules": [
+    {
+      "name": "cache_ram",
+      "params": [
+        {
+          "name": "ROW_BITS",
+          "default": "16"
+        },
+        {
+          "name": "WIDTH",
+          "default": "64"
+        },
+        {
+          "name": "BYTEWID",
+          "default": "8"
+        },
+        {
+          "name": "TRACE",
+          "default": "false"
+        },
+        {
+          "name": "ADD_BUF",
+          "default": "false"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rd_en"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "rd_addr",
+          "dim": "[ROW_BITS - 1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "rd_data",
+          "dim": "[WIDTH - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wr_sel",
+          "dim": "[WIDTH/BYTEWID - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wr_addr",
+          "dim": "[ROW_BITS - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wr_data",
+          "dim": "[WIDTH - 1:0]"
+        }
+      ]
+    }
+  ]
+}

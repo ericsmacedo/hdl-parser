@@ -1,0 +1,76 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_soc_gpio.vhd",
+  "modules": [
+    {
+      "name": "pp_soc_gpio",
+      "params": [
+        {
+          "name": "NUM_GPIOS",
+          "default": "32"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "-- GPIO interface:"
+          ]
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "gpio",
+          "dim": "[NUM_GPIOS - 1:0]",
+          "comment": [
+            "-- Wishbone interface:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wb_adr_in",
+          "dim": "[11:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wb_dat_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "wb_dat_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_cyc_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_stb_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_we_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "wb_ack_out"
+        }
+      ]
+    }
+  ]
+}

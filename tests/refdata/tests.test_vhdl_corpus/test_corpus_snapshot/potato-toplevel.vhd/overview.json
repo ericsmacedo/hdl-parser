@@ -1,0 +1,612 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/toplevel.vhd",
+  "modules": [
+    {
+      "name": "toplevel",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset_n",
+          "comment": [
+            "-- GPIOs:",
+            "-- 4x LEDs        (bits 11 downto 8)",
+            "-- 4x Switches    (bits  7 downto 4)",
+            "-- 4x Buttons     (bits  3 downto 0)"
+          ]
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "gpio_pins",
+          "dim": "[11:0]",
+          "comment": [
+            "-- UART0 signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "uart0_txd"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "uart0_rxd",
+          "comment": [
+            "-- UART1 signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "uart1_txd"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "uart1_rxd"
+        }
+      ],
+      "insts": [
+        {
+          "name": "reset_controller",
+          "module": "pp_soc_reset",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset_n",
+              "con": "reset_n"
+            },
+            {
+              "port": "reset_out",
+              "con": "reset"
+            },
+            {
+              "port": "system_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "system_clk_locked",
+              "con": "system_clk_locked"
+            }
+          ]
+        },
+        {
+          "name": "clkgen",
+          "module": "clock_generator",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "resetn",
+              "con": "reset_n"
+            },
+            {
+              "port": "system_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "locked",
+              "con": "system_clk_locked"
+            }
+          ]
+        },
+        {
+          "name": "processor",
+          "module": "pp_potato",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "irq",
+              "con": "irq_array"
+            },
+            {
+              "port": "test_context_out",
+              "con": "open"
+            },
+            {
+              "port": "wb_adr_out",
+              "con": "processor_adr_out"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "processor_dat_out"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "processor_dat_in"
+            },
+            {
+              "port": "wb_sel_out",
+              "con": "processor_sel_out"
+            },
+            {
+              "port": "wb_cyc_out",
+              "con": "processor_cyc_out"
+            },
+            {
+              "port": "wb_stb_out",
+              "con": "processor_stb_out"
+            },
+            {
+              "port": "wb_we_out",
+              "con": "processor_we_out"
+            },
+            {
+              "port": "wb_ack_in",
+              "con": "processor_ack_in"
+            }
+          ]
+        },
+        {
+          "name": "timer0",
+          "module": "pp_soc_timer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "irq",
+              "con": "timer0_irq"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "timer0_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "timer0_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "timer0_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "timer0_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "timer0_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "timer0_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "timer0_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "timer1",
+          "module": "pp_soc_timer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "irq",
+              "con": "timer1_irq"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "timer1_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "timer1_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "timer1_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "timer1_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "timer1_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "timer1_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "timer1_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "gpio",
+          "module": "pp_soc_gpio",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "gpio",
+              "con": "gpio_pins"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "gpio_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "gpio_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "gpio_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "gpio_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "gpio_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "gpio_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "gpio_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "uart0",
+          "module": "pp_soc_uart",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "txd",
+              "con": "uart0_txd"
+            },
+            {
+              "port": "rxd",
+              "con": "uart0_rxd"
+            },
+            {
+              "port": "irq",
+              "con": "uart0_irq"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "uart0_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "uart0_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "uart0_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "uart0_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "uart0_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "uart0_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "uart0_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "uart1",
+          "module": "pp_soc_uart",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "txd",
+              "con": "uart1_txd"
+            },
+            {
+              "port": "rxd",
+              "con": "uart1_rxd"
+            },
+            {
+              "port": "irq",
+              "con": "uart1_irq"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "uart1_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "uart1_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "uart1_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "uart1_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "uart1_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "uart1_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "uart1_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "intercon_error",
+          "module": "pp_soc_intercon",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "error_irq",
+              "con": "intercon_irq_bus_error"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "intercon_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "intercon_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "intercon_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "intercon_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "intercon_stb_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "intercon_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "intercon_ack_out"
+            },
+            {
+              "port": "err_adr_in",
+              "con": "error_adr_in"
+            },
+            {
+              "port": "err_dat_in",
+              "con": "error_dat_in"
+            },
+            {
+              "port": "err_sel_in",
+              "con": "error_sel_in"
+            },
+            {
+              "port": "err_cyc_in",
+              "con": "error_cyc_in"
+            },
+            {
+              "port": "err_stb_in",
+              "con": "error_stb_in"
+            },
+            {
+              "port": "err_we_in",
+              "con": "error_we_in"
+            },
+            {
+              "port": "err_ack_out",
+              "con": "error_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "aee_rom",
+          "module": "aee_rom_wrapper",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "aee_rom_adr_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "aee_rom_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "aee_rom_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "aee_rom_stb_in"
+            },
+            {
+              "port": "wb_sel_in",
+              "con": "aee_rom_sel_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "aee_rom_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "aee_ram",
+          "module": "pp_soc_memory",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "aee_ram_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "aee_ram_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "aee_ram_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "aee_ram_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "aee_ram_stb_in"
+            },
+            {
+              "port": "wb_sel_in",
+              "con": "aee_ram_sel_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "aee_ram_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "aee_ram_ack_out"
+            }
+          ]
+        },
+        {
+          "name": "main_memory",
+          "module": "pp_soc_memory",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "main_memory_adr_in"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "main_memory_dat_in"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "main_memory_dat_out"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "main_memory_cyc_in"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "main_memory_stb_in"
+            },
+            {
+              "port": "wb_sel_in",
+              "con": "main_memory_sel_in"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "main_memory_we_in"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "main_memory_ack_out"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

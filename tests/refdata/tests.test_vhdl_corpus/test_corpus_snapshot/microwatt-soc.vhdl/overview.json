@@ -1,0 +1,958 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/soc.vhdl",
+  "modules": [
+    {
+      "name": "soc",
+      "params": [
+        {
+          "name": "MEMORY_SIZE"
+        },
+        {
+          "name": "RAM_INIT_FILE"
+        },
+        {
+          "name": "CLK_FREQ"
+        },
+        {
+          "name": "SIM"
+        },
+        {
+          "name": "NCPUS",
+          "default": "1"
+        },
+        {
+          "name": "HAS_FPU",
+          "default": "true"
+        },
+        {
+          "name": "HAS_BTC",
+          "default": "true"
+        },
+        {
+          "name": "DISABLE_FLATTEN_CORE",
+          "default": "false"
+        },
+        {
+          "name": "ALT_RESET_ADDRESS",
+          "dim": "[63:0]",
+          "default": "(23 downto 0 => '0', others => '1')"
+        },
+        {
+          "name": "HAS_DRAM",
+          "default": "false"
+        },
+        {
+          "name": "DRAM_SIZE",
+          "default": "0"
+        },
+        {
+          "name": "DRAM_INIT_SIZE",
+          "default": "0"
+        },
+        {
+          "name": "HAS_SPI_FLASH",
+          "default": "false"
+        },
+        {
+          "name": "SPI_FLASH_DLINES",
+          "default": "1"
+        },
+        {
+          "name": "SPI_FLASH_OFFSET",
+          "default": "0"
+        },
+        {
+          "name": "SPI_FLASH_DEF_CKDV",
+          "default": "2"
+        },
+        {
+          "name": "SPI_FLASH_DEF_QUAD",
+          "default": "false"
+        },
+        {
+          "name": "SPI_BOOT_CLOCKS",
+          "default": "true"
+        },
+        {
+          "name": "LOG_LENGTH",
+          "default": "512"
+        },
+        {
+          "name": "HAS_LITEETH",
+          "default": "false"
+        },
+        {
+          "name": "UART0_IS_16550",
+          "default": "true"
+        },
+        {
+          "name": "HAS_UART1",
+          "default": "false"
+        },
+        {
+          "name": "ICACHE_NUM_LINES",
+          "default": "64"
+        },
+        {
+          "name": "ICACHE_NUM_WAYS",
+          "default": "2"
+        },
+        {
+          "name": "ICACHE_TLB_SIZE",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_NUM_LINES",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_NUM_WAYS",
+          "default": "2"
+        },
+        {
+          "name": "DCACHE_TLB_SET_SIZE",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_TLB_NUM_WAYS",
+          "default": "2"
+        },
+        {
+          "name": "HAS_SD_CARD",
+          "default": "false"
+        },
+        {
+          "name": "HAS_SD_CARD2",
+          "default": "false"
+        },
+        {
+          "name": "HAS_LCD",
+          "default": "false"
+        },
+        {
+          "name": "HAS_GPIO",
+          "default": "false"
+        },
+        {
+          "name": "NGPIO",
+          "default": "32"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rst"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "system_clk"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "run_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "run_outs",
+          "dim": "[NCPUS-1:0]",
+          "comment": [
+            "-- \"Large\" (64-bit) DRAM wishbone"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "wishbone_master_out",
+          "name": "wb_dram_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "wishbone_slave_out",
+          "name": "wb_dram_out",
+          "comment": [
+            "-- \"Small\" (32-bit) external IO wishbone"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "wb_io_master_out",
+          "name": "wb_ext_io_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_ext_io_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_dram_csr"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_dram_init"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_eth"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_sdcard"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_lcd",
+          "comment": [
+            "-- external DMA wishbone with 32-bit data/address"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "wb_io_slave_out",
+          "name": "wishbone_dma_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "wb_io_master_out",
+          "name": "wishbone_dma_out",
+          "comment": [
+            "-- External interrupts"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "ext_irq_eth"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "ext_irq_sdcard"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "ext_irq_sdcard2",
+          "comment": [
+            "-- UART0 signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "uart0_txd"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "uart0_rxd",
+          "comment": [
+            "-- UART1 signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "uart1_txd"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "uart1_rxd",
+          "comment": [
+            "-- SPI Flash signals"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_sck"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_cs_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_flash_sdat_o",
+          "dim": "[SPI_FLASH_DLINES-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_flash_sdat_oe",
+          "dim": "[SPI_FLASH_DLINES-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_flash_sdat_i",
+          "dim": "[SPI_FLASH_DLINES-1:0]",
+          "comment": [
+            "-- GPIO signals"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "gpio_out",
+          "dim": "[NGPIO - 1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "gpio_dir",
+          "dim": "[NGPIO - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "gpio_in",
+          "dim": "[NGPIO - 1:0]",
+          "comment": [
+            "-- SOC reset trigger from syscon"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "sw_soc_reset"
+        }
+      ],
+      "insts": [
+        {
+          "name": "core",
+          "module": "core",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_core(i)"
+            },
+            {
+              "port": "alt_reset",
+              "con": "alt_reset_d"
+            },
+            {
+              "port": "run_out",
+              "con": "core_run_out(i)"
+            },
+            {
+              "port": "tb_ctrl",
+              "con": "tb_ctrl"
+            },
+            {
+              "port": "wishbone_insn_in",
+              "con": "wb_masters_in(i + NCPUS)"
+            },
+            {
+              "port": "wishbone_insn_out",
+              "con": "wb_masters_out(i + NCPUS)"
+            },
+            {
+              "port": "wishbone_data_in",
+              "con": "wb_masters_in(i)"
+            },
+            {
+              "port": "wishbone_data_out",
+              "con": "wb_masters_out(i)"
+            },
+            {
+              "port": "wb_snoop_in",
+              "con": "wb_snoop"
+            },
+            {
+              "port": "dmi_addr",
+              "con": "dmi_addr(3 downto 0)"
+            },
+            {
+              "port": "dmi_dout",
+              "con": "dmi_core_dout(i)"
+            },
+            {
+              "port": "dmi_din",
+              "con": "dmi_dout"
+            },
+            {
+              "port": "dmi_wr",
+              "con": "dmi_wr"
+            },
+            {
+              "port": "dmi_ack",
+              "con": "dmi_core_ack(i)"
+            },
+            {
+              "port": "dmi_req",
+              "con": "dmi_core_req(i)"
+            },
+            {
+              "port": "ext_irq",
+              "con": "core_ext_irq(i)"
+            },
+            {
+              "port": "msg_out",
+              "con": "msgs(i)"
+            },
+            {
+              "port": "msg_in",
+              "con": "msgin"
+            }
+          ]
+        },
+        {
+          "name": "wishbone_arbiter_0",
+          "module": "wishbone_arbiter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_wbar"
+            },
+            {
+              "port": "wb_masters_in",
+              "con": "wb_masters_out"
+            },
+            {
+              "port": "wb_masters_out",
+              "con": "wb_masters_in"
+            },
+            {
+              "port": "wb_slave_out",
+              "con": "wb_master_out"
+            },
+            {
+              "port": "wb_slave_in",
+              "con": "wb_master_in"
+            }
+          ]
+        },
+        {
+          "name": "syscon0",
+          "module": "syscon",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "soc_reset"
+            },
+            {
+              "port": "wishbone_in",
+              "con": "wb_syscon_in"
+            },
+            {
+              "port": "wishbone_out",
+              "con": "wb_syscon_out"
+            },
+            {
+              "port": "dram_at_0",
+              "con": "dram_at_0"
+            },
+            {
+              "port": "core_reset",
+              "con": "do_core_reset"
+            },
+            {
+              "port": "soc_reset",
+              "con": "sw_soc_reset"
+            },
+            {
+              "port": "alt_reset",
+              "con": "alt_reset"
+            },
+            {
+              "port": "tb_rdp",
+              "con": "tb_ctrl.rd_prot"
+            },
+            {
+              "port": "tb_frz",
+              "con": "tb_ctrl.freeze"
+            }
+          ]
+        },
+        {
+          "name": "uart0",
+          "module": "pp_soc_uart",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "reset",
+              "con": "rst_uart"
+            },
+            {
+              "port": "txd",
+              "con": "uart0_txd"
+            },
+            {
+              "port": "rxd",
+              "con": "uart0_rxd"
+            },
+            {
+              "port": "irq",
+              "con": "uart0_irq"
+            },
+            {
+              "port": "wb_adr_in",
+              "con": "wb_uart0_in.adr(9 downto 0) & \"00\""
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "wb_uart0_in.dat(7 downto 0)"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "uart0_dat8"
+            },
+            {
+              "port": "wb_cyc_in",
+              "con": "wb_uart0_in.cyc"
+            },
+            {
+              "port": "wb_stb_in",
+              "con": "wb_uart0_in.stb"
+            },
+            {
+              "port": "wb_we_in",
+              "con": "wb_uart0_in.we"
+            },
+            {
+              "port": "wb_ack_out",
+              "con": "wb_uart0_out.ack"
+            }
+          ]
+        },
+        {
+          "name": "uart0",
+          "module": "uart_top",
+          "connections": [
+            {
+              "port": "wb_clk_i",
+              "con": "system_clk"
+            },
+            {
+              "port": "wb_rst_i",
+              "con": "rst_uart"
+            },
+            {
+              "port": "wb_adr_i",
+              "con": "wb_uart0_in.adr(2 downto 0)"
+            },
+            {
+              "port": "wb_dat_i",
+              "con": "wb_uart0_in.dat(7 downto 0)"
+            },
+            {
+              "port": "wb_dat_o",
+              "con": "uart0_dat8"
+            },
+            {
+              "port": "wb_we_i",
+              "con": "wb_uart0_in.we"
+            },
+            {
+              "port": "wb_stb_i",
+              "con": "wb_uart0_in.stb"
+            },
+            {
+              "port": "wb_cyc_i",
+              "con": "wb_uart0_in.cyc"
+            },
+            {
+              "port": "wb_ack_o",
+              "con": "wb_uart0_out.ack"
+            },
+            {
+              "port": "int_o",
+              "con": "irq_l"
+            },
+            {
+              "port": "stx_pad_o",
+              "con": "uart0_txd"
+            },
+            {
+              "port": "srx_pad_i",
+              "con": "uart0_rxd"
+            },
+            {
+              "port": "rts_pad_o",
+              "con": "open"
+            },
+            {
+              "port": "cts_pad_i",
+              "con": "'1'"
+            },
+            {
+              "port": "dtr_pad_o",
+              "con": "open"
+            },
+            {
+              "port": "dsr_pad_i",
+              "con": "'1'"
+            },
+            {
+              "port": "ri_pad_i",
+              "con": "'0'"
+            },
+            {
+              "port": "dcd_pad_i",
+              "con": "'1'"
+            }
+          ]
+        },
+        {
+          "name": "uart1",
+          "module": "uart_top",
+          "connections": [
+            {
+              "port": "wb_clk_i",
+              "con": "system_clk"
+            },
+            {
+              "port": "wb_rst_i",
+              "con": "rst_uart"
+            },
+            {
+              "port": "wb_adr_i",
+              "con": "wb_uart1_in.adr(2 downto 0)"
+            },
+            {
+              "port": "wb_dat_i",
+              "con": "wb_uart1_in.dat(7 downto 0)"
+            },
+            {
+              "port": "wb_dat_o",
+              "con": "uart1_dat8"
+            },
+            {
+              "port": "wb_we_i",
+              "con": "wb_uart1_in.we"
+            },
+            {
+              "port": "wb_stb_i",
+              "con": "wb_uart1_in.stb"
+            },
+            {
+              "port": "wb_cyc_i",
+              "con": "wb_uart1_in.cyc"
+            },
+            {
+              "port": "wb_ack_o",
+              "con": "wb_uart1_out.ack"
+            },
+            {
+              "port": "int_o",
+              "con": "irq_l"
+            },
+            {
+              "port": "stx_pad_o",
+              "con": "uart1_txd"
+            },
+            {
+              "port": "srx_pad_i",
+              "con": "uart1_rxd"
+            },
+            {
+              "port": "rts_pad_o",
+              "con": "open"
+            },
+            {
+              "port": "cts_pad_i",
+              "con": "'1'"
+            },
+            {
+              "port": "dtr_pad_o",
+              "con": "open"
+            },
+            {
+              "port": "dsr_pad_i",
+              "con": "'1'"
+            },
+            {
+              "port": "ri_pad_i",
+              "con": "'0'"
+            },
+            {
+              "port": "dcd_pad_i",
+              "con": "'1'"
+            }
+          ]
+        },
+        {
+          "name": "spiflash",
+          "module": "spi_flash_ctrl",
+          "connections": [
+            {
+              "port": "rst",
+              "con": "rst_spi"
+            },
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "wb_in",
+              "con": "wb_spiflash_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wb_spiflash_out"
+            },
+            {
+              "port": "wb_sel_reg",
+              "con": "wb_spiflash_is_reg"
+            },
+            {
+              "port": "wb_sel_map",
+              "con": "wb_spiflash_is_map"
+            },
+            {
+              "port": "sck",
+              "con": "spi_flash_sck"
+            },
+            {
+              "port": "cs_n",
+              "con": "spi_flash_cs_n"
+            },
+            {
+              "port": "sdat_o",
+              "con": "spi_flash_sdat_o"
+            },
+            {
+              "port": "sdat_oe",
+              "con": "spi_flash_sdat_oe"
+            },
+            {
+              "port": "sdat_i",
+              "con": "spi_flash_sdat_i"
+            }
+          ]
+        },
+        {
+          "name": "xics_icp",
+          "module": "xics_icp",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_xics"
+            },
+            {
+              "port": "wb_in",
+              "con": "wb_xics_icp_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wb_xics_icp_out"
+            },
+            {
+              "port": "ics_in",
+              "con": "ics_to_icp"
+            },
+            {
+              "port": "core_irq_out",
+              "con": "core_ext_irq"
+            }
+          ]
+        },
+        {
+          "name": "xics_ics",
+          "module": "xics_ics",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_xics"
+            },
+            {
+              "port": "wb_in",
+              "con": "wb_xics_ics_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wb_xics_ics_out"
+            },
+            {
+              "port": "int_level_in",
+              "con": "int_level_in"
+            },
+            {
+              "port": "icp_out",
+              "con": "ics_to_icp"
+            }
+          ]
+        },
+        {
+          "name": "gpio",
+          "module": "gpio",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_gpio"
+            },
+            {
+              "port": "wb_in",
+              "con": "wb_gpio_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wb_gpio_out"
+            },
+            {
+              "port": "gpio_in",
+              "con": "gpio_in"
+            },
+            {
+              "port": "gpio_out",
+              "con": "gpio_out"
+            },
+            {
+              "port": "gpio_dir",
+              "con": "gpio_dir"
+            },
+            {
+              "port": "intr",
+              "con": "gpio_intr"
+            }
+          ]
+        },
+        {
+          "name": "bram0",
+          "module": "wishbone_bram_wrapper",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_bram"
+            },
+            {
+              "port": "wishbone_in",
+              "con": "wb_bram_in"
+            },
+            {
+              "port": "wishbone_out",
+              "con": "wb_bram_out"
+            }
+          ]
+        },
+        {
+          "name": "dtm",
+          "module": "dmi_dtm",
+          "connections": [
+            {
+              "port": "sys_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "sys_reset",
+              "con": "rst_dtm"
+            },
+            {
+              "port": "dmi_addr",
+              "con": "dmi_addr"
+            },
+            {
+              "port": "dmi_din",
+              "con": "dmi_din"
+            },
+            {
+              "port": "dmi_dout",
+              "con": "dmi_dout"
+            },
+            {
+              "port": "dmi_req",
+              "con": "dmi_req"
+            },
+            {
+              "port": "dmi_wr",
+              "con": "dmi_wr"
+            },
+            {
+              "port": "dmi_ack",
+              "con": "dmi_ack"
+            }
+          ]
+        },
+        {
+          "name": "wishbone_debug",
+          "module": "wishbone_debug_master",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_wbdb"
+            },
+            {
+              "port": "dmi_addr",
+              "con": "dmi_addr(1 downto 0)"
+            },
+            {
+              "port": "dmi_dout",
+              "con": "dmi_wb_dout"
+            },
+            {
+              "port": "dmi_din",
+              "con": "dmi_dout"
+            },
+            {
+              "port": "dmi_wr",
+              "con": "dmi_wr"
+            },
+            {
+              "port": "dmi_ack",
+              "con": "dmi_wb_ack"
+            },
+            {
+              "port": "dmi_req",
+              "con": "dmi_wb_req"
+            },
+            {
+              "port": "wb_in",
+              "con": "wishbone_debug_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wishbone_debug_out"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
