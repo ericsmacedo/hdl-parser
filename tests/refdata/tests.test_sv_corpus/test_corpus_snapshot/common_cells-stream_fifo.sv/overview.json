@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/common_cells/stream_fifo.sv",
   "modules": [
     {
+      "id": "stream_fifo",
       "name": "stream_fifo",
       "params": [
         {
+          "id": "stream_fifo.FALL_THROUGH",
           "ptype": "bit",
           "name": "FALL_THROUGH",
           "default": "1'b0",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "stream_fifo.DATA_WIDTH",
           "ptype": "int",
           "name": "DATA_WIDTH",
           "default": "32",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "stream_fifo.DEPTH",
           "ptype": "int",
           "name": "DEPTH",
           "default": "8",
@@ -44,6 +48,7 @@
           }
         },
         {
+          "id": "stream_fifo.T",
           "ptype": "type",
           "name": "T",
           "default": "logic [DATA_WIDTH-1:0]",
@@ -58,6 +63,7 @@
           }
         },
         {
+          "id": "stream_fifo.ADDR_DEPTH",
           "ptype": "int",
           "name": "ADDR_DEPTH",
           "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1",
@@ -71,6 +77,7 @@
       ],
       "ports": [
         {
+          "id": "stream_fifo.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -85,6 +92,7 @@
           }
         },
         {
+          "id": "stream_fifo.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -99,6 +107,7 @@
           }
         },
         {
+          "id": "stream_fifo.flush_i",
           "direction": "input",
           "ptype": "logic",
           "name": "flush_i",
@@ -113,6 +122,7 @@
           }
         },
         {
+          "id": "stream_fifo.testmode_i",
           "direction": "input",
           "ptype": "logic",
           "name": "testmode_i",
@@ -127,6 +137,7 @@
           }
         },
         {
+          "id": "stream_fifo.usage_o",
           "direction": "output",
           "ptype": "logic",
           "name": "usage_o",
@@ -143,6 +154,7 @@
           }
         },
         {
+          "id": "stream_fifo.data_i",
           "direction": "input",
           "ptype": "T",
           "name": "data_i",
@@ -157,6 +169,7 @@
           }
         },
         {
+          "id": "stream_fifo.valid_i",
           "direction": "input",
           "ptype": "logic",
           "name": "valid_i",
@@ -171,6 +184,7 @@
           }
         },
         {
+          "id": "stream_fifo.ready_o",
           "direction": "output",
           "ptype": "logic",
           "name": "ready_o",
@@ -186,6 +200,7 @@
           }
         },
         {
+          "id": "stream_fifo.data_o",
           "direction": "output",
           "ptype": "T",
           "name": "data_o",
@@ -200,6 +215,7 @@
           }
         },
         {
+          "id": "stream_fifo.valid_o",
           "direction": "output",
           "ptype": "logic",
           "name": "valid_o",
@@ -214,6 +230,7 @@
           }
         },
         {
+          "id": "stream_fifo.ready_i",
           "direction": "input",
           "ptype": "logic",
           "name": "ready_i",
@@ -230,10 +247,12 @@
       ],
       "insts": [
         {
+          "id": "stream_fifo.fifo_i",
           "name": "fifo_i",
           "module": "fifo_v3",
           "connections": [
             {
+              "id": "stream_fifo.fifo_i.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -244,6 +263,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -254,6 +274,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.flush_i",
               "port": "flush_i",
               "con": "flush_i",
               "loc": {
@@ -264,6 +285,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.testmode_i",
               "port": "testmode_i",
               "con": "testmode_i",
               "loc": {
@@ -274,6 +296,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.full_o",
               "port": "full_o",
               "con": "full",
               "loc": {
@@ -284,6 +307,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.empty_o",
               "port": "empty_o",
               "con": "empty",
               "loc": {
@@ -294,6 +318,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.usage_o",
               "port": "usage_o",
               "con": "usage_o",
               "loc": {
@@ -304,6 +329,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.data_i",
               "port": "data_i",
               "con": "data_i",
               "loc": {
@@ -314,6 +340,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.push_i",
               "port": "push_i",
               "con": "push",
               "loc": {
@@ -324,6 +351,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.data_o",
               "port": "data_o",
               "con": "data_o",
               "loc": {
@@ -334,6 +362,7 @@
               }
             },
             {
+              "id": "stream_fifo.fifo_i.pop_i",
               "port": "pop_i",
               "con": "pop",
               "loc": {

@@ -28,7 +28,7 @@ from hdl_parser import Module, ModuleInstance, Param, Port, parse_text
 from hdl_parser._sv.tokenizer import ID, KW, MACRO, tokenize
 from hdl_parser.datamodel import Connection
 
-from .conftest import strip_locs
+from .conftest import plain
 
 
 def _parse(text: str) -> Module:
@@ -89,7 +89,7 @@ module top (
 );
 endmodule
 """)
-    assert strip_locs(module.ports) == (
+    assert plain(module.ports) == (
         Port(direction="input", ptype="my_t", name="a_i"),
         Port(direction="output", ptype="pkg::data_t", name="b_o", dim="[1:0]", dim_unpacked="[3]"),
         Port(ptype="my_if.slave", name="bus"),
@@ -108,7 +108,7 @@ endmodule
 def test_port_inherit():
     """Direction Is Inherited Within ANSI Port List."""
     module = _parse("module top (input a, b, logic [1:0] c, output my_t d, e); endmodule")
-    assert strip_locs(module.ports) == (
+    assert plain(module.ports) == (
         Port(direction="input", name="a"),
         Port(direction="input", name="b"),
         Port(direction="input", ptype="logic", name="c", dim="[1:0]"),
@@ -130,14 +130,14 @@ module top #(
     localparam type U = struct packed { logic a; logic b; };
 endmodule
 """)
-    assert strip_locs(module.params) == (
+    assert plain(module.params) == (
         Param(ptype="type", name="T", default="logic [7:0]"),
         Param(ptype="T", name="X", dim="[1:0]", default="'{1, 2}"),
         Param(ptype="int", name="Y", default="f(1, 2)"),
         Param(ptype="int", name="Z", default="cond ? 3 : 4"),
         Param(ptype="my_pkg::enum_t", name="E", default="my_pkg::A"),
     )
-    assert strip_locs(module.localparams) == (
+    assert plain(module.localparams) == (
         Param(ptype="string", name="S", default='");,"'),
         Param(ptype="type", name="U", default="struct packed { logic a; logic b; }"),
     )
@@ -150,7 +150,7 @@ module top;
     sub #(.P($clog2(N)), .T(logic [1:0])) u0 [3:0] (.a(b[1]), .c(f(d, e)), .g(), .h), u1 (i, {j, k}, l(1, 2));
 endmodule
 """)
-    assert strip_locs(module.insts) == (
+    assert plain(module.insts) == (
         ModuleInstance(
             name="u0",
             module="sub",
@@ -226,7 +226,7 @@ endmodule : top
     assert [port.name for port in module.ports] == ["a", "d"]
 
     module = _parse("extern module ext (input a); module top (a, b); input a; output reg [1:0] b = 0, c; endmodule")
-    assert strip_locs(module.ports) == (
+    assert plain(module.ports) == (
         Port(direction="input", name="a"),
         Port(direction="output", ptype="reg", name="b", dim="[1:0]"),
         Port(direction="output", ptype="reg", name="c", dim="[1:0]"),
@@ -244,9 +244,9 @@ module top #(parameter A = 1 /* one */ + 2 // two
         .b(b));
 endmodule
 """)
-    assert strip_locs(module.params) == (Param(name="A", default="1  + 2", comment=("one", "two")),)
-    assert strip_locs(module.ports) == (Port(direction="input", name="a", comment=("port",)),)
-    assert strip_locs(module.insts[0].connections) == (
+    assert plain(module.params) == (Param(name="A", default="1  + 2", comment=("one", "two")),)
+    assert plain(module.ports) == (Port(direction="input", name="a", comment=("port",)),)
+    assert plain(module.insts[0].connections) == (
         Connection(port="a", con="a  + 1", comment=("in", "con")),
         Connection(port="b", con="b"),
     )

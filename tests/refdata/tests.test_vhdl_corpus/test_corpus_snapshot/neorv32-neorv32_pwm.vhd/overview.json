@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_pwm.vhd",
   "modules": [
     {
+      "id": "neorv32_pwm",
       "name": "neorv32_pwm",
       "params": [
         {
+          "id": "neorv32_pwm.num_channels",
           "name": "NUM_CHANNELS",
           "comment": [
             "-- number of PWM channels (0..32)"
@@ -19,6 +21,7 @@
       ],
       "ports": [
         {
+          "id": "neorv32_pwm.clk_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clk_i",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "neorv32_pwm.rstn_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "rstn_i",
@@ -47,6 +51,7 @@
           }
         },
         {
+          "id": "neorv32_pwm.bus_req_i",
           "direction": "in",
           "dtype": "bus_req_t",
           "name": "bus_req_i",
@@ -61,6 +66,7 @@
           }
         },
         {
+          "id": "neorv32_pwm.bus_rsp_o",
           "direction": "out",
           "dtype": "bus_rsp_t",
           "name": "bus_rsp_o",
@@ -75,6 +81,7 @@
           }
         },
         {
+          "id": "neorv32_pwm.clkgen_i",
           "direction": "in",
           "dtype": "std_ulogic_vector",
           "name": "clkgen_i",
@@ -90,6 +97,7 @@
           }
         },
         {
+          "id": "neorv32_pwm.pwm_o",
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "pwm_o",
@@ -107,10 +115,12 @@
       ],
       "insts": [
         {
+          "id": "neorv32_pwm.neorv32_pwm_channel_inst",
           "name": "neorv32_pwm_channel_inst",
           "module": "neorv32_pwm_channel",
           "connections": [
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -121,6 +131,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -131,6 +142,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.clken_i",
               "port": "clken_i",
               "con": "clken",
               "loc": {
@@ -141,6 +153,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.en_i",
               "port": "en_i",
               "con": "enable(i)",
               "loc": {
@@ -151,6 +164,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.pol_i",
               "port": "pol_i",
               "con": "polarity(i)",
               "loc": {
@@ -161,6 +175,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.mode_i",
               "port": "mode_i",
               "con": "mode(i)",
               "comment": [
@@ -174,6 +189,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.cs_i",
               "port": "cs_i",
               "con": "cs(i)",
               "loc": {
@@ -184,6 +200,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.we_i",
               "port": "we_i",
               "con": "bus_req_i.rw",
               "loc": {
@@ -194,6 +211,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.ben_i",
               "port": "ben_i",
               "con": "bus_req_i.ben",
               "loc": {
@@ -204,6 +222,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.wdata_i",
               "port": "wdata_i",
               "con": "bus_req_i.data",
               "loc": {
@@ -214,6 +233,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.rdata_o",
               "port": "rdata_o",
               "con": "rdata(i)",
               "comment": [
@@ -227,6 +247,7 @@
               }
             },
             {
+              "id": "neorv32_pwm.neorv32_pwm_channel_inst.pwm_o",
               "port": "pwm_o",
               "con": "pwm(i)",
               "loc": {
@@ -253,9 +274,11 @@
       }
     },
     {
+      "id": "neorv32_pwm_channel",
       "name": "neorv32_pwm_channel",
       "ports": [
         {
+          "id": "neorv32_pwm_channel.clk_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clk_i",
@@ -270,6 +293,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.rstn_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "rstn_i",
@@ -284,6 +308,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.clken_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clken_i",
@@ -298,6 +323,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.en_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "en_i",
@@ -312,6 +338,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.pol_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "pol_i",
@@ -326,6 +353,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.mode_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "mode_i",
@@ -341,6 +369,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.cs_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "cs_i",
@@ -355,6 +384,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.we_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "we_i",
@@ -369,6 +399,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.ben_i",
           "direction": "in",
           "dtype": "std_ulogic_vector",
           "name": "ben_i",
@@ -384,6 +415,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.wdata_i",
           "direction": "in",
           "dtype": "std_ulogic_vector",
           "name": "wdata_i",
@@ -399,6 +431,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.rdata_o",
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "rdata_o",
@@ -415,6 +448,7 @@
           }
         },
         {
+          "id": "neorv32_pwm_channel.pwm_o",
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "pwm_o",

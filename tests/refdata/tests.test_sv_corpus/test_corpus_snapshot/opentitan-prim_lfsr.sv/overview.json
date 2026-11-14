@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/opentitan/prim_lfsr.sv",
   "modules": [
     {
+      "id": "prim_lfsr",
       "name": "prim_lfsr",
       "params": [
         {
+          "id": "prim_lfsr.LfsrType",
           "name": "LfsrType",
           "default": "\"GAL_XOR\"",
           "comment": [
@@ -18,6 +20,7 @@
           }
         },
         {
+          "id": "prim_lfsr.LfsrDw",
           "ptype": "int",
           "name": "LfsrDw",
           "default": "32",
@@ -32,6 +35,7 @@
           }
         },
         {
+          "id": "prim_lfsr.EntropyDw",
           "ptype": "int",
           "name": "EntropyDw",
           "default": "8",
@@ -46,6 +50,7 @@
           }
         },
         {
+          "id": "prim_lfsr.StateOutDw",
           "ptype": "int",
           "name": "StateOutDw",
           "default": "8",
@@ -60,6 +65,7 @@
           }
         },
         {
+          "id": "prim_lfsr.DefaultSeed",
           "ptype": "logic",
           "name": "DefaultSeed",
           "dim": "[LfsrDw-1:0]",
@@ -75,6 +81,7 @@
           }
         },
         {
+          "id": "prim_lfsr.CustomCoeffs",
           "ptype": "logic",
           "name": "CustomCoeffs",
           "dim": "[LfsrDw-1:0]",
@@ -97,6 +104,7 @@
           }
         },
         {
+          "id": "prim_lfsr.StatePermEn",
           "ptype": "bit",
           "name": "StatePermEn",
           "default": "1'b0",
@@ -108,6 +116,7 @@
           }
         },
         {
+          "id": "prim_lfsr.StatePerm",
           "ptype": "logic",
           "name": "StatePerm",
           "dim": "[LfsrDw-1:0][LfsrIdxDw-1:0]",
@@ -123,6 +132,7 @@
           }
         },
         {
+          "id": "prim_lfsr.MaxLenSVA",
           "ptype": "bit",
           "name": "MaxLenSVA",
           "default": "1'b1",
@@ -139,6 +149,7 @@
           }
         },
         {
+          "id": "prim_lfsr.LockupSVA",
           "ptype": "bit",
           "name": "LockupSVA",
           "default": "1'b1",
@@ -150,6 +161,7 @@
           }
         },
         {
+          "id": "prim_lfsr.ExtSeedSVA",
           "ptype": "bit",
           "name": "ExtSeedSVA",
           "default": "1'b1",
@@ -166,6 +178,7 @@
           }
         },
         {
+          "id": "prim_lfsr.NonLinearOut",
           "ptype": "bit",
           "name": "NonLinearOut",
           "default": "1'b0",
@@ -179,6 +192,7 @@
       ],
       "ports": [
         {
+          "id": "prim_lfsr.clk_i",
           "direction": "input",
           "name": "clk_i",
           "loc": {
@@ -189,6 +203,7 @@
           }
         },
         {
+          "id": "prim_lfsr.rst_ni",
           "direction": "input",
           "name": "rst_ni",
           "loc": {
@@ -199,6 +214,7 @@
           }
         },
         {
+          "id": "prim_lfsr.seed_en_i",
           "direction": "input",
           "name": "seed_en_i",
           "comment": [
@@ -212,6 +228,7 @@
           }
         },
         {
+          "id": "prim_lfsr.seed_i",
           "direction": "input",
           "name": "seed_i",
           "dim": "[LfsrDw-1:0]",
@@ -226,6 +243,7 @@
           }
         },
         {
+          "id": "prim_lfsr.lfsr_en_i",
           "direction": "input",
           "name": "lfsr_en_i",
           "comment": [
@@ -239,6 +257,7 @@
           }
         },
         {
+          "id": "prim_lfsr.entropy_i",
           "direction": "input",
           "name": "entropy_i",
           "dim": "[EntropyDw-1:0]",
@@ -253,6 +272,7 @@
           }
         },
         {
+          "id": "prim_lfsr.state_o",
           "direction": "output",
           "ptype": "logic",
           "name": "state_o",
@@ -270,6 +290,7 @@
       ],
       "localparams": [
         {
+          "id": "prim_lfsr.LfsrIdxDw",
           "ptype": "int",
           "name": "LfsrIdxDw",
           "default": "$clog2(LfsrDw)",
@@ -284,6 +305,7 @@
           }
         },
         {
+          "id": "prim_lfsr.LUT_OFF",
           "ptype": "int",
           "name": "LUT_OFF",
           "default": "3",
@@ -295,6 +317,7 @@
           }
         },
         {
+          "id": "prim_lfsr.LFSR_COEFFS",
           "ptype": "logic",
           "name": "LFSR_COEFFS",
           "dim": "[167:0]",
@@ -308,6 +331,7 @@
           }
         },
         {
+          "id": "prim_lfsr.DefaultSeedLocal",
           "ptype": "logic",
           "name": "DefaultSeedLocal",
           "dim": "[LfsrDw-1:0]",
@@ -324,6 +348,7 @@
           }
         },
         {
+          "id": "prim_lfsr.DefaultSeedLocal~2",
           "ptype": "logic",
           "name": "DefaultSeedLocal",
           "dim": "[LfsrDw-1:0]",
@@ -339,6 +364,7 @@
           }
         },
         {
+          "id": "prim_lfsr.NumSboxes",
           "ptype": "int",
           "name": "NumSboxes",
           "default": "LfsrDw / 4",

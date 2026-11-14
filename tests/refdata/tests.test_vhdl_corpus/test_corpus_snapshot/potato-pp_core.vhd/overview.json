@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/potato/pp_core.vhd",
   "modules": [
     {
+      "id": "pp_core",
       "name": "pp_core",
       "params": [
         {
+          "id": "pp_core.processor_id",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "pp_core.reset_address",
           "name": "RESET_ADDRESS",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "pp_core.mtime_divider",
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -46,6 +50,7 @@
           }
         },
         {
+          "id": "pp_core.time_divider",
           "name": "TIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -61,6 +66,7 @@
       ],
       "ports": [
         {
+          "id": "pp_core.clk",
           "direction": "in",
           "dtype": "std_logic",
           "name": "clk",
@@ -75,6 +81,7 @@
           }
         },
         {
+          "id": "pp_core.reset",
           "direction": "in",
           "dtype": "std_logic",
           "name": "reset",
@@ -90,6 +97,7 @@
           }
         },
         {
+          "id": "pp_core.imem_address",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "imem_address",
@@ -105,6 +113,7 @@
           }
         },
         {
+          "id": "pp_core.imem_data_in",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "imem_data_in",
@@ -120,6 +129,7 @@
           }
         },
         {
+          "id": "pp_core.imem_req",
           "direction": "out",
           "dtype": "std_logic",
           "name": "imem_req",
@@ -131,6 +141,7 @@
           }
         },
         {
+          "id": "pp_core.imem_ack",
           "direction": "in",
           "dtype": "std_logic",
           "name": "imem_ack",
@@ -145,6 +156,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_address",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "dmem_address",
@@ -160,6 +172,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_data_in",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "dmem_data_in",
@@ -175,6 +188,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_data_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "dmem_data_out",
@@ -190,6 +204,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_data_size",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "dmem_data_size",
@@ -205,6 +220,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_read_req",
           "direction": "out",
           "dtype": "std_logic",
           "name": "dmem_read_req",
@@ -219,6 +235,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_read_ack",
           "direction": "in",
           "dtype": "std_logic",
           "name": "dmem_read_ack",
@@ -233,6 +250,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_write_req",
           "direction": "out",
           "dtype": "std_logic",
           "name": "dmem_write_req",
@@ -247,6 +265,7 @@
           }
         },
         {
+          "id": "pp_core.dmem_write_ack",
           "direction": "in",
           "dtype": "std_logic",
           "name": "dmem_write_ack",
@@ -262,6 +281,7 @@
           }
         },
         {
+          "id": "pp_core.test_context_out",
           "direction": "out",
           "dtype": "test_context",
           "name": "test_context_out",
@@ -277,6 +297,7 @@
           }
         },
         {
+          "id": "pp_core.irq",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "irq",
@@ -294,10 +315,12 @@
       ],
       "insts": [
         {
+          "id": "pp_core.csr_unit",
           "name": "csr_unit",
           "module": "pp_csr_unit",
           "connections": [
             {
+              "id": "pp_core.csr_unit.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -308,6 +331,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -318,6 +342,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.irq",
               "port": "irq",
               "con": "irq",
               "loc": {
@@ -328,6 +353,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.count_instruction",
               "port": "count_instruction",
               "con": "wb_count_instruction",
               "loc": {
@@ -338,6 +364,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.test_context_out",
               "port": "test_context_out",
               "con": "test_context_out",
               "loc": {
@@ -348,6 +375,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.read_address",
               "port": "read_address",
               "con": "csr_read_address",
               "loc": {
@@ -358,6 +386,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.read_data_out",
               "port": "read_data_out",
               "con": "csr_read_data",
               "loc": {
@@ -368,6 +397,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.write_address",
               "port": "write_address",
               "con": "wb_csr_address",
               "loc": {
@@ -378,6 +408,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.write_data_in",
               "port": "write_data_in",
               "con": "wb_csr_data",
               "loc": {
@@ -388,6 +419,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.write_mode",
               "port": "write_mode",
               "con": "wb_csr_write",
               "loc": {
@@ -398,6 +430,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.exception_context",
               "port": "exception_context",
               "con": "wb_exception_context",
               "loc": {
@@ -408,6 +441,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.exception_context_write",
               "port": "exception_context_write",
               "con": "wb_exception",
               "loc": {
@@ -418,6 +452,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.mie_out",
               "port": "mie_out",
               "con": "mie",
               "loc": {
@@ -428,6 +463,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.mtvec_out",
               "port": "mtvec_out",
               "con": "mtvec",
               "loc": {
@@ -438,6 +474,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.ie_out",
               "port": "ie_out",
               "con": "ie",
               "loc": {
@@ -448,6 +485,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.ie1_out",
               "port": "ie1_out",
               "con": "ie1",
               "loc": {
@@ -458,6 +496,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.software_interrupt_out",
               "port": "software_interrupt_out",
               "con": "software_interrupt",
               "loc": {
@@ -468,6 +507,7 @@
               }
             },
             {
+              "id": "pp_core.csr_unit.timer_interrupt_out",
               "port": "timer_interrupt_out",
               "con": "timer_interrupt",
               "loc": {
@@ -486,10 +526,12 @@
           }
         },
         {
+          "id": "pp_core.regfile",
           "name": "regfile",
           "module": "pp_register_file",
           "connections": [
             {
+              "id": "pp_core.regfile.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -500,6 +542,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rs1_addr",
               "port": "rs1_addr",
               "con": "rs1_address",
               "loc": {
@@ -510,6 +553,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rs2_addr",
               "port": "rs2_addr",
               "con": "rs2_address",
               "loc": {
@@ -520,6 +564,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rs1_data",
               "port": "rs1_data",
               "con": "rs1_data",
               "loc": {
@@ -530,6 +575,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rs2_data",
               "port": "rs2_data",
               "con": "rs2_data",
               "loc": {
@@ -540,6 +586,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rd_addr",
               "port": "rd_addr",
               "con": "wb_rd_address",
               "loc": {
@@ -550,6 +597,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rd_data",
               "port": "rd_data",
               "con": "wb_rd_data",
               "loc": {
@@ -560,6 +608,7 @@
               }
             },
             {
+              "id": "pp_core.regfile.rd_write",
               "port": "rd_write",
               "con": "wb_rd_write",
               "loc": {
@@ -578,10 +627,12 @@
           }
         },
         {
+          "id": "pp_core.fetch",
           "name": "fetch",
           "module": "pp_fetch",
           "connections": [
             {
+              "id": "pp_core.fetch.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -592,6 +643,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -602,6 +654,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.imem_address",
               "port": "imem_address",
               "con": "imem_address",
               "loc": {
@@ -612,6 +665,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.imem_data_in",
               "port": "imem_data_in",
               "con": "imem_data_in",
               "loc": {
@@ -622,6 +676,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.imem_req",
               "port": "imem_req",
               "con": "imem_req",
               "loc": {
@@ -632,6 +687,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.imem_ack",
               "port": "imem_ack",
               "con": "imem_ack",
               "loc": {
@@ -642,6 +698,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.stall",
               "port": "stall",
               "con": "stall_if",
               "loc": {
@@ -652,6 +709,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.flush",
               "port": "flush",
               "con": "flush_if",
               "loc": {
@@ -662,6 +720,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.branch",
               "port": "branch",
               "con": "branch_taken",
               "loc": {
@@ -672,6 +731,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.exception",
               "port": "exception",
               "con": "exception_taken",
               "loc": {
@@ -682,6 +742,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.branch_target",
               "port": "branch_target",
               "con": "branch_target",
               "loc": {
@@ -692,6 +753,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.evec",
               "port": "evec",
               "con": "exception_target",
               "loc": {
@@ -702,6 +764,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.instruction_data",
               "port": "instruction_data",
               "con": "if_instruction",
               "loc": {
@@ -712,6 +775,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.instruction_address",
               "port": "instruction_address",
               "con": "if_pc",
               "loc": {
@@ -722,6 +786,7 @@
               }
             },
             {
+              "id": "pp_core.fetch.instruction_ready",
               "port": "instruction_ready",
               "con": "if_instruction_ready",
               "loc": {
@@ -740,10 +805,12 @@
           }
         },
         {
+          "id": "pp_core.decode",
           "name": "decode",
           "module": "pp_decode",
           "connections": [
             {
+              "id": "pp_core.decode.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -754,6 +821,7 @@
               }
             },
             {
+              "id": "pp_core.decode.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -764,6 +832,7 @@
               }
             },
             {
+              "id": "pp_core.decode.flush",
               "port": "flush",
               "con": "flush_id",
               "loc": {
@@ -774,6 +843,7 @@
               }
             },
             {
+              "id": "pp_core.decode.stall",
               "port": "stall",
               "con": "stall_id",
               "loc": {
@@ -784,6 +854,7 @@
               }
             },
             {
+              "id": "pp_core.decode.instruction_data",
               "port": "instruction_data",
               "con": "if_instruction",
               "loc": {
@@ -794,6 +865,7 @@
               }
             },
             {
+              "id": "pp_core.decode.instruction_address",
               "port": "instruction_address",
               "con": "if_pc",
               "loc": {
@@ -804,6 +876,7 @@
               }
             },
             {
+              "id": "pp_core.decode.instruction_ready",
               "port": "instruction_ready",
               "con": "if_instruction_ready",
               "loc": {
@@ -814,6 +887,7 @@
               }
             },
             {
+              "id": "pp_core.decode.instruction_count",
               "port": "instruction_count",
               "con": "if_count_instruction",
               "loc": {
@@ -824,6 +898,7 @@
               }
             },
             {
+              "id": "pp_core.decode.funct3",
               "port": "funct3",
               "con": "id_funct3",
               "loc": {
@@ -834,6 +909,7 @@
               }
             },
             {
+              "id": "pp_core.decode.rs1_addr",
               "port": "rs1_addr",
               "con": "id_rs1_address",
               "loc": {
@@ -844,6 +920,7 @@
               }
             },
             {
+              "id": "pp_core.decode.rs2_addr",
               "port": "rs2_addr",
               "con": "id_rs2_address",
               "loc": {
@@ -854,6 +931,7 @@
               }
             },
             {
+              "id": "pp_core.decode.rd_addr",
               "port": "rd_addr",
               "con": "id_rd_address",
               "loc": {
@@ -864,6 +942,7 @@
               }
             },
             {
+              "id": "pp_core.decode.csr_addr",
               "port": "csr_addr",
               "con": "id_csr_address",
               "loc": {
@@ -874,6 +953,7 @@
               }
             },
             {
+              "id": "pp_core.decode.shamt",
               "port": "shamt",
               "con": "id_shamt",
               "loc": {
@@ -884,6 +964,7 @@
               }
             },
             {
+              "id": "pp_core.decode.immediate",
               "port": "immediate",
               "con": "id_immediate",
               "loc": {
@@ -894,6 +975,7 @@
               }
             },
             {
+              "id": "pp_core.decode.rd_write",
               "port": "rd_write",
               "con": "id_rd_write",
               "loc": {
@@ -904,6 +986,7 @@
               }
             },
             {
+              "id": "pp_core.decode.branch",
               "port": "branch",
               "con": "id_branch",
               "loc": {
@@ -914,6 +997,7 @@
               }
             },
             {
+              "id": "pp_core.decode.alu_x_src",
               "port": "alu_x_src",
               "con": "id_alu_x_src",
               "loc": {
@@ -924,6 +1008,7 @@
               }
             },
             {
+              "id": "pp_core.decode.alu_y_src",
               "port": "alu_y_src",
               "con": "id_alu_y_src",
               "loc": {
@@ -934,6 +1019,7 @@
               }
             },
             {
+              "id": "pp_core.decode.alu_op",
               "port": "alu_op",
               "con": "id_alu_op",
               "loc": {
@@ -944,6 +1030,7 @@
               }
             },
             {
+              "id": "pp_core.decode.mem_op",
               "port": "mem_op",
               "con": "id_mem_op",
               "loc": {
@@ -954,6 +1041,7 @@
               }
             },
             {
+              "id": "pp_core.decode.mem_size",
               "port": "mem_size",
               "con": "id_mem_size",
               "loc": {
@@ -964,6 +1052,7 @@
               }
             },
             {
+              "id": "pp_core.decode.count_instruction",
               "port": "count_instruction",
               "con": "id_count_instruction",
               "loc": {
@@ -974,6 +1063,7 @@
               }
             },
             {
+              "id": "pp_core.decode.pc",
               "port": "pc",
               "con": "id_pc",
               "loc": {
@@ -984,6 +1074,7 @@
               }
             },
             {
+              "id": "pp_core.decode.csr_write",
               "port": "csr_write",
               "con": "id_csr_write",
               "loc": {
@@ -994,6 +1085,7 @@
               }
             },
             {
+              "id": "pp_core.decode.csr_use_imm",
               "port": "csr_use_imm",
               "con": "id_csr_use_immediate",
               "loc": {
@@ -1004,6 +1096,7 @@
               }
             },
             {
+              "id": "pp_core.decode.decode_exception",
               "port": "decode_exception",
               "con": "id_exception",
               "loc": {
@@ -1014,6 +1107,7 @@
               }
             },
             {
+              "id": "pp_core.decode.decode_exception_cause",
               "port": "decode_exception_cause",
               "con": "id_exception_cause",
               "loc": {
@@ -1032,10 +1126,12 @@
           }
         },
         {
+          "id": "pp_core.execute",
           "name": "execute",
           "module": "pp_execute",
           "connections": [
             {
+              "id": "pp_core.execute.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -1046,6 +1142,7 @@
               }
             },
             {
+              "id": "pp_core.execute.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -1056,6 +1153,7 @@
               }
             },
             {
+              "id": "pp_core.execute.stall",
               "port": "stall",
               "con": "stall_ex",
               "loc": {
@@ -1066,6 +1164,7 @@
               }
             },
             {
+              "id": "pp_core.execute.flush",
               "port": "flush",
               "con": "flush_ex",
               "loc": {
@@ -1076,6 +1175,7 @@
               }
             },
             {
+              "id": "pp_core.execute.irq",
               "port": "irq",
               "con": "irq",
               "loc": {
@@ -1086,6 +1186,7 @@
               }
             },
             {
+              "id": "pp_core.execute.software_interrupt",
               "port": "software_interrupt",
               "con": "software_interrupt",
               "loc": {
@@ -1096,6 +1197,7 @@
               }
             },
             {
+              "id": "pp_core.execute.timer_interrupt",
               "port": "timer_interrupt",
               "con": "timer_interrupt",
               "loc": {
@@ -1106,6 +1208,7 @@
               }
             },
             {
+              "id": "pp_core.execute.dmem_address",
               "port": "dmem_address",
               "con": "ex_dmem_address",
               "loc": {
@@ -1116,6 +1219,7 @@
               }
             },
             {
+              "id": "pp_core.execute.dmem_data_size",
               "port": "dmem_data_size",
               "con": "ex_dmem_data_size",
               "loc": {
@@ -1126,6 +1230,7 @@
               }
             },
             {
+              "id": "pp_core.execute.dmem_data_out",
               "port": "dmem_data_out",
               "con": "ex_dmem_data_out",
               "loc": {
@@ -1136,6 +1241,7 @@
               }
             },
             {
+              "id": "pp_core.execute.dmem_read_req",
               "port": "dmem_read_req",
               "con": "ex_dmem_read_req",
               "loc": {
@@ -1146,6 +1252,7 @@
               }
             },
             {
+              "id": "pp_core.execute.dmem_write_req",
               "port": "dmem_write_req",
               "con": "ex_dmem_write_req",
               "loc": {
@@ -1156,6 +1263,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rs1_addr_in",
               "port": "rs1_addr_in",
               "con": "rs1_address",
               "loc": {
@@ -1166,6 +1274,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rs2_addr_in",
               "port": "rs2_addr_in",
               "con": "rs2_address",
               "loc": {
@@ -1176,6 +1285,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rd_addr_in",
               "port": "rd_addr_in",
               "con": "id_rd_address",
               "loc": {
@@ -1186,6 +1296,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rd_addr_out",
               "port": "rd_addr_out",
               "con": "ex_rd_address",
               "loc": {
@@ -1196,6 +1307,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rs1_data_in",
               "port": "rs1_data_in",
               "con": "rs1_data",
               "loc": {
@@ -1206,6 +1318,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rs2_data_in",
               "port": "rs2_data_in",
               "con": "rs2_data",
               "loc": {
@@ -1216,6 +1329,7 @@
               }
             },
             {
+              "id": "pp_core.execute.shamt_in",
               "port": "shamt_in",
               "con": "id_shamt",
               "loc": {
@@ -1226,6 +1340,7 @@
               }
             },
             {
+              "id": "pp_core.execute.immediate_in",
               "port": "immediate_in",
               "con": "id_immediate",
               "loc": {
@@ -1236,6 +1351,7 @@
               }
             },
             {
+              "id": "pp_core.execute.funct3_in",
               "port": "funct3_in",
               "con": "id_funct3",
               "loc": {
@@ -1246,6 +1362,7 @@
               }
             },
             {
+              "id": "pp_core.execute.pc_in",
               "port": "pc_in",
               "con": "id_pc",
               "loc": {
@@ -1256,6 +1373,7 @@
               }
             },
             {
+              "id": "pp_core.execute.pc_out",
               "port": "pc_out",
               "con": "ex_pc",
               "loc": {
@@ -1266,6 +1384,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_addr_in",
               "port": "csr_addr_in",
               "con": "csr_read_address",
               "loc": {
@@ -1276,6 +1395,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_addr_out",
               "port": "csr_addr_out",
               "con": "ex_csr_address",
               "loc": {
@@ -1286,6 +1406,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_write_in",
               "port": "csr_write_in",
               "con": "id_csr_write",
               "loc": {
@@ -1296,6 +1417,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_write_out",
               "port": "csr_write_out",
               "con": "ex_csr_write",
               "loc": {
@@ -1306,6 +1428,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_value_in",
               "port": "csr_value_in",
               "con": "csr_read_data",
               "loc": {
@@ -1316,6 +1439,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_value_out",
               "port": "csr_value_out",
               "con": "ex_csr_data",
               "loc": {
@@ -1326,6 +1450,7 @@
               }
             },
             {
+              "id": "pp_core.execute.csr_use_immediate_in",
               "port": "csr_use_immediate_in",
               "con": "id_csr_use_immediate",
               "loc": {
@@ -1336,6 +1461,7 @@
               }
             },
             {
+              "id": "pp_core.execute.alu_op_in",
               "port": "alu_op_in",
               "con": "id_alu_op",
               "loc": {
@@ -1346,6 +1472,7 @@
               }
             },
             {
+              "id": "pp_core.execute.alu_x_src_in",
               "port": "alu_x_src_in",
               "con": "id_alu_x_src",
               "loc": {
@@ -1356,6 +1483,7 @@
               }
             },
             {
+              "id": "pp_core.execute.alu_y_src_in",
               "port": "alu_y_src_in",
               "con": "id_alu_y_src",
               "loc": {
@@ -1366,6 +1494,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rd_write_in",
               "port": "rd_write_in",
               "con": "id_rd_write",
               "loc": {
@@ -1376,6 +1505,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rd_write_out",
               "port": "rd_write_out",
               "con": "ex_rd_write",
               "loc": {
@@ -1386,6 +1516,7 @@
               }
             },
             {
+              "id": "pp_core.execute.rd_data_out",
               "port": "rd_data_out",
               "con": "ex_rd_data",
               "loc": {
@@ -1396,6 +1527,7 @@
               }
             },
             {
+              "id": "pp_core.execute.branch_in",
               "port": "branch_in",
               "con": "id_branch",
               "loc": {
@@ -1406,6 +1538,7 @@
               }
             },
             {
+              "id": "pp_core.execute.branch_out",
               "port": "branch_out",
               "con": "ex_branch",
               "loc": {
@@ -1416,6 +1549,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_op_in",
               "port": "mem_op_in",
               "con": "id_mem_op",
               "loc": {
@@ -1426,6 +1560,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_op_out",
               "port": "mem_op_out",
               "con": "ex_mem_op",
               "loc": {
@@ -1436,6 +1571,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_size_in",
               "port": "mem_size_in",
               "con": "id_mem_size",
               "loc": {
@@ -1446,6 +1582,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_size_out",
               "port": "mem_size_out",
               "con": "ex_mem_size",
               "loc": {
@@ -1456,6 +1593,7 @@
               }
             },
             {
+              "id": "pp_core.execute.count_instruction_in",
               "port": "count_instruction_in",
               "con": "id_count_instruction",
               "loc": {
@@ -1466,6 +1604,7 @@
               }
             },
             {
+              "id": "pp_core.execute.count_instruction_out",
               "port": "count_instruction_out",
               "con": "ex_count_instruction",
               "loc": {
@@ -1476,6 +1615,7 @@
               }
             },
             {
+              "id": "pp_core.execute.ie_in",
               "port": "ie_in",
               "con": "ie",
               "loc": {
@@ -1486,6 +1626,7 @@
               }
             },
             {
+              "id": "pp_core.execute.ie1_in",
               "port": "ie1_in",
               "con": "ie1",
               "loc": {
@@ -1496,6 +1637,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mie_in",
               "port": "mie_in",
               "con": "mie",
               "loc": {
@@ -1506,6 +1648,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mtvec_in",
               "port": "mtvec_in",
               "con": "mtvec",
               "loc": {
@@ -1516,6 +1659,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mtvec_out",
               "port": "mtvec_out",
               "con": "exception_target",
               "loc": {
@@ -1526,6 +1670,7 @@
               }
             },
             {
+              "id": "pp_core.execute.decode_exception_in",
               "port": "decode_exception_in",
               "con": "id_exception",
               "loc": {
@@ -1536,6 +1681,7 @@
               }
             },
             {
+              "id": "pp_core.execute.decode_exception_cause_in",
               "port": "decode_exception_cause_in",
               "con": "id_exception_cause",
               "loc": {
@@ -1546,6 +1692,7 @@
               }
             },
             {
+              "id": "pp_core.execute.exception_out",
               "port": "exception_out",
               "con": "exception_taken",
               "loc": {
@@ -1556,6 +1703,7 @@
               }
             },
             {
+              "id": "pp_core.execute.exception_context_out",
               "port": "exception_context_out",
               "con": "ex_exception_context",
               "loc": {
@@ -1566,6 +1714,7 @@
               }
             },
             {
+              "id": "pp_core.execute.jump_out",
               "port": "jump_out",
               "con": "branch_taken",
               "loc": {
@@ -1576,6 +1725,7 @@
               }
             },
             {
+              "id": "pp_core.execute.jump_target_out",
               "port": "jump_target_out",
               "con": "branch_target",
               "loc": {
@@ -1586,6 +1736,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_rd_write",
               "port": "mem_rd_write",
               "con": "mem_rd_write",
               "loc": {
@@ -1596,6 +1747,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_rd_addr",
               "port": "mem_rd_addr",
               "con": "mem_rd_address",
               "loc": {
@@ -1606,6 +1758,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_rd_value",
               "port": "mem_rd_value",
               "con": "mem_rd_data",
               "loc": {
@@ -1616,6 +1769,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_csr_addr",
               "port": "mem_csr_addr",
               "con": "mem_csr_address",
               "loc": {
@@ -1626,6 +1780,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_csr_write",
               "port": "mem_csr_write",
               "con": "mem_csr_write",
               "loc": {
@@ -1636,6 +1791,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_exception",
               "port": "mem_exception",
               "con": "mem_exception",
               "loc": {
@@ -1646,6 +1802,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_rd_write",
               "port": "wb_rd_write",
               "con": "wb_rd_write",
               "loc": {
@@ -1656,6 +1813,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_rd_addr",
               "port": "wb_rd_addr",
               "con": "wb_rd_address",
               "loc": {
@@ -1666,6 +1824,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_rd_value",
               "port": "wb_rd_value",
               "con": "wb_rd_data",
               "loc": {
@@ -1676,6 +1835,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_csr_addr",
               "port": "wb_csr_addr",
               "con": "wb_csr_address",
               "loc": {
@@ -1686,6 +1846,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_csr_write",
               "port": "wb_csr_write",
               "con": "wb_csr_write",
               "loc": {
@@ -1696,6 +1857,7 @@
               }
             },
             {
+              "id": "pp_core.execute.wb_exception",
               "port": "wb_exception",
               "con": "wb_exception",
               "loc": {
@@ -1706,6 +1868,7 @@
               }
             },
             {
+              "id": "pp_core.execute.mem_mem_op",
               "port": "mem_mem_op",
               "con": "mem_mem_op",
               "loc": {
@@ -1716,6 +1879,7 @@
               }
             },
             {
+              "id": "pp_core.execute.hazard_detected",
               "port": "hazard_detected",
               "con": "hazard_detected",
               "loc": {
@@ -1734,10 +1898,12 @@
           }
         },
         {
+          "id": "pp_core.memory",
           "name": "memory",
           "module": "pp_memory",
           "connections": [
             {
+              "id": "pp_core.memory.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -1748,6 +1914,7 @@
               }
             },
             {
+              "id": "pp_core.memory.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -1758,6 +1925,7 @@
               }
             },
             {
+              "id": "pp_core.memory.stall",
               "port": "stall",
               "con": "stall_mem",
               "loc": {
@@ -1768,6 +1936,7 @@
               }
             },
             {
+              "id": "pp_core.memory.dmem_data_in",
               "port": "dmem_data_in",
               "con": "dmem_data_in",
               "loc": {
@@ -1778,6 +1947,7 @@
               }
             },
             {
+              "id": "pp_core.memory.dmem_read_ack",
               "port": "dmem_read_ack",
               "con": "dmem_read_ack",
               "loc": {
@@ -1788,6 +1958,7 @@
               }
             },
             {
+              "id": "pp_core.memory.dmem_write_ack",
               "port": "dmem_write_ack",
               "con": "dmem_write_ack",
               "loc": {
@@ -1798,6 +1969,7 @@
               }
             },
             {
+              "id": "pp_core.memory.pc",
               "port": "pc",
               "con": "ex_pc",
               "loc": {
@@ -1808,6 +1980,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_write_in",
               "port": "rd_write_in",
               "con": "ex_rd_write",
               "loc": {
@@ -1818,6 +1991,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_write_out",
               "port": "rd_write_out",
               "con": "mem_rd_write",
               "loc": {
@@ -1828,6 +2002,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_data_in",
               "port": "rd_data_in",
               "con": "ex_rd_data",
               "loc": {
@@ -1838,6 +2013,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_data_out",
               "port": "rd_data_out",
               "con": "mem_rd_data",
               "loc": {
@@ -1848,6 +2024,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_addr_in",
               "port": "rd_addr_in",
               "con": "ex_rd_address",
               "loc": {
@@ -1858,6 +2035,7 @@
               }
             },
             {
+              "id": "pp_core.memory.rd_addr_out",
               "port": "rd_addr_out",
               "con": "mem_rd_address",
               "loc": {
@@ -1868,6 +2046,7 @@
               }
             },
             {
+              "id": "pp_core.memory.branch",
               "port": "branch",
               "con": "ex_branch",
               "loc": {
@@ -1878,6 +2057,7 @@
               }
             },
             {
+              "id": "pp_core.memory.mem_op_in",
               "port": "mem_op_in",
               "con": "ex_mem_op",
               "loc": {
@@ -1888,6 +2068,7 @@
               }
             },
             {
+              "id": "pp_core.memory.mem_op_out",
               "port": "mem_op_out",
               "con": "mem_mem_op",
               "loc": {
@@ -1898,6 +2079,7 @@
               }
             },
             {
+              "id": "pp_core.memory.mem_size_in",
               "port": "mem_size_in",
               "con": "ex_mem_size",
               "loc": {
@@ -1908,6 +2090,7 @@
               }
             },
             {
+              "id": "pp_core.memory.count_instr_in",
               "port": "count_instr_in",
               "con": "ex_count_instruction",
               "loc": {
@@ -1918,6 +2101,7 @@
               }
             },
             {
+              "id": "pp_core.memory.count_instr_out",
               "port": "count_instr_out",
               "con": "mem_count_instruction",
               "loc": {
@@ -1928,6 +2112,7 @@
               }
             },
             {
+              "id": "pp_core.memory.exception_in",
               "port": "exception_in",
               "con": "exception_taken",
               "loc": {
@@ -1938,6 +2123,7 @@
               }
             },
             {
+              "id": "pp_core.memory.exception_out",
               "port": "exception_out",
               "con": "mem_exception",
               "loc": {
@@ -1948,6 +2134,7 @@
               }
             },
             {
+              "id": "pp_core.memory.exception_context_in",
               "port": "exception_context_in",
               "con": "ex_exception_context",
               "loc": {
@@ -1958,6 +2145,7 @@
               }
             },
             {
+              "id": "pp_core.memory.exception_context_out",
               "port": "exception_context_out",
               "con": "mem_exception_context",
               "loc": {
@@ -1968,6 +2156,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_addr_in",
               "port": "csr_addr_in",
               "con": "ex_csr_address",
               "loc": {
@@ -1978,6 +2167,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_addr_out",
               "port": "csr_addr_out",
               "con": "mem_csr_address",
               "loc": {
@@ -1988,6 +2178,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_write_in",
               "port": "csr_write_in",
               "con": "ex_csr_write",
               "loc": {
@@ -1998,6 +2189,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_write_out",
               "port": "csr_write_out",
               "con": "mem_csr_write",
               "loc": {
@@ -2008,6 +2200,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_data_in",
               "port": "csr_data_in",
               "con": "ex_csr_data",
               "loc": {
@@ -2018,6 +2211,7 @@
               }
             },
             {
+              "id": "pp_core.memory.csr_data_out",
               "port": "csr_data_out",
               "con": "mem_csr_data",
               "loc": {
@@ -2036,10 +2230,12 @@
           }
         },
         {
+          "id": "pp_core.writeback",
           "name": "writeback",
           "module": "pp_writeback",
           "connections": [
             {
+              "id": "pp_core.writeback.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -2050,6 +2246,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -2060,6 +2257,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.count_instr_in",
               "port": "count_instr_in",
               "con": "mem_count_instruction",
               "loc": {
@@ -2070,6 +2268,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.count_instr_out",
               "port": "count_instr_out",
               "con": "wb_count_instruction",
               "loc": {
@@ -2080,6 +2279,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.exception_ctx_in",
               "port": "exception_ctx_in",
               "con": "mem_exception_context",
               "loc": {
@@ -2090,6 +2290,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.exception_ctx_out",
               "port": "exception_ctx_out",
               "con": "wb_exception_context",
               "loc": {
@@ -2100,6 +2301,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.exception_in",
               "port": "exception_in",
               "con": "mem_exception",
               "loc": {
@@ -2110,6 +2312,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.exception_out",
               "port": "exception_out",
               "con": "wb_exception",
               "loc": {
@@ -2120,6 +2323,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_write_in",
               "port": "csr_write_in",
               "con": "mem_csr_write",
               "loc": {
@@ -2130,6 +2334,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_write_out",
               "port": "csr_write_out",
               "con": "wb_csr_write",
               "loc": {
@@ -2140,6 +2345,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_data_in",
               "port": "csr_data_in",
               "con": "mem_csr_data",
               "loc": {
@@ -2150,6 +2356,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_data_out",
               "port": "csr_data_out",
               "con": "wb_csr_data",
               "loc": {
@@ -2160,6 +2367,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_addr_in",
               "port": "csr_addr_in",
               "con": "mem_csr_address",
               "loc": {
@@ -2170,6 +2378,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.csr_addr_out",
               "port": "csr_addr_out",
               "con": "wb_csr_address",
               "loc": {
@@ -2180,6 +2389,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_addr_in",
               "port": "rd_addr_in",
               "con": "mem_rd_address",
               "loc": {
@@ -2190,6 +2400,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_addr_out",
               "port": "rd_addr_out",
               "con": "wb_rd_address",
               "loc": {
@@ -2200,6 +2411,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_write_in",
               "port": "rd_write_in",
               "con": "mem_rd_write",
               "loc": {
@@ -2210,6 +2422,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_write_out",
               "port": "rd_write_out",
               "con": "wb_rd_write",
               "loc": {
@@ -2220,6 +2433,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_data_in",
               "port": "rd_data_in",
               "con": "mem_rd_data",
               "loc": {
@@ -2230,6 +2444,7 @@
               }
             },
             {
+              "id": "pp_core.writeback.rd_data_out",
               "port": "rd_data_out",
               "con": "wb_rd_data",
               "loc": {

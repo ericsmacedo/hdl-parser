@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/potato/pp_potato.vhd",
   "modules": [
     {
+      "id": "pp_potato",
       "name": "pp_potato",
       "params": [
         {
+          "id": "pp_potato.processor_id",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "pp_potato.reset_address",
           "name": "RESET_ADDRESS",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "pp_potato.mtime_divider",
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -46,6 +50,7 @@
           }
         },
         {
+          "id": "pp_potato.icache_enable",
           "name": "ICACHE_ENABLE",
           "default": "true",
           "comment": [
@@ -59,6 +64,7 @@
           }
         },
         {
+          "id": "pp_potato.icache_line_size",
           "name": "ICACHE_LINE_SIZE",
           "default": "4",
           "comment": [
@@ -72,6 +78,7 @@
           }
         },
         {
+          "id": "pp_potato.icache_num_lines",
           "name": "ICACHE_NUM_LINES",
           "default": "128",
           "comment": [
@@ -87,6 +94,7 @@
       ],
       "ports": [
         {
+          "id": "pp_potato.clk",
           "direction": "in",
           "dtype": "std_logic",
           "name": "clk",
@@ -98,6 +106,7 @@
           }
         },
         {
+          "id": "pp_potato.reset",
           "direction": "in",
           "dtype": "std_logic",
           "name": "reset",
@@ -112,6 +121,7 @@
           }
         },
         {
+          "id": "pp_potato.irq",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "irq",
@@ -127,6 +137,7 @@
           }
         },
         {
+          "id": "pp_potato.test_context_out",
           "direction": "out",
           "dtype": "test_context",
           "name": "test_context_out",
@@ -141,6 +152,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_adr_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "wb_adr_out",
@@ -153,6 +165,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_sel_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "wb_sel_out",
@@ -165,6 +178,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_cyc_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "wb_cyc_out",
@@ -176,6 +190,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_stb_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "wb_stb_out",
@@ -187,6 +202,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_we_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "wb_we_out",
@@ -198,6 +214,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_dat_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "wb_dat_out",
@@ -210,6 +227,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_dat_in",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "wb_dat_in",
@@ -222,6 +240,7 @@
           }
         },
         {
+          "id": "pp_potato.wb_ack_in",
           "direction": "in",
           "dtype": "std_logic",
           "name": "wb_ack_in",
@@ -235,10 +254,12 @@
       ],
       "insts": [
         {
+          "id": "pp_potato.processor",
           "name": "processor",
           "module": "pp_core",
           "connections": [
             {
+              "id": "pp_potato.processor.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -249,6 +270,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -259,6 +281,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.imem_address",
               "port": "imem_address",
               "con": "imem_address",
               "loc": {
@@ -269,6 +292,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.imem_data_in",
               "port": "imem_data_in",
               "con": "imem_data",
               "loc": {
@@ -279,6 +303,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.imem_req",
               "port": "imem_req",
               "con": "imem_req",
               "loc": {
@@ -289,6 +314,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.imem_ack",
               "port": "imem_ack",
               "con": "imem_ack",
               "loc": {
@@ -299,6 +325,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_address",
               "port": "dmem_address",
               "con": "dmem_address",
               "loc": {
@@ -309,6 +336,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_data_in",
               "port": "dmem_data_in",
               "con": "dmem_data_in",
               "loc": {
@@ -319,6 +347,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_data_out",
               "port": "dmem_data_out",
               "con": "dmem_data_out",
               "loc": {
@@ -329,6 +358,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_data_size",
               "port": "dmem_data_size",
               "con": "dmem_data_size",
               "loc": {
@@ -339,6 +369,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_read_req",
               "port": "dmem_read_req",
               "con": "dmem_read_req",
               "loc": {
@@ -349,6 +380,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_read_ack",
               "port": "dmem_read_ack",
               "con": "dmem_read_ack",
               "loc": {
@@ -359,6 +391,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_write_req",
               "port": "dmem_write_req",
               "con": "dmem_write_req",
               "loc": {
@@ -369,6 +402,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.dmem_write_ack",
               "port": "dmem_write_ack",
               "con": "dmem_write_ack",
               "loc": {
@@ -379,6 +413,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.test_context_out",
               "port": "test_context_out",
               "con": "test_context_out",
               "loc": {
@@ -389,6 +424,7 @@
               }
             },
             {
+              "id": "pp_potato.processor.irq",
               "port": "irq",
               "con": "irq",
               "loc": {
@@ -407,10 +443,12 @@
           }
         },
         {
+          "id": "pp_potato.icache",
           "name": "icache",
           "module": "pp_icache",
           "connections": [
             {
+              "id": "pp_potato.icache.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -421,6 +459,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -431,6 +470,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.mem_address_in",
               "port": "mem_address_in",
               "con": "imem_address",
               "loc": {
@@ -441,6 +481,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.mem_data_out",
               "port": "mem_data_out",
               "con": "imem_data",
               "loc": {
@@ -451,6 +492,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.mem_read_req",
               "port": "mem_read_req",
               "con": "imem_req",
               "loc": {
@@ -461,6 +503,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.mem_read_ack",
               "port": "mem_read_ack",
               "con": "imem_ack",
               "loc": {
@@ -471,6 +514,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.wb_inputs",
               "port": "wb_inputs",
               "con": "icache_inputs",
               "loc": {
@@ -481,6 +525,7 @@
               }
             },
             {
+              "id": "pp_potato.icache.wb_outputs",
               "port": "wb_outputs",
               "con": "icache_outputs",
               "loc": {
@@ -499,10 +544,12 @@
           }
         },
         {
+          "id": "pp_potato.imem_if",
           "name": "imem_if",
           "module": "pp_wb_adapter",
           "connections": [
             {
+              "id": "pp_potato.imem_if.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -513,6 +560,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -523,6 +571,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_address",
               "port": "mem_address",
               "con": "imem_address",
               "loc": {
@@ -533,6 +582,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_data_in",
               "port": "mem_data_in",
               "con": "(others => '0')",
               "loc": {
@@ -543,6 +593,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_data_out",
               "port": "mem_data_out",
               "con": "imem_data",
               "loc": {
@@ -553,6 +604,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_data_size",
               "port": "mem_data_size",
               "con": "(others => '0')",
               "loc": {
@@ -563,6 +615,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_read_req",
               "port": "mem_read_req",
               "con": "imem_req",
               "loc": {
@@ -573,6 +626,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_read_ack",
               "port": "mem_read_ack",
               "con": "imem_ack",
               "loc": {
@@ -583,6 +637,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_write_req",
               "port": "mem_write_req",
               "con": "'0'",
               "loc": {
@@ -593,6 +648,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.mem_write_ack",
               "port": "mem_write_ack",
               "con": "open",
               "loc": {
@@ -603,6 +659,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.wb_inputs",
               "port": "wb_inputs",
               "con": "icache_inputs",
               "loc": {
@@ -613,6 +670,7 @@
               }
             },
             {
+              "id": "pp_potato.imem_if.wb_outputs",
               "port": "wb_outputs",
               "con": "icache_outputs",
               "loc": {
@@ -631,10 +689,12 @@
           }
         },
         {
+          "id": "pp_potato.dmem_if",
           "name": "dmem_if",
           "module": "pp_wb_adapter",
           "connections": [
             {
+              "id": "pp_potato.dmem_if.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -645,6 +705,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -655,6 +716,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_address",
               "port": "mem_address",
               "con": "dmem_address",
               "loc": {
@@ -665,6 +727,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_data_in",
               "port": "mem_data_in",
               "con": "dmem_data_out",
               "loc": {
@@ -675,6 +738,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_data_out",
               "port": "mem_data_out",
               "con": "dmem_data_in",
               "loc": {
@@ -685,6 +749,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_data_size",
               "port": "mem_data_size",
               "con": "dmem_data_size",
               "loc": {
@@ -695,6 +760,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_read_req",
               "port": "mem_read_req",
               "con": "dmem_read_req",
               "loc": {
@@ -705,6 +771,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_read_ack",
               "port": "mem_read_ack",
               "con": "dmem_read_ack",
               "loc": {
@@ -715,6 +782,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_write_req",
               "port": "mem_write_req",
               "con": "dmem_write_req",
               "loc": {
@@ -725,6 +793,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.mem_write_ack",
               "port": "mem_write_ack",
               "con": "dmem_write_ack",
               "loc": {
@@ -735,6 +804,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.wb_inputs",
               "port": "wb_inputs",
               "con": "dmem_if_inputs",
               "loc": {
@@ -745,6 +815,7 @@
               }
             },
             {
+              "id": "pp_potato.dmem_if.wb_outputs",
               "port": "wb_outputs",
               "con": "dmem_if_outputs",
               "loc": {
@@ -763,10 +834,12 @@
           }
         },
         {
+          "id": "pp_potato.arbiter",
           "name": "arbiter",
           "module": "pp_wb_arbiter",
           "connections": [
             {
+              "id": "pp_potato.arbiter.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -777,6 +850,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -787,6 +861,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.m1_inputs",
               "port": "m1_inputs",
               "con": "m1_inputs",
               "loc": {
@@ -797,6 +872,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.m1_outputs",
               "port": "m1_outputs",
               "con": "m1_outputs",
               "loc": {
@@ -807,6 +883,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.m2_inputs",
               "port": "m2_inputs",
               "con": "m2_inputs",
               "loc": {
@@ -817,6 +894,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.m2_outputs",
               "port": "m2_outputs",
               "con": "m2_outputs",
               "loc": {
@@ -827,6 +905,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_adr_out",
               "port": "wb_adr_out",
               "con": "wb_adr_out",
               "loc": {
@@ -837,6 +916,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_sel_out",
               "port": "wb_sel_out",
               "con": "wb_sel_out",
               "loc": {
@@ -847,6 +927,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_cyc_out",
               "port": "wb_cyc_out",
               "con": "wb_cyc_out",
               "loc": {
@@ -857,6 +938,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_stb_out",
               "port": "wb_stb_out",
               "con": "wb_stb_out",
               "loc": {
@@ -867,6 +949,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_we_out",
               "port": "wb_we_out",
               "con": "wb_we_out",
               "loc": {
@@ -877,6 +960,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_dat_out",
               "port": "wb_dat_out",
               "con": "wb_dat_out",
               "loc": {
@@ -887,6 +971,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_dat_in",
               "port": "wb_dat_in",
               "con": "wb_dat_in",
               "loc": {
@@ -897,6 +982,7 @@
               }
             },
             {
+              "id": "pp_potato.arbiter.wb_ack_in",
               "port": "wb_ack_in",
               "con": "wb_ack_in",
               "loc": {

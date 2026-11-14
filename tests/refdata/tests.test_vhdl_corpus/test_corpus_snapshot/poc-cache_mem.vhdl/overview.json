@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/poc/cache_mem.vhdl",
   "modules": [
     {
+      "id": "cache_mem",
       "name": "cache_mem",
       "params": [
         {
+          "id": "cache_mem.replacement_policy",
           "name": "REPLACEMENT_POLICY",
           "default": "\"LRU\"",
           "loc": {
@@ -15,6 +17,7 @@
           }
         },
         {
+          "id": "cache_mem.cache_lines",
           "name": "CACHE_LINES",
           "loc": {
             "line": 138,
@@ -24,6 +27,7 @@
           }
         },
         {
+          "id": "cache_mem.associativity",
           "name": "ASSOCIATIVITY",
           "loc": {
             "line": 139,
@@ -33,6 +37,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_data_bits",
           "name": "CPU_DATA_BITS",
           "loc": {
             "line": 140,
@@ -42,6 +47,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_addr_bits",
           "name": "MEM_ADDR_BITS",
           "loc": {
             "line": 141,
@@ -51,6 +57,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_data_bits",
           "name": "MEM_DATA_BITS",
           "loc": {
             "line": 142,
@@ -60,6 +67,7 @@
           }
         },
         {
+          "id": "cache_mem.outstanding_req",
           "name": "OUTSTANDING_REQ",
           "default": "2",
           "loc": {
@@ -72,6 +80,7 @@
       ],
       "ports": [
         {
+          "id": "cache_mem.clk",
           "direction": "in",
           "dtype": "std_logic",
           "name": "clk",
@@ -86,6 +95,7 @@
           }
         },
         {
+          "id": "cache_mem.rst",
           "direction": "in",
           "dtype": "std_logic",
           "name": "rst",
@@ -101,6 +111,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_req",
           "direction": "in",
           "dtype": "std_logic",
           "name": "cpu_req",
@@ -112,6 +123,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_write",
           "direction": "in",
           "dtype": "std_logic",
           "name": "cpu_write",
@@ -123,6 +135,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_addr",
           "direction": "in",
           "dtype": "unsigned",
           "name": "cpu_addr",
@@ -135,6 +148,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_wdata",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "cpu_wdata",
@@ -147,6 +161,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_wmask",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "cpu_wmask",
@@ -159,6 +174,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_rdy",
           "direction": "out",
           "dtype": "std_logic",
           "name": "cpu_rdy",
@@ -170,6 +186,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_rstb",
           "direction": "out",
           "dtype": "std_logic",
           "name": "cpu_rstb",
@@ -181,6 +198,7 @@
           }
         },
         {
+          "id": "cache_mem.cpu_rdata",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "cpu_rdata",
@@ -196,6 +214,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_req",
           "direction": "out",
           "dtype": "std_logic",
           "name": "mem_req",
@@ -207,6 +226,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_write",
           "direction": "out",
           "dtype": "std_logic",
           "name": "mem_write",
@@ -218,6 +238,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_addr",
           "direction": "out",
           "dtype": "unsigned",
           "name": "mem_addr",
@@ -230,6 +251,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_wdata",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mem_wdata",
@@ -242,6 +264,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_wmask",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mem_wmask",
@@ -254,6 +277,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_rdy",
           "direction": "in",
           "dtype": "std_logic",
           "name": "mem_rdy",
@@ -265,6 +289,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_rstb",
           "direction": "in",
           "dtype": "std_logic",
           "name": "mem_rstb",
@@ -276,6 +301,7 @@
           }
         },
         {
+          "id": "cache_mem.mem_rdata",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "mem_rdata",
@@ -290,10 +316,12 @@
       ],
       "insts": [
         {
+          "id": "cache_mem.cache_cpu_inst",
           "name": "cache_cpu_inst",
           "module": "cache_cpu",
           "connections": [
             {
+              "id": "cache_mem.cache_cpu_inst.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -304,6 +332,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.rst",
               "port": "rst",
               "con": "rst",
               "loc": {
@@ -314,6 +343,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_req",
               "port": "cpu_req",
               "con": "int_req",
               "loc": {
@@ -324,6 +354,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_write",
               "port": "cpu_write",
               "con": "int_write",
               "loc": {
@@ -334,6 +365,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_addr",
               "port": "cpu_addr",
               "con": "int_addr",
               "loc": {
@@ -344,6 +376,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_wdata",
               "port": "cpu_wdata",
               "con": "int_wdata",
               "loc": {
@@ -354,6 +387,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_wmask",
               "port": "cpu_wmask",
               "con": "int_wmask",
               "loc": {
@@ -364,6 +398,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_got",
               "port": "cpu_got",
               "con": "int_got",
               "loc": {
@@ -374,6 +409,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.cpu_rdata",
               "port": "cpu_rdata",
               "con": "int_rdata",
               "loc": {
@@ -384,6 +420,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_req",
               "port": "mem_req",
               "con": "mem_req",
               "loc": {
@@ -394,6 +431,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_write",
               "port": "mem_write",
               "con": "mem_write",
               "loc": {
@@ -404,6 +442,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_addr",
               "port": "mem_addr",
               "con": "mem_addr",
               "loc": {
@@ -414,6 +453,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_wdata",
               "port": "mem_wdata",
               "con": "mem_wdata",
               "loc": {
@@ -424,6 +464,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_wmask",
               "port": "mem_wmask",
               "con": "mem_wmask",
               "loc": {
@@ -434,6 +475,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_rdy",
               "port": "mem_rdy",
               "con": "mem_rdy",
               "loc": {
@@ -444,6 +486,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_rstb",
               "port": "mem_rstb",
               "con": "mem_rstb",
               "loc": {
@@ -454,6 +497,7 @@
               }
             },
             {
+              "id": "cache_mem.cache_cpu_inst.mem_rdata",
               "port": "mem_rdata",
               "con": "mem_rdata",
               "loc": {
@@ -472,10 +516,12 @@
           }
         },
         {
+          "id": "cache_mem.req_fifo",
           "name": "req_fifo",
           "module": "fifo_glue",
           "connections": [
             {
+              "id": "cache_mem.req_fifo.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -486,6 +532,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.rst",
               "port": "rst",
               "con": "rst",
               "loc": {
@@ -496,6 +543,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.put",
               "port": "put",
               "con": "put",
               "loc": {
@@ -506,6 +554,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.di",
               "port": "di",
               "con": "din",
               "loc": {
@@ -516,6 +565,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.ful",
               "port": "ful",
               "con": "full",
               "loc": {
@@ -526,6 +576,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.vld",
               "port": "vld",
               "con": "valid",
               "loc": {
@@ -536,6 +587,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.do",
               "port": "do",
               "con": "dout",
               "loc": {
@@ -546,6 +598,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo.got",
               "port": "got",
               "con": "int_got",
               "loc": {
@@ -564,10 +617,12 @@
           }
         },
         {
+          "id": "cache_mem.req_fifo~2",
           "name": "req_fifo",
           "module": "fifo_cc_got",
           "connections": [
             {
+              "id": "cache_mem.req_fifo~2.rst",
               "port": "rst",
               "con": "rst",
               "loc": {
@@ -578,6 +633,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -588,6 +644,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.put",
               "port": "put",
               "con": "put",
               "loc": {
@@ -598,6 +655,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.din",
               "port": "din",
               "con": "din",
               "loc": {
@@ -608,6 +666,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.full",
               "port": "full",
               "con": "full",
               "loc": {
@@ -618,6 +677,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.estate_wr",
               "port": "estate_wr",
               "con": "open",
               "loc": {
@@ -628,6 +688,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.got",
               "port": "got",
               "con": "int_got",
               "loc": {
@@ -638,6 +699,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.dout",
               "port": "dout",
               "con": "dout",
               "loc": {
@@ -648,6 +710,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.valid",
               "port": "valid",
               "con": "valid",
               "loc": {
@@ -658,6 +721,7 @@
               }
             },
             {
+              "id": "cache_mem.req_fifo~2.fstate_rd",
               "port": "fstate_rd",
               "con": "open",
               "loc": {

@@ -2,9 +2,11 @@
   "path": "$PRJ/examples/sv/macros/cond_ports.sv",
   "modules": [
     {
+      "id": "cond_ports",
       "name": "cond_ports",
       "params": [
         {
+          "id": "cond_ports.WIDTH",
           "ptype": "int",
           "name": "WIDTH",
           "default": "8",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "cond_ports.A_DEPTH",
           "ptype": "int",
           "name": "A_DEPTH",
           "default": "16",
@@ -27,6 +30,7 @@
           }
         },
         {
+          "id": "cond_ports.B_DEPTH",
           "ptype": "int",
           "name": "B_DEPTH",
           "default": "32",
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "cond_ports.LAST",
           "ptype": "bit",
           "name": "LAST",
           "default": "1'b0",
@@ -54,6 +59,7 @@
       ],
       "ports": [
         {
+          "id": "cond_ports.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -65,6 +71,7 @@
           }
         },
         {
+          "id": "cond_ports.a_i",
           "direction": "input",
           "ptype": "logic",
           "name": "a_i",
@@ -80,6 +87,7 @@
           }
         },
         {
+          "id": "cond_ports.b_i",
           "direction": "input",
           "ptype": "logic",
           "name": "b_i",
@@ -98,6 +106,7 @@
           }
         },
         {
+          "id": "cond_ports.a_and_b_i",
           "direction": "input",
           "ptype": "logic",
           "name": "a_and_b_i",
@@ -112,6 +121,7 @@
           }
         },
         {
+          "id": "cond_ports.scan_en_i",
           "direction": "input",
           "ptype": "logic",
           "name": "scan_en_i",
@@ -126,6 +136,7 @@
           }
         },
         {
+          "id": "cond_ports.fpga_cfg_i",
           "direction": "input",
           "ptype": "logic",
           "name": "fpga_cfg_i",
@@ -140,6 +151,7 @@
           }
         },
         {
+          "id": "cond_ports.sim_only_i",
           "direction": "input",
           "ptype": "logic",
           "name": "sim_only_i",
@@ -154,6 +166,7 @@
           }
         },
         {
+          "id": "cond_ports.sim_or_fpga_i",
           "direction": "input",
           "ptype": "logic",
           "name": "sim_or_fpga_i",
@@ -168,6 +181,7 @@
           }
         },
         {
+          "id": "cond_ports.q_o",
           "direction": "output",
           "ptype": "logic",
           "name": "q_o",
@@ -182,10 +196,12 @@
       ],
       "insts": [
         {
+          "id": "cond_ports.u_ram",
           "name": "u_ram",
           "module": "fpga_ram",
           "connections": [
             {
+              "id": "cond_ports.u_ram.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -204,10 +220,12 @@
           }
         },
         {
+          "id": "cond_ports.u_checker",
           "name": "u_checker",
           "module": "checker_mod",
           "connections": [
             {
+              "id": "cond_ports.u_checker.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "ifdefs": [
@@ -240,9 +258,11 @@
       }
     },
     {
+      "id": "only_with_b",
       "name": "only_with_b",
       "ports": [
         {
+          "id": "only_with_b.y",
           "direction": "input",
           "ptype": "logic",
           "name": "y",

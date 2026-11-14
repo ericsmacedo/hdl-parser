@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/ibex/ibex_dummy_instr.sv",
   "modules": [
     {
+      "id": "ibex_dummy_instr",
       "name": "ibex_dummy_instr",
       "params": [
         {
+          "id": "ibex_dummy_instr.RndCnstLfsrSeed",
           "ptype": "lfsr_seed_t",
           "name": "RndCnstLfsrSeed",
           "default": "RndCnstLfsrSeedDefault",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.RndCnstLfsrPerm",
           "ptype": "lfsr_perm_t",
           "name": "RndCnstLfsrPerm",
           "default": "RndCnstLfsrPermDefault",
@@ -29,6 +32,7 @@
       ],
       "ports": [
         {
+          "id": "ibex_dummy_instr.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -40,6 +44,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -54,6 +59,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_en_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_en_i",
@@ -65,6 +71,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_mask_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_mask_i",
@@ -77,6 +84,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_seed_en_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_seed_en_i",
@@ -88,6 +96,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_seed_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_seed_i",
@@ -100,6 +109,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_16regs_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_16regs_i",
@@ -114,6 +124,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.fetch_valid_i",
           "direction": "input",
           "ptype": "logic",
           "name": "fetch_valid_i",
@@ -125,6 +136,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.id_in_ready_i",
           "direction": "input",
           "ptype": "logic",
           "name": "id_in_ready_i",
@@ -136,6 +148,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.insert_hold_i",
           "direction": "input",
           "ptype": "logic",
           "name": "insert_hold_i",
@@ -147,6 +160,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.insert_dummy_instr_o",
           "direction": "output",
           "ptype": "logic",
           "name": "insert_dummy_instr_o",
@@ -158,6 +172,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.dummy_instr_data_o",
           "direction": "output",
           "ptype": "logic",
           "name": "dummy_instr_data_o",
@@ -172,6 +187,7 @@
       ],
       "localparams": [
         {
+          "id": "ibex_dummy_instr.TIMEOUT_CNT_W",
           "ptype": "int",
           "name": "TIMEOUT_CNT_W",
           "default": "5",
@@ -183,6 +199,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.OP_W",
           "ptype": "int",
           "name": "OP_W",
           "default": "5",
@@ -194,6 +211,7 @@
           }
         },
         {
+          "id": "ibex_dummy_instr.LFSR_OUT_W",
           "ptype": "int",
           "name": "LFSR_OUT_W",
           "default": "$bits(lfsr_data_t)",
@@ -207,10 +225,12 @@
       ],
       "insts": [
         {
+          "id": "ibex_dummy_instr.lfsr_i",
           "name": "lfsr_i",
           "module": "prim_lfsr",
           "connections": [
             {
+              "id": "ibex_dummy_instr.lfsr_i.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -221,6 +241,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -231,6 +252,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.seed_en_i",
               "port": "seed_en_i",
               "con": "dummy_instr_seed_en_i",
               "loc": {
@@ -241,6 +263,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.seed_i",
               "port": "seed_i",
               "con": "dummy_instr_seed_d",
               "loc": {
@@ -251,6 +274,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.lfsr_en_i",
               "port": "lfsr_en_i",
               "con": "lfsr_en",
               "loc": {
@@ -261,6 +285,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.entropy_i",
               "port": "entropy_i",
               "con": "'0",
               "loc": {
@@ -271,6 +296,7 @@
               }
             },
             {
+              "id": "ibex_dummy_instr.lfsr_i.state_o",
               "port": "state_o",
               "con": "lfsr_state",
               "loc": {

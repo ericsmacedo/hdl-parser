@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/opentitan/prim_fifo_sync.sv",
   "modules": [
     {
+      "id": "prim_fifo_sync",
       "name": "prim_fifo_sync",
       "params": [
         {
+          "id": "prim_fifo_sync.Width",
           "ptype": "int",
           "name": "Width",
           "default": "16",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.Pass",
           "ptype": "bit",
           "name": "Pass",
           "default": "1'b1",
@@ -30,6 +33,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.Depth",
           "ptype": "int",
           "name": "Depth",
           "default": "4",
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.OutputZeroIfEmpty",
           "ptype": "bit",
           "name": "OutputZeroIfEmpty",
           "default": "1'b1",
@@ -55,6 +60,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.Secure",
           "ptype": "bit",
           "name": "Secure",
           "default": "1'b0",
@@ -72,6 +78,7 @@
       ],
       "ports": [
         {
+          "id": "prim_fifo_sync.clk_i",
           "direction": "input",
           "name": "clk_i",
           "loc": {
@@ -82,6 +89,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.rst_ni",
           "direction": "input",
           "name": "rst_ni",
           "comment": [
@@ -95,6 +103,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.clr_i",
           "direction": "input",
           "name": "clr_i",
           "comment": [
@@ -108,6 +117,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.wvalid_i",
           "direction": "input",
           "name": "wvalid_i",
           "loc": {
@@ -118,6 +128,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.wready_o",
           "direction": "output",
           "name": "wready_o",
           "loc": {
@@ -128,6 +139,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.wdata_i",
           "direction": "input",
           "name": "wdata_i",
           "dim": "[Width-1:0]",
@@ -142,6 +154,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.rvalid_o",
           "direction": "output",
           "name": "rvalid_o",
           "loc": {
@@ -152,6 +165,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.rready_i",
           "direction": "input",
           "name": "rready_i",
           "loc": {
@@ -162,6 +176,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.rdata_o",
           "direction": "output",
           "name": "rdata_o",
           "dim": "[Width-1:0]",
@@ -176,6 +191,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.full_o",
           "direction": "output",
           "name": "full_o",
           "loc": {
@@ -186,6 +202,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.depth_o",
           "direction": "output",
           "name": "depth_o",
           "dim": "[DepthW-1:0]",
@@ -197,6 +214,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.err_o",
           "direction": "output",
           "name": "err_o",
           "loc": {
@@ -209,6 +227,7 @@
       ],
       "localparams": [
         {
+          "id": "prim_fifo_sync.DepthW",
           "ptype": "int",
           "name": "DepthW",
           "default": "prim_util_pkg::vbits(Depth+1)",
@@ -220,6 +239,7 @@
           }
         },
         {
+          "id": "prim_fifo_sync.PtrW",
           "ptype": "int",
           "name": "PtrW",
           "default": "prim_util_pkg::vbits(Depth)",
@@ -233,10 +253,12 @@
       ],
       "insts": [
         {
+          "id": "prim_fifo_sync.u_fifo_cnt",
           "name": "u_fifo_cnt",
           "module": "prim_fifo_sync_cnt",
           "connections": [
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -247,6 +269,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -257,6 +280,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.clr_i",
               "port": "clr_i",
               "con": "clr_i",
               "loc": {
@@ -267,6 +291,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.incr_wptr_i",
               "port": "incr_wptr_i",
               "con": "fifo_incr_wptr",
               "loc": {
@@ -277,6 +302,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.incr_rptr_i",
               "port": "incr_rptr_i",
               "con": "fifo_incr_rptr",
               "loc": {
@@ -287,6 +313,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.wptr_o",
               "port": "wptr_o",
               "con": "fifo_wptr",
               "loc": {
@@ -297,6 +324,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.rptr_o",
               "port": "rptr_o",
               "con": "fifo_rptr",
               "loc": {
@@ -307,6 +335,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.full_o",
               "port": "full_o",
               "con": "full_o",
               "loc": {
@@ -317,6 +346,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.empty_o",
               "port": "empty_o",
               "con": "fifo_empty",
               "loc": {
@@ -327,6 +357,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.depth_o",
               "port": "depth_o",
               "con": "depth_o",
               "loc": {
@@ -337,6 +368,7 @@
               }
             },
             {
+              "id": "prim_fifo_sync.u_fifo_cnt.err_o",
               "port": "err_o",
               "con": "err_o",
               "loc": {
