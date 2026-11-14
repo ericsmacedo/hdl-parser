@@ -1,0 +1,260 @@
+{
+  "path": "$PRJ/examples/sv/macros/cond_ports.sv",
+  "modules": [
+    {
+      "name": "cond_ports",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "WIDTH",
+          "default": "8"
+        },
+        {
+          "ptype": "int",
+          "name": "A_DEPTH",
+          "default": "16",
+          "ifdefs": [
+            "FEATURE_A"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "NO_A",
+          "default": "1",
+          "ifdefs": [
+            "!FEATURE_A"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "B_DEPTH",
+          "default": "32",
+          "ifdefs": [
+            "FEATURE_B"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "LAST",
+          "default": "1'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "a_i",
+          "dim": "[WIDTH-1:0]",
+          "ifdefs": [
+            "FEATURE_A"
+          ],
+          "comment": [
+            "only with feature A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "no_a_i",
+          "ifdefs": [
+            "!FEATURE_A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "no_a2_i",
+          "ifdefs": [
+            "!FEATURE_A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "b_i",
+          "dim": "[WIDTH-1:0]",
+          "ifdefs": [
+            "FEATURE_B"
+          ],
+          "comment": [
+            "only with feature B"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "a_and_b_i",
+          "ifdefs": [
+            "FEATURE_B",
+            "FEATURE_A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "b_without_a_i",
+          "ifdefs": [
+            "FEATURE_B",
+            "!FEATURE_A"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scan_en_i",
+          "ifdefs": [
+            "TECH_ASIC"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "fpga_cfg_i",
+          "ifdefs": [
+            "!TECH_ASIC",
+            "TECH_FPGA"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "sim_ctrl_i",
+          "ifdefs": [
+            "!TECH_ASIC",
+            "!TECH_FPGA",
+            "TECH_SIM"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "generic_i",
+          "ifdefs": [
+            "!TECH_ASIC",
+            "!TECH_FPGA",
+            "!TECH_SIM"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "sim_only_i",
+          "ifdefs": [
+            "TECH_SIM"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "sim_or_fpga_i",
+          "ifdefs": [
+            "!TECH_SIM",
+            "TECH_FPGA"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "not_sim_not_fpga_i",
+          "ifdefs": [
+            "!TECH_SIM",
+            "!TECH_FPGA"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_o",
+          "dim": "[WIDTH-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_ram",
+          "module": "fpga_ram",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "TECH_FPGA"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "TECH_FPGA"
+          ]
+        },
+        {
+          "name": "u_ram",
+          "module": "asic_ram",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "!TECH_FPGA"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "!TECH_FPGA"
+          ]
+        },
+        {
+          "name": "u_checker",
+          "module": "checker_mod",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "only_without_a",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "x",
+          "ifdefs": [
+            "!FEATURE_A"
+          ]
+        }
+      ],
+      "ifdefs": [
+        "!FEATURE_A"
+      ]
+    },
+    {
+      "name": "only_with_b",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "y",
+          "ifdefs": [
+            "FEATURE_B"
+          ]
+        }
+      ],
+      "ifdefs": [
+        "FEATURE_B"
+      ]
+    }
+  ]
+}

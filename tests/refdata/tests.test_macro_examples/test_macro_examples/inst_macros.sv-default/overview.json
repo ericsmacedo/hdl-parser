@@ -1,0 +1,76 @@
+{
+  "path": "$PRJ/examples/sv/macros/inst_macros.sv",
+  "modules": [
+    {
+      "name": "inst_macros",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "DEPTH",
+          "default": "4"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_i",
+          "dim": "[7:0]",
+          "dim_unpacked": "[3]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[7:0]",
+          "dim_unpacked": "[3]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "irq_o"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_regs",
+          "module": "regs",
+          "connections": [
+            {
+              "con": "`CLK_RST_CON"
+            },
+            {
+              "con": "`APB_CON(cfg)"
+            }
+          ]
+        },
+        {
+          "name": "u_other",
+          "module": "other",
+          "connections": [
+            {
+              "con": "`CLK_RST_CON"
+            },
+            {
+              "con": "`UNKNOWN_CON(x)"
+            },
+            {
+              "port": "y",
+              "con": "`UNKNOWN_VALUE"
+            }
+          ]
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "CLK_RST_PORTS"
+        }
+      ]
+    }
+  ]
+}

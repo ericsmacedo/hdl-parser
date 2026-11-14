@@ -1,0 +1,85 @@
+--- original
++++ expanded
+@@ -57 +57 @@
+-  `ASSERT_INIT(CheckNGreaterZero_A, N > 0)
++
+@@ -139,3 +139,3 @@
+-  `ASSERT_KNOWN(ValidKnown_A, valid_o)
+-  `ASSERT_KNOWN(GrantKnown_A, gnt_o)
+-  `ASSERT_KNOWN(IdxKnown_A, idx_o)
++
++
++
+@@ -144,4 +144 @@
+-  `ASSERT(RoundRobin_A,
+-      ##1 valid_o && ready_i && $past(ready_i) && $past(valid_o) &&
+-      |(req_i & ~((N'(1) << $past(idx_o)+1) - 1)) |->
+-      idx_o > $past(idx_o))
++
+@@ -149 +146 @@
+-  `ASSERT(CheckHotOne_A, $onehot0(gnt_o))
++
+@@ -151 +148 @@
+-  `ASSERT(GntImpliesReady_A, |gnt_o |-> ready_i)
++
+@@ -153 +150 @@
+-  `ASSERT(GntImpliesValid_A, |gnt_o |-> valid_o)
++
+@@ -155 +152 @@
+-  `ASSERT(ReqAndReadyImplyGrant_A, |req_i && ready_i |-> |gnt_o)
++
+@@ -157 +154 @@
+-  `ASSERT(ReqImpliesValid_A, |req_i |-> valid_o)
++
+@@ -159 +156 @@
+-  `ASSERT(ReadyAndValidImplyGrant_A, ready_i && valid_o |-> |gnt_o)
++
+@@ -161 +158 @@
+-  `ASSERT(NoReadyValidNoGrant_A, !(ready_i || valid_o) |-> gnt_o == 0)
++
+@@ -163 +160 @@
+-  `ASSERT(IndexIsCorrect_A, ready_i && valid_o |-> gnt_o[idx_o] && req_i[idx_o])
++
+@@ -167 +164 @@
+-  `ASSERT(DataFlow_A, ready_i && valid_o |-> data_o == data_i[idx_o])
++
+@@ -171,2 +168 @@
+-  `ASSUME(ReqStaysHighUntilGranted0_M, |req_i && !ready_i |=>
+-      (req_i & $past(req_i)) == $past(req_i), clk_i, !rst_ni || !req_chk_i)
++
+@@ -174,2 +170 @@
+-  `ASSERT(LockArbDecision_A, |req_i && !ready_i |=> idx_o == $past(idx_o),
+-      clk_i, !rst_ni || !req_chk_i)
++
+@@ -185,2 +180,2 @@
+-  `ASSUME(KStable_M, ##1 $stable(k))
+-  `ASSUME(KRange_M, k < N)
++
++
+@@ -189,4 +184,4 @@
+-  `ASSUME(ReadyIsStable_M, ##1 $stable(ReadyIsStable))
+-  `ASSUME(ReqsAreStable_M, ##1 $stable(ReqsAreStable))
+-  `ASSUME(ReadyStable_M, ##1 !ReadyIsStable || $stable(ready_i))
+-  `ASSUME(ReqsStable_M, ##1 !ReqsAreStable || $stable(req_i))
++
++
++
++
+@@ -195 +190 @@
+-  `ASSERT(GntImpliesReq_A, gnt_o[k] |-> req_i[k])
++
+@@ -198,3 +193 @@
+-  `ASSERT(NoStarvation_A,
+-      ReqsAreStable && ReadyIsStable && ready_i && req_i[k] |->
+-      strong(##[0:$] gnt_o[k]))
++
+@@ -206,4 +199 @@
+-    `ASSERT(Fairness_A,
+-        ReqsAreStable && ReadyIsStable && ready_i && req_i[k] &&
+-        $countones(req_i) == n |->
+-        ##n gnt_cnt == $past(gnt_cnt, n) + 1)
++
+@@ -221,2 +211 @@
+-  `ASSUME(ReqStaysHighUntilGranted1_M, req_i[k] && !gnt_o[k] |=>
+-      req_i[k], clk_i, !rst_ni || !req_chk_i)
++

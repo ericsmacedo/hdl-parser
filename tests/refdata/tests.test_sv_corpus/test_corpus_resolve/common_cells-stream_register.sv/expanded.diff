@@ -1,0 +1,33 @@
+--- original
++++ expanded
+@@ -37,2 +37,28 @@
+-    `FFLARNC(valid_o, valid_i, ready_o, clr_i, 1'b0, clk_i, rst_ni)
+-    `FFLARNC(data_o,   data_i, reg_ena, clr_i,   '0, clk_i, rst_ni)
++    `ifndef NO_SYNOPSYS_FF
++  /* synopsys sync_set_reset "clr_i" */
++    `endif
++  always_ff @(posedge (clk_i) or negedge (rst_ni)) begin
++    if (!rst_ni) begin
++      valid_o <= (1'b0);
++    end else begin
++      if (clr_i) begin
++        valid_o <= (1'b0);
++      end else if (ready_o) begin
++        valid_o <= (valid_i);
++      end
++    end
++  end
++    `ifndef NO_SYNOPSYS_FF
++  /* synopsys sync_set_reset "clr_i" */
++    `endif
++  always_ff @(posedge (clk_i) or negedge (rst_ni)) begin
++    if (!rst_ni) begin
++      data_o <= ('0);
++    end else begin
++      if (clr_i) begin
++        data_o <= ('0);
++      end else if (reg_ena) begin
++        data_o <= (data_i);
++      end
++    end
++  end

@@ -1,0 +1,82 @@
+{
+  "path": "$PRJ/examples/sv/macros/param_macros.sv",
+  "modules": [
+    {
+      "name": "param_macros",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "DATA_WIDTH",
+          "default": "8"
+        },
+        {
+          "ptype": "int",
+          "name": "ADDR_WIDTH",
+          "default": "$clog2((1 << 8))"
+        },
+        {
+          "ptype": "int",
+          "name": "MASK",
+          "default": "{8{1'b1}}"
+        },
+        {
+          "ptype": "string",
+          "name": "CORE_NAME",
+          "default": "\"CORE\""
+        },
+        {
+          "ptype": "string",
+          "name": "MSG",
+          "default": "\"Module: param_macros\""
+        },
+        {
+          "ptype": "logic",
+          "name": "RESET_VALUE",
+          "dim": "[8-1:0]",
+          "default": "8'd0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_i",
+          "dim": "[8-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "addr_i",
+          "dim": "[ADDR_WIDTH-1:0]",
+          "dim_unpacked": "[`UNKNOWN_DEPTH]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[8*2-1:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "WORDS",
+          "default": "(1 << 8) / 8"
+        },
+        {
+          "ptype": "int",
+          "name": "UNKNOWN",
+          "default": "`UNKNOWN_VALUE"
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "UNKNOWN_PARAMS",
+          "args": [
+            "3"
+          ]
+        }
+      ]
+    }
+  ]
+}

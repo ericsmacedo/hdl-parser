@@ -5,6 +5,10 @@ snapshot-tested (`tests/test_sv_corpus.py::test_corpus_snapshot`, reference data
 `tests/refdata/tests.test_sv_corpus/`) and checked against structural invariants (`tests/sv_invariants.py`).
 Known parser bugs are tracked in `KNOWN_ISSUES` in `tests/test_sv_corpus.py` as strict xfails.
 
+With macro expansion, the changes made by the preprocessor are compared with reference data too
+(`tests/test_sv_corpus.py::test_corpus_expand` and `test_corpus_resolve`). The macro files of the projects are
+located in the `include` directory of each project. They have been retrieved on 2026-11-14, from the same refs.
+
 The files are kept byte-for-byte as downloaded, including their license headers, and are excluded from all
 pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of each project is stored next to its files.
 
@@ -44,6 +48,12 @@ pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of
 | `common_cells/stream_register.sv` | 1759 | `src/stream_register.sv` |
 | `common_cells/sync.sv` | 1269 | `src/sync.sv` |
 
+Macro files, for the macro expansion (include directory `common_cells/include`):
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `common_cells/include/common_cells/assertions.svh` | 9449 | `include/common_cells/assertions.svh` |
+
 ## axi
 
 - URL: <https://github.com/pulp-platform/axi>
@@ -58,6 +68,13 @@ pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of
 | `axi/axi_err_slv.sv` | 8507 | `src/axi_err_slv.sv` |
 | `axi/axi_id_prepend.sv` | 8484 | `src/axi_id_prepend.sv` |
 | `axi/axi_to_axi_lite.sv` | 12317 | `src/axi_to_axi_lite.sv` |
+
+Macro files, for the macro expansion (include directory `axi/include`):
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `axi/include/axi/assign.svh` | 43285 | `include/axi/assign.svh` |
+| `axi/include/axi/typedef.svh` | 14368 | `include/axi/typedef.svh` |
 
 ## ibex
 
@@ -83,6 +100,18 @@ pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of
 | `ibex/ibex_top.sv` | 67606 | `rtl/ibex_top.sv` |
 | `ibex/ibex_wb_stage.sv` | 13833 | `rtl/ibex_wb_stage.sv` |
 
+Macro files, for the macro expansion (include directory `ibex/include`):
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `ibex/include/dv_fcov_macros.svh` | 4202 | `vendor/lowrisc_ip/dv/sv/dv_utils/dv_fcov_macros.svh` |
+| `ibex/include/prim_assert.sv` | 9966 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv` |
+| `ibex/include/prim_assert_dummy_macros.svh` | 1102 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert_dummy_macros.svh` |
+| `ibex/include/prim_assert_sec_cm.svh` | 7571 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert_sec_cm.svh` |
+| `ibex/include/prim_assert_standard_macros.svh` | 6761 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert_standard_macros.svh` |
+| `ibex/include/prim_assert_yosys_macros.svh` | 2709 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert_yosys_macros.svh` |
+| `ibex/include/prim_flop_macros.sv` | 3576 | `vendor/lowrisc_ip/ip/prim/rtl/prim_flop_macros.sv` |
+
 ## opentitan
 
 - URL: <https://github.com/lowRISC/opentitan>
@@ -101,3 +130,14 @@ pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of
 | `opentitan/prim_pulse_sync.sv` | 3245 | `hw/ip/prim/rtl/prim_pulse_sync.sv` |
 | `opentitan/prim_subreg.sv` | 1841 | `hw/ip/prim/rtl/prim_subreg.sv` |
 | `opentitan/prim_sync_reqack.sv` | 11858 | `hw/ip/prim/rtl/prim_sync_reqack.sv` |
+
+Macro files, for the macro expansion (include directory `opentitan/include`):
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `opentitan/include/prim_assert.sv` | 9806 | `hw/ip/prim/rtl/prim_assert.sv` |
+| `opentitan/include/prim_assert_dummy_macros.svh` | 1102 | `hw/ip/prim/rtl/prim_assert_dummy_macros.svh` |
+| `opentitan/include/prim_assert_sec_cm.svh` | 4972 | `hw/ip/prim/rtl/prim_assert_sec_cm.svh` |
+| `opentitan/include/prim_assert_standard_macros.svh` | 6614 | `hw/ip/prim/rtl/prim_assert_standard_macros.svh` |
+| `opentitan/include/prim_assert_yosys_macros.svh` | 2709 | `hw/ip/prim/rtl/prim_assert_yosys_macros.svh` |
+| `opentitan/include/prim_flop_macros.sv` | 3576 | `hw/ip/prim/rtl/prim_flop_macros.sv` |

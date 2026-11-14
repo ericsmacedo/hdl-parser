@@ -1,0 +1,256 @@
+--- original
++++ expanded
+@@ -138 +138 @@
+-`ifdef RVFI
++
+@@ -183 +183 @@
+-`endif
++
+@@ -474 +474 @@
+-`ifdef RVFI
++
+@@ -519 +519 @@
+-`endif
++
+@@ -763 +763 @@
+-        `ifdef INC_ASSERT
++
+@@ -779,13 +779,3 @@
+-          `ASSERT(ScrambleKeyAppliedAtTagBank_A,
+-                  scramble_key_valid_i
+-                  |-> ##[0:10]
+-                  tag_bank.key_valid_i && (tag_bank.key_i == sampled_scramble_key),
+-                  clk_i, !rst_ni
+-          )
+-          `ASSERT(ScrambleKeyAppliedAtDataBank_A,
+-                  scramble_key_valid_i
+-                  |-> ##[0:10]
+-                  data_bank.key_valid_i && (data_bank.key_i == sampled_scramble_key),
+-                  clk_i, !rst_ni
+-          )
+-        `endif
++
++
++
+@@ -1397,25 +1387,37 @@
+-  `ASSERT_KNOWN(IbexInstrReqX, instr_req_o)
+-  `ASSERT_KNOWN_IF(IbexInstrReqPayloadX, instr_addr_o, instr_req_o)
+-
+-  `ASSERT_KNOWN(IbexDataReqX, data_req_o)
+-  `ASSERT_KNOWN_IF(IbexDataReqPayloadX,
+-    {data_we_o, data_be_o, data_addr_o, data_wdata_o, data_wdata_intg_o, data_tag_o}, data_req_o)
+-
+-  `ASSERT_KNOWN(IbexTrvkRevbmReqX, trvk_revbm_req_o)
+-  `ASSERT_KNOWN_IF(IbexTrvkRevbmReqPayloadX, trvk_revbm_addr_o, trvk_revbm_req_o)
+-
+-  `ASSERT_KNOWN(IbexScrambleReqX, scramble_req_o)
+-  `ASSERT_KNOWN(IbexDoubleFaultSeenX, double_fault_seen_o)
+-  `ASSERT_KNOWN(IbexAlertMinorX, alert_minor_o)
+-  `ASSERT_KNOWN(IbexAlertMajorInternalX, alert_major_internal_o)
+-  `ASSERT_KNOWN(IbexAlertMajorBusX, alert_major_bus_o)
+-  `ASSERT_KNOWN(IbexCoreSleepX, core_sleep_o)
+-  `ASSERT_KNOWN(IbexRamCfgIcacheTagOX, ram_cfg_icache_tag_o)
+-  `ASSERT_KNOWN(IbexRamCfgIcacheDataOX, ram_cfg_icache_data_o)
+-  `ASSERT_KNOWN(IbexLockstepCmpEnX, lockstep_cmp_en_o)
+-  `ASSERT_KNOWN(IbexDataReqShadowX, data_req_shadow_o)
+-  `ASSERT_KNOWN_IF(IbexDataReqShadowPayloadX,
+-    {data_we_shadow_o, data_be_shadow_o, data_addr_shadow_o,
+-     data_wdata_shadow_o, data_wdata_intg_shadow_o}, data_req_shadow_o)
+-  `ASSERT_KNOWN(IbexInstrReqShadowX, instr_req_shadow_o)
+-  `ASSERT_KNOWN_IF(IbexInstrReqShadowPayloadX, instr_addr_shadow_o, instr_req_shadow_o)
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++
++
++
++
++
++
++
++
++
++  `ifndef FPV_ON
++
++
++`endif
++
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1424,20 +1426,24 @@
+-  `ASSERT_KNOWN(IbexTestEnX, test_en_i)
+-  `ASSERT_KNOWN(IbexRamCfgTagX, ram_cfg_icache_tag_i)
+-  `ASSERT_KNOWN(IbexRamCfgDataX, ram_cfg_icache_data_i)
+-  `ASSERT_KNOWN(IbexCHERIoTEnableX, cheriot_enable_i)
+-  `ASSERT_KNOWN(IbexHartIdX, hart_id_i)
+-  `ASSERT_KNOWN(IbexBootAddrX, boot_addr_i)
+-  `ASSERT_KNOWN(IbexTrvkHeapBaseAddrX, trvk_heap_base_addr_i)
+-
+-  `ASSERT_KNOWN(IbexInstrGntX, instr_gnt_i)
+-  `ASSERT_KNOWN(IbexInstrRValidX, instr_rvalid_i)
+-  `ASSERT_KNOWN_IF(IbexInstrRPayloadX,
+-    {instr_rdata_i, instr_rdata_intg_i, instr_err_i}, instr_rvalid_i)
+-
+-  `ASSERT_KNOWN(IbexDataGntX, data_gnt_i)
+-  `ASSERT_KNOWN(IbexDataRValidX, data_rvalid_i)
+-
+-  `ASSERT_KNOWN(IbexTrvkRevbmGntX, trvk_revbm_gnt_i)
+-  `ASSERT_KNOWN(IbexTrvkRevbmRValidX, trvk_revbm_rvalid_i)
+-  `ASSERT_KNOWN_IF(IbexTrvkRevbmRPayloadX,
+-    {trvk_revbm_rdata_i, trvk_revbm_rdata_intg_i, trvk_revbm_err_i}, trvk_revbm_rvalid_i)
++
++
++
++
++
++
++
++
++
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++
++
++
++
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1447,3 +1453,3 @@
+-  `ASSERT_KNOWN(IbexCrashDumpLastDataAddrX, crash_dump_o.last_data_addr)
+-  `ASSERT_KNOWN(IbexCrashDumpExceptionPcX, crash_dump_o.exception_pc)
+-  `ASSERT_KNOWN(IbexCrashDumpExceptionAddrX, crash_dump_o.exception_addr)
++
++
++
+@@ -1451,2 +1457,2 @@
+-    `ASSERT_KNOWN(IbexCrashDumpCurrentPcX, crash_dump_o.current_pc)
+-    `ASSERT_KNOWN(IbexCrashDumpNextPcX, crash_dump_o.next_pc)
++
++
+@@ -1455 +1461 @@
+-  `ifdef INC_ASSERT
++
+@@ -1512,3 +1518 @@
+-    `ASSERT(MaxOutstandingDSideAccessesCorrect,
+-        data_req_o |->
+-        ~pending_dside_accesses_q[MaxOutstandingDSideAccesses-1].valid | data_rvalid_i)
++
+@@ -1517 +1521 @@
+-    `ASSERT(PendingAccessTrackingCorrect, data_rvalid_i |-> pending_dside_accesses_q[0])
++
+@@ -1522,2 +1526,4 @@
+-      `ASSERT_KNOWN_IF(IbexDataRPayloadX, {data_rdata_i, data_rdata_intg_i},
+-          data_rvalid_i)
++      `ifndef FPV_ON
++
++
++`endif
+@@ -1527,2 +1533,4 @@
+-      `ASSERT_KNOWN_IF(IbexDataRPayloadX, {data_rdata_i, data_rdata_intg_i},
+-          data_rvalid_i & pending_dside_accesses_q[0].is_read)
++      `ifndef FPV_ON
++
++
++`endif
+@@ -1533,3 +1541,6 @@
+-    `ASSERT_KNOWN_IF(IbexDataRErrPayloadX, {data_err_i, data_tag_i}, data_rvalid_i)
+-
+-    `ifdef RVFI
++    `ifndef FPV_ON
++
++
++`endif
++
++
+@@ -1606 +1617 @@
+-    `ASSERT(DoubleFaultSinglePulse, $onehot0(double_fault_seen_delay_buffer))
++
+@@ -1608,2 +1619 @@
+-    `ASSERT(DoubleFaultPulseSeenOnDoubleFault,
+-      double_fault_seen_predicted |-> |double_fault_seen_delay_buffer)
++
+@@ -1611,13 +1621,15 @@
+-    `ASSERT(DoubleFaultPulseOnlyOnDoubleFault,
+-      double_fault_seen_o |-> ##[0:DoubleFaultSeenLatency] double_fault_seen_predicted)
+-    `endif // RVFI
+-  `endif
+-
+-  `ASSERT_KNOWN(IbexIrqX, {irq_software_i, irq_timer_i, irq_external_i, irq_fast_i, irq_nm_i})
+-
+-  `ASSERT_KNOWN(IbexScrambleKeyValidX, scramble_key_valid_i)
+-  `ASSERT_KNOWN_IF(IbexScramblePayloadX, {scramble_key_i, scramble_nonce_i}, scramble_key_valid_i)
+-
+-  `ASSERT_KNOWN(IbexDebugReqX, debug_req_i)
+-  `ASSERT_KNOWN(IbexFetchEnableX, fetch_enable_i)
+-  `ASSERT_KNOWN(IbexMcounterEnableWritableX, mcounteren_writable_i)
++
++     // RVFI
++
++
++
++
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++
++
+@@ -1627 +1639 @@
+-  `ASSERT(WaddrAZeroForDummyInstr, dummy_instr_wb && rf_we_wb |-> rf_waddr_wb == '0)
++
+@@ -1630,8 +1642,5 @@
+-  `ASSERT(CrashDumpCurrentPCConn, crash_dump_o.current_pc === u_ibex_core.pc_id)
+-  `ASSERT(CrashDumpNextPCConn, crash_dump_o.next_pc === u_ibex_core.pc_if)
+-  `ASSERT(CrashDumpLastDataAddrConn,
+-    crash_dump_o.last_data_addr === u_ibex_core.load_store_unit_i.addr_last_q)
+-  `ASSERT(CrashDumpExceptionPCConn,
+-    crash_dump_o.exception_pc === u_ibex_core.cs_registers_i.mepc_q)
+-  `ASSERT(CrashDumpExceptionAddrConn,
+-    crash_dump_o.exception_addr === u_ibex_core.cs_registers_i.mtval_q)
++
++
++
++
++
+@@ -1641 +1650 @@
+-  `ifdef INC_ASSERT
++
+@@ -1653,2 +1662 @@
+-    `ASSERT(MajorAlertOnDMemIntegrityErr,
+-      trvk_rvalid && (|data_ecc_err) |-> ##[0:5] alert_major_bus_o)
++
+@@ -1663,2 +1671 @@
+-    `ASSERT(MajorAlertOnIMemIntegrityErr,
+-      instr_rvalid_i && (|instr_ecc_err) |-> ##[0:5] alert_major_bus_o)
++
+@@ -1666 +1673 @@
+-  `endif
++

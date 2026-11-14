@@ -1,0 +1,51 @@
+{
+  "path": "$PRJ/examples/sv/macros/type_macros.sv",
+  "modules": [
+    {
+      "name": "type_macros",
+      "params": [
+        {
+          "ptype": "type",
+          "name": "T",
+          "default": "logic [7:0]"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_i",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "bus_i",
+          "dim": "[16-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "nibbles_i",
+          "dim": "[4-1:0]",
+          "dim_unpacked": "[8]"
+        },
+        {
+          "direction": "input",
+          "ptype": "`EXTERNAL_T",
+          "name": "ext_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "`EXTERNAL_T(3)",
+          "name": "ext_arg_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "T",
+          "name": "data_o"
+        }
+      ]
+    }
+  ]
+}

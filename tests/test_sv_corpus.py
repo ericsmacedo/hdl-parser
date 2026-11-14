@@ -22,12 +22,14 @@
 
 """Snapshot And Invariant Tests Over A Corpus Of Real World SystemVerilog."""
 
+from difflib import unified_diff
 from pathlib import Path
 
 from pytest import mark, param
 from test2ref import assert_refdata
 
-from hdl_parser import File, Module, ModuleInstance, Port, parse_file
+from hdl_parser import File, Module, ModuleInstance, Port, parse_defines_text, parse_file
+from hdl_parser._sv.preproc import expand
 from hdl_parser.datamodel import Connection
 
 from .conftest import EXAMPLES
@@ -78,6 +80,91 @@ def test_examples_invariants(path):
     """Check Invariants On Examples."""
     file = parse_file(path)
     assert check_invariants(file, path.read_text()) == []
+
+
+# --- macro expansion ---
+
+# Defines of a typical synthesis flow
+FLOW_MACROS = parse_defines_text("`define SYNTHESIS\n`define RVFI\n`define INC_ASSERT\n")
+
+
+_NOT_COMPILED = frozenset(f"!{name}" for name in FLOW_MACROS)
+_RESOLVED = _NOT_COMPILED.union(FLOW_MACROS)
+
+
+def _inc_dirs(path: Path) -> tuple[Path, ...]:
+    """Include Directories: The Ones Of The Project First."""
+    return (path.parent / "include", CORPUS_PATH, *sorted(CORPUS_PATH.glob("*/include")))
+
+
+def _diff(path: Path, expanded: str) -> str:
+    """Changes Made By The Preprocessor."""
+    lines = unified_diff(path.read_text().splitlines(), expanded.splitlines(), "original", "expanded", lineterm="", n=0)
+    return "".join(f"{line.rstrip()}\n" for line in lines)
+
+
+@mark.parametrize("path", _cases(KNOWN_ISSUES_SNAPSHOT))
+def test_corpus_expand(tmp_path, path):
+    """Macro Expansion On The Corpus, With The Macro Files Of The Projects.
+
+    None of the corpus files creates parameters, ports or instances by macros, so the result has to be the same
+    as without macro expansion. The changes made by the preprocessor are compared with 'refdata'.
+    """
+    inc_dirs = _inc_dirs(path)
+    file = parse_file(path, expand_macros=True, resolve_ifdefs=True, inc_dirs=inc_dirs)
+    assert file == parse_file(path)
+
+    source = path.read_text()
+    expanded = expand(source, file_path=path, inc_dirs=inc_dirs, resolve_ifdefs=True)
+    assert check_invariants(file, expanded) == []
+    if expanded != source:
+        flavor = path.relative_to(CORPUS_PATH).as_posix().replace("/", "-")
+        (tmp_path / "expanded.diff").write_text(_diff(path, expanded))
+        assert_refdata(test_corpus_expand, tmp_path, flavor=flavor)
+
+
+@mark.parametrize("path", _cases(KNOWN_ISSUES_SNAPSHOT))
+def test_corpus_resolve(tmp_path, path):
+    """Resolution Of `ifdef On The Corpus, With The Defines Of A Synthesis Flow."""
+    inc_dirs = _inc_dirs(path)
+    file = parse_file(path, expand_macros=True, resolve_ifdefs=True, inc_dirs=inc_dirs, macros=FLOW_MACROS)
+    default = parse_file(path)
+
+    assert [module.name for module in file.modules] == [module.name for module in default.modules]
+    for module, default_module in zip(file.modules, default.modules, strict=True):
+        for name in ("params", "localparams", "ports", "insts"):
+            items = getattr(module, name)
+            default_items = getattr(default_module, name)
+            # code which is not compiled is gone, nothing else
+            assert [item.name for item in items] == [
+                item.name for item in default_items if _NOT_COMPILED.isdisjoint(item.ifdefs)
+            ]
+            # the resolved conditions are gone
+            assert all(_RESOLVED.isdisjoint(item.ifdefs) for item in items)
+
+    source = path.read_text()
+    expanded = expand(source, file_path=path, inc_dirs=inc_dirs, resolve_ifdefs=True, macros=FLOW_MACROS)
+    assert check_invariants(file, expanded) == []
+    if expanded != source:
+        flavor = path.relative_to(CORPUS_PATH).as_posix().replace("/", "-")
+        (tmp_path / "expanded.diff").write_text(_diff(path, expanded))
+        assert_refdata(test_corpus_resolve, tmp_path, flavor=flavor)
+
+
+def test_corpus_rvfi():
+    """The Formal Interface Of Ibex Depends On A Define."""
+    path = CORPUS_PATH / "ibex" / "ibex_top.sv"
+    ports = parse_file(path).modules[0].ports
+    rvfi = [port.name for port in ports if port.ifdefs == ("RVFI",)]
+    assert len(rvfi) > 20
+    kwargs = {"expand_macros": True, "resolve_ifdefs": True, "inc_dirs": _inc_dirs(path)}
+    # not defined: nothing changes
+    assert parse_file(path, **kwargs).modules[0].ports == ports
+    # defined: no longer conditional
+    macros = parse_defines_text("`define RVFI")
+    resolved = parse_file(path, macros=macros, **kwargs).modules[0].ports
+    assert [port.name for port in resolved] == [port.name for port in ports]
+    assert all(port.ifdefs == () for port in resolved if port.name in rvfi)
 
 
 def _mod(**kwargs) -> File:
