@@ -111,7 +111,8 @@ def test_corpus_expand(tmp_path, path):
     """
     inc_dirs = _inc_dirs(path)
     file = parse_file(path, expand_macros=True, resolve_ifdefs=True, inc_dirs=inc_dirs)
-    assert file == parse_file(path)
+    # the diagnostics differ: macros which cannot be expanded, included files which are not found
+    assert file.modules == parse_file(path).modules
 
     source = path.read_text()
     expanded = expand(source, file_path=path, inc_dirs=inc_dirs, resolve_ifdefs=True)

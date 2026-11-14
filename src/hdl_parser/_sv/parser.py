@@ -43,6 +43,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
+from .._diagnostics import Diagnostics, shorten  # noqa: TID252
 from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token  # noqa: TID252
 from .preproc import Macros, expand_mapped, split_args
 from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
@@ -206,6 +207,8 @@ class _Module:
     ports: list[_Decl] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
+    # token ranges within the header, which are not understood
+    skipped: list[tuple[int, int]] = field(default_factory=list)
 
 
 # --- types and declarations ---
@@ -339,41 +342,57 @@ def _parse_macro_call(c: Cursor) -> _Macro:
     return _Macro(tok, c.toks[c.pos - 1], dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs))
 
 
-def _parse_decl_list(c: Cursor, kind: str, macros: list[_Macro]) -> list[_Decl]:
+def _parse_decl_list(c: Cursor, kind: str, mod: _Module) -> list[_Decl]:
     """Parse the parenthesized, comma separated parameter or port declarations of a module header.
 
-    Macros which have not been expanded and stand for declarations are added to `macros`.
+    Macros which have not been expanded and stand for declarations are added to `mod.macros`,
+    anything else which is not understood to `mod.skipped`.
     """
     decls: list[_Decl] = []
-    c.next()
+    opening = c.next()
     while True:
         tok = c.peek()
         if tok.text == ")":
             c.next()
             break
         if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
             break
         pos = c.pos
-        if tok.text == ".":
+        if tok.text == ",":
+            c.next()
+        elif tok.text == ".":
             # explicit port: .name(expression)
             c.next()
             c.next()
-        elif tok.text != ",":
+        else:
             items = _parse_decl(c, kind)
             if items:
                 # direction and parameter keyword are inherited by the following declarations
                 kind = items[-1].kind
                 decls += items
         if c.pos == pos:
-            # nothing we understand
-            if tok.kind == MACRO:
-                macros.append(_parse_macro_call(c))
-            elif tok.text in OPEN:
-                c.skip_balanced()
-            else:
-                c.next()
+            _parse_unknown(c, mod)
     c.sink = None
     return decls
+
+
+def _parse_unknown(c: Cursor, mod: _Module) -> None:
+    """Consume something within the module header, which is no declaration."""
+    pos = c.pos
+    tok = c.peek()
+    if tok.kind == MACRO:
+        mod.macros.append(_parse_macro_call(c))
+        return
+    if tok.text in OPEN:
+        c.skip_balanced()
+    else:
+        c.next()
+    if mod.skipped and mod.skipped[-1][1] == pos:
+        # continued
+        mod.skipped[-1] = (mod.skipped[-1][0], c.pos)
+    else:
+        mod.skipped.append((pos, c.pos))
 
 
 def _parse_item_decl(c: Cursor) -> list[_Decl]:
@@ -407,7 +426,7 @@ def _is_instance(c: Cursor) -> bool:
 def _parse_connections(c: Cursor) -> list[_Con]:
     """Parse the parenthesized connections of an instance."""
     cons: list[_Con] = []
-    c.next()
+    opening = c.next()
     while True:
         tok = c.peek()
         text = tok.text
@@ -415,6 +434,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             c.next()
             break
         if tok.kind == EOF or (text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
             break
         if text == ",":
             c.next()
@@ -687,10 +707,10 @@ def _parse_module(c: Cursor) -> _Module | None:
         c.accept(";")
     if c.peek().text == "#" and c.peek(1).text == "(":
         c.next()
-        mod.params.extend(_parse_decl_list(c, "parameter", mod.macros))
+        mod.params.extend(_parse_decl_list(c, "parameter", mod))
     if c.peek().text == "(":
         # names of a non-ANSI port list have neither direction nor type
-        mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod.macros) if decl.kind or decl.ptype)
+        mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod) if decl.kind or decl.ptype)
     c.accept(";")
     _parse_body(c, mod)
     mod.last = c.toks[c.pos - 1]
@@ -774,15 +794,25 @@ def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstanc
     )
 
 
-def _create_macros(mod: _Module, context: str, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
-    for macro in mod.macros:
-        LOGGER.warning(
-            "%s: module '%s': macro `%s in module header is not expanded. Ports or parameters may be missing.",
-            context,
-            mod.name.text,
-            macro.call.name,
-        )
+def _create_macros(mod: _Module, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
     return tuple(macro.call.model_copy(update={"loc": smap.span(macro.first, macro.last)}) for macro in mod.macros)
+
+
+def _report(c: Cursor, mods: list[_Module], smap: SourceMap, diagnostics: Diagnostics) -> None:
+    """Report everything, which has not been parsed properly."""
+    for mod in mods:
+        name = mod.name.text
+        for start, end in mod.skipped:
+            diagnostics.add(
+                "header-item-skipped",
+                f"module '{name}': '{shorten(c.text(start, end))}' in module header is not understood. "
+                "Ports or parameters may be missing.",
+                smap.span(c.toks[start], c.toks[end - 1]),
+            )
+        if mod.last.text != "endmodule":
+            diagnostics.add("missing-end", f"module '{name}' has no 'endmodule'.", smap.span(mod.first, mod.name))
+    for tok in c.unclosed:
+        diagnostics.add("unbalanced-bracket", f"'{tok.text}' is never closed.", smap.span(tok, tok))
 
 
 def parse(  # noqa: PLR0913
@@ -792,22 +822,31 @@ def parse(  # noqa: PLR0913
     macros: Macros | None = None,
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
+    diagnostics: Diagnostics | None = None,
 ) -> tuple[dm.Module, ...]:
     """Parse SystemVerilog `text` and return its modules.
 
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
     With `resolve_ifdefs`, the `` `ifdef `` conditions on macros which are known to be defined are resolved.
+    Problems are reported to `diagnostics`.
     """
-    context = str(file_path) if file_path else "<text>"
+    if diagnostics is None:
+        diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
     if expand_macros:
-        source = text
-        text, segments = expand_mapped(
-            text, macros=macros, file_path=file_path, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs
+        text, smap = expand_mapped(
+            text,
+            macros=macros,
+            file_path=file_path,
+            inc_dirs=inc_dirs,
+            resolve_ifdefs=resolve_ifdefs,
+            diagnostics=diagnostics,
         )
-        smap = SourceMap(source, segments)
     else:
         smap = SourceMap(text)
+    c = Cursor(tokenize(text), _HARD_STOPS)
+    mods = _parse_modules(c)
+    _report(c, mods, smap, diagnostics)
     return tuple(
         dm.Module(
             name=mod.name.text,
@@ -816,8 +855,8 @@ def parse(  # noqa: PLR0913
             ports=_create_ports(mod.ports, smap),
             insts=_create_insts(mod.insts, smap),
             ifdefs=mod.first.ifdefs,
-            unresolved_macros=_create_macros(mod, context, smap),
+            unresolved_macros=_create_macros(mod, smap),
             loc=smap.span(mod.first, mod.last, mod.name),
         )
-        for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
+        for mod in mods
     )

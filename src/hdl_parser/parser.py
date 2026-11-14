@@ -42,6 +42,7 @@ from pathlib import Path
 from typing import Literal, TypeAlias
 
 from . import datamodel as dm
+from ._diagnostics import Diagnostics
 from ._ids import assign_ids
 from ._sv.parser import parse as parse_sv
 from ._sv.preproc import Macro, Macros, collect_defines, read_text
@@ -193,8 +194,9 @@ def parse_text(  # noqa: PLR0913
     if lang is None and file_path:
         lang = LANGMAP.get(file_path.suffix)
 
+    diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
     if lang == "vhdl":
-        modules = assign_ids(parse_vhdl(text), casefold=True)
+        modules = assign_ids(parse_vhdl(text, diagnostics), casefold=True)
     else:
         modules = parse_sv(
             text,
@@ -203,11 +205,21 @@ def parse_text(  # noqa: PLR0913
             macros=macros,
             inc_dirs=map(Path, inc_dirs),
             resolve_ifdefs=resolve_ifdefs,
+            diagnostics=diagnostics,
         )
         modules = assign_ids(modules)
 
     if not modules:
         # this is fine: packages, interfaces, included files, ...
-        LOGGER.info("%s: no module found.", file_path or "<text>")
+        diagnostics.add("no-module", "no module found.")
+    for module in modules:
+        for macro in module.unresolved_macros:
+            diagnostics.add(
+                "macro-not-expanded",
+                f"module '{module.name}': macro `{macro.name} in module header is not expanded. "
+                "Ports or parameters may be missing.",
+                macro.loc,
+                item=macro.id,
+            )
 
-    return dm.File(path=file_path, modules=modules)
+    return dm.File(path=file_path, modules=modules, diagnostics=diagnostics.finish(modules))

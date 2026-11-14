@@ -57,7 +57,8 @@ from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
-from .._tokens import Segment  # noqa: TID252
+from .._diagnostics import Diagnostics  # noqa: TID252
+from .._tokens import Segment, SourceMap  # noqa: TID252
 
 LOGGER = logging.getLogger(__name__)
 
@@ -152,7 +153,14 @@ class _Preprocessor:
         ambiguous: Macros with different definitions under unknown conditions. They are not expanded.
     """
 
-    def __init__(self, macros: Macros | None = None, inc_dirs: Iterable[Path] = (), resolve_ifdefs: bool = False):
+    def __init__(
+        self,
+        diagnostics: Diagnostics,
+        macros: Macros | None = None,
+        inc_dirs: Iterable[Path] = (),
+        resolve_ifdefs: bool = False,
+    ):
+        self.diagnostics = diagnostics
         self.macros: dict[str, Macro] = dict(macros or {})
         self.ambiguous: set[str] = set()
         # macros handed over are never touched
@@ -170,6 +178,10 @@ class _Preprocessor:
         self.segments: list[Segment] = []
         self.out_len = 0
         self.call: Segment | None = None
+        # problems are located at the outermost directive or macro call: its range within the main text.
+        # `smap` creates the location. Without, problems have no location.
+        self.site: tuple[int, int] | None = None
+        self.smap: SourceMap | None = None
 
     def process_file(self, file_path: Path, out: list[str] | None = None) -> None:
         """Process the file at `file_path`."""
@@ -201,32 +213,53 @@ class _Preprocessor:
                     directive = self._branch(mat.group("cond"), mat.group("cname"), mat.group(), text, pos)
                 if out is not None:
                     self._emit(out, directive, start, pos, "")
-            elif self.state == _INACTIVE:
-                pass
-            elif kind == "macro":
-                result = self._expand_call(text, mat, context)
-                if result is not None:
-                    expanded, end = result
-                    if out is not None:
-                        self._emit(out, text[pos:start], pos)
-                    pos = end
-                    # the replacement is processed like any other text
-                    outermost = out is not None and out is self.main_out and self.call is None
-                    if outermost:
-                        self.call = Segment(0, start, end, mat.group("macro"))
-                    self.expanding.append(mat.group("macro"))
-                    self.process(expanded, context, basedir, out)
-                    self.expanding.pop()
-                    if outermost:
-                        self.call = None
-            elif kind == "define":
-                self._define(mat.group("dname"), mat.group("define"), context)
-            elif kind == "undef":
-                self._undef(mat.group("undef"))
-            else:
-                self._include(mat.group("include"), context, basedir)
+            elif self.state != _INACTIVE:
+                # problems within a macro or an included file are reported here
+                outermost = self.site is None
+                if outermost:
+                    self.site = (start, mat.end())
+                if kind == "macro":
+                    pos = self._macro(text, mat, pos, context, basedir, out)
+                elif kind == "define":
+                    self._define(mat.group("dname"), mat.group("define"), context)
+                elif kind == "undef":
+                    self._undef(mat.group("undef"))
+                else:
+                    self._include(mat.group("include"), context, basedir)
+                if outermost:
+                    self.site = None
         if out is not None and self.state != _INACTIVE:
             self._emit(out, text[pos:], pos)
+
+    def _macro(  # noqa: PLR0913
+        self, text: str, mat: re.Match, pos: int, context: str, basedir: Path | None, out: list[str] | None
+    ) -> int:
+        """Replace the macro call at `mat` by its expansion, if possible. Return the position processed up to."""
+        result = self._expand_call(text, mat, context)
+        if result is None:
+            return pos
+        expanded, end = result
+        start = mat.start()
+        name = mat.group("macro")
+        if out is not None:
+            self._emit(out, text[pos:start], pos)
+        # the source map points to the outermost macro call
+        mapped = out is not None and out is self.main_out and self.call is None
+        if mapped:
+            self.call = Segment(0, start, end, name)
+        # the replacement is processed like any other text
+        self.expanding.append(name)
+        self.process(expanded, context, basedir, out)
+        self.expanding.pop()
+        if mapped:
+            self.call = None
+        return end
+
+    def _report(self, code: str, message: str, context: str) -> None:
+        """Report problem `code` within `context` (the main text or an included file)."""
+        loc = self.smap.source_location(*self.site) if self.smap and self.site else None
+        file = "" if context == self.diagnostics.context else context
+        self.diagnostics.add(code, message, loc, file=file)
 
     def _emit(
         self, out: list[str], chunk: str, src_start: int, src_end: int | None = None, macro: str | None = None
@@ -325,7 +358,7 @@ class _Preprocessor:
             return
         macro = _parse_define(name, text)
         if macro is None:
-            LOGGER.warning("%s: cannot parse definition of macro `%s. Skipped.", context, name)
+            self._report("macro-bad-define", f"cannot parse definition of macro `{name}. Skipped.", context)
         elif self.state == _ACTIVE:
             self.ambiguous.discard(name)
             self.macros[name] = macro
@@ -351,7 +384,7 @@ class _Preprocessor:
             if file_path.is_file():
                 break
         else:
-            LOGGER.info("%s: included file '%s' not found. Its macros are unknown.", context, name)
+            self._report("include-not-found", f"included file '{name}' not found. Its macros are unknown.", context)
             return
         resolved = file_path.resolve()
         if resolved in self.included or resolved in self.including:
@@ -363,7 +396,7 @@ class _Preprocessor:
         try:
             self.process_file(file_path)
         except OSError as exc:
-            LOGGER.warning("%s: cannot read included file '%s': %s", context, file_path, exc)
+            self._report("include-unreadable", f"cannot read included file '{file_path}': {exc}", context)
         # an included file never changes the conditions of the including one
         del self.conds[depth:]
         self.state = state
@@ -376,10 +409,10 @@ class _Preprocessor:
             if name in self.ambiguous:
                 # report once
                 self.ambiguous.remove(name)
-                LOGGER.warning("%s: macro `%s has conflicting definitions. Not expanded.", context, name)
+                self._report("macro-ambiguous", f"macro `{name} has conflicting definitions. Not expanded.", context)
             return None
         if name in self.expanding or len(self.expanding) >= _MAX_DEPTH:
-            LOGGER.warning("%s: recursive macro `%s is not expanded.", context, name)
+            self._report("macro-recursive", f"recursive macro `{name} is not expanded.", context)
             return None
         if macro.params is None:
             return macro.body, mat.end()
@@ -387,12 +420,14 @@ class _Preprocessor:
         start = _skip_spaces(text, mat.end())
         end = find_closing(text, start)
         if end is None:
-            LOGGER.warning("%s: macro `%s requires arguments. Not expanded.", context, name)
+            self._report("macro-args-missing", f"macro `{name} requires arguments. Not expanded.", context)
             return None
         arg_text = _RE_ARG_COMMENT.sub(lambda mat: mat.group("string") or " ", text[start + 1 : end - 1])
         args = _bind_args(macro, split_args(arg_text))
         if args is None:
-            LOGGER.warning("%s: macro `%s is used with wrong number of arguments. Not expanded.", context, name)
+            self._report(
+                "macro-args-count", f"macro `{name} is used with wrong number of arguments. Not expanded.", context
+            )
             return None
         # Macros within arguments are expanded first. So a macro may be used within its own arguments.
         for pname, arg in args.items():
@@ -414,7 +449,9 @@ def collect_defines(
     Included files are searched next to the including file and in `inc_dirs`.
     A macro which is defined with different content under unknown conditions is ambiguous and therefore skipped.
     """
-    preproc = _Preprocessor(inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    # the problems are just logged
+    diagnostics = Diagnostics("<defines>")
+    preproc = _Preprocessor(diagnostics, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
     for text in texts:
         preproc.process(text, "<text>")
         preproc.reset_conds()
@@ -422,7 +459,7 @@ def collect_defines(
         preproc.process_file(file_path)
         preproc.reset_conds()
     for name in sorted(preproc.ambiguous):
-        LOGGER.warning("macro `%s has conflicting definitions. Skipped.", name)
+        diagnostics.add("macro-ambiguous", f"macro `{name} has conflicting definitions. Skipped.")
     return preproc.macros
 
 
@@ -442,31 +479,36 @@ def expand(
     return expand_mapped(text, macros, file_path, inc_dirs, resolve_ifdefs)[0]
 
 
-def expand_mapped(
+def expand_mapped(  # noqa: PLR0913
     text: str,
     macros: Macros | None = None,
     file_path: Path | None = None,
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
-) -> tuple[str, list[Segment] | None]:
-    """Like [expand][hdl_parser._sv.preproc.expand], but also return the origin of the result within `text`.
+    diagnostics: Diagnostics | None = None,
+) -> tuple[str, SourceMap]:
+    """Like [expand][hdl_parser._sv.preproc.expand], but also return the source map of the result.
 
-    The segments are `None`, if the result is `text` itself.
+    Problems are reported to `diagnostics`.
     """
+    smap = SourceMap(text)
     if "`" not in text:
-        return text, None
-    preproc = _Preprocessor(macros, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
+        return text, smap
+    context = str(file_path) if file_path else "<text>"
+    preproc = _Preprocessor(diagnostics or Diagnostics(context), macros, inc_dirs, resolve_ifdefs)
+    preproc.smap = smap
     out: list[str] = []
     preproc.main_out = out
     if file_path:
         preproc.including.append(file_path.resolve())
-        preproc.process(text, str(file_path), file_path.parent, out)
+        preproc.process(text, context, file_path.parent, out)
     else:
-        preproc.process(text, "<text>", None, out)
+        preproc.process(text, context, None, out)
     # most of the time, there is nothing to do
     if len(out) == 1:
-        return text, None
-    return "".join(out), preproc.segments
+        return text, smap
+    smap.set_segments(preproc.segments)
+    return "".join(out), smap
 
 
 def _parse_define(name: str, text: str) -> Macro | None:

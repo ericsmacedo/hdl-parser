@@ -83,16 +83,22 @@ class Segment(NamedTuple):
 class SourceMap:
     """Translate Positions Within The Parsed Text To Source Locations.
 
-    The parsed text is the source itself (no `segments`) or created from the source by the preprocessor.
+    The parsed text is the source itself, or created from the source by the preprocessor. In the latter
+    case, the preprocessor describes the origin of the parsed text by `set_segments`.
     """
 
     __slots__ = ("_line_starts", "_seg_starts", "_segments", "_source")
 
-    def __init__(self, source: str, segments: Sequence[Segment] | None = None):
+    def __init__(self, source: str):
         self._source = source
         self._line_starts: list[int] | None = None
+        self._segments: Sequence[Segment] = ()
+        self._seg_starts: list[int] = []
+
+    def set_segments(self, segments: Sequence[Segment]) -> None:
+        """The parsed text is not the source, but consists of `segments`."""
         self._segments = segments
-        self._seg_starts = [seg.start for seg in segments] if segments else []
+        self._seg_starts = [seg.start for seg in segments]
 
     def _source_pos(self, pos: int, end: bool) -> tuple[int, str]:
         """Source position and macro name of position `pos` within the parsed text.
@@ -114,6 +120,12 @@ class SourceMap:
             line_starts = self._line_starts = [0, *accumulate(len(line) + 1 for line in self._source.split("\n"))]
         line = bisect_right(line_starts, pos)
         return line, pos - line_starts[line - 1] + 1
+
+    def source_location(self, start: int, end: int) -> dm.Location:
+        """Location of `start` to `end` (exclusive) within the source."""
+        line, col = self._line_col(start)
+        end_line, end_col = self._line_col(max(end - 1, start))
+        return dm.Location(line=line, col=col, end_line=end_line, end_col=end_col + 1)
 
     def location(self, start: int, end: int, anchor: tuple[int, int] | None = None) -> dm.Location:
         """Location of `start` to `end` (exclusive) within the parsed text.
@@ -162,7 +174,7 @@ class Cursor:
     Nothing is ever skipped beyond the end of the token stream or a keyword of `hard_stops`.
     """
 
-    __slots__ = ("_gap_starts", "comments", "gaps", "hard_stops", "last", "pos", "sink", "source", "toks")
+    __slots__ = ("_gap_starts", "comments", "gaps", "hard_stops", "last", "pos", "sink", "source", "toks", "unclosed")
 
     def __init__(self, tokens: Tokens, hard_stops: frozenset[str] = frozenset()):
         self.hard_stops = hard_stops
@@ -174,6 +186,8 @@ class Cursor:
         self.last = len(self.toks) - 1
         self.pos = 0
         self.sink: list[str] | None = None
+        # opening brackets, which are never closed
+        self.unclosed: list[Token] = []
 
     def peek(self, offset: int = 0) -> Token:
         """Token at current position plus `offset`, without consuming it."""
@@ -205,8 +219,8 @@ class Cursor:
         self.sink = []
         return self.sink
 
-    def match(self, idx: int) -> int:
-        """Index behind the bracket group starting at `idx`."""
+    def _group_end(self, idx: int) -> tuple[int, bool]:
+        """Index behind the bracket group starting at `idx`, and whether the group is closed."""
         toks = self.toks
         hard_stops = self.hard_stops
         depth = 0
@@ -218,10 +232,14 @@ class Cursor:
             elif text in CLOSE:
                 depth -= 1
                 if depth <= 0:
-                    return idx + 1
+                    return idx + 1, True
             elif tok.kind == EOF or (text in hard_stops and tok.kind == KW):
-                return idx
+                return idx, False
             idx += 1
+
+    def match(self, idx: int) -> int:
+        """Index behind the bracket group starting at `idx`."""
+        return self._group_end(idx)[0]
 
     def skip_to(self, idx: int) -> None:
         """Consume all tokens up to `idx`."""
@@ -233,7 +251,10 @@ class Cursor:
 
     def skip_balanced(self) -> None:
         """Consume the bracket group at the current position."""
-        self.skip_to(self.match(self.pos))
+        end, closed = self._group_end(self.pos)
+        if not closed:
+            self.unclosed.append(self.toks[self.pos])
+        self.skip_to(end)
 
     def skip_until(self, stops: frozenset[str]) -> None:
         """Consume tokens until one of `stops`. Bracket groups are skipped as a whole.

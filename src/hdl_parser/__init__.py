@@ -34,11 +34,12 @@ Macros are expanded on request, if their definition is known. Macros from other 
 You receive a [hdl_parser.File][] object holding all information.
 """
 
-from .datamodel import File, Location, MacroCall, Module, ModuleInstance, Param, Port
+from .datamodel import Diagnostic, File, Location, MacroCall, Module, ModuleInstance, Param, Port
 from .filelistparser import parse_filelist
 from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_text
 
 __all__ = [
+    "Diagnostic",
     "File",
     "Location",
     "Macro",

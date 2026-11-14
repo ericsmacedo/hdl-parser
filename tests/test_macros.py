@@ -372,7 +372,7 @@ endmodule
     )
     assert _ports(text) == ["output logic q"]
     assert [param.name for param in module.params] == ["A"]
-    assert "file.sv: module 'm': macro `AXI_PORTS in module header is not expanded." in caplog.text
+    assert "file.sv:8:5: module 'm': macro `AXI_PORTS in module header is not expanded." in caplog.text
 
 
 @mark.parametrize(
