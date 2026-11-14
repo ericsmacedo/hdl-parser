@@ -23,6 +23,7 @@
 
 import logging
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 
 import click
@@ -31,8 +32,11 @@ from rich.console import Console
 from rich.logging import RichHandler
 
 from ._gen_templates import gen_instance, gen_markdown_table
+from .datamodel import File
 from .filelistparser import parse_filelist
-from .parser import parse_file
+from .parser import parse_defines, parse_file
+
+LOGGER = logging.getLogger(__name__)
 
 _LOGLEVELMAP = {
     0: logging.WARNING,
@@ -45,6 +49,42 @@ arg_filepaths = click.argument("filepaths", nargs=-1, type=click.Path(exists=Tru
 opt_filelists = click.option(
     "--filelist", "-f", type=click.Path(exists=True, readable=True, path_type=Path), multiple=True, help="Filelist"
 )
+opt_expand_macros = click.option(
+    "--expand-macros",
+    "-e",
+    is_flag=True,
+    help="Expand macros which are defined in the file, its included files or the files given by '--macro-file'.",
+)
+opt_macro_files = click.option(
+    "--macro-file",
+    "-m",
+    "macro_files",
+    type=click.Path(exists=True, readable=True, path_type=Path),
+    multiple=True,
+    help="File with `define macros. Requires '--expand-macros'. Can be given multiple times.",
+)
+opt_resolve_ifdefs = click.option(
+    "--resolve-ifdefs",
+    "-r",
+    is_flag=True,
+    help="Resolve `ifdef conditions on macros which are known to be defined. Requires '--expand-macros'.",
+)
+opt_inc_dirs = click.option(
+    "--incdir",
+    "-I",
+    "inc_dirs",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    multiple=True,
+    help="Directory to search for included files, in addition to the ones of the filelists. "
+    "Used by '--expand-macros'. Can be given multiple times.",
+)
+
+
+def opt_parse(func):
+    """Options which control the parser. See `_parse_files`."""
+    for option in (opt_resolve_ifdefs, opt_inc_dirs, opt_macro_files, opt_expand_macros, opt_filelists):
+        func = option(func)
+    return func
 
 
 def _create_console(**kwargs) -> Console:
@@ -112,12 +152,11 @@ pass_ctx = click.make_pass_decorator(Ctx)
 
 @cli.command()
 @arg_filepaths
-@opt_filelists
+@opt_parse
 @pass_ctx
-def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]):  # noqa: ARG001
+def gen_sv_instance(ctx, filepaths: tuple[Path, ...], **options):  # noqa: ARG001
     """Parses an SystemVerilog file and returns a instance of the module."""
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+    for file in _parse_files(filepaths, **options):
         for module in file.modules:
             instance = gen_instance(module)
             print(instance)
@@ -125,7 +164,7 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]
 
 @cli.command()
 @arg_filepaths
-@opt_filelists
+@opt_parse
 @pass_ctx
 @click.option(
     "--width",
@@ -136,17 +175,16 @@ def gen_sv_instance(ctx, filepaths: tuple[Path, ...], filelist: tuple[Path, ...]
 )
 @click.option("--level", "-l", type=int, default=2, help="Markdown Header Level. Default 2. Means '##'")
 @click.option("--sub", "-s", is_flag=True, help="Show Submodules")
-def info(  # noqa: PLR0913
+def info(
     ctx: Ctx,
     filepaths: tuple[Path, ...],
-    filelist: tuple[Path, ...],
     width: int | None = None,
     level: int = 2,
     sub: bool = False,
+    **options,
 ) -> None:
     """Creates Markdown Overview Tables."""
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+    for file in _parse_files(filepaths, **options):
         pre = "#" * level
         for module in file.modules:
             params, ports, insts = gen_markdown_table(module, width=width)
@@ -176,17 +214,33 @@ Path `{file.path!s}`
 
 @cli.command()
 @arg_filepaths
-@opt_filelists
-def json(filepaths: tuple[Path, ...], filelist: tuple[Path, ...]) -> None:
+@opt_parse
+def json(filepaths: tuple[Path, ...], **options) -> None:
     """Dump All Extracted Information in a JSON file."""
-    for filepath in _join_filepaths(filepaths, filelist):
-        file = parse_file(filepath)
+    for file in _parse_files(filepaths, **options):
         print(file.overview)
 
 
-def _join_filepaths(filepaths: tuple[Path, ...], filelists: tuple[Path, ...]) -> list[Path]:
+def _parse_files(  # noqa: PLR0913
+    filepaths: tuple[Path, ...],
+    filelist: tuple[Path, ...] = (),
+    expand_macros: bool = False,
+    macro_files: tuple[Path, ...] = (),
+    inc_dirs: tuple[Path, ...] = (),
+    resolve_ifdefs: bool = False,
+) -> Iterator[File]:
+    """Parse all files according to the options of `opt_parse`."""
+    for option, value in (("--macro-file", macro_files), ("--resolve-ifdefs", resolve_ifdefs)):
+        if value and not expand_macros:
+            # the context swallows the message
+            LOGGER.error("'%s' requires '--expand-macros'.", option)
+            raise click.UsageError(f"'{option}' requires '--expand-macros'.")
     all_filepaths = list(filepaths)
-    all_incdirs: list[Path] = []
-    for filelist in filelists:
-        parse_filelist(all_filepaths, all_incdirs, filelist)
-    return all_filepaths
+    all_inc_dirs = list(inc_dirs)
+    for filelist_path in filelist:
+        parse_filelist(all_filepaths, all_inc_dirs, filelist_path)
+    macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    for filepath in all_filepaths:
+        yield parse_file(
+            filepath, expand_macros=expand_macros, macros=macros, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs
+        )
