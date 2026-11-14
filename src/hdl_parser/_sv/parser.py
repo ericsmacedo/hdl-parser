@@ -38,6 +38,7 @@ dispatched by their leading keyword: a new one is a function decorated with `_ha
 
 import logging
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NamedTuple
 
@@ -147,10 +148,16 @@ _DECLARATIONS = frozenset(
 )
 
 
-class _Decl(NamedTuple):
-    """One Declared Name (Port or Parameter)."""
+# All items know their `first` and `last` token: the source range they are parsed from.
+# Items with a name know its token as `name`.
 
-    token: Token
+
+class _Decl(NamedTuple):
+    """One Declared Name (Port or Parameter). `first` and `last` span the whole declaration."""
+
+    first: Token
+    last: Token
+    name: Token
     kind: str  # port direction or parameter keyword
     ptype: str
     dtype: str
@@ -158,39 +165,47 @@ class _Decl(NamedTuple):
     dim_unpacked: str
     default: str
     comment: list[str]
-    first: Token
-    last: Token
 
 
 class _Con(NamedTuple):
-    token: Token
+    """One Connection Of An Instance."""
+
+    first: Token
+    last: Token
     port: str
     con: str
     comment: list[str]
-    last: Token
 
 
 class _Inst(NamedTuple):
-    module: Token
-    name: Token
-    cons: list[_Con]
+    """One Instance. `first` and `last` span the whole instantiation."""
+
+    first: Token
     last: Token
+    name: Token
+    module: Token
+    cons: list[_Con]
 
 
 class _Macro(NamedTuple):
-    call: dm.MacroCall
+    """Macro Call Within The Module Header, Which Has Not Been Expanded."""
+
     first: Token
     last: Token
+    call: dm.MacroCall
 
 
-class _Module(NamedTuple):
-    token: Token
+@dataclass
+class _Module:
+    """One Module. `last` is known as soon as the module is parsed completely."""
+
+    first: Token
+    last: Token
     name: Token
-    params: list[_Decl]
-    ports: list[_Decl]
-    insts: list[_Inst]
-    macros: list[_Macro]
-    last: list[Token]
+    params: list[_Decl] = field(default_factory=list)
+    ports: list[_Decl] = field(default_factory=list)
+    insts: list[_Inst] = field(default_factory=list)
+    macros: list[_Macro] = field(default_factory=list)
 
 
 # --- types and declarations ---
@@ -298,7 +313,7 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
             start = c.pos
             c.skip_until(_VALUE_STOPS)
             default = c.text(start, c.pos).strip()
-        decls.append(_Decl(tok, kind, ptype, dtype, dim, dim_unpacked, default, comment, first, tok))
+        decls.append(_Decl(first, tok, tok, kind, ptype, dtype, dim, dim_unpacked, default, comment))
         # another name of this declaration, or the next declaration?
         if c.peek().text == "," and c.peek(1).kind == ID and not _type_ref_end(c, c.pos + 1):
             c.next()
@@ -321,7 +336,7 @@ def _parse_macro_call(c: Cursor) -> _Macro:
         start = c.pos + 1
         c.skip_balanced()
         args = tuple(split_args(c.text(start, c.pos - 1)))
-    return _Macro(dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs), tok, c.toks[c.pos - 1])
+    return _Macro(tok, c.toks[c.pos - 1], dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs))
 
 
 def _parse_decl_list(c: Cursor, kind: str, macros: list[_Macro]) -> list[_Decl]:
@@ -413,9 +428,9 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             if c.peek().text == "(":
                 start = c.pos + 1
                 c.skip_balanced()
-                cons.append(_Con(tok, port.text, c.text(start, c.pos - 1).strip(), comment, c.toks[c.pos - 1]))
+                cons.append(_Con(tok, c.toks[c.pos - 1], port.text, c.text(start, c.pos - 1).strip(), comment))
             else:
-                cons.append(_Con(tok, port.text, port.text, comment, port))
+                cons.append(_Con(tok, port, port.text, port.text, comment))
         else:
             # connection by order
             pos = c.pos
@@ -424,7 +439,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             if c.pos == pos:
                 c.next()
             else:
-                cons.append(_Con(tok, "", c.text(pos, c.pos).strip(), comment, c.toks[c.pos - 1]))
+                cons.append(_Con(tok, c.toks[c.pos - 1], "", c.text(pos, c.pos).strip(), comment))
     return cons
 
 
@@ -439,7 +454,7 @@ def _parse_instances(c: Cursor) -> list[_Inst]:
         name = c.next()
         while c.peek().text == "[":
             c.skip_balanced()
-        insts.append(_Inst(module, name, _parse_connections(c), name))
+        insts.append(_Inst(module, name, name, module, _parse_connections(c)))
         if c.peek().text == "," and c.peek(1).kind == ID:
             c.next()
         else:
@@ -665,7 +680,8 @@ def _parse_module(c: Cursor) -> _Module | None:
         c.next()
     if c.peek().kind != ID:
         return None
-    mod = _Module(start, c.next(), [], [], [], [], [])
+    name = c.next()
+    mod = _Module(start, name, name)
     while c.peek().text == "import":
         c.skip_until(_SEMI)
         c.accept(";")
@@ -677,7 +693,7 @@ def _parse_module(c: Cursor) -> _Module | None:
         mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod.macros) if decl.kind or decl.ptype)
     c.accept(";")
     _parse_body(c, mod)
-    mod.last.append(c.toks[c.pos - 1])
+    mod.last = c.toks[c.pos - 1]
     return mod
 
 
@@ -705,14 +721,14 @@ def _parse_modules(c: Cursor) -> list[_Module]:
 def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.Param, ...]:
     return tuple(
         dm.Param(
-            name=decl.token.text,
+            name=decl.name.text,
             ptype=decl.ptype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             default=decl.default,
             comment=tuple(decl.comment),
-            ifdefs=decl.token.ifdefs,
-            loc=smap.span(decl.first, decl.last, decl.token),
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
         if decl.kind == kind
@@ -722,15 +738,15 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
 def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     return tuple(
         dm.Port(
-            name=decl.token.text,
+            name=decl.name.text,
             direction=decl.kind,
             ptype=decl.ptype,
             dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             comment=tuple(decl.comment),
-            ifdefs=decl.token.ifdefs,
-            loc=smap.span(decl.first, decl.last, decl.token),
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
     )
@@ -747,12 +763,12 @@ def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstanc
                     port=con.port,
                     con=con.con,
                     comment=tuple(con.comment),
-                    ifdefs=con.token.ifdefs,
-                    loc=smap.span(con.token, con.last),
+                    ifdefs=con.first.ifdefs,
+                    loc=smap.span(con.first, con.last),
                 )
                 for con in inst.cons
             ),
-            loc=smap.span(inst.module, inst.last, inst.name),
+            loc=smap.span(inst.first, inst.last, inst.name),
         )
         for inst in insts
     )
@@ -799,9 +815,9 @@ def parse(  # noqa: PLR0913
             localparams=_create_params(mod.params, "localparam", smap),
             ports=_create_ports(mod.ports, smap),
             insts=_create_insts(mod.insts, smap),
-            ifdefs=mod.token.ifdefs,
+            ifdefs=mod.first.ifdefs,
             unresolved_macros=_create_macros(mod, context, smap),
-            loc=smap.span(mod.token, mod.last[0], mod.name),
+            loc=smap.span(mod.first, mod.last, mod.name),
         )
         for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
     )
