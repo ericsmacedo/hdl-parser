@@ -982,6 +982,64 @@
           "id": "neorv32_cpu.cpu_frontend_inst",
           "name": "cpu_frontend_inst",
           "module": "neorv32_cpu_frontend",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_frontend_inst.hart_id",
+              "port": "HART_ID",
+              "con": "HART_ID",
+              "comment": [
+                "-- hardware thread ID"
+              ],
+              "loc": {
+                "line": 231,
+                "col": 5,
+                "end_line": 231,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_frontend_inst.riscv_c",
+              "port": "RISCV_C",
+              "con": "RISCV_ISA_C",
+              "comment": [
+                "-- implement C ISA extension"
+              ],
+              "loc": {
+                "line": 232,
+                "col": 5,
+                "end_line": 232,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_frontend_inst.riscv_zcb",
+              "port": "RISCV_ZCB",
+              "con": "RISCV_ISA_Zcb",
+              "comment": [
+                "-- implement Zcb ISA sub-extension"
+              ],
+              "loc": {
+                "line": 233,
+                "col": 5,
+                "end_line": 233,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_frontend_inst.riscv_zcmop",
+              "port": "RISCV_ZCMOP",
+              "con": "riscv_zcmop_c",
+              "comment": [
+                "-- implement Zcb ISA sub-extension"
+              ],
+              "loc": {
+                "line": 234,
+                "col": 5,
+                "end_line": 234,
+                "end_col": 33
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_frontend_inst.clk_i",
@@ -1124,6 +1182,612 @@
           "id": "neorv32_cpu.cpu_control_inst",
           "name": "cpu_control_inst",
           "module": "neorv32_cpu_control",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_control_inst.hart_id",
+              "port": "HART_ID",
+              "con": "HART_ID",
+              "comment": [
+                "-- hardware thread ID"
+              ],
+              "loc": {
+                "line": 258,
+                "col": 5,
+                "end_line": 258,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.vendor_id",
+              "port": "VENDOR_ID",
+              "con": "VENDOR_ID",
+              "comment": [
+                "-- vendor ID"
+              ],
+              "loc": {
+                "line": 259,
+                "col": 5,
+                "end_line": 259,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.boot_addr",
+              "port": "BOOT_ADDR",
+              "con": "BOOT_ADDR",
+              "comment": [
+                "-- CPU boot address"
+              ],
+              "loc": {
+                "line": 260,
+                "col": 5,
+                "end_line": 260,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.debug_park_addr",
+              "port": "DEBUG_PARK_ADDR",
+              "con": "DEBUG_PARK_ADDR",
+              "comment": [
+                "-- CPU debug mode parking loop entry address"
+              ],
+              "loc": {
+                "line": 261,
+                "col": 5,
+                "end_line": 261,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.debug_exc_addr",
+              "port": "DEBUG_EXC_ADDR",
+              "con": "DEBUG_EXC_ADDR",
+              "comment": [
+                "-- CPU debug mode exception entry address",
+                "-- RISC-V ISA Extensions --"
+              ],
+              "loc": {
+                "line": 262,
+                "col": 5,
+                "end_line": 262,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_a",
+              "port": "RISCV_ISA_A",
+              "con": "riscv_a_c",
+              "comment": [
+                "-- atomic memory operations extension"
+              ],
+              "loc": {
+                "line": 264,
+                "col": 5,
+                "end_line": 264,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_b",
+              "port": "RISCV_ISA_B",
+              "con": "riscv_b_c",
+              "comment": [
+                "-- bit-manipulation extension"
+              ],
+              "loc": {
+                "line": 265,
+                "col": 5,
+                "end_line": 265,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_c",
+              "port": "RISCV_ISA_C",
+              "con": "RISCV_ISA_C",
+              "comment": [
+                "-- compressed extension"
+              ],
+              "loc": {
+                "line": 266,
+                "col": 5,
+                "end_line": 266,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_e",
+              "port": "RISCV_ISA_E",
+              "con": "RISCV_ISA_E",
+              "comment": [
+                "-- embedded RF extension"
+              ],
+              "loc": {
+                "line": 267,
+                "col": 5,
+                "end_line": 267,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_m",
+              "port": "RISCV_ISA_M",
+              "con": "RISCV_ISA_M",
+              "comment": [
+                "-- mul/div extension"
+              ],
+              "loc": {
+                "line": 268,
+                "col": 5,
+                "end_line": 268,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_u",
+              "port": "RISCV_ISA_U",
+              "con": "RISCV_ISA_U",
+              "comment": [
+                "-- user mode extension"
+              ],
+              "loc": {
+                "line": 269,
+                "col": 5,
+                "end_line": 269,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zaamo",
+              "port": "RISCV_ISA_Zaamo",
+              "con": "RISCV_ISA_Zaamo",
+              "comment": [
+                "-- atomic read-modify-write operations extension"
+              ],
+              "loc": {
+                "line": 270,
+                "col": 5,
+                "end_line": 270,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zalrsc",
+              "port": "RISCV_ISA_Zalrsc",
+              "con": "RISCV_ISA_Zalrsc",
+              "comment": [
+                "-- atomic reservation-set operations extension"
+              ],
+              "loc": {
+                "line": 271,
+                "col": 5,
+                "end_line": 271,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zba",
+              "port": "RISCV_ISA_Zba",
+              "con": "RISCV_ISA_Zba",
+              "comment": [
+                "-- shifted-add bit-manipulation extension"
+              ],
+              "loc": {
+                "line": 272,
+                "col": 5,
+                "end_line": 272,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbb",
+              "port": "RISCV_ISA_Zbb",
+              "con": "RISCV_ISA_Zbb",
+              "comment": [
+                "-- basic bit-manipulation extension"
+              ],
+              "loc": {
+                "line": 273,
+                "col": 5,
+                "end_line": 273,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbc",
+              "port": "RISCV_ISA_Zbc",
+              "con": "RISCV_ISA_Zbc",
+              "comment": [
+                "-- carry-less multiplication instructions"
+              ],
+              "loc": {
+                "line": 274,
+                "col": 5,
+                "end_line": 274,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbkb",
+              "port": "RISCV_ISA_Zbkb",
+              "con": "RISCV_ISA_Zbkb",
+              "comment": [
+                "-- bit-manipulation instructions for cryptography"
+              ],
+              "loc": {
+                "line": 275,
+                "col": 5,
+                "end_line": 275,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbkc",
+              "port": "RISCV_ISA_Zbkc",
+              "con": "RISCV_ISA_Zbkc",
+              "comment": [
+                "-- carry-less multiplication instructions"
+              ],
+              "loc": {
+                "line": 276,
+                "col": 5,
+                "end_line": 276,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbkx",
+              "port": "RISCV_ISA_Zbkx",
+              "con": "RISCV_ISA_Zbkx",
+              "comment": [
+                "-- cryptography crossbar permutation extension"
+              ],
+              "loc": {
+                "line": 277,
+                "col": 5,
+                "end_line": 277,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zbs",
+              "port": "RISCV_ISA_Zbs",
+              "con": "RISCV_ISA_Zbs",
+              "comment": [
+                "-- single-bit bit-manipulation extension"
+              ],
+              "loc": {
+                "line": 278,
+                "col": 5,
+                "end_line": 278,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zcb",
+              "port": "RISCV_ISA_Zcb",
+              "con": "riscv_zcb_c",
+              "comment": [
+                "-- additional code size reduction instructions"
+              ],
+              "loc": {
+                "line": 279,
+                "col": 5,
+                "end_line": 279,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zcmop",
+              "port": "RISCV_ISA_Zcmop",
+              "con": "riscv_zcmop_c",
+              "comment": [
+                "-- compressed may-be-operations"
+              ],
+              "loc": {
+                "line": 280,
+                "col": 5,
+                "end_line": 280,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zfinx",
+              "port": "RISCV_ISA_Zfinx",
+              "con": "RISCV_ISA_Zfinx",
+              "comment": [
+                "-- 32-bit floating-point extension"
+              ],
+              "loc": {
+                "line": 281,
+                "col": 5,
+                "end_line": 281,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zibi",
+              "port": "RISCV_ISA_Zibi",
+              "con": "RISCV_ISA_Zibi",
+              "comment": [
+                "-- branch with immediate"
+              ],
+              "loc": {
+                "line": 282,
+                "col": 5,
+                "end_line": 282,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zicntr",
+              "port": "RISCV_ISA_Zicntr",
+              "con": "RISCV_ISA_Zicntr",
+              "comment": [
+                "-- base counters"
+              ],
+              "loc": {
+                "line": 283,
+                "col": 5,
+                "end_line": 283,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zicond",
+              "port": "RISCV_ISA_Zicond",
+              "con": "RISCV_ISA_Zicond",
+              "comment": [
+                "-- integer conditional operations"
+              ],
+              "loc": {
+                "line": 284,
+                "col": 5,
+                "end_line": 284,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zihpm",
+              "port": "RISCV_ISA_Zihpm",
+              "con": "RISCV_ISA_Zihpm",
+              "comment": [
+                "-- hardware performance monitors"
+              ],
+              "loc": {
+                "line": 285,
+                "col": 5,
+                "end_line": 285,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zimop",
+              "port": "RISCV_ISA_Zimop",
+              "con": "RISCV_ISA_Zimop",
+              "comment": [
+                "-- may-be-operations"
+              ],
+              "loc": {
+                "line": 286,
+                "col": 5,
+                "end_line": 286,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zkn",
+              "port": "RISCV_ISA_Zkn",
+              "con": "riscv_zkn_c",
+              "comment": [
+                "-- NIST algorithm suite available"
+              ],
+              "loc": {
+                "line": 287,
+                "col": 5,
+                "end_line": 287,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zknd",
+              "port": "RISCV_ISA_Zknd",
+              "con": "RISCV_ISA_Zknd",
+              "comment": [
+                "-- cryptography NIST AES decryption extension"
+              ],
+              "loc": {
+                "line": 288,
+                "col": 5,
+                "end_line": 288,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zkne",
+              "port": "RISCV_ISA_Zkne",
+              "con": "RISCV_ISA_Zkne",
+              "comment": [
+                "-- cryptography NIST AES encryption extension"
+              ],
+              "loc": {
+                "line": 289,
+                "col": 5,
+                "end_line": 289,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zknh",
+              "port": "RISCV_ISA_Zknh",
+              "con": "RISCV_ISA_Zknh",
+              "comment": [
+                "-- cryptography NIST hash extension"
+              ],
+              "loc": {
+                "line": 290,
+                "col": 5,
+                "end_line": 290,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zks",
+              "port": "RISCV_ISA_Zks",
+              "con": "riscv_zks_c",
+              "comment": [
+                "-- ShangMi algorithm suite available"
+              ],
+              "loc": {
+                "line": 291,
+                "col": 5,
+                "end_line": 291,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zksed",
+              "port": "RISCV_ISA_Zksed",
+              "con": "RISCV_ISA_Zksed",
+              "comment": [
+                "-- ShangMi block cipher extension"
+              ],
+              "loc": {
+                "line": 292,
+                "col": 5,
+                "end_line": 292,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zksh",
+              "port": "RISCV_ISA_Zksh",
+              "con": "RISCV_ISA_Zksh",
+              "comment": [
+                "-- ShangMi hash extension"
+              ],
+              "loc": {
+                "line": 293,
+                "col": 5,
+                "end_line": 293,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zkt",
+              "port": "RISCV_ISA_Zkt",
+              "con": "riscv_zkt_c",
+              "comment": [
+                "-- data-independent execution time for cryptography operations available"
+              ],
+              "loc": {
+                "line": 294,
+                "col": 5,
+                "end_line": 294,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_zmmul",
+              "port": "RISCV_ISA_Zmmul",
+              "con": "RISCV_ISA_Zmmul",
+              "comment": [
+                "-- multiply-only M sub-extension"
+              ],
+              "loc": {
+                "line": 295,
+                "col": 5,
+                "end_line": 295,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_sdext",
+              "port": "RISCV_ISA_Sdext",
+              "con": "RISCV_ISA_Sdext",
+              "comment": [
+                "-- external debug mode extension"
+              ],
+              "loc": {
+                "line": 296,
+                "col": 5,
+                "end_line": 296,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_sdtrig",
+              "port": "RISCV_ISA_Sdtrig",
+              "con": "RISCV_ISA_Sdtrig",
+              "comment": [
+                "-- trigger module extension"
+              ],
+              "loc": {
+                "line": 297,
+                "col": 5,
+                "end_line": 297,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_smcntrpmf",
+              "port": "RISCV_ISA_Smcntrpmf",
+              "con": "RISCV_ISA_Smcntrpmf",
+              "comment": [
+                "-- counter privilege-mode filtering"
+              ],
+              "loc": {
+                "line": 298,
+                "col": 5,
+                "end_line": 298,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_smpmp",
+              "port": "RISCV_ISA_Smpmp",
+              "con": "RISCV_ISA_Smpmp",
+              "comment": [
+                "-- physical memory protection"
+              ],
+              "loc": {
+                "line": 299,
+                "col": 5,
+                "end_line": 299,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.riscv_isa_xcfu",
+              "port": "RISCV_ISA_Xcfu",
+              "con": "RISCV_ISA_Xcfu",
+              "comment": [
+                "-- custom (instr.) functions unit",
+                "-- Tuning Options --"
+              ],
+              "loc": {
+                "line": 300,
+                "col": 5,
+                "end_line": 300,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_control_inst.cpu_constt_br_en",
+              "port": "CPU_CONSTT_BR_EN",
+              "con": "CPU_CONSTT_BR_EN",
+              "comment": [
+                "-- constant-time branches"
+              ],
+              "loc": {
+                "line": 302,
+                "col": 5,
+                "end_line": 302,
+                "end_col": 44
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_control_inst.clk_i",
@@ -1379,6 +2043,36 @@
           "id": "neorv32_cpu.cpu_hwtrig_inst",
           "name": "cpu_hwtrig_inst",
           "module": "neorv32_cpu_hwtrig",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_hwtrig_inst.num_triggers",
+              "port": "NUM_TRIGGERS",
+              "con": "NUM_HW_TRIGGERS",
+              "comment": [
+                "-- number of implemented hardware triggers"
+              ],
+              "loc": {
+                "line": 349,
+                "col": 7,
+                "end_line": 349,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_hwtrig_inst.riscv_isa_u",
+              "port": "RISCV_ISA_U",
+              "con": "RISCV_ISA_U",
+              "comment": [
+                "-- RISC-V user-mode available"
+              ],
+              "loc": {
+                "line": 350,
+                "col": 7,
+                "end_line": 350,
+                "end_col": 34
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_hwtrig_inst.clk_i",
@@ -1478,6 +2172,92 @@
           "id": "neorv32_cpu.cpu_counters_inst",
           "name": "cpu_counters_inst",
           "module": "neorv32_cpu_counters",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.zicntr_en",
+              "port": "ZICNTR_EN",
+              "con": "RISCV_ISA_Zicntr",
+              "comment": [
+                "-- base counters"
+              ],
+              "loc": {
+                "line": 378,
+                "col": 7,
+                "end_line": 378,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.zihpm_en",
+              "port": "ZIHPM_EN",
+              "con": "RISCV_ISA_Zihpm",
+              "comment": [
+                "-- hardware performance monitors (HPMs)"
+              ],
+              "loc": {
+                "line": 379,
+                "col": 7,
+                "end_line": 379,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.smcntrpmf_en",
+              "port": "SMCNTRPMF_EN",
+              "con": "RISCV_ISA_Smcntrpmf",
+              "comment": [
+                "-- counter privilege-mode filtering"
+              ],
+              "loc": {
+                "line": 380,
+                "col": 7,
+                "end_line": 380,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.umode_en",
+              "port": "UMODE_EN",
+              "con": "RISCV_ISA_U",
+              "comment": [
+                "-- user-mode"
+              ],
+              "loc": {
+                "line": 381,
+                "col": 7,
+                "end_line": 381,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.hpm_num",
+              "port": "HPM_NUM",
+              "con": "HPM_NUM_CNTS",
+              "comment": [
+                "-- number of implemented HPM counters"
+              ],
+              "loc": {
+                "line": 382,
+                "col": 7,
+                "end_line": 382,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_counters_inst.hpm_width",
+              "port": "HPM_WIDTH",
+              "con": "HPM_CNT_WIDTH",
+              "comment": [
+                "-- total size of HPM counters"
+              ],
+              "loc": {
+                "line": 383,
+                "col": 7,
+                "end_line": 383,
+                "end_col": 36
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_counters_inst.clk_i",
@@ -1563,6 +2343,36 @@
           "id": "neorv32_cpu.cpu_regfile_inst",
           "name": "cpu_regfile_inst",
           "module": "neorv32_cpu_regfile",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_regfile_inst.awidth",
+              "port": "AWIDTH",
+              "con": "rf_awidth_c",
+              "comment": [
+                "-- address width"
+              ],
+              "loc": {
+                "line": 408,
+                "col": 5,
+                "end_line": 408,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_regfile_inst.archsel",
+              "port": "ARCHSEL",
+              "con": "CPU_RF_ARCH_SEL",
+              "comment": [
+                "-- architecture style select"
+              ],
+              "loc": {
+                "line": 409,
+                "col": 5,
+                "end_line": 409,
+                "end_col": 31
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_regfile_inst.clk_i",
@@ -1695,6 +2505,303 @@
           "id": "neorv32_cpu.cpu_alu_inst",
           "name": "cpu_alu_inst",
           "module": "neorv32_cpu_alu",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_m",
+              "port": "RISCV_ISA_M",
+              "con": "RISCV_ISA_M",
+              "comment": [
+                "-- mul/div extension"
+              ],
+              "loc": {
+                "line": 437,
+                "col": 5,
+                "end_line": 437,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zba",
+              "port": "RISCV_ISA_Zba",
+              "con": "RISCV_ISA_Zba",
+              "comment": [
+                "-- address-generation instruction"
+              ],
+              "loc": {
+                "line": 438,
+                "col": 5,
+                "end_line": 438,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbb",
+              "port": "RISCV_ISA_Zbb",
+              "con": "RISCV_ISA_Zbb",
+              "comment": [
+                "-- basic bit-manipulation instruction"
+              ],
+              "loc": {
+                "line": 439,
+                "col": 5,
+                "end_line": 439,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbc",
+              "port": "RISCV_ISA_Zbc",
+              "con": "RISCV_ISA_Zbc",
+              "comment": [
+                "-- carry-less multiplication instructions"
+              ],
+              "loc": {
+                "line": 440,
+                "col": 5,
+                "end_line": 440,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbkb",
+              "port": "RISCV_ISA_Zbkb",
+              "con": "RISCV_ISA_Zbkb",
+              "comment": [
+                "-- bit-manipulation instructions for cryptography"
+              ],
+              "loc": {
+                "line": 441,
+                "col": 5,
+                "end_line": 441,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbkc",
+              "port": "RISCV_ISA_Zbkc",
+              "con": "RISCV_ISA_Zbkc",
+              "comment": [
+                "-- carry-less multiplication instructions"
+              ],
+              "loc": {
+                "line": 442,
+                "col": 5,
+                "end_line": 442,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbkx",
+              "port": "RISCV_ISA_Zbkx",
+              "con": "RISCV_ISA_Zbkx",
+              "comment": [
+                "-- cryptography crossbar permutation extension"
+              ],
+              "loc": {
+                "line": 443,
+                "col": 5,
+                "end_line": 443,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zbs",
+              "port": "RISCV_ISA_Zbs",
+              "con": "RISCV_ISA_Zbs",
+              "comment": [
+                "-- single-bit instructions"
+              ],
+              "loc": {
+                "line": 444,
+                "col": 5,
+                "end_line": 444,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zfinx",
+              "port": "RISCV_ISA_Zfinx",
+              "con": "RISCV_ISA_Zfinx",
+              "comment": [
+                "-- 32-bit floating-point extension"
+              ],
+              "loc": {
+                "line": 445,
+                "col": 5,
+                "end_line": 445,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zibi",
+              "port": "RISCV_ISA_Zibi",
+              "con": "RISCV_ISA_Zibi",
+              "comment": [
+                "-- branch with immediate"
+              ],
+              "loc": {
+                "line": 446,
+                "col": 5,
+                "end_line": 446,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zicond",
+              "port": "RISCV_ISA_Zicond",
+              "con": "RISCV_ISA_Zicond",
+              "comment": [
+                "-- integer conditional operations"
+              ],
+              "loc": {
+                "line": 447,
+                "col": 5,
+                "end_line": 447,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zknd",
+              "port": "RISCV_ISA_Zknd",
+              "con": "RISCV_ISA_Zknd",
+              "comment": [
+                "-- cryptography NIST AES decryption extension"
+              ],
+              "loc": {
+                "line": 448,
+                "col": 5,
+                "end_line": 448,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zkne",
+              "port": "RISCV_ISA_Zkne",
+              "con": "RISCV_ISA_Zkne",
+              "comment": [
+                "-- cryptography NIST AES encryption extension"
+              ],
+              "loc": {
+                "line": 449,
+                "col": 5,
+                "end_line": 449,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zknh",
+              "port": "RISCV_ISA_Zknh",
+              "con": "RISCV_ISA_Zknh",
+              "comment": [
+                "-- cryptography NIST hash extension"
+              ],
+              "loc": {
+                "line": 450,
+                "col": 5,
+                "end_line": 450,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zksed",
+              "port": "RISCV_ISA_Zksed",
+              "con": "RISCV_ISA_Zksed",
+              "comment": [
+                "-- ShangMi block cipher extension"
+              ],
+              "loc": {
+                "line": 451,
+                "col": 5,
+                "end_line": 451,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zksh",
+              "port": "RISCV_ISA_Zksh",
+              "con": "RISCV_ISA_Zksh",
+              "comment": [
+                "-- ShangMi hash extension"
+              ],
+              "loc": {
+                "line": 452,
+                "col": 5,
+                "end_line": 452,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_zmmul",
+              "port": "RISCV_ISA_Zmmul",
+              "con": "RISCV_ISA_Zmmul",
+              "comment": [
+                "-- multiply-only M sub-extension"
+              ],
+              "loc": {
+                "line": 453,
+                "col": 5,
+                "end_line": 453,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.riscv_isa_xcfu",
+              "port": "RISCV_ISA_Xcfu",
+              "con": "RISCV_ISA_Xcfu",
+              "comment": [
+                "-- custom (instr.) functions unit",
+                "-- Tuning Options --"
+              ],
+              "loc": {
+                "line": 454,
+                "col": 5,
+                "end_line": 454,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.fast_mul_en",
+              "port": "FAST_MUL_EN",
+              "con": "CPU_FAST_MUL_EN",
+              "comment": [
+                "-- use DSPs for M extension's multiplier"
+              ],
+              "loc": {
+                "line": 456,
+                "col": 5,
+                "end_line": 456,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.fast_mul_regs",
+              "port": "FAST_MUL_REGS",
+              "con": "CPU_FAST_MUL_REGS",
+              "comment": [
+                "-- number of fast multiplier register stages"
+              ],
+              "loc": {
+                "line": 457,
+                "col": 5,
+                "end_line": 457,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_alu_inst.fast_shift_en",
+              "port": "FAST_SHIFT_EN",
+              "con": "CPU_FAST_SHIFT_EN",
+              "comment": [
+                "-- use barrel shifter for shift operations"
+              ],
+              "loc": {
+                "line": 458,
+                "col": 5,
+                "end_line": 458,
+                "end_col": 42
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_alu_inst.clk_i",
@@ -1851,6 +2958,36 @@
           "id": "neorv32_cpu.cpu_lsu_inst",
           "name": "cpu_lsu_inst",
           "module": "neorv32_cpu_lsu",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_lsu_inst.hart_id",
+              "port": "HART_ID",
+              "con": "HART_ID",
+              "comment": [
+                "-- hardware thread ID"
+              ],
+              "loc": {
+                "line": 482,
+                "col": 5,
+                "end_line": 482,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_lsu_inst.amo_en",
+              "port": "AMO_EN",
+              "con": "any_amo_c",
+              "comment": [
+                "-- enable atomic memory accesses"
+              ],
+              "loc": {
+                "line": 483,
+                "col": 5,
+                "end_line": 483,
+                "end_col": 25
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_lsu_inst.clk_i",
@@ -2034,6 +3171,64 @@
           "id": "neorv32_cpu.cpu_pmp_inst",
           "name": "cpu_pmp_inst",
           "module": "neorv32_cpu_pmp",
+          "params": [
+            {
+              "id": "neorv32_cpu.cpu_pmp_inst.num_regions",
+              "port": "NUM_REGIONS",
+              "con": "PMP_NUM_REGIONS",
+              "comment": [
+                "-- number of regions"
+              ],
+              "loc": {
+                "line": 513,
+                "col": 7,
+                "end_line": 513,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_pmp_inst.granularity",
+              "port": "GRANULARITY",
+              "con": "PMP_MIN_GRANULARITY",
+              "comment": [
+                "-- minimal region granularity in bytes"
+              ],
+              "loc": {
+                "line": 514,
+                "col": 7,
+                "end_line": 514,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_pmp_inst.tor_en",
+              "port": "TOR_EN",
+              "con": "PMP_TOR_MODE_EN",
+              "comment": [
+                "-- enable TOR mode"
+              ],
+              "loc": {
+                "line": 515,
+                "col": 7,
+                "end_line": 515,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "neorv32_cpu.cpu_pmp_inst.nap_en",
+              "port": "NAP_EN",
+              "con": "PMP_NAP_MODE_EN",
+              "comment": [
+                "-- enable NAPOT/NA4 modes"
+              ],
+              "loc": {
+                "line": 516,
+                "col": 7,
+                "end_line": 516,
+                "end_col": 37
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.cpu_pmp_inst.clk_i",
@@ -2344,6 +3539,19 @@
           "id": "neorv32_cpu.trace_simlog_inst",
           "name": "trace_simlog_inst",
           "module": "neorv32_cpu_trace_simlog",
+          "params": [
+            {
+              "id": "neorv32_cpu.trace_simlog_inst.log_file",
+              "port": "LOG_FILE",
+              "con": "\"neorv32_trace0.log\"",
+              "loc": {
+                "line": 575,
+                "col": 7,
+                "end_line": 575,
+                "end_col": 39
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.trace_simlog_inst.clk_i",
@@ -2390,6 +3598,19 @@
           "id": "neorv32_cpu.trace_simlog_inst~2",
           "name": "trace_simlog_inst",
           "module": "neorv32_cpu_trace_simlog",
+          "params": [
+            {
+              "id": "neorv32_cpu.trace_simlog_inst~2.log_file",
+              "port": "LOG_FILE",
+              "con": "\"neorv32_trace1.log\"",
+              "loc": {
+                "line": 589,
+                "col": 7,
+                "end_line": 589,
+                "end_col": 39
+              }
+            }
+          ],
           "connections": [
             {
               "id": "neorv32_cpu.trace_simlog_inst~2.clk_i",

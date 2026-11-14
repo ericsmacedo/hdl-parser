@@ -204,6 +204,52 @@
           "id": "axi_err_slv.i_atop_filter",
           "name": "i_atop_filter",
           "module": "axi_atop_filter",
+          "params": [
+            {
+              "id": "axi_err_slv.i_atop_filter.AxiIdWidth",
+              "port": "AxiIdWidth",
+              "con": "AxiIdWidth",
+              "loc": {
+                "line": 47,
+                "col": 7,
+                "end_line": 47,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axi_err_slv.i_atop_filter.AxiMaxWriteTxns",
+              "port": "AxiMaxWriteTxns",
+              "con": "MaxTrans",
+              "loc": {
+                "line": 48,
+                "col": 7,
+                "end_line": 48,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axi_err_slv.i_atop_filter.axi_req_t",
+              "port": "axi_req_t",
+              "con": "axi_req_t",
+              "loc": {
+                "line": 49,
+                "col": 7,
+                "end_line": 49,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axi_err_slv.i_atop_filter.axi_resp_t",
+              "port": "axi_resp_t",
+              "con": "axi_resp_t",
+              "loc": {
+                "line": 50,
+                "col": 7,
+                "end_line": 50,
+                "end_col": 40
+              }
+            }
+          ],
           "connections": [
             {
               "id": "axi_err_slv.i_atop_filter.clk_i",
@@ -283,6 +329,41 @@
           "id": "axi_err_slv.i_w_fifo",
           "name": "i_w_fifo",
           "module": "fifo_v3",
+          "params": [
+            {
+              "id": "axi_err_slv.i_w_fifo.FALL_THROUGH",
+              "port": "FALL_THROUGH",
+              "con": "1'b1",
+              "loc": {
+                "line": 91,
+                "col": 5,
+                "end_line": 91,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_err_slv.i_w_fifo.DEPTH",
+              "port": "DEPTH",
+              "con": "MaxTrans",
+              "loc": {
+                "line": 92,
+                "col": 5,
+                "end_line": 92,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_err_slv.i_w_fifo.dtype",
+              "port": "dtype",
+              "con": "id_t",
+              "loc": {
+                "line": 93,
+                "col": 5,
+                "end_line": 93,
+                "end_col": 32
+              }
+            }
+          ],
           "connections": [
             {
               "id": "axi_err_slv.i_w_fifo.clk_i",
@@ -416,6 +497,44 @@
           "id": "axi_err_slv.i_b_fifo",
           "name": "i_b_fifo",
           "module": "fifo_v3",
+          "params": [
+            {
+              "id": "axi_err_slv.i_b_fifo.FALL_THROUGH",
+              "port": "FALL_THROUGH",
+              "con": "1'b0",
+              "loc": {
+                "line": 124,
+                "col": 5,
+                "end_line": 124,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "axi_err_slv.i_b_fifo.DEPTH",
+              "port": "DEPTH",
+              "con": "unsigned'(2)",
+              "comment": [
+                "two placed so that w can eat beats if b is not sent"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 5,
+                "end_line": 125,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "axi_err_slv.i_b_fifo.dtype",
+              "port": "dtype",
+              "con": "id_t",
+              "loc": {
+                "line": 126,
+                "col": 5,
+                "end_line": 126,
+                "end_col": 35
+              }
+            }
+          ],
           "connections": [
             {
               "id": "axi_err_slv.i_b_fifo.clk_i",
@@ -549,6 +668,41 @@
           "id": "axi_err_slv.i_r_fifo",
           "name": "i_r_fifo",
           "module": "fifo_v3",
+          "params": [
+            {
+              "id": "axi_err_slv.i_r_fifo.FALL_THROUGH",
+              "port": "FALL_THROUGH",
+              "con": "1'b0",
+              "loc": {
+                "line": 166,
+                "col": 5,
+                "end_line": 166,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_err_slv.i_r_fifo.DEPTH",
+              "port": "DEPTH",
+              "con": "MaxTrans",
+              "loc": {
+                "line": 167,
+                "col": 5,
+                "end_line": 167,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_err_slv.i_r_fifo.dtype",
+              "port": "dtype",
+              "con": "r_data_t",
+              "loc": {
+                "line": 168,
+                "col": 5,
+                "end_line": 168,
+                "end_col": 32
+              }
+            }
+          ],
           "connections": [
             {
               "id": "axi_err_slv.i_r_fifo.clk_i",
@@ -682,6 +836,19 @@
           "id": "axi_err_slv.i_r_counter",
           "name": "i_r_counter",
           "module": "counter",
+          "params": [
+            {
+              "id": "axi_err_slv.i_r_counter.WIDTH",
+              "port": "WIDTH",
+              "con": "$bits(axi_pkg::len_t)",
+              "loc": {
+                "line": 232,
+                "col": 5,
+                "end_line": 232,
+                "end_col": 39
+              }
+            }
+          ],
           "connections": [
             {
               "id": "axi_err_slv.i_r_counter.clk_i",

@@ -57,19 +57,28 @@ def assign_ids(modules: Iterable[dm.Module], casefold: bool = False) -> tuple[dm
     def named(items, scope):
         return tuple(item.model_copy(update={"id": scope.id(name(item.name))}) for item in items)
 
-    def instance(inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
-        inst_id = scope.id(name(inst.name))
-        cons = _Scope(inst_id)
+    def connections(cons: tuple[dm.Connection, ...], scope: _Scope, by_order: str) -> tuple[dm.Connection, ...]:
         position = 0
-        connections = []
-        for con in inst.connections:
+        result = []
+        for con in cons:
             if con.port:
-                con_id = cons.id(name(con.port))
+                con_id = scope.id(name(con.port))
             else:
                 position += 1
-                con_id = cons.id(f"#{position}")
-            connections.append(con.model_copy(update={"id": con_id}))
-        return inst.model_copy(update={"id": inst_id, "connections": tuple(connections)})
+                con_id = scope.id(f"{by_order}{position}")
+            result.append(con.model_copy(update={"id": con_id}))
+        return tuple(result)
+
+    def instance(inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
+        inst_id = scope.id(name(inst.name))
+        # parameters and ports share the names of the instantiated module
+        inst_scope = _Scope(inst_id)
+        update = {
+            "id": inst_id,
+            "params": connections(inst.params, inst_scope, "#p"),
+            "connections": connections(inst.connections, inst_scope, "#"),
+        }
+        return inst.model_copy(update=update)
 
     files = _Scope()
     result = []

@@ -185,6 +185,8 @@ class _Inst(NamedTuple):
     last: Token
     name: Token
     module: Token
+    dim: str
+    params: list[_Con]
     cons: list[_Con]
 
 
@@ -424,7 +426,7 @@ def _is_instance(c: Cursor) -> bool:
 
 
 def _parse_connections(c: Cursor) -> list[_Con]:
-    """Parse the parenthesized connections of an instance."""
+    """Parse the parenthesized connections or parameter values of an instance."""
     cons: list[_Con] = []
     opening = c.next()
     while True:
@@ -468,13 +470,11 @@ def _parse_instances(c: Cursor) -> list[_Inst]:
     insts: list[_Inst] = []
     c.sink = None
     module = c.next()
-    if c.accept("#"):
-        c.skip_balanced()
+    params = _parse_connections(c) if c.accept("#") else []
     while True:
         name = c.next()
-        while c.peek().text == "[":
-            c.skip_balanced()
-        insts.append(_Inst(module, name, name, module, _parse_connections(c)))
+        dim = _parse_dims(c)
+        insts.append(_Inst(module, name, name, module, dim, params, _parse_connections(c)))
         if c.peek().text == "," and c.peek(1).kind == ID:
             c.next()
         else:
@@ -772,22 +772,28 @@ def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     )
 
 
+def _create_connections(cons: list[_Con], smap: SourceMap) -> tuple[dm.Connection, ...]:
+    return tuple(
+        dm.Connection(
+            port=con.port,
+            con=con.con,
+            comment=tuple(con.comment),
+            ifdefs=con.first.ifdefs,
+            loc=smap.span(con.first, con.last),
+        )
+        for con in cons
+    )
+
+
 def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstance, ...]:
     return tuple(
         dm.ModuleInstance(
             name=inst.name.text,
             module=inst.module.text,
+            dim=inst.dim,
+            params=_create_connections(inst.params, smap),
+            connections=_create_connections(inst.cons, smap),
             ifdefs=inst.module.ifdefs,
-            connections=tuple(
-                dm.Connection(
-                    port=con.port,
-                    con=con.con,
-                    comment=tuple(con.comment),
-                    ifdefs=con.first.ifdefs,
-                    loc=smap.span(con.first, con.last),
-                )
-                for con in inst.cons
-            ),
             loc=smap.span(inst.first, inst.last, inst.name),
         )
         for inst in insts

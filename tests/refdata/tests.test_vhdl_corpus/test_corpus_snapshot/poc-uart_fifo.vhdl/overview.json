@@ -347,6 +347,106 @@
           "id": "uart_fifo.txfifo",
           "name": "TXFIFO",
           "module": "fifo_cc_got",
+          "params": [
+            {
+              "id": "uart_fifo.txfifo.d_bits",
+              "port": "D_BITS",
+              "con": "8",
+              "comment": [
+                "-- Data Width"
+              ],
+              "loc": {
+                "line": 127,
+                "col": 4,
+                "end_line": 127,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.min_depth",
+              "port": "MIN_DEPTH",
+              "con": "TX_MIN_DEPTH",
+              "comment": [
+                "-- Minimum FIFO Depth"
+              ],
+              "loc": {
+                "line": 128,
+                "col": 4,
+                "end_line": 128,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.data_reg",
+              "port": "DATA_REG",
+              "con": "TRUE",
+              "comment": [
+                "-- Store Data Content in Registers"
+              ],
+              "loc": {
+                "line": 129,
+                "col": 4,
+                "end_line": 129,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.state_reg",
+              "port": "STATE_REG",
+              "con": "FALSE",
+              "comment": [
+                "-- Registered Full/Empty Indicators"
+              ],
+              "loc": {
+                "line": 130,
+                "col": 4,
+                "end_line": 130,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.output_reg",
+              "port": "OUTPUT_REG",
+              "con": "FALSE",
+              "comment": [
+                "-- Registered FIFO Output"
+              ],
+              "loc": {
+                "line": 131,
+                "col": 4,
+                "end_line": 131,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.estate_wr_bits",
+              "port": "ESTATE_WR_BITS",
+              "con": "TX_ESTATE_BITS",
+              "comment": [
+                "-- Empty State Bits"
+              ],
+              "loc": {
+                "line": 132,
+                "col": 4,
+                "end_line": 132,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "uart_fifo.txfifo.fstate_rd_bits",
+              "port": "FSTATE_RD_BITS",
+              "con": "0",
+              "comment": [
+                "-- Full State Bits"
+              ],
+              "loc": {
+                "line": 133,
+                "col": 4,
+                "end_line": 133,
+                "end_col": 23
+              }
+            }
+          ],
           "connections": [
             {
               "id": "uart_fifo.txfifo.rst",
@@ -470,6 +570,106 @@
           "id": "uart_fifo.rxfifo",
           "name": "RXFIFO",
           "module": "fifo_cc_got",
+          "params": [
+            {
+              "id": "uart_fifo.rxfifo.d_bits",
+              "port": "D_BITS",
+              "con": "8",
+              "comment": [
+                "-- Data Width"
+              ],
+              "loc": {
+                "line": 151,
+                "col": 4,
+                "end_line": 151,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.min_depth",
+              "port": "MIN_DEPTH",
+              "con": "RX_MIN_DEPTH",
+              "comment": [
+                "-- Minimum FIFO Depth"
+              ],
+              "loc": {
+                "line": 152,
+                "col": 4,
+                "end_line": 152,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.data_reg",
+              "port": "DATA_REG",
+              "con": "TRUE",
+              "comment": [
+                "-- Store Data Content in Registers"
+              ],
+              "loc": {
+                "line": 153,
+                "col": 4,
+                "end_line": 153,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.state_reg",
+              "port": "STATE_REG",
+              "con": "FALSE",
+              "comment": [
+                "-- Registered Full/Empty Indicators"
+              ],
+              "loc": {
+                "line": 154,
+                "col": 4,
+                "end_line": 154,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.output_reg",
+              "port": "OUTPUT_REG",
+              "con": "FALSE",
+              "comment": [
+                "-- Registered FIFO Output"
+              ],
+              "loc": {
+                "line": 155,
+                "col": 4,
+                "end_line": 155,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.estate_wr_bits",
+              "port": "ESTATE_WR_BITS",
+              "con": "0",
+              "comment": [
+                "-- Empty State Bits"
+              ],
+              "loc": {
+                "line": 156,
+                "col": 4,
+                "end_line": 156,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "uart_fifo.rxfifo.fstate_rd_bits",
+              "port": "FSTATE_RD_BITS",
+              "con": "RX_FSTATE_BITS",
+              "comment": [
+                "-- Full State Bits"
+              ],
+              "loc": {
+                "line": 157,
+                "col": 4,
+                "end_line": 157,
+                "end_col": 36
+              }
+            }
+          ],
           "connections": [
             {
               "id": "uart_fifo.rxfifo.rst",
@@ -648,6 +848,30 @@
           "id": "uart_fifo.bclk",
           "name": "bclk",
           "module": "uart_bclk",
+          "params": [
+            {
+              "id": "uart_fifo.bclk.clock_freq",
+              "port": "CLOCK_FREQ",
+              "con": "CLOCK_FREQ",
+              "loc": {
+                "line": 292,
+                "col": 4,
+                "end_line": 292,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "uart_fifo.bclk.baudrate",
+              "port": "BAUDRATE",
+              "con": "BAUDRATE",
+              "loc": {
+                "line": 293,
+                "col": 4,
+                "end_line": 293,
+                "end_col": 25
+              }
+            }
+          ],
           "connections": [
             {
               "id": "uart_fifo.bclk.clk",
