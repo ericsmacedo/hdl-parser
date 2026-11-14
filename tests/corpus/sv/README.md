@@ -3,7 +3,7 @@
 Unmodified third-party SystemVerilog files used as a safety net for tokenizer and parser changes. Every `*.sv` file is
 snapshot-tested (`tests/test_sv_corpus.py::test_corpus_snapshot`, reference data in
 `tests/refdata/tests.test_sv_corpus/`) and checked against structural invariants (`tests/sv_invariants.py`).
-Known parser bugs are tracked in `KNOWN_ISSUES` in `tests/test_sv_corpus.py` as strict xfails.
+Known parser bugs are tracked in `KNOWN_ISSUES` in `tests/test_sv_corpus.py` as strict xfails. There are none right now.
 
 The files are kept byte-for-byte as downloaded, including their license headers, and are excluded from all
 pre-commit hooks. Retrieval date for everything: 2026-11-13. The license text of each project is stored next to its files.
