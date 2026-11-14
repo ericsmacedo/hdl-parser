@@ -1,0 +1,174 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/prim_fifo_sync.sv",
+  "modules": [
+    {
+      "name": "prim_fifo_sync",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "Width",
+          "default": "16"
+        },
+        {
+          "ptype": "bit",
+          "name": "Pass",
+          "default": "1'b1",
+          "comment": [
+            "if == 1 allow requests to pass through empty FIFO"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "Depth",
+          "default": "4"
+        },
+        {
+          "ptype": "bit",
+          "name": "OutputZeroIfEmpty",
+          "default": "1'b1",
+          "comment": [
+            "if == 1 always output 0 when FIFO is empty"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "Secure",
+          "default": "1'b0",
+          "comment": [
+            "use prim count for pointers",
+            "derived parameter"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "name": "rst_ni",
+          "comment": [
+            "synchronous clear / flush port"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "clr_i",
+          "comment": [
+            "write port"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "wvalid_i"
+        },
+        {
+          "direction": "output",
+          "name": "wready_o"
+        },
+        {
+          "direction": "input",
+          "name": "wdata_i",
+          "dim": "[Width-1:0]",
+          "comment": [
+            "read port"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "rvalid_o"
+        },
+        {
+          "direction": "input",
+          "name": "rready_i"
+        },
+        {
+          "direction": "output",
+          "name": "rdata_o",
+          "dim": "[Width-1:0]",
+          "comment": [
+            "occupancy"
+          ]
+        },
+        {
+          "direction": "output",
+          "name": "full_o"
+        },
+        {
+          "direction": "output",
+          "name": "depth_o",
+          "dim": "[DepthW-1:0]"
+        },
+        {
+          "direction": "output",
+          "name": "err_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "DepthW",
+          "default": "prim_util_pkg::vbits(Depth+1)"
+        },
+        {
+          "ptype": "int",
+          "name": "PtrW",
+          "default": "prim_util_pkg::vbits(Depth)"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_fifo_cnt",
+          "module": "prim_fifo_sync_cnt",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "clr_i",
+              "con": "clr_i"
+            },
+            {
+              "port": "incr_wptr_i",
+              "con": "fifo_incr_wptr"
+            },
+            {
+              "port": "incr_rptr_i",
+              "con": "fifo_incr_rptr"
+            },
+            {
+              "port": "wptr_o",
+              "con": "fifo_wptr"
+            },
+            {
+              "port": "rptr_o",
+              "con": "fifo_rptr"
+            },
+            {
+              "port": "full_o",
+              "con": "full_o"
+            },
+            {
+              "port": "empty_o",
+              "con": "fifo_empty"
+            },
+            {
+              "port": "depth_o",
+              "con": "depth_o"
+            },
+            {
+              "port": "err_o",
+              "con": "err_o"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

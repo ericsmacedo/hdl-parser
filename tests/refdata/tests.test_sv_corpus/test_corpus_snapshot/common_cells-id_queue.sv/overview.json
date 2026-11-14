@@ -1,0 +1,216 @@
+{
+  "path": "$PRJ/tests/corpus/sv/common_cells/id_queue.sv",
+  "modules": [
+    {
+      "name": "id_queue",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "ID_WIDTH",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "CAPACITY",
+          "default": "0"
+        },
+        {
+          "ptype": "bit",
+          "name": "FULL_BW",
+          "default": "0"
+        },
+        {
+          "ptype": "bit",
+          "name": "CUT_OUP_POP_INP_GNT",
+          "default": "0"
+        },
+        {
+          "ptype": "type",
+          "name": "data_t",
+          "default": "logic[31:0]",
+          "comment": [
+            "Dependent parameters, DO NOT OVERRIDE!"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "id_t",
+          "name": "inp_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "data_t",
+          "name": "inp_data_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "inp_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "inp_gnt_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "data_t",
+          "name": "exists_data_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "data_t",
+          "name": "exists_mask_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "exists_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "exists_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "exists_gnt_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "id_t",
+          "name": "oup_id_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_pop_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "oup_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "data_t",
+          "name": "oup_data_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_data_valid_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "oup_gnt_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "type",
+          "name": "id_t",
+          "default": "logic[ID_WIDTH-1:0]"
+        },
+        {
+          "ptype": "int",
+          "name": "NIds",
+          "default": "2**ID_WIDTH"
+        },
+        {
+          "ptype": "int",
+          "name": "HtCapacity",
+          "default": "(NIds <= CAPACITY) ? NIds : CAPACITY"
+        },
+        {
+          "ptype": "int",
+          "name": "HtIdxWidth",
+          "default": "cf_math_pkg::idx_width(HtCapacity)"
+        },
+        {
+          "ptype": "int",
+          "name": "LdIdxWidth",
+          "default": "cf_math_pkg::idx_width(CAPACITY)"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_id_ohb_in",
+          "module": "onehot_to_bin",
+          "connections": [
+            {
+              "port": "onehot",
+              "con": "idx_matches_in_id"
+            },
+            {
+              "port": "bin",
+              "con": "match_in_idx"
+            }
+          ]
+        },
+        {
+          "name": "i_id_ohb_out",
+          "module": "onehot_to_bin",
+          "connections": [
+            {
+              "port": "onehot",
+              "con": "idx_matches_out_id"
+            },
+            {
+              "port": "bin",
+              "con": "match_out_idx"
+            }
+          ]
+        },
+        {
+          "name": "i_ht_free_lzc",
+          "module": "lzc",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "head_tail_free"
+            },
+            {
+              "port": "cnt_o",
+              "con": "head_tail_free_idx"
+            },
+            {
+              "port": "empty_o"
+            }
+          ]
+        },
+        {
+          "name": "i_ld_free_lzc",
+          "module": "lzc",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "linked_data_free"
+            },
+            {
+              "port": "cnt_o",
+              "con": "linked_data_free_idx"
+            },
+            {
+              "port": "empty_o"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

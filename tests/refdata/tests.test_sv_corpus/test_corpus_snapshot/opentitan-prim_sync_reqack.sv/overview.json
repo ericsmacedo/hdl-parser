@@ -1,0 +1,188 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/prim_sync_reqack.sv",
+  "modules": [
+    {
+      "name": "prim_sync_reqack",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "EnRstChks",
+          "default": "1'b0",
+          "comment": [
+            "Enable reset-related assertion checks, disabled by default."
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "EnRzHs",
+          "default": "1'b0",
+          "comment": [
+            "By Default, the faster NRZ handshake protocol",
+            "(EnRzHs = 0) is used. Enable the RZ handshake protocol",
+            "if the FSMs need to be partial-reset-safe."
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "name": "clk_src_i",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "rst_src_ni",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "clk_dst_i",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "name": "rst_dst_ni",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "req_chk_i",
+          "comment": [
+            "Used for gating assertions. Drive to 1 during normal operation."
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "src_req_i",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "src_ack_o",
+          "comment": [
+            "REQ side, SRC domain"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dst_req_o",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dst_ack_i",
+          "comment": [
+            "ACK side, DST domain"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "ack_sync",
+          "module": "prim_flop_2sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_src_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_src_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "dst_ack"
+            },
+            {
+              "port": "q_o",
+              "con": "src_ack"
+            }
+          ]
+        },
+        {
+          "name": "req_sync",
+          "module": "prim_flop_2sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_dst_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_dst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "src_req"
+            },
+            {
+              "port": "q_o",
+              "con": "dst_req"
+            }
+          ]
+        },
+        {
+          "name": "req_sync",
+          "module": "prim_flop_2sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_dst_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_dst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "src_req_q"
+            },
+            {
+              "port": "q_o",
+              "con": "dst_req"
+            }
+          ]
+        },
+        {
+          "name": "ack_sync",
+          "module": "prim_flop_2sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_src_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_src_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "dst_ack_q"
+            },
+            {
+              "port": "q_o",
+              "con": "src_ack"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
