@@ -36,6 +36,7 @@ Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 * [hdl_parser.parser.parse_defines_text][]
 """
 
+import logging
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Literal, TypeAlias
@@ -44,6 +45,8 @@ from . import datamodel as dm
 from ._sv.parser import parse as parse_sv
 from ._sv.preproc import Macro, Macros, collect_defines, read_text
 from ._vhdl.parser import parse as parse_vhdl
+
+LOGGER = logging.getLogger(__name__)
 
 Lang: TypeAlias = Literal["sv", "vhdl"]
 """Language."""
@@ -176,7 +179,7 @@ def parse_text(  # noqa: PLR0913
                         Conditions on any other macro are kept. Requires `expand_macros`.
 
     Returns:
-        Parsed Data
+        Parsed Data. `modules` is empty, if there is no module (i.e. a file with packages only).
     """
     if macros and not expand_macros:
         raise ValueError("'macros' requires 'expand_macros=True'.")
@@ -202,6 +205,7 @@ def parse_text(  # noqa: PLR0913
         )
 
     if not modules:
-        raise RuntimeError("No module found.")
+        # this is fine: packages, interfaces, included files, ...
+        LOGGER.info("%s: no module found.", file_path or "<text>")
 
     return dm.File(path=file_path, modules=modules)

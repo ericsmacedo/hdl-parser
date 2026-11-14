@@ -21,6 +21,8 @@
 # SOFTWARE.
 """Test Parser."""
 
+import logging
+
 from pytest import mark, raises
 from test2ref import assert_refdata
 
@@ -136,3 +138,14 @@ def test_unknown_suffix(tmp_path):
     file_path = tmp_path / "file.svh"
     file_path.write_text("module m (input a);\nendmodule\n")
     assert [module.name for module in parse_file(file_path).modules] == ["m"]
+
+
+@mark.parametrize("text", ["", "// comment", "package p;\n  typedef logic [3:0] t;\nendpackage\n", "module"])
+def test_no_module(tmp_path, caplog, text):
+    """Files Without Modules Are Fine."""
+    assert parse_text(text) == File(path=None, modules=())
+    file_path = tmp_path / "file.sv"
+    file_path.write_text(text)
+    with caplog.at_level(logging.INFO):
+        assert parse_file(file_path) == File(path=file_path, modules=())
+    assert f"{file_path}: no module found." in caplog.text

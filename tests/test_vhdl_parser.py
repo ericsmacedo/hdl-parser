@@ -22,9 +22,9 @@
 
 """Test VHDL Parser."""
 
-from pytest import mark, raises
+from pytest import mark
 
-from hdl_parser import Module, ModuleInstance, Param, Port, parse_text
+from hdl_parser import File, Module, ModuleInstance, Param, Port, parse_text
 from hdl_parser._tokens import ID, KW, NUM, OP, STR
 from hdl_parser._vhdl.tokenizer import tokenize
 from hdl_parser.datamodel import Connection
@@ -368,8 +368,7 @@ def test_units():
 @mark.parametrize("text", ["", "entity", "entity top", "library ieee; package p is end;"])
 def test_no_module(text):
     """Nothing To Find."""
-    with raises(RuntimeError):
-        parse_text(text, lang="vhdl")
+    assert parse_text(text, lang="vhdl") == File(path=None, modules=())
 
 
 @mark.parametrize(

@@ -121,7 +121,9 @@ def test_empty(tmp_path, runner):
         # Run the command
         result = runner.invoke(cli, ["info", str(empty_file)])
 
-        assert result.exit_code == 1
+        # there is nothing to show
+        assert result.exit_code == 0
+        assert result.output == ""
 
 
 @mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
@@ -151,3 +153,13 @@ def test_failure_reason(runner, examples, caplog, monkeypatch):
     result = runner.invoke(cli, ["json", str(examples / "sv" / "adder.sv")])
     assert result.exit_code == 1
     assert "ValueError: something is wrong" in caplog.text
+
+
+@mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
+def test_no_module(runner, tmp_path, examples, cmd):
+    """A File Without Modules Does Not Stop The Others."""
+    package = tmp_path / "pkg.sv"
+    package.write_text("package pkg;\n  typedef logic [3:0] t;\nendpackage\n")
+    result = runner.invoke(cli, [cmd, str(package), str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 0
+    assert "adder" in result.output

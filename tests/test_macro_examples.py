@@ -42,9 +42,7 @@ MODES = {
     "resolve": {"expand_macros": True, "inc_dirs": INC_DIRS, "resolve_ifdefs": True},
 }
 # (example, mode) -> reason. Strict, see 'tests/test_sv_corpus.py'.
-KNOWN_ISSUES = {
-    ("module_macros.sv", "default"): "issue 80: a file without modules raises RuntimeError('No module found.')",
-}
+KNOWN_ISSUES: dict[tuple[str, str], str] = {}
 _DEFINE = re.compile(r"`define(?:\\\r?\n|[^\n])*")
 
 

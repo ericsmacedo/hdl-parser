@@ -3,7 +3,7 @@
 Unmodified third-party SystemVerilog files used as a safety net for tokenizer and parser changes. Every `*.sv` file is
 snapshot-tested (`tests/test_sv_corpus.py::test_corpus_snapshot`, reference data in
 `tests/refdata/tests.test_sv_corpus/`) and checked against structural invariants (`tests/sv_invariants.py`).
-Known parser bugs are tracked in `KNOWN_ISSUES` in `tests/test_sv_corpus.py` as strict xfails.
+Known parser bugs are tracked in `KNOWN_ISSUES` in `tests/test_sv_corpus.py` as strict xfails. There are none right now.
 
 With macro expansion, the changes made by the preprocessor are compared with reference data too
 (`tests/test_sv_corpus.py::test_corpus_expand` and `test_corpus_resolve`). The macro files of the projects are
