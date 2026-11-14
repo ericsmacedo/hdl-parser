@@ -1,0 +1,150 @@
+{
+  "path": "$PRJ/examples/vhdl/instances.vhd",
+  "modules": [
+    {
+      "name": "instances",
+      "params": [
+        {
+          "name": "STAGES",
+          "default": "4"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "din",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dout",
+          "dim": "[7:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_first",
+          "module": "stage",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk",
+              "comment": [
+                "-- Clock"
+              ]
+            },
+            {
+              "port": "din",
+              "con": "data(0)",
+              "comment": [
+                "-- Input of the first stage"
+              ]
+            },
+            {
+              "port": "dout",
+              "con": "data(1)"
+            }
+          ]
+        },
+        {
+          "name": "u_second",
+          "module": "stage",
+          "connections": [
+            {
+              "con": "clk"
+            },
+            {
+              "con": "data(1)"
+            },
+            {
+              "con": "data(2)"
+            }
+          ]
+        },
+        {
+          "name": "u_third",
+          "module": "stage",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "data(2)"
+            },
+            {
+              "port": "dout",
+              "con": "open",
+              "comment": [
+                "-- Unconnected"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "u_stage",
+          "module": "stage",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "data(idx)"
+            },
+            {
+              "port": "dout",
+              "con": "data(idx + 1)"
+            }
+          ]
+        },
+        {
+          "name": "u_parity",
+          "module": "parity_gen",
+          "connections": [
+            {
+              "port": "din",
+              "con": "data(STAGES)"
+            },
+            {
+              "port": "parity",
+              "con": "par"
+            }
+          ]
+        },
+        {
+          "name": "u_sync",
+          "module": "sync",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "rst"
+            },
+            {
+              "port": "dout",
+              "con": "synced"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
