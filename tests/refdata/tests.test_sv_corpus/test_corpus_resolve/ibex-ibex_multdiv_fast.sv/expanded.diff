@@ -1,0 +1,85 @@
+--- original
++++ expanded
+@@ -117,3 +117,3 @@
+-  `ASSERT_KNOWN(DivEnKnown, div_en_internal)
+-  `ASSERT_KNOWN(MultEnKnown, mult_en_internal)
+-  `ASSERT_KNOWN(MultDivEnKnown, multdiv_en)
++
++
++
+@@ -175,2 +175,2 @@
+-    assign mult1_op_a = op_a_i[`OP_L];
+-    assign mult1_op_b = op_b_i[`OP_L];
++    assign mult1_op_a = op_a_i[15:0];
++    assign mult1_op_b = op_b_i[15:0];
+@@ -181,2 +181,2 @@
+-    assign mult2_op_a = op_a_i[`OP_L];
+-    assign mult2_op_b = op_b_i[`OP_H];
++    assign mult2_op_a = op_a_i[15:0];
++    assign mult2_op_b = op_b_i[31:16];
+@@ -194,4 +194,4 @@
+-      mult3_op_a = op_a_i[`OP_H];
+-      mult3_op_b = op_b_i[`OP_L];
+-
+-      summand1 = {18'h0, mult1_res_uns[`OP_H]};
++      mult3_op_a = op_a_i[31:16];
++      mult3_op_b = op_b_i[15:0];
++
++      summand1 = {18'h0, mult1_res_uns[31:16]};
+@@ -202 +202 @@
+-      mac_res_d = {2'b0, mac_res[`OP_L], mult1_res_uns[`OP_L]};
++      mac_res_d = {2'b0, mac_res[15:0], mult1_res_uns[15:0]};
+@@ -224,2 +224,2 @@
+-          mult3_op_a = op_a_i[`OP_H];
+-          mult3_op_b = op_b_i[`OP_H];
++          mult3_op_a = op_a_i[31:16];
++          mult3_op_b = op_b_i[31:16];
+@@ -258 +258 @@
+-    `ASSERT_KNOWN(IbexMultStateKnown, mult_state_q)
++
+@@ -283,2 +283,2 @@
+-      mult_op_a    = op_a_i[`OP_L];
+-      mult_op_b    = op_b_i[`OP_L];
++      mult_op_a    = op_a_i[15:0];
++      mult_op_b    = op_b_i[15:0];
+@@ -297,2 +297,2 @@
+-          mult_op_a = op_a_i[`OP_L];
+-          mult_op_b = op_b_i[`OP_L];
++          mult_op_a = op_a_i[15:0];
++          mult_op_b = op_b_i[15:0];
+@@ -308,2 +308,2 @@
+-          mult_op_a = op_a_i[`OP_L];
+-          mult_op_b = op_b_i[`OP_H];
++          mult_op_a = op_a_i[15:0];
++          mult_op_b = op_b_i[31:16];
+@@ -315 +315 @@
+-            mac_res_d = {2'b0, mac_res[`OP_L], imd_val_q_i[0][`OP_L]};
++            mac_res_d = {2'b0, mac_res[15:0], imd_val_q_i[0][15:0]};
+@@ -325,2 +325,2 @@
+-          mult_op_a = op_a_i[`OP_H];
+-          mult_op_b = op_b_i[`OP_L];
++          mult_op_a = op_a_i[31:16];
++          mult_op_b = op_b_i[15:0];
+@@ -347,2 +347,2 @@
+-          mult_op_a = op_a_i[`OP_H];
+-          mult_op_b = op_b_i[`OP_H];
++          mult_op_a = op_a_i[31:16];
++          mult_op_b = op_b_i[31:16];
+@@ -378 +378 @@
+-    `ASSERT_KNOWN(IbexMultStateKnown, mult_state_q)
++
+@@ -532,4 +532,3 @@
+-  `ASSERT(IbexMultDivStateValid, md_state_q inside {
+-      MD_IDLE, MD_ABS_A, MD_ABS_B, MD_COMP, MD_LAST, MD_CHANGE_SIGN, MD_FINISH})
+-
+-`ifdef INC_ASSERT
++
++
++
+@@ -544,5 +543 @@
+-`else
+-  logic unused_sva_mul_fsm_idle;
+-
+-  assign unused_sva_mul_fsm_idle = sva_mul_fsm_idle;
+-`endif
++

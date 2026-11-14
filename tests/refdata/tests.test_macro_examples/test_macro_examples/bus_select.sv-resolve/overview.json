@@ -1,0 +1,87 @@
+{
+  "path": "$PRJ/examples/sv/macros/bus_select.sv",
+  "modules": [
+    {
+      "name": "bus_select",
+      "params": [
+        {
+          "ptype": "string",
+          "name": "BUS",
+          "default": "\"axi4-lite\""
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reg_awvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "reg_awready_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reg_awaddr_i",
+          "dim": "[(16)-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reg_wvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "reg_wready_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reg_wdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "reg_bvalid_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "reg_bready_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[(32)-1:0]",
+          "dim_unpacked": "[4]"
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "DEBUG_PORTS"
+        }
+      ]
+    }
+  ]
+}

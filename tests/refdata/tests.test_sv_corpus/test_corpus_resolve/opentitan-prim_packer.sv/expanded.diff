@@ -1,0 +1,66 @@
+--- original
++++ expanded
+@@ -309,2 +309 @@
+-    `ASSUME(ContiguousOnesMask_M,
+-            valid_i |-> $countones(mask_i ^ {mask_i[InW-2:0],1'b0}) <= 2)
++
+@@ -314 +313 @@
+-  `ASSUME(ExFlushValid_M, flush_i |-> !valid_i)
++
+@@ -317,2 +316 @@
+-  `ASSUME(ValidIDeassertedOnFlush_M,
+-          flush_st == FlushSend |-> $stable(valid_i))
++
+@@ -321,6 +319,3 @@
+-  `ASSUME(DataIStable_M,
+-          ##1 valid_i && $past(valid_i) && !$past(ready_o)
+-          |-> $stable(data_i) && $stable(mask_i))
+-
+-  `ASSERT(FlushFollowedByDone_A,
+-          ##1 $rose(flush_i) && !flush_done_o |-> !flush_done_o [*0:$] ##1 flush_done_o)
++
++
++
+@@ -329,2 +324 @@
+-  `ASSERT(ValidOPairedWidthReadyI_A,
+-          valid_o && !ready_i |=> valid_o)
++
+@@ -333,2 +327 @@
+-  `ASSERT(ValidOAssertedForStoredDataGTEOutW_A,
+-          ($countones(stored_mask) >= OutW) |-> valid_o)
++
+@@ -337,3 +330 @@
+-  `ASSERT(DataOStableWhenPending_A,
+-          ##1 valid_o && $past(valid_o)
+-          && !$past(ready_i) |-> $stable(data_o))
++
+@@ -342,11 +333,3 @@
+-  `ASSERT(ExcessiveDataStored_A,
+-          ack_in && ack_out && (($countones(mask_i) + $countones(stored_mask)) > OutW)
+-          |=> (($past(data_i) &  $past(mask_i)) >>
+-               ($past(lod_idx)+OutW-$countones($past(stored_mask))))
+-               == stored_data)
+-
+-  `ASSERT(ExcessiveMaskStored_A,
+-          ack_in && ack_out && (($countones(mask_i) + $countones(stored_mask)) > OutW)
+-          |=> ($past(mask_i) >>
+-               ($past(lod_idx)+OutW-$countones($past(stored_mask))))
+-              == stored_mask)
++
++
++
+@@ -356,2 +339,2 @@
+-    `ASSERT_INIT(InputDividedBy8_A,  InW  % 8 == 0)
+-    `ASSERT_INIT(OutputDividedBy8_A, OutW % 8 == 0)
++
++
+@@ -361,3 +344 @@
+-      `ASSERT(InputMaskContiguous_A,
+-              valid_i |-> (|mask_i[8*i+:8] == 1'b 0)
+-                       || (&mask_i[8*i+:8] == 1'b 1))
++
+@@ -366,3 +347 @@
+-      `ASSERT(OutputMaskContiguous_A,
+-              valid_o |-> (|mask_o[8*i+:8] == 1'b 0)
+-                       || (&mask_o[8*i+:8] == 1'b 1))
++

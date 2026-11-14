@@ -1,0 +1,126 @@
+{
+  "path": "$PRJ/examples/sv/macros/cond_pasted.sv",
+  "modules": [
+    {
+      "name": "cond_pasted",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "uart_tx_o",
+          "ifdefs": [
+            "HAS_UART"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "spi_clk_o",
+          "ifdefs": [
+            "HAS_SPI"
+          ]
+        },
+        {
+          "direction": "inout",
+          "ptype": "wire",
+          "name": "i2c_sda_io",
+          "ifdefs": [
+            "HAS_I2C"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "uart_rx_i",
+          "ifdefs": [
+            "HAS_UART"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "can_rx_i",
+          "ifdefs": [
+            "HAS_CAN"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "irq_o"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_UART",
+          "module": "UART_core",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "HAS_UART"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "HAS_UART"
+          ]
+        },
+        {
+          "name": "u_UART",
+          "module": "UART_stub",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "!HAS_UART"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "!HAS_UART"
+          ]
+        },
+        {
+          "name": "u_I2C",
+          "module": "I2C_core",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "HAS_I2C"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "HAS_I2C"
+          ]
+        },
+        {
+          "name": "u_I2C",
+          "module": "I2C_stub",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "ifdefs": [
+                "!HAS_I2C"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "!HAS_I2C"
+          ]
+        }
+      ]
+    }
+  ]
+}

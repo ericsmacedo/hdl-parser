@@ -55,7 +55,11 @@ class Module(_BaseModel):
         name: Module Name
         params: Parameters
         ports: Ports
+        localparams: Local Parameters
         insts: Submodule Instances.
+        ifdefs: Conditions the module is defined at.
+        unresolved_macros: Macros used in the module header, which could not be expanded.
+                           Ports or parameters defined by these macros are missing.
     """
 
     name: str
@@ -64,6 +68,7 @@ class Module(_BaseModel):
     localparams: tuple["Param", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
+    unresolved_macros: tuple["MacroCall", ...] = ()
 
 
 class Param(_BaseModel):
@@ -137,4 +142,18 @@ class ModuleInstance(_BaseModel):
     name: str
     module: str
     connections: tuple[Connection, ...] = ()
+    ifdefs: tuple[str, ...] = ()
+
+
+class MacroCall(_BaseModel):
+    """Represents The Use Of A Macro.
+
+    Attributes:
+        name: Macro Name, without backtick
+        args: Arguments. `None` if the macro is used without parenthesis
+        ifdefs: Conditions the macro is used at
+    """
+
+    name: str
+    args: tuple[str, ...] | None = None
     ifdefs: tuple[str, ...] = ()

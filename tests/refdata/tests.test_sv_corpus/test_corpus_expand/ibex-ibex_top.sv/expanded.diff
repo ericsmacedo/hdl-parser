@@ -1,0 +1,76 @@
+--- original
++++ expanded
+@@ -1398 +1398,4 @@
+-  `ASSERT_KNOWN_IF(IbexInstrReqPayloadX, instr_addr_o, instr_req_o)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexInstrReqPayloadXKnownEnable, instr_req_o, clk_i, !rst_ni)
++  `ASSERT(IbexInstrReqPayloadX, (instr_req_o) |-> (!$isunknown(instr_addr_o)), clk_i, !rst_ni)
++`endif
+@@ -1401,2 +1404,4 @@
+-  `ASSERT_KNOWN_IF(IbexDataReqPayloadX,
+-    {data_we_o, data_be_o, data_addr_o, data_wdata_o, data_wdata_intg_o, data_tag_o}, data_req_o)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexDataReqPayloadXKnownEnable, data_req_o, clk_i, !rst_ni)
++  `ASSERT(IbexDataReqPayloadX, (data_req_o) |-> (!$isunknown({data_we_o, data_be_o, data_addr_o, data_wdata_o, data_wdata_intg_o, data_tag_o})), clk_i, !rst_ni)
++`endif
+@@ -1405 +1410,4 @@
+-  `ASSERT_KNOWN_IF(IbexTrvkRevbmReqPayloadX, trvk_revbm_addr_o, trvk_revbm_req_o)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexTrvkRevbmReqPayloadXKnownEnable, trvk_revbm_req_o, clk_i, !rst_ni)
++  `ASSERT(IbexTrvkRevbmReqPayloadX, (trvk_revbm_req_o) |-> (!$isunknown(trvk_revbm_addr_o)), clk_i, !rst_ni)
++`endif
+@@ -1417,3 +1425,5 @@
+-  `ASSERT_KNOWN_IF(IbexDataReqShadowPayloadX,
+-    {data_we_shadow_o, data_be_shadow_o, data_addr_shadow_o,
+-     data_wdata_shadow_o, data_wdata_intg_shadow_o}, data_req_shadow_o)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexDataReqShadowPayloadXKnownEnable, data_req_shadow_o, clk_i, !rst_ni)
++  `ASSERT(IbexDataReqShadowPayloadX, (data_req_shadow_o) |-> (!$isunknown({data_we_shadow_o, data_be_shadow_o, data_addr_shadow_o,
++     data_wdata_shadow_o, data_wdata_intg_shadow_o})), clk_i, !rst_ni)
++`endif
+@@ -1421 +1431,4 @@
+-  `ASSERT_KNOWN_IF(IbexInstrReqShadowPayloadX, instr_addr_shadow_o, instr_req_shadow_o)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexInstrReqShadowPayloadXKnownEnable, instr_req_shadow_o, clk_i, !rst_ni)
++  `ASSERT(IbexInstrReqShadowPayloadX, (instr_req_shadow_o) |-> (!$isunknown(instr_addr_shadow_o)), clk_i, !rst_ni)
++`endif
+@@ -1434,2 +1447,4 @@
+-  `ASSERT_KNOWN_IF(IbexInstrRPayloadX,
+-    {instr_rdata_i, instr_rdata_intg_i, instr_err_i}, instr_rvalid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexInstrRPayloadXKnownEnable, instr_rvalid_i, clk_i, !rst_ni)
++  `ASSERT(IbexInstrRPayloadX, (instr_rvalid_i) |-> (!$isunknown({instr_rdata_i, instr_rdata_intg_i, instr_err_i})), clk_i, !rst_ni)
++`endif
+@@ -1442,2 +1457,4 @@
+-  `ASSERT_KNOWN_IF(IbexTrvkRevbmRPayloadX,
+-    {trvk_revbm_rdata_i, trvk_revbm_rdata_intg_i, trvk_revbm_err_i}, trvk_revbm_rvalid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexTrvkRevbmRPayloadXKnownEnable, trvk_revbm_rvalid_i, clk_i, !rst_ni)
++  `ASSERT(IbexTrvkRevbmRPayloadX, (trvk_revbm_rvalid_i) |-> (!$isunknown({trvk_revbm_rdata_i, trvk_revbm_rdata_intg_i, trvk_revbm_err_i})), clk_i, !rst_ni)
++`endif
+@@ -1522,2 +1539,4 @@
+-      `ASSERT_KNOWN_IF(IbexDataRPayloadX, {data_rdata_i, data_rdata_intg_i},
+-          data_rvalid_i)
++      `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexDataRPayloadXKnownEnable, data_rvalid_i, clk_i, !rst_ni)
++  `ASSERT(IbexDataRPayloadX, (data_rvalid_i) |-> (!$isunknown({data_rdata_i, data_rdata_intg_i})), clk_i, !rst_ni)
++`endif
+@@ -1527,2 +1546,4 @@
+-      `ASSERT_KNOWN_IF(IbexDataRPayloadX, {data_rdata_i, data_rdata_intg_i},
+-          data_rvalid_i & pending_dside_accesses_q[0].is_read)
++      `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexDataRPayloadXKnownEnable, data_rvalid_i & pending_dside_accesses_q[0].is_read, clk_i, !rst_ni)
++  `ASSERT(IbexDataRPayloadX, (data_rvalid_i & pending_dside_accesses_q[0].is_read) |-> (!$isunknown({data_rdata_i, data_rdata_intg_i})), clk_i, !rst_ni)
++`endif
+@@ -1533 +1554,4 @@
+-    `ASSERT_KNOWN_IF(IbexDataRErrPayloadX, {data_err_i, data_tag_i}, data_rvalid_i)
++    `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexDataRErrPayloadXKnownEnable, data_rvalid_i, clk_i, !rst_ni)
++  `ASSERT(IbexDataRErrPayloadX, (data_rvalid_i) |-> (!$isunknown({data_err_i, data_tag_i})), clk_i, !rst_ni)
++`endif
+@@ -1619 +1643,4 @@
+-  `ASSERT_KNOWN_IF(IbexScramblePayloadX, {scramble_key_i, scramble_nonce_i}, scramble_key_valid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexScramblePayloadXKnownEnable, scramble_key_valid_i, clk_i, !rst_ni)
++  `ASSERT(IbexScramblePayloadX, (scramble_key_valid_i) |-> (!$isunknown({scramble_key_i, scramble_nonce_i})), clk_i, !rst_ni)
++`endif

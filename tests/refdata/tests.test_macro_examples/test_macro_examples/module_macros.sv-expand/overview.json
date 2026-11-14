@@ -1,0 +1,150 @@
+{
+  "path": "$PRJ/examples/sv/macros/module_macros.sv",
+  "modules": [
+    {
+      "name": "module_macros",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "d_i",
+          "dim": "[(8)-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_o",
+          "dim": "[(8)-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_stage0",
+          "module": "stage8",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "d_i"
+            },
+            {
+              "port": "q_o",
+              "con": "stage"
+            }
+          ]
+        },
+        {
+          "name": "u_stage1",
+          "module": "stage8",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "stage"
+            },
+            {
+              "port": "q_o",
+              "con": "q_o"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stage8",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "d_i",
+          "dim": "[(8)-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_o",
+          "dim": "[(8)-1:0]"
+        }
+      ]
+    },
+    {
+      "name": "stage16",
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "d_i",
+          "dim": "[(16)-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "q_o",
+          "dim": "[(16)-1:0]"
+        }
+      ]
+    }
+  ]
+}

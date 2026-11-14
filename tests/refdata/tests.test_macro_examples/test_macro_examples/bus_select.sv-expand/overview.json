@@ -1,0 +1,51 @@
+{
+  "path": "$PRJ/examples/sv/macros/bus_select.sv",
+  "modules": [
+    {
+      "name": "bus_select",
+      "params": [
+        {
+          "ptype": "string",
+          "name": "BUS",
+          "default": "`REG_BUS_NAME"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[(32)-1:0]",
+          "dim_unpacked": "[4]"
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "REG_BUS_PORTS",
+          "args": [
+            "reg"
+          ]
+        },
+        {
+          "name": "DEBUG_PORTS"
+        }
+      ]
+    }
+  ]
+}

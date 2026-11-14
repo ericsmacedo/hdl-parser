@@ -1,0 +1,18 @@
+--- original
++++ expanded
+@@ -140,5 +139,0 @@
+-`ifndef SYNTHESIS
+-`ifndef COMMON_CELLS_ASSERTS_OFF
+-    initial begin
+-        assert (DEPTH > 0)             else $error("DEPTH must be greater than 0.");
+-    end
+@@ -146,9 +140,0 @@
+-    full_write : assert property(
+-        @(posedge clk_i) disable iff (~rst_ni) (full_o |-> ~push_i))
+-        else $fatal (1, "Trying to push new data although the FIFO is full.");
+-
+-    empty_read : assert property(
+-        @(posedge clk_i) disable iff (~rst_ni) (empty_o |-> ~pop_i))
+-        else $fatal (1, "Trying to pop data although the FIFO is empty.");
+-`endif
+-`endif

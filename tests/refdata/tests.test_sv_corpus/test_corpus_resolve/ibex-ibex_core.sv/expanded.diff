@@ -1,0 +1,178 @@
+--- original
++++ expanded
+@@ -136 +136 @@
+-`ifdef RVFI
++
+@@ -181 +181 @@
+-  `endif
++
+@@ -637,2 +637,2 @@
+-  `ASSERT_INIT(IbexMuBiSecureOnBottomBitSet,    IbexMuBiOn[0] == 1'b1)
+-  `ASSERT_INIT(IbexMuBiSecureOffBottomBitClear, IbexMuBiOff[0] == 1'b0)
++
++
+@@ -1342,2 +1342 @@
+-    `ASSERT(CheriotEnableOneWaySwitch,
+-            (cheriot_enable_i == IbexMuBiOn) |=> (cheriot_enable_i == IbexMuBiOn), clk_i, !rst_ni)
++
+@@ -1355 +1354 @@
+-  `ifdef INC_ASSERT
++
+@@ -1386 +1385 @@
+-    `ASSERT(NoMemRFWriteWithoutPendingLoad, rf_we_lsu |-> outstanding_load_wb, clk_i, !rst_ni)
++
+@@ -1393,5 +1392,4 @@
+-    `ASSERT(NoMemRFWriteWithoutPendingLoad, rf_we_lsu |-> outstanding_load_id, clk_i, !rst_ni)
+-  end
+-
+-  `ASSERT(NoMemResponseWithoutPendingAccess,
+-    data_rvalid_i |-> outstanding_load_resp | outstanding_store_resp, clk_i, !rst_ni)
++
++  end
++
++
+@@ -1425,5 +1423,3 @@
+-  `ASSERT(NoExecWhenFetchEnableNotOn,
+-          !fetch_enable_raw |=>
+-          (~instr_valid_id || (pc_id == pc_at_fetch_disable)) && ~$rose(instr_valid_id))
+-
+-  `endif // INC_ASSERT
++
++
++   // INC_ASSERT
+@@ -1578,7 +1574,5 @@
+-  `ASSERT(IbexCsrOpValid, instr_valid_id |-> csr_op inside {
+-      CSR_OP_READ,
+-      CSR_OP_WRITE,
+-      CSR_OP_SET,
+-      CSR_OP_CLEAR
+-      })
+-  `ASSERT_KNOWN_IF(IbexCsrWdataIntKnown, cs_registers_i.csr_wdata_int, csr_op_en)
++
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1659 +1653 @@
+-`ifdef RVFI
++
+@@ -2453,3 +2447 @@
+-  `COVER(StepCountedTrappedNonFinalUop,
+-         rvfi_valid && rvfi_trap && rvfi_ext_expanded_insn_valid &&
+-         !rvfi_ext_expanded_insn_last && debug_single_step)
++
+@@ -2459,13 +2451,3 @@
+-  `ASSERT(StepDebugEntryHasArchitecturalProgress,
+-          debug_mode_entering && debug_csr_save && (debug_cause == DBG_CAUSE_STEP)
+-          |=> (step_rvfi_cnt_q == 2'd1))
+-
+-`else
+-  logic unused_instr_new_id, unused_instr_id_done, unused_instr_done_wb,
+-        unused_instr_expanded_id, unused_instr_gets_expanded_id;
+-  assign unused_instr_id_done = instr_id_done;
+-  assign unused_instr_new_id = instr_new_id;
+-  assign unused_instr_done_wb = instr_done_wb;
+-  assign unused_instr_expanded_id = ^instr_expanded_id;
+-  assign unused_instr_gets_expanded_id = ^instr_gets_expanded_id;
+-`endif
++
++
++
+@@ -2474,3 +2456,2 @@
+-  `ASSERT_INIT(IllegalParamSecure, !(SecureIbex && (RV32M == RV32MNone)))
+-  `ASSERT_INIT(IllegalParamCHERIoTNoWriteback,
+-               !((BaseIsa == BaseIsaRV32IorCHERIoT) && !WritebackStage))
++
++
+@@ -2482,6 +2463,3 @@
+-  `ASSERT(SingleStepStableAcrossDummy,
+-          instr_valid_id & dummy_instr_id |=> $stable(id_stage_i.controller_i.do_single_step_q))
+-  `COVER(SingleStepDummyWhileDisarmed,
+-         instr_valid_id & dummy_instr_id & ~id_stage_i.controller_i.do_single_step_q)
+-  `COVER(SingleStepDummyWhileArmed,
+-         instr_valid_id & dummy_instr_id & id_stage_i.controller_i.do_single_step_q)
++
++
++
+@@ -2490,8 +2468,5 @@
+-  `ASSERT_KNOWN(IbexWbExceptionKnown, id_stage_i.controller_i.wb_exception_o)
+-  `ASSERT_KNOWN(IbexInstrRetWbKnown, perf_instr_ret_wb)
+-  `ASSERT(NoInstrRetOnWbException,
+-          id_stage_i.controller_i.wb_exception_o |-> ~perf_instr_ret_wb)
+-  `COVER(WbExceptionOnCountedInstr,
+-         id_stage_i.controller_i.wb_exception_o & perf_instr_ret_wb_spec)
+-  `COVER(WbExceptionOnCountedCompressedInstr,
+-         id_stage_i.controller_i.wb_exception_o & perf_instr_ret_compressed_wb_spec)
++
++
++
++
++
+@@ -2503,66 +2478 @@
+-`ifndef SYNTHESIS
+-  // fcov signals for V2S
+-  `DV_FCOV_SIGNAL_GEN_IF(logic, rf_ecc_err_a_id, gen_regfile_ecc.rf_ecc_err_a_id, RegFileECC)
+-  `DV_FCOV_SIGNAL_GEN_IF(logic, rf_ecc_err_b_id, gen_regfile_ecc.rf_ecc_err_b_id, RegFileECC)
+-
+-  // fcov signals for CSR access. These are complicated by illegal accesses. Where an access is
+-  // legal `csr_op_en` signals the operation occurring, but this is deasserted where an access is
+-  // illegal. Instead `illegal_insn_id` confirms the instruction is taking an illegal instruction
+-  // exception.
+-  // All CSR operations perform a read, `CSR_OP_READ` is the only one that only performs a read
+-  `DV_FCOV_SIGNAL(logic, csr_read_only,
+-      (csr_op == CSR_OP_READ) && csr_access && (csr_op_en || illegal_insn_id))
+-  `DV_FCOV_SIGNAL(logic, csr_write,
+-      cs_registers_i.csr_wr && csr_access && (csr_op_en || illegal_insn_id))
+-
+-  if (PMPEnable) begin : g_pmp_fcov_signals
+-    logic [PMPNumRegions-1:0] fcov_pmp_region_ichan_priority;
+-    logic [PMPNumRegions-1:0] fcov_pmp_region_ichan2_priority;
+-    logic [PMPNumRegions-1:0] fcov_pmp_region_dchan_priority;
+-
+-    logic unused_fcov_pmp_region_priority;
+-
+-    assign unused_fcov_pmp_region_priority = ^{fcov_pmp_region_ichan_priority,
+-                                               fcov_pmp_region_ichan2_priority,
+-                                               fcov_pmp_region_dchan_priority};
+-
+-    for (genvar i_region = 0; i_region < PMPNumRegions; i_region += 1) begin : g_pmp_region_fcov
+-      `DV_FCOV_SIGNAL(logic, pmp_region_ichan_access,
+-          g_pmp.pmp_i.region_match_all[PMP_I][i_region] & if_stage_i.if_id_pipe_reg_we)
+-      `DV_FCOV_SIGNAL(logic, pmp_region_ichan2_access,
+-          g_pmp.pmp_i.region_match_all[PMP_I2][i_region] & if_stage_i.if_id_pipe_reg_we)
+-      `DV_FCOV_SIGNAL(logic, pmp_region_dchan_access,
+-          g_pmp.pmp_i.region_match_all[PMP_D][i_region] & data_req_out)
+-      // pmp_cfg[5:6] is reserved and because of that the width of it inside cs_registers module
+-      // is 6-bit.
+-      `DV_FCOV_SIGNAL(logic, warl_check_pmpcfg,
+-          fcov_csr_write &&
+-          (cs_registers_i.g_pmp_registers.g_pmp_csrs[i_region].u_pmp_cfg_csr.wr_data_i !=
+-          {cs_registers_i.csr_wdata_int[(i_region%4)*PMP_CFG_W+:5],
+-           cs_registers_i.csr_wdata_int[(i_region%4)*PMP_CFG_W+7]}))
+-
+-      if (i_region > 0) begin : g_region_priority
+-        assign fcov_pmp_region_ichan_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_I][i_region] &
+-          ~|g_pmp.pmp_i.region_match_all[PMP_I][i_region-1:0];
+-
+-        assign fcov_pmp_region_ichan2_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_I2][i_region] &
+-          ~|g_pmp.pmp_i.region_match_all[PMP_I2][i_region-1:0];
+-
+-        assign fcov_pmp_region_dchan_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_D][i_region] &
+-          ~|g_pmp.pmp_i.region_match_all[PMP_D][i_region-1:0];
+-      end else begin : g_region_highest_priority
+-        assign fcov_pmp_region_ichan_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_I][i_region];
+-
+-        assign fcov_pmp_region_ichan2_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_I2][i_region];
+-
+-        assign fcov_pmp_region_dchan_priority[i_region] =
+-          g_pmp.pmp_i.region_match_all[PMP_D][i_region];
+-      end
+-    end
+-  end
+-`endif
++

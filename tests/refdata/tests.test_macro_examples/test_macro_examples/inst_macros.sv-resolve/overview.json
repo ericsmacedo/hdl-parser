@@ -1,0 +1,282 @@
+{
+  "path": "$PRJ/examples/sv/macros/inst_macros.sv",
+  "modules": [
+    {
+      "name": "inst_macros",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "DEPTH",
+          "default": "4"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_i",
+          "dim": "[7:0]",
+          "dim_unpacked": "[3]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_o",
+          "dim": "[7:0]",
+          "dim_unpacked": "[3]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "irq_o"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_fifo0",
+          "module": "fifo",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_i[0]",
+              "comment": [
+                "Input"
+              ]
+            },
+            {
+              "port": "data_o",
+              "con": "data_o[0]",
+              "comment": [
+                "Output"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "u_mon0",
+          "module": "monitor",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_o[0]"
+            }
+          ]
+        },
+        {
+          "name": "u_fifo1",
+          "module": "fifo",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_i[1]",
+              "comment": [
+                "Input"
+              ]
+            },
+            {
+              "port": "data_o",
+              "con": "data_o[1]",
+              "comment": [
+                "Output"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "u_mon1",
+          "module": "monitor",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_o[1]"
+            }
+          ]
+        },
+        {
+          "name": "u_fifo2",
+          "module": "fifo",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_i[2]",
+              "comment": [
+                "Input"
+              ]
+            },
+            {
+              "port": "data_o",
+              "con": "data_o[2]",
+              "comment": [
+                "Output"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "u_mon2",
+          "module": "monitor",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "data_i",
+              "con": "data_o[2]"
+            }
+          ]
+        },
+        {
+          "name": "u_sync_irq",
+          "module": "sync",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "irq_i"
+            },
+            {
+              "port": "q_o",
+              "con": "irq_o"
+            }
+          ]
+        },
+        {
+          "name": "u_regs",
+          "module": "regs",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cfg_psel_i",
+              "con": "cfg_psel"
+            },
+            {
+              "port": "cfg_penable_i",
+              "con": "cfg_penable"
+            },
+            {
+              "port": "cfg_pwrite_i",
+              "con": "cfg_pwrite"
+            },
+            {
+              "port": "cfg_paddr_i",
+              "con": "cfg_paddr"
+            },
+            {
+              "port": "cfg_pwdata_i",
+              "con": "cfg_pwdata"
+            },
+            {
+              "port": "cfg_prdata_o",
+              "con": "cfg_prdata"
+            },
+            {
+              "port": "cfg_pready_o",
+              "con": "cfg_pready"
+            }
+          ]
+        },
+        {
+          "name": "u_other",
+          "module": "other",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "con": "`UNKNOWN_CON(x)"
+            },
+            {
+              "port": "y",
+              "con": "`UNKNOWN_VALUE"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

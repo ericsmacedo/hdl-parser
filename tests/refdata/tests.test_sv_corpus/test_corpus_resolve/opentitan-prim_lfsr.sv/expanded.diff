@@ -1,0 +1,188 @@
+--- original
++++ expanded
+@@ -261,2 +261 @@
+-        `ASSERT_I(UseDefaultSeedRandomizeCheck_A, std::randomize(prim_lfsr_use_default_seed) with {
+-                                                  prim_lfsr_use_default_seed dist {0:/7, 1:/3};})
++
+@@ -268,2 +267 @@
+-        `ASSERT_I(DefaultSeedLocalRandomizeCheck_A, std::randomize(DefaultSeedLocal) with {
+-                                                    !(DefaultSeedLocal inside {'0, '1});})
++
+@@ -291,2 +289,2 @@
+-      `ASSERT_INIT(MinLfsrWidth_A, LfsrDw >= $low(LFSR_COEFFS)+LUT_OFF)
+-      `ASSERT_INIT(MaxLfsrWidth_A, LfsrDw <= $high(LFSR_COEFFS)+LUT_OFF)
++
++
+@@ -302 +300 @@
+-    `ASSERT_INIT(DefaultSeedNzCheck_A, |DefaultSeedLocal)
++
+@@ -316,2 +314,2 @@
+-      `ASSERT_INIT(MinLfsrWidth_A, LfsrDw >= $low(LFSR_COEFFS)+LUT_OFF)
+-      `ASSERT_INIT(MaxLfsrWidth_A, LfsrDw <= $high(LFSR_COEFFS)+LUT_OFF)
++
++
+@@ -327 +325 @@
+-    `ASSERT_INIT(DefaultSeedNzCheck_A, !(&DefaultSeedLocal))
++
+@@ -337 +335 @@
+-    `ASSERT_INIT(UnknownLfsrType_A, 0)
++
+@@ -418,12 +416 @@
+-`ifndef SYNTHESIS
+-      // Check that the permutation is indeed a permutation.
+-      logic [LfsrDw-1:0] sbox_perm_test;
+-      always_comb begin : p_perm_check
+-        sbox_perm_test = '0;
+-        for (int k = 0; k < LfsrDw; k++) begin
+-          sbox_perm_test[sbox_in_indices[k]] = 1'b1;
+-        end
+-      end
+-      // All bit positions must be marked with 1.
+-      `ASSERT(SboxPermutationCheck_A, &sbox_perm_test)
+-`endif
++
+@@ -437,8 +424,4 @@
+-      `ASSUME(SjSkRange_M, (sj < NumSboxes) && (sk < NumSboxes))
+-      `ASSUME(SjSkDifferent_M, sj != sk)
+-      `ASSUME(SjSkStable_M, ##1 $stable(sj) && $stable(sk) && $stable(shift))
+-      `ASSERT(SboxInputIndexGroupIsUnique_A,
+-          !((((sbox_in_indices[sj * 4 + 0] + shift) % LfsrDw) == sbox_in_indices[sk * 4 + 0]) &&
+-            (((sbox_in_indices[sj * 4 + 1] + shift) % LfsrDw) == sbox_in_indices[sk * 4 + 1]) &&
+-            (((sbox_in_indices[sj * 4 + 2] + shift) % LfsrDw) == sbox_in_indices[sk * 4 + 2]) &&
+-            (((sbox_in_indices[sj * 4 + 3] + shift) % LfsrDw) == sbox_in_indices[sk * 4 + 3])))
++
++
++
++
+@@ -450,3 +433,3 @@
+-      `ASSUME(IkYRange_M, (ik < LfsrDw) && (y == 1 || y == -1))
+-      `ASSUME(IkStable_M, ##1 $stable(ik) && $stable(y))
+-      `ASSERT(IndicesNotAdjacent_A, (sbox_in_indices[ik] - sbox_in_indices[(ik + y) % LfsrDw]) != 1)
++
++
++
+@@ -499 +482 @@
+-  `ASSERT_KNOWN(DataKnownO_A, state_o)
++
+@@ -503,64 +486,4 @@
+-`ifndef SYNTHESIS
+-  function automatic logic [LfsrDw-1:0] compute_next_state(logic [LfsrDw-1:0]    lfsrcoeffs,
+-                                                           logic [EntropyDw-1:0] entropy,
+-                                                           logic [LfsrDw-1:0]    current_state);
+-    logic state0;
+-    logic [LfsrDw-1:0] next_state;
+-
+-    next_state = current_state;
+-
+-    // Galois XOR
+-    if (64'(LfsrType) == 64'("GAL_XOR")) begin
+-      if (next_state == 0) begin
+-        next_state = DefaultSeedLocal;
+-      end else begin
+-        state0 = next_state[0];
+-        next_state = next_state >> 1;
+-        if (state0) next_state ^= lfsrcoeffs;
+-        next_state ^= LfsrDw'(entropy);
+-      end
+-    // Fibonacci XNOR
+-    end else if (64'(LfsrType) == "FIB_XNOR") begin
+-      if (&next_state) begin
+-        next_state = DefaultSeedLocal;
+-      end else begin
+-        state0 = ~(^(next_state & lfsrcoeffs));
+-        next_state = next_state << 1;
+-        next_state[0] = state0;
+-        next_state ^= LfsrDw'(entropy);
+-      end
+-    end else begin
+-      $error("unknown lfsr type");
+-    end
+-
+-    return next_state;
+-  endfunction : compute_next_state
+-
+-  // check whether next state is computed correctly
+-  // we shift the assertion by one clock cycle (##1) in order to avoid
+-  // erroneous SVA triggers right after reset deassertion in cases where
+-  // the precondition is true throughout the reset.
+-  // this can happen since the disable_iff evaluates using unsampled values,
+-  // meaning that the assertion may already read rst_ni == 1 on an active
+-  // clock edge while the flops in the design have not yet changed state.
+-  `ASSERT(NextStateCheck_A, ##1 lfsr_en_i && !seed_en_i |=> lfsr_q ==
+-      compute_next_state(coeffs, $past(entropy_i), $past(lfsr_q)))
+-
+-  // Only check this if enabled.
+-  if (StatePermEn) begin : gen_perm_check
+-    // Check that the supplied permutation is valid.
+-    logic [LfsrDw-1:0] lfsr_perm_test;
+-    initial begin : p_perm_check
+-      lfsr_perm_test = '0;
+-      for (int k = 0; k < LfsrDw; k++) begin
+-        lfsr_perm_test[StatePerm[k]] = 1'b1;
+-      end
+-      // All bit positions must be marked with 1.
+-      `ASSERT_I(PermutationCheck_A, &lfsr_perm_test)
+-    end
+-  end
+-
+-`endif
+-
+-  `ASSERT_INIT(InputWidth_A, LfsrDw >= EntropyDw)
+-  `ASSERT_INIT(OutputWidth_A, LfsrDw >= StateOutDw)
++
++
++
++
+@@ -569 +492 @@
+-  `ASSERT(CoeffCheck_A, coeffs[LfsrDw-1])
++
+@@ -572 +495 @@
+-  `ASSERT_KNOWN(OutputKnown_A, state_o)
++
+@@ -574 +497 @@
+-    `ASSERT(OutputCheck_A, state_o == StateOutDw'(lfsr_q))
++
+@@ -578 +501 @@
+-  `ASSERT(NoLockups_A, lfsr_en_i && !entropy_i && !seed_en_i |=> !lockup)
++
+@@ -585 +508 @@
+-    `ASSERT(ExtDefaultSeedInputCheck_A, (seed_en_i && rst_ni) |=> lfsr_q == $past(seed_i))
++
+@@ -593 +516 @@
+-    `ASSERT(LfsrLockupCheck_A, lfsr_en_i && lockup && !seed_en_i |=> !lockup)
++
+@@ -598 +521 @@
+-    `ASSERT_INIT(SboxByteAlign_A, 2**$clog2(LfsrDw) == LfsrDw && LfsrDw >= 16)
++
+@@ -602,30 +525 @@
+-`ifndef SYNTHESIS
+-    // the code below is a workaround to enable long sequences to be checked.
+-    // some simulators do not support SVA sequences longer than 2**32-1.
+-    logic [LfsrDw-1:0] cnt_d, cnt_q;
+-    logic perturbed_d, perturbed_q;
+-    logic [LfsrDw-1:0] cmp_val;
+-
+-    assign cmp_val = {{(LfsrDw-1){1'b1}}, 1'b0}; // 2**LfsrDw-2
+-    assign cnt_d = (lfsr_en_i && lockup)             ? '0           :
+-                   (lfsr_en_i && (cnt_q == cmp_val)) ? '0           :
+-                   (lfsr_en_i)                       ? cnt_q + 1'b1 :
+-                                                       cnt_q;
+-
+-    assign perturbed_d = perturbed_q | (|entropy_i) | seed_en_i;
+-
+-    always_ff @(posedge clk_i or negedge rst_ni) begin : p_max_len
+-      if (!rst_ni) begin
+-        cnt_q       <= '0;
+-        perturbed_q <= 1'b0;
+-      end else begin
+-        cnt_q       <= cnt_d;
+-        perturbed_q <= perturbed_d;
+-      end
+-    end
+-
+-    `ASSERT(MaximalLengthCheck0_A, cnt_q == 0 |-> lfsr_q == DefaultSeedLocal,
+-        clk_i, !rst_ni || perturbed_q)
+-    `ASSERT(MaximalLengthCheck1_A, cnt_q != 0 |-> lfsr_q != DefaultSeedLocal,
+-        clk_i, !rst_ni || perturbed_q)
+-`endif
++

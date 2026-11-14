@@ -1,0 +1,153 @@
+{
+  "path": "$PRJ/examples/sv/macros/port_macros.sv",
+  "modules": [
+    {
+      "name": "port_macros",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "IN_WIDTH",
+          "default": "16"
+        },
+        {
+          "ptype": "int",
+          "name": "OUT_WIDTH",
+          "default": "8"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Reset, low active"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_valid"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "in_data",
+          "dim": "[(IN_WIDTH)-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "in_ready"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_valid"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "out_data",
+          "dim": "[(OUT_WIDTH)-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "out_ready"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "aux_valid"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "aux_data",
+          "dim": "[(8)-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "aux_ready"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cfg_psel_i",
+          "comment": [
+            "Select"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cfg_penable_i",
+          "comment": [
+            "Enable"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cfg_pwrite_i",
+          "comment": [
+            "Write"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cfg_paddr_i",
+          "dim": "[(12)-1:0]",
+          "comment": [
+            "Address"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cfg_pwdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Write Data"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cfg_prdata_o",
+          "dim": "[31:0]",
+          "comment": [
+            "Read Data"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cfg_pready_o",
+          "comment": [
+            "Ready"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "busy_o",
+          "comment": [
+            "Busy"
+          ]
+        }
+      ]
+    }
+  ]
+}

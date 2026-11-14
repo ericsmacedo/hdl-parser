@@ -1,0 +1,37 @@
+{
+  "path": "$PRJ/examples/sv/macros/bus_select.sv",
+  "modules": [
+    {
+      "name": "bus_select",
+      "params": [
+        {
+          "ptype": "string",
+          "name": "BUS",
+          "default": "`REG_BUS_NAME"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "output",
+          "ptype": "`VEC(`DATA_WIDTH)",
+          "name": "data_o",
+          "dim_unpacked": "[`NUM_CHANNELS]"
+        }
+      ],
+      "unresolved_macros": [
+        {
+          "name": "CLK_RST_PORTS"
+        },
+        {
+          "name": "REG_BUS_PORTS",
+          "args": [
+            "reg"
+          ]
+        },
+        {
+          "name": "DEBUG_PORTS"
+        }
+      ]
+    }
+  ]
+}

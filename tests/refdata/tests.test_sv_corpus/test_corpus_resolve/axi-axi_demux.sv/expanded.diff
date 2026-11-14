@@ -1,0 +1,170 @@
+--- original
++++ expanded
+@@ -249,7 +249,64 @@
+-  `AXI_TYPEDEF_AW_CHAN_T(aw_chan_t, addr_t, id_t, user_t)
+-  `AXI_TYPEDEF_W_CHAN_T(w_chan_t, data_t, strb_t, user_t)
+-  `AXI_TYPEDEF_B_CHAN_T(b_chan_t, id_t, user_t)
+-  `AXI_TYPEDEF_AR_CHAN_T(ar_chan_t, addr_t, id_t, user_t)
+-  `AXI_TYPEDEF_R_CHAN_T(r_chan_t, data_t, id_t, user_t)
+-  `AXI_TYPEDEF_REQ_T(axi_req_t, aw_chan_t, w_chan_t, ar_chan_t)
+-  `AXI_TYPEDEF_RESP_T(axi_resp_t, b_chan_t, r_chan_t)
++  typedef struct packed {
++    id_t              id;
++    addr_t            addr;
++    axi_pkg::len_t    len;
++    axi_pkg::size_t   size;
++    axi_pkg::burst_t  burst;
++    logic             lock;
++    axi_pkg::cache_t  cache;
++    axi_pkg::prot_t   prot;
++    axi_pkg::qos_t    qos;
++    axi_pkg::region_t region;
++    axi_pkg::atop_t   atop;
++    user_t            user;
++  } aw_chan_t;
++  typedef struct packed {
++    data_t data;
++    strb_t strb;
++    logic  last;
++    user_t user;
++  } w_chan_t;
++  typedef struct packed {
++    id_t            id;
++    axi_pkg::resp_t resp;
++    user_t          user;
++  } b_chan_t;
++  typedef struct packed {
++    id_t              id;
++    addr_t            addr;
++    axi_pkg::len_t    len;
++    axi_pkg::size_t   size;
++    axi_pkg::burst_t  burst;
++    logic             lock;
++    axi_pkg::cache_t  cache;
++    axi_pkg::prot_t   prot;
++    axi_pkg::qos_t    qos;
++    axi_pkg::region_t region;
++    user_t            user;
++  } ar_chan_t;
++  typedef struct packed {
++    id_t            id;
++    data_t          data;
++    axi_pkg::resp_t resp;
++    logic           last;
++    user_t          user;
++  } r_chan_t;
++  typedef struct packed {
++    aw_chan_t aw;
++    logic     aw_valid;
++    w_chan_t  w;
++    logic     w_valid;
++    logic     b_ready;
++    ar_chan_t ar;
++    logic     ar_valid;
++    logic     r_ready;
++  } axi_req_t;
++  typedef struct packed {
++    logic     aw_ready;
++    logic     ar_ready;
++    logic     w_ready;
++    logic     b_valid;
++    b_chan_t  b;
++    logic     r_valid;
++    r_chan_t  r;
++  } axi_resp_t;
+@@ -262,2 +319,45 @@
+-  `AXI_ASSIGN_TO_REQ(slv_req, slv)
+-  `AXI_ASSIGN_FROM_RESP(slv, slv_resp)
++  assign slv_req.aw.id     = slv.aw_id;
++  assign slv_req.aw.addr   = slv.aw_addr;
++  assign slv_req.aw.len    = slv.aw_len;
++  assign slv_req.aw.size   = slv.aw_size;
++  assign slv_req.aw.burst  = slv.aw_burst;
++  assign slv_req.aw.lock   = slv.aw_lock;
++  assign slv_req.aw.cache  = slv.aw_cache;
++  assign slv_req.aw.prot   = slv.aw_prot;
++  assign slv_req.aw.qos    = slv.aw_qos;
++  assign slv_req.aw.region = slv.aw_region;
++  assign slv_req.aw.atop   = slv.aw_atop;
++  assign slv_req.aw.user   = slv.aw_user;
++  assign slv_req.aw_valid = slv.aw_valid;
++  assign slv_req.w.data   = slv.w_data;
++  assign slv_req.w.strb   = slv.w_strb;
++  assign slv_req.w.last   = slv.w_last;
++  assign slv_req.w.user   = slv.w_user;
++  assign slv_req.w_valid = slv.w_valid;
++  assign slv_req.b_ready = slv.b_ready;
++  assign slv_req.ar.id     = slv.ar_id;
++  assign slv_req.ar.addr   = slv.ar_addr;
++  assign slv_req.ar.len    = slv.ar_len;
++  assign slv_req.ar.size   = slv.ar_size;
++  assign slv_req.ar.burst  = slv.ar_burst;
++  assign slv_req.ar.lock   = slv.ar_lock;
++  assign slv_req.ar.cache  = slv.ar_cache;
++  assign slv_req.ar.prot   = slv.ar_prot;
++  assign slv_req.ar.qos    = slv.ar_qos;
++  assign slv_req.ar.region = slv.ar_region;
++  assign slv_req.ar.user   = slv.ar_user;
++  assign slv_req.ar_valid = slv.ar_valid;
++  assign slv_req.r_ready = slv.r_ready;
++  assign slv.aw_ready = slv_resp.aw_ready;
++  assign slv.ar_ready = slv_resp.ar_ready;
++  assign slv.w_ready = slv_resp.w_ready;
++  assign slv.b_valid = slv_resp.b_valid;
++  assign slv.b_id     = slv_resp.b.id;
++  assign slv.b_resp   = slv_resp.b.resp;
++  assign slv.b_user   = slv_resp.b.user;
++  assign slv.r_valid = slv_resp.r_valid;
++  assign slv.r_id     = slv_resp.r.id;
++  assign slv.r_data   = slv_resp.r.data;
++  assign slv.r_resp   = slv_resp.r.resp;
++  assign slv.r_last   = slv_resp.r.last;
++  assign slv.r_user   = slv_resp.r.user;
+@@ -266,2 +366,45 @@
+-    `AXI_ASSIGN_FROM_REQ(mst[i], mst_req[i])
+-    `AXI_ASSIGN_TO_RESP(mst_resp[i], mst[i])
++    assign mst[i].aw_id     = mst_req[i].aw.id;
++  assign mst[i].aw_addr   = mst_req[i].aw.addr;
++  assign mst[i].aw_len    = mst_req[i].aw.len;
++  assign mst[i].aw_size   = mst_req[i].aw.size;
++  assign mst[i].aw_burst  = mst_req[i].aw.burst;
++  assign mst[i].aw_lock   = mst_req[i].aw.lock;
++  assign mst[i].aw_cache  = mst_req[i].aw.cache;
++  assign mst[i].aw_prot   = mst_req[i].aw.prot;
++  assign mst[i].aw_qos    = mst_req[i].aw.qos;
++  assign mst[i].aw_region = mst_req[i].aw.region;
++  assign mst[i].aw_atop   = mst_req[i].aw.atop;
++  assign mst[i].aw_user   = mst_req[i].aw.user;
++  assign mst[i].aw_valid = mst_req[i].aw_valid;
++  assign mst[i].w_data   = mst_req[i].w.data;
++  assign mst[i].w_strb   = mst_req[i].w.strb;
++  assign mst[i].w_last   = mst_req[i].w.last;
++  assign mst[i].w_user   = mst_req[i].w.user;
++  assign mst[i].w_valid = mst_req[i].w_valid;
++  assign mst[i].b_ready = mst_req[i].b_ready;
++  assign mst[i].ar_id     = mst_req[i].ar.id;
++  assign mst[i].ar_addr   = mst_req[i].ar.addr;
++  assign mst[i].ar_len    = mst_req[i].ar.len;
++  assign mst[i].ar_size   = mst_req[i].ar.size;
++  assign mst[i].ar_burst  = mst_req[i].ar.burst;
++  assign mst[i].ar_lock   = mst_req[i].ar.lock;
++  assign mst[i].ar_cache  = mst_req[i].ar.cache;
++  assign mst[i].ar_prot   = mst_req[i].ar.prot;
++  assign mst[i].ar_qos    = mst_req[i].ar.qos;
++  assign mst[i].ar_region = mst_req[i].ar.region;
++  assign mst[i].ar_user   = mst_req[i].ar.user;
++  assign mst[i].ar_valid = mst_req[i].ar_valid;
++  assign mst[i].r_ready = mst_req[i].r_ready;
++    assign mst_resp[i].aw_ready = mst[i].aw_ready;
++  assign mst_resp[i].ar_ready = mst[i].ar_ready;
++  assign mst_resp[i].w_ready = mst[i].w_ready;
++  assign mst_resp[i].b_valid = mst[i].b_valid;
++  assign mst_resp[i].b.id     = mst[i].b_id;
++  assign mst_resp[i].b.resp   = mst[i].b_resp;
++  assign mst_resp[i].b.user   = mst[i].b_user;
++  assign mst_resp[i].r_valid = mst[i].r_valid;
++  assign mst_resp[i].r.id     = mst[i].r_id;
++  assign mst_resp[i].r.data   = mst[i].r_data;
++  assign mst_resp[i].r.resp   = mst[i].r_resp;
++  assign mst_resp[i].r.last   = mst[i].r_last;
++  assign mst_resp[i].r.user   = mst[i].r_user;

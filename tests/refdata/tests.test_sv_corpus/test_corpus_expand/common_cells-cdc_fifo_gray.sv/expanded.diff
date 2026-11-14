@@ -1,0 +1,32 @@
+--- original
++++ expanded
+@@ -197,2 +197,5 @@
+-    `FFLNR(data_q[i], src_data_i,
+-          src_valid_i & src_ready_o & (wptr_bin[LOG_DEPTH-1:0] == i), src_clk_i)
++    always_ff @(posedge (src_clk_i)) begin
++    if (src_valid_i & src_ready_o & (wptr_bin[LOG_DEPTH-1:0] == i)) begin
++      data_q[i] <= (src_data_i);
++    end
++  end
+@@ -216 +219,9 @@
+-  `FFLARN(wptr_q, wptr_d, src_valid_i & src_ready_o, '0, src_clk_i, src_rst_ni)
++  always_ff @(posedge (src_clk_i) or negedge (src_rst_ni)) begin
++    if (!src_rst_ni) begin
++      wptr_q <= ('0);
++    end else begin
++      if (src_valid_i & src_ready_o) begin
++        wptr_q <= (wptr_d);
++      end
++    end
++  end
+@@ -259 +270,9 @@
+-  `FFLARN(rptr_q, rptr_d, dst_valid & dst_ready, '0, dst_clk_i, dst_rst_ni)
++  always_ff @(posedge (dst_clk_i) or negedge (dst_rst_ni)) begin
++    if (!dst_rst_ni) begin
++      rptr_q <= ('0);
++    end else begin
++      if (dst_valid & dst_ready) begin
++        rptr_q <= (rptr_d);
++      end
++    end
++  end
