@@ -24,7 +24,7 @@
 
 from collections.abc import Iterator
 from pathlib import Path
-from typing import TypeAlias, Union
+from typing import Literal, TypeAlias, Union
 
 import pydantic as pyd
 
@@ -63,6 +63,53 @@ class Location(_BaseModel):
     macro: str = ""
 
 
+Severity: TypeAlias = Literal["error", "warning", "info"]
+"""Severity Of A Diagnostic."""
+
+
+class Diagnostic(_BaseModel):
+    """A Problem Found While Parsing.
+
+    The result is still valid, but it may be incomplete at the reported location.
+
+    | `code`                | Severity | Meaning                                                           |
+    | --------------------- | -------- | ----------------------------------------------------------------- |
+    | `macro-not-expanded`  | warning  | Macro in a module header is not expanded. `item` is the macro.    |
+    | `macro-ambiguous`     | warning  | Macro has different definitions under unknown conditions.         |
+    | `macro-recursive`     | warning  | Macro uses itself.                                                |
+    | `macro-args-missing`  | warning  | Macro with arguments is used without.                             |
+    | `macro-args-count`    | warning  | Macro is used with the wrong number of arguments.                 |
+    | `macro-bad-define`    | warning  | `` `define `` cannot be parsed.                                   |
+    | `include-not-found`   | warning  | Included file is not found.                                       |
+    | `include-unreadable`  | warning  | Included file cannot be read.                                     |
+    | `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |
+    | `missing-end`         | warning  | Module, entity or architecture without end.                       |
+    | `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |
+    | `no-module`           | info     | File without module, i.e. a package.                              |
+
+    The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
+    unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
+
+    Code the parser has no interest in (i.e. procedural code) is skipped without diagnostic.
+
+    Attributes:
+        code: Kind of problem. See table above.
+        severity: `error`, `warning` or `info`.
+        message: Description.
+        loc: Source Location within the parsed file. A problem within an included file points to the
+             `` `include `` statement.
+        item: Identifier of the related item: the module the problem is located in, if not stated otherwise.
+        file: Included file the problem is located in. Empty, if located in the parsed file itself.
+    """
+
+    code: str
+    severity: Severity
+    message: str
+    loc: Location | None = None
+    item: str = ""
+    file: str = ""
+
+
 Item: TypeAlias = Union["Module", "Param", "Port", "ModuleInstance", "Connection", "MacroCall"]
 """Any Item With An Identifier."""
 
@@ -91,10 +138,12 @@ class File(_BaseModel):
     Attributes:
         path: Related File.
         modules: Modules Within That File.
+        diagnostics: Problems found while parsing, in the order of the file.
     """
 
     path: Path | None
     modules: tuple["Module", ...]
+    diagnostics: tuple[Diagnostic, ...] = ()
 
     @property
     def file_id(self) -> str:

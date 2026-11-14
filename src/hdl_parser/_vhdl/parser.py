@@ -44,6 +44,7 @@ from collections.abc import Callable, Iterator
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
+from .._diagnostics import Diagnostics, shorten  # noqa: TID252
 from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token, Tokens  # noqa: TID252
 from .tokenizer import tokenize
 
@@ -85,11 +86,12 @@ class _Decl(NamedTuple):
 class _Unit:
     """Entity With The Instances Of Its Architectures."""
 
-    __slots__ = ("arch_loc", "depth", "generics", "insts", "loc", "name", "ports", "smap")
+    __slots__ = ("arch_loc", "depth", "diagnostics", "generics", "insts", "loc", "name", "ports", "smap")
 
-    def __init__(self, name: str, smap: SourceMap):
+    def __init__(self, name: str, smap: SourceMap, diagnostics: Diagnostics):
         self.name = name
         self.smap = smap
+        self.diagnostics = diagnostics
         self.generics: list[_Decl] = []
         self.ports: list[_Decl] = []
         self.insts: list[dm.ModuleInstance] = []
@@ -126,9 +128,10 @@ def _parse_subtype(c: Cursor) -> tuple[str, str]:
     return dtype, dim
 
 
-def _parse_interface_decl(c: Cursor, smap: SourceMap) -> list[_Decl]:
+def _parse_interface_decl(c: Cursor, unit: _Unit) -> list[_Decl]:
     """Parse `[class] name {, name} : [mode] type [(constraint)] [:= default]`."""
     comment = c.start_comment()
+    start = c.pos
     first = c.peek()
     ptype = ""
     if c.peek().text in _OBJECT_CLASSES and c.peek().kind == KW:
@@ -141,6 +144,13 @@ def _parse_interface_decl(c: Cursor, smap: SourceMap) -> list[_Decl]:
     if not names or not c.accept(":"):
         # nothing we understand, i.e. the type, subprogram and package generics of VHDL-2008
         c.skip_until(_SEMI)
+        if c.pos > start:
+            unit.diagnostics.add(
+                "header-item-skipped",
+                f"entity '{unit.name}': '{shorten(c.text(start, c.pos))}' in entity header is not understood. "
+                "Generics or ports may be missing.",
+                unit.smap.span(first, _last(c)),
+            )
         return []
     direction = ""
     if c.peek().text in _MODES and c.peek().kind == KW:
@@ -154,26 +164,28 @@ def _parse_interface_decl(c: Cursor, smap: SourceMap) -> list[_Decl]:
         default = c.text(start, c.pos).strip()
     last = _last(c)
     return [
-        _Decl(name.text, direction, ptype, dtype, dim, default, comment, smap.span(first, last, name)) for name in names
+        _Decl(name.text, direction, ptype, dtype, dim, default, comment, unit.smap.span(first, last, name))
+        for name in names
     ]
 
 
-def _parse_interface_list(c: Cursor, smap: SourceMap) -> list[_Decl]:
+def _parse_interface_list(c: Cursor, unit: _Unit) -> list[_Decl]:
     """Parse the parenthesized, semicolon separated declarations of a generic or port clause."""
     decls: list[_Decl] = []
-    c.next()
+    opening = c.next()
     while True:
         tok = c.peek()
         if tok.text == ")":
             c.next()
             break
         if tok.kind == EOF:
+            c.unclosed.append(opening)
             break
         if tok.text == ";":
             c.next()
             continue
         pos = c.pos
-        decls += _parse_interface_decl(c, smap)
+        decls += _parse_interface_decl(c, unit)
         if c.pos == pos:
             # unmatched closing bracket
             c.next()
@@ -192,7 +204,7 @@ def _parse_entity(c: Cursor, unit: _Unit) -> None:
                 return
             if tok.text in _MAPPED and c.peek(1).text == "(":
                 c.next()
-                decls = _parse_interface_list(c, unit.smap)
+                decls = _parse_interface_list(c, unit)
                 if tok.text == "port":
                     unit.ports += decls
                 else:
@@ -219,13 +231,14 @@ def _is_component_instance(c: Cursor) -> bool:
 def _parse_port_map(c: Cursor, smap: SourceMap) -> list[dm.Connection]:
     """Parse the parenthesized connections of an instance."""
     cons: list[tuple[str, str, list[str], dm.Location]] = []
-    c.next()
+    opening = c.next()
     while True:
         tok = c.peek()
         if tok.text == ")":
             c.next()
             break
         if tok.kind == EOF:
+            c.unclosed.append(opening)
             break
         if tok.text == ",":
             c.next()
@@ -435,8 +448,8 @@ def _parse_end(c: Cursor, unit: _Unit) -> bool:
     return False
 
 
-def _parse_architecture(c: Cursor, unit: _Unit) -> None:
-    """Parse declarations and statements up to the `end` of the architecture.
+def _parse_architecture(c: Cursor, unit: _Unit) -> bool:
+    """Parse declarations and statements up to the `end` of the architecture. Return whether there is an `end`.
 
     Items starting with a keyword are parsed by the related function of `_HANDLERS`.
     """
@@ -454,7 +467,7 @@ def _parse_architecture(c: Cursor, unit: _Unit) -> None:
                 c.next()
                 _skip_statement(c)
             elif _parse_end(c, unit):
-                return
+                return True
         elif kind == ID:
             if c.peek(1).text == ":":
                 _parse_labeled(c, unit)
@@ -462,7 +475,7 @@ def _parse_architecture(c: Cursor, unit: _Unit) -> None:
                 # assignment or procedure call
                 _skip_statement(c)
         elif kind == EOF:
-            return
+            return False
         elif tok.text in OPEN:
             c.skip_balanced()
         else:
@@ -492,8 +505,8 @@ def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens]]:
         yield toks[start], Tokens(tokens.source, [*toks[start:end], eof], comments, tokens.gaps)
 
 
-def _skip_end(c: Cursor) -> None:
-    """Consume everything up to and including `end ...;`."""
+def _skip_end(c: Cursor) -> bool:
+    """Consume everything up to and including `end ...;`. Return whether there is an `end`."""
     while True:
         tok = c.peek()
         if tok.kind == EOF or (tok.kind == KW and tok.text == "end"):
@@ -502,11 +515,13 @@ def _skip_end(c: Cursor) -> None:
             c.skip_balanced()
         else:
             c.next()
+    ended = c.peek().kind != EOF
     c.skip_until(_SEMI)
     c.accept(";")
+    return ended
 
 
-def _parse_units(tokens: Tokens) -> list[_Unit]:
+def _parse_units(tokens: Tokens, diagnostics: Diagnostics) -> list[_Unit]:
     """Parse all entities and architectures."""
     smap = SourceMap(tokens.source)
     units: dict[str, _Unit] = {}
@@ -522,27 +537,32 @@ def _parse_units(tokens: Tokens) -> list[_Unit]:
         key = name.lower()
         unit = units.get(key)
         if unit is None:
-            unit = units[key] = _Unit(name, smap)
+            unit = units[key] = _Unit(name, smap, diagnostics)
         c.accept("is")
         if tok.text == "entity":
             _parse_entity(c, unit)
-            _skip_end(c)
+            ended = _skip_end(c)
             if unit.loc is None:
                 unit.loc = smap.span(tok, _last(c), name_tok)
         else:
-            _parse_architecture(c, unit)
+            ended = _parse_architecture(c, unit)
             c.skip_until(_SEMI)
             c.accept(";")
             if unit.arch_loc is None:
                 unit.arch_loc = smap.span(tok, _last(c), name_tok)
+        if not ended:
+            diagnostics.add("missing-end", f"{tok.text} '{name}' has no 'end'.", smap.span(tok, name_tok))
+        for opening in c.unclosed:
+            diagnostics.add("unbalanced-bracket", f"'{opening.text}' is never closed.", smap.span(opening, opening))
     return list(units.values())
 
 
 # --- data model ---
 
 
-def parse(text: str) -> tuple[dm.Module, ...]:
-    """Parse VHDL `text` and return its entities as modules."""
+def parse(text: str, diagnostics: Diagnostics | None = None) -> tuple[dm.Module, ...]:
+    """Parse VHDL `text` and return its entities as modules. Problems are reported to `diagnostics`."""
+    units = _parse_units(tokenize(text), diagnostics or Diagnostics("<text>"))
     return tuple(
         dm.Module(
             name=unit.name,
@@ -572,5 +592,5 @@ def parse(text: str) -> tuple[dm.Module, ...]:
             insts=tuple(unit.insts),
             loc=unit.loc or unit.arch_loc,
         )
-        for unit in _parse_units(tokenize(text))
+        for unit in units
     )

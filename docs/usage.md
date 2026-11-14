@@ -117,6 +117,17 @@ STREAM_PORTS ('in', 'input', 'output')
 
 ```
 
+Every problem found while parsing is also listed in `diagnostics` of the file, with a code, a source location
+and the related item. See [Diagnostic][hdl_parser.datamodel.Diagnostic] for all codes:
+
+```python
+>>> for diag in file.diagnostics:
+...     print(diag.code, diag.severity, f"{diag.loc.line}:{diag.loc.col}", diag.item)
+macro-not-expanded warning 1:13 top.`CLK_RST_PORTS
+macro-not-expanded warning 1:29 top.`STREAM_PORTS
+
+```
+
 The file is read once, from top to bottom, like a compiler does:
 a macro has to be defined before its use, a later `` `define `` replaces an earlier one and `` `undef `` is followed.
 

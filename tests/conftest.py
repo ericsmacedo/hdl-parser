@@ -52,7 +52,7 @@ def enforce_terminal_size(monkeypatch):
 
 
 def plain(obj):
-    """Return `obj` (data model object, tuple or list of them) without source locations and identifiers."""
+    """Return `obj` (data model object, tuple or list of them) without source locations, identifiers and diagnostics."""
     if isinstance(obj, tuple | list):
         return type(obj)(plain(item) for item in obj)
     if isinstance(obj, BaseModel):
@@ -62,5 +62,7 @@ def plain(obj):
             update["loc"] = None
         if "id" in fields:
             update["id"] = ""
+        if "diagnostics" in fields:
+            update["diagnostics"] = ()
         return obj.model_copy(update=update)
     return obj
