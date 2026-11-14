@@ -47,7 +47,7 @@ LANGMAP: dict[str, Lang] = {
 }
 
 
-def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
+def parse_file(file_path: Path | str, lang: Lang | None = None, encoding: str | None = None) -> dm.File:
     """Parse a HDL (SystemVerilog or VHDL) file.
 
     Args:
@@ -55,6 +55,10 @@ def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
 
     Keyword Args:
         lang: Language: SystemVerilog (sv) or (VHDL). Detected from file_path. `sv` by default.
+        encoding: File encoding. By default the file is read as UTF-8, with a fallback to
+                  Latin-1 if it is not valid UTF-8 (common for legacy HDL sources with
+                  non-ASCII characters in comments). If given, the encoding is used strictly
+                  and a `UnicodeDecodeError` is raised on invalid input.
 
     Returns:
         Parsed Data
@@ -62,7 +66,17 @@ def parse_file(file_path: Path | str, lang: Lang | None = None) -> dm.File:
     if isinstance(file_path, str):
         file_path = Path(file_path)
 
-    return parse_text(file_path.read_text(), file_path=file_path, lang=lang)
+    return parse_text(_read_text(file_path, encoding), file_path=file_path, lang=lang)
+
+
+def _read_text(file_path: Path, encoding: str | None = None) -> str:
+    """Read `file_path` as UTF-8 with Latin-1 fallback, or strictly with `encoding` if given."""
+    if encoding is not None:
+        return file_path.read_text(encoding=encoding)
+    try:
+        return file_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return file_path.read_text(encoding="latin-1")
 
 
 def parse_text(text: str, file_path: Path | str | None = None, lang: Lang | None = None) -> dm.File:
