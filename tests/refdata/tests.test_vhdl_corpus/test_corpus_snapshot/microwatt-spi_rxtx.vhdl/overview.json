@@ -10,7 +10,13 @@
           "comment": [
             "-- Number of data lines",
             "-- 1=MISO/MOSI, otherwise 2 or 4"
-          ]
+          ],
+          "loc": {
+            "line": 10,
+            "col": 9,
+            "end_line": 10,
+            "end_col": 38
+          }
         },
         {
           "name": "INPUT_DELAY",
@@ -18,14 +24,26 @@
           "comment": [
             "-- Delay latching of SPI input:",
             "-- 0=no delay, 1=clk/2"
-          ]
+          ],
+          "loc": {
+            "line": 12,
+            "col": 9,
+            "end_line": 12,
+            "end_col": 50
+          }
         }
       ],
       "ports": [
         {
           "direction": "in",
           "dtype": "std_ulogic",
-          "name": "clk"
+          "name": "clk",
+          "loc": {
+            "line": 16,
+            "col": 9,
+            "end_line": 16,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
@@ -38,7 +56,13 @@
             "--",
             "-- This need to be changed before a command.",
             "-- XX TODO add handshake"
-          ]
+          ],
+          "loc": {
+            "line": 17,
+            "col": 9,
+            "end_line": 17,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
@@ -49,12 +73,24 @@
             "-- Command port (includes write data)",
             "--",
             "-- Valid & ready: command sampled when valid=1 and ready=1"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 9,
+            "end_line": 25,
+            "end_col": 50
+          }
         },
         {
           "direction": "in",
           "dtype": "std_ulogic",
-          "name": "cmd_valid_i"
+          "name": "cmd_valid_i",
+          "loc": {
+            "line": 32,
+            "col": 9,
+            "end_line": 32,
+            "end_col": 38
+          }
         },
         {
           "direction": "out",
@@ -69,7 +105,13 @@
             "--  101 : Dual write",
             "--  110 : Quad read",
             "--  111 : Quad write"
-          ]
+          ],
+          "loc": {
+            "line": 33,
+            "col": 9,
+            "end_line": 33,
+            "end_col": 39
+          }
         },
         {
           "direction": "in",
@@ -78,7 +120,13 @@
           "dim": "[2:0]",
           "comment": [
             "-- # clocks-1 in a command (#bits-1)"
-          ]
+          ],
+          "loc": {
+            "line": 43,
+            "col": 9,
+            "end_line": 43,
+            "end_col": 57
+          }
         },
         {
           "direction": "in",
@@ -87,7 +135,13 @@
           "dim": "[2:0]",
           "comment": [
             "-- Write data (sampled with command)"
-          ]
+          ],
+          "loc": {
+            "line": 46,
+            "col": 9,
+            "end_line": 46,
+            "end_col": 57
+          }
         },
         {
           "direction": "in",
@@ -99,13 +153,25 @@
             "-- Read data port. Data valid when d_ack=1, no ready",
             "-- signal, receiver must be ready",
             "--"
-          ]
+          ],
+          "loc": {
+            "line": 49,
+            "col": 9,
+            "end_line": 49,
+            "end_col": 57
+          }
         },
         {
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "d_rxd_o",
-          "dim": "[7:0]"
+          "dim": "[7:0]",
+          "loc": {
+            "line": 55,
+            "col": 9,
+            "end_line": 55,
+            "end_col": 58
+          }
         },
         {
           "direction": "out",
@@ -114,7 +180,13 @@
           "comment": [
             "-- Set when all commands are done. Needed for callers to know when",
             "-- to release CS#"
-          ]
+          ],
+          "loc": {
+            "line": 56,
+            "col": 9,
+            "end_line": 56,
+            "end_col": 46
+          }
         },
         {
           "direction": "out",
@@ -147,32 +219,68 @@
             "-- the input and output signals, and provide a \"sdat_oe\" signal which",
             "-- is the \"output enable\" of each line.",
             "--"
-          ]
+          ],
+          "loc": {
+            "line": 60,
+            "col": 9,
+            "end_line": 60,
+            "end_col": 39
+          }
         },
         {
           "direction": "out",
           "dtype": "std_ulogic",
-          "name": "sck"
+          "name": "sck",
+          "loc": {
+            "line": 88,
+            "col": 9,
+            "end_line": 88,
+            "end_col": 33
+          }
         },
         {
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "sdat_o",
-          "dim": "[DATA_LINES-1:0]"
+          "dim": "[DATA_LINES-1:0]",
+          "loc": {
+            "line": 89,
+            "col": 9,
+            "end_line": 89,
+            "end_col": 63
+          }
         },
         {
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "sdat_oe",
-          "dim": "[DATA_LINES-1:0]"
+          "dim": "[DATA_LINES-1:0]",
+          "loc": {
+            "line": 90,
+            "col": 9,
+            "end_line": 90,
+            "end_col": 63
+          }
         },
         {
           "direction": "in",
           "dtype": "std_ulogic_vector",
           "name": "sdat_i",
-          "dim": "[DATA_LINES-1:0]"
+          "dim": "[DATA_LINES-1:0]",
+          "loc": {
+            "line": 91,
+            "col": 9,
+            "end_line": 91,
+            "end_col": 63
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 8,
+        "col": 1,
+        "end_line": 93,
+        "end_col": 21
+      }
     }
   ]
 }

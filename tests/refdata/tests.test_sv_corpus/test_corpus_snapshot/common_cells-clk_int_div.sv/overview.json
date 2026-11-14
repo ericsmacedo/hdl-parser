@@ -10,7 +10,13 @@
           "default": "4",
           "comment": [
             "/ The default divider value which is used right after reset"
-          ]
+          ],
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 45
+          }
         },
         {
           "ptype": "int",
@@ -18,19 +24,37 @@
           "default": "0",
           "comment": [
             "/ If 1'b1, the output clock is enabled during async reset assertion"
-          ]
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 47
+          }
         },
         {
           "ptype": "bit",
           "name": "ENABLE_CLOCK_IN_RESET",
-          "default": "1'b0"
+          "default": "1'b0",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 54
+          }
         }
       ],
       "ports": [
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "clk_i"
+          "name": "clk_i",
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 43
+          }
         },
         {
           "direction": "input",
@@ -40,7 +64,13 @@
             "/ Active-high output clock enable. Controls a glitch-free clock gate so the",
             "/ enable signal may be driven by combinational logic without introducing",
             "/ glitches."
-          ]
+          ],
+          "loc": {
+            "line": 79,
+            "col": 3,
+            "end_line": 79,
+            "end_col": 44
+          }
         },
         {
           "direction": "input",
@@ -49,7 +79,13 @@
           "comment": [
             "/ If asserted (active-high) bypass the clock divider and drive clk_o",
             "/ directly with clk_i."
-          ]
+          ],
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 42
+          }
         },
         {
           "direction": "input",
@@ -59,7 +95,13 @@
             "/ Divider select value. The output clock has a frequency of f_clk_i/div_i.",
             "/ For div_i == 0 or  div_i == 1, the output clock has the same frequency as",
             "/ th input clock."
-          ]
+          ],
+          "loc": {
+            "line": 86,
+            "col": 3,
+            "end_line": 86,
+            "end_col": 52
+          }
         },
         {
           "direction": "input",
@@ -70,12 +112,24 @@
             "/ Valid handshake signal. Must not combinationally depend on `div_ready_o`.",
             "/ Once asserted, the valid signal must not be deasserted until it is",
             "/ accepted with `div_ready_o`."
-          ]
+          ],
+          "loc": {
+            "line": 90,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 43
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "div_valid_i"
+          "name": "div_valid_i",
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 49
+          }
         },
         {
           "direction": "output",
@@ -88,7 +142,13 @@
             "/ reconfiguration, the output clock is gated with its next falling edge and",
             "/ remains gated (idle-low) for at least one period of the new target output",
             "/ period to filter out any glitches during the config transition."
-          ]
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 49
+          }
         },
         {
           "direction": "output",
@@ -97,30 +157,60 @@
           "comment": [
             "/ Current value of the internal cycle counter. Might be usefull if you need",
             "/ to do some phase shifting relative to the generated clock."
-          ]
+          ],
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 43
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "cycl_count_o",
-          "dim": "[DIV_VALUE_WIDTH-1:0]"
+          "dim": "[DIV_VALUE_WIDTH-1:0]",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 50
+          }
         }
       ],
       "localparams": [
         {
           "ptype": "int",
           "name": "DivResetValue",
-          "default": "(DEFAULT_DIV_VALUE != 0)? DEFAULT_DIV_VALUE: 1"
+          "default": "(DEFAULT_DIV_VALUE != 0)? DEFAULT_DIV_VALUE: 1",
+          "loc": {
+            "line": 118,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 90
+          }
         },
         {
           "ptype": "logic",
           "name": "UseOddDivisionResetValue",
-          "default": "DEFAULT_DIV_VALUE[0]"
+          "default": "DEFAULT_DIV_VALUE[0]",
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 226,
+            "end_col": 68
+          }
         },
         {
           "ptype": "logic",
           "name": "ClkDivBypassEnResetValue",
-          "default": "(DEFAULT_DIV_VALUE < 2)? 1'b1: 1'b0"
+          "default": "(DEFAULT_DIV_VALUE < 2)? 1'b1: 1'b0",
+          "loc": {
+            "line": 227,
+            "col": 3,
+            "end_line": 227,
+            "end_col": 83
+          }
         }
       ],
       "insts": [
@@ -130,17 +220,41 @@
           "connections": [
             {
               "port": "clk0_i",
-              "con": "t_ff1_q"
+              "con": "t_ff1_q",
+              "loc": {
+                "line": 340,
+                "col": 5,
+                "end_line": 340,
+                "end_col": 24
+              }
             },
             {
               "port": "clk1_i",
-              "con": "t_ff2_q"
+              "con": "t_ff2_q",
+              "loc": {
+                "line": 341,
+                "col": 5,
+                "end_line": 341,
+                "end_col": 24
+              }
             },
             {
               "port": "clk_o",
-              "con": "odd_clk"
+              "con": "odd_clk",
+              "loc": {
+                "line": 342,
+                "col": 5,
+                "end_line": 342,
+                "end_col": 24
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 339,
+            "col": 3,
+            "end_line": 343,
+            "end_col": 5
+          }
         },
         {
           "name": "i_clk_mux",
@@ -148,21 +262,51 @@
           "connections": [
             {
               "port": "clk0_i",
-              "con": "even_clk"
+              "con": "even_clk",
+              "loc": {
+                "line": 347,
+                "col": 5,
+                "end_line": 347,
+                "end_col": 38
+              }
             },
             {
               "port": "clk1_i",
-              "con": "odd_clk"
+              "con": "odd_clk",
+              "loc": {
+                "line": 348,
+                "col": 5,
+                "end_line": 348,
+                "end_col": 38
+              }
             },
             {
               "port": "clk_sel_i",
-              "con": "use_odd_division_q"
+              "con": "use_odd_division_q",
+              "loc": {
+                "line": 349,
+                "col": 5,
+                "end_line": 349,
+                "end_col": 38
+              }
             },
             {
               "port": "clk_o",
-              "con": "generated_clock"
+              "con": "generated_clock",
+              "loc": {
+                "line": 350,
+                "col": 5,
+                "end_line": 350,
+                "end_col": 38
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 346,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 5
+          }
         },
         {
           "name": "i_clk_bypass_mux",
@@ -170,21 +314,51 @@
           "connections": [
             {
               "port": "clk0_i",
-              "con": "generated_clock"
+              "con": "generated_clock",
+              "loc": {
+                "line": 355,
+                "col": 5,
+                "end_line": 355,
+                "end_col": 57
+              }
             },
             {
               "port": "clk1_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 356,
+                "col": 5,
+                "end_line": 356,
+                "end_col": 57
+              }
             },
             {
               "port": "clk_sel_i",
-              "con": "clk_div_bypass_en_q || test_mode_en_i"
+              "con": "clk_div_bypass_en_q || test_mode_en_i",
+              "loc": {
+                "line": 357,
+                "col": 5,
+                "end_line": 357,
+                "end_col": 57
+              }
             },
             {
               "port": "clk_o",
-              "con": "ungated_output_clock"
+              "con": "ungated_output_clock",
+              "loc": {
+                "line": 358,
+                "col": 5,
+                "end_line": 358,
+                "end_col": 57
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 354,
+            "col": 3,
+            "end_line": 359,
+            "end_col": 5
+          }
         },
         {
           "name": "i_clk_gate",
@@ -192,23 +366,59 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "ungated_output_clock"
+              "con": "ungated_output_clock",
+              "loc": {
+                "line": 385,
+                "col": 5,
+                "end_line": 385,
+                "end_col": 40
+              }
             },
             {
               "port": "en_i",
-              "con": "gate_en_q & en_i"
+              "con": "gate_en_q & en_i",
+              "loc": {
+                "line": 386,
+                "col": 5,
+                "end_line": 386,
+                "end_col": 40
+              }
             },
             {
               "port": "test_en_i",
-              "con": "test_mode_en_i"
+              "con": "test_mode_en_i",
+              "loc": {
+                "line": 387,
+                "col": 5,
+                "end_line": 387,
+                "end_col": 40
+              }
             },
             {
               "port": "clk_o",
-              "con": "clk_o"
+              "con": "clk_o",
+              "loc": {
+                "line": 388,
+                "col": 5,
+                "end_line": 388,
+                "end_col": 11
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 380,
+            "col": 3,
+            "end_line": 389,
+            "end_col": 5
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 70,
+        "col": 1,
+        "end_line": 392,
+        "end_col": 10
+      }
     }
   ]
 }

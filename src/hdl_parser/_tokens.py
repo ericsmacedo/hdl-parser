@@ -26,8 +26,12 @@ Language independent part of the parsers: the tokenizers create [Tokens][hdl_par
 parsers read them through a [Cursor][hdl_parser._tokens.Cursor].
 """
 
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
+from collections.abc import Sequence
+from itertools import accumulate
 from typing import NamedTuple
+
+from . import datamodel as dm
 
 # Token kinds
 ID = "id"
@@ -57,6 +61,79 @@ class Token(NamedTuple):
     start: int
     end: int
     ifdefs: tuple[str, ...]
+
+
+class Segment(NamedTuple):
+    """Part Of The Parsed Text And Its Origin Within The Source.
+
+    Attributes:
+        start: Start position within the parsed text.
+        src_start: Start position within the source.
+        src_end: End position within the source.
+        macro: `None`: copied from the source. Name of the outermost macro, if created by a macro call
+               (`src_start` to `src_end`). Empty, if the text replaces a directive of the source.
+    """
+
+    start: int
+    src_start: int
+    src_end: int
+    macro: str | None = None
+
+
+class SourceMap:
+    """Translate Positions Within The Parsed Text To Source Locations.
+
+    The parsed text is the source itself (no `segments`) or created from the source by the preprocessor.
+    """
+
+    __slots__ = ("_line_starts", "_seg_starts", "_segments", "_source")
+
+    def __init__(self, source: str, segments: Sequence[Segment] | None = None):
+        self._source = source
+        self._line_starts: list[int] | None = None
+        self._segments = segments
+        self._seg_starts = [seg.start for seg in segments] if segments else []
+
+    def _source_pos(self, pos: int, end: bool) -> tuple[int, str]:
+        """Source position and macro name of position `pos` within the parsed text.
+
+        `end`: `pos` is the last character of a range. Code created by a macro maps to the end of the call.
+        """
+        if not self._segments:
+            return pos, ""
+        idx = max(bisect_right(self._seg_starts, pos) - 1, 0)
+        seg = self._segments[idx]
+        if seg.macro is None:
+            return seg.src_start + pos - seg.start, ""
+        return (seg.src_end - 1 if end else seg.src_start), seg.macro
+
+    def _line_col(self, pos: int) -> tuple[int, int]:
+        line_starts = self._line_starts
+        if line_starts is None:
+            # created on first use: files without modules do not need it
+            line_starts = self._line_starts = [0, *accumulate(len(line) + 1 for line in self._source.split("\n"))]
+        line = bisect_right(line_starts, pos)
+        return line, pos - line_starts[line - 1] + 1
+
+    def location(self, start: int, end: int, anchor: tuple[int, int] | None = None) -> dm.Location:
+        """Location of `start` to `end` (exclusive) within the parsed text.
+
+        `macro` is taken from the range `anchor` (default `start` to `end`), i.e. the name of an item:
+        the macro, which created any part of it.
+        """
+        src_start, macro = self._source_pos(start, False)
+        src_last, last_macro = self._source_pos(max(end - 1, start), True)
+        if anchor is not None:
+            _, macro = self._source_pos(anchor[0], False)
+            _, last_macro = self._source_pos(max(anchor[1] - 1, anchor[0]), True)
+        line, col = self._line_col(src_start)
+        end_line, end_col = self._line_col(src_last)
+        return dm.Location(line=line, col=col, end_line=end_line, end_col=end_col + 1, macro=macro or last_macro)
+
+    def span(self, first: Token, last: Token, anchor: Token | None = None) -> dm.Location:
+        """Location from token `first` to token `last` (inclusive). `macro` is taken from `anchor` (default `first`)."""
+        anchor = anchor or first
+        return self.location(first.start, max(last.end, first.end), (anchor.start, anchor.end))
 
 
 class Tokens(NamedTuple):

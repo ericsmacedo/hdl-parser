@@ -7,12 +7,24 @@
         {
           "ptype": "int",
           "name": "WIDTH",
-          "default": "8"
+          "default": "8",
+          "loc": {
+            "line": 10,
+            "col": 5,
+            "end_line": 10,
+            "end_col": 28
+          }
         },
         {
           "ptype": "int",
           "name": "STAGES",
-          "default": "3"
+          "default": "3",
+          "loc": {
+            "line": 11,
+            "col": 5,
+            "end_line": 11,
+            "end_col": 29
+          }
         }
       ],
       "ports": [
@@ -22,7 +34,14 @@
           "name": "clk_i",
           "comment": [
             "Clock"
-          ]
+          ],
+          "loc": {
+            "line": 13,
+            "col": 5,
+            "end_line": 13,
+            "end_col": 19,
+            "macro": "CLK_RST_PORTS"
+          }
         },
         {
           "direction": "input",
@@ -30,19 +49,38 @@
           "name": "rst_ni",
           "comment": [
             "Reset, low active"
-          ]
+          ],
+          "loc": {
+            "line": 13,
+            "col": 5,
+            "end_line": 13,
+            "end_col": 19,
+            "macro": "CLK_RST_PORTS"
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
           "name": "d_i",
-          "dim": "[WIDTH-1:0]"
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 14,
+            "col": 5,
+            "end_line": 14,
+            "end_col": 33
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "q_o",
-          "dim": "[WIDTH-1:0]"
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 15,
+            "col": 5,
+            "end_line": 15,
+            "end_col": 33
+          }
         }
       ],
       "insts": [
@@ -52,22 +90,60 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 25,
+                "col": 41,
+                "end_line": 25,
+                "end_col": 53,
+                "macro": "CLK_RST_CON"
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_ni"
+              "con": "rst_ni",
+              "loc": {
+                "line": 25,
+                "col": 41,
+                "end_line": 25,
+                "end_col": 53,
+                "macro": "CLK_RST_CON"
+              }
             },
             {
               "port": "d_i",
-              "con": "stage_q"
+              "con": "stage_q",
+              "loc": {
+                "line": 25,
+                "col": 55,
+                "end_line": 25,
+                "end_col": 68
+              }
             },
             {
-              "port": "q_o"
+              "port": "q_o",
+              "loc": {
+                "line": 25,
+                "col": 70,
+                "end_line": 25,
+                "end_col": 76
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 9,
+            "end_line": 25,
+            "end_col": 78
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 9,
+        "col": 1,
+        "end_line": 32,
+        "end_col": 10
+      }
     }
   ]
 }

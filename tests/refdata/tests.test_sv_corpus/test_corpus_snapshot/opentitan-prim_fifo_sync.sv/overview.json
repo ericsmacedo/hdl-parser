@@ -7,7 +7,13 @@
         {
           "ptype": "int",
           "name": "Width",
-          "default": "16"
+          "default": "16",
+          "loc": {
+            "line": 10,
+            "col": 3,
+            "end_line": 10,
+            "end_col": 42
+          }
         },
         {
           "ptype": "bit",
@@ -15,12 +21,24 @@
           "default": "1'b1",
           "comment": [
             "if == 1 allow requests to pass through empty FIFO"
-          ]
+          ],
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 44
+          }
         },
         {
           "ptype": "int",
           "name": "Depth",
-          "default": "4"
+          "default": "4",
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 41
+          }
         },
         {
           "ptype": "bit",
@@ -28,7 +46,13 @@
           "default": "1'b1",
           "comment": [
             "if == 1 always output 0 when FIFO is empty"
-          ]
+          ],
+          "loc": {
+            "line": 13,
+            "col": 3,
+            "end_line": 13,
+            "end_col": 44
+          }
         },
         {
           "ptype": "bit",
@@ -37,35 +61,71 @@
           "comment": [
             "use prim count for pointers",
             "derived parameter"
-          ]
+          ],
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 44
+          }
         }
       ],
       "ports": [
         {
           "direction": "input",
-          "name": "clk_i"
+          "name": "clk_i",
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 32
+          }
         },
         {
           "direction": "input",
           "name": "rst_ni",
           "comment": [
             "synchronous clear / flush port"
-          ]
+          ],
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 33
+          }
         },
         {
           "direction": "input",
           "name": "clr_i",
           "comment": [
             "write port"
-          ]
+          ],
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 32
+          }
         },
         {
           "direction": "input",
-          "name": "wvalid_i"
+          "name": "wvalid_i",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 35
+          }
         },
         {
           "direction": "output",
-          "name": "wready_o"
+          "name": "wready_o",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 35
+          }
         },
         {
           "direction": "input",
@@ -73,15 +133,33 @@
           "dim": "[Width-1:0]",
           "comment": [
             "read port"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 34
+          }
         },
         {
           "direction": "output",
-          "name": "rvalid_o"
+          "name": "rvalid_o",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 35
+          }
         },
         {
           "direction": "input",
-          "name": "rready_i"
+          "name": "rready_i",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 35
+          }
         },
         {
           "direction": "output",
@@ -89,32 +167,68 @@
           "dim": "[Width-1:0]",
           "comment": [
             "occupancy"
-          ]
+          ],
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 34
+          }
         },
         {
           "direction": "output",
-          "name": "full_o"
+          "name": "full_o",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 33
+          }
         },
         {
           "direction": "output",
           "name": "depth_o",
-          "dim": "[DepthW-1:0]"
+          "dim": "[DepthW-1:0]",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 34
+          }
         },
         {
           "direction": "output",
-          "name": "err_o"
+          "name": "err_o",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 32
+          }
         }
       ],
       "localparams": [
         {
           "ptype": "int",
           "name": "DepthW",
-          "default": "prim_util_pkg::vbits(Depth+1)"
+          "default": "prim_util_pkg::vbits(Depth+1)",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 69
+          }
         },
         {
           "ptype": "int",
           "name": "PtrW",
-          "default": "prim_util_pkg::vbits(Depth)"
+          "default": "prim_util_pkg::vbits(Depth)",
+          "loc": {
+            "line": 61,
+            "col": 5,
+            "end_line": 61,
+            "end_col": 64
+          }
         }
       ],
       "insts": [
@@ -124,51 +238,129 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 88,
+                "col": 7,
+                "end_line": 88,
+                "end_col": 13
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_ni"
+              "con": "rst_ni",
+              "loc": {
+                "line": 89,
+                "col": 7,
+                "end_line": 89,
+                "end_col": 14
+              }
             },
             {
               "port": "clr_i",
-              "con": "clr_i"
+              "con": "clr_i",
+              "loc": {
+                "line": 90,
+                "col": 7,
+                "end_line": 90,
+                "end_col": 13
+              }
             },
             {
               "port": "incr_wptr_i",
-              "con": "fifo_incr_wptr"
+              "con": "fifo_incr_wptr",
+              "loc": {
+                "line": 91,
+                "col": 7,
+                "end_line": 91,
+                "end_col": 35
+              }
             },
             {
               "port": "incr_rptr_i",
-              "con": "fifo_incr_rptr"
+              "con": "fifo_incr_rptr",
+              "loc": {
+                "line": 92,
+                "col": 7,
+                "end_line": 92,
+                "end_col": 35
+              }
             },
             {
               "port": "wptr_o",
-              "con": "fifo_wptr"
+              "con": "fifo_wptr",
+              "loc": {
+                "line": 93,
+                "col": 7,
+                "end_line": 93,
+                "end_col": 25
+              }
             },
             {
               "port": "rptr_o",
-              "con": "fifo_rptr"
+              "con": "fifo_rptr",
+              "loc": {
+                "line": 94,
+                "col": 7,
+                "end_line": 94,
+                "end_col": 25
+              }
             },
             {
               "port": "full_o",
-              "con": "full_o"
+              "con": "full_o",
+              "loc": {
+                "line": 95,
+                "col": 7,
+                "end_line": 95,
+                "end_col": 14
+              }
             },
             {
               "port": "empty_o",
-              "con": "fifo_empty"
+              "con": "fifo_empty",
+              "loc": {
+                "line": 96,
+                "col": 7,
+                "end_line": 96,
+                "end_col": 27
+              }
             },
             {
               "port": "depth_o",
-              "con": "depth_o"
+              "con": "depth_o",
+              "loc": {
+                "line": 97,
+                "col": 7,
+                "end_line": 97,
+                "end_col": 15
+              }
             },
             {
               "port": "err_o",
-              "con": "err_o"
+              "con": "err_o",
+              "loc": {
+                "line": 98,
+                "col": 7,
+                "end_line": 98,
+                "end_col": 13
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 84,
+            "col": 5,
+            "end_line": 99,
+            "end_col": 7
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 9,
+        "col": 1,
+        "end_line": 156,
+        "end_col": 10
+      }
     }
   ]
 }

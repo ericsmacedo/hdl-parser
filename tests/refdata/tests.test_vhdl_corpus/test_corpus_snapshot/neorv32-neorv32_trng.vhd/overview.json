@@ -8,25 +8,49 @@
           "name": "TRNG_FIFO",
           "comment": [
             "-- FIFO depth, has to be a power of two, min 1"
-          ]
+          ],
+          "loc": {
+            "line": 22,
+            "col": 5,
+            "end_line": 22,
+            "end_col": 41
+          }
         },
         {
           "name": "NUM_RO",
           "comment": [
             "-- total number of ring-oscillators"
-          ]
+          ],
+          "loc": {
+            "line": 23,
+            "col": 5,
+            "end_line": 23,
+            "end_col": 39
+          }
         },
         {
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters in first ring-oscillator; has to be odd"
-          ]
+          ],
+          "loc": {
+            "line": 24,
+            "col": 5,
+            "end_line": 24,
+            "end_col": 40
+          }
         },
         {
           "name": "NUM_RBIT",
           "comment": [
             "-- number of raw bits to process for one output byte; has to be power of 2"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 5,
+            "end_line": 25,
+            "end_col": 40
+          }
         }
       ],
       "ports": [
@@ -36,7 +60,13 @@
           "name": "clk_i",
           "comment": [
             "-- global clock line"
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 31
+          }
         },
         {
           "direction": "in",
@@ -44,7 +74,13 @@
           "name": "rstn_i",
           "comment": [
             "-- global reset line, low-active, async"
-          ]
+          ],
+          "loc": {
+            "line": 29,
+            "col": 5,
+            "end_line": 29,
+            "end_col": 31
+          }
         },
         {
           "direction": "in",
@@ -52,7 +88,13 @@
           "name": "bus_req_i",
           "comment": [
             "-- bus request"
-          ]
+          ],
+          "loc": {
+            "line": 30,
+            "col": 5,
+            "end_line": 30,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -60,7 +102,13 @@
           "name": "bus_rsp_o",
           "comment": [
             "-- bus response"
-          ]
+          ],
+          "loc": {
+            "line": 31,
+            "col": 5,
+            "end_line": 31,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -68,7 +116,13 @@
           "name": "irq_o",
           "comment": [
             "-- FIFO full interrupt"
-          ]
+          ],
+          "loc": {
+            "line": 32,
+            "col": 5,
+            "end_line": 32,
+            "end_col": 31
+          }
         }
       ],
       "insts": [
@@ -78,25 +132,61 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 153,
+                "col": 5,
+                "end_line": 153,
+                "end_col": 22
+              }
             },
             {
               "port": "rstn_i",
-              "con": "rstn_i"
+              "con": "rstn_i",
+              "loc": {
+                "line": 154,
+                "col": 5,
+                "end_line": 154,
+                "end_col": 23
+              }
             },
             {
               "port": "enable_i",
-              "con": "enable"
+              "con": "enable",
+              "loc": {
+                "line": 155,
+                "col": 5,
+                "end_line": 155,
+                "end_col": 23
+              }
             },
             {
               "port": "valid_o",
-              "con": "fifo.we"
+              "con": "fifo.we",
+              "loc": {
+                "line": 156,
+                "col": 5,
+                "end_line": 156,
+                "end_col": 24
+              }
             },
             {
               "port": "data_o",
-              "con": "fifo.wdata"
+              "con": "fifo.wdata",
+              "loc": {
+                "line": 157,
+                "col": 5,
+                "end_line": 157,
+                "end_col": 27
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 145,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 5
+          }
         },
         {
           "name": "rnd_fifo_inst",
@@ -104,53 +194,125 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 171,
+                "col": 5,
+                "end_line": 171,
+                "end_col": 21
+              }
             },
             {
               "port": "rstn_i",
-              "con": "rstn_i"
+              "con": "rstn_i",
+              "loc": {
+                "line": 172,
+                "col": 5,
+                "end_line": 172,
+                "end_col": 22
+              }
             },
             {
               "port": "clear_i",
-              "con": "fifo.clear"
+              "con": "fifo.clear",
+              "loc": {
+                "line": 173,
+                "col": 5,
+                "end_line": 173,
+                "end_col": 26
+              }
             },
             {
               "port": "level_o",
               "con": "open",
               "comment": [
                 "-- write port --"
-              ]
+              ],
+              "loc": {
+                "line": 174,
+                "col": 5,
+                "end_line": 174,
+                "end_col": 20
+              }
             },
             {
               "port": "wdata_i",
-              "con": "fifo.wdata"
+              "con": "fifo.wdata",
+              "loc": {
+                "line": 176,
+                "col": 5,
+                "end_line": 176,
+                "end_col": 26
+              }
             },
             {
               "port": "we_i",
-              "con": "fifo.we"
+              "con": "fifo.we",
+              "loc": {
+                "line": 177,
+                "col": 5,
+                "end_line": 177,
+                "end_col": 23
+              }
             },
             {
               "port": "free_o",
               "con": "fifo.free",
               "comment": [
                 "-- read port --"
-              ]
+              ],
+              "loc": {
+                "line": 178,
+                "col": 5,
+                "end_line": 178,
+                "end_col": 25
+              }
             },
             {
               "port": "re_i",
-              "con": "fifo.re"
+              "con": "fifo.re",
+              "loc": {
+                "line": 180,
+                "col": 5,
+                "end_line": 180,
+                "end_col": 23
+              }
             },
             {
               "port": "rdata_o",
-              "con": "fifo.rdata"
+              "con": "fifo.rdata",
+              "loc": {
+                "line": 181,
+                "col": 5,
+                "end_line": 181,
+                "end_col": 26
+              }
             },
             {
               "port": "avail_o",
-              "con": "fifo.avail"
+              "con": "fifo.avail",
+              "loc": {
+                "line": 182,
+                "col": 5,
+                "end_line": 182,
+                "end_col": 26
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 183,
+            "end_col": 5
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 20,
+        "col": 1,
+        "end_line": 34,
+        "end_col": 12
+      }
     },
     {
       "name": "neoTRNG",
@@ -159,25 +321,49 @@
           "name": "NUM_CELLS",
           "comment": [
             "-- number of ring-oscillator cells, min 1"
-          ]
+          ],
+          "loc": {
+            "line": 252,
+            "col": 5,
+            "end_line": 252,
+            "end_col": 43
+          }
         },
         {
           "name": "NUM_INV_START",
           "comment": [
             "-- number of inverters in first ring-oscillator cell, has to be odd"
-          ]
+          ],
+          "loc": {
+            "line": 253,
+            "col": 5,
+            "end_line": 253,
+            "end_col": 44
+          }
         },
         {
           "name": "NUM_RAW_BITS",
           "comment": [
             "-- number of raw bits per random sample byte (has to be a power of 2)"
-          ]
+          ],
+          "loc": {
+            "line": 254,
+            "col": 5,
+            "end_line": 254,
+            "end_col": 44
+          }
         },
         {
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
-          ]
+          ],
+          "loc": {
+            "line": 255,
+            "col": 5,
+            "end_line": 255,
+            "end_col": 28
+          }
         }
       ],
       "ports": [
@@ -187,7 +373,13 @@
           "name": "clk_i",
           "comment": [
             "-- module clock"
-          ]
+          ],
+          "loc": {
+            "line": 258,
+            "col": 5,
+            "end_line": 258,
+            "end_col": 30
+          }
         },
         {
           "direction": "in",
@@ -195,7 +387,13 @@
           "name": "rstn_i",
           "comment": [
             "-- module reset, low-active, async, optional"
-          ]
+          ],
+          "loc": {
+            "line": 259,
+            "col": 5,
+            "end_line": 259,
+            "end_col": 30
+          }
         },
         {
           "direction": "in",
@@ -203,7 +401,13 @@
           "name": "enable_i",
           "comment": [
             "-- module enable (high-active)"
-          ]
+          ],
+          "loc": {
+            "line": 260,
+            "col": 5,
+            "end_line": 260,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -211,7 +415,13 @@
           "name": "valid_o",
           "comment": [
             "-- data_o is valid when set (high for one cycle)"
-          ]
+          ],
+          "loc": {
+            "line": 261,
+            "col": 5,
+            "end_line": 261,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -220,7 +430,13 @@
           "dim": "[7:0]",
           "comment": [
             "-- random data byte output"
-          ]
+          ],
+          "loc": {
+            "line": 262,
+            "col": 5,
+            "end_line": 262,
+            "end_col": 49
+          }
         }
       ],
       "insts": [
@@ -230,27 +446,69 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 342,
+                "col": 7,
+                "end_line": 342,
+                "end_col": 22
+              }
             },
             {
               "port": "rstn_i",
-              "con": "rstn_i"
+              "con": "rstn_i",
+              "loc": {
+                "line": 343,
+                "col": 7,
+                "end_line": 343,
+                "end_col": 23
+              }
             },
             {
               "port": "en_i",
-              "con": "cell_en_in(i)"
+              "con": "cell_en_in(i)",
+              "loc": {
+                "line": 344,
+                "col": 7,
+                "end_line": 344,
+                "end_col": 30
+              }
             },
             {
               "port": "en_o",
-              "con": "cell_en_out(i)"
+              "con": "cell_en_out(i)",
+              "loc": {
+                "line": 345,
+                "col": 7,
+                "end_line": 345,
+                "end_col": 31
+              }
             },
             {
               "port": "rnd_o",
-              "con": "cell_rnd(i)"
+              "con": "cell_rnd(i)",
+              "loc": {
+                "line": 346,
+                "col": 7,
+                "end_line": 346,
+                "end_col": 28
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 336,
+            "col": 5,
+            "end_line": 347,
+            "end_col": 7
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 250,
+        "col": 1,
+        "end_line": 264,
+        "end_col": 12
+      }
     },
     {
       "name": "neoTRNG_cell",
@@ -259,13 +517,25 @@
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters, has to be odd, min 3"
-          ]
+          ],
+          "loc": {
+            "line": 427,
+            "col": 5,
+            "end_line": 427,
+            "end_col": 23
+          }
         },
         {
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
-          ]
+          ],
+          "loc": {
+            "line": 428,
+            "col": 5,
+            "end_line": 428,
+            "end_col": 23
+          }
         }
       ],
       "ports": [
@@ -275,7 +545,13 @@
           "name": "clk_i",
           "comment": [
             "-- clock"
-          ]
+          ],
+          "loc": {
+            "line": 431,
+            "col": 5,
+            "end_line": 431,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
@@ -283,7 +559,13 @@
           "name": "rstn_i",
           "comment": [
             "-- reset, low-active, async, optional"
-          ]
+          ],
+          "loc": {
+            "line": 432,
+            "col": 5,
+            "end_line": 432,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
@@ -291,7 +573,13 @@
           "name": "en_i",
           "comment": [
             "-- enable-chain input"
-          ]
+          ],
+          "loc": {
+            "line": 433,
+            "col": 5,
+            "end_line": 433,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
@@ -299,7 +587,13 @@
           "name": "en_o",
           "comment": [
             "-- enable-chain output"
-          ]
+          ],
+          "loc": {
+            "line": 434,
+            "col": 5,
+            "end_line": 434,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
@@ -307,9 +601,21 @@
           "name": "rnd_o",
           "comment": [
             "-- random data (sync)"
-          ]
+          ],
+          "loc": {
+            "line": 435,
+            "col": 5,
+            "end_line": 435,
+            "end_col": 28
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 425,
+        "col": 1,
+        "end_line": 437,
+        "end_col": 12
+      }
     }
   ]
 }

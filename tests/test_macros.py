@@ -32,7 +32,7 @@ from hdl_parser import Macro, MacroCall, Port, parse_defines, parse_defines_text
 from hdl_parser._sv.preproc import expand
 from hdl_parser.cli import cli
 
-from .conftest import EXAMPLES_PATH
+from .conftest import EXAMPLES_PATH, strip_locs
 
 # Macro expansion is off by default
 parse_file = partial(hdl_parser.parse_file, expand_macros=True)
@@ -120,7 +120,7 @@ def test_define_order():
     )
     modules = parse_text(text).modules
     assert [[port.name for port in module.ports] for module in modules] == [["a"], ["b"], []]
-    assert modules[2].unresolved_macros == (MacroCall(name="P"),)
+    assert strip_locs(modules[2].unresolved_macros) == (MacroCall(name="P"),)
 
 
 def test_define_broken(caplog):
@@ -143,8 +143,13 @@ def test_parse_defines(tmp_path):
 def test_parse_defines_example():
     """Include Guard Does Not Harm."""
     macros = parse_defines(MACROS_SVH)
-    assert tuple(macros) == ("MACROS_SVH", "CLK_RST_PORTS", "STREAM_PORTS")
-    assert macros["STREAM_PORTS"].params == (("prefix", None), ("dir_req", None), ("dir_rsp", None), ("width", "8"))
+    assert strip_locs(tuple(macros)) == ("MACROS_SVH", "CLK_RST_PORTS", "STREAM_PORTS")
+    assert strip_locs(macros["STREAM_PORTS"].params) == (
+        ("prefix", None),
+        ("dir_req", None),
+        ("dir_rsp", None),
+        ("width", "8"),
+    )
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -163,14 +168,14 @@ module m (
 endmodule
 """
     assert _ports(text) == ["input logic clk", "input logic rst_n", "output logic [7:0] q"]
-    assert parse_text(text).modules[0].unresolved_macros == ()
+    assert strip_locs(parse_text(text).modules[0].unresolved_macros) == ()
 
 
 def test_define_after_use():
     """A Macro Has To Be Defined Before Its Use."""
     text = "module m (`PORTS);\nendmodule\n`define PORTS input a, output b\n"
     assert _ports(text) == []
-    assert parse_text(text).modules[0].unresolved_macros == (MacroCall(name="PORTS"),)
+    assert strip_locs(parse_text(text).modules[0].unresolved_macros) == (MacroCall(name="PORTS"),)
 
 
 def test_external_macros():
@@ -236,7 +241,7 @@ def test_recursive(caplog):
     text = "`define A input a, `B\n`define B input b, `A\nmodule m (`A);\nendmodule\n"
     assert _ports(text) == ["input a", "input b"]
     assert "recursive macro `A is not expanded" in caplog.text
-    assert parse_text(text).modules[0].unresolved_macros == (MacroCall(name="A"),)
+    assert strip_locs(parse_text(text).modules[0].unresolved_macros) == (MacroCall(name="A"),)
 
 
 def test_params_and_dims():
@@ -254,7 +259,7 @@ endmodule
     assert [(param.name, param.default) for param in module.params] == [("A", "8"), ("B", "2"), ("C", "8 + `UNKNOWN")]
     assert [(port.name, port.dim) for port in module.ports] == [("d", "[8-1:0]"), ("e", "[`UNKNOWN-1:0]")]
     # unknown macros within values and dimensions are kept as they are, there is nothing missing
-    assert module.unresolved_macros == ()
+    assert strip_locs(module.unresolved_macros) == ()
 
 
 def test_comments_and_ifdefs():
@@ -274,7 +279,7 @@ module m (
 );
 endmodule
 """
-    assert parse_text(text).modules[0].ports == (
+    assert strip_locs(parse_text(text).modules[0].ports) == (
         Port(direction="input", ptype="logic", name="a", comment=("Port A",), ifdefs=("WITH_PORTS",)),
         Port(direction="input", ptype="logic", name="b", comment=("Port B",), ifdefs=("WITH_PORTS", "WITH_B")),
         Port(direction="output", ptype="logic", name="c", comment=("Port C",), ifdefs=("WITH_PORTS",)),
@@ -321,7 +326,7 @@ endmodule
     assert [inst.name for inst in module.insts] == ["u_sub0", "u_sub1"]
     assert [(con.port, con.con) for con in module.insts[0].connections] == [("a", "sig"), ("b", "4")]
     # unknown macros in the module body are not reported
-    assert module.unresolved_macros == ()
+    assert strip_locs(module.unresolved_macros) == ()
 
 
 def test_untouched():
@@ -359,7 +364,7 @@ endmodule
 """
     with caplog.at_level(logging.WARNING):
         module = parse_text(text, file_path="file.sv").modules[0]
-    assert module.unresolved_macros == (
+    assert strip_locs(module.unresolved_macros) == (
         MacroCall(name="PARAMS", args=("A", "f(1, 2)")),
         MacroCall(name="CLK_RST"),
         MacroCall(name="AXI_PORTS", args=("s_axi", "32"), ifdefs=("AXI",)),
@@ -422,10 +427,10 @@ def test_example():
     """Example With Included Macro File."""
     module = parse_file(MACRO_PORTS_SV).modules[0]
     assert [param.name for param in module.params] == ["IN_WIDTH", "OUT_WIDTH"]
-    assert module.unresolved_macros == ()
+    assert strip_locs(module.unresolved_macros) == ()
     assert _ports(MACRO_PORTS_SV.read_text(), file_path=MACRO_PORTS_SV) == EXAMPLE_PORTS
-    assert module.ports[0].comment == ("Clock",)
-    assert module.ports[-1].comment == ("Busy",)
+    assert strip_locs(module.ports[0].comment) == ("Clock",)
+    assert strip_locs(module.ports[-1].comment) == ("Busy",)
 
     # text only: the included file cannot be located
     text = MACRO_PORTS_SV.read_text()
@@ -493,17 +498,17 @@ def test_include(tmp_path, caplog):
     with caplog.at_level(logging.INFO):
         module = parse_file(top).modules[0]
     assert [port.name for port in module.ports] == ["a"]
-    assert module.unresolved_macros == (MacroCall(name="B"),)
+    assert strip_locs(module.unresolved_macros) == (MacroCall(name="B"),)
     assert "included file 'missing.svh' not found" in caplog.text
     assert "local.svh: included file 'common.svh' not found" in caplog.text
 
     for inc_dirs in ([inc], [str(inc)], [tmp_path / "missing", inc]):
         module = parse_file(top, inc_dirs=inc_dirs).modules[0]
         assert [port.name for port in module.ports] == ["a", "b"]
-        assert module.unresolved_macros == ()
+        assert strip_locs(module.unresolved_macros) == ()
 
-    assert tuple(parse_defines(top, inc_dirs=[inc])) == ("B", "A")
-    assert tuple(parse_defines_text(top.read_text(), inc_dirs=[tmp_path, inc])) == ("B", "A")
+    assert strip_locs(tuple(parse_defines(top, inc_dirs=[inc]))) == ("B", "A")
+    assert strip_locs(tuple(parse_defines_text(top.read_text(), inc_dirs=[tmp_path, inc]))) == ("B", "A")
     assert parse_defines_text(top.read_text()) == {}
 
 
@@ -524,7 +529,7 @@ def test_include_encoding(tmp_path):
     top = tmp_path / "top.sv"
     top.write_text('`include "inc.svh"\nmodule top (`P);\nendmodule\n')
     port = parse_file(top).modules[0].ports[0]
-    assert (port.name, port.comment) == ("a", ("\xe4",))
+    assert strip_locs((port.name, port.comment)) == ("a", ("\xe4",))
     assert parse_defines(tmp_path / "inc.svh")["P"].body == "input a /* \xe4 */"
 
 
@@ -540,7 +545,7 @@ def test_include_unreadable(tmp_path, caplog, monkeypatch):
 
     monkeypatch.setattr(Path, "read_text", read_text)
     module = parse_text(text, file_path=top).modules[0]
-    assert module.unresolved_macros == (MacroCall(name="P"),)
+    assert strip_locs(module.unresolved_macros) == (MacroCall(name="P"),)
     assert "cannot read included file" in caplog.text
 
 
@@ -559,7 +564,7 @@ def test_unresolved_multiline_args():
     """Arguments Of Unknown Macros May Span Lines."""
     text = "module m (\n    `PORTS\n    (\n        a, // first\n        b\n    ),\n    input z\n);\nendmodule\n"
     module = parse_text(text).modules[0]
-    assert module.unresolved_macros == (MacroCall(name="PORTS", args=("a", "b")),)
+    assert strip_locs(module.unresolved_macros) == (MacroCall(name="PORTS", args=("a", "b")),)
     assert _ports(text) == ["input z"]
 
 
@@ -568,7 +573,7 @@ def test_type_macro_is_resolved():
     text = "module m (input `MY_T a, `MY_T(3) b, `PORTS input c);\nendmodule\n"
     module = parse_text(text).modules[0]
     assert _ports(text) == ["input `MY_T a", "input `MY_T(3) b", "input c"]
-    assert module.unresolved_macros == (MacroCall(name="PORTS"),)
+    assert strip_locs(module.unresolved_macros) == (MacroCall(name="PORTS"),)
 
 
 def test_off_by_default(caplog):
@@ -576,7 +581,7 @@ def test_off_by_default(caplog):
     text = "`define W 8\n`define PORTS input a\nmodule m (`PORTS, input [`W-1:0] b);\n    `PORTS;\nendmodule\n"
     module = hdl_parser.parse_text(text).modules[0]
     assert [(port.name, port.dim) for port in module.ports] == [("b", "[`W-1:0]")]
-    assert module.unresolved_macros == (MacroCall(name="PORTS"),)
+    assert strip_locs(module.unresolved_macros) == (MacroCall(name="PORTS"),)
     assert "macro `PORTS in module header is not expanded" in caplog.text
     assert [(port.name, port.dim) for port in parse_text(text).modules[0].ports] == [
         ("a", ""),

@@ -38,12 +38,13 @@ dispatched by their leading keyword: a new one is a function decorated with `_ha
 
 import logging
 from collections.abc import Callable, Iterable
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
-from .._tokens import EOF, ID, KW, OPEN, Cursor, Token  # noqa: TID252
-from .preproc import Macros, expand, split_args
+from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token  # noqa: TID252
+from .preproc import Macros, expand_mapped, split_args
 from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
 
 LOGGER = logging.getLogger(__name__)
@@ -147,10 +148,16 @@ _DECLARATIONS = frozenset(
 )
 
 
-class _Decl(NamedTuple):
-    """One Declared Name (Port or Parameter)."""
+# All items know their `first` and `last` token: the source range they are parsed from.
+# Items with a name know its token as `name`.
 
-    token: Token
+
+class _Decl(NamedTuple):
+    """One Declared Name (Port or Parameter). `first` and `last` span the whole declaration."""
+
+    first: Token
+    last: Token
+    name: Token
     kind: str  # port direction or parameter keyword
     ptype: str
     dtype: str
@@ -161,25 +168,44 @@ class _Decl(NamedTuple):
 
 
 class _Con(NamedTuple):
-    token: Token
+    """One Connection Of An Instance."""
+
+    first: Token
+    last: Token
     port: str
     con: str
     comment: list[str]
 
 
 class _Inst(NamedTuple):
-    module: Token
+    """One Instance. `first` and `last` span the whole instantiation."""
+
+    first: Token
+    last: Token
     name: Token
+    module: Token
     cons: list[_Con]
 
 
-class _Module(NamedTuple):
-    token: Token
-    name: str
-    params: list[_Decl]
-    ports: list[_Decl]
-    insts: list[_Inst]
-    macros: list[dm.MacroCall]
+class _Macro(NamedTuple):
+    """Macro Call Within The Module Header, Which Has Not Been Expanded."""
+
+    first: Token
+    last: Token
+    call: dm.MacroCall
+
+
+@dataclass
+class _Module:
+    """One Module. `last` is known as soon as the module is parsed completely."""
+
+    first: Token
+    last: Token
+    name: Token
+    params: list[_Decl] = field(default_factory=list)
+    ports: list[_Decl] = field(default_factory=list)
+    insts: list[_Inst] = field(default_factory=list)
+    macros: list[_Macro] = field(default_factory=list)
 
 
 # --- types and declarations ---
@@ -269,6 +295,7 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
     """Parse `[type] [dims] name [dims] [= default] {, name [dims] [= default]}`."""
     decls: list[_Decl] = []
     comment = c.start_comment()
+    first = c.peek()
     if c.peek().text in _DIRECTIONS or c.peek().text in _PARAMS:
         kind = c.next().text
         ptype, dtype = _parse_type(c)
@@ -286,16 +313,22 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
             start = c.pos
             c.skip_until(_VALUE_STOPS)
             default = c.text(start, c.pos).strip()
-        decls.append(_Decl(tok, kind, ptype, dtype, dim, dim_unpacked, default, comment))
+        decls.append(_Decl(first, tok, tok, kind, ptype, dtype, dim, dim_unpacked, default, comment))
         # another name of this declaration, or the next declaration?
         if c.peek().text == "," and c.peek(1).kind == ID and not _type_ref_end(c, c.pos + 1):
             c.next()
         else:
             break
-    return decls
+    return _set_last(c, decls)
 
 
-def _parse_macro_call(c: Cursor) -> dm.MacroCall:
+def _set_last(c: Cursor, items: list) -> list:
+    """Let all `items` end at the last consumed token."""
+    last = c.toks[c.pos - 1] if c.pos else c.toks[0]
+    return [item._replace(last=last) for item in items]
+
+
+def _parse_macro_call(c: Cursor) -> _Macro:
     """Parse `` `NAME `` or `` `NAME(arguments) `` at the current position."""
     tok = c.next()
     args = None
@@ -303,10 +336,10 @@ def _parse_macro_call(c: Cursor) -> dm.MacroCall:
         start = c.pos + 1
         c.skip_balanced()
         args = tuple(split_args(c.text(start, c.pos - 1)))
-    return dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs)
+    return _Macro(tok, c.toks[c.pos - 1], dm.MacroCall(name=tok.text[1:], args=args, ifdefs=tok.ifdefs))
 
 
-def _parse_decl_list(c: Cursor, kind: str, macros: list[dm.MacroCall]) -> list[_Decl]:
+def _parse_decl_list(c: Cursor, kind: str, macros: list[_Macro]) -> list[_Decl]:
     """Parse the parenthesized, comma separated parameter or port declarations of a module header.
 
     Macros which have not been expanded and stand for declarations are added to `macros`.
@@ -349,7 +382,7 @@ def _parse_item_decl(c: Cursor) -> list[_Decl]:
     c.skip_until(_SEMI)
     c.accept(";")
     c.sink = None
-    return decls
+    return _set_last(c, decls)
 
 
 # --- instances ---
@@ -395,9 +428,9 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             if c.peek().text == "(":
                 start = c.pos + 1
                 c.skip_balanced()
-                cons.append(_Con(tok, port.text, c.text(start, c.pos - 1).strip(), comment))
+                cons.append(_Con(tok, c.toks[c.pos - 1], port.text, c.text(start, c.pos - 1).strip(), comment))
             else:
-                cons.append(_Con(tok, port.text, port.text, comment))
+                cons.append(_Con(tok, port, port.text, port.text, comment))
         else:
             # connection by order
             pos = c.pos
@@ -406,7 +439,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             if c.pos == pos:
                 c.next()
             else:
-                cons.append(_Con(tok, "", c.text(pos, c.pos).strip(), comment))
+                cons.append(_Con(tok, c.toks[c.pos - 1], "", c.text(pos, c.pos).strip(), comment))
     return cons
 
 
@@ -421,14 +454,14 @@ def _parse_instances(c: Cursor) -> list[_Inst]:
         name = c.next()
         while c.peek().text == "[":
             c.skip_balanced()
-        insts.append(_Inst(module, name, _parse_connections(c)))
+        insts.append(_Inst(module, name, name, module, _parse_connections(c)))
         if c.peek().text == "," and c.peek(1).kind == ID:
             c.next()
         else:
             break
     c.accept(";")
     c.sink = None
-    return insts
+    return _set_last(c, insts)
 
 
 # --- code without anything to extract ---
@@ -647,7 +680,8 @@ def _parse_module(c: Cursor) -> _Module | None:
         c.next()
     if c.peek().kind != ID:
         return None
-    mod = _Module(start, c.next().text, [], [], [], [])
+    name = c.next()
+    mod = _Module(start, name, name)
     while c.peek().text == "import":
         c.skip_until(_SEMI)
         c.accept(";")
@@ -659,6 +693,7 @@ def _parse_module(c: Cursor) -> _Module | None:
         mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod.macros) if decl.kind or decl.ptype)
     c.accept(";")
     _parse_body(c, mod)
+    mod.last = c.toks[c.pos - 1]
     return mod
 
 
@@ -683,62 +718,71 @@ def _parse_modules(c: Cursor) -> list[_Module]:
 # --- data model ---
 
 
-def _create_params(decls: list[_Decl], kind: str) -> tuple[dm.Param, ...]:
+def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.Param, ...]:
     return tuple(
         dm.Param(
-            name=decl.token.text,
+            name=decl.name.text,
             ptype=decl.ptype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             default=decl.default,
             comment=tuple(decl.comment),
-            ifdefs=decl.token.ifdefs,
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
         if decl.kind == kind
     )
 
 
-def _create_ports(decls: list[_Decl]) -> tuple[dm.Port, ...]:
+def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     return tuple(
         dm.Port(
-            name=decl.token.text,
+            name=decl.name.text,
             direction=decl.kind,
             ptype=decl.ptype,
             dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             comment=tuple(decl.comment),
-            ifdefs=decl.token.ifdefs,
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
     )
 
 
-def _create_insts(insts: list[_Inst]) -> tuple[dm.ModuleInstance, ...]:
+def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstance, ...]:
     return tuple(
         dm.ModuleInstance(
             name=inst.name.text,
             module=inst.module.text,
             ifdefs=inst.module.ifdefs,
             connections=tuple(
-                dm.Connection(port=con.port, con=con.con, comment=tuple(con.comment), ifdefs=con.token.ifdefs)
+                dm.Connection(
+                    port=con.port,
+                    con=con.con,
+                    comment=tuple(con.comment),
+                    ifdefs=con.first.ifdefs,
+                    loc=smap.span(con.first, con.last),
+                )
                 for con in inst.cons
             ),
+            loc=smap.span(inst.first, inst.last, inst.name),
         )
         for inst in insts
     )
 
 
-def _create_macros(mod: _Module, context: str) -> tuple[dm.MacroCall, ...]:
+def _create_macros(mod: _Module, context: str, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
     for macro in mod.macros:
         LOGGER.warning(
             "%s: module '%s': macro `%s in module header is not expanded. Ports or parameters may be missing.",
             context,
-            mod.name,
-            macro.name,
+            mod.name.text,
+            macro.call.name,
         )
-    return tuple(mod.macros)
+    return tuple(macro.call.model_copy(update={"loc": smap.span(macro.first, macro.last)}) for macro in mod.macros)
 
 
 def parse(  # noqa: PLR0913
@@ -757,16 +801,23 @@ def parse(  # noqa: PLR0913
     """
     context = str(file_path) if file_path else "<text>"
     if expand_macros:
-        text = expand(text, macros=macros, file_path=file_path, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
+        source = text
+        text, segments = expand_mapped(
+            text, macros=macros, file_path=file_path, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs
+        )
+        smap = SourceMap(source, segments)
+    else:
+        smap = SourceMap(text)
     return tuple(
         dm.Module(
-            name=mod.name,
-            params=_create_params(mod.params, "parameter"),
-            localparams=_create_params(mod.params, "localparam"),
-            ports=_create_ports(mod.ports),
-            insts=_create_insts(mod.insts),
-            ifdefs=mod.token.ifdefs,
-            unresolved_macros=_create_macros(mod, context),
+            name=mod.name.text,
+            params=_create_params(mod.params, "parameter", smap),
+            localparams=_create_params(mod.params, "localparam", smap),
+            ports=_create_ports(mod.ports, smap),
+            insts=_create_insts(mod.insts, smap),
+            ifdefs=mod.first.ifdefs,
+            unresolved_macros=_create_macros(mod, context, smap),
+            loc=smap.span(mod.first, mod.last, mod.name),
         )
         for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
     )

@@ -6,28 +6,52 @@
       "params": [
         {
           "name": "PROCESSOR_ID",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 48
+          }
         },
         {
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
             "--! Divider for the clock driving the MTIME counter."
-          ]
+          ],
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 32
+          }
         },
         {
           "name": "TIME_DIVIDER",
           "default": "5",
           "comment": [
             "--! Divider for the clock driving the TIME counter."
-          ]
+          ],
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 32
+          }
         }
       ],
       "ports": [
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "clk"
+          "name": "clk",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 27
+          }
         },
         {
           "direction": "in",
@@ -35,7 +59,13 @@
           "name": "reset",
           "comment": [
             "-- IRQ signals:"
-          ]
+          ],
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 27
+          }
         },
         {
           "direction": "in",
@@ -44,7 +74,13 @@
           "dim": "[7:0]",
           "comment": [
             "-- Count retired instruction:"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 40
+          }
         },
         {
           "direction": "in",
@@ -52,7 +88,13 @@
           "name": "count_instruction",
           "comment": [
             "-- Test interface:"
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 35
+          }
         },
         {
           "direction": "out",
@@ -60,12 +102,24 @@
           "name": "test_context_out",
           "comment": [
             "-- Read port:"
-          ]
+          ],
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 38
+          }
         },
         {
           "direction": "in",
           "dtype": "csr_address",
-          "name": "read_address"
+          "name": "read_address",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 34
+          }
         },
         {
           "direction": "out",
@@ -74,18 +128,36 @@
           "dim": "[31:0]",
           "comment": [
             "-- Write port:"
-          ]
+          ],
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 53
+          }
         },
         {
           "direction": "in",
           "dtype": "csr_address",
-          "name": "write_address"
+          "name": "write_address",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 33
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "write_data_in",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 51
+          }
         },
         {
           "direction": "in",
@@ -93,12 +165,24 @@
           "name": "write_mode",
           "comment": [
             "-- Exception context write port:"
-          ]
+          ],
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 36
+          }
         },
         {
           "direction": "in",
           "dtype": "csr_exception_context",
-          "name": "exception_context"
+          "name": "exception_context",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 53
+          }
         },
         {
           "direction": "in",
@@ -106,12 +190,24 @@
           "name": "exception_context_write",
           "comment": [
             "-- Interrupts originating from this unit:"
-          ]
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 41
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "software_interrupt_out"
+          "name": "software_interrupt_out",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 41
+          }
         },
         {
           "direction": "out",
@@ -119,29 +215,59 @@
           "name": "timer_interrupt_out",
           "comment": [
             "-- Registers needed for exception handling, always read:"
-          ]
+          ],
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 41
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mie_out",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 54
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mtvec_out",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 54
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "ie_out"
+          "name": "ie_out",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 34
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "ie1_out"
+          "name": "ie1_out",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 34
+          }
         }
       ],
       "insts": [
@@ -151,21 +277,51 @@
           "connections": [
             {
               "port": "clk",
-              "con": "time_clk"
+              "con": "time_clk",
+              "loc": {
+                "line": 284,
+                "col": 4,
+                "end_line": 284,
+                "end_col": 19
+              }
             },
             {
               "port": "reset",
-              "con": "reset"
+              "con": "reset",
+              "loc": {
+                "line": 285,
+                "col": 4,
+                "end_line": 285,
+                "end_col": 18
+              }
             },
             {
               "port": "count",
-              "con": "counter_time"
+              "con": "counter_time",
+              "loc": {
+                "line": 286,
+                "col": 4,
+                "end_line": 286,
+                "end_col": 25
+              }
             },
             {
               "port": "increment",
-              "con": "'1'"
+              "con": "'1'",
+              "loc": {
+                "line": 287,
+                "col": 4,
+                "end_line": 287,
+                "end_col": 20
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 282,
+            "col": 2,
+            "end_line": 288,
+            "end_col": 5
+          }
         },
         {
           "name": "cycle_counter",
@@ -173,21 +329,51 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 292,
+                "col": 4,
+                "end_line": 292,
+                "end_col": 14
+              }
             },
             {
               "port": "reset",
-              "con": "reset"
+              "con": "reset",
+              "loc": {
+                "line": 293,
+                "col": 4,
+                "end_line": 293,
+                "end_col": 18
+              }
             },
             {
               "port": "count",
-              "con": "counter_cycle"
+              "con": "counter_cycle",
+              "loc": {
+                "line": 294,
+                "col": 4,
+                "end_line": 294,
+                "end_col": 26
+              }
             },
             {
               "port": "increment",
-              "con": "'1'"
+              "con": "'1'",
+              "loc": {
+                "line": 295,
+                "col": 4,
+                "end_line": 295,
+                "end_col": 20
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 290,
+            "col": 2,
+            "end_line": 296,
+            "end_col": 5
+          }
         },
         {
           "name": "instret_counter",
@@ -195,23 +381,59 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 300,
+                "col": 4,
+                "end_line": 300,
+                "end_col": 14
+              }
             },
             {
               "port": "reset",
-              "con": "reset"
+              "con": "reset",
+              "loc": {
+                "line": 301,
+                "col": 4,
+                "end_line": 301,
+                "end_col": 18
+              }
             },
             {
               "port": "count",
-              "con": "counter_instret"
+              "con": "counter_instret",
+              "loc": {
+                "line": 302,
+                "col": 4,
+                "end_line": 302,
+                "end_col": 28
+              }
             },
             {
               "port": "increment",
-              "con": "count_instruction"
+              "con": "count_instruction",
+              "loc": {
+                "line": 303,
+                "col": 4,
+                "end_line": 303,
+                "end_col": 34
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 298,
+            "col": 2,
+            "end_line": 304,
+            "end_col": 5
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 14,
+        "col": 1,
+        "end_line": 55,
+        "end_col": 24
+      }
     }
   ]
 }

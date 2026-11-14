@@ -6,26 +6,68 @@
       "params": [
         {
           "name": "REPLACEMENT_POLICY",
-          "default": "\"LRU\""
+          "default": "\"LRU\"",
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 40
+          }
         },
         {
-          "name": "CACHE_LINES"
+          "name": "CACHE_LINES",
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 32
+          }
         },
         {
-          "name": "ASSOCIATIVITY"
+          "name": "ASSOCIATIVITY",
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 32
+          }
         },
         {
-          "name": "CPU_DATA_BITS"
+          "name": "CPU_DATA_BITS",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 32
+          }
         },
         {
-          "name": "MEM_ADDR_BITS"
+          "name": "MEM_ADDR_BITS",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 32
+          }
         },
         {
-          "name": "MEM_DATA_BITS"
+          "name": "MEM_DATA_BITS",
+          "loc": {
+            "line": 142,
+            "col": 3,
+            "end_line": 142,
+            "end_col": 32
+          }
         },
         {
           "name": "OUTSTANDING_REQ",
-          "default": "2"
+          "default": "2",
+          "loc": {
+            "line": 143,
+            "col": 3,
+            "end_line": 143,
+            "end_col": 37
+          }
         }
       ],
       "ports": [
@@ -35,7 +77,13 @@
           "name": "clk",
           "comment": [
             "-- clock"
-          ]
+          ],
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 21
+          }
         },
         {
           "direction": "in",
@@ -44,45 +92,93 @@
           "comment": [
             "-- reset",
             "-- \"CPU\" side"
-          ]
+          ],
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 21
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "cpu_req"
+          "name": "cpu_req",
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "cpu_write"
+          "name": "cpu_write",
+          "loc": {
+            "line": 151,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
           "dtype": "unsigned",
           "name": "cpu_addr",
-          "dim": "[log2ceil(MEM_DATA_BITS/CPU_DATA_BITS)+MEM_ADDR_BITS-1:0]"
+          "dim": "[log2ceil(MEM_DATA_BITS/CPU_DATA_BITS)+MEM_ADDR_BITS-1:0]",
+          "loc": {
+            "line": 152,
+            "col": 3,
+            "end_line": 152,
+            "end_col": 91
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "cpu_wdata",
-          "dim": "[CPU_DATA_BITS-1:0]"
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "loc": {
+            "line": 153,
+            "col": 3,
+            "end_line": 153,
+            "end_col": 61
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "cpu_wmask",
-          "dim": "[CPU_DATA_BITS/8-1:0]"
+          "dim": "[CPU_DATA_BITS/8-1:0]",
+          "loc": {
+            "line": 154,
+            "col": 3,
+            "end_line": 154,
+            "end_col": 82
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "cpu_rdy"
+          "name": "cpu_rdy",
+          "loc": {
+            "line": 155,
+            "col": 3,
+            "end_line": 155,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "cpu_rstb"
+          "name": "cpu_rstb",
+          "loc": {
+            "line": 156,
+            "col": 3,
+            "end_line": 156,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
@@ -91,51 +187,105 @@
           "dim": "[CPU_DATA_BITS-1:0]",
           "comment": [
             "-- Memory side"
-          ]
+          ],
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 61
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "mem_req"
+          "name": "mem_req",
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 160,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "mem_write"
+          "name": "mem_write",
+          "loc": {
+            "line": 161,
+            "col": 3,
+            "end_line": 161,
+            "end_col": 28
+          }
         },
         {
           "direction": "out",
           "dtype": "unsigned",
           "name": "mem_addr",
-          "dim": "[MEM_ADDR_BITS-1:0]"
+          "dim": "[MEM_ADDR_BITS-1:0]",
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 53
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mem_wdata",
-          "dim": "[MEM_DATA_BITS-1:0]"
+          "dim": "[MEM_DATA_BITS-1:0]",
+          "loc": {
+            "line": 163,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 61
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mem_wmask",
-          "dim": "[MEM_DATA_BITS/8-1:0]"
+          "dim": "[MEM_DATA_BITS/8-1:0]",
+          "loc": {
+            "line": 164,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 63
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "mem_rdy"
+          "name": "mem_rdy",
+          "loc": {
+            "line": 165,
+            "col": 3,
+            "end_line": 165,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "mem_rstb"
+          "name": "mem_rstb",
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 166,
+            "end_col": 28
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "mem_rdata",
-          "dim": "[MEM_DATA_BITS-1:0]"
+          "dim": "[MEM_DATA_BITS-1:0]",
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 167,
+            "end_col": 61
+          }
         }
       ],
       "insts": [
@@ -145,73 +295,181 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 194,
+                "col": 4,
+                "end_line": 194,
+                "end_col": 20
+              }
             },
             {
               "port": "rst",
-              "con": "rst"
+              "con": "rst",
+              "loc": {
+                "line": 195,
+                "col": 4,
+                "end_line": 195,
+                "end_col": 20
+              }
             },
             {
               "port": "cpu_req",
-              "con": "int_req"
+              "con": "int_req",
+              "loc": {
+                "line": 196,
+                "col": 4,
+                "end_line": 196,
+                "end_col": 24
+              }
             },
             {
               "port": "cpu_write",
-              "con": "int_write"
+              "con": "int_write",
+              "loc": {
+                "line": 197,
+                "col": 4,
+                "end_line": 197,
+                "end_col": 26
+              }
             },
             {
               "port": "cpu_addr",
-              "con": "int_addr"
+              "con": "int_addr",
+              "loc": {
+                "line": 198,
+                "col": 4,
+                "end_line": 198,
+                "end_col": 25
+              }
             },
             {
               "port": "cpu_wdata",
-              "con": "int_wdata"
+              "con": "int_wdata",
+              "loc": {
+                "line": 199,
+                "col": 4,
+                "end_line": 199,
+                "end_col": 26
+              }
             },
             {
               "port": "cpu_wmask",
-              "con": "int_wmask"
+              "con": "int_wmask",
+              "loc": {
+                "line": 200,
+                "col": 4,
+                "end_line": 200,
+                "end_col": 26
+              }
             },
             {
               "port": "cpu_got",
-              "con": "int_got"
+              "con": "int_got",
+              "loc": {
+                "line": 201,
+                "col": 4,
+                "end_line": 201,
+                "end_col": 24
+              }
             },
             {
               "port": "cpu_rdata",
-              "con": "int_rdata"
+              "con": "int_rdata",
+              "loc": {
+                "line": 202,
+                "col": 4,
+                "end_line": 202,
+                "end_col": 26
+              }
             },
             {
               "port": "mem_req",
-              "con": "mem_req"
+              "con": "mem_req",
+              "loc": {
+                "line": 203,
+                "col": 4,
+                "end_line": 203,
+                "end_col": 24
+              }
             },
             {
               "port": "mem_write",
-              "con": "mem_write"
+              "con": "mem_write",
+              "loc": {
+                "line": 204,
+                "col": 4,
+                "end_line": 204,
+                "end_col": 26
+              }
             },
             {
               "port": "mem_addr",
-              "con": "mem_addr"
+              "con": "mem_addr",
+              "loc": {
+                "line": 205,
+                "col": 4,
+                "end_line": 205,
+                "end_col": 25
+              }
             },
             {
               "port": "mem_wdata",
-              "con": "mem_wdata"
+              "con": "mem_wdata",
+              "loc": {
+                "line": 206,
+                "col": 4,
+                "end_line": 206,
+                "end_col": 26
+              }
             },
             {
               "port": "mem_wmask",
-              "con": "mem_wmask"
+              "con": "mem_wmask",
+              "loc": {
+                "line": 207,
+                "col": 4,
+                "end_line": 207,
+                "end_col": 26
+              }
             },
             {
               "port": "mem_rdy",
-              "con": "mem_rdy"
+              "con": "mem_rdy",
+              "loc": {
+                "line": 208,
+                "col": 4,
+                "end_line": 208,
+                "end_col": 24
+              }
             },
             {
               "port": "mem_rstb",
-              "con": "mem_rstb"
+              "con": "mem_rstb",
+              "loc": {
+                "line": 209,
+                "col": 4,
+                "end_line": 209,
+                "end_col": 25
+              }
             },
             {
               "port": "mem_rdata",
-              "con": "mem_rdata"
+              "con": "mem_rdata",
+              "loc": {
+                "line": 210,
+                "col": 4,
+                "end_line": 210,
+                "end_col": 26
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 185,
+            "col": 2,
+            "end_line": 210,
+            "end_col": 28
+          }
         },
         {
           "name": "req_fifo",
@@ -219,37 +477,91 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 286,
+                "col": 5,
+                "end_line": 286,
+                "end_col": 15
+              }
             },
             {
               "port": "rst",
-              "con": "rst"
+              "con": "rst",
+              "loc": {
+                "line": 287,
+                "col": 5,
+                "end_line": 287,
+                "end_col": 15
+              }
             },
             {
               "port": "put",
-              "con": "put"
+              "con": "put",
+              "loc": {
+                "line": 288,
+                "col": 5,
+                "end_line": 288,
+                "end_col": 15
+              }
             },
             {
               "port": "di",
-              "con": "din"
+              "con": "din",
+              "loc": {
+                "line": 289,
+                "col": 5,
+                "end_line": 289,
+                "end_col": 15
+              }
             },
             {
               "port": "ful",
-              "con": "full"
+              "con": "full",
+              "loc": {
+                "line": 290,
+                "col": 5,
+                "end_line": 290,
+                "end_col": 16
+              }
             },
             {
               "port": "vld",
-              "con": "valid"
+              "con": "valid",
+              "loc": {
+                "line": 291,
+                "col": 5,
+                "end_line": 291,
+                "end_col": 17
+              }
             },
             {
               "port": "do",
-              "con": "dout"
+              "con": "dout",
+              "loc": {
+                "line": 292,
+                "col": 5,
+                "end_line": 292,
+                "end_col": 16
+              }
             },
             {
               "port": "got",
-              "con": "int_got"
+              "con": "int_got",
+              "loc": {
+                "line": 293,
+                "col": 5,
+                "end_line": 293,
+                "end_col": 19
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 282,
+            "col": 3,
+            "end_line": 293,
+            "end_col": 21
+          }
         },
         {
           "name": "req_fifo",
@@ -257,47 +569,119 @@
           "connections": [
             {
               "port": "rst",
-              "con": "rst"
+              "con": "rst",
+              "loc": {
+                "line": 326,
+                "col": 9,
+                "end_line": 326,
+                "end_col": 25
+              }
             },
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 327,
+                "col": 9,
+                "end_line": 327,
+                "end_col": 25
+              }
             },
             {
               "port": "put",
-              "con": "put"
+              "con": "put",
+              "loc": {
+                "line": 328,
+                "col": 9,
+                "end_line": 328,
+                "end_col": 25
+              }
             },
             {
               "port": "din",
-              "con": "din"
+              "con": "din",
+              "loc": {
+                "line": 329,
+                "col": 9,
+                "end_line": 329,
+                "end_col": 25
+              }
             },
             {
               "port": "full",
-              "con": "full"
+              "con": "full",
+              "loc": {
+                "line": 330,
+                "col": 9,
+                "end_line": 330,
+                "end_col": 26
+              }
             },
             {
               "port": "estate_wr",
-              "con": "open"
+              "con": "open",
+              "loc": {
+                "line": 331,
+                "col": 9,
+                "end_line": 331,
+                "end_col": 26
+              }
             },
             {
               "port": "got",
-              "con": "int_got"
+              "con": "int_got",
+              "loc": {
+                "line": 332,
+                "col": 9,
+                "end_line": 332,
+                "end_col": 29
+              }
             },
             {
               "port": "dout",
-              "con": "dout"
+              "con": "dout",
+              "loc": {
+                "line": 333,
+                "col": 9,
+                "end_line": 333,
+                "end_col": 26
+              }
             },
             {
               "port": "valid",
-              "con": "valid"
+              "con": "valid",
+              "loc": {
+                "line": 334,
+                "col": 9,
+                "end_line": 334,
+                "end_col": 27
+              }
             },
             {
               "port": "fstate_rd",
-              "con": "open"
+              "con": "open",
+              "loc": {
+                "line": 335,
+                "col": 9,
+                "end_line": 335,
+                "end_col": 26
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 318,
+            "col": 3,
+            "end_line": 335,
+            "end_col": 28
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 135,
+        "col": 1,
+        "end_line": 169,
+        "end_col": 12
+      }
     }
   ]
 }

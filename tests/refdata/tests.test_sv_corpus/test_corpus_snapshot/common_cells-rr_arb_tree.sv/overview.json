@@ -10,7 +10,13 @@
           "default": "64",
           "comment": [
             "/ Data width of the payload in bits. Not needed if `DataType` is overwritten."
-          ]
+          ],
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 41
+          }
         },
         {
           "ptype": "int",
@@ -18,7 +24,13 @@
           "default": "32",
           "comment": [
             "/ Data type of the payload, can be overwritten with custom type. Only use of `DataWidth`."
-          ]
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 41
+          }
         },
         {
           "ptype": "type",
@@ -31,7 +43,13 @@
             "/ is needed, just connect `rr_i` to '0.",
             "/",
             "/ Set to 1'b1 to enable."
-          ]
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 60
+          }
         },
         {
           "ptype": "bit",
@@ -44,7 +62,13 @@
             "/ delay and area.",
             "/",
             "/ Set to `1'b1` to treat req/gnt as vld/rdy."
-          ]
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 43
+          }
         },
         {
           "ptype": "bit",
@@ -57,7 +81,13 @@
             "/ able to grant the request in the same cycle.",
             "/",
             "/ Set to `1'b1` to enable."
-          ]
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 43
+          }
         },
         {
           "ptype": "bit",
@@ -67,7 +97,13 @@
             "/ When set, ensures that throughput gets distributed evenly between all inputs.",
             "/",
             "/ Set to `1'b0` to disable."
-          ]
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 43
+          }
         },
         {
           "ptype": "bit",
@@ -76,7 +112,13 @@
           "comment": [
             "/ Dependent parameter, do **not** overwrite.",
             "/ Width of the arbitration priority signal and the arbitrated index."
-          ]
+          ],
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 43
+          }
         },
         {
           "ptype": "int",
@@ -85,12 +127,24 @@
           "comment": [
             "/ Dependent parameter, do **not** overwrite.",
             "/ Type for defining the arbitration priority and arbitrated index signal."
-          ]
+          ],
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 89
+          }
         },
         {
           "ptype": "type",
           "name": "idx_t",
-          "default": "logic [IdxWidth-1:0]"
+          "default": "logic [IdxWidth-1:0]",
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 59
+          }
         }
       ],
       "ports": [
@@ -100,7 +154,13 @@
           "name": "clk_i",
           "comment": [
             "/ Asynchronous reset, active low."
-          ]
+          ],
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 36
+          }
         },
         {
           "direction": "input",
@@ -108,7 +168,13 @@
           "name": "rst_ni",
           "comment": [
             "/ Clears the arbiter state. Only used if `ExtPrio` is `1'b0` or `LockIn` is `1'b1`."
-          ]
+          ],
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 37
+          }
         },
         {
           "direction": "input",
@@ -116,7 +182,13 @@
           "name": "flush_i",
           "comment": [
             "/ External round-robin priority. Only used if `ExtPrio` is `1'b1.`"
-          ]
+          ],
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 91,
+            "end_col": 38
+          }
         },
         {
           "direction": "input",
@@ -124,7 +196,13 @@
           "name": "rr_i",
           "comment": [
             "/ Input requests arbitration."
-          ]
+          ],
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 35
+          }
         },
         {
           "direction": "input",
@@ -134,7 +212,13 @@
           "comment": [
             "verilator lint_off UNOPTFLAT",
             "/ Input request is granted."
-          ]
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 36
+          }
         },
         {
           "direction": "output",
@@ -144,7 +228,13 @@
           "comment": [
             "verilator lint_on UNOPTFLAT",
             "/ Input data for arbitration."
-          ]
+          ],
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 36
+          }
         },
         {
           "direction": "input",
@@ -153,7 +243,13 @@
           "dim": "[NumIn-1:0]",
           "comment": [
             "/ Output request is valid."
-          ]
+          ],
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 37
+          }
         },
         {
           "direction": "output",
@@ -161,7 +257,13 @@
           "name": "req_o",
           "comment": [
             "/ Output request is granted."
-          ]
+          ],
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 36
+          }
         },
         {
           "direction": "input",
@@ -169,7 +271,13 @@
           "name": "gnt_i",
           "comment": [
             "/ Output data."
-          ]
+          ],
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 36
+          }
         },
         {
           "direction": "output",
@@ -177,29 +285,59 @@
           "name": "data_o",
           "comment": [
             "/ Index from which input the data came from."
-          ]
+          ],
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 37
+          }
         },
         {
           "direction": "output",
           "ptype": "idx_t",
-          "name": "idx_o"
+          "name": "idx_o",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 109,
+            "end_col": 36
+          }
         }
       ],
       "localparams": [
         {
           "ptype": "int",
           "name": "NumLevels",
-          "default": "unsigned'($clog2(NumIn))"
+          "default": "unsigned'($clog2(NumIn))",
+          "loc": {
+            "line": 131,
+            "col": 5,
+            "end_line": 131,
+            "end_col": 66
+          }
         },
         {
           "ptype": "int",
           "name": "Idx0",
-          "default": "2**level-1+l"
+          "default": "2**level-1+l",
+          "loc": {
+            "line": 263,
+            "col": 9,
+            "end_line": 263,
+            "end_col": 53
+          }
         },
         {
           "ptype": "int",
           "name": "Idx1",
-          "default": "2**(level+1)-1+l*2"
+          "default": "2**(level+1)-1+l*2",
+          "loc": {
+            "line": 264,
+            "col": 9,
+            "end_line": 264,
+            "end_col": 59
+          }
         }
       ],
       "insts": [
@@ -209,17 +347,41 @@
           "connections": [
             {
               "port": "in_i",
-              "con": "upper_mask"
+              "con": "upper_mask",
+              "loc": {
+                "line": 220,
+                "col": 11,
+                "end_line": 220,
+                "end_col": 35
+              }
             },
             {
               "port": "cnt_o",
-              "con": "upper_idx"
+              "con": "upper_idx",
+              "loc": {
+                "line": 221,
+                "col": 11,
+                "end_line": 221,
+                "end_col": 35
+              }
             },
             {
               "port": "empty_o",
-              "con": "upper_empty"
+              "con": "upper_empty",
+              "loc": {
+                "line": 222,
+                "col": 11,
+                "end_line": 222,
+                "end_col": 35
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 216,
+            "col": 9,
+            "end_line": 223,
+            "end_col": 11
+          }
         },
         {
           "name": "i_lzc_lower",
@@ -227,21 +389,51 @@
           "connections": [
             {
               "port": "in_i",
-              "con": "lower_mask"
+              "con": "lower_mask",
+              "loc": {
+                "line": 229,
+                "col": 11,
+                "end_line": 229,
+                "end_col": 35
+              }
             },
             {
               "port": "cnt_o",
-              "con": "lower_idx"
+              "con": "lower_idx",
+              "loc": {
+                "line": 230,
+                "col": 11,
+                "end_line": 230,
+                "end_col": 35
+              }
             },
             {
               "port": "empty_o",
               "comment": [
                 "unused"
-              ]
+              ],
+              "loc": {
+                "line": 231,
+                "col": 11,
+                "end_line": 231,
+                "end_col": 35
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 225,
+            "col": 9,
+            "end_line": 232,
+            "end_col": 11
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 47,
+        "col": 1,
+        "end_line": 351,
+        "end_col": 10
+      }
     }
   ]
 }

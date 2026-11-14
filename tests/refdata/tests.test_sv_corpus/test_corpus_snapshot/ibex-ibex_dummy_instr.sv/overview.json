@@ -7,19 +7,37 @@
         {
           "ptype": "lfsr_seed_t",
           "name": "RndCnstLfsrSeed",
-          "default": "RndCnstLfsrSeedDefault"
+          "default": "RndCnstLfsrSeedDefault",
+          "loc": {
+            "line": 13,
+            "col": 5,
+            "end_line": 13,
+            "end_col": 67
+          }
         },
         {
           "ptype": "lfsr_perm_t",
           "name": "RndCnstLfsrPerm",
-          "default": "RndCnstLfsrPermDefault"
+          "default": "RndCnstLfsrPermDefault",
+          "loc": {
+            "line": 14,
+            "col": 5,
+            "end_line": 14,
+            "end_col": 67
+          }
         }
       ],
       "ports": [
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "clk_i"
+          "name": "clk_i",
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 28
+          }
         },
         {
           "direction": "input",
@@ -27,29 +45,59 @@
           "name": "rst_ni",
           "comment": [
             "Interface to CSRs"
-          ]
+          ],
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 29
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "dummy_instr_en_i"
+          "name": "dummy_instr_en_i",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 39
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_mask_i",
-          "dim": "[2:0]"
+          "dim": "[2:0]",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 41
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "dummy_instr_seed_en_i"
+          "name": "dummy_instr_seed_en_i",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 44
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
           "name": "dummy_instr_seed_i",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 41
+          }
         },
         {
           "direction": "input",
@@ -57,50 +105,104 @@
           "name": "dummy_instr_16regs_i",
           "comment": [
             "Interface to IF stage"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 43
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "fetch_valid_i"
+          "name": "fetch_valid_i",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 36
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "id_in_ready_i"
+          "name": "id_in_ready_i",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 36
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "insert_hold_i"
+          "name": "insert_hold_i",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 36
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
-          "name": "insert_dummy_instr_o"
+          "name": "insert_dummy_instr_o",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 43
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "dummy_instr_data_o",
-          "dim": "[31:0]"
+          "dim": "[31:0]",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 41
+          }
         }
       ],
       "localparams": [
         {
           "ptype": "int",
           "name": "TIMEOUT_CNT_W",
-          "default": "5"
+          "default": "5",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 45
+          }
         },
         {
           "ptype": "int",
           "name": "OP_W",
-          "default": "5"
+          "default": "5",
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 45
+          }
         },
         {
           "ptype": "int",
           "name": "LFSR_OUT_W",
-          "default": "$bits(lfsr_data_t)"
+          "default": "$bits(lfsr_data_t)",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 59
+          }
         }
       ],
       "insts": [
@@ -110,35 +212,89 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 86,
+                "col": 7,
+                "end_line": 86,
+                "end_col": 43
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_ni"
+              "con": "rst_ni",
+              "loc": {
+                "line": 87,
+                "col": 7,
+                "end_line": 87,
+                "end_col": 43
+              }
             },
             {
               "port": "seed_en_i",
-              "con": "dummy_instr_seed_en_i"
+              "con": "dummy_instr_seed_en_i",
+              "loc": {
+                "line": 88,
+                "col": 7,
+                "end_line": 88,
+                "end_col": 43
+              }
             },
             {
               "port": "seed_i",
-              "con": "dummy_instr_seed_d"
+              "con": "dummy_instr_seed_d",
+              "loc": {
+                "line": 89,
+                "col": 7,
+                "end_line": 89,
+                "end_col": 43
+              }
             },
             {
               "port": "lfsr_en_i",
-              "con": "lfsr_en"
+              "con": "lfsr_en",
+              "loc": {
+                "line": 90,
+                "col": 7,
+                "end_line": 90,
+                "end_col": 43
+              }
             },
             {
               "port": "entropy_i",
-              "con": "'0"
+              "con": "'0",
+              "loc": {
+                "line": 91,
+                "col": 7,
+                "end_line": 91,
+                "end_col": 43
+              }
             },
             {
               "port": "state_o",
-              "con": "lfsr_state"
+              "con": "lfsr_state",
+              "loc": {
+                "line": 92,
+                "col": 7,
+                "end_line": 92,
+                "end_col": 43
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 79,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 5
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 12,
+        "col": 1,
+        "end_line": 158,
+        "end_col": 10
+      }
     }
   ]
 }

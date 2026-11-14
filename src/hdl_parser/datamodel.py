@@ -36,6 +36,31 @@ class _BaseModel(pyd.BaseModel):
         return self.model_dump_json(indent=2, exclude_defaults=True)
 
 
+class Location(_BaseModel):
+    """Source Location.
+
+    Lines and columns start at 1. Columns count characters, not bytes. The end is exclusive: `end_col` is
+    the column behind the last character.
+
+    Code created by a macro points at the macro call in the parsed file. Nested macros point at the outermost
+    call.
+
+    Attributes:
+        line: First line.
+        col: First column.
+        end_line: Last line.
+        end_col: Column behind the last character on `end_line`.
+        macro: Name of the macro (without backtick), which created the item. Empty, if the item is written in
+               the source. The item cannot be edited directly, but only via the macro call.
+    """
+
+    line: int
+    col: int
+    end_line: int
+    end_col: int
+    macro: str = ""
+
+
 class File(_BaseModel):
     """Represents a SystemVerilog File with SystemVerilog Modules.
 
@@ -60,6 +85,7 @@ class Module(_BaseModel):
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
                            Ports or parameters defined by these macros are missing.
+        loc: Source Location: from `module` to `endmodule`. VHDL: the entity.
     """
 
     name: str
@@ -69,6 +95,7 @@ class Module(_BaseModel):
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
+    loc: Location | None = None
 
 
 class Param(_BaseModel):
@@ -80,6 +107,7 @@ class Param(_BaseModel):
         dim: Dimension (Packed)
         dim_unpacked: Unpacked Dimension
         comment: tuple of associated comments
+        loc: Source Location of the declaration. Names declared together share it.
     """
 
     ptype: str = ""
@@ -89,6 +117,7 @@ class Param(_BaseModel):
     default: str = ""
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
+    loc: Location | None = None
 
 
 class Port(_BaseModel):
@@ -102,6 +131,7 @@ class Port(_BaseModel):
         dim: Dimension (Packed)
         dim_unpacked: Unpacked
         comment: tuple of associated comments
+        loc: Source Location of the declaration. Names declared together share it.
     """
 
     # FIXME: Decide for possible values (remove comments)
@@ -113,6 +143,7 @@ class Port(_BaseModel):
     dim_unpacked: str = ""
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
+    loc: Location | None = None
 
 
 class Connection(_BaseModel):
@@ -122,12 +153,14 @@ class Connection(_BaseModel):
         port: Port
         con: Connection
         comment: Comment
+        loc: Source Location: `.port(con)`, `port => con` or the expression of a connection by order.
     """
 
     port: str = ""
     con: str = ""
     comment: tuple[str, ...] = ()
     ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
 
 
 class ModuleInstance(_BaseModel):
@@ -137,12 +170,14 @@ class ModuleInstance(_BaseModel):
         name: Module Instance Name
         module: Module Name
         connections: Connections
+        loc: Source Location of the instantiation. Instances created together share it.
     """
 
     name: str
     module: str
     connections: tuple[Connection, ...] = ()
     ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
 
 
 class MacroCall(_BaseModel):
@@ -152,8 +187,10 @@ class MacroCall(_BaseModel):
         name: Macro Name, without backtick
         args: Arguments. `None` if the macro is used without parenthesis
         ifdefs: Conditions the macro is used at
+        loc: Source Location of the call, including the arguments.
     """
 
     name: str
     args: tuple[str, ...] | None = None
     ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None

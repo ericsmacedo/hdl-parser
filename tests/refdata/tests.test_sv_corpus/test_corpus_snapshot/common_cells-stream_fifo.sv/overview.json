@@ -10,7 +10,13 @@
           "default": "1'b0",
           "comment": [
             "/ Default data width if the fifo is of type logic"
-          ]
+          ],
+          "loc": {
+            "line": 15,
+            "col": 5,
+            "end_line": 15,
+            "end_col": 47
+          }
         },
         {
           "ptype": "int",
@@ -18,12 +24,24 @@
           "default": "32",
           "comment": [
             "/ Depth can be arbitrary from 0 to 2**32"
-          ]
+          ],
+          "loc": {
+            "line": 17,
+            "col": 5,
+            "end_line": 17,
+            "end_col": 45
+          }
         },
         {
           "ptype": "int",
           "name": "DEPTH",
-          "default": "8"
+          "default": "8",
+          "loc": {
+            "line": 19,
+            "col": 5,
+            "end_line": 19,
+            "end_col": 44
+          }
         },
         {
           "ptype": "type",
@@ -31,12 +49,24 @@
           "default": "logic [DATA_WIDTH-1:0]",
           "comment": [
             "DO NOT OVERWRITE THIS PARAMETER"
-          ]
+          ],
+          "loc": {
+            "line": 20,
+            "col": 5,
+            "end_line": 20,
+            "end_col": 65
+          }
         },
         {
           "ptype": "int",
           "name": "ADDR_DEPTH",
-          "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1"
+          "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1",
+          "loc": {
+            "line": 22,
+            "col": 5,
+            "end_line": 22,
+            "end_col": 73
+          }
         }
       ],
       "ports": [
@@ -46,7 +76,13 @@
           "name": "clk_i",
           "comment": [
             "Clock"
-          ]
+          ],
+          "loc": {
+            "line": 24,
+            "col": 5,
+            "end_line": 24,
+            "end_col": 40
+          }
         },
         {
           "direction": "input",
@@ -54,7 +90,13 @@
           "name": "rst_ni",
           "comment": [
             "Asynchronous reset active low"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 5,
+            "end_line": 25,
+            "end_col": 41
+          }
         },
         {
           "direction": "input",
@@ -62,7 +104,13 @@
           "name": "flush_i",
           "comment": [
             "flush the fifo"
-          ]
+          ],
+          "loc": {
+            "line": 26,
+            "col": 5,
+            "end_line": 26,
+            "end_col": 42
+          }
         },
         {
           "direction": "input",
@@ -70,7 +118,13 @@
           "name": "testmode_i",
           "comment": [
             "test_mode to bypass clock gating"
-          ]
+          ],
+          "loc": {
+            "line": 27,
+            "col": 5,
+            "end_line": 27,
+            "end_col": 45
+          }
         },
         {
           "direction": "output",
@@ -80,7 +134,13 @@
           "comment": [
             "fill pointer",
             "input interface"
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 42
+          }
         },
         {
           "direction": "input",
@@ -88,7 +148,13 @@
           "name": "data_i",
           "comment": [
             "data to push into the fifo"
-          ]
+          ],
+          "loc": {
+            "line": 30,
+            "col": 5,
+            "end_line": 30,
+            "end_col": 41
+          }
         },
         {
           "direction": "input",
@@ -96,7 +162,13 @@
           "name": "valid_i",
           "comment": [
             "input data valid"
-          ]
+          ],
+          "loc": {
+            "line": 31,
+            "col": 5,
+            "end_line": 31,
+            "end_col": 42
+          }
         },
         {
           "direction": "output",
@@ -105,7 +177,13 @@
           "comment": [
             "fifo is not full",
             "output interface"
-          ]
+          ],
+          "loc": {
+            "line": 32,
+            "col": 5,
+            "end_line": 32,
+            "end_col": 42
+          }
         },
         {
           "direction": "output",
@@ -113,7 +191,13 @@
           "name": "data_o",
           "comment": [
             "output data"
-          ]
+          ],
+          "loc": {
+            "line": 34,
+            "col": 5,
+            "end_line": 34,
+            "end_col": 41
+          }
         },
         {
           "direction": "output",
@@ -121,7 +205,13 @@
           "name": "valid_o",
           "comment": [
             "fifo is not empty"
-          ]
+          ],
+          "loc": {
+            "line": 35,
+            "col": 5,
+            "end_line": 35,
+            "end_col": 42
+          }
         },
         {
           "direction": "input",
@@ -129,7 +219,13 @@
           "name": "ready_i",
           "comment": [
             "pop head from fifo"
-          ]
+          ],
+          "loc": {
+            "line": 36,
+            "col": 5,
+            "end_line": 36,
+            "end_col": 42
+          }
         }
       ],
       "insts": [
@@ -139,51 +235,129 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 53,
+                "col": 9,
+                "end_line": 53,
+                "end_col": 15
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_ni"
+              "con": "rst_ni",
+              "loc": {
+                "line": 54,
+                "col": 9,
+                "end_line": 54,
+                "end_col": 16
+              }
             },
             {
               "port": "flush_i",
-              "con": "flush_i"
+              "con": "flush_i",
+              "loc": {
+                "line": 55,
+                "col": 9,
+                "end_line": 55,
+                "end_col": 17
+              }
             },
             {
               "port": "testmode_i",
-              "con": "testmode_i"
+              "con": "testmode_i",
+              "loc": {
+                "line": 56,
+                "col": 9,
+                "end_line": 56,
+                "end_col": 20
+              }
             },
             {
               "port": "full_o",
-              "con": "full"
+              "con": "full",
+              "loc": {
+                "line": 57,
+                "col": 9,
+                "end_line": 57,
+                "end_col": 27
+              }
             },
             {
               "port": "empty_o",
-              "con": "empty"
+              "con": "empty",
+              "loc": {
+                "line": 58,
+                "col": 9,
+                "end_line": 58,
+                "end_col": 28
+              }
             },
             {
               "port": "usage_o",
-              "con": "usage_o"
+              "con": "usage_o",
+              "loc": {
+                "line": 59,
+                "col": 9,
+                "end_line": 59,
+                "end_col": 17
+              }
             },
             {
               "port": "data_i",
-              "con": "data_i"
+              "con": "data_i",
+              "loc": {
+                "line": 60,
+                "col": 9,
+                "end_line": 60,
+                "end_col": 16
+              }
             },
             {
               "port": "push_i",
-              "con": "push"
+              "con": "push",
+              "loc": {
+                "line": 61,
+                "col": 9,
+                "end_line": 61,
+                "end_col": 27
+              }
             },
             {
               "port": "data_o",
-              "con": "data_o"
+              "con": "data_o",
+              "loc": {
+                "line": 62,
+                "col": 9,
+                "end_line": 62,
+                "end_col": 16
+              }
             },
             {
               "port": "pop_i",
-              "con": "pop"
+              "con": "pop",
+              "loc": {
+                "line": 63,
+                "col": 9,
+                "end_line": 63,
+                "end_col": 26
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 47,
+            "col": 5,
+            "end_line": 64,
+            "end_col": 7
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 13,
+        "col": 1,
+        "end_line": 66,
+        "end_col": 10
+      }
     }
   ]
 }
