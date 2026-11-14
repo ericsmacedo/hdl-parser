@@ -1,0 +1,2808 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_top.sv",
+  "modules": [
+    {
+      "name": "ibex_top",
+      "params": [
+        {
+          "ptype": "ibex_pkg::base_isa_e",
+          "name": "BaseIsa",
+          "default": "ibex_pkg::BaseIsaRV32I"
+        },
+        {
+          "ptype": "bit",
+          "name": "PMPEnable",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "PMPGranularity",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "PMPNumRegions",
+          "default": "4"
+        },
+        {
+          "ptype": "int",
+          "name": "MHPMCounterNum",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "MHPMCounterWidth",
+          "default": "40"
+        },
+        {
+          "ptype": "ibex_pkg::pmp_cfg_t",
+          "name": "PMPRstCfg",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "ibex_pkg::PmpCfgRst"
+        },
+        {
+          "ptype": "logic",
+          "name": "PMPRstAddr",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "ibex_pkg::PmpAddrRst"
+        },
+        {
+          "ptype": "ibex_pkg::pmp_mseccfg_t",
+          "name": "PMPRstMsecCfg",
+          "default": "ibex_pkg::PmpMseccfgRst"
+        },
+        {
+          "ptype": "int",
+          "name": "CheriotRevBitmapAddrWidth",
+          "default": "32'd11"
+        },
+        {
+          "ptype": "int",
+          "name": "CheriotRevBitmapBaseAddr",
+          "default": "32'h0"
+        },
+        {
+          "ptype": "bit",
+          "name": "RV32E",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "rv32m_e",
+          "name": "RV32M",
+          "default": "RV32MFast"
+        },
+        {
+          "ptype": "rv32b_e",
+          "name": "RV32B",
+          "default": "RV32BNone"
+        },
+        {
+          "ptype": "rv32zc_e",
+          "name": "RV32ZC",
+          "default": "RV32ZcaZcbZcmp"
+        },
+        {
+          "ptype": "regfile_e",
+          "name": "RegFile",
+          "default": "RegFileFF"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICache",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchPredictor",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "DbgTriggerEn",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "DbgHwBreakNum",
+          "default": "1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SecureIbex",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "LockstepOffset",
+          "default": "1"
+        },
+        {
+          "ptype": "bit",
+          "name": "MemECC",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "int",
+          "name": "MemDataWidth",
+          "default": "MemECC ? 32 + 7 : 32"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheScramble",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "ICacheScrNumPrinceRoundsHalf",
+          "default": "2"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheTweakInfection",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "lfsr_seed_t",
+          "name": "RndCnstLfsrSeed",
+          "default": "RndCnstLfsrSeedDefault"
+        },
+        {
+          "ptype": "lfsr_perm_t",
+          "name": "RndCnstLfsrPerm",
+          "default": "RndCnstLfsrPermDefault"
+        },
+        {
+          "ptype": "int",
+          "name": "DmBaseAddr",
+          "default": "32'h1A110000"
+        },
+        {
+          "ptype": "int",
+          "name": "DmAddrMask",
+          "default": "32'h00000FFF"
+        },
+        {
+          "ptype": "int",
+          "name": "DmHaltAddr",
+          "default": "32'h1A110800"
+        },
+        {
+          "ptype": "int",
+          "name": "DmExceptionAddr",
+          "default": "32'h1A110808",
+          "comment": [
+            "Default seed and nonce for scrambling"
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "RndCnstIbexKey",
+          "dim": "[SCRAMBLE_KEY_W-1:0]",
+          "default": "RndCnstIbexKeyDefault"
+        },
+        {
+          "ptype": "logic",
+          "name": "RndCnstIbexNonce",
+          "dim": "[SCRAMBLE_NONCE_W-1:0]",
+          "default": "RndCnstIbexNonceDefault",
+          "comment": [
+            "mvendorid: encoding of manufacturer/provider",
+            "0 indicates this field is not implemented. Ibex implementers may wish to set their",
+            "own JEDEC ID here."
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMvendorId",
+          "dim": "[31:0]",
+          "default": "32'b0",
+          "comment": [
+            "mimpid: encoding of processor implementation version",
+            "0 indicates this field is not implemented. Ibex implementers may wish to indicate an",
+            "RTL/netlist version here using their own unique encoding (e.g. 32 bits of the git hash of the",
+            "implemented commit)."
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMimpId",
+          "dim": "[31:0]",
+          "default": "32'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "enable all clock gates for testing"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_en_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "prim_ram_1p_pkg::ram_1p_cfg_req_t",
+          "name": "ram_cfg_icache_tag_i",
+          "dim": "[ibex_pkg::IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "prim_ram_1p_pkg::ram_1p_cfg_rsp_t",
+          "name": "ram_cfg_icache_tag_o",
+          "dim": "[ibex_pkg::IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "prim_ram_1p_pkg::ram_1p_cfg_req_t",
+          "name": "ram_cfg_icache_data_i",
+          "dim": "[ibex_pkg::IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "prim_ram_1p_pkg::ram_1p_cfg_rsp_t",
+          "name": "ram_cfg_icache_data_o",
+          "dim": "[ibex_pkg::IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "cheriot_enable_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "hart_id_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "boot_addr_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_heap_base_addr_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Instruction memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_err_i",
+          "comment": [
+            "Data memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_be_o",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_intg_o",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_tag_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_tag_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_err_i",
+          "comment": [
+            "TRVK revocation bitmap read interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "trvk_revbm_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "trvk_revbm_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rdata_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_rdata_intg_i",
+          "dim": "[6:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trvk_revbm_err_i",
+          "comment": [
+            "Interrupt inputs"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_software_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_timer_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_external_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_fast_i",
+          "dim": "[14:0]",
+          "comment": [
+            "non-maskeable interrupt"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_nm_i",
+          "comment": [
+            "Scrambling Interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_key_valid_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_key_i",
+          "dim": "[SCRAMBLE_KEY_W-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scramble_nonce_i",
+          "dim": "[SCRAMBLE_NONCE_W-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "scramble_req_o",
+          "comment": [
+            "Debug Interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "crash_dump_t",
+          "name": "crash_dump_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "double_fault_seen_o",
+          "comment": [
+            "RISC-V Formal Interface",
+            "Does not comply with the coding standards of _i/_o suffixes, but follows",
+            "the convention of RISC-V Formal Interface Specification."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_order",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_insn",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_trap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_halt",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_intr",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mode",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ixl",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rs1_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rs2_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rd_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_addr",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_is_cap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_mem_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_mem_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_pre_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_post_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi_int",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_req",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_mode",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_rf_wr_suppress",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mcycle",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcounters",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcountersh",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_ic_scr_key_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_irq_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn",
+          "dim": "[15:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_last",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "comment": [
+            "CPU Control Signals"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "fetch_enable_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "mcounteren_writable_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_minor_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_internal_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_bus_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "core_sleep_o",
+          "comment": [
+            "DFT bypass controls"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "scan_rst_ni",
+          "comment": [
+            "Lockstep signals"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "ibex_mubi_t",
+          "name": "lockstep_cmp_en_o",
+          "comment": [
+            "Shadow core data interface outputs"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_be_shadow_o",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_addr_shadow_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_shadow_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_intg_shadow_o",
+          "dim": "[6:0]",
+          "comment": [
+            "Shadow core instruction interface outputs"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_shadow_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_shadow_o",
+          "dim": "[31:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "bit",
+          "name": "Lockstep",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "Lockstep"
+        },
+        {
+          "ptype": "bit",
+          "name": "DummyInstructions",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "RegFileECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "RegFileLockstepECC",
+          "default": "Lockstep"
+        },
+        {
+          "ptype": "int",
+          "name": "RegFileDataWidth",
+          "default": "32"
+        },
+        {
+          "ptype": "int",
+          "name": "RegFileDataEccWidth",
+          "default": "32 + 7"
+        },
+        {
+          "ptype": "int",
+          "name": "RegFileCapEccWidth",
+          "default": "REGCAP_W + 7"
+        },
+        {
+          "ptype": "int",
+          "name": "BusSizeECC",
+          "default": "ICacheECC ? (BUS_SIZE + IC_DATA_ECC_SIZE) :\n                                                           BUS_SIZE"
+        },
+        {
+          "ptype": "int",
+          "name": "LineSizeECC",
+          "default": "BusSizeECC * IC_LINE_BEATS"
+        },
+        {
+          "ptype": "int",
+          "name": "TagSizeECC",
+          "default": "ICacheECC ? (IC_TAG_SIZE + IC_TAG_ECC_SIZE) :\n                                                           IC_TAG_SIZE"
+        },
+        {
+          "ptype": "int",
+          "name": "NumAddrScrRounds",
+          "default": "ICacheScramble ? 2 : 0"
+        },
+        {
+          "ptype": "int",
+          "name": "MaxOutstandingDSideAccesses",
+          "default": "2"
+        },
+        {
+          "ptype": "int",
+          "name": "NumBufferBits",
+          "default": "$bits({\n      hart_id_i,\n      boot_addr_i,\n      instr_req_o,\n      instr_gnt_i,\n      instr_rvalid_i,\n      instr_addr_o,\n      instr_rdata_core,\n      instr_err_i,\n      trvk_req,\n      trvk_gnt,\n      trvk_rvalid,\n      trvk_we,\n      trvk_be,\n      trvk_addr,\n      trvk_wdata,\n      trvk_wtag,\n      data_rdata_core,\n      trvk_rtag,\n      trvk_err,\n      rf_raddr_a,\n      rf_raddr_b,\n      rf_waddr_wb,\n      rf_we_wb,\n      rf_wdata_wb,\n      rf_rdata_a,\n      rf_rdata_b,\n      ic_tag_req,\n      ic_tag_write,\n      ic_tag_addr,\n      ic_tag_wdata,\n      ic_data_req,\n      ic_data_write,\n      ic_data_addr,\n      ic_data_wdata,\n      scramble_key_valid_i,\n      ic_scr_key_req,\n      irq_software_i,\n      irq_timer_i,\n      irq_external_i,\n      irq_fast_i,\n      irq_nm_i,\n      irq_pending,\n      debug_req_i,\n      crash_dump_o,\n      double_fault_seen_o,\n      fetch_enable_i,\n      mcounteren_writable_i,\n      core_busy_d,\n      cheriot_enable_i,\n      rf_wcap,\n      rf_rcap_a,\n      rf_rcap_b\n    })"
+        },
+        {
+          "ptype": "int",
+          "name": "DoubleFaultSeenLatency",
+          "default": "3",
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_prim_core_busy_flop",
+          "module": "prim_flop",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "d_i",
+              "con": "core_busy_d"
+            },
+            {
+              "port": "q_o",
+              "con": "core_busy_q"
+            }
+          ]
+        },
+        {
+          "name": "core_clock_gate_i",
+          "module": "prim_clock_gating",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "en_i",
+              "con": "clock_en"
+            },
+            {
+              "port": "test_en_i",
+              "con": "test_en_i"
+            },
+            {
+              "port": "clk_o",
+              "con": "clk"
+            }
+          ]
+        },
+        {
+          "name": "u_fetch_enable_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "fetch_enable_i"
+            },
+            {
+              "port": "out_o",
+              "con": "fetch_enable_buf"
+            }
+          ]
+        },
+        {
+          "name": "u_mcounteren_writable_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "mcounteren_writable_i"
+            },
+            {
+              "port": "out_o",
+              "con": "mcounteren_writable_buf"
+            }
+          ]
+        },
+        {
+          "name": "u_ibex_core",
+          "module": "ibex_core",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "hart_id_i",
+              "con": "hart_id_i"
+            },
+            {
+              "port": "boot_addr_i",
+              "con": "boot_addr_i"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "instr_req_o",
+              "con": "instr_req_o"
+            },
+            {
+              "port": "instr_gnt_i",
+              "con": "instr_gnt_i"
+            },
+            {
+              "port": "instr_rvalid_i",
+              "con": "instr_rvalid_i"
+            },
+            {
+              "port": "instr_addr_o",
+              "con": "instr_addr_o"
+            },
+            {
+              "port": "instr_rdata_i",
+              "con": "instr_rdata_core"
+            },
+            {
+              "port": "instr_err_i",
+              "con": "instr_err_i"
+            },
+            {
+              "port": "data_req_o",
+              "con": "trvk_req"
+            },
+            {
+              "port": "data_gnt_i",
+              "con": "trvk_gnt"
+            },
+            {
+              "port": "data_rvalid_i",
+              "con": "trvk_rvalid"
+            },
+            {
+              "port": "data_we_o",
+              "con": "trvk_we"
+            },
+            {
+              "port": "data_be_o",
+              "con": "trvk_be"
+            },
+            {
+              "port": "data_addr_o",
+              "con": "trvk_addr"
+            },
+            {
+              "port": "data_wdata_o",
+              "con": "data_wdata_core"
+            },
+            {
+              "port": "data_tag_o",
+              "con": "trvk_wtag"
+            },
+            {
+              "port": "data_rdata_i",
+              "con": "data_rdata_core"
+            },
+            {
+              "port": "data_tag_i",
+              "con": "trvk_rtag"
+            },
+            {
+              "port": "data_err_i",
+              "con": "trvk_err"
+            },
+            {
+              "port": "dummy_instr_id_o",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "dummy_instr_wb_o",
+              "con": "dummy_instr_wb"
+            },
+            {
+              "port": "rf_raddr_a_o",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rf_raddr_b_o",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rf_waddr_wb_o",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "rf_we_wb_o",
+              "con": "rf_we_wb"
+            },
+            {
+              "port": "rf_wdata_wb_ecc_o",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "rf_rdata_a_ecc_i",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rf_rdata_b_ecc_i",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rf_wcap_ecc_wb_o",
+              "con": "rf_wcap"
+            },
+            {
+              "port": "rf_rcap_a_ecc_i",
+              "con": "rf_rcap_a"
+            },
+            {
+              "port": "rf_rcap_b_ecc_i",
+              "con": "rf_rcap_b"
+            },
+            {
+              "port": "ic_tag_req_o",
+              "con": "ic_tag_req"
+            },
+            {
+              "port": "ic_tag_write_o",
+              "con": "ic_tag_write"
+            },
+            {
+              "port": "ic_tag_addr_o",
+              "con": "ic_tag_addr"
+            },
+            {
+              "port": "ic_tag_wdata_o",
+              "con": "ic_tag_wdata"
+            },
+            {
+              "port": "ic_tag_rdata_i",
+              "con": "ic_tag_rdata"
+            },
+            {
+              "port": "ic_data_req_o",
+              "con": "ic_data_req"
+            },
+            {
+              "port": "ic_data_write_o",
+              "con": "ic_data_write"
+            },
+            {
+              "port": "ic_data_addr_o",
+              "con": "ic_data_addr"
+            },
+            {
+              "port": "ic_data_wdata_o",
+              "con": "ic_data_wdata"
+            },
+            {
+              "port": "ic_data_rdata_i",
+              "con": "ic_data_rdata"
+            },
+            {
+              "port": "ic_scr_key_valid_i",
+              "con": "scramble_key_valid_q"
+            },
+            {
+              "port": "ic_scr_key_req_o",
+              "con": "ic_scr_key_req"
+            },
+            {
+              "port": "irq_software_i",
+              "con": "irq_software_i"
+            },
+            {
+              "port": "irq_timer_i",
+              "con": "irq_timer_i"
+            },
+            {
+              "port": "irq_external_i",
+              "con": "irq_external_i"
+            },
+            {
+              "port": "irq_fast_i",
+              "con": "irq_fast_i"
+            },
+            {
+              "port": "irq_nm_i",
+              "con": "irq_nm_i"
+            },
+            {
+              "port": "irq_pending_o",
+              "con": "irq_pending"
+            },
+            {
+              "port": "debug_req_i",
+              "con": "debug_req_i"
+            },
+            {
+              "port": "crash_dump_o",
+              "con": "crash_dump_o"
+            },
+            {
+              "port": "double_fault_seen_o",
+              "con": "double_fault_seen_o"
+            },
+            {
+              "port": "rvfi_valid",
+              "con": "rvfi_valid",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_order",
+              "con": "rvfi_order",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_insn",
+              "con": "rvfi_insn",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_trap",
+              "con": "rvfi_trap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_halt",
+              "con": "rvfi_halt",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_intr",
+              "con": "rvfi_intr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mode",
+              "con": "rvfi_mode",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ixl",
+              "con": "rvfi_ixl",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs1_addr",
+              "con": "rvfi_rs1_addr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs2_addr",
+              "con": "rvfi_rs2_addr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs3_addr",
+              "con": "rvfi_rs3_addr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs1_rdata",
+              "con": "rvfi_rs1_rdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs1_rcap",
+              "con": "rvfi_rs1_rcap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs2_rdata",
+              "con": "rvfi_rs2_rdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs2_rcap",
+              "con": "rvfi_rs2_rcap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rs3_rdata",
+              "con": "rvfi_rs3_rdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rd_addr",
+              "con": "rvfi_rd_addr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rd_wdata",
+              "con": "rvfi_rd_wdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_rd_wcap",
+              "con": "rvfi_rd_wcap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_pc_rdata",
+              "con": "rvfi_pc_rdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_pc_wdata",
+              "con": "rvfi_pc_wdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_addr",
+              "con": "rvfi_mem_addr",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_rmask",
+              "con": "rvfi_mem_rmask",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_wmask",
+              "con": "rvfi_mem_wmask",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_rdata",
+              "con": "rvfi_mem_rdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_wdata",
+              "con": "rvfi_mem_wdata",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_rcap",
+              "con": "rvfi_mem_rcap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_wcap",
+              "con": "rvfi_mem_wcap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_mem_is_cap",
+              "con": "rvfi_mem_is_cap",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_pre_mip",
+              "con": "rvfi_ext_pre_mip",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_post_mip",
+              "con": "rvfi_ext_post_mip",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_nmi",
+              "con": "rvfi_ext_nmi",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_nmi_int",
+              "con": "rvfi_ext_nmi_int",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_debug_req",
+              "con": "rvfi_ext_debug_req",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_debug_mode",
+              "con": "rvfi_ext_debug_mode",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_rf_wr_suppress",
+              "con": "rvfi_ext_rf_wr_suppress",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_mcycle",
+              "con": "rvfi_ext_mcycle",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_mhpmcounters",
+              "con": "rvfi_ext_mhpmcounters",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_mhpmcountersh",
+              "con": "rvfi_ext_mhpmcountersh",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_ic_scr_key_valid",
+              "con": "rvfi_ext_ic_scr_key_valid",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_irq_valid",
+              "con": "rvfi_ext_irq_valid",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_expanded_insn_valid",
+              "con": "rvfi_ext_expanded_insn_valid",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_expanded_insn",
+              "con": "rvfi_ext_expanded_insn",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "rvfi_ext_expanded_insn_last",
+              "con": "rvfi_ext_expanded_insn_last",
+              "ifdefs": [
+                "RVFI"
+              ]
+            },
+            {
+              "port": "fetch_enable_i",
+              "con": "fetch_enable_buf"
+            },
+            {
+              "port": "mcounteren_writable_i",
+              "con": "mcounteren_writable_buf"
+            },
+            {
+              "port": "alert_minor_o",
+              "con": "core_alert_minor"
+            },
+            {
+              "port": "alert_major_internal_o",
+              "con": "core_alert_major_internal"
+            },
+            {
+              "port": "alert_major_bus_o",
+              "con": "core_alert_major_bus"
+            },
+            {
+              "port": "core_busy_o",
+              "con": "core_busy_d"
+            }
+          ]
+        },
+        {
+          "name": "register_file_i",
+          "module": "ibex_register_file_ff",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_en_i",
+              "con": "test_en_i"
+            },
+            {
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "dummy_instr_wb_i",
+              "con": "dummy_instr_wb"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "raddr_a_i",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rdata_a_o",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rcap_a_o",
+              "con": "rf_rcap_a"
+            },
+            {
+              "port": "raddr_b_i",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rdata_b_o",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rcap_b_o",
+              "con": "rf_rcap_b"
+            },
+            {
+              "port": "waddr_a_i",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "wdata_a_i",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "wcap_a_i",
+              "con": "rf_wcap"
+            },
+            {
+              "port": "we_a_i",
+              "con": "rf_we_wb"
+            }
+          ]
+        },
+        {
+          "name": "register_file_i",
+          "module": "ibex_register_file_fpga",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_en_i",
+              "con": "test_en_i"
+            },
+            {
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "dummy_instr_wb_i",
+              "con": "dummy_instr_wb"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "raddr_a_i",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rdata_a_o",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rcap_a_o",
+              "con": "rf_rcap_a"
+            },
+            {
+              "port": "raddr_b_i",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rdata_b_o",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rcap_b_o",
+              "con": "rf_rcap_b"
+            },
+            {
+              "port": "waddr_a_i",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "wdata_a_i",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "wcap_a_i",
+              "con": "rf_wcap"
+            },
+            {
+              "port": "we_a_i",
+              "con": "rf_we_wb"
+            }
+          ]
+        },
+        {
+          "name": "register_file_i",
+          "module": "ibex_register_file_latch",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_en_i",
+              "con": "test_en_i"
+            },
+            {
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "dummy_instr_wb_i",
+              "con": "dummy_instr_wb"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "raddr_a_i",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rdata_a_o",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rcap_a_o",
+              "con": "rf_rcap_a"
+            },
+            {
+              "port": "raddr_b_i",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rdata_b_o",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rcap_b_o",
+              "con": "rf_rcap_b"
+            },
+            {
+              "port": "waddr_a_i",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "wdata_a_i",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "wcap_a_i",
+              "con": "rf_wcap"
+            },
+            {
+              "port": "we_a_i",
+              "con": "rf_we_wb"
+            }
+          ]
+        },
+        {
+          "name": "tag_bank",
+          "module": "prim_ram_1p_scr",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "key_valid_i",
+              "con": "scramble_key_valid_q"
+            },
+            {
+              "port": "key_i",
+              "con": "scramble_key_q"
+            },
+            {
+              "port": "nonce_i",
+              "con": "scramble_nonce_q"
+            },
+            {
+              "port": "req_i",
+              "con": "ic_tag_req[way]"
+            },
+            {
+              "port": "gnt_o"
+            },
+            {
+              "port": "write_i",
+              "con": "ic_tag_write"
+            },
+            {
+              "port": "addr_i",
+              "con": "ic_tag_addr"
+            },
+            {
+              "port": "wdata_i",
+              "con": "ic_tag_wdata"
+            },
+            {
+              "port": "wmask_i",
+              "con": "{TagSizeECC{1'b1}}"
+            },
+            {
+              "port": "intg_error_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "rdata_o",
+              "con": "ic_tag_rdata[way]"
+            },
+            {
+              "port": "rvalid_o"
+            },
+            {
+              "port": "raddr_o"
+            },
+            {
+              "port": "rerror_o"
+            },
+            {
+              "port": "cfg_i",
+              "con": "ram_cfg_icache_tag_i[way]"
+            },
+            {
+              "port": "cfg_o",
+              "con": "ram_cfg_icache_tag_o[way]"
+            },
+            {
+              "port": "wr_collision_o"
+            },
+            {
+              "port": "write_pending_o"
+            },
+            {
+              "port": "alert_o",
+              "con": "icache_tag_alert[way]"
+            }
+          ]
+        },
+        {
+          "name": "data_bank",
+          "module": "prim_ram_1p_scr",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "key_valid_i",
+              "con": "scramble_key_valid_q"
+            },
+            {
+              "port": "key_i",
+              "con": "scramble_key_q"
+            },
+            {
+              "port": "nonce_i",
+              "con": "scramble_nonce_q"
+            },
+            {
+              "port": "req_i",
+              "con": "ic_data_req[way]"
+            },
+            {
+              "port": "gnt_o"
+            },
+            {
+              "port": "write_i",
+              "con": "ic_data_write"
+            },
+            {
+              "port": "addr_i",
+              "con": "ic_data_addr"
+            },
+            {
+              "port": "wdata_i",
+              "con": "ic_data_wdata"
+            },
+            {
+              "port": "wmask_i",
+              "con": "{LineSizeECC{1'b1}}"
+            },
+            {
+              "port": "intg_error_i",
+              "con": "1'b0"
+            },
+            {
+              "port": "rdata_o",
+              "con": "ic_data_rdata[way]"
+            },
+            {
+              "port": "rvalid_o"
+            },
+            {
+              "port": "raddr_o"
+            },
+            {
+              "port": "rerror_o"
+            },
+            {
+              "port": "cfg_i",
+              "con": "ram_cfg_icache_data_i[way]"
+            },
+            {
+              "port": "cfg_o",
+              "con": "ram_cfg_icache_data_o[way]"
+            },
+            {
+              "port": "wr_collision_o"
+            },
+            {
+              "port": "write_pending_o"
+            },
+            {
+              "port": "alert_o",
+              "con": "icache_data_alert[way]"
+            }
+          ]
+        },
+        {
+          "name": "tag_bank",
+          "module": "prim_ram_1p",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "req_i",
+              "con": "ic_tag_req[way]"
+            },
+            {
+              "port": "write_i",
+              "con": "ic_tag_write"
+            },
+            {
+              "port": "addr_i",
+              "con": "ic_tag_addr"
+            },
+            {
+              "port": "wdata_i",
+              "con": "ic_tag_wdata"
+            },
+            {
+              "port": "wmask_i",
+              "con": "{TagSizeECC{1'b1}}"
+            },
+            {
+              "port": "rdata_o",
+              "con": "ic_tag_rdata[way]"
+            },
+            {
+              "port": "cfg_i",
+              "con": "ram_cfg_icache_tag_i[way]"
+            },
+            {
+              "port": "cfg_o",
+              "con": "ram_cfg_icache_tag_o[way]"
+            }
+          ]
+        },
+        {
+          "name": "data_bank",
+          "module": "prim_ram_1p",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "req_i",
+              "con": "ic_data_req[way]"
+            },
+            {
+              "port": "write_i",
+              "con": "ic_data_write"
+            },
+            {
+              "port": "addr_i",
+              "con": "ic_data_addr"
+            },
+            {
+              "port": "wdata_i",
+              "con": "ic_data_wdata"
+            },
+            {
+              "port": "wmask_i",
+              "con": "{LineSizeECC{1'b1}}"
+            },
+            {
+              "port": "rdata_o",
+              "con": "ic_data_rdata[way]"
+            },
+            {
+              "port": "cfg_i",
+              "con": "ram_cfg_icache_data_i[way]"
+            },
+            {
+              "port": "cfg_o",
+              "con": "ram_cfg_icache_data_o[way]"
+            }
+          ]
+        },
+        {
+          "name": "u_prim_buf_data_wdata_intg",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "data_wdata_core[MemDataWidth-1:32]"
+            },
+            {
+              "port": "out_o",
+              "con": "trvk_wdata_intg"
+            }
+          ]
+        },
+        {
+          "name": "u_signals_prim_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "buf_in"
+            },
+            {
+              "port": "out_o",
+              "con": "buf_out"
+            }
+          ]
+        },
+        {
+          "name": "u_tag_prim_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "ic_tag_rdata[k]"
+            },
+            {
+              "port": "out_o",
+              "con": "ic_tag_rdata_local[k]"
+            }
+          ]
+        },
+        {
+          "name": "u_data_prim_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "ic_data_rdata[k]"
+            },
+            {
+              "port": "out_o",
+              "con": "ic_data_rdata_local[k]"
+            }
+          ]
+        },
+        {
+          "name": "u_ibex_lockstep",
+          "module": "ibex_lockstep",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "hart_id_i",
+              "con": "hart_id_local"
+            },
+            {
+              "port": "boot_addr_i",
+              "con": "boot_addr_local"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_local"
+            },
+            {
+              "port": "instr_req_i",
+              "con": "instr_req_local"
+            },
+            {
+              "port": "instr_gnt_i",
+              "con": "instr_gnt_local"
+            },
+            {
+              "port": "instr_rvalid_i",
+              "con": "instr_rvalid_local"
+            },
+            {
+              "port": "instr_addr_i",
+              "con": "instr_addr_local"
+            },
+            {
+              "port": "instr_rdata_i",
+              "con": "instr_rdata_local"
+            },
+            {
+              "port": "instr_err_i",
+              "con": "instr_err_local"
+            },
+            {
+              "port": "data_req_i",
+              "con": "data_req_local"
+            },
+            {
+              "port": "data_gnt_i",
+              "con": "data_gnt_local"
+            },
+            {
+              "port": "data_rvalid_i",
+              "con": "data_rvalid_local"
+            },
+            {
+              "port": "data_we_i",
+              "con": "data_we_local"
+            },
+            {
+              "port": "data_be_i",
+              "con": "data_be_local"
+            },
+            {
+              "port": "data_addr_i",
+              "con": "data_addr_local"
+            },
+            {
+              "port": "data_wdata_i",
+              "con": "data_wdata_local"
+            },
+            {
+              "port": "data_tag_i",
+              "con": "data_tag_local"
+            },
+            {
+              "port": "data_rdata_i",
+              "con": "data_rdata_local"
+            },
+            {
+              "port": "data_rdata_tag_i",
+              "con": "data_rdata_tag_local"
+            },
+            {
+              "port": "data_err_i",
+              "con": "data_err_local"
+            },
+            {
+              "port": "rf_raddr_a_i",
+              "con": "rf_raddr_a_local"
+            },
+            {
+              "port": "rf_raddr_b_i",
+              "con": "rf_raddr_b_local"
+            },
+            {
+              "port": "rf_waddr_wb_i",
+              "con": "rf_waddr_wb_local"
+            },
+            {
+              "port": "rf_we_wb_i",
+              "con": "rf_we_wb_local"
+            },
+            {
+              "port": "rf_wdata_wb_i",
+              "con": "rf_wdata_wb_local"
+            },
+            {
+              "port": "rf_rdata_a_i",
+              "con": "rf_rdata_a_local"
+            },
+            {
+              "port": "rf_rdata_b_i",
+              "con": "rf_rdata_b_local"
+            },
+            {
+              "port": "rf_wcap_wb_i",
+              "con": "rf_wcap_local"
+            },
+            {
+              "port": "rf_rcap_a_i",
+              "con": "rf_rcap_a_local"
+            },
+            {
+              "port": "rf_rcap_b_i",
+              "con": "rf_rcap_b_local"
+            },
+            {
+              "port": "ic_tag_req_i",
+              "con": "ic_tag_req_local"
+            },
+            {
+              "port": "ic_tag_write_i",
+              "con": "ic_tag_write_local"
+            },
+            {
+              "port": "ic_tag_addr_i",
+              "con": "ic_tag_addr_local"
+            },
+            {
+              "port": "ic_tag_wdata_i",
+              "con": "ic_tag_wdata_local"
+            },
+            {
+              "port": "ic_tag_rdata_i",
+              "con": "ic_tag_rdata_local"
+            },
+            {
+              "port": "ic_data_req_i",
+              "con": "ic_data_req_local"
+            },
+            {
+              "port": "ic_data_write_i",
+              "con": "ic_data_write_local"
+            },
+            {
+              "port": "ic_data_addr_i",
+              "con": "ic_data_addr_local"
+            },
+            {
+              "port": "ic_data_wdata_i",
+              "con": "ic_data_wdata_local"
+            },
+            {
+              "port": "ic_data_rdata_i",
+              "con": "ic_data_rdata_local"
+            },
+            {
+              "port": "ic_scr_key_valid_i",
+              "con": "scramble_key_valid_local"
+            },
+            {
+              "port": "ic_scr_key_req_i",
+              "con": "ic_scr_key_req_local"
+            },
+            {
+              "port": "irq_software_i",
+              "con": "irq_software_local"
+            },
+            {
+              "port": "irq_timer_i",
+              "con": "irq_timer_local"
+            },
+            {
+              "port": "irq_external_i",
+              "con": "irq_external_local"
+            },
+            {
+              "port": "irq_fast_i",
+              "con": "irq_fast_local"
+            },
+            {
+              "port": "irq_nm_i",
+              "con": "irq_nm_local"
+            },
+            {
+              "port": "irq_pending_i",
+              "con": "irq_pending_local"
+            },
+            {
+              "port": "debug_req_i",
+              "con": "debug_req_local"
+            },
+            {
+              "port": "crash_dump_i",
+              "con": "crash_dump_local"
+            },
+            {
+              "port": "double_fault_seen_i",
+              "con": "double_fault_seen_local"
+            },
+            {
+              "port": "fetch_enable_i",
+              "con": "fetch_enable_local"
+            },
+            {
+              "port": "mcounteren_writable_i",
+              "con": "mcounteren_writable_local"
+            },
+            {
+              "port": "alert_minor_o",
+              "con": "lockstep_alert_minor_local"
+            },
+            {
+              "port": "alert_major_internal_o",
+              "con": "lockstep_alert_major_internal_local"
+            },
+            {
+              "port": "alert_major_bus_o",
+              "con": "lockstep_alert_major_bus_local"
+            },
+            {
+              "port": "core_busy_i",
+              "con": "core_busy_local"
+            },
+            {
+              "port": "test_en_i",
+              "con": "test_en_i"
+            },
+            {
+              "port": "scan_rst_ni",
+              "con": "scan_rst_ni"
+            },
+            {
+              "port": "lockstep_cmp_en_o",
+              "con": "lockstep_cmp_en_o"
+            },
+            {
+              "port": "data_req_shadow_o",
+              "con": "data_req_shadow_o"
+            },
+            {
+              "port": "data_we_shadow_o",
+              "con": "data_we_shadow_o"
+            },
+            {
+              "port": "data_be_shadow_o",
+              "con": "data_be_shadow_o"
+            },
+            {
+              "port": "data_addr_shadow_o",
+              "con": "data_addr_shadow_o"
+            },
+            {
+              "port": "data_wdata_shadow_o",
+              "con": "data_wdata_shadow_o"
+            },
+            {
+              "port": "data_wdata_intg_shadow_o",
+              "con": "data_wdata_intg_shadow_o"
+            },
+            {
+              "port": "instr_req_shadow_o",
+              "con": "instr_req_shadow_o"
+            },
+            {
+              "port": "instr_addr_shadow_o",
+              "con": "instr_addr_shadow_o"
+            }
+          ]
+        },
+        {
+          "name": "u_prim_buf_alert_minor",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "lockstep_alert_minor_local"
+            },
+            {
+              "port": "out_o",
+              "con": "lockstep_alert_minor"
+            }
+          ]
+        },
+        {
+          "name": "u_prim_buf_alert_major_internal",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "lockstep_alert_major_internal_local"
+            },
+            {
+              "port": "out_o",
+              "con": "lockstep_alert_major_internal"
+            }
+          ]
+        },
+        {
+          "name": "u_prim_buf_alert_major_bus",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "lockstep_alert_major_bus_local"
+            },
+            {
+              "port": "out_o",
+              "con": "lockstep_alert_major_bus"
+            }
+          ]
+        },
+        {
+          "name": "i_ibex_trvk",
+          "module": "ibex_trvk",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "heap_base_addr_i",
+              "con": "trvk_heap_base_addr_i"
+            },
+            {
+              "port": "upstream_req_i",
+              "con": "trvk_req"
+            },
+            {
+              "port": "upstream_gnt_o",
+              "con": "trvk_gnt"
+            },
+            {
+              "port": "upstream_rvalid_o",
+              "con": "trvk_rvalid"
+            },
+            {
+              "port": "upstream_we_i",
+              "con": "trvk_we"
+            },
+            {
+              "port": "upstream_be_i",
+              "con": "trvk_be"
+            },
+            {
+              "port": "upstream_addr_i",
+              "con": "trvk_addr"
+            },
+            {
+              "port": "upstream_wdata_i",
+              "con": "trvk_wdata"
+            },
+            {
+              "port": "upstream_wdata_intg_i",
+              "con": "trvk_wdata_intg"
+            },
+            {
+              "port": "upstream_rdata_o",
+              "con": "trvk_rdata"
+            },
+            {
+              "port": "upstream_rdata_intg_o",
+              "con": "trvk_rdata_intg"
+            },
+            {
+              "port": "upstream_err_o",
+              "con": "trvk_err"
+            },
+            {
+              "port": "upstream_tag_i",
+              "con": "trvk_wtag"
+            },
+            {
+              "port": "upstream_tag_o",
+              "con": "trvk_rtag"
+            },
+            {
+              "port": "downstream_req_o",
+              "con": "data_req_o"
+            },
+            {
+              "port": "downstream_gnt_i",
+              "con": "data_gnt_i"
+            },
+            {
+              "port": "downstream_rvalid_i",
+              "con": "data_rvalid_i"
+            },
+            {
+              "port": "downstream_we_o",
+              "con": "data_we_o"
+            },
+            {
+              "port": "downstream_be_o",
+              "con": "data_be_o"
+            },
+            {
+              "port": "downstream_addr_o",
+              "con": "data_addr_o"
+            },
+            {
+              "port": "downstream_wdata_o",
+              "con": "data_wdata_o"
+            },
+            {
+              "port": "downstream_wdata_intg_o",
+              "con": "data_wdata_intg_o"
+            },
+            {
+              "port": "downstream_rdata_i",
+              "con": "data_rdata_i"
+            },
+            {
+              "port": "downstream_rdata_intg_i",
+              "con": "data_rdata_intg_i"
+            },
+            {
+              "port": "downstream_err_i",
+              "con": "data_err_i"
+            },
+            {
+              "port": "downstream_tag_o",
+              "con": "data_tag_o"
+            },
+            {
+              "port": "downstream_tag_i",
+              "con": "data_tag_i"
+            },
+            {
+              "port": "revbm_req_o",
+              "con": "trvk_revbm_req_o"
+            },
+            {
+              "port": "revbm_gnt_i",
+              "con": "trvk_revbm_gnt_i"
+            },
+            {
+              "port": "revbm_rvalid_i",
+              "con": "trvk_revbm_rvalid_i"
+            },
+            {
+              "port": "revbm_addr_o",
+              "con": "trvk_revbm_addr_o"
+            },
+            {
+              "port": "revbm_rdata_i",
+              "con": "trvk_revbm_rdata_i"
+            },
+            {
+              "port": "revbm_rdata_intg_i",
+              "con": "trvk_revbm_rdata_intg_i"
+            },
+            {
+              "port": "revbm_err_i",
+              "con": "trvk_revbm_err_i"
+            },
+            {
+              "port": "revbm_data_intg_error_o",
+              "con": "trvk_revbm_data_intg_error"
+            },
+            {
+              "port": "revbm_device_error_o",
+              "con": "trvk_revbm_device_error"
+            }
+          ]
+        },
+        {
+          "name": "u_data_intg_dec",
+          "module": "prim_secded_inv_39_32_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "data_rdata_core",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "data_o",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "syndrome_o",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "err_o",
+              "con": "data_ecc_err",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ]
+        },
+        {
+          "name": "u_instr_intg_dec",
+          "module": "prim_secded_inv_39_32_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "instr_rdata_core",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "data_o",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "syndrome_o",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            },
+            {
+              "port": "err_o",
+              "con": "instr_ecc_err",
+              "ifdefs": [
+                "INC_ASSERT"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ]
+        }
+      ]
+    }
+  ]
+}

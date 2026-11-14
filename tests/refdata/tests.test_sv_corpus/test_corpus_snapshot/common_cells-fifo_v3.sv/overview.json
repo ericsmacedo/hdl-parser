@@ -1,0 +1,148 @@
+{
+  "path": "$PRJ/tests/corpus/sv/common_cells/fifo_v3.sv",
+  "modules": [
+    {
+      "name": "fifo_v3",
+      "params": [
+        {
+          "ptype": "bit",
+          "name": "FALL_THROUGH",
+          "default": "1'b0",
+          "comment": [
+            "fifo is in fall-through mode"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "DATA_WIDTH",
+          "default": "32",
+          "comment": [
+            "default data width if the fifo is of type logic"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "DEPTH",
+          "default": "8",
+          "comment": [
+            "depth can be arbitrary from 0 to 2**32"
+          ]
+        },
+        {
+          "ptype": "type",
+          "name": "dtype",
+          "default": "logic [DATA_WIDTH-1:0]",
+          "comment": [
+            "DO NOT OVERWRITE THIS PARAMETER"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "ADDR_DEPTH",
+          "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Asynchronous reset active low"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "flush_i",
+          "comment": [
+            "flush the queue"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "testmode_i",
+          "comment": [
+            "test_mode to bypass clock gating",
+            "status flags"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "full_o",
+          "comment": [
+            "queue is full"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "empty_o",
+          "comment": [
+            "queue is empty"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "usage_o",
+          "dim": "[ADDR_DEPTH-1:0]",
+          "comment": [
+            "fill pointer",
+            "as long as the queue is not full we can push new data"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "dtype",
+          "name": "data_i",
+          "comment": [
+            "data to push into the queue"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "push_i",
+          "comment": [
+            "data is valid and can be pushed to the queue",
+            "as long as the queue is not empty we can pop new elements"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "dtype",
+          "name": "data_o",
+          "comment": [
+            "output data"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pop_i",
+          "comment": [
+            "pop head from queue"
+          ]
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "FifoDepth",
+          "default": "(DEPTH > 0) ? DEPTH : 1"
+        }
+      ]
+    }
+  ]
+}

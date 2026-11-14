@@ -1,0 +1,144 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_dummy_instr.sv",
+  "modules": [
+    {
+      "name": "ibex_dummy_instr",
+      "params": [
+        {
+          "ptype": "lfsr_seed_t",
+          "name": "RndCnstLfsrSeed",
+          "default": "RndCnstLfsrSeedDefault"
+        },
+        {
+          "ptype": "lfsr_perm_t",
+          "name": "RndCnstLfsrPerm",
+          "default": "RndCnstLfsrPermDefault"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Interface to CSRs"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_en_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_mask_i",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_seed_en_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_seed_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_16regs_i",
+          "comment": [
+            "Interface to IF stage"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "fetch_valid_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "id_in_ready_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "insert_hold_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "insert_dummy_instr_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dummy_instr_data_o",
+          "dim": "[31:0]"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "TIMEOUT_CNT_W",
+          "default": "5"
+        },
+        {
+          "ptype": "int",
+          "name": "OP_W",
+          "default": "5"
+        },
+        {
+          "ptype": "int",
+          "name": "LFSR_OUT_W",
+          "default": "$bits(lfsr_data_t)"
+        }
+      ],
+      "insts": [
+        {
+          "name": "lfsr_i",
+          "module": "prim_lfsr",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "seed_en_i",
+              "con": "dummy_instr_seed_en_i"
+            },
+            {
+              "port": "seed_i",
+              "con": "dummy_instr_seed_d"
+            },
+            {
+              "port": "lfsr_en_i",
+              "con": "lfsr_en"
+            },
+            {
+              "port": "entropy_i",
+              "con": "'0"
+            },
+            {
+              "port": "state_o",
+              "con": "lfsr_state"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

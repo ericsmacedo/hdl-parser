@@ -1,0 +1,686 @@
+{
+  "path": "$PRJ/tests/corpus/sv/axi/axi_demux.sv",
+  "modules": [
+    {
+      "name": "axi_demux",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "AxiIdWidth",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "bit",
+          "name": "AtopSupport",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "type",
+          "name": "aw_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "w_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "b_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "ar_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "r_chan_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "axi_req_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "type",
+          "name": "axi_resp_t",
+          "default": "logic"
+        },
+        {
+          "ptype": "int",
+          "name": "NoMstPorts",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "MaxTrans",
+          "default": "32'd8"
+        },
+        {
+          "ptype": "int",
+          "name": "AxiLookBits",
+          "default": "32'd3"
+        },
+        {
+          "ptype": "bit",
+          "name": "UniqueIds",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SpillAw",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SpillW",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SpillB",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SpillAr",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SpillR",
+          "default": "1'b0",
+          "comment": [
+            "Dependent parameters, DO NOT OVERRIDE!"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "SelectWidth",
+          "default": "(NoMstPorts > 32'd1) ? $clog2(NoMstPorts) : 32'd1"
+        },
+        {
+          "ptype": "type",
+          "name": "select_t",
+          "default": "logic [SelectWidth-1:0]"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_i",
+          "comment": [
+            "Slave Port"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "axi_req_t",
+          "name": "slv_req_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "select_t",
+          "name": "slv_aw_select_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "select_t",
+          "name": "slv_ar_select_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "axi_resp_t",
+          "name": "slv_resp_o",
+          "comment": [
+            "Master Ports"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "axi_req_t",
+          "name": "mst_reqs_o",
+          "dim": "[NoMstPorts-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "axi_resp_t",
+          "name": "mst_resps_i",
+          "dim": "[NoMstPorts-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_aw_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.aw_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_aw_ready_chan"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.aw"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_aw_valid_chan"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_resp_cut.aw_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_req_cut.aw"
+            }
+          ]
+        },
+        {
+          "name": "i_aw_select_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.aw_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_aw_ready_sel"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_aw_select_i"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_aw_valid_sel"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_resp_cut.aw_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_aw_select"
+            }
+          ]
+        },
+        {
+          "name": "i_w_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.w_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_resp_o.w_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.w"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_req_cut.w_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_resp_cut.w_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_req_cut.w"
+            }
+          ]
+        },
+        {
+          "name": "i_ar_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.ar_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_ar_ready_chan"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_req_i.ar"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_ar_valid_chan"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_resp_cut.ar_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_req_cut.ar"
+            }
+          ]
+        },
+        {
+          "name": "i_ar_sel_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_req_i.ar_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_ar_ready_sel"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_ar_select_i"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_ar_valid_sel"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_resp_cut.ar_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_ar_select"
+            }
+          ]
+        },
+        {
+          "name": "i_b_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_resp_cut.b_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_req_cut.b_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_resp_cut.b"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_resp_o.b_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_req_i.b_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_resp_o.b"
+            }
+          ]
+        },
+        {
+          "name": "i_r_spill_reg",
+          "module": "spill_register",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "valid_i",
+              "con": "slv_resp_cut.r_valid"
+            },
+            {
+              "port": "ready_o",
+              "con": "slv_req_cut.r_ready"
+            },
+            {
+              "port": "data_i",
+              "con": "slv_resp_cut.r"
+            },
+            {
+              "port": "valid_o",
+              "con": "slv_resp_o.r_valid"
+            },
+            {
+              "port": "ready_i",
+              "con": "slv_req_i.r_ready"
+            },
+            {
+              "port": "data_o",
+              "con": "slv_resp_o.r"
+            }
+          ]
+        },
+        {
+          "name": "i_demux_simple",
+          "module": "axi_demux_simple",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "test_i",
+              "con": "test_i"
+            },
+            {
+              "port": "slv_req_i",
+              "con": "slv_req_cut"
+            },
+            {
+              "port": "slv_aw_select_i",
+              "con": "slv_aw_select"
+            },
+            {
+              "port": "slv_ar_select_i",
+              "con": "slv_ar_select"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "slv_resp_cut"
+            },
+            {
+              "port": "mst_reqs_o",
+              "con": "mst_reqs_o"
+            },
+            {
+              "port": "mst_resps_i",
+              "con": "mst_resps_i"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axi_demux_intf",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "32'd0",
+          "comment": [
+            "Synopsys DC requires default value for params"
+          ]
+        },
+        {
+          "ptype": "bit",
+          "name": "ATOP_SUPPORT",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "32'd0"
+        },
+        {
+          "ptype": "int",
+          "name": "NO_MST_PORTS",
+          "default": "32'd3"
+        },
+        {
+          "ptype": "int",
+          "name": "MAX_TRANS",
+          "default": "32'd8"
+        },
+        {
+          "ptype": "int",
+          "name": "AXI_LOOK_BITS",
+          "default": "32'd3"
+        },
+        {
+          "ptype": "bit",
+          "name": "UNIQUE_IDS",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SPILL_AW",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SPILL_W",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SPILL_B",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "SPILL_AR",
+          "default": "1'b1"
+        },
+        {
+          "ptype": "bit",
+          "name": "SPILL_R",
+          "default": "1'b0",
+          "comment": [
+            "Dependent parameters, DO NOT OVERRIDE!"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "SELECT_WIDTH",
+          "default": "(NO_MST_PORTS > 32'd1) ? $clog2(NO_MST_PORTS) : 32'd1"
+        },
+        {
+          "ptype": "type",
+          "name": "select_t",
+          "default": "logic [SELECT_WIDTH-1:0]",
+          "comment": [
+            "MST port select type"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "comment": [
+            "Clock"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "Asynchronous reset active low"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "test_i",
+          "comment": [
+            "Testmode enable"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "select_t",
+          "name": "slv_aw_select_i",
+          "comment": [
+            "has to be stable, when aw_valid"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "select_t",
+          "name": "slv_ar_select_i",
+          "comment": [
+            "has to be stable, when ar_valid"
+          ]
+        },
+        {
+          "ptype": "AXI_BUS.Slave",
+          "name": "slv",
+          "comment": [
+            "slave port"
+          ]
+        },
+        {
+          "ptype": "AXI_BUS.Master",
+          "name": "mst",
+          "dim_unpacked": "[NO_MST_PORTS-1:0]",
+          "comment": [
+            "master ports"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "i_axi_demux",
+          "module": "axi_demux",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "Clock"
+              ]
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni",
+              "comment": [
+                "Asynchronous reset active low"
+              ]
+            },
+            {
+              "port": "test_i",
+              "con": "test_i",
+              "comment": [
+                "Testmode enable",
+                "slave port"
+              ]
+            },
+            {
+              "port": "slv_req_i",
+              "con": "slv_req"
+            },
+            {
+              "port": "slv_aw_select_i",
+              "con": "slv_aw_select_i"
+            },
+            {
+              "port": "slv_ar_select_i",
+              "con": "slv_ar_select_i"
+            },
+            {
+              "port": "slv_resp_o",
+              "con": "slv_resp",
+              "comment": [
+                "master port"
+              ]
+            },
+            {
+              "port": "mst_reqs_o",
+              "con": "mst_req"
+            },
+            {
+              "port": "mst_resps_i",
+              "con": "mst_resp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

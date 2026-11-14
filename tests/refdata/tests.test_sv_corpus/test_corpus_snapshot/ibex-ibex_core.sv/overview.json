@@ -1,0 +1,3349 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_core.sv",
+  "modules": [
+    {
+      "name": "ibex_core",
+      "params": [
+        {
+          "ptype": "base_isa_e",
+          "name": "BaseIsa",
+          "default": "BaseIsaRV32I"
+        },
+        {
+          "ptype": "bit",
+          "name": "PMPEnable",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "PMPGranularity",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "PMPNumRegions",
+          "default": "4"
+        },
+        {
+          "ptype": "ibex_pkg::pmp_cfg_t",
+          "name": "PMPRstCfg",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "ibex_pkg::PmpCfgRst"
+        },
+        {
+          "ptype": "logic",
+          "name": "PMPRstAddr",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "ibex_pkg::PmpAddrRst"
+        },
+        {
+          "ptype": "ibex_pkg::pmp_mseccfg_t",
+          "name": "PMPRstMsecCfg",
+          "default": "ibex_pkg::PmpMseccfgRst"
+        },
+        {
+          "ptype": "int",
+          "name": "MHPMCounterNum",
+          "default": "0"
+        },
+        {
+          "ptype": "int",
+          "name": "MHPMCounterWidth",
+          "default": "40"
+        },
+        {
+          "ptype": "bit",
+          "name": "RV32E",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "rv32m_e",
+          "name": "RV32M",
+          "default": "RV32MFast"
+        },
+        {
+          "ptype": "rv32b_e",
+          "name": "RV32B",
+          "default": "RV32BNone"
+        },
+        {
+          "ptype": "rv32zc_e",
+          "name": "RV32ZC",
+          "default": "RV32ZcaZcbZcmp"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICache",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "ICacheTweakInfection",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "BusSizeECC",
+          "default": "BUS_SIZE"
+        },
+        {
+          "ptype": "int",
+          "name": "TagSizeECC",
+          "default": "IC_TAG_SIZE"
+        },
+        {
+          "ptype": "int",
+          "name": "LineSizeECC",
+          "default": "IC_LINE_SIZE"
+        },
+        {
+          "ptype": "bit",
+          "name": "BranchPredictor",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "DbgTriggerEn",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "DbgHwBreakNum",
+          "default": "1"
+        },
+        {
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "lfsr_seed_t",
+          "name": "RndCnstLfsrSeed",
+          "default": "RndCnstLfsrSeedDefault"
+        },
+        {
+          "ptype": "lfsr_perm_t",
+          "name": "RndCnstLfsrPerm",
+          "default": "RndCnstLfsrPermDefault"
+        },
+        {
+          "ptype": "bit",
+          "name": "SecureIbex",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "DummyInstructions",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "bit",
+          "name": "RegFileECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "RegFileDataWidth",
+          "default": "32"
+        },
+        {
+          "ptype": "int",
+          "name": "RegFileCapEccWidth",
+          "default": "REGCAP_W"
+        },
+        {
+          "ptype": "bit",
+          "name": "MemECC",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "MemDataWidth",
+          "default": "MemECC ? 32 + 7 : 32"
+        },
+        {
+          "ptype": "int",
+          "name": "DmBaseAddr",
+          "default": "32'h1A110000"
+        },
+        {
+          "ptype": "int",
+          "name": "DmAddrMask",
+          "default": "32'h00000FFF"
+        },
+        {
+          "ptype": "int",
+          "name": "DmHaltAddr",
+          "default": "32'h1A110800"
+        },
+        {
+          "ptype": "int",
+          "name": "DmExceptionAddr",
+          "default": "32'h1A110808",
+          "comment": [
+            "mvendorid: encoding of manufacturer/provider"
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMvendorId",
+          "dim": "[31:0]",
+          "default": "32'b0",
+          "comment": [
+            "marchid: encoding of base microarchitecture"
+          ]
+        },
+        {
+          "ptype": "logic",
+          "name": "CsrMimpId",
+          "dim": "[31:0]",
+          "default": "32'b0"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "hart_id_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "boot_addr_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "cheriot_enable_i",
+          "comment": [
+            "Instruction memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[MemDataWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_err_i",
+          "comment": [
+            "Data memory interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_gnt_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rvalid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_be_o",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_addr_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_wdata_o",
+          "dim": "[MemDataWidth-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_tag_o"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_rdata_i",
+          "dim": "[MemDataWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_tag_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_err_i",
+          "comment": [
+            "Register file interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dummy_instr_id_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dummy_instr_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_a_o",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_b_o",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_waddr_wb_o",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_we_wb_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_wdata_wb_ecc_o",
+          "dim": "[RegFileDataWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rdata_a_ecc_i",
+          "dim": "[RegFileDataWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rdata_b_ecc_i",
+          "dim": "[RegFileDataWidth-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_wcap_ecc_wb_o",
+          "dim": "[RegFileCapEccWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rcap_a_ecc_i",
+          "dim": "[RegFileCapEccWidth-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rcap_b_ecc_i",
+          "dim": "[RegFileCapEccWidth-1:0]",
+          "comment": [
+            "RAMs interface"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_tag_req_o",
+          "dim": "[IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_tag_write_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_tag_addr_o",
+          "dim": "[IC_INDEX_W-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_tag_wdata_o",
+          "dim": "[TagSizeECC-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ic_tag_rdata_i",
+          "dim": "[TagSizeECC-1:0]",
+          "dim_unpacked": "[IC_NUM_WAYS]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_data_req_o",
+          "dim": "[IC_NUM_WAYS-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_data_write_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_data_addr_o",
+          "dim": "[IC_INDEX_W-1:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_data_wdata_o",
+          "dim": "[LineSizeECC-1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ic_data_rdata_i",
+          "dim": "[LineSizeECC-1:0]",
+          "dim_unpacked": "[IC_NUM_WAYS]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ic_scr_key_valid_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ic_scr_key_req_o",
+          "comment": [
+            "Interrupt inputs"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_software_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_timer_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_external_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_fast_i",
+          "dim": "[14:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_nm_i",
+          "comment": [
+            "non-maskable interrupt"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "irq_pending_o",
+          "comment": [
+            "Debug Interface"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_req_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "crash_dump_t",
+          "name": "crash_dump_o",
+          "comment": [
+            "SEC_CM: EXCEPTION.CTRL_FLOW.LOCAL_ESC",
+            "SEC_CM: EXCEPTION.CTRL_FLOW.GLOBAL_ESC"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "double_fault_seen_o",
+          "comment": [
+            "RISC-V Formal Interface",
+            "Does not comply with the coding standards of _i/_o suffixes, but follows",
+            "the convention of RISC-V Formal Interface Specification."
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_order",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_insn",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_trap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_halt",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_intr",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mode",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ixl",
+          "dim": "[ 1:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs1_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rs1_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs2_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rs2_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rs3_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_addr",
+          "dim": "[ 4:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_rd_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_rd_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_pc_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_is_cap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_addr",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wmask",
+          "dim": "[ 3:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_rdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_mem_rcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_mem_wdata",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "cap_t",
+          "name": "rvfi_mem_wcap",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_pre_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_post_mip",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_nmi_int",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_req",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_debug_mode",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_rf_wr_suppress",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mcycle",
+          "dim": "[63:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcounters",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_mhpmcountersh",
+          "dim": "[31:0]",
+          "dim_unpacked": "[10]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_ic_scr_key_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_irq_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_valid",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn",
+          "dim": "[15:0]",
+          "ifdefs": [
+            "RVFI"
+          ]
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rvfi_ext_expanded_insn_last",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "comment": [
+            "CPU Control Signals",
+            "SEC_CM: FETCH.CTRL.LC_GATED"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "fetch_enable_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "mcounteren_writable_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_minor_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_internal_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alert_major_bus_o"
+        },
+        {
+          "direction": "output",
+          "ptype": "ibex_mubi_t",
+          "name": "core_busy_o"
+        }
+      ],
+      "localparams": [
+        {
+          "ptype": "int",
+          "name": "PMPNumChan",
+          "default": "3"
+        },
+        {
+          "ptype": "bit",
+          "name": "DataIndTiming",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "PCIncrCheck",
+          "default": "SecureIbex"
+        },
+        {
+          "ptype": "bit",
+          "name": "ShadowCSR",
+          "default": "1'b0"
+        },
+        {
+          "ptype": "int",
+          "name": "NumBusySignals",
+          "default": "3"
+        },
+        {
+          "ptype": "int",
+          "name": "NumBusyBits",
+          "default": "$bits(ibex_mubi_t) * NumBusySignals"
+        },
+        {
+          "ptype": "int",
+          "name": "RVFI_STAGES",
+          "default": "WritebackStage ? 2 : 1",
+          "ifdefs": [
+            "RVFI"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_fetch_enable_buf",
+          "module": "prim_buf",
+          "connections": [
+            {
+              "port": "in_i",
+              "con": "{$bits(ibex_mubi_t){ctrl_busy, if_busy, lsu_busy}}"
+            },
+            {
+              "port": "out_o",
+              "con": "busy_bits_buf"
+            }
+          ]
+        },
+        {
+          "name": "if_stage_i",
+          "module": "ibex_if_stage",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "boot_addr_i",
+              "con": "boot_addr_i"
+            },
+            {
+              "port": "req_i",
+              "con": "instr_req_gated",
+              "comment": [
+                "instruction request control"
+              ]
+            },
+            {
+              "port": "debug_mode_i",
+              "con": "debug_mode",
+              "comment": [
+                "instruction cache interface"
+              ]
+            },
+            {
+              "port": "instr_req_o",
+              "con": "instr_req_o"
+            },
+            {
+              "port": "instr_addr_o",
+              "con": "instr_addr_o"
+            },
+            {
+              "port": "instr_gnt_i",
+              "con": "instr_gnt_i"
+            },
+            {
+              "port": "instr_rvalid_i",
+              "con": "instr_rvalid_i"
+            },
+            {
+              "port": "instr_rdata_i",
+              "con": "instr_rdata_i"
+            },
+            {
+              "port": "instr_bus_err_i",
+              "con": "instr_err_i"
+            },
+            {
+              "port": "instr_intg_err_o",
+              "con": "instr_intg_err"
+            },
+            {
+              "port": "ic_tag_req_o",
+              "con": "ic_tag_req_o"
+            },
+            {
+              "port": "ic_tag_write_o",
+              "con": "ic_tag_write_o"
+            },
+            {
+              "port": "ic_tag_addr_o",
+              "con": "ic_tag_addr_o"
+            },
+            {
+              "port": "ic_tag_wdata_o",
+              "con": "ic_tag_wdata_o"
+            },
+            {
+              "port": "ic_tag_rdata_i",
+              "con": "ic_tag_rdata_i"
+            },
+            {
+              "port": "ic_data_req_o",
+              "con": "ic_data_req_o"
+            },
+            {
+              "port": "ic_data_write_o",
+              "con": "ic_data_write_o"
+            },
+            {
+              "port": "ic_data_addr_o",
+              "con": "ic_data_addr_o"
+            },
+            {
+              "port": "ic_data_wdata_o",
+              "con": "ic_data_wdata_o"
+            },
+            {
+              "port": "ic_data_rdata_i",
+              "con": "ic_data_rdata_i"
+            },
+            {
+              "port": "ic_scr_key_valid_i",
+              "con": "ic_scr_key_valid_i"
+            },
+            {
+              "port": "ic_scr_key_req_o",
+              "con": "ic_scr_key_req_o",
+              "comment": [
+                "outputs to ID stage"
+              ]
+            },
+            {
+              "port": "instr_valid_id_o",
+              "con": "instr_valid_id"
+            },
+            {
+              "port": "instr_new_id_o",
+              "con": "instr_new_id"
+            },
+            {
+              "port": "instr_rdata_id_o",
+              "con": "instr_rdata_id"
+            },
+            {
+              "port": "instr_rdata_alu_id_o",
+              "con": "instr_rdata_alu_id"
+            },
+            {
+              "port": "instr_rdata_c_id_o",
+              "con": "instr_rdata_c_id"
+            },
+            {
+              "port": "instr_is_compressed_id_o",
+              "con": "instr_is_compressed_id"
+            },
+            {
+              "port": "instr_gets_expanded_id_o",
+              "con": "instr_gets_expanded_id"
+            },
+            {
+              "port": "instr_expanded_id_o",
+              "con": "instr_expanded_id"
+            },
+            {
+              "port": "instr_bp_taken_o",
+              "con": "instr_bp_taken_id"
+            },
+            {
+              "port": "instr_fetch_err_o",
+              "con": "instr_fetch_err"
+            },
+            {
+              "port": "instr_fetch_err_plus2_o",
+              "con": "instr_fetch_err_plus2"
+            },
+            {
+              "port": "instr_fetch_cheriot_acc_vio_o",
+              "con": "instr_fetch_cheriot_acc_vio"
+            },
+            {
+              "port": "instr_fetch_cheriot_bound_vio_o",
+              "con": "instr_fetch_cheriot_bound_vio"
+            },
+            {
+              "port": "illegal_c_insn_id_o",
+              "con": "illegal_c_insn_id"
+            },
+            {
+              "port": "dummy_instr_id_o",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "pc_if_o",
+              "con": "pc_if"
+            },
+            {
+              "port": "pc_id_o",
+              "con": "pc_id"
+            },
+            {
+              "port": "pmp_err_if_i",
+              "con": "pmp_req_err[PMP_I]"
+            },
+            {
+              "port": "pmp_err_if_plus2_i",
+              "con": "pmp_req_err[PMP_I2]",
+              "comment": [
+                "control signals"
+              ]
+            },
+            {
+              "port": "instr_valid_clear_i",
+              "con": "instr_valid_clear"
+            },
+            {
+              "port": "pc_set_i",
+              "con": "pc_set"
+            },
+            {
+              "port": "pc_mux_i",
+              "con": "pc_mux_id"
+            },
+            {
+              "port": "nt_branch_mispredict_i",
+              "con": "nt_branch_mispredict"
+            },
+            {
+              "port": "exc_pc_mux_i",
+              "con": "exc_pc_mux_id"
+            },
+            {
+              "port": "exc_cause",
+              "con": "exc_cause"
+            },
+            {
+              "port": "dummy_instr_en_i",
+              "con": "dummy_instr_en"
+            },
+            {
+              "port": "dummy_instr_mask_i",
+              "con": "dummy_instr_mask"
+            },
+            {
+              "port": "dummy_instr_seed_en_i",
+              "con": "dummy_instr_seed_en"
+            },
+            {
+              "port": "dummy_instr_seed_i",
+              "con": "dummy_instr_seed"
+            },
+            {
+              "port": "icache_enable_i",
+              "con": "icache_enable"
+            },
+            {
+              "port": "icache_inval_i",
+              "con": "icache_inval"
+            },
+            {
+              "port": "icache_ecc_error_o",
+              "con": "icache_ecc_error",
+              "comment": [
+                "branch targets"
+              ]
+            },
+            {
+              "port": "branch_target_ex_i",
+              "con": "branch_target_ex"
+            },
+            {
+              "port": "nt_branch_addr_i",
+              "con": "nt_branch_addr",
+              "comment": [
+                "CSRs"
+              ]
+            },
+            {
+              "port": "csr_mepc_i",
+              "con": "csr_mepc",
+              "comment": [
+                "exception return address"
+              ]
+            },
+            {
+              "port": "csr_depc_i",
+              "con": "csr_depc",
+              "comment": [
+                "debug return address"
+              ]
+            },
+            {
+              "port": "csr_mtvec_i",
+              "con": "csr_mtvec",
+              "comment": [
+                "trap-vector base address"
+              ]
+            },
+            {
+              "port": "csr_mtvec_init_o",
+              "con": "csr_mtvec_init",
+              "comment": [
+                "pipeline stalls"
+              ]
+            },
+            {
+              "port": "id_in_ready_i",
+              "con": "id_in_ready"
+            },
+            {
+              "port": "pc_mismatch_alert_o",
+              "con": "pc_mismatch_alert"
+            },
+            {
+              "port": "if_busy_o",
+              "con": "if_busy"
+            },
+            {
+              "port": "pcc_cap_i",
+              "con": "pcc_cap_r"
+            }
+          ]
+        },
+        {
+          "name": "id_stage_i",
+          "module": "ibex_id_stage",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i",
+              "comment": [
+                "Processor Enable"
+              ]
+            },
+            {
+              "port": "ctrl_busy_o",
+              "con": "ctrl_busy"
+            },
+            {
+              "port": "illegal_insn_o",
+              "con": "illegal_insn_id",
+              "comment": [
+                "from/to IF-ID pipeline register"
+              ]
+            },
+            {
+              "port": "instr_valid_i",
+              "con": "instr_valid_id"
+            },
+            {
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "instr_rdata_i",
+              "con": "instr_rdata_id"
+            },
+            {
+              "port": "instr_rdata_alu_i",
+              "con": "instr_rdata_alu_id"
+            },
+            {
+              "port": "instr_rdata_c_i",
+              "con": "instr_rdata_c_id"
+            },
+            {
+              "port": "instr_is_compressed_i",
+              "con": "instr_is_compressed_id"
+            },
+            {
+              "port": "instr_gets_expanded_i",
+              "con": "instr_gets_expanded_id"
+            },
+            {
+              "port": "instr_bp_taken_i",
+              "con": "instr_bp_taken_id",
+              "comment": [
+                "Jumps and branches"
+              ]
+            },
+            {
+              "port": "branch_decision_i",
+              "con": "branch_decision",
+              "comment": [
+                "IF and ID control signals"
+              ]
+            },
+            {
+              "port": "instr_first_cycle_id_o",
+              "con": "instr_first_cycle_id"
+            },
+            {
+              "port": "instr_valid_clear_o",
+              "con": "instr_valid_clear"
+            },
+            {
+              "port": "id_in_ready_o",
+              "con": "id_in_ready"
+            },
+            {
+              "port": "instr_exec_i",
+              "con": "instr_exec"
+            },
+            {
+              "port": "instr_req_o",
+              "con": "instr_req_int"
+            },
+            {
+              "port": "pc_set_o",
+              "con": "pc_set"
+            },
+            {
+              "port": "pc_mux_o",
+              "con": "pc_mux_id"
+            },
+            {
+              "port": "nt_branch_mispredict_o",
+              "con": "nt_branch_mispredict"
+            },
+            {
+              "port": "nt_branch_addr_o",
+              "con": "nt_branch_addr"
+            },
+            {
+              "port": "exc_pc_mux_o",
+              "con": "exc_pc_mux_id"
+            },
+            {
+              "port": "exc_cause_o",
+              "con": "exc_cause"
+            },
+            {
+              "port": "icache_inval_o",
+              "con": "icache_inval"
+            },
+            {
+              "port": "instr_fetch_err_i",
+              "con": "instr_fetch_err"
+            },
+            {
+              "port": "instr_fetch_err_plus2_i",
+              "con": "instr_fetch_err_plus2"
+            },
+            {
+              "port": "instr_fetch_cheriot_acc_vio_i",
+              "con": "instr_fetch_cheriot_acc_vio"
+            },
+            {
+              "port": "instr_fetch_cheriot_bound_vio_i",
+              "con": "instr_fetch_cheriot_bound_vio"
+            },
+            {
+              "port": "illegal_c_insn_i",
+              "con": "illegal_c_insn_id"
+            },
+            {
+              "port": "pc_id_i",
+              "con": "pc_id",
+              "comment": [
+                "Stalls"
+              ]
+            },
+            {
+              "port": "ex_valid_i",
+              "con": "ex_valid"
+            },
+            {
+              "port": "lsu_resp_valid_i",
+              "con": "lsu_resp_valid"
+            },
+            {
+              "port": "alu_operator_ex_o",
+              "con": "alu_operator_ex"
+            },
+            {
+              "port": "alu_operand_a_ex_o",
+              "con": "alu_operand_a_ex"
+            },
+            {
+              "port": "alu_operand_b_ex_o",
+              "con": "alu_operand_b_ex"
+            },
+            {
+              "port": "imd_val_q_ex_o",
+              "con": "imd_val_q_ex"
+            },
+            {
+              "port": "imd_val_d_ex_i",
+              "con": "imd_val_d_ex"
+            },
+            {
+              "port": "imd_val_we_ex_i",
+              "con": "imd_val_we_ex"
+            },
+            {
+              "port": "bt_a_operand_o",
+              "con": "bt_a_operand"
+            },
+            {
+              "port": "bt_b_operand_o",
+              "con": "bt_b_operand"
+            },
+            {
+              "port": "mult_en_ex_o",
+              "con": "mult_en_ex"
+            },
+            {
+              "port": "div_en_ex_o",
+              "con": "div_en_ex"
+            },
+            {
+              "port": "mult_sel_ex_o",
+              "con": "mult_sel_ex"
+            },
+            {
+              "port": "div_sel_ex_o",
+              "con": "div_sel_ex"
+            },
+            {
+              "port": "multdiv_operator_ex_o",
+              "con": "multdiv_operator_ex"
+            },
+            {
+              "port": "multdiv_signed_mode_ex_o",
+              "con": "multdiv_signed_mode_ex"
+            },
+            {
+              "port": "multdiv_operand_a_ex_o",
+              "con": "multdiv_operand_a_ex"
+            },
+            {
+              "port": "multdiv_operand_b_ex_o",
+              "con": "multdiv_operand_b_ex"
+            },
+            {
+              "port": "multdiv_ready_id_o",
+              "con": "multdiv_ready_id",
+              "comment": [
+                "CSR ID/EX"
+              ]
+            },
+            {
+              "port": "csr_access_o",
+              "con": "csr_access"
+            },
+            {
+              "port": "csr_op_o",
+              "con": "csr_op"
+            },
+            {
+              "port": "csr_addr_o",
+              "con": "csr_addr"
+            },
+            {
+              "port": "csr_op_en_o",
+              "con": "csr_op_en"
+            },
+            {
+              "port": "csr_save_if_o",
+              "con": "csr_save_if",
+              "comment": [
+                "control signal to save PC"
+              ]
+            },
+            {
+              "port": "csr_save_id_o",
+              "con": "csr_save_id",
+              "comment": [
+                "control signal to save PC"
+              ]
+            },
+            {
+              "port": "csr_save_wb_o",
+              "con": "csr_save_wb",
+              "comment": [
+                "control signal to save PC"
+              ]
+            },
+            {
+              "port": "csr_restore_mret_id_o",
+              "con": "csr_restore_mret_id",
+              "comment": [
+                "restore mstatus upon MRET"
+              ]
+            },
+            {
+              "port": "csr_restore_dret_id_o",
+              "con": "csr_restore_dret_id",
+              "comment": [
+                "restore mstatus upon MRET"
+              ]
+            },
+            {
+              "port": "csr_save_cause_o",
+              "con": "csr_save_cause"
+            },
+            {
+              "port": "csr_mepcc_clrtag_o",
+              "con": "csr_mepcc_clrtag"
+            },
+            {
+              "port": "csr_mtval_o",
+              "con": "csr_mtval"
+            },
+            {
+              "port": "priv_mode_i",
+              "con": "priv_mode_id"
+            },
+            {
+              "port": "csr_mstatus_tw_i",
+              "con": "csr_mstatus_tw"
+            },
+            {
+              "port": "illegal_csr_insn_i",
+              "con": "illegal_csr_insn_id"
+            },
+            {
+              "port": "data_ind_timing_i",
+              "con": "data_ind_timing"
+            },
+            {
+              "port": "csr_pcc_perm_sr_i",
+              "con": "pcc_cap_r.perms.SR",
+              "comment": [
+                "LSU"
+              ]
+            },
+            {
+              "port": "lsu_req_o",
+              "con": "rv32_lsu_req",
+              "comment": [
+                "to load store unit"
+              ]
+            },
+            {
+              "port": "lsu_we_o",
+              "con": "rv32_lsu_we",
+              "comment": [
+                "to load store unit"
+              ]
+            },
+            {
+              "port": "lsu_type_o",
+              "con": "rv32_lsu_type",
+              "comment": [
+                "to load store unit"
+              ]
+            },
+            {
+              "port": "lsu_sign_ext_o",
+              "con": "rv32_lsu_sign_ext",
+              "comment": [
+                "to load store unit"
+              ]
+            },
+            {
+              "port": "lsu_wdata_o",
+              "con": "rv32_lsu_wdata",
+              "comment": [
+                "to load store unit"
+              ]
+            },
+            {
+              "port": "lsu_req_done_i",
+              "con": "lsu_req_done",
+              "comment": [
+                "from load store unit"
+              ]
+            },
+            {
+              "port": "lsu_addr_incr_req_i",
+              "con": "rv32_lsu_addr_incr_req"
+            },
+            {
+              "port": "lsu_addr_last_i",
+              "con": "rv32_lsu_addr_last"
+            },
+            {
+              "port": "lsu_load_err_i",
+              "con": "lsu_load_err"
+            },
+            {
+              "port": "lsu_load_resp_intg_err_i",
+              "con": "lsu_load_resp_intg_err"
+            },
+            {
+              "port": "lsu_store_err_i",
+              "con": "lsu_store_err"
+            },
+            {
+              "port": "lsu_store_resp_intg_err_i",
+              "con": "lsu_store_resp_intg_err"
+            },
+            {
+              "port": "lsu_err_is_cheriot_i",
+              "con": "lsu_err_is_cheriot"
+            },
+            {
+              "port": "expecting_load_resp_o",
+              "con": "expecting_load_resp_id"
+            },
+            {
+              "port": "expecting_store_resp_o",
+              "con": "expecting_store_resp_id",
+              "comment": [
+                "Interrupt Signals"
+              ]
+            },
+            {
+              "port": "csr_mstatus_mie_i",
+              "con": "csr_mstatus_mie"
+            },
+            {
+              "port": "irq_pending_i",
+              "con": "irq_pending_o"
+            },
+            {
+              "port": "irqs_i",
+              "con": "irqs"
+            },
+            {
+              "port": "irq_nm_i",
+              "con": "irq_nm_i"
+            },
+            {
+              "port": "nmi_mode_o",
+              "con": "nmi_mode",
+              "comment": [
+                "Debug Signal"
+              ]
+            },
+            {
+              "port": "debug_mode_o",
+              "con": "debug_mode"
+            },
+            {
+              "port": "debug_mode_entering_o",
+              "con": "debug_mode_entering"
+            },
+            {
+              "port": "debug_cause_o",
+              "con": "debug_cause"
+            },
+            {
+              "port": "debug_csr_save_o",
+              "con": "debug_csr_save"
+            },
+            {
+              "port": "debug_req_i",
+              "con": "debug_req_i"
+            },
+            {
+              "port": "debug_single_step_i",
+              "con": "debug_single_step"
+            },
+            {
+              "port": "debug_ebreakm_i",
+              "con": "debug_ebreakm"
+            },
+            {
+              "port": "debug_ebreaku_i",
+              "con": "debug_ebreaku"
+            },
+            {
+              "port": "trigger_match_i",
+              "con": "trigger_match",
+              "comment": [
+                "write data to commit in the register file"
+              ]
+            },
+            {
+              "port": "result_ex_i",
+              "con": "result_ex"
+            },
+            {
+              "port": "csr_rdata_i",
+              "con": "csr_rdata"
+            },
+            {
+              "port": "rf_raddr_a_o",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rf_rdata_a_i",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rf_raddr_b_o",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rf_rdata_b_i",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rf_ren_a_o",
+              "con": "rf_ren_a"
+            },
+            {
+              "port": "rf_ren_b_o",
+              "con": "rf_ren_b"
+            },
+            {
+              "port": "rf_waddr_id_o",
+              "con": "rf_waddr_id"
+            },
+            {
+              "port": "rf_wdata_id_o",
+              "con": "rf_wdata_id"
+            },
+            {
+              "port": "rf_we_id_o",
+              "con": "rf_we_id"
+            },
+            {
+              "port": "rf_rd_a_wb_match_o",
+              "con": "rf_rd_a_wb_match"
+            },
+            {
+              "port": "rf_rd_b_wb_match_o",
+              "con": "rf_rd_b_wb_match"
+            },
+            {
+              "port": "rf_waddr_wb_i",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "rf_wdata_fwd_wb_i",
+              "con": "rf_wdata_fwd_wb"
+            },
+            {
+              "port": "rf_write_wb_i",
+              "con": "rf_write_wb"
+            },
+            {
+              "port": "en_wb_o",
+              "con": "en_wb"
+            },
+            {
+              "port": "instr_type_wb_o",
+              "con": "instr_type_wb"
+            },
+            {
+              "port": "instr_perf_count_id_o",
+              "con": "instr_perf_count_id"
+            },
+            {
+              "port": "ready_wb_i",
+              "con": "ready_wb"
+            },
+            {
+              "port": "outstanding_load_wb_i",
+              "con": "outstanding_load_wb"
+            },
+            {
+              "port": "outstanding_store_wb_i",
+              "con": "outstanding_store_wb",
+              "comment": [
+                "Performance Counters"
+              ]
+            },
+            {
+              "port": "perf_jump_o",
+              "con": "perf_jump"
+            },
+            {
+              "port": "perf_branch_o",
+              "con": "perf_branch"
+            },
+            {
+              "port": "perf_tbranch_o",
+              "con": "perf_tbranch"
+            },
+            {
+              "port": "perf_dside_wait_o",
+              "con": "perf_dside_wait"
+            },
+            {
+              "port": "perf_mul_wait_o",
+              "con": "perf_mul_wait"
+            },
+            {
+              "port": "perf_div_wait_o",
+              "con": "perf_div_wait"
+            },
+            {
+              "port": "instr_id_done_o",
+              "con": "instr_id_done"
+            },
+            {
+              "port": "cheriot_exec_id_o",
+              "con": "cheriot_exec_id"
+            },
+            {
+              "port": "instr_is_cheriot_id_o",
+              "con": "instr_is_cheriot_id"
+            },
+            {
+              "port": "instr_is_rv32lsu_id_o",
+              "con": "instr_is_rv32lsu_id"
+            },
+            {
+              "port": "cheriot_imm12_o",
+              "con": "cheriot_imm12"
+            },
+            {
+              "port": "cheriot_imm20_o",
+              "con": "cheriot_imm20"
+            },
+            {
+              "port": "cheriot_imm21_o",
+              "con": "cheriot_imm21"
+            },
+            {
+              "port": "cheriot_operator_o",
+              "con": "cheriot_operator"
+            },
+            {
+              "port": "cheriot_cs2_dec_o",
+              "con": "cheriot_cs2_dec"
+            },
+            {
+              "port": "cheriot_cap_field_sel_o",
+              "con": "cheriot_cap_field_sel"
+            },
+            {
+              "port": "cheriot_adder_a_sel_o",
+              "con": "cheriot_adder_a_sel"
+            },
+            {
+              "port": "cheriot_adder_b_sel_o",
+              "con": "cheriot_adder_b_sel"
+            },
+            {
+              "port": "cheriot_setaddr_sel_o",
+              "con": "cheriot_setaddr_sel"
+            },
+            {
+              "port": "cheriot_setbounds_sel_o",
+              "con": "cheriot_setbounds_sel"
+            },
+            {
+              "port": "cheriot_load_o",
+              "con": "cheriot_load_id"
+            },
+            {
+              "port": "cheriot_store_o",
+              "con": "cheriot_store_id"
+            },
+            {
+              "port": "cheriot_ex_valid_i",
+              "con": "cheriot_ex_valid"
+            },
+            {
+              "port": "cheriot_ex_err_i",
+              "con": "cheriot_ex_err"
+            },
+            {
+              "port": "cheriot_ex_err_info_i",
+              "con": "cheriot_ex_err_info"
+            },
+            {
+              "port": "cheriot_wb_err_i",
+              "con": "cheriot_wb_err"
+            },
+            {
+              "port": "cheriot_wb_err_info_i",
+              "con": "cheriot_wb_err_info"
+            },
+            {
+              "port": "cheriot_branch_req_i",
+              "con": "cheriot_branch_req_spec"
+            },
+            {
+              "port": "cheriot_branch_target_i",
+              "con": "branch_target_ex_cheriot"
+            }
+          ]
+        },
+        {
+          "name": "ex_block_i",
+          "module": "ibex_ex_block",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni",
+              "comment": [
+                "ALU signal from ID stage"
+              ]
+            },
+            {
+              "port": "alu_operator_i",
+              "con": "alu_operator_ex"
+            },
+            {
+              "port": "alu_operand_a_i",
+              "con": "alu_operand_a_ex"
+            },
+            {
+              "port": "alu_operand_b_i",
+              "con": "alu_operand_b_ex",
+              "comment": [
+                "Branch target ALU signal from ID stage"
+              ]
+            },
+            {
+              "port": "bt_a_operand_i",
+              "con": "bt_a_operand"
+            },
+            {
+              "port": "bt_b_operand_i",
+              "con": "bt_b_operand",
+              "comment": [
+                "Multipler/Divider signal from ID stage"
+              ]
+            },
+            {
+              "port": "multdiv_operator_i",
+              "con": "multdiv_operator_ex"
+            },
+            {
+              "port": "mult_en_i",
+              "con": "mult_en_ex"
+            },
+            {
+              "port": "div_en_i",
+              "con": "div_en_ex"
+            },
+            {
+              "port": "mult_sel_i",
+              "con": "mult_sel_ex"
+            },
+            {
+              "port": "div_sel_i",
+              "con": "div_sel_ex"
+            },
+            {
+              "port": "multdiv_signed_mode_i",
+              "con": "multdiv_signed_mode_ex"
+            },
+            {
+              "port": "multdiv_operand_a_i",
+              "con": "multdiv_operand_a_ex"
+            },
+            {
+              "port": "multdiv_operand_b_i",
+              "con": "multdiv_operand_b_ex"
+            },
+            {
+              "port": "multdiv_ready_id_i",
+              "con": "multdiv_ready_id"
+            },
+            {
+              "port": "data_ind_timing_i",
+              "con": "data_ind_timing",
+              "comment": [
+                "Intermediate value register"
+              ]
+            },
+            {
+              "port": "imd_val_we_o",
+              "con": "imd_val_we_ex"
+            },
+            {
+              "port": "imd_val_d_o",
+              "con": "imd_val_d_ex"
+            },
+            {
+              "port": "imd_val_q_i",
+              "con": "imd_val_q_ex",
+              "comment": [
+                "Outputs"
+              ]
+            },
+            {
+              "port": "alu_adder_result_ex_o",
+              "con": "alu_adder_result_ex",
+              "comment": [
+                "to LSU"
+              ]
+            },
+            {
+              "port": "result_ex_o",
+              "con": "result_ex",
+              "comment": [
+                "to ID"
+              ]
+            },
+            {
+              "port": "branch_target_o",
+              "con": "branch_target_ex_rv32",
+              "comment": [
+                "to IF"
+              ]
+            },
+            {
+              "port": "branch_decision_o",
+              "con": "branch_decision",
+              "comment": [
+                "to ID"
+              ]
+            },
+            {
+              "port": "ex_valid_o",
+              "con": "ex_valid"
+            }
+          ]
+        },
+        {
+          "name": "u_ibex_cheriot_ex",
+          "module": "ibex_cheriot_ex",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i"
+            },
+            {
+              "port": "debug_mode_i",
+              "con": "debug_mode"
+            },
+            {
+              "port": "fwd_we_i",
+              "con": "rf_write_wb"
+            },
+            {
+              "port": "fwd_waddr_i",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "fwd_wdata_i",
+              "con": "rf_wdata_fwd_wb"
+            },
+            {
+              "port": "fwd_wcap_i",
+              "con": "rf_wcap_fwd_wb"
+            },
+            {
+              "port": "rf_raddr_a_i",
+              "con": "rf_raddr_a"
+            },
+            {
+              "port": "rf_rdata_a_i",
+              "con": "rf_rdata_a"
+            },
+            {
+              "port": "rf_rcap_a_i",
+              "con": "rf_rcap_a"
+            },
+            {
+              "port": "rf_raddr_b_i",
+              "con": "rf_raddr_b"
+            },
+            {
+              "port": "rf_rdata_b_i",
+              "con": "rf_rdata_b"
+            },
+            {
+              "port": "rf_rcap_b_i",
+              "con": "rf_rcap_b"
+            },
+            {
+              "port": "rf_waddr_i",
+              "con": "rf_waddr_id"
+            },
+            {
+              "port": "pcc_cap_i",
+              "con": "pcc_cap_r"
+            },
+            {
+              "port": "pcc_cap_o",
+              "con": "pcc_cap_w"
+            },
+            {
+              "port": "pc_id_i",
+              "con": "pc_id"
+            },
+            {
+              "port": "branch_req_o",
+              "con": "cheriot_branch_req"
+            },
+            {
+              "port": "branch_req_spec_o",
+              "con": "cheriot_branch_req_spec"
+            },
+            {
+              "port": "branch_target_o",
+              "con": "branch_target_ex_cheriot"
+            },
+            {
+              "port": "cheriot_exec_id_i",
+              "con": "cheriot_exec_id"
+            },
+            {
+              "port": "instr_valid_i",
+              "con": "instr_valid_id"
+            },
+            {
+              "port": "instr_first_cycle_i",
+              "con": "instr_first_cycle_id"
+            },
+            {
+              "port": "instr_is_cheriot_i",
+              "con": "instr_is_cheriot_id"
+            },
+            {
+              "port": "instr_is_rv32lsu_i",
+              "con": "instr_is_rv32lsu_id"
+            },
+            {
+              "port": "instr_is_compressed_i",
+              "con": "instr_is_compressed_id"
+            },
+            {
+              "port": "cheriot_imm12_i",
+              "con": "cheriot_imm12"
+            },
+            {
+              "port": "cheriot_imm20_i",
+              "con": "cheriot_imm20"
+            },
+            {
+              "port": "cheriot_imm21_i",
+              "con": "cheriot_imm21"
+            },
+            {
+              "port": "cheriot_operator_i",
+              "con": "cheriot_operator"
+            },
+            {
+              "port": "cheriot_cs2_dec_i",
+              "con": "cheriot_cs2_dec"
+            },
+            {
+              "port": "cheriot_cap_field_sel_i",
+              "con": "cheriot_cap_field_sel"
+            },
+            {
+              "port": "cheriot_adder_a_sel_i",
+              "con": "cheriot_adder_a_sel"
+            },
+            {
+              "port": "cheriot_adder_b_sel_i",
+              "con": "cheriot_adder_b_sel"
+            },
+            {
+              "port": "cheriot_setaddr_sel_i",
+              "con": "cheriot_setaddr_sel"
+            },
+            {
+              "port": "cheriot_setbounds_sel_i",
+              "con": "cheriot_setbounds_sel"
+            },
+            {
+              "port": "cheriot_rf_we_o",
+              "con": "cheriot_rf_we"
+            },
+            {
+              "port": "result_data_o",
+              "con": "cheriot_result_data"
+            },
+            {
+              "port": "result_cap_o",
+              "con": "cheriot_result_cap"
+            },
+            {
+              "port": "cheriot_ex_valid_o",
+              "con": "cheriot_ex_valid"
+            },
+            {
+              "port": "cheriot_ex_err_o",
+              "con": "cheriot_ex_err"
+            },
+            {
+              "port": "cheriot_ex_err_info_o",
+              "con": "cheriot_ex_err_info"
+            },
+            {
+              "port": "cheriot_wb_err_o",
+              "con": "cheriot_wb_err"
+            },
+            {
+              "port": "cheriot_wb_err_info_o",
+              "con": "cheriot_wb_err_info"
+            },
+            {
+              "port": "lsu_req_o",
+              "con": "lsu_req"
+            },
+            {
+              "port": "lsu_is_cap_o",
+              "con": "lsu_is_cap"
+            },
+            {
+              "port": "lsu_lc_clrperm_o",
+              "con": "lsu_lc_clrperm"
+            },
+            {
+              "port": "lsu_cheriot_err_o",
+              "con": "lsu_cheriot_err"
+            },
+            {
+              "port": "lsu_we_o",
+              "con": "lsu_we"
+            },
+            {
+              "port": "lsu_addr_o",
+              "con": "lsu_addr"
+            },
+            {
+              "port": "lsu_type_o",
+              "con": "lsu_type"
+            },
+            {
+              "port": "lsu_wdata_o",
+              "con": "lsu_wdata"
+            },
+            {
+              "port": "lsu_wcap_o",
+              "con": "lsu_wcap"
+            },
+            {
+              "port": "lsu_sign_ext_o",
+              "con": "lsu_sign_ext"
+            },
+            {
+              "port": "addr_incr_req_i",
+              "con": "lsu_addr_incr_req"
+            },
+            {
+              "port": "addr_last_i",
+              "con": "lsu_addr_last"
+            },
+            {
+              "port": "rv32_lsu_req_i",
+              "con": "rv32_lsu_req"
+            },
+            {
+              "port": "rv32_lsu_we_i",
+              "con": "rv32_lsu_we"
+            },
+            {
+              "port": "rv32_lsu_type_i",
+              "con": "rv32_lsu_type"
+            },
+            {
+              "port": "rv32_lsu_wdata_i",
+              "con": "rv32_lsu_wdata"
+            },
+            {
+              "port": "rv32_lsu_sign_ext_i",
+              "con": "rv32_lsu_sign_ext"
+            },
+            {
+              "port": "rv32_lsu_addr_i",
+              "con": "alu_adder_result_ex"
+            },
+            {
+              "port": "rv32_addr_incr_req_o",
+              "con": "rv32_lsu_addr_incr_req"
+            },
+            {
+              "port": "rv32_addr_last_o",
+              "con": "rv32_lsu_addr_last"
+            },
+            {
+              "port": "csr_rdata_i",
+              "con": "cheriot_csr_rdata"
+            },
+            {
+              "port": "csr_rcap_i",
+              "con": "cheriot_csr_rcap"
+            },
+            {
+              "port": "csr_mstatus_mie_i",
+              "con": "csr_mstatus_mie"
+            },
+            {
+              "port": "csr_access_o",
+              "con": "cheriot_csr_access"
+            },
+            {
+              "port": "csr_addr_o",
+              "con": "cheriot_csr_addr"
+            },
+            {
+              "port": "csr_wdata_o",
+              "con": "cheriot_csr_wdata"
+            },
+            {
+              "port": "csr_wcap_o",
+              "con": "cheriot_csr_wcap"
+            },
+            {
+              "port": "csr_op_o",
+              "con": "cheriot_csr_op"
+            },
+            {
+              "port": "csr_op_en_o",
+              "con": "cheriot_csr_op_en"
+            },
+            {
+              "port": "csr_set_mie_o",
+              "con": "cheriot_csr_set_mie"
+            },
+            {
+              "port": "csr_clr_mie_o",
+              "con": "cheriot_csr_clr_mie"
+            },
+            {
+              "port": "csr_mshwm_i",
+              "con": "csr_mshwm"
+            },
+            {
+              "port": "csr_mshwmb_i",
+              "con": "csr_mshwmb"
+            },
+            {
+              "port": "csr_mshwm_set_o",
+              "con": "csr_mshwm_set"
+            },
+            {
+              "port": "csr_mshwm_new_o",
+              "con": "csr_mshwm_new"
+            },
+            {
+              "port": "csr_dbg_tclr_fault_i",
+              "con": "csr_dbg_tclr_fault"
+            }
+          ]
+        },
+        {
+          "name": "load_store_unit_i",
+          "module": "ibex_load_store_unit",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i",
+              "comment": [
+                "data interface"
+              ]
+            },
+            {
+              "port": "data_req_o",
+              "con": "data_req_out"
+            },
+            {
+              "port": "data_gnt_i",
+              "con": "data_gnt_i"
+            },
+            {
+              "port": "data_rvalid_i",
+              "con": "data_rvalid_i"
+            },
+            {
+              "port": "data_bus_err_i",
+              "con": "data_err_i"
+            },
+            {
+              "port": "data_pmp_err_i",
+              "con": "pmp_req_err[PMP_D]"
+            },
+            {
+              "port": "data_addr_o",
+              "con": "data_addr_o"
+            },
+            {
+              "port": "data_we_o",
+              "con": "data_we_o"
+            },
+            {
+              "port": "data_be_o",
+              "con": "data_be_o"
+            },
+            {
+              "port": "data_wdata_o",
+              "con": "data_wdata_o"
+            },
+            {
+              "port": "data_tag_o",
+              "con": "data_tag_o"
+            },
+            {
+              "port": "data_rdata_i",
+              "con": "data_rdata_i"
+            },
+            {
+              "port": "data_tag_i",
+              "con": "data_tag_i",
+              "comment": [
+                "signals to/from ID/EX stage"
+              ]
+            },
+            {
+              "port": "lsu_we_i",
+              "con": "lsu_we"
+            },
+            {
+              "port": "lsu_type_i",
+              "con": "lsu_type"
+            },
+            {
+              "port": "lsu_wdata_i",
+              "con": "lsu_wdata"
+            },
+            {
+              "port": "lsu_wcap_i",
+              "con": "lsu_wcap"
+            },
+            {
+              "port": "lsu_sign_ext_i",
+              "con": "lsu_sign_ext"
+            },
+            {
+              "port": "lsu_rdata_o",
+              "con": "rf_wdata_lsu"
+            },
+            {
+              "port": "lsu_rcap_o",
+              "con": "rf_wcap_lsu"
+            },
+            {
+              "port": "lsu_rdata_valid_o",
+              "con": "lsu_rdata_valid"
+            },
+            {
+              "port": "lsu_req_i",
+              "con": "lsu_req"
+            },
+            {
+              "port": "lsu_is_cap_i",
+              "con": "lsu_is_cap"
+            },
+            {
+              "port": "lsu_lc_clrperm_i",
+              "con": "lsu_lc_clrperm"
+            },
+            {
+              "port": "lsu_cheriot_err_i",
+              "con": "lsu_cheriot_err"
+            },
+            {
+              "port": "adder_result_ex_i",
+              "con": "lsu_addr"
+            },
+            {
+              "port": "addr_incr_req_o",
+              "con": "lsu_addr_incr_req"
+            },
+            {
+              "port": "addr_last_o",
+              "con": "lsu_addr_last"
+            },
+            {
+              "port": "lsu_req_done_o",
+              "con": "lsu_req_done"
+            },
+            {
+              "port": "lsu_resp_valid_o",
+              "con": "lsu_resp_valid",
+              "comment": [
+                "exception signals"
+              ]
+            },
+            {
+              "port": "load_err_o",
+              "con": "lsu_load_err_raw"
+            },
+            {
+              "port": "load_resp_intg_err_o",
+              "con": "lsu_load_resp_intg_err"
+            },
+            {
+              "port": "store_err_o",
+              "con": "lsu_store_err_raw"
+            },
+            {
+              "port": "store_resp_intg_err_o",
+              "con": "lsu_store_resp_intg_err"
+            },
+            {
+              "port": "lsu_err_is_cheriot_o",
+              "con": "lsu_err_is_cheriot"
+            },
+            {
+              "port": "busy_o",
+              "con": "lsu_busy"
+            },
+            {
+              "port": "perf_load_o",
+              "con": "perf_load"
+            },
+            {
+              "port": "perf_store_o",
+              "con": "perf_store"
+            }
+          ]
+        },
+        {
+          "name": "wb_stage_i",
+          "module": "ibex_wb_stage",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "en_wb_i",
+              "con": "en_wb"
+            },
+            {
+              "port": "instr_type_wb_i",
+              "con": "instr_type_wb"
+            },
+            {
+              "port": "pc_id_i",
+              "con": "pc_id"
+            },
+            {
+              "port": "instr_is_compressed_id_i",
+              "con": "instr_is_compressed_id"
+            },
+            {
+              "port": "instr_perf_count_id_i",
+              "con": "instr_perf_count_id"
+            },
+            {
+              "port": "instr_is_cheriot_i",
+              "con": "instr_is_cheriot_id"
+            },
+            {
+              "port": "cheriot_load_i",
+              "con": "cheriot_load_id"
+            },
+            {
+              "port": "cheriot_store_i",
+              "con": "cheriot_store_id"
+            },
+            {
+              "port": "ready_wb_o",
+              "con": "ready_wb"
+            },
+            {
+              "port": "rf_write_wb_o",
+              "con": "rf_write_wb"
+            },
+            {
+              "port": "outstanding_load_wb_o",
+              "con": "outstanding_load_wb"
+            },
+            {
+              "port": "outstanding_store_wb_o",
+              "con": "outstanding_store_wb"
+            },
+            {
+              "port": "pc_wb_o",
+              "con": "pc_wb"
+            },
+            {
+              "port": "perf_instr_ret_wb_o",
+              "con": "perf_instr_ret_wb"
+            },
+            {
+              "port": "perf_instr_ret_compressed_wb_o",
+              "con": "perf_instr_ret_compressed_wb"
+            },
+            {
+              "port": "perf_instr_ret_wb_spec_o",
+              "con": "perf_instr_ret_wb_spec"
+            },
+            {
+              "port": "perf_instr_ret_compressed_wb_spec_o",
+              "con": "perf_instr_ret_compressed_wb_spec"
+            },
+            {
+              "port": "rf_waddr_id_i",
+              "con": "rf_waddr_id"
+            },
+            {
+              "port": "rf_wdata_id_i",
+              "con": "rf_wdata_id"
+            },
+            {
+              "port": "rf_we_id_i",
+              "con": "rf_we_id"
+            },
+            {
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id"
+            },
+            {
+              "port": "cheriot_rf_we_i",
+              "con": "cheriot_rf_we"
+            },
+            {
+              "port": "cheriot_rf_wdata_i",
+              "con": "cheriot_result_data"
+            },
+            {
+              "port": "cheriot_rf_wcap_i",
+              "con": "cheriot_result_cap"
+            },
+            {
+              "port": "rf_wdata_lsu_i",
+              "con": "rf_wdata_lsu"
+            },
+            {
+              "port": "rf_wcap_lsu_i",
+              "con": "rf_wcap_lsu"
+            },
+            {
+              "port": "rf_we_lsu_i",
+              "con": "rf_we_lsu"
+            },
+            {
+              "port": "rf_wdata_fwd_wb_o",
+              "con": "rf_wdata_fwd_wb"
+            },
+            {
+              "port": "rf_wcap_fwd_wb_o",
+              "con": "rf_wcap_fwd_wb"
+            },
+            {
+              "port": "rf_waddr_wb_o",
+              "con": "rf_waddr_wb"
+            },
+            {
+              "port": "rf_wdata_wb_o",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "rf_wcap_wb_o",
+              "con": "rf_wcap_wb"
+            },
+            {
+              "port": "rf_we_wb_o",
+              "con": "rf_we_wb"
+            },
+            {
+              "port": "dummy_instr_wb_o",
+              "con": "dummy_instr_wb"
+            },
+            {
+              "port": "lsu_resp_valid_i",
+              "con": "lsu_resp_valid"
+            },
+            {
+              "port": "lsu_resp_err_i",
+              "con": "lsu_resp_err"
+            },
+            {
+              "port": "cheriot_wb_err_i",
+              "con": "cheriot_wb_err"
+            },
+            {
+              "port": "instr_done_wb_o",
+              "con": "instr_done_wb"
+            }
+          ]
+        },
+        {
+          "name": "regfile_ecc_enc",
+          "module": "prim_secded_inv_39_32_enc",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "rf_wdata_wb"
+            },
+            {
+              "port": "data_o",
+              "con": "rf_wdata_wb_ecc_o"
+            }
+          ]
+        },
+        {
+          "name": "regfile_ecc_dec_a",
+          "module": "prim_secded_inv_39_32_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "rf_rdata_a_ecc_i"
+            },
+            {
+              "port": "data_o"
+            },
+            {
+              "port": "syndrome_o"
+            },
+            {
+              "port": "err_o",
+              "con": "rf_ecc_err_a"
+            }
+          ]
+        },
+        {
+          "name": "regfile_ecc_dec_b",
+          "module": "prim_secded_inv_39_32_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "rf_rdata_b_ecc_i"
+            },
+            {
+              "port": "data_o"
+            },
+            {
+              "port": "syndrome_o"
+            },
+            {
+              "port": "err_o",
+              "con": "rf_ecc_err_b"
+            }
+          ]
+        },
+        {
+          "name": "regfile_cap_ecc_enc",
+          "module": "prim_secded_inv_64_57_enc",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "{22'b0, cheriot_regcap_to_vec(rf_wcap_wb)}"
+            },
+            {
+              "port": "data_o",
+              "con": "wcap_ecc_tmp"
+            }
+          ]
+        },
+        {
+          "name": "regfile_cap_ecc_dec_a",
+          "module": "prim_secded_inv_64_57_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "{rf_rcap_a_ecc_i[RegFileCapEccWidth-1:REGCAP_W], 22'b0,\n                     rf_rcap_a_ecc_i[REGCAP_W-1:0]}"
+            },
+            {
+              "port": "data_o"
+            },
+            {
+              "port": "syndrome_o"
+            },
+            {
+              "port": "err_o",
+              "con": "rf_cap_ecc_err_a"
+            }
+          ]
+        },
+        {
+          "name": "regfile_cap_ecc_dec_b",
+          "module": "prim_secded_inv_64_57_dec",
+          "connections": [
+            {
+              "port": "data_i",
+              "con": "{rf_rcap_b_ecc_i[RegFileCapEccWidth-1:REGCAP_W], 22'b0,\n                     rf_rcap_b_ecc_i[REGCAP_W-1:0]}"
+            },
+            {
+              "port": "data_o"
+            },
+            {
+              "port": "syndrome_o"
+            },
+            {
+              "port": "err_o",
+              "con": "rf_cap_ecc_err_b"
+            }
+          ]
+        },
+        {
+          "name": "cs_registers_i",
+          "module": "ibex_cs_registers",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rst_ni",
+              "con": "rst_ni"
+            },
+            {
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i",
+              "comment": [
+                "Hart ID from outside"
+              ]
+            },
+            {
+              "port": "hart_id_i",
+              "con": "hart_id_i"
+            },
+            {
+              "port": "priv_mode_id_o",
+              "con": "priv_mode_id"
+            },
+            {
+              "port": "priv_mode_lsu_o",
+              "con": "priv_mode_lsu",
+              "comment": [
+                "mtvec"
+              ]
+            },
+            {
+              "port": "csr_mtvec_o",
+              "con": "csr_mtvec"
+            },
+            {
+              "port": "csr_mtvec_init_i",
+              "con": "csr_mtvec_init"
+            },
+            {
+              "port": "boot_addr_i",
+              "con": "boot_addr_i",
+              "comment": [
+                "Interface to CSRs     ( SRAM like                    )"
+              ]
+            },
+            {
+              "port": "csr_access_i",
+              "con": "csr_access"
+            },
+            {
+              "port": "csr_addr_i",
+              "con": "csr_addr"
+            },
+            {
+              "port": "csr_wdata_i",
+              "con": "csr_wdata"
+            },
+            {
+              "port": "csr_op_i",
+              "con": "csr_op"
+            },
+            {
+              "port": "csr_op_en_i",
+              "con": "csr_op_en"
+            },
+            {
+              "port": "csr_rdata_o",
+              "con": "csr_rdata"
+            },
+            {
+              "port": "cheriot_csr_access_i",
+              "con": "cheriot_csr_access"
+            },
+            {
+              "port": "cheriot_csr_addr_i",
+              "con": "cheriot_csr_addr"
+            },
+            {
+              "port": "cheriot_csr_wdata_i",
+              "con": "cheriot_csr_wdata"
+            },
+            {
+              "port": "cheriot_csr_wcap_i",
+              "con": "cheriot_csr_wcap"
+            },
+            {
+              "port": "cheriot_csr_op_i",
+              "con": "cheriot_csr_op"
+            },
+            {
+              "port": "cheriot_csr_op_en_i",
+              "con": "cheriot_csr_op_en"
+            },
+            {
+              "port": "cheriot_csr_set_mie_i",
+              "con": "cheriot_csr_set_mie"
+            },
+            {
+              "port": "cheriot_csr_clr_mie_i",
+              "con": "cheriot_csr_clr_mie"
+            },
+            {
+              "port": "cheriot_csr_rdata_o",
+              "con": "cheriot_csr_rdata"
+            },
+            {
+              "port": "cheriot_csr_rcap_o",
+              "con": "cheriot_csr_rcap"
+            },
+            {
+              "port": "csr_mshwm_o",
+              "con": "csr_mshwm"
+            },
+            {
+              "port": "csr_mshwmb_o",
+              "con": "csr_mshwmb"
+            },
+            {
+              "port": "csr_mshwm_set_i",
+              "con": "csr_mshwm_set"
+            },
+            {
+              "port": "csr_mshwm_new_i",
+              "con": "csr_mshwm_new",
+              "comment": [
+                "Interrupt related control signals"
+              ]
+            },
+            {
+              "port": "irq_software_i",
+              "con": "irq_software_i"
+            },
+            {
+              "port": "irq_timer_i",
+              "con": "irq_timer_i"
+            },
+            {
+              "port": "irq_external_i",
+              "con": "irq_external_i"
+            },
+            {
+              "port": "irq_fast_i",
+              "con": "irq_fast_i"
+            },
+            {
+              "port": "nmi_mode_i",
+              "con": "nmi_mode"
+            },
+            {
+              "port": "irq_pending_o",
+              "con": "irq_pending_o"
+            },
+            {
+              "port": "irqs_o",
+              "con": "irqs"
+            },
+            {
+              "port": "csr_mstatus_mie_o",
+              "con": "csr_mstatus_mie"
+            },
+            {
+              "port": "csr_mstatus_tw_o",
+              "con": "csr_mstatus_tw"
+            },
+            {
+              "port": "csr_mepc_o",
+              "con": "csr_mepc"
+            },
+            {
+              "port": "csr_mtval_o",
+              "con": "crash_dump_mtval",
+              "comment": [
+                "PMP"
+              ]
+            },
+            {
+              "port": "csr_pmp_cfg_o",
+              "con": "csr_pmp_cfg"
+            },
+            {
+              "port": "csr_pmp_addr_o",
+              "con": "csr_pmp_addr"
+            },
+            {
+              "port": "csr_pmp_mseccfg_o",
+              "con": "csr_pmp_mseccfg",
+              "comment": [
+                "debug"
+              ]
+            },
+            {
+              "port": "csr_depc_o",
+              "con": "csr_depc"
+            },
+            {
+              "port": "debug_mode_i",
+              "con": "debug_mode"
+            },
+            {
+              "port": "debug_mode_entering_i",
+              "con": "debug_mode_entering"
+            },
+            {
+              "port": "debug_cause_i",
+              "con": "debug_cause"
+            },
+            {
+              "port": "debug_csr_save_i",
+              "con": "debug_csr_save"
+            },
+            {
+              "port": "debug_single_step_o",
+              "con": "debug_single_step"
+            },
+            {
+              "port": "debug_ebreakm_o",
+              "con": "debug_ebreakm"
+            },
+            {
+              "port": "debug_ebreaku_o",
+              "con": "debug_ebreaku"
+            },
+            {
+              "port": "trigger_match_o",
+              "con": "trigger_match"
+            },
+            {
+              "port": "pc_if_i",
+              "con": "pc_if"
+            },
+            {
+              "port": "pc_id_i",
+              "con": "pc_id"
+            },
+            {
+              "port": "pc_wb_i",
+              "con": "pc_wb"
+            },
+            {
+              "port": "data_ind_timing_o",
+              "con": "data_ind_timing"
+            },
+            {
+              "port": "dummy_instr_en_o",
+              "con": "dummy_instr_en"
+            },
+            {
+              "port": "dummy_instr_mask_o",
+              "con": "dummy_instr_mask"
+            },
+            {
+              "port": "dummy_instr_seed_en_o",
+              "con": "dummy_instr_seed_en"
+            },
+            {
+              "port": "dummy_instr_seed_o",
+              "con": "dummy_instr_seed"
+            },
+            {
+              "port": "icache_enable_o",
+              "con": "icache_enable"
+            },
+            {
+              "port": "csr_shadow_err_o",
+              "con": "csr_shadow_err"
+            },
+            {
+              "port": "ic_scr_key_valid_i",
+              "con": "ic_scr_key_valid_i"
+            },
+            {
+              "port": "mcounteren_writable_i",
+              "con": "mcounteren_writable_i"
+            },
+            {
+              "port": "csr_save_if_i",
+              "con": "csr_save_if"
+            },
+            {
+              "port": "csr_save_id_i",
+              "con": "csr_save_id"
+            },
+            {
+              "port": "csr_save_wb_i",
+              "con": "csr_save_wb"
+            },
+            {
+              "port": "csr_restore_mret_i",
+              "con": "csr_restore_mret_id"
+            },
+            {
+              "port": "csr_restore_dret_i",
+              "con": "csr_restore_dret_id"
+            },
+            {
+              "port": "csr_save_cause_i",
+              "con": "csr_save_cause"
+            },
+            {
+              "port": "csr_mepcc_clrtag_i",
+              "con": "csr_mepcc_clrtag"
+            },
+            {
+              "port": "csr_mcause_i",
+              "con": "exc_cause"
+            },
+            {
+              "port": "csr_mtval_i",
+              "con": "csr_mtval"
+            },
+            {
+              "port": "illegal_csr_insn_o",
+              "con": "illegal_csr_insn_id"
+            },
+            {
+              "port": "double_fault_seen_o",
+              "con": "double_fault_seen_o",
+              "comment": [
+                "performance counter related signals"
+              ]
+            },
+            {
+              "port": "instr_ret_i",
+              "con": "perf_instr_ret_wb"
+            },
+            {
+              "port": "instr_ret_compressed_i",
+              "con": "perf_instr_ret_compressed_wb"
+            },
+            {
+              "port": "instr_ret_spec_i",
+              "con": "perf_instr_ret_wb_spec"
+            },
+            {
+              "port": "instr_ret_compressed_spec_i",
+              "con": "perf_instr_ret_compressed_wb_spec"
+            },
+            {
+              "port": "iside_wait_i",
+              "con": "perf_iside_wait"
+            },
+            {
+              "port": "jump_i",
+              "con": "perf_jump"
+            },
+            {
+              "port": "branch_i",
+              "con": "perf_branch"
+            },
+            {
+              "port": "branch_taken_i",
+              "con": "perf_tbranch"
+            },
+            {
+              "port": "mem_load_i",
+              "con": "perf_load"
+            },
+            {
+              "port": "mem_store_i",
+              "con": "perf_store"
+            },
+            {
+              "port": "dside_wait_i",
+              "con": "perf_dside_wait"
+            },
+            {
+              "port": "mul_wait_i",
+              "con": "perf_mul_wait"
+            },
+            {
+              "port": "div_wait_i",
+              "con": "perf_div_wait"
+            },
+            {
+              "port": "cheriot_branch_req_i",
+              "con": "cheriot_branch_req"
+            },
+            {
+              "port": "cheriot_branch_target_i",
+              "con": "branch_target_ex_cheriot"
+            },
+            {
+              "port": "pcc_cap_i",
+              "con": "pcc_cap_w"
+            },
+            {
+              "port": "pcc_cap_o",
+              "con": "pcc_cap_r"
+            },
+            {
+              "port": "csr_dbg_tclr_fault_o",
+              "con": "csr_dbg_tclr_fault"
+            },
+            {
+              "port": "cheriot_fatal_err_o",
+              "con": "cheriot_fatal_err"
+            }
+          ]
+        },
+        {
+          "name": "pmp_i",
+          "module": "ibex_pmp",
+          "connections": [
+            {
+              "port": "csr_pmp_cfg_i",
+              "con": "csr_pmp_cfg"
+            },
+            {
+              "port": "csr_pmp_addr_i",
+              "con": "csr_pmp_addr"
+            },
+            {
+              "port": "csr_pmp_mseccfg_i",
+              "con": "csr_pmp_mseccfg"
+            },
+            {
+              "port": "debug_mode_i",
+              "con": "debug_mode"
+            },
+            {
+              "port": "priv_mode_i",
+              "con": "pmp_priv_lvl",
+              "comment": [
+                "Access checking channels"
+              ]
+            },
+            {
+              "port": "pmp_req_addr_i",
+              "con": "pmp_req_addr"
+            },
+            {
+              "port": "pmp_req_type_i",
+              "con": "pmp_req_type"
+            },
+            {
+              "port": "pmp_req_err_o",
+              "con": "pmp_req_err_raw"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

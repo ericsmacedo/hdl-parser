@@ -1,0 +1,152 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_multdiv_fast.sv",
+  "modules": [
+    {
+      "name": "ibex_multdiv_fast",
+      "params": [
+        {
+          "ptype": "ibex_pkg::rv32m_e",
+          "name": "RV32M",
+          "default": "ibex_pkg::RV32MFast"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mult_en_i",
+          "comment": [
+            "dynamic enable signal, for FSM control"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_en_i",
+          "comment": [
+            "dynamic enable signal, for FSM control"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mult_sel_i",
+          "comment": [
+            "static decoder output, for data muxes"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_sel_i",
+          "comment": [
+            "static decoder output, for data muxes"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::md_op_e",
+          "name": "operator_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "signed_mode_i",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "op_a_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "op_b_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "alu_adder_ext_i",
+          "dim": "[33:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "alu_adder_i",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "equal_to_zero_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_ind_timing_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alu_operand_a_o",
+          "dim": "[32:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alu_operand_b_o",
+          "dim": "[32:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "imd_val_q_i",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imd_val_d_o",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imd_val_we_o",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_ready_id_i"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_result_o",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "valid_o"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_pmp.sv",
+  "modules": [
+    {
+      "name": "ibex_pmp",
+      "params": [
+        {
+          "ptype": "int",
+          "name": "DmBaseAddr",
+          "default": "32'h1A110000"
+        },
+        {
+          "ptype": "int",
+          "name": "DmAddrMask",
+          "default": "32'h00000FFF",
+          "comment": [
+            "Granularity of NAPOT access,",
+            "0 = No restriction, 1 = 8 byte, 2 = 16 byte, 3 = 32 byte, etc."
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "PMPGranularity",
+          "default": "0",
+          "comment": [
+            "Number of access channels (e.g. i-side + d-side)"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "PMPNumChan",
+          "default": "2",
+          "comment": [
+            "Number of implemented regions"
+          ]
+        },
+        {
+          "ptype": "int",
+          "name": "PMPNumRegions",
+          "default": "4"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::pmp_cfg_t",
+          "name": "csr_pmp_cfg_i",
+          "dim_unpacked": "[PMPNumRegions]"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_pmp_addr_i",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMPNumRegions]"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::pmp_mseccfg_t",
+          "name": "csr_pmp_mseccfg_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_mode_i"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::priv_lvl_e",
+          "name": "priv_mode_i",
+          "dim_unpacked": "[PMPNumChan]",
+          "comment": [
+            "Access checking channels"
+          ]
+        },
+        {
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pmp_req_addr_i",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMPNumChan]"
+        },
+        {
+          "direction": "input",
+          "ptype": "ibex_pkg::pmp_req_e",
+          "name": "pmp_req_type_i",
+          "dim_unpacked": "[PMPNumChan]"
+        },
+        {
+          "direction": "output",
+          "ptype": "logic",
+          "name": "pmp_req_err_o",
+          "dim_unpacked": "[PMPNumChan]"
+        }
+      ]
+    }
+  ]
+}
