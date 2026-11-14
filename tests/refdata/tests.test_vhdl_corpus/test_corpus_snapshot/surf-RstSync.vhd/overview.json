@@ -9,53 +9,107 @@
           "default": "1 ns",
           "comment": [
             "-- Simulation FF output delay"
-          ]
+          ],
+          "loc": {
+            "line": 27,
+            "col": 7,
+            "end_line": 27,
+            "end_col": 59
+          }
         },
         {
           "name": "IN_POLARITY_G",
           "default": "'1'",
           "comment": [
             "-- 0 for active low rst, 1 for high"
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 7,
+            "end_line": 28,
+            "end_col": 58
+          }
         },
         {
           "name": "OUT_POLARITY_G",
-          "default": "'1'"
+          "default": "'1'",
+          "loc": {
+            "line": 29,
+            "col": 7,
+            "end_line": 29,
+            "end_col": 58
+          }
         },
         {
           "name": "BYPASS_SYNC_G",
           "default": "false",
           "comment": [
             "-- Bypass Synchronizer module for synchronous data configuration"
-          ]
+          ],
+          "loc": {
+            "line": 30,
+            "col": 7,
+            "end_line": 30,
+            "end_col": 60
+          }
         },
         {
           "name": "RELEASE_DELAY_G",
           "default": "3",
           "comment": [
             "-- Delay between deassertion of async and sync resets"
-          ]
+          ],
+          "loc": {
+            "line": 31,
+            "col": 7,
+            "end_line": 31,
+            "end_col": 56
+          }
         },
         {
           "name": "OUT_REG_RST_G",
-          "default": "true"
+          "default": "true",
+          "loc": {
+            "line": 32,
+            "col": 7,
+            "end_line": 32,
+            "end_col": 59
+          }
         }
       ],
       "ports": [
         {
           "direction": "in",
           "dtype": "sl",
-          "name": "clk"
+          "name": "clk",
+          "loc": {
+            "line": 34,
+            "col": 7,
+            "end_line": 34,
+            "end_col": 24
+          }
         },
         {
           "direction": "in",
           "dtype": "sl",
-          "name": "asyncRst"
+          "name": "asyncRst",
+          "loc": {
+            "line": 35,
+            "col": 7,
+            "end_line": 35,
+            "end_col": 24
+          }
         },
         {
           "direction": "out",
           "dtype": "sl",
-          "name": "syncRst"
+          "name": "syncRst",
+          "loc": {
+            "line": 36,
+            "col": 7,
+            "end_line": 36,
+            "end_col": 24
+          }
         }
       ],
       "insts": [
@@ -65,23 +119,59 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 57,
+                "col": 10,
+                "end_line": 57,
+                "end_col": 24
+              }
             },
             {
               "port": "rst",
-              "con": "asyncRst"
+              "con": "asyncRst",
+              "loc": {
+                "line": 58,
+                "col": 10,
+                "end_line": 58,
+                "end_col": 29
+              }
             },
             {
               "port": "dataIn",
-              "con": "not OUT_POLARITY_G"
+              "con": "not OUT_POLARITY_G",
+              "loc": {
+                "line": 59,
+                "col": 10,
+                "end_line": 59,
+                "end_col": 39
+              }
             },
             {
               "port": "dataOut",
-              "con": "syncInt"
+              "con": "syncInt",
+              "loc": {
+                "line": 60,
+                "col": 10,
+                "end_line": 60,
+                "end_col": 28
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 48,
+            "col": 4,
+            "end_line": 60,
+            "end_col": 30
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 25,
+        "col": 1,
+        "end_line": 37,
+        "end_col": 13
+      }
     }
   ]
 }

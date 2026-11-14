@@ -28,7 +28,7 @@ from test2ref import assert_refdata
 
 from hdl_parser import File, Module, Port, parse_file, parse_text
 
-from .conftest import EXAMPLES
+from .conftest import EXAMPLES, strip_locs
 
 
 @mark.parametrize("example", EXAMPLES)
@@ -81,10 +81,10 @@ endmodule
             ),
         ),
     )
-    assert ref == parse_text(text)
+    assert ref == strip_locs(parse_text(text))
     ref = File(path=file_path, modules=ref.modules)
-    assert ref == parse_text(text, file_path=file_path)
-    assert ref == parse_text(text, file_path=str(file_path))
+    assert ref == strip_locs(parse_text(text, file_path=file_path))
+    assert ref == strip_locs(parse_text(text, file_path=str(file_path)))
 
 
 LATIN1_VHDL = """\
@@ -108,7 +108,7 @@ def test_parse_file_latin1(tmp_path):
     assert [module.name for module in file.modules] == ["top"]
     (port,) = file.modules[0].ports
     assert port.name == "clk"
-    assert port.comment == ("-- 25 \u00b0C clock",)
+    assert strip_locs(port.comment) == ("-- 25 \u00b0C clock",)
 
 
 def test_parse_file_utf8(tmp_path):
@@ -118,7 +118,7 @@ def test_parse_file_utf8(tmp_path):
 
     file = parse_file(file_path)
 
-    assert file.modules[0].ports[0].comment == ("-- 25 \u00b0C clock",)
+    assert strip_locs(file.modules[0].ports[0].comment) == ("-- 25 \u00b0C clock",)
 
 
 def test_parse_file_encoding(tmp_path):
@@ -127,7 +127,7 @@ def test_parse_file_encoding(tmp_path):
     file_path.write_bytes(LATIN1_VHDL.encode("latin-1"))
 
     file = parse_file(file_path, encoding="latin-1")
-    assert file.modules[0].ports[0].comment == ("-- 25 \u00b0C clock",)
+    assert strip_locs(file.modules[0].ports[0].comment) == ("-- 25 \u00b0C clock",)
 
     with raises(UnicodeDecodeError):
         parse_file(file_path, encoding="utf-8")
@@ -143,9 +143,9 @@ def test_unknown_suffix(tmp_path):
 @mark.parametrize("text", ["", "// comment", "package p;\n  typedef logic [3:0] t;\nendpackage\n", "module"])
 def test_no_module(tmp_path, caplog, text):
     """Files Without Modules Are Fine."""
-    assert parse_text(text) == File(path=None, modules=())
+    assert strip_locs(parse_text(text)) == File(path=None, modules=())
     file_path = tmp_path / "file.sv"
     file_path.write_text(text)
     with caplog.at_level(logging.INFO):
-        assert parse_file(file_path) == File(path=file_path, modules=())
+        assert strip_locs(parse_file(file_path)) == File(path=file_path, modules=())
     assert f"{file_path}: no module found." in caplog.text

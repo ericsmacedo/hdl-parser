@@ -10,7 +10,13 @@
           "default": "2",
           "comment": [
             "/ Mode selection: 0 -> trailing zero, 1 -> leading zero"
-          ]
+          ],
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 35
+          }
         },
         {
           "ptype": "bit",
@@ -20,12 +26,24 @@
             "/ Dependent parameter. Do **not** change!",
             "/",
             "/ Width of the output signal with the zero count."
-          ]
+          ],
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 38
+          }
         },
         {
           "ptype": "int",
           "name": "CNT_WIDTH",
-          "default": "cf_math_pkg::idx_width(WIDTH)"
+          "default": "cf_math_pkg::idx_width(WIDTH)",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 67
+          }
         }
       ],
       "ports": [
@@ -36,7 +54,13 @@
           "dim": "[WIDTH-1:0]",
           "comment": [
             "/ Count of the leading / trailing zeros."
-          ]
+          ],
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 36
+          }
         },
         {
           "direction": "output",
@@ -45,21 +69,45 @@
           "dim": "[CNT_WIDTH-1:0]",
           "comment": [
             "/ Counter is empty: Asserted if all bits in in_i are zero."
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 37
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
-          "name": "empty_o"
+          "name": "empty_o",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 39
+          }
         }
       ],
       "localparams": [
         {
           "ptype": "int",
           "name": "NumLevels",
-          "default": "$clog2(WIDTH)"
+          "default": "$clog2(WIDTH)",
+          "loc": {
+            "line": 40,
+            "col": 5,
+            "end_line": 40,
+            "end_col": 55
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 15,
+        "col": 1,
+        "end_line": 113,
+        "end_col": 10
+      }
     }
   ]
 }

@@ -7,12 +7,24 @@
         {
           "ptype": "int",
           "name": "DW",
-          "default": "32"
+          "default": "32",
+          "loc": {
+            "line": 10,
+            "col": 3,
+            "end_line": 10,
+            "end_col": 41
+          }
         },
         {
           "ptype": "sw_access_e",
           "name": "SwAccess",
-          "default": "SwAccessRW"
+          "default": "SwAccessRW",
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 49
+          }
         },
         {
           "ptype": "logic",
@@ -21,18 +33,36 @@
           "default": "'0",
           "comment": [
             "reset value"
-          ]
+          ],
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 41
+          }
         },
         {
           "ptype": "bit",
           "name": "Mubi",
-          "default": "1'b0"
+          "default": "1'b0",
+          "loc": {
+            "line": 13,
+            "col": 3,
+            "end_line": 13,
+            "end_col": 43
+          }
         }
       ],
       "ports": [
         {
           "direction": "input",
-          "name": "clk_i"
+          "name": "clk_i",
+          "loc": {
+            "line": 15,
+            "col": 3,
+            "end_line": 15,
+            "end_col": 14
+          }
         },
         {
           "direction": "input",
@@ -40,11 +70,23 @@
           "comment": [
             "From SW: valid for RW, WO, W1C, W1S, W0C, RC",
             "In case of RC, Top connects Read Pulse to we"
-          ]
+          ],
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 15
+          }
         },
         {
           "direction": "input",
-          "name": "we"
+          "name": "we",
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 20
+          }
         },
         {
           "direction": "input",
@@ -52,11 +94,23 @@
           "dim": "[DW-1:0]",
           "comment": [
             "From HW: valid for HRW, HWO"
-          ]
+          ],
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 20
+          }
         },
         {
           "direction": "input",
-          "name": "de"
+          "name": "de",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 20
+          }
         },
         {
           "direction": "input",
@@ -64,12 +118,24 @@
           "dim": "[DW-1:0]",
           "comment": [
             "output to HW and Reg Read"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 19
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
-          "name": "qe"
+          "name": "qe",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 27
+          }
         },
         {
           "direction": "output",
@@ -80,19 +146,37 @@
             "ds and qs have slightly different timing.",
             "ds is the data that will be written into the flop,",
             "while qs is the current flop value exposed to software."
-          ]
+          ],
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 26
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "ds",
-          "dim": "[DW-1:0]"
+          "dim": "[DW-1:0]",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 27
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "qs",
-          "dim": "[DW-1:0]"
+          "dim": "[DW-1:0]",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 27
+          }
         }
       ],
       "insts": [
@@ -102,35 +186,89 @@
           "connections": [
             {
               "port": "we",
-              "con": "we"
+              "con": "we",
+              "loc": {
+                "line": 46,
+                "col": 5,
+                "end_line": 46,
+                "end_col": 8
+              }
             },
             {
               "port": "wd",
-              "con": "wd"
+              "con": "wd",
+              "loc": {
+                "line": 47,
+                "col": 5,
+                "end_line": 47,
+                "end_col": 8
+              }
             },
             {
               "port": "de",
-              "con": "de"
+              "con": "de",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 8
+              }
             },
             {
               "port": "d",
-              "con": "d"
+              "con": "d",
+              "loc": {
+                "line": 49,
+                "col": 5,
+                "end_line": 49,
+                "end_col": 7
+              }
             },
             {
               "port": "q",
-              "con": "q"
+              "con": "q",
+              "loc": {
+                "line": 50,
+                "col": 5,
+                "end_line": 50,
+                "end_col": 7
+              }
             },
             {
               "port": "wr_en",
-              "con": "wr_en"
+              "con": "wr_en",
+              "loc": {
+                "line": 51,
+                "col": 5,
+                "end_line": 51,
+                "end_col": 11
+              }
             },
             {
               "port": "wr_data",
-              "con": "wr_data"
+              "con": "wr_data",
+              "loc": {
+                "line": 52,
+                "col": 5,
+                "end_line": 52,
+                "end_col": 13
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 5
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 7,
+        "col": 1,
+        "end_line": 75,
+        "end_col": 10
+      }
     }
   ]
 }

@@ -57,6 +57,8 @@ from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
+from .._tokens import Segment  # noqa: TID252
+
 LOGGER = logging.getLogger(__name__)
 
 _MAX_DEPTH = 32
@@ -163,6 +165,11 @@ class _Preprocessor:
         self.expanding: list[str] = []
         self.including: list[Path] = []
         self.included: set[Path] = set()
+        # source map of the main output: the output, its segments, its length and the outermost macro call
+        self.main_out: list[str] | None = None
+        self.segments: list[Segment] = []
+        self.out_len = 0
+        self.call: Segment | None = None
 
     def process_file(self, file_path: Path, out: list[str] | None = None) -> None:
         """Process the file at `file_path`."""
@@ -186,14 +193,14 @@ class _Preprocessor:
             if kind in ("cond", "cname", "condend"):
                 # the state changes: flush
                 if out is not None and self.state != _INACTIVE:
-                    out.append(text[pos:start])
+                    self._emit(out, text[pos:start], pos)
                 pos = mat.end()
                 if kind == "condend":
                     directive = self._branch_end(mat.group("condend"), mat.group())
                 else:
                     directive = self._branch(mat.group("cond"), mat.group("cname"), mat.group(), text, pos)
                 if out is not None:
-                    out.append(directive)
+                    self._emit(out, directive, start, pos, "")
             elif self.state == _INACTIVE:
                 pass
             elif kind == "macro":
@@ -201,12 +208,17 @@ class _Preprocessor:
                 if result is not None:
                     expanded, end = result
                     if out is not None:
-                        out.append(text[pos:start])
+                        self._emit(out, text[pos:start], pos)
                     pos = end
                     # the replacement is processed like any other text
+                    outermost = out is not None and out is self.main_out and self.call is None
+                    if outermost:
+                        self.call = Segment(0, start, end, mat.group("macro"))
                     self.expanding.append(mat.group("macro"))
                     self.process(expanded, context, basedir, out)
                     self.expanding.pop()
+                    if outermost:
+                        self.call = None
             elif kind == "define":
                 self._define(mat.group("dname"), mat.group("define"), context)
             elif kind == "undef":
@@ -214,7 +226,29 @@ class _Preprocessor:
             else:
                 self._include(mat.group("include"), context, basedir)
         if out is not None and self.state != _INACTIVE:
-            out.append(text[pos:])
+            self._emit(out, text[pos:], pos)
+
+    def _emit(
+        self, out: list[str], chunk: str, src_start: int, src_end: int | None = None, macro: str | None = None
+    ) -> None:
+        """Append `chunk` to `out`. `chunk` is `text[src_start:]`, or replaces `text[src_start:src_end]`.
+
+        Only the main output is tracked by the source map.
+        """
+        out.append(chunk)
+        if out is not self.main_out or not chunk:
+            return
+        if self.call is not None:
+            # created by a macro call
+            seg = self.call._replace(start=self.out_len)
+        elif macro is None:
+            seg = Segment(self.out_len, src_start, src_start + len(chunk))
+        else:
+            seg = Segment(self.out_len, src_start, src_end if src_end is not None else src_start, macro)
+        segments = self.segments
+        if not segments or segments[-1][1:] != seg[1:] or seg.macro is None:
+            segments.append(seg)
+        self.out_len += len(chunk)
 
     # --- conditions ---
 
@@ -405,17 +439,34 @@ def expand(
     included by `text`. Included files are searched next to `file_path` and in `inc_dirs`.
     `macros` take precedence. Unknown macros are left untouched.
     """
+    return expand_mapped(text, macros, file_path, inc_dirs, resolve_ifdefs)[0]
+
+
+def expand_mapped(
+    text: str,
+    macros: Macros | None = None,
+    file_path: Path | None = None,
+    inc_dirs: Iterable[Path] = (),
+    resolve_ifdefs: bool = False,
+) -> tuple[str, list[Segment] | None]:
+    """Like [expand][hdl_parser._sv.preproc.expand], but also return the origin of the result within `text`.
+
+    The segments are `None`, if the result is `text` itself.
+    """
     if "`" not in text:
-        return text
+        return text, None
     preproc = _Preprocessor(macros, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
     out: list[str] = []
+    preproc.main_out = out
     if file_path:
         preproc.including.append(file_path.resolve())
         preproc.process(text, str(file_path), file_path.parent, out)
     else:
         preproc.process(text, "<text>", None, out)
     # most of the time, there is nothing to do
-    return text if len(out) == 1 else "".join(out)
+    if len(out) == 1:
+        return text, None
+    return "".join(out), preproc.segments
 
 
 def _parse_define(name: str, text: str) -> Macro | None:

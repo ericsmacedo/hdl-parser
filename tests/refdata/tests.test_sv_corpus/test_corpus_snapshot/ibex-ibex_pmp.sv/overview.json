@@ -7,7 +7,13 @@
         {
           "ptype": "int",
           "name": "DmBaseAddr",
-          "default": "32'h1A110000"
+          "default": "32'h1A110000",
+          "loc": {
+            "line": 8,
+            "col": 3,
+            "end_line": 8,
+            "end_col": 55
+          }
         },
         {
           "ptype": "int",
@@ -16,7 +22,13 @@
           "comment": [
             "Granularity of NAPOT access,",
             "0 = No restriction, 1 = 8 byte, 2 = 16 byte, 3 = 32 byte, etc."
-          ]
+          ],
+          "loc": {
+            "line": 9,
+            "col": 3,
+            "end_line": 9,
+            "end_col": 55
+          }
         },
         {
           "ptype": "int",
@@ -24,7 +36,13 @@
           "default": "0",
           "comment": [
             "Number of access channels (e.g. i-side + d-side)"
-          ]
+          ],
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 44
+          }
         },
         {
           "ptype": "int",
@@ -32,12 +50,24 @@
           "default": "2",
           "comment": [
             "Number of implemented regions"
-          ]
+          ],
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 44
+          }
         },
         {
           "ptype": "int",
           "name": "PMPNumRegions",
-          "default": "4"
+          "default": "4",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 44
+          }
         }
       ],
       "ports": [
@@ -45,24 +75,48 @@
           "direction": "input",
           "ptype": "ibex_pkg::pmp_cfg_t",
           "name": "csr_pmp_cfg_i",
-          "dim_unpacked": "[PMPNumRegions]"
+          "dim_unpacked": "[PMPNumRegions]",
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 67
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
           "name": "csr_pmp_addr_i",
           "dim": "[PMP_ADDR_MSB:0]",
-          "dim_unpacked": "[PMPNumRegions]"
+          "dim_unpacked": "[PMPNumRegions]",
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 67
+          }
         },
         {
           "direction": "input",
           "ptype": "ibex_pkg::pmp_mseccfg_t",
-          "name": "csr_pmp_mseccfg_i"
+          "name": "csr_pmp_mseccfg_i",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 51
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
-          "name": "debug_mode_i"
+          "name": "debug_mode_i",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 46
+          }
         },
         {
           "direction": "input",
@@ -71,28 +125,58 @@
           "dim_unpacked": "[PMPNumChan]",
           "comment": [
             "Access checking channels"
-          ]
+          ],
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 61
+          }
         },
         {
           "direction": "input",
           "ptype": "logic",
           "name": "pmp_req_addr_i",
           "dim": "[PMP_ADDR_MSB:0]",
-          "dim_unpacked": "[PMPNumChan]"
+          "dim_unpacked": "[PMPNumChan]",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 61
+          }
         },
         {
           "direction": "input",
           "ptype": "ibex_pkg::pmp_req_e",
           "name": "pmp_req_type_i",
-          "dim_unpacked": "[PMPNumChan]"
+          "dim_unpacked": "[PMPNumChan]",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 61
+          }
         },
         {
           "direction": "output",
           "ptype": "logic",
           "name": "pmp_req_err_o",
-          "dim_unpacked": "[PMPNumChan]"
+          "dim_unpacked": "[PMPNumChan]",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 61
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 7,
+        "col": 1,
+        "end_line": 263,
+        "end_col": 10
+      }
     }
   ]
 }

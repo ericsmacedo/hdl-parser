@@ -44,7 +44,7 @@ from collections.abc import Callable, Iterator
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
-from .._tokens import EOF, ID, KW, OPEN, Cursor, Token, Tokens  # noqa: TID252
+from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token, Tokens  # noqa: TID252
 from .tokenizer import tokenize
 
 _MODES = frozenset(("in", "out", "inout", "buffer", "linkage"))
@@ -79,20 +79,30 @@ class _Decl(NamedTuple):
     dim: str
     default: str
     comment: list[str]
+    loc: dm.Location
 
 
 class _Unit:
     """Entity With The Instances Of Its Architectures."""
 
-    __slots__ = ("depth", "generics", "insts", "name", "ports")
+    __slots__ = ("arch_loc", "depth", "generics", "insts", "loc", "name", "ports", "smap")
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, smap: SourceMap):
         self.name = name
+        self.smap = smap
         self.generics: list[_Decl] = []
         self.ports: list[_Decl] = []
         self.insts: list[dm.ModuleInstance] = []
         # nesting level of generate and block statements
         self.depth = 0
+        # entity, and first architecture
+        self.loc: dm.Location | None = None
+        self.arch_loc: dm.Location | None = None
+
+
+def _last(c: Cursor) -> Token:
+    """Last consumed token."""
+    return c.toks[c.pos - 1] if c.pos else c.toks[0]
 
 
 # --- generics and ports ---
@@ -116,9 +126,10 @@ def _parse_subtype(c: Cursor) -> tuple[str, str]:
     return dtype, dim
 
 
-def _parse_interface_decl(c: Cursor) -> list[_Decl]:
+def _parse_interface_decl(c: Cursor, smap: SourceMap) -> list[_Decl]:
     """Parse `[class] name {, name} : [mode] type [(constraint)] [:= default]`."""
     comment = c.start_comment()
+    first = c.peek()
     ptype = ""
     if c.peek().text in _OBJECT_CLASSES and c.peek().kind == KW:
         ptype = c.next().text
@@ -141,10 +152,13 @@ def _parse_interface_decl(c: Cursor) -> list[_Decl]:
         start = c.pos
         c.skip_until(_SEMI)
         default = c.text(start, c.pos).strip()
-    return [_Decl(name.text, direction, ptype, dtype, dim, default, comment) for name in names]
+    last = _last(c)
+    return [
+        _Decl(name.text, direction, ptype, dtype, dim, default, comment, smap.span(first, last, name)) for name in names
+    ]
 
 
-def _parse_interface_list(c: Cursor) -> list[_Decl]:
+def _parse_interface_list(c: Cursor, smap: SourceMap) -> list[_Decl]:
     """Parse the parenthesized, semicolon separated declarations of a generic or port clause."""
     decls: list[_Decl] = []
     c.next()
@@ -159,7 +173,7 @@ def _parse_interface_list(c: Cursor) -> list[_Decl]:
             c.next()
             continue
         pos = c.pos
-        decls += _parse_interface_decl(c)
+        decls += _parse_interface_decl(c, smap)
         if c.pos == pos:
             # unmatched closing bracket
             c.next()
@@ -178,7 +192,7 @@ def _parse_entity(c: Cursor, unit: _Unit) -> None:
                 return
             if tok.text in _MAPPED and c.peek(1).text == "(":
                 c.next()
-                decls = _parse_interface_list(c)
+                decls = _parse_interface_list(c, unit.smap)
                 if tok.text == "port":
                     unit.ports += decls
                 else:
@@ -202,9 +216,9 @@ def _is_component_instance(c: Cursor) -> bool:
     return toks[idx].text in _MAPPED and toks[idx].kind == KW and toks[idx + 1].text == "map"
 
 
-def _parse_port_map(c: Cursor) -> list[dm.Connection]:
+def _parse_port_map(c: Cursor, smap: SourceMap) -> list[dm.Connection]:
     """Parse the parenthesized connections of an instance."""
-    cons: list[tuple[str, str, list[str]]] = []
+    cons: list[tuple[str, str, list[str], dm.Location]] = []
     c.next()
     while True:
         tok = c.peek()
@@ -217,6 +231,7 @@ def _parse_port_map(c: Cursor) -> list[dm.Connection]:
             c.next()
             continue
         start = c.pos
+        first = c.peek()
         comment = c.start_comment()
         c.skip_until(_COMMA_OR_ASSOC)
         port = ""
@@ -229,13 +244,13 @@ def _parse_port_map(c: Cursor) -> list[dm.Connection]:
             # nothing we understand
             c.next()
             continue
-        cons.append((port, c.text(start, c.pos).strip(), comment))
+        cons.append((port, c.text(start, c.pos).strip(), comment, smap.span(first, _last(c))))
     c.sink = None
     # the comments are complete now
-    return [dm.Connection(port=port, con=con, comment=tuple(comment)) for port, con, comment in cons]
+    return [dm.Connection(port=port, con=con, comment=tuple(comment), loc=loc) for port, con, comment, loc in cons]
 
 
-def _parse_instance(c: Cursor, label: Token) -> dm.ModuleInstance | None:
+def _parse_instance(c: Cursor, label: Token, smap: SourceMap) -> dm.ModuleInstance | None:
     """Parse `name [(architecture)] [generic map (...)] [port map (...)];` behind `label : [entity|component]`."""
     if c.peek().kind != ID:
         return None
@@ -253,7 +268,7 @@ def _parse_instance(c: Cursor, label: Token) -> dm.ModuleInstance | None:
         if c.peek().text != "(":
             break
         if is_port:
-            cons += _parse_port_map(c)
+            cons += _parse_port_map(c, smap)
         else:
             c.skip_balanced()
     return dm.ModuleInstance(name=label.text, module=module.text, connections=tuple(cons))
@@ -270,11 +285,11 @@ def _parse_labeled(c: Cursor, unit: _Unit) -> None:
         c.next()
     elif tok.kind != ID or not _is_component_instance(c):
         return
-    inst = _parse_instance(c, label)
-    if inst:
-        unit.insts.append(inst)
+    inst = _parse_instance(c, label, unit.smap)
     c.skip_until(_SEMI)
     c.accept(";")
+    if inst:
+        unit.insts.append(inst.model_copy(update={"loc": unit.smap.span(label, _last(c), label)}))
 
 
 # --- architecture ---
@@ -477,26 +492,49 @@ def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens]]:
         yield toks[start], Tokens(tokens.source, [*toks[start:end], eof], comments, tokens.gaps)
 
 
+def _skip_end(c: Cursor) -> None:
+    """Consume everything up to and including `end ...;`."""
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF or (tok.kind == KW and tok.text == "end"):
+            break
+        if tok.text in OPEN:
+            c.skip_balanced()
+        else:
+            c.next()
+    c.skip_until(_SEMI)
+    c.accept(";")
+
+
 def _parse_units(tokens: Tokens) -> list[_Unit]:
     """Parse all entities and architectures."""
+    smap = SourceMap(tokens.source)
     units: dict[str, _Unit] = {}
     for tok, unit_tokens in _split(tokens):
         c = Cursor(unit_tokens)
         c.next()
-        name = c.next().text
+        name_tok = c.next()
         if tok.text == "architecture":
             c.next()
-            name = c.next().text
+            name_tok = c.next()
+        name = name_tok.text
         # identifiers are case insensitive
         key = name.lower()
         unit = units.get(key)
         if unit is None:
-            unit = units[key] = _Unit(name)
+            unit = units[key] = _Unit(name, smap)
         c.accept("is")
         if tok.text == "entity":
             _parse_entity(c, unit)
+            _skip_end(c)
+            if unit.loc is None:
+                unit.loc = smap.span(tok, _last(c), name_tok)
         else:
             _parse_architecture(c, unit)
+            c.skip_until(_SEMI)
+            c.accept(";")
+            if unit.arch_loc is None:
+                unit.arch_loc = smap.span(tok, _last(c), name_tok)
     return list(units.values())
 
 
@@ -515,6 +553,7 @@ def parse(text: str) -> tuple[dm.Module, ...]:
                     dim=decl.dim,
                     default=decl.default,
                     comment=tuple(decl.comment),
+                    loc=decl.loc,
                 )
                 for decl in unit.generics
             ),
@@ -526,10 +565,12 @@ def parse(text: str) -> tuple[dm.Module, ...]:
                     dtype=decl.dtype,
                     dim=decl.dim,
                     comment=tuple(decl.comment),
+                    loc=decl.loc,
                 )
                 for decl in unit.ports
             ),
             insts=tuple(unit.insts),
+            loc=unit.loc or unit.arch_loc,
         )
         for unit in _parse_units(tokenize(text))
     )

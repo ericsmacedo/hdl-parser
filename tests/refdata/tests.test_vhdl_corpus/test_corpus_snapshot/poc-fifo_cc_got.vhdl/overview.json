@@ -8,48 +8,90 @@
           "name": "D_BITS",
           "comment": [
             "-- Data Width"
-          ]
+          ],
+          "loc": {
+            "line": 100,
+            "col": 5,
+            "end_line": 100,
+            "end_col": 30
+          }
         },
         {
           "name": "MIN_DEPTH",
           "comment": [
             "-- Minimum FIFO Depth"
-          ]
+          ],
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 101,
+            "end_col": 30
+          }
         },
         {
           "name": "DATA_REG",
           "default": "false",
           "comment": [
             "-- Store Data Content in Registers"
-          ]
+          ],
+          "loc": {
+            "line": 102,
+            "col": 5,
+            "end_line": 102,
+            "end_col": 38
+          }
         },
         {
           "name": "STATE_REG",
           "default": "false",
           "comment": [
             "-- Registered Full/Empty Indicators"
-          ]
+          ],
+          "loc": {
+            "line": 103,
+            "col": 5,
+            "end_line": 103,
+            "end_col": 38
+          }
         },
         {
           "name": "OUTPUT_REG",
           "default": "false",
           "comment": [
             "-- Registered FIFO Output"
-          ]
+          ],
+          "loc": {
+            "line": 104,
+            "col": 5,
+            "end_line": 104,
+            "end_col": 38
+          }
         },
         {
           "name": "ESTATE_WR_BITS",
           "default": "0",
           "comment": [
             "-- Empty State Bits"
-          ]
+          ],
+          "loc": {
+            "line": 105,
+            "col": 5,
+            "end_line": 105,
+            "end_col": 34
+          }
         },
         {
           "name": "FSTATE_RD_BITS",
           "default": "0",
           "comment": [
             "-- Full State Bits"
-          ]
+          ],
+          "loc": {
+            "line": 106,
+            "col": 5,
+            "end_line": 106,
+            "end_col": 34
+          }
         }
       ],
       "ports": [
@@ -59,7 +101,13 @@
           "name": "rst",
           "comment": [
             "-- Writing Interface"
-          ]
+          ],
+          "loc": {
+            "line": 110,
+            "col": 5,
+            "end_line": 110,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -67,7 +115,13 @@
           "name": "clk",
           "comment": [
             "-- Writing Interface"
-          ]
+          ],
+          "loc": {
+            "line": 110,
+            "col": 5,
+            "end_line": 110,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -75,7 +129,13 @@
           "name": "put",
           "comment": [
             "-- Write Request"
-          ]
+          ],
+          "loc": {
+            "line": 113,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 30
+          }
         },
         {
           "direction": "in",
@@ -84,12 +144,24 @@
           "dim": "[D_BITS-1:0]",
           "comment": [
             "-- Input Data"
-          ]
+          ],
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 114,
+            "end_col": 56
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "full"
+          "name": "full",
+          "loc": {
+            "line": 115,
+            "col": 5,
+            "end_line": 115,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -98,7 +170,13 @@
           "dim": "[imax(0, ESTATE_WR_BITS-1):0]",
           "comment": [
             "-- Reading Interface"
-          ]
+          ],
+          "loc": {
+            "line": 116,
+            "col": 5,
+            "end_line": 116,
+            "end_col": 73
+          }
         },
         {
           "direction": "in",
@@ -106,7 +184,13 @@
           "name": "got",
           "comment": [
             "-- Read Completed"
-          ]
+          ],
+          "loc": {
+            "line": 119,
+            "col": 5,
+            "end_line": 119,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -115,18 +199,36 @@
           "dim": "[D_BITS-1:0]",
           "comment": [
             "-- Output Data"
-          ]
+          ],
+          "loc": {
+            "line": 120,
+            "col": 5,
+            "end_line": 120,
+            "end_col": 56
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic",
-          "name": "valid"
+          "name": "valid",
+          "loc": {
+            "line": 121,
+            "col": 5,
+            "end_line": 121,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "fstate_rd",
-          "dim": "[imax(0, FSTATE_RD_BITS-1):0]"
+          "dim": "[imax(0, FSTATE_RD_BITS-1):0]",
+          "loc": {
+            "line": 122,
+            "col": 5,
+            "end_line": 122,
+            "end_col": 73
+          }
         }
       ],
       "insts": [
@@ -136,13 +238,31 @@
           "connections": [
             {
               "port": "X",
-              "con": "IP0_slv"
+              "con": "IP0_slv",
+              "loc": {
+                "line": 174,
+                "col": 5,
+                "end_line": 174,
+                "end_col": 20
+              }
             },
             {
               "port": "Y",
-              "con": "IP1_slv"
+              "con": "IP1_slv",
+              "loc": {
+                "line": 175,
+                "col": 5,
+                "end_line": 175,
+                "end_col": 20
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 169,
+            "col": 3,
+            "end_line": 176,
+            "end_col": 6
+          }
         },
         {
           "name": "incOP",
@@ -150,13 +270,31 @@
           "connections": [
             {
               "port": "X",
-              "con": "OP0_slv"
+              "con": "OP0_slv",
+              "loc": {
+                "line": 183,
+                "col": 5,
+                "end_line": 183,
+                "end_col": 20
+              }
             },
             {
               "port": "Y",
-              "con": "OP1_slv"
+              "con": "OP1_slv",
+              "loc": {
+                "line": 184,
+                "col": 5,
+                "end_line": 184,
+                "end_col": 20
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 185,
+            "end_col": 6
+          }
         },
         {
           "name": "ram",
@@ -164,43 +302,109 @@
           "connections": [
             {
               "port": "wclk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 323,
+                "col": 9,
+                "end_line": 323,
+                "end_col": 22
+              }
             },
             {
               "port": "rclk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 324,
+                "col": 9,
+                "end_line": 324,
+                "end_col": 22
+              }
             },
             {
               "port": "wce",
-              "con": "'1'"
+              "con": "'1'",
+              "loc": {
+                "line": 325,
+                "col": 9,
+                "end_line": 325,
+                "end_col": 22
+              }
             },
             {
               "port": "wa",
-              "con": "wa"
+              "con": "wa",
+              "loc": {
+                "line": 327,
+                "col": 9,
+                "end_line": 327,
+                "end_col": 21
+              }
             },
             {
               "port": "we",
-              "con": "we"
+              "con": "we",
+              "loc": {
+                "line": 328,
+                "col": 9,
+                "end_line": 328,
+                "end_col": 21
+              }
             },
             {
               "port": "d",
-              "con": "din"
+              "con": "din",
+              "loc": {
+                "line": 329,
+                "col": 9,
+                "end_line": 329,
+                "end_col": 22
+              }
             },
             {
               "port": "ra",
-              "con": "ra"
+              "con": "ra",
+              "loc": {
+                "line": 331,
+                "col": 9,
+                "end_line": 331,
+                "end_col": 21
+              }
             },
             {
               "port": "rce",
-              "con": "re"
+              "con": "re",
+              "loc": {
+                "line": 332,
+                "col": 9,
+                "end_line": 332,
+                "end_col": 21
+              }
             },
             {
               "port": "q",
-              "con": "do"
+              "con": "do",
+              "loc": {
+                "line": 333,
+                "col": 9,
+                "end_line": 333,
+                "end_col": 21
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 317,
+            "col": 5,
+            "end_line": 334,
+            "end_col": 9
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 98,
+        "col": 1,
+        "end_line": 124,
+        "end_col": 24
+      }
     }
   ]
 }

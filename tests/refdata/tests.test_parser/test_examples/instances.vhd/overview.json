@@ -6,31 +6,61 @@
       "params": [
         {
           "name": "STAGES",
-          "default": "4"
+          "default": "4",
+          "loc": {
+            "line": 6,
+            "col": 5,
+            "end_line": 6,
+            "end_col": 27
+          }
         }
       ],
       "ports": [
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "clk"
+          "name": "clk",
+          "loc": {
+            "line": 9,
+            "col": 5,
+            "end_line": 9,
+            "end_col": 25
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic",
-          "name": "rst"
+          "name": "rst",
+          "loc": {
+            "line": 10,
+            "col": 5,
+            "end_line": 10,
+            "end_col": 25
+          }
         },
         {
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "din",
-          "dim": "[7:0]"
+          "dim": "[7:0]",
+          "loc": {
+            "line": 11,
+            "col": 5,
+            "end_line": 11,
+            "end_col": 44
+          }
         },
         {
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "dout",
-          "dim": "[7:0]"
+          "dim": "[7:0]",
+          "loc": {
+            "line": 12,
+            "col": 5,
+            "end_line": 12,
+            "end_col": 44
+          }
         }
       ],
       "insts": [
@@ -43,35 +73,83 @@
               "con": "clk",
               "comment": [
                 "-- Clock"
-              ]
+              ],
+              "loc": {
+                "line": 63,
+                "col": 7,
+                "end_line": 63,
+                "end_col": 18
+              }
             },
             {
               "port": "din",
               "con": "data(0)",
               "comment": [
                 "-- Input of the first stage"
-              ]
+              ],
+              "loc": {
+                "line": 64,
+                "col": 7,
+                "end_line": 64,
+                "end_col": 22
+              }
             },
             {
               "port": "dout",
-              "con": "data(1)"
+              "con": "data(1)",
+              "loc": {
+                "line": 65,
+                "col": 7,
+                "end_line": 65,
+                "end_col": 22
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 7
+          }
         },
         {
           "name": "u_second",
           "module": "stage",
           "connections": [
             {
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 70,
+                "col": 15,
+                "end_line": 70,
+                "end_col": 18
+              }
             },
             {
-              "con": "data(1)"
+              "con": "data(1)",
+              "loc": {
+                "line": 70,
+                "col": 20,
+                "end_line": 70,
+                "end_col": 27
+              }
             },
             {
-              "con": "data(2)"
+              "con": "data(2)",
+              "loc": {
+                "line": 70,
+                "col": 29,
+                "end_line": 70,
+                "end_col": 36
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 69,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 38
+          }
         },
         {
           "name": "u_third",
@@ -79,20 +157,44 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 76,
+                "col": 7,
+                "end_line": 76,
+                "end_col": 18
+              }
             },
             {
               "port": "din",
-              "con": "data(2)"
+              "con": "data(2)",
+              "loc": {
+                "line": 77,
+                "col": 7,
+                "end_line": 77,
+                "end_col": 22
+              }
             },
             {
               "port": "dout",
               "con": "open",
               "comment": [
                 "-- Unconnected"
-              ]
+              ],
+              "loc": {
+                "line": 78,
+                "col": 7,
+                "end_line": 78,
+                "end_col": 19
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 73,
+            "col": 3,
+            "end_line": 79,
+            "end_col": 7
+          }
         },
         {
           "name": "u_stage",
@@ -100,17 +202,41 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 85,
+                "col": 9,
+                "end_line": 85,
+                "end_col": 20
+              }
             },
             {
               "port": "din",
-              "con": "data(idx)"
+              "con": "data(idx)",
+              "loc": {
+                "line": 86,
+                "col": 9,
+                "end_line": 86,
+                "end_col": 26
+              }
             },
             {
               "port": "dout",
-              "con": "data(idx + 1)"
+              "con": "data(idx + 1)",
+              "loc": {
+                "line": 87,
+                "col": 9,
+                "end_line": 87,
+                "end_col": 30
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 83,
+            "col": 5,
+            "end_line": 88,
+            "end_col": 9
+          }
         },
         {
           "name": "u_parity",
@@ -118,13 +244,31 @@
           "connections": [
             {
               "port": "din",
-              "con": "data(STAGES)"
+              "con": "data(STAGES)",
+              "loc": {
+                "line": 94,
+                "col": 9,
+                "end_line": 94,
+                "end_col": 31
+              }
             },
             {
               "port": "parity",
-              "con": "par"
+              "con": "par",
+              "loc": {
+                "line": 95,
+                "col": 9,
+                "end_line": 95,
+                "end_col": 22
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 92,
+            "col": 5,
+            "end_line": 96,
+            "end_col": 9
+          }
         },
         {
           "name": "u_sync",
@@ -132,19 +276,49 @@
           "connections": [
             {
               "port": "clk",
-              "con": "clk"
+              "con": "clk",
+              "loc": {
+                "line": 105,
+                "col": 9,
+                "end_line": 105,
+                "end_col": 20
+              }
             },
             {
               "port": "din",
-              "con": "rst"
+              "con": "rst",
+              "loc": {
+                "line": 106,
+                "col": 9,
+                "end_line": 106,
+                "end_col": 20
+              }
             },
             {
               "port": "dout",
-              "con": "synced"
+              "con": "synced",
+              "loc": {
+                "line": 107,
+                "col": 9,
+                "end_line": 107,
+                "end_col": 23
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 103,
+            "col": 5,
+            "end_line": 108,
+            "end_col": 9
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 4,
+        "col": 1,
+        "end_line": 14,
+        "end_col": 22
+      }
     }
   ]
 }

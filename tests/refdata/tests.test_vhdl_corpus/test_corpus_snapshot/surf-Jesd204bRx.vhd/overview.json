@@ -6,7 +6,13 @@
       "params": [
         {
           "name": "TPD_G",
-          "default": "1 ns"
+          "default": "1 ns",
+          "loc": {
+            "line": 41,
+            "col": 7,
+            "end_line": 41,
+            "end_col": 27
+          }
         },
         {
           "name": "GEN_ASYNC_G",
@@ -14,7 +20,13 @@
           "comment": [
             "-- default false don't add synchronizer",
             "-- Test tx module instead of GTX"
-          ]
+          ],
+          "loc": {
+            "line": 43,
+            "col": 7,
+            "end_line": 43,
+            "end_col": 37
+          }
         },
         {
           "name": "TEST_G",
@@ -22,32 +34,62 @@
           "comment": [
             "-- JESD generics",
             "-- Number of bytes in a frame (1,2,or 4)"
-          ]
+          ],
+          "loc": {
+            "line": 46,
+            "col": 7,
+            "end_line": 46,
+            "end_col": 32
+          }
         },
         {
           "name": "F_G",
           "default": "2",
           "comment": [
             "-- Number of frames in a multi frame (32)"
-          ]
+          ],
+          "loc": {
+            "line": 51,
+            "col": 7,
+            "end_line": 51,
+            "end_col": 26
+          }
         },
         {
           "name": "K_G",
           "default": "32",
           "comment": [
             "-- Number of RX lanes (1 to 32)"
-          ]
+          ],
+          "loc": {
+            "line": 54,
+            "col": 7,
+            "end_line": 54,
+            "end_col": 27
+          }
         },
         {
           "name": "L_G",
-          "default": "2"
+          "default": "2",
+          "loc": {
+            "line": 57,
+            "col": 7,
+            "end_line": 57,
+            "end_col": 40
+          }
         }
       ],
       "ports": [
         {
           "direction": "in",
           "dtype": "sl",
-          "name": "axiClk"
+          "name": "axiClk",
+          "loc": {
+            "line": 62,
+            "col": 7,
+            "end_line": 62,
+            "end_col": 21
+          }
         },
         {
           "direction": "in",
@@ -55,22 +97,46 @@
           "name": "axiRst",
           "comment": [
             "-- AXI-Lite Register Interface"
-          ]
+          ],
+          "loc": {
+            "line": 63,
+            "col": 7,
+            "end_line": 63,
+            "end_col": 21
+          }
         },
         {
           "direction": "in",
           "dtype": "axilitereadmastertype",
-          "name": "axilReadMaster"
+          "name": "axilReadMaster",
+          "loc": {
+            "line": 66,
+            "col": 7,
+            "end_line": 66,
+            "end_col": 50
+          }
         },
         {
           "direction": "out",
           "dtype": "axilitereadslavetype",
-          "name": "axilReadSlave"
+          "name": "axilReadSlave",
+          "loc": {
+            "line": 67,
+            "col": 7,
+            "end_line": 67,
+            "end_col": 49
+          }
         },
         {
           "direction": "in",
           "dtype": "axilitewritemastertype",
-          "name": "axilWriteMaster"
+          "name": "axilWriteMaster",
+          "loc": {
+            "line": 68,
+            "col": 7,
+            "end_line": 68,
+            "end_col": 51
+          }
         },
         {
           "direction": "out",
@@ -78,13 +144,25 @@
           "name": "axilWriteSlave",
           "comment": [
             "-- Sample data output (Use if external data acquisition core is attached)"
-          ]
+          ],
+          "loc": {
+            "line": 69,
+            "col": 7,
+            "end_line": 69,
+            "end_col": 50
+          }
         },
         {
           "direction": "out",
           "dtype": "sampledataarray",
           "name": "sampleDataArr_o",
-          "dim": "[L_G-1:0]"
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 72,
+            "col": 7,
+            "end_line": 72,
+            "end_col": 60
+          }
         },
         {
           "direction": "out",
@@ -94,12 +172,24 @@
           "comment": [
             "-- JESD",
             "-- Clocks and Resets"
-          ]
+          ],
+          "loc": {
+            "line": 73,
+            "col": 7,
+            "end_line": 73,
+            "end_col": 48
+          }
         },
         {
           "direction": "in",
           "dtype": "sl",
-          "name": "devClk_i"
+          "name": "devClk_i",
+          "loc": {
+            "line": 77,
+            "col": 7,
+            "end_line": 77,
+            "end_col": 23
+          }
         },
         {
           "direction": "in",
@@ -107,7 +197,13 @@
           "name": "devRst_i",
           "comment": [
             "-- SYSREF for subclass 1 fixed latency"
-          ]
+          ],
+          "loc": {
+            "line": 78,
+            "col": 7,
+            "end_line": 78,
+            "end_col": 23
+          }
         },
         {
           "direction": "in",
@@ -115,7 +211,13 @@
           "name": "sysRef_i",
           "comment": [
             "-- SYSREF output for debug"
-          ]
+          ],
+          "loc": {
+            "line": 81,
+            "col": 7,
+            "end_line": 81,
+            "end_col": 23
+          }
         },
         {
           "direction": "out",
@@ -123,25 +225,49 @@
           "name": "sysRefDbg_o",
           "comment": [
             "-- Data and character inputs from GT (transceivers)"
-          ]
+          ],
+          "loc": {
+            "line": 84,
+            "col": 7,
+            "end_line": 84,
+            "end_col": 27
+          }
         },
         {
           "direction": "in",
           "dtype": "jesdgtrxlanetypearray",
           "name": "r_jesdGtRxArr",
-          "dim": "[L_G-1:0]"
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 87,
+            "col": 7,
+            "end_line": 87,
+            "end_col": 64
+          }
         },
         {
           "direction": "out",
           "dtype": "slv",
           "name": "gtRxReset_o",
-          "dim": "[L_G-1:0]"
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 88,
+            "col": 7,
+            "end_line": 88,
+            "end_col": 46
+          }
         },
         {
           "direction": "out",
           "dtype": "slv",
           "name": "rxPowerDown",
-          "dim": "[L_G-1:0]"
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 90,
+            "col": 7,
+            "end_line": 90,
+            "end_col": 44
+          }
         },
         {
           "direction": "out",
@@ -150,7 +276,13 @@
           "dim": "[L_G-1:0]",
           "comment": [
             "-- Synchronization output combined from all receivers"
-          ]
+          ],
+          "loc": {
+            "line": 91,
+            "col": 7,
+            "end_line": 91,
+            "end_col": 44
+          }
         },
         {
           "direction": "out",
@@ -158,19 +290,37 @@
           "name": "nSync_o",
           "comment": [
             "-- Debug signals"
-          ]
+          ],
+          "loc": {
+            "line": 94,
+            "col": 7,
+            "end_line": 94,
+            "end_col": 23
+          }
         },
         {
           "direction": "out",
           "dtype": "slv",
           "name": "pulse_o",
-          "dim": "[L_G-1:0]"
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 97,
+            "col": 7,
+            "end_line": 97,
+            "end_col": 40
+          }
         },
         {
           "direction": "out",
           "dtype": "slv",
           "name": "leds_o",
-          "dim": "[1:0]"
+          "dim": "[1:0]",
+          "loc": {
+            "line": 98,
+            "col": 7,
+            "end_line": 98,
+            "end_col": 36
+          }
         }
       ],
       "insts": [
@@ -180,116 +330,284 @@
           "connections": [
             {
               "port": "axiClk_i",
-              "con": "axiClk"
+              "con": "axiClk",
+              "loc": {
+                "line": 185,
+                "col": 10,
+                "end_line": 185,
+                "end_col": 35
+              }
             },
             {
               "port": "axiRst_i",
-              "con": "axiRst"
+              "con": "axiRst",
+              "loc": {
+                "line": 186,
+                "col": 10,
+                "end_line": 186,
+                "end_col": 35
+              }
             },
             {
               "port": "axilReadMaster",
-              "con": "axilReadMaster"
+              "con": "axilReadMaster",
+              "loc": {
+                "line": 187,
+                "col": 10,
+                "end_line": 187,
+                "end_col": 43
+              }
             },
             {
               "port": "axilReadSlave",
-              "con": "axilReadSlave"
+              "con": "axilReadSlave",
+              "loc": {
+                "line": 188,
+                "col": 10,
+                "end_line": 188,
+                "end_col": 42
+              }
             },
             {
               "port": "axilWriteMaster",
-              "con": "axilWriteMaster"
+              "con": "axilWriteMaster",
+              "loc": {
+                "line": 189,
+                "col": 10,
+                "end_line": 189,
+                "end_col": 44
+              }
             },
             {
               "port": "axilWriteSlave",
               "con": "axilWriteSlave",
               "comment": [
                 "-- DevClk domain"
-              ]
+              ],
+              "loc": {
+                "line": 190,
+                "col": 10,
+                "end_line": 190,
+                "end_col": 43
+              }
             },
             {
               "port": "devClk_i",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 193,
+                "col": 10,
+                "end_line": 193,
+                "end_col": 39
+              }
             },
             {
               "port": "devRst_i",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 194,
+                "col": 10,
+                "end_line": 194,
+                "end_col": 39
+              }
             },
             {
               "port": "sysrefRe_i",
-              "con": "s_sysrefRe"
+              "con": "s_sysrefRe",
+              "loc": {
+                "line": 195,
+                "col": 10,
+                "end_line": 195,
+                "end_col": 41
+              }
             },
             {
               "port": "statusRxArr_i",
-              "con": "s_statusRxArr"
+              "con": "s_statusRxArr",
+              "loc": {
+                "line": 196,
+                "col": 10,
+                "end_line": 196,
+                "end_col": 44
+              }
             },
             {
               "port": "rawData_i",
-              "con": "s_rawData"
+              "con": "s_rawData",
+              "loc": {
+                "line": 197,
+                "col": 10,
+                "end_line": 197,
+                "end_col": 40
+              }
             },
             {
               "port": "linkErrMask_o",
-              "con": "s_linkErrMask"
+              "con": "s_linkErrMask",
+              "loc": {
+                "line": 198,
+                "col": 10,
+                "end_line": 198,
+                "end_col": 44
+              }
             },
             {
               "port": "sysrefDlyRx_o",
-              "con": "s_sysrefDlyRx"
+              "con": "s_sysrefDlyRx",
+              "loc": {
+                "line": 199,
+                "col": 10,
+                "end_line": 199,
+                "end_col": 44
+              }
             },
             {
               "port": "enableRx_o",
-              "con": "s_enableRx"
+              "con": "s_enableRx",
+              "loc": {
+                "line": 200,
+                "col": 10,
+                "end_line": 200,
+                "end_col": 41
+              }
             },
             {
               "port": "replEnable_o",
-              "con": "s_replEnable"
+              "con": "s_replEnable",
+              "loc": {
+                "line": 201,
+                "col": 10,
+                "end_line": 201,
+                "end_col": 43
+              }
             },
             {
               "port": "scrEnable_o",
-              "con": "s_scrEnable"
+              "con": "s_scrEnable",
+              "loc": {
+                "line": 202,
+                "col": 10,
+                "end_line": 202,
+                "end_col": 42
+              }
             },
             {
               "port": "dlyTxArr_o",
-              "con": "s_dlyTxArr"
+              "con": "s_dlyTxArr",
+              "loc": {
+                "line": 203,
+                "col": 10,
+                "end_line": 203,
+                "end_col": 41
+              }
             },
             {
               "port": "alignTxArr_o",
-              "con": "s_alignTxArr"
+              "con": "s_alignTxArr",
+              "loc": {
+                "line": 204,
+                "col": 10,
+                "end_line": 204,
+                "end_col": 43
+              }
             },
             {
               "port": "subClass_o",
-              "con": "s_subClass"
+              "con": "s_subClass",
+              "loc": {
+                "line": 205,
+                "col": 10,
+                "end_line": 205,
+                "end_col": 41
+              }
             },
             {
               "port": "gtReset_o",
-              "con": "s_gtReset"
+              "con": "s_gtReset",
+              "loc": {
+                "line": 206,
+                "col": 10,
+                "end_line": 206,
+                "end_col": 40
+              }
             },
             {
               "port": "clearErr_o",
-              "con": "s_clearErr"
+              "con": "s_clearErr",
+              "loc": {
+                "line": 207,
+                "col": 10,
+                "end_line": 207,
+                "end_col": 41
+              }
             },
             {
               "port": "invertSync_o",
-              "con": "s_invertSync"
+              "con": "s_invertSync",
+              "loc": {
+                "line": 208,
+                "col": 10,
+                "end_line": 208,
+                "end_col": 43
+              }
             },
             {
               "port": "invertData_o",
-              "con": "s_invertData"
+              "con": "s_invertData",
+              "loc": {
+                "line": 209,
+                "col": 10,
+                "end_line": 209,
+                "end_col": 43
+              }
             },
             {
               "port": "thresoldHighArr_o",
-              "con": "s_thresoldHighArr"
+              "con": "s_thresoldHighArr",
+              "loc": {
+                "line": 210,
+                "col": 10,
+                "end_line": 210,
+                "end_col": 48
+              }
             },
             {
               "port": "thresoldLowArr_o",
-              "con": "s_thresoldLowArr"
+              "con": "s_thresoldLowArr",
+              "loc": {
+                "line": 211,
+                "col": 10,
+                "end_line": 211,
+                "end_col": 47
+              }
             },
             {
               "port": "rxPowerDown",
-              "con": "rxPowerDown"
+              "con": "rxPowerDown",
+              "loc": {
+                "line": 212,
+                "col": 10,
+                "end_line": 212,
+                "end_col": 42
+              }
             },
             {
               "port": "rxPolarity",
-              "con": "rxPolarity"
+              "con": "rxPolarity",
+              "loc": {
+                "line": 213,
+                "col": 10,
+                "end_line": 213,
+                "end_col": 41
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 180,
+            "col": 4,
+            "end_line": 213,
+            "end_col": 43
+          }
         },
         {
           "name": "JesdTxTest_INST",
@@ -297,45 +615,111 @@
           "connections": [
             {
               "port": "devClk_i",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 228,
+                "col": 16,
+                "end_line": 228,
+                "end_col": 41
+              }
             },
             {
               "port": "devRst_i",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 229,
+                "col": 16,
+                "end_line": 229,
+                "end_col": 41
+              }
             },
             {
               "port": "enable_i",
-              "con": "s_enableRx(i)"
+              "con": "s_enableRx(i)",
+              "loc": {
+                "line": 230,
+                "col": 16,
+                "end_line": 230,
+                "end_col": 46
+              }
             },
             {
               "port": "delay_i",
-              "con": "s_dlyTxArr(i)"
+              "con": "s_dlyTxArr(i)",
+              "loc": {
+                "line": 231,
+                "col": 16,
+                "end_line": 231,
+                "end_col": 46
+              }
             },
             {
               "port": "align_i",
-              "con": "s_alignTxArr(i)"
+              "con": "s_alignTxArr(i)",
+              "loc": {
+                "line": 232,
+                "col": 16,
+                "end_line": 232,
+                "end_col": 48
+              }
             },
             {
               "port": "lmfc_i",
-              "con": "s_lmfc"
+              "con": "s_lmfc",
+              "loc": {
+                "line": 233,
+                "col": 16,
+                "end_line": 233,
+                "end_col": 39
+              }
             },
             {
               "port": "nSync_i",
-              "con": "r.nSyncAnyD1"
+              "con": "r.nSyncAnyD1",
+              "loc": {
+                "line": 234,
+                "col": 16,
+                "end_line": 234,
+                "end_col": 45
+              }
             },
             {
               "port": "r_jesdGtRx",
-              "con": "s_jesdGtRxArr(i)"
+              "con": "s_jesdGtRxArr(i)",
+              "loc": {
+                "line": 235,
+                "col": 16,
+                "end_line": 235,
+                "end_col": 49
+              }
             },
             {
               "port": "subClass_i",
-              "con": "s_subClass"
+              "con": "s_subClass",
+              "loc": {
+                "line": 236,
+                "col": 16,
+                "end_line": 236,
+                "end_col": 43
+              }
             },
             {
               "port": "txDataValid_o",
-              "con": "open"
+              "con": "open",
+              "loc": {
+                "line": 237,
+                "col": 16,
+                "end_line": 237,
+                "end_col": 37
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 224,
+            "col": 10,
+            "end_line": 237,
+            "end_col": 39
+          }
         },
         {
           "name": "Synchronizer_INST",
@@ -343,21 +727,51 @@
           "connections": [
             {
               "port": "clk",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 265,
+                "col": 13,
+                "end_line": 265,
+                "end_col": 32
+              }
             },
             {
               "port": "rst",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 266,
+                "col": 13,
+                "end_line": 266,
+                "end_col": 32
+              }
             },
             {
               "port": "dataIn",
-              "con": "sysref_i"
+              "con": "sysref_i",
+              "loc": {
+                "line": 267,
+                "col": 13,
+                "end_line": 267,
+                "end_col": 32
+              }
             },
             {
               "port": "dataOut",
-              "con": "s_sysrefSync"
+              "con": "s_sysrefSync",
+              "loc": {
+                "line": 268,
+                "col": 13,
+                "end_line": 268,
+                "end_col": 36
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 255,
+            "col": 7,
+            "end_line": 268,
+            "end_col": 38
+          }
         },
         {
           "name": "U_SysrefDly",
@@ -365,25 +779,61 @@
           "connections": [
             {
               "port": "clk",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 287,
+                "col": 10,
+                "end_line": 287,
+                "end_col": 29
+              }
             },
             {
               "port": "rst",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 288,
+                "col": 10,
+                "end_line": 288,
+                "end_col": 29
+              }
             },
             {
               "port": "delay",
-              "con": "s_sysrefDlyRx"
+              "con": "s_sysrefDlyRx",
+              "loc": {
+                "line": 289,
+                "col": 10,
+                "end_line": 289,
+                "end_col": 34
+              }
             },
             {
               "port": "din(0)",
-              "con": "s_sysrefSync"
+              "con": "s_sysrefSync",
+              "loc": {
+                "line": 290,
+                "col": 10,
+                "end_line": 290,
+                "end_col": 33
+              }
             },
             {
               "port": "dout(0)",
-              "con": "s_sysrefD"
+              "con": "s_sysrefD",
+              "loc": {
+                "line": 291,
+                "col": 10,
+                "end_line": 291,
+                "end_col": 30
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 281,
+            "col": 4,
+            "end_line": 291,
+            "end_col": 32
+          }
         },
         {
           "name": "LmfcGen_INST",
@@ -391,38 +841,80 @@
           "connections": [
             {
               "port": "clk",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 300,
+                "col": 10,
+                "end_line": 300,
+                "end_col": 32
+              }
             },
             {
               "port": "rst",
               "con": "devRst_i",
               "comment": [
                 "--nSync_i     => '0', -- r.nSyncAnyD1,"
-              ]
+              ],
+              "loc": {
+                "line": 301,
+                "col": 10,
+                "end_line": 301,
+                "end_col": 32
+              }
             },
             {
               "port": "nSync_i",
-              "con": "r.nSyncAnyD1"
+              "con": "r.nSyncAnyD1",
+              "loc": {
+                "line": 303,
+                "col": 10,
+                "end_line": 303,
+                "end_col": 36
+              }
             },
             {
               "port": "sysref_i",
               "con": "s_sysrefD",
               "comment": [
                 "-- Delayed SYSREF IN"
-              ]
+              ],
+              "loc": {
+                "line": 304,
+                "col": 10,
+                "end_line": 304,
+                "end_col": 33
+              }
             },
             {
               "port": "sysrefRe_o",
               "con": "s_sysrefRe",
               "comment": [
                 "-- Rising-edge of SYSREF OUT"
-              ]
+              ],
+              "loc": {
+                "line": 305,
+                "col": 10,
+                "end_line": 305,
+                "end_col": 34
+              }
             },
             {
               "port": "lmfc_o",
-              "con": "s_lmfc"
+              "con": "s_lmfc",
+              "loc": {
+                "line": 306,
+                "col": 10,
+                "end_line": 306,
+                "end_col": 30
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 294,
+            "col": 4,
+            "end_line": 306,
+            "end_col": 32
+          }
         },
         {
           "name": "JesdRx_INST",
@@ -430,80 +922,194 @@
           "connections": [
             {
               "port": "devClk_i",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 320,
+                "col": 13,
+                "end_line": 320,
+                "end_col": 38
+              }
             },
             {
               "port": "devRst_i",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 321,
+                "col": 13,
+                "end_line": 321,
+                "end_col": 38
+              }
             },
             {
               "port": "sysRef_i",
               "con": "s_sysrefRe",
               "comment": [
                 "-- Rising-edge of SYSREF"
-              ]
+              ],
+              "loc": {
+                "line": 322,
+                "col": 13,
+                "end_line": 322,
+                "end_col": 40
+              }
             },
             {
               "port": "enable_i",
-              "con": "s_enableRx(i)"
+              "con": "s_enableRx(i)",
+              "loc": {
+                "line": 323,
+                "col": 13,
+                "end_line": 323,
+                "end_col": 43
+              }
             },
             {
               "port": "clearErr_i",
-              "con": "s_clearErr"
+              "con": "s_clearErr",
+              "loc": {
+                "line": 324,
+                "col": 13,
+                "end_line": 324,
+                "end_col": 40
+              }
             },
             {
               "port": "linkErrMask_i",
-              "con": "s_linkErrMask"
+              "con": "s_linkErrMask",
+              "loc": {
+                "line": 325,
+                "col": 13,
+                "end_line": 325,
+                "end_col": 43
+              }
             },
             {
               "port": "replEnable_i",
-              "con": "s_replEnable"
+              "con": "s_replEnable",
+              "loc": {
+                "line": 326,
+                "col": 13,
+                "end_line": 326,
+                "end_col": 42
+              }
             },
             {
               "port": "scrEnable_i",
-              "con": "s_scrEnable"
+              "con": "s_scrEnable",
+              "loc": {
+                "line": 327,
+                "col": 13,
+                "end_line": 327,
+                "end_col": 41
+              }
             },
             {
               "port": "inv_i",
-              "con": "s_invertData(i)"
+              "con": "s_invertData(i)",
+              "loc": {
+                "line": 328,
+                "col": 13,
+                "end_line": 328,
+                "end_col": 45
+              }
             },
             {
               "port": "status_o",
-              "con": "s_statusRxArr(i)"
+              "con": "s_statusRxArr(i)",
+              "loc": {
+                "line": 329,
+                "col": 13,
+                "end_line": 329,
+                "end_col": 46
+              }
             },
             {
               "port": "r_jesdGtRx",
-              "con": "s_jesdGtRxArr(i)"
+              "con": "s_jesdGtRxArr(i)",
+              "loc": {
+                "line": 330,
+                "col": 13,
+                "end_line": 330,
+                "end_col": 46
+              }
             },
             {
               "port": "lmfc_i",
-              "con": "s_lmfc"
+              "con": "s_lmfc",
+              "loc": {
+                "line": 331,
+                "col": 13,
+                "end_line": 331,
+                "end_col": 36
+              }
             },
             {
               "port": "nSyncAnyD1_i",
-              "con": "r.nSyncAnyD1"
+              "con": "r.nSyncAnyD1",
+              "loc": {
+                "line": 332,
+                "col": 13,
+                "end_line": 332,
+                "end_col": 42
+              }
             },
             {
               "port": "nSyncAny_i",
-              "con": "s_nSyncAny"
+              "con": "s_nSyncAny",
+              "loc": {
+                "line": 333,
+                "col": 13,
+                "end_line": 333,
+                "end_col": 40
+              }
             },
             {
               "port": "nSync_o",
-              "con": "s_nSyncVec(i)"
+              "con": "s_nSyncVec(i)",
+              "loc": {
+                "line": 334,
+                "col": 13,
+                "end_line": 334,
+                "end_col": 43
+              }
             },
             {
               "port": "dataValid_o",
-              "con": "s_dataValidVec(i)"
+              "con": "s_dataValidVec(i)",
+              "loc": {
+                "line": 335,
+                "col": 13,
+                "end_line": 335,
+                "end_col": 47
+              }
             },
             {
               "port": "sampleData_o",
-              "con": "s_sampleDataArr(i)"
+              "con": "s_sampleDataArr(i)",
+              "loc": {
+                "line": 336,
+                "col": 13,
+                "end_line": 336,
+                "end_col": 48
+              }
             },
             {
               "port": "subClass_i",
-              "con": "s_subClass"
+              "con": "s_subClass",
+              "loc": {
+                "line": 337,
+                "col": 13,
+                "end_line": 337,
+                "end_col": 40
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 314,
+            "col": 7,
+            "end_line": 337,
+            "end_col": 42
+          }
         },
         {
           "name": "Pulser_INST",
@@ -511,35 +1117,89 @@
           "connections": [
             {
               "port": "clk",
-              "con": "devClk_i"
+              "con": "devClk_i",
+              "loc": {
+                "line": 347,
+                "col": 13,
+                "end_line": 347,
+                "end_col": 39
+              }
             },
             {
               "port": "rst",
-              "con": "devRst_i"
+              "con": "devRst_i",
+              "loc": {
+                "line": 348,
+                "col": 13,
+                "end_line": 348,
+                "end_col": 39
+              }
             },
             {
               "port": "enable_i",
-              "con": "s_dataValidVec(i)"
+              "con": "s_dataValidVec(i)",
+              "loc": {
+                "line": 349,
+                "col": 13,
+                "end_line": 349,
+                "end_col": 48
+              }
             },
             {
               "port": "thresoldLow_i",
-              "con": "s_thresoldLowArr(i)"
+              "con": "s_thresoldLowArr(i)",
+              "loc": {
+                "line": 350,
+                "col": 13,
+                "end_line": 350,
+                "end_col": 50
+              }
             },
             {
               "port": "thresoldHigh_i",
-              "con": "s_thresoldHighArr(i)"
+              "con": "s_thresoldHighArr(i)",
+              "loc": {
+                "line": 351,
+                "col": 13,
+                "end_line": 351,
+                "end_col": 51
+              }
             },
             {
               "port": "sampleData_i",
-              "con": "s_sampleDataArr(i)"
+              "con": "s_sampleDataArr(i)",
+              "loc": {
+                "line": 352,
+                "col": 13,
+                "end_line": 352,
+                "end_col": 49
+              }
             },
             {
               "port": "testSig_o",
-              "con": "pulse_o(i)"
+              "con": "pulse_o(i)",
+              "loc": {
+                "line": 353,
+                "col": 13,
+                "end_line": 353,
+                "end_col": 41
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 342,
+            "col": 7,
+            "end_line": 353,
+            "end_col": 43
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 39,
+        "col": 1,
+        "end_line": 99,
+        "end_col": 16
+      }
     }
   ]
 }

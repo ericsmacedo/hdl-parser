@@ -29,6 +29,8 @@ from hdl_parser._tokens import ID, KW, NUM, OP, STR
 from hdl_parser._vhdl.tokenizer import tokenize
 from hdl_parser.datamodel import Connection
 
+from .conftest import strip_locs
+
 
 def _parse(text: str) -> Module:
     (module,) = parse_text(text, lang="vhdl").modules
@@ -109,7 +111,7 @@ def test_ports():
         -- last
         """
     )
-    assert ports == (
+    assert strip_locs(ports) == (
         Port(direction="in", ptype="signal", dtype="std_logic", name="a", comment=("-- first", "-- second")),
         Port(direction="in", ptype="signal", dtype="std_logic", name="b", comment=("-- first", "-- second")),
         Port(direction="out", dtype="std_logic_vector", name="c", dim="[W-1:0]"),
@@ -133,7 +135,7 @@ def test_params():
         E : string := ";"
         """
     )
-    assert params == (
+    assert strip_locs(params) == (
         Param(name="A"),
         Param(name="B", ptype="constant", default="2", comment=("-- two",)),
         Param(name="C", ptype="constant", default="2", comment=("-- two",)),
@@ -155,7 +157,7 @@ def test_entity():
         end entity top;
         """
     )
-    assert module == Module(
+    assert strip_locs(module) == Module(
         name="top",
         params=(Param(name="W", default="8"),),
         ports=(Port(direction="in", dtype="std_logic", name="a"),),
@@ -202,7 +204,7 @@ def test_instances():
         end architecture rtl;
         """
     )
-    assert module.insts == (
+    assert strip_locs(module.insts) == (
         ModuleInstance(
             name="u0",
             module="sub",
@@ -368,7 +370,7 @@ def test_units():
 @mark.parametrize("text", ["", "entity", "entity top", "library ieee; package p is end;"])
 def test_no_module(text):
     """Nothing To Find."""
-    assert parse_text(text, lang="vhdl") == File(path=None, modules=())
+    assert strip_locs(parse_text(text, lang="vhdl")) == File(path=None, modules=())
 
 
 @mark.parametrize(
@@ -382,4 +384,4 @@ def test_no_module(text):
 )
 def test_empty(text):
     """Empty Units."""
-    assert _parse(text) == Module(name="top")
+    assert strip_locs(_parse(text)) == Module(name="top")

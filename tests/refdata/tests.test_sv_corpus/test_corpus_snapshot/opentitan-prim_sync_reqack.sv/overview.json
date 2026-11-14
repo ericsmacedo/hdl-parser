@@ -10,7 +10,13 @@
           "default": "1'b0",
           "comment": [
             "Enable reset-related assertion checks, disabled by default."
-          ]
+          ],
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 33
+          }
         },
         {
           "ptype": "bit",
@@ -20,7 +26,13 @@
             "By Default, the faster NRZ handshake protocol",
             "(EnRzHs = 0) is used. Enable the RZ handshake protocol",
             "if the FSMs need to be partial-reset-safe."
-          ]
+          ],
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 30
+          }
         }
       ],
       "ports": [
@@ -29,28 +41,52 @@
           "name": "clk_src_i",
           "comment": [
             "REQ side, SRC domain"
-          ]
+          ],
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 19
+          }
         },
         {
           "direction": "input",
           "name": "rst_src_ni",
           "comment": [
             "REQ side, SRC domain"
-          ]
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 20
+          }
         },
         {
           "direction": "input",
           "name": "clk_dst_i",
           "comment": [
             "ACK side, DST domain"
-          ]
+          ],
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 19
+          }
         },
         {
           "direction": "input",
           "name": "rst_dst_ni",
           "comment": [
             "ACK side, DST domain"
-          ]
+          ],
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 20
+          }
         },
         {
           "direction": "input",
@@ -58,7 +94,13 @@
           "name": "req_chk_i",
           "comment": [
             "Used for gating assertions. Drive to 1 during normal operation."
-          ]
+          ],
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 25
+          }
         },
         {
           "direction": "input",
@@ -66,7 +108,13 @@
           "name": "src_req_i",
           "comment": [
             "REQ side, SRC domain"
-          ]
+          ],
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 25
+          }
         },
         {
           "direction": "output",
@@ -74,7 +122,13 @@
           "name": "src_ack_o",
           "comment": [
             "REQ side, SRC domain"
-          ]
+          ],
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 25
+          }
         },
         {
           "direction": "output",
@@ -82,7 +136,13 @@
           "name": "dst_req_o",
           "comment": [
             "ACK side, DST domain"
-          ]
+          ],
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 25
+          }
         },
         {
           "direction": "input",
@@ -90,7 +150,13 @@
           "name": "dst_ack_i",
           "comment": [
             "ACK side, DST domain"
-          ]
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 25
+          }
         }
       ],
       "insts": [
@@ -100,21 +166,51 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_src_i"
+              "con": "clk_src_i",
+              "loc": {
+                "line": 109,
+                "col": 7,
+                "end_line": 109,
+                "end_col": 26
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_src_ni"
+              "con": "rst_src_ni",
+              "loc": {
+                "line": 110,
+                "col": 7,
+                "end_line": 110,
+                "end_col": 27
+              }
             },
             {
               "port": "d_i",
-              "con": "dst_ack"
+              "con": "dst_ack",
+              "loc": {
+                "line": 111,
+                "col": 7,
+                "end_line": 111,
+                "end_col": 24
+              }
             },
             {
               "port": "q_o",
-              "con": "src_ack"
+              "con": "src_ack",
+              "loc": {
+                "line": 112,
+                "col": 7,
+                "end_line": 112,
+                "end_col": 24
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 106,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 7
+          }
         },
         {
           "name": "req_sync",
@@ -122,21 +218,51 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_dst_i"
+              "con": "clk_dst_i",
+              "loc": {
+                "line": 161,
+                "col": 7,
+                "end_line": 161,
+                "end_col": 26
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_dst_ni"
+              "con": "rst_dst_ni",
+              "loc": {
+                "line": 162,
+                "col": 7,
+                "end_line": 162,
+                "end_col": 27
+              }
             },
             {
               "port": "d_i",
-              "con": "src_req"
+              "con": "src_req",
+              "loc": {
+                "line": 163,
+                "col": 7,
+                "end_line": 163,
+                "end_col": 24
+              }
             },
             {
               "port": "q_o",
-              "con": "dst_req"
+              "con": "dst_req",
+              "loc": {
+                "line": 164,
+                "col": 7,
+                "end_line": 164,
+                "end_col": 24
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 158,
+            "col": 5,
+            "end_line": 165,
+            "end_col": 7
+          }
         },
         {
           "name": "req_sync",
@@ -144,21 +270,51 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_dst_i"
+              "con": "clk_dst_i",
+              "loc": {
+                "line": 201,
+                "col": 7,
+                "end_line": 201,
+                "end_col": 26
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_dst_ni"
+              "con": "rst_dst_ni",
+              "loc": {
+                "line": 202,
+                "col": 7,
+                "end_line": 202,
+                "end_col": 27
+              }
             },
             {
               "port": "d_i",
-              "con": "src_req_q"
+              "con": "src_req_q",
+              "loc": {
+                "line": 203,
+                "col": 7,
+                "end_line": 203,
+                "end_col": 26
+              }
             },
             {
               "port": "q_o",
-              "con": "dst_req"
+              "con": "dst_req",
+              "loc": {
+                "line": 204,
+                "col": 7,
+                "end_line": 204,
+                "end_col": 24
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 198,
+            "col": 5,
+            "end_line": 205,
+            "end_col": 7
+          }
         },
         {
           "name": "ack_sync",
@@ -166,23 +322,59 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_src_i"
+              "con": "clk_src_i",
+              "loc": {
+                "line": 211,
+                "col": 7,
+                "end_line": 211,
+                "end_col": 26
+              }
             },
             {
               "port": "rst_ni",
-              "con": "rst_src_ni"
+              "con": "rst_src_ni",
+              "loc": {
+                "line": 212,
+                "col": 7,
+                "end_line": 212,
+                "end_col": 27
+              }
             },
             {
               "port": "d_i",
-              "con": "dst_ack_q"
+              "con": "dst_ack_q",
+              "loc": {
+                "line": 213,
+                "col": 7,
+                "end_line": 213,
+                "end_col": 26
+              }
             },
             {
               "port": "q_o",
-              "con": "src_ack"
+              "con": "src_ack",
+              "loc": {
+                "line": 214,
+                "col": 7,
+                "end_line": 214,
+                "end_col": 24
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 208,
+            "col": 5,
+            "end_line": 215,
+            "end_col": 7
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 34,
+        "col": 1,
+        "end_line": 404,
+        "end_col": 10
+      }
     }
   ]
 }

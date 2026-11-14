@@ -8,7 +8,13 @@
           "name": "NUM_HARTS",
           "comment": [
             "-- number of physical CPU cores"
-          ]
+          ],
+          "loc": {
+            "line": 23,
+            "col": 5,
+            "end_line": 23,
+            "end_col": 37
+          }
         }
       ],
       "ports": [
@@ -18,7 +24,13 @@
           "name": "clk_i",
           "comment": [
             "-- global clock line"
-          ]
+          ],
+          "loc": {
+            "line": 26,
+            "col": 5,
+            "end_line": 26,
+            "end_col": 31
+          }
         },
         {
           "direction": "in",
@@ -26,7 +38,13 @@
           "name": "rstn_i",
           "comment": [
             "-- global reset line, low-active, async"
-          ]
+          ],
+          "loc": {
+            "line": 27,
+            "col": 5,
+            "end_line": 27,
+            "end_col": 31
+          }
         },
         {
           "direction": "in",
@@ -34,7 +52,13 @@
           "name": "bus_req_i",
           "comment": [
             "-- bus request"
-          ]
+          ],
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -42,7 +66,13 @@
           "name": "bus_rsp_o",
           "comment": [
             "-- bus response"
-          ]
+          ],
+          "loc": {
+            "line": 29,
+            "col": 5,
+            "end_line": 29,
+            "end_col": 30
+          }
         },
         {
           "direction": "out",
@@ -51,7 +81,13 @@
           "dim": "[63:0]",
           "comment": [
             "-- current system time (HI/LO are not synchronized!)"
-          ]
+          ],
+          "loc": {
+            "line": 30,
+            "col": 5,
+            "end_line": 30,
+            "end_col": 51
+          }
         },
         {
           "direction": "out",
@@ -60,7 +96,13 @@
           "dim": "[NUM_HARTS-1:0]",
           "comment": [
             "-- machine timer interrupt"
-          ]
+          ],
+          "loc": {
+            "line": 31,
+            "col": 5,
+            "end_line": 31,
+            "end_col": 60
+          }
         },
         {
           "direction": "out",
@@ -69,7 +111,13 @@
           "dim": "[NUM_HARTS-1:0]",
           "comment": [
             "-- machine software interrupt"
-          ]
+          ],
+          "loc": {
+            "line": 32,
+            "col": 5,
+            "end_line": 32,
+            "end_col": 60
+          }
         }
       ],
       "insts": [
@@ -79,39 +127,87 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 83,
+                "col": 5,
+                "end_line": 83,
+                "end_col": 20
+              }
             },
             {
               "port": "rstn_i",
-              "con": "rstn_i"
+              "con": "rstn_i",
+              "loc": {
+                "line": 84,
+                "col": 5,
+                "end_line": 84,
+                "end_col": 21
+              }
             },
             {
               "port": "inc_i",
               "con": "'1'",
               "comment": [
                 "-- permanent increment"
-              ]
+              ],
+              "loc": {
+                "line": 85,
+                "col": 5,
+                "end_line": 85,
+                "end_col": 18
+              }
             },
             {
               "port": "we_i",
-              "con": "mtime_we"
+              "con": "mtime_we",
+              "loc": {
+                "line": 86,
+                "col": 5,
+                "end_line": 86,
+                "end_col": 23
+              }
             },
             {
               "port": "data_i",
-              "con": "bus_req_i.data"
+              "con": "bus_req_i.data",
+              "loc": {
+                "line": 87,
+                "col": 5,
+                "end_line": 87,
+                "end_col": 29
+              }
             },
             {
               "port": "oe_i",
               "con": "'1'",
               "comment": [
                 "-- permanent output (required for comparators)"
-              ]
+              ],
+              "loc": {
+                "line": 88,
+                "col": 5,
+                "end_line": 88,
+                "end_col": 18
+              }
             },
             {
               "port": "cnt_o",
-              "con": "mtime"
+              "con": "mtime",
+              "loc": {
+                "line": 89,
+                "col": 5,
+                "end_line": 89,
+                "end_col": 20
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 5
+          }
         },
         {
           "name": "neorv32_clint_mtimecmp_inst",
@@ -119,43 +215,109 @@
           "connections": [
             {
               "port": "clk_i",
-              "con": "clk_i"
+              "con": "clk_i",
+              "loc": {
+                "line": 111,
+                "col": 7,
+                "end_line": 111,
+                "end_col": 23
+              }
             },
             {
               "port": "rstn_i",
-              "con": "rstn_i"
+              "con": "rstn_i",
+              "loc": {
+                "line": 112,
+                "col": 7,
+                "end_line": 112,
+                "end_col": 24
+              }
             },
             {
               "port": "mtime_i",
-              "con": "mtime"
+              "con": "mtime",
+              "loc": {
+                "line": 113,
+                "col": 7,
+                "end_line": 113,
+                "end_col": 23
+              }
             },
             {
               "port": "we_i",
-              "con": "mtimecmp_we(i)"
+              "con": "mtimecmp_we(i)",
+              "loc": {
+                "line": 114,
+                "col": 7,
+                "end_line": 114,
+                "end_col": 32
+              }
             },
             {
               "port": "re_i",
-              "con": "mtimecmp_re(i)"
+              "con": "mtimecmp_re(i)",
+              "loc": {
+                "line": 115,
+                "col": 7,
+                "end_line": 115,
+                "end_col": 32
+              }
             },
             {
               "port": "addr_i",
-              "con": "bus_req_i.addr(2)"
+              "con": "bus_req_i.addr(2)",
+              "loc": {
+                "line": 116,
+                "col": 7,
+                "end_line": 116,
+                "end_col": 35
+              }
             },
             {
               "port": "wdata_i",
-              "con": "bus_req_i.data"
+              "con": "bus_req_i.data",
+              "loc": {
+                "line": 117,
+                "col": 7,
+                "end_line": 117,
+                "end_col": 32
+              }
             },
             {
               "port": "rdata_o",
-              "con": "mtimecmp_rd(i)"
+              "con": "mtimecmp_rd(i)",
+              "loc": {
+                "line": 118,
+                "col": 7,
+                "end_line": 118,
+                "end_col": 32
+              }
             },
             {
               "port": "mti_o",
-              "con": "mti_o(i)"
+              "con": "mti_o(i)",
+              "loc": {
+                "line": 119,
+                "col": 7,
+                "end_line": 119,
+                "end_col": 26
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 109,
+            "col": 5,
+            "end_line": 120,
+            "end_col": 7
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 21,
+        "col": 1,
+        "end_line": 34,
+        "end_col": 12
+      }
     },
     {
       "name": "neorv32_clint_mtimecmp",
@@ -166,7 +328,13 @@
           "name": "clk_i",
           "comment": [
             "-- global clock line"
-          ]
+          ],
+          "loc": {
+            "line": 201,
+            "col": 5,
+            "end_line": 201,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -174,7 +342,13 @@
           "name": "rstn_i",
           "comment": [
             "-- global reset line, low-active, async"
-          ]
+          ],
+          "loc": {
+            "line": 202,
+            "col": 5,
+            "end_line": 202,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -183,7 +357,13 @@
           "dim": "[63:0]",
           "comment": [
             "-- global mtime (async words!)"
-          ]
+          ],
+          "loc": {
+            "line": 203,
+            "col": 5,
+            "end_line": 203,
+            "end_col": 49
+          }
         },
         {
           "direction": "in",
@@ -191,7 +371,13 @@
           "name": "we_i",
           "comment": [
             "-- write enable"
-          ]
+          ],
+          "loc": {
+            "line": 204,
+            "col": 5,
+            "end_line": 204,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -199,7 +385,13 @@
           "name": "re_i",
           "comment": [
             "-- read enable"
-          ]
+          ],
+          "loc": {
+            "line": 205,
+            "col": 5,
+            "end_line": 205,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -207,7 +399,13 @@
           "name": "addr_i",
           "comment": [
             "-- HI/LO word select"
-          ]
+          ],
+          "loc": {
+            "line": 206,
+            "col": 5,
+            "end_line": 206,
+            "end_col": 29
+          }
         },
         {
           "direction": "in",
@@ -216,7 +414,13 @@
           "dim": "[31:0]",
           "comment": [
             "-- write data"
-          ]
+          ],
+          "loc": {
+            "line": 207,
+            "col": 5,
+            "end_line": 207,
+            "end_col": 49
+          }
         },
         {
           "direction": "out",
@@ -225,7 +429,13 @@
           "dim": "[31:0]",
           "comment": [
             "-- read data"
-          ]
+          ],
+          "loc": {
+            "line": 208,
+            "col": 5,
+            "end_line": 208,
+            "end_col": 49
+          }
         },
         {
           "direction": "out",
@@ -233,9 +443,21 @@
           "name": "mti_o",
           "comment": [
             "-- interrupt"
-          ]
+          ],
+          "loc": {
+            "line": 209,
+            "col": 5,
+            "end_line": 209,
+            "end_col": 29
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 199,
+        "col": 1,
+        "end_line": 211,
+        "end_col": 12
+      }
     }
   ]
 }

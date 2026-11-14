@@ -25,6 +25,7 @@
 from pathlib import Path
 
 from click.testing import CliRunner
+from pydantic import BaseModel
 from pytest import fixture
 
 PRJ_PATH = Path(__file__).parent.parent
@@ -48,3 +49,14 @@ def runner():
 def enforce_terminal_size(monkeypatch):
     """Fix issue with varying terminal size."""
     monkeypatch.setenv("HDL_PARSER_WIDTH", "75")
+
+
+def strip_locs(obj):
+    """Return `obj` (data model object, tuple or list of them) without source locations."""
+    if isinstance(obj, tuple | list):
+        return type(obj)(strip_locs(item) for item in obj)
+    if isinstance(obj, BaseModel):
+        fields = type(obj).model_fields
+        update = {name: None if name == "loc" else strip_locs(getattr(obj, name)) for name in fields}
+        return obj.model_copy(update=update)
+    return obj
