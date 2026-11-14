@@ -1,0 +1,753 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/top-genesys2.vhdl",
+  "modules": [
+    {
+      "name": "toplevel",
+      "params": [
+        {
+          "name": "MEMORY_SIZE",
+          "default": "16384"
+        },
+        {
+          "name": "RAM_INIT_FILE",
+          "default": "\"firmware.hex\""
+        },
+        {
+          "name": "RESET_LOW",
+          "default": "true"
+        },
+        {
+          "name": "CLK_FREQUENCY",
+          "default": "100000000"
+        },
+        {
+          "name": "USE_LITEDRAM",
+          "default": "false"
+        },
+        {
+          "name": "NO_BRAM",
+          "default": "false"
+        },
+        {
+          "name": "DISABLE_FLATTEN_CORE",
+          "default": "false"
+        },
+        {
+          "name": "SPI_FLASH_OFFSET",
+          "default": "12582912"
+        },
+        {
+          "name": "SPI_FLASH_DEF_CKDV",
+          "default": "1"
+        },
+        {
+          "name": "SPI_FLASH_DEF_QUAD",
+          "default": "true"
+        },
+        {
+          "name": "LOG_LENGTH",
+          "default": "2048"
+        },
+        {
+          "name": "USE_LITEETH",
+          "default": "true"
+        },
+        {
+          "name": "UART_IS_16550",
+          "default": "true"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk200_p"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk200_n"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "ext_rst_n",
+          "comment": [
+            "-- UART0 signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "uart_main_tx"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "uart_main_rx",
+          "comment": [
+            "-- LEDs"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "led0"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "led1"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "led2"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "led3",
+          "comment": [
+            "-- SPI"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_cs_n"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_mosi"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_miso"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_wp_n"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_ulogic",
+          "name": "spi_flash_hold_n",
+          "comment": [
+            "-- Ethernet"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "eth_clocks_tx"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "eth_clocks_rx"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "eth_rst_n"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "eth_int_n"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_ulogic",
+          "name": "eth_mdio"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "eth_mdc"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "eth_rx_ctl"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "eth_rx_data",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "eth_tx_ctl"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "eth_tx_data",
+          "dim": "[3:0]",
+          "comment": [
+            "-- DRAM wires"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "ddram_a",
+          "dim": "[14:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "ddram_ba",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_ras_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_cas_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_we_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "ddram_cs_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "ddram_dm",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "ddram_dq",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "ddram_dqs_p",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "ddram_dqs_n",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_clk_p"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_clk_n"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_cke"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_odt"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ddram_reset_n"
+        }
+      ],
+      "insts": [
+        {
+          "name": "soc0",
+          "module": "soc",
+          "connections": [
+            {
+              "port": "system_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "rst",
+              "con": "soc_rst",
+              "comment": [
+                "-- UART signals"
+              ]
+            },
+            {
+              "port": "uart0_txd",
+              "con": "uart_main_tx"
+            },
+            {
+              "port": "uart0_rxd",
+              "con": "uart_main_rx",
+              "comment": [
+                "-- SPI signals"
+              ]
+            },
+            {
+              "port": "spi_flash_sck",
+              "con": "spi_sck"
+            },
+            {
+              "port": "spi_flash_cs_n",
+              "con": "spi_cs_n"
+            },
+            {
+              "port": "spi_flash_sdat_o",
+              "con": "spi_sdat_o"
+            },
+            {
+              "port": "spi_flash_sdat_oe",
+              "con": "spi_sdat_oe"
+            },
+            {
+              "port": "spi_flash_sdat_i",
+              "con": "spi_sdat_i",
+              "comment": [
+                "-- External interrupts"
+              ]
+            },
+            {
+              "port": "ext_irq_eth",
+              "con": "ext_irq_eth",
+              "comment": [
+                "-- DRAM wishbone"
+              ]
+            },
+            {
+              "port": "wb_dram_in",
+              "con": "wb_dram_in"
+            },
+            {
+              "port": "wb_dram_out",
+              "con": "wb_dram_out"
+            },
+            {
+              "port": "wb_ext_io_in",
+              "con": "wb_ext_io_in"
+            },
+            {
+              "port": "wb_ext_io_out",
+              "con": "wb_ext_io_out"
+            },
+            {
+              "port": "wb_ext_is_dram_csr",
+              "con": "wb_ext_is_dram_csr"
+            },
+            {
+              "port": "wb_ext_is_dram_init",
+              "con": "wb_ext_is_dram_init"
+            },
+            {
+              "port": "wb_ext_is_eth",
+              "con": "wb_ext_is_eth"
+            }
+          ]
+        },
+        {
+          "name": "STARTUPE2_INST",
+          "module": "STARTUPE2",
+          "connections": [
+            {
+              "port": "CLK",
+              "con": "'0'"
+            },
+            {
+              "port": "GSR",
+              "con": "'0'"
+            },
+            {
+              "port": "GTS",
+              "con": "'0'"
+            },
+            {
+              "port": "KEYCLEARB",
+              "con": "'0'"
+            },
+            {
+              "port": "PACK",
+              "con": "'0'"
+            },
+            {
+              "port": "USRCCLKO",
+              "con": "spi_sck"
+            },
+            {
+              "port": "USRCCLKTS",
+              "con": "'0'"
+            },
+            {
+              "port": "USRDONEO",
+              "con": "'1'"
+            },
+            {
+              "port": "USRDONETS",
+              "con": "'0'"
+            }
+          ]
+        },
+        {
+          "name": "clk200",
+          "module": "IBUFDS",
+          "connections": [
+            {
+              "port": "i",
+              "con": "clk200_p"
+            },
+            {
+              "port": "ib",
+              "con": "clk200_n"
+            },
+            {
+              "port": "o",
+              "con": "ext_clk"
+            }
+          ]
+        },
+        {
+          "name": "reset_controller",
+          "module": "soc_reset",
+          "connections": [
+            {
+              "port": "ext_clk",
+              "con": "ext_clk"
+            },
+            {
+              "port": "pll_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "pll_locked_in",
+              "con": "system_clk_locked"
+            },
+            {
+              "port": "ext_rst_in",
+              "con": "ext_rst_n"
+            },
+            {
+              "port": "pll_rst_out",
+              "con": "pll_rst"
+            },
+            {
+              "port": "rst_out",
+              "con": "soc_rst"
+            }
+          ]
+        },
+        {
+          "name": "clkgen",
+          "module": "clock_generator",
+          "connections": [
+            {
+              "port": "ext_clk",
+              "con": "ext_clk"
+            },
+            {
+              "port": "pll_rst_in",
+              "con": "pll_rst"
+            },
+            {
+              "port": "pll_clk_out",
+              "con": "system_clk"
+            },
+            {
+              "port": "pll_locked_out",
+              "con": "system_clk_locked"
+            }
+          ]
+        },
+        {
+          "name": "dummy_dram_clk",
+          "module": "OBUFDS",
+          "connections": [
+            {
+              "port": "O",
+              "con": "ddram_clk_p"
+            },
+            {
+              "port": "OB",
+              "con": "ddram_clk_n"
+            },
+            {
+              "port": "I",
+              "con": "ddram_clk_dummy"
+            }
+          ]
+        },
+        {
+          "name": "reset_controller",
+          "module": "soc_reset",
+          "connections": [
+            {
+              "port": "ext_clk",
+              "con": "ext_clk"
+            },
+            {
+              "port": "pll_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "pll_locked_in",
+              "con": "'1'"
+            },
+            {
+              "port": "ext_rst_in",
+              "con": "ext_rst_n"
+            },
+            {
+              "port": "pll_rst_out",
+              "con": "pll_rst"
+            },
+            {
+              "port": "rst_out",
+              "con": "open"
+            }
+          ]
+        },
+        {
+          "name": "dram",
+          "module": "litedram_wrapper",
+          "connections": [
+            {
+              "port": "clk_in",
+              "con": "ext_clk"
+            },
+            {
+              "port": "rst",
+              "con": "pll_rst"
+            },
+            {
+              "port": "system_clk",
+              "con": "system_clk"
+            },
+            {
+              "port": "system_reset",
+              "con": "dram_sys_rst"
+            },
+            {
+              "port": "pll_locked",
+              "con": "system_clk_locked"
+            },
+            {
+              "port": "wb_in",
+              "con": "wb_dram_in"
+            },
+            {
+              "port": "wb_out",
+              "con": "wb_dram_out"
+            },
+            {
+              "port": "wb_ctrl_in",
+              "con": "wb_ext_io_in"
+            },
+            {
+              "port": "wb_ctrl_out",
+              "con": "wb_dram_ctrl_out",
+              "comment": [
+                "--\t\twb_ctrl_out\t=> wb_ext_io_out,"
+              ]
+            },
+            {
+              "port": "wb_ctrl_is_csr",
+              "con": "wb_ext_is_dram_csr"
+            },
+            {
+              "port": "wb_ctrl_is_init",
+              "con": "wb_ext_is_dram_init"
+            },
+            {
+              "port": "init_done",
+              "con": "dram_init_done"
+            },
+            {
+              "port": "init_error",
+              "con": "dram_init_error"
+            },
+            {
+              "port": "ddram_a",
+              "con": "ddram_a"
+            },
+            {
+              "port": "ddram_ba",
+              "con": "ddram_ba"
+            },
+            {
+              "port": "ddram_ras_n",
+              "con": "ddram_ras_n"
+            },
+            {
+              "port": "ddram_cas_n",
+              "con": "ddram_cas_n"
+            },
+            {
+              "port": "ddram_we_n",
+              "con": "ddram_we_n"
+            },
+            {
+              "port": "ddram_cs_n",
+              "con": "ddram_cs_n"
+            },
+            {
+              "port": "ddram_dm",
+              "con": "ddram_dm"
+            },
+            {
+              "port": "ddram_dq",
+              "con": "ddram_dq"
+            },
+            {
+              "port": "ddram_dqs_p",
+              "con": "ddram_dqs_p"
+            },
+            {
+              "port": "ddram_dqs_n",
+              "con": "ddram_dqs_n"
+            },
+            {
+              "port": "ddram_clk_p",
+              "con": "ddram_clk_p_vec"
+            },
+            {
+              "port": "ddram_clk_n",
+              "con": "ddram_clk_n_vec"
+            },
+            {
+              "port": "ddram_cke",
+              "con": "ddram_cke"
+            },
+            {
+              "port": "ddram_odt",
+              "con": "ddram_odt"
+            },
+            {
+              "port": "ddram_reset_n",
+              "con": "ddram_reset_n"
+            }
+          ]
+        },
+        {
+          "name": "liteeth",
+          "module": "liteeth_core",
+          "connections": [
+            {
+              "port": "sys_clock",
+              "con": "system_clk"
+            },
+            {
+              "port": "sys_reset",
+              "con": "soc_rst"
+            },
+            {
+              "port": "rgmii_clocks_tx",
+              "con": "eth_clocks_tx"
+            },
+            {
+              "port": "rgmii_clocks_rx",
+              "con": "eth_clocks_rx"
+            },
+            {
+              "port": "rgmii_rst_n",
+              "con": "eth_rst_n"
+            },
+            {
+              "port": "rgmii_int_n",
+              "con": "eth_int_n"
+            },
+            {
+              "port": "rgmii_mdio",
+              "con": "eth_mdio"
+            },
+            {
+              "port": "rgmii_mdc",
+              "con": "eth_mdc"
+            },
+            {
+              "port": "rgmii_rx_ctl",
+              "con": "eth_rx_ctl"
+            },
+            {
+              "port": "rgmii_rx_data",
+              "con": "eth_rx_data"
+            },
+            {
+              "port": "rgmii_tx_ctl",
+              "con": "eth_tx_ctl"
+            },
+            {
+              "port": "rgmii_tx_data",
+              "con": "eth_tx_data"
+            },
+            {
+              "port": "wishbone_adr",
+              "con": "wb_eth_adr"
+            },
+            {
+              "port": "wishbone_dat_w",
+              "con": "wb_ext_io_in.dat"
+            },
+            {
+              "port": "wishbone_dat_r",
+              "con": "wb_eth_out.dat"
+            },
+            {
+              "port": "wishbone_sel",
+              "con": "wb_ext_io_in.sel"
+            },
+            {
+              "port": "wishbone_cyc",
+              "con": "wb_eth_cyc"
+            },
+            {
+              "port": "wishbone_stb",
+              "con": "wb_ext_io_in.stb"
+            },
+            {
+              "port": "wishbone_ack",
+              "con": "wb_eth_out.ack"
+            },
+            {
+              "port": "wishbone_we",
+              "con": "wb_ext_io_in.we"
+            },
+            {
+              "port": "wishbone_cti",
+              "con": "\"000\""
+            },
+            {
+              "port": "wishbone_bte",
+              "con": "\"00\""
+            },
+            {
+              "port": "wishbone_err",
+              "con": "open"
+            },
+            {
+              "port": "interrupt",
+              "con": "ext_irq_eth"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

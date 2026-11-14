@@ -22,7 +22,7 @@
 
 """SystemVerilog Tokenizer.
 
-Splits SystemVerilog source into a flat list of [Token][hdl_parser._sv.tokenizer.Token]s. The tokenizer knows
+Splits SystemVerilog source into a flat list of [Token][hdl_parser._tokens.Token]s. The tokenizer knows
 nothing about the grammar. It only
 
 * classifies identifiers, keywords, numbers, strings, macros and punctuation,
@@ -31,17 +31,12 @@ nothing about the grammar. It only
 """
 
 import re
-from typing import NamedTuple
 
-# Token kinds
-ID = "id"
-KW = "kw"
-NUM = "num"
-STR = "str"
+from .._tokens import EOF, ID, KW, Token, Tokens  # noqa: TID252
+
+# Additional token kinds
 MACRO = "macro"
 SYS = "sys"
-OP = "op"
-EOF = "eof"
 
 # fmt: off
 TYPE_KEYWORDS = frozenset(
@@ -113,40 +108,6 @@ _TOKEN = re.compile(
 _MACRO_NAME = re.compile(r"\s*([a-zA-Z_]\w*)?")
 _DEFINE_BODY = re.compile(r"(?:\\\r?\n|[^\n])*")
 _LINE_REST = re.compile(r"[^\n]*")
-
-
-class Token(NamedTuple):
-    """Token.
-
-    Attributes:
-        kind: Token kind.
-        text: Source text.
-        start: Start position within source.
-        end: End position within source.
-        ifdefs: Conditions, the token is compiled under. Inverted conditions are prefixed with `!`.
-    """
-
-    kind: str
-    text: str
-    start: int
-    end: int
-    ifdefs: tuple[str, ...]
-
-
-class Tokens(NamedTuple):
-    """Tokenizer Result.
-
-    Attributes:
-        source: Source text.
-        tokens: Tokens. The last token is always of kind `EOF`.
-        comments: Comments, by the index of the token they are located in front of.
-        gaps: Source ranges (comments, directives and attributes), which are not covered by tokens.
-    """
-
-    source: str
-    tokens: list[Token]
-    comments: dict[int, list[str]]
-    gaps: list[tuple[int, int]]
 
 
 def _flip(cond: str) -> str:

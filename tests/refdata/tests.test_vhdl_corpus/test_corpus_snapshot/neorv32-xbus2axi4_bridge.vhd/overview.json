@@ -1,0 +1,278 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/xbus2axi4_bridge.vhd",
+  "modules": [
+    {
+      "name": "xbus2axi4_bridge",
+      "params": [
+        {
+          "name": "BURST_EN",
+          "comment": [
+            "-- enable burst transfers"
+          ]
+        },
+        {
+          "name": "BURST_LEN",
+          "comment": [
+            "-- bytes per burst, has to be a multiple of 4"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "resetn",
+          "comment": [
+            "-- XBUS device interface --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "xbus_req_t",
+          "name": "xbus_req_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "xbus_rsp_t",
+          "name": "xbus_rsp_o",
+          "comment": [
+            "-- AXI4 host write address channel --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awaddr",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awlen",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awsize",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awburst",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awcache",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_awprot",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_awvalid"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_awready",
+          "comment": [
+            "-- AXI4 host write data channel --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_wdata",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_wstrb",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_wlast"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_wvalid"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_wready",
+          "comment": [
+            "-- AXI4 host read address channel --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_araddr",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_arlen",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_arsize",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_arburst",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_arcache",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_arprot",
+          "dim": "[2:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_arvalid"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_arready",
+          "comment": [
+            "-- AXI4 host read data channel --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_rdata",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_rresp",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_rlast"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_rvalid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_rready",
+          "comment": [
+            "-- AXI4 host write response channel --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "m_axi_bresp",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "m_axi_bvalid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "m_axi_bready"
+        }
+      ],
+      "insts": [
+        {
+          "name": "data_buffer_inst",
+          "module": "neorv32_prim_fifo",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk"
+            },
+            {
+              "port": "rstn_i",
+              "con": "resetn"
+            },
+            {
+              "port": "clear_i",
+              "con": "fifo.clr"
+            },
+            {
+              "port": "level_o",
+              "con": "open",
+              "comment": [
+                "-- write port --"
+              ]
+            },
+            {
+              "port": "wdata_i",
+              "con": "fifo.wdata"
+            },
+            {
+              "port": "we_i",
+              "con": "fifo.we"
+            },
+            {
+              "port": "free_o",
+              "con": "open",
+              "comment": [
+                "-- read port --"
+              ]
+            },
+            {
+              "port": "re_i",
+              "con": "fifo.re"
+            },
+            {
+              "port": "rdata_o",
+              "con": "fifo.rdata"
+            },
+            {
+              "port": "avail_o",
+              "con": "fifo.avail"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

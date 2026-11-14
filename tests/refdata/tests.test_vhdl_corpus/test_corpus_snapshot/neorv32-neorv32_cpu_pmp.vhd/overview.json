@@ -1,0 +1,121 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_cpu_pmp.vhd",
+  "modules": [
+    {
+      "name": "neorv32_cpu_pmp",
+      "params": [
+        {
+          "name": "NUM_REGIONS",
+          "comment": [
+            "-- number of regions"
+          ]
+        },
+        {
+          "name": "GRANULARITY",
+          "comment": [
+            "-- minimal region granularity in bytes, has to be a power of 2, min 4 bytes"
+          ]
+        },
+        {
+          "name": "TOR_EN",
+          "comment": [
+            "-- implement TOR mode"
+          ]
+        },
+        {
+          "name": "NAP_EN",
+          "comment": [
+            "-- implement NAPOT/NA4 modes"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "ctrl_bus_t",
+          "name": "ctrl_i",
+          "comment": [
+            "-- main control bus"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "csr_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- CSR read data",
+            "-- instruction access check --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "i_addr_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- access address"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "i_priv_i",
+          "comment": [
+            "-- access privilege"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "i_err_o",
+          "comment": [
+            "-- PMP fault",
+            "-- data access check --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "d_addr_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- access address"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "d_priv_i",
+          "comment": [
+            "-- access privilege"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "d_err_o",
+          "comment": [
+            "-- PMP fault"
+          ]
+        }
+      ]
+    }
+  ]
+}

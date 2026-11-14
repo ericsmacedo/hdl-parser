@@ -1,0 +1,581 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_execute.vhd",
+  "modules": [
+    {
+      "name": "pp_execute",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "stall",
+          "comment": [
+            "-- Interrupt inputs:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "flush",
+          "comment": [
+            "-- Interrupt inputs:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "irq",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "software_interrupt",
+          "comment": [
+            "-- Data memory outputs:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "timer_interrupt",
+          "comment": [
+            "-- Data memory outputs:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_address",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_size",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "dmem_read_req"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "dmem_write_req",
+          "comment": [
+            "-- Register addresses:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "register_address",
+          "name": "rs1_addr_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "register_address",
+          "name": "rs2_addr_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "register_address",
+          "name": "rd_addr_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "register_address",
+          "name": "rd_addr_out",
+          "comment": [
+            "-- Register values:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "rs1_data_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "rs2_data_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "rd_data_out",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Constant values:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "shamt_in",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "immediate_in",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Instruction address:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "pc_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "pc_out",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Funct3 value from the instruction, used to choose which comparison",
+            "-- is used when branching:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "funct3_in",
+          "dim": "[2:0]",
+          "comment": [
+            "-- CSR signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_address",
+          "name": "csr_addr_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_address",
+          "name": "csr_addr_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_write_mode",
+          "name": "csr_write_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_write_mode",
+          "name": "csr_write_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "csr_value_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "csr_value_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "csr_use_immediate_in",
+          "comment": [
+            "-- Control signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "alu_operation",
+          "name": "alu_op_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "alu_operand_source",
+          "name": "alu_x_src_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "alu_operand_source",
+          "name": "alu_y_src_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rd_write_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "rd_write_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "branch_type",
+          "name": "branch_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "branch_type",
+          "name": "branch_out",
+          "comment": [
+            "-- Memory control signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "memory_operation_type",
+          "name": "mem_op_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "memory_operation_type",
+          "name": "mem_op_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "memory_operation_size",
+          "name": "mem_size_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "memory_operation_size",
+          "name": "mem_size_out",
+          "comment": [
+            "-- Whether the instruction should be counted:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "count_instruction_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "count_instruction_out",
+          "comment": [
+            "-- Exception control registers:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "ie_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "ie1_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "mie_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "mtvec_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mtvec_out",
+          "dim": "[31:0]",
+          "comment": [
+            "--mepc_in       : in  std_logic_vector(31 downto 0);",
+            "-- Exception signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "decode_exception_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_exception_cause",
+          "name": "decode_exception_cause_in",
+          "comment": [
+            "-- Exception outputs:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "exception_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_exception_context",
+          "name": "exception_context_out",
+          "comment": [
+            "-- Control outputs:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "jump_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "jump_target_out",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Inputs to the forwarding logic from the MEM stage:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "mem_rd_write"
+        },
+        {
+          "direction": "in",
+          "dtype": "register_address",
+          "name": "mem_rd_addr"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "mem_rd_value",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_address",
+          "name": "mem_csr_addr"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_write_mode",
+          "name": "mem_csr_write"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "mem_exception",
+          "comment": [
+            "-- Inputs to the forwarding logic from the WB stage:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_rd_write"
+        },
+        {
+          "direction": "in",
+          "dtype": "register_address",
+          "name": "wb_rd_addr"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wb_rd_value",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_address",
+          "name": "wb_csr_addr"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_write_mode",
+          "name": "wb_csr_write"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_exception",
+          "comment": [
+            "-- Hazard detection unit signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "memory_operation_type",
+          "name": "mem_mem_op"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "hazard_detected"
+        }
+      ],
+      "insts": [
+        {
+          "name": "alu_x_mux",
+          "module": "pp_alu_mux",
+          "connections": [
+            {
+              "port": "source",
+              "con": "alu_x_src"
+            },
+            {
+              "port": "register_value",
+              "con": "rs1_forwarded"
+            },
+            {
+              "port": "immediate_value",
+              "con": "immediate"
+            },
+            {
+              "port": "shamt_value",
+              "con": "shamt"
+            },
+            {
+              "port": "pc_value",
+              "con": "pc"
+            },
+            {
+              "port": "csr_value",
+              "con": "csr_value"
+            },
+            {
+              "port": "output",
+              "con": "alu_x"
+            }
+          ]
+        },
+        {
+          "name": "alu_y_mux",
+          "module": "pp_alu_mux",
+          "connections": [
+            {
+              "port": "source",
+              "con": "alu_y_src"
+            },
+            {
+              "port": "register_value",
+              "con": "rs2_forwarded"
+            },
+            {
+              "port": "immediate_value",
+              "con": "immediate"
+            },
+            {
+              "port": "shamt_value",
+              "con": "shamt"
+            },
+            {
+              "port": "pc_value",
+              "con": "pc"
+            },
+            {
+              "port": "csr_value",
+              "con": "csr_value"
+            },
+            {
+              "port": "output",
+              "con": "alu_y"
+            }
+          ]
+        },
+        {
+          "name": "branch_comparator",
+          "module": "pp_comparator",
+          "connections": [
+            {
+              "port": "funct3",
+              "con": "funct3"
+            },
+            {
+              "port": "rs1",
+              "con": "rs1_forwarded"
+            },
+            {
+              "port": "rs2",
+              "con": "rs2_forwarded"
+            },
+            {
+              "port": "result",
+              "con": "branch_condition"
+            }
+          ]
+        },
+        {
+          "name": "alu_instance",
+          "module": "pp_alu",
+          "connections": [
+            {
+              "port": "result",
+              "con": "alu_result"
+            },
+            {
+              "port": "x",
+              "con": "alu_x"
+            },
+            {
+              "port": "y",
+              "con": "alu_y"
+            },
+            {
+              "port": "operation",
+              "con": "alu_op"
+            }
+          ]
+        },
+        {
+          "name": "csr_alu_instance",
+          "module": "pp_csr_alu",
+          "connections": [
+            {
+              "port": "x",
+              "con": "csr_value"
+            },
+            {
+              "port": "y",
+              "con": "rs1_forwarded"
+            },
+            {
+              "port": "result",
+              "con": "csr_value_out"
+            },
+            {
+              "port": "immediate",
+              "con": "rs1_addr"
+            },
+            {
+              "port": "use_immediate",
+              "con": "csr_use_immediate"
+            },
+            {
+              "port": "write_mode",
+              "con": "csr_write"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

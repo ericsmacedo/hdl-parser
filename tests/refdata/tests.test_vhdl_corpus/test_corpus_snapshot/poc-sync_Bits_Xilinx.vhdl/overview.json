@@ -1,0 +1,161 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/sync_Bits_Xilinx.vhdl",
+  "modules": [
+    {
+      "name": "sync_Bits_Xilinx",
+      "params": [
+        {
+          "name": "BITS",
+          "default": "1",
+          "comment": [
+            "-- number of bit to be synchronized"
+          ]
+        },
+        {
+          "name": "INIT",
+          "default": "x\"00000000\"",
+          "comment": [
+            "-- initialization bits"
+          ]
+        },
+        {
+          "name": "SYNC_DEPTH",
+          "default": "T_MISC_SYNC_DEPTH'low",
+          "comment": [
+            "-- generate SYNC_DEPTH many stages, at least 2"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Clock",
+          "comment": [
+            "-- <Clock>  output clock domain"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "Input",
+          "dim": "[BITS - 1:0]",
+          "comment": [
+            "-- @async:  input bits"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "Output",
+          "dim": "[BITS - 1:0]",
+          "comment": [
+            "-- @Clock:  output bits"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "Sync",
+          "module": "sync_Bit_Xilinx",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Input",
+              "con": "Input(i)"
+            },
+            {
+              "port": "Output",
+              "con": "Output(i)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sync_Bit_Xilinx",
+      "params": [
+        {
+          "name": "INIT",
+          "comment": [
+            "-- initialization bits"
+          ]
+        },
+        {
+          "name": "SYNC_DEPTH",
+          "default": "T_MISC_SYNC_DEPTH'low",
+          "comment": [
+            "-- generate SYNC_DEPTH many stages, at least 2"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Clock",
+          "comment": [
+            "-- <Clock>  output clock domain"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Input",
+          "comment": [
+            "-- @async:  input bit"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Output",
+          "comment": [
+            "-- @Clock:  output bit"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "FF1_METASTABILITY_FFS",
+          "module": "FD",
+          "connections": [
+            {
+              "port": "C",
+              "con": "Clock"
+            },
+            {
+              "port": "D",
+              "con": "Data_async"
+            },
+            {
+              "port": "Q",
+              "con": "Data_meta"
+            }
+          ]
+        },
+        {
+          "name": "FF2",
+          "module": "FD",
+          "connections": [
+            {
+              "port": "C",
+              "con": "Clock"
+            },
+            {
+              "port": "D",
+              "con": "Data_meta"
+            },
+            {
+              "port": "Q",
+              "con": "Data_sync"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

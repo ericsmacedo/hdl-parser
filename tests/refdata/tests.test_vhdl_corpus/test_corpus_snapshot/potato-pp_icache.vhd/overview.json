@@ -1,0 +1,74 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_icache.vhd",
+  "modules": [
+    {
+      "name": "pp_icache",
+      "params": [
+        {
+          "name": "LINE_SIZE",
+          "default": "4",
+          "comment": [
+            "--! Number of words per cache line"
+          ]
+        },
+        {
+          "name": "NUM_LINES",
+          "default": "128",
+          "comment": [
+            "--! Number of lines in the cache"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "-- Memory interface:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "mem_address_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mem_data_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "mem_read_req"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "mem_read_ack",
+          "comment": [
+            "-- Wishbone interface:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "wishbone_master_inputs",
+          "name": "wb_inputs"
+        },
+        {
+          "direction": "out",
+          "dtype": "wishbone_master_outputs",
+          "name": "wb_outputs"
+        }
+      ]
+    }
+  ]
+}

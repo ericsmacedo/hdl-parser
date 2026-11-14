@@ -1,0 +1,236 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_pwm.vhd",
+  "modules": [
+    {
+      "name": "neorv32_pwm",
+      "params": [
+        {
+          "name": "NUM_CHANNELS",
+          "comment": [
+            "-- number of PWM channels (0..32)"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock line"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset line, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "bus_req_i",
+          "comment": [
+            "-- bus request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "bus_rsp_o",
+          "comment": [
+            "-- bus response"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "clkgen_i",
+          "dim": "[7:0]",
+          "comment": [
+            "-- clock divider input"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "pwm_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- PWM output"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "neorv32_pwm_channel_inst",
+          "module": "neorv32_pwm_channel",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "clken_i",
+              "con": "clken"
+            },
+            {
+              "port": "en_i",
+              "con": "enable(i)"
+            },
+            {
+              "port": "pol_i",
+              "con": "polarity(i)"
+            },
+            {
+              "port": "mode_i",
+              "con": "mode(i)",
+              "comment": [
+                "-- register access --"
+              ]
+            },
+            {
+              "port": "cs_i",
+              "con": "cs(i)"
+            },
+            {
+              "port": "we_i",
+              "con": "bus_req_i.rw"
+            },
+            {
+              "port": "ben_i",
+              "con": "bus_req_i.ben"
+            },
+            {
+              "port": "wdata_i",
+              "con": "bus_req_i.data"
+            },
+            {
+              "port": "rdata_o",
+              "con": "rdata(i)",
+              "comment": [
+                "-- PWM output --"
+              ]
+            },
+            {
+              "port": "pwm_o",
+              "con": "pwm(i)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_pwm_channel",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock line"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset line, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clken_i",
+          "comment": [
+            "-- clock divider input"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "en_i",
+          "comment": [
+            "-- channel enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "pol_i",
+          "comment": [
+            "-- output polarity"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "mode_i",
+          "comment": [
+            "-- operation mode",
+            "-- register access --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "cs_i",
+          "comment": [
+            "-- access enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "we_i",
+          "comment": [
+            "-- write-enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "ben_i",
+          "dim": "[3:0]",
+          "comment": [
+            "-- byte-enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "wdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- write data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- read data",
+            "-- PWM output --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "pwm_o",
+          "comment": [
+            "-- PWM output"
+          ]
+        }
+      ]
+    }
+  ]
+}

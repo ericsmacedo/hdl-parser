@@ -1,0 +1,281 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/io_FanControl.vhdl",
+  "modules": [
+    {
+      "name": "io_FanControl",
+      "params": [
+        {
+          "name": "CLOCK_FREQ"
+        },
+        {
+          "name": "ADD_INPUT_SYNCHRONIZERS",
+          "default": "TRUE"
+        },
+        {
+          "name": "ENABLE_TACHO",
+          "default": "FALSE"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Clock"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Reset",
+          "comment": [
+            "-- Fan Control derived from internal System Health Monitor"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Fan_PWM",
+          "comment": [
+            "-- Decoding of Speed Sensor (Requires ENABLE_TACHO)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Fan_Tacho"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "TachoFrequency",
+          "dim": "[15:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "SystemMonitor",
+          "module": "xil_SystemMonitor",
+          "connections": [
+            {
+              "port": "Reset",
+              "con": "Reset",
+              "comment": [
+                "-- Reset signal for the System Monitor control logic"
+              ]
+            },
+            {
+              "port": "Alarm_UserTemp",
+              "con": "UserTemperature_async",
+              "comment": [
+                "-- Temperature-sensor alarm output"
+              ]
+            },
+            {
+              "port": "Alarm_OverTemp",
+              "con": "OverTemperature_async",
+              "comment": [
+                "-- Over-Temperature alarm output"
+              ]
+            },
+            {
+              "port": "Alarm",
+              "con": "open",
+              "comment": [
+                "-- OR'ed output of all the Alarms"
+              ]
+            },
+            {
+              "port": "VP",
+              "con": "'0'",
+              "comment": [
+                "-- Dedicated Analog Input Pair"
+              ]
+            },
+            {
+              "port": "VN",
+              "con": "'0'"
+            }
+          ]
+        },
+        {
+          "name": "sync",
+          "module": "sync_Bits_Xilinx",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Input(0)",
+              "con": "OverTemperature_async"
+            },
+            {
+              "port": "Input(1)",
+              "con": "UserTemperature_async"
+            },
+            {
+              "port": "Output(0)",
+              "con": "OverTemperature_sync"
+            },
+            {
+              "port": "Output(1)",
+              "con": "UserTemperature_sync"
+            }
+          ]
+        },
+        {
+          "name": "TC",
+          "module": "io_TimingCounter",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock",
+              "comment": [
+                "-- clock"
+              ]
+            },
+            {
+              "port": "Enable",
+              "con": "StartUp",
+              "comment": [
+                "-- enable counter"
+              ]
+            },
+            {
+              "port": "Load",
+              "con": "'0'",
+              "comment": [
+                "-- load Timing Value from TIMING_TABLE selected by slot"
+              ]
+            },
+            {
+              "port": "Slot",
+              "con": "0",
+              "comment": [
+                "--"
+              ]
+            },
+            {
+              "port": "Timeout",
+              "con": "TC_Timeout",
+              "comment": [
+                "-- timing reached"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "TC",
+          "module": "io_TimingCounter",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock",
+              "comment": [
+                "-- clock"
+              ]
+            },
+            {
+              "port": "Enable",
+              "con": "StartUp",
+              "comment": [
+                "-- enable counter"
+              ]
+            },
+            {
+              "port": "Load",
+              "con": "'0'",
+              "comment": [
+                "-- load Timing Value from TIMING_TABLE selected by slot"
+              ]
+            },
+            {
+              "port": "Slot",
+              "con": "0",
+              "comment": [
+                "--"
+              ]
+            },
+            {
+              "port": "Timeout",
+              "con": "TC_Timeout",
+              "comment": [
+                "-- timing reached"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "PWM",
+          "module": "io_PulseWidthModulation",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "PWMIn",
+              "con": "PWM_PWMIn"
+            },
+            {
+              "port": "PWMOut",
+              "con": "PWM_PWMOut"
+            }
+          ]
+        },
+        {
+          "name": "sync_i",
+          "module": "sync_Bits",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock",
+              "comment": [
+                "-- Clock to be synchronized to"
+              ]
+            },
+            {
+              "port": "Input(0)",
+              "con": "Fan_Tacho",
+              "comment": [
+                "-- Data to be synchronized"
+              ]
+            },
+            {
+              "port": "Output(0)",
+              "con": "Tacho_sync",
+              "comment": [
+                "-- synchronised data"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Tacho",
+          "module": "io_FrequencyCounter",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock"
+            },
+            {
+              "port": "Reset",
+              "con": "Reset"
+            },
+            {
+              "port": "FreqIn",
+              "con": "Tacho_sync"
+            },
+            {
+              "port": "FreqOut",
+              "con": "Tacho_Freq"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

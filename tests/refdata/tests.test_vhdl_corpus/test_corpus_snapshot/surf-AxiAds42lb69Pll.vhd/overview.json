@@ -1,0 +1,684 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/AxiAds42lb69Pll.vhd",
+  "modules": [
+    {
+      "name": "AxiAds42lb69Pll",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "USE_PLL_G",
+          "default": "true"
+        },
+        {
+          "name": "USE_FBCLK_G",
+          "default": "true"
+        },
+        {
+          "name": "ADC_CLK_FREQ_G",
+          "default": "250.0E+6"
+        },
+        {
+          "name": "XIL_DEVICE_G",
+          "default": "\"7SERIES\""
+        }
+      ],
+      "ports": [
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "adcClkP"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "adcClkN"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "adcSyncP"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "adcSyncN"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "adcClkFbP"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "adcClkFbN",
+          "comment": [
+            "-- ADC Reference Signals"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "adcSync"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "adcClk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "adcRst"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "adcClock"
+        }
+      ],
+      "insts": [
+        {
+          "name": "IBUFGDS_0",
+          "module": "IBUFGDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcClkFbP"
+            },
+            {
+              "port": "IB",
+              "con": "adcClkFbN"
+            },
+            {
+              "port": "O",
+              "con": "clkFeedBackIn"
+            }
+          ]
+        },
+        {
+          "name": "MMCME2_ADV_0",
+          "module": "MMCME2_ADV",
+          "connections": [
+            {
+              "port": "CLKFBOUT",
+              "con": "clkFeedBack"
+            },
+            {
+              "port": "CLKFBOUTB",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT0",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT0B",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT1",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT1B",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT2",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT2B",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT3",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT3B",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT4",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT5",
+              "con": "open"
+            },
+            {
+              "port": "CLKOUT6",
+              "con": "open",
+              "comment": [
+                "-- Input clock control"
+              ]
+            },
+            {
+              "port": "CLKFBIN",
+              "con": "clkFeedBackIn"
+            },
+            {
+              "port": "CLKIN1",
+              "con": "adcClk"
+            },
+            {
+              "port": "CLKIN2",
+              "con": "'0'",
+              "comment": [
+                "-- Tied to always select the primary input clock"
+              ]
+            },
+            {
+              "port": "CLKINSEL",
+              "con": "'1'",
+              "comment": [
+                "-- Ports for dynamic reconfiguration"
+              ]
+            },
+            {
+              "port": "DADDR",
+              "con": "(others => '0')"
+            },
+            {
+              "port": "DCLK",
+              "con": "'0'"
+            },
+            {
+              "port": "DEN",
+              "con": "'0'"
+            },
+            {
+              "port": "DI",
+              "con": "(others => '0')"
+            },
+            {
+              "port": "DO",
+              "con": "open"
+            },
+            {
+              "port": "DRDY",
+              "con": "open"
+            },
+            {
+              "port": "DWE",
+              "con": "'0'",
+              "comment": [
+                "-- Ports for dynamic phase shift"
+              ]
+            },
+            {
+              "port": "PSCLK",
+              "con": "'0'"
+            },
+            {
+              "port": "PSEN",
+              "con": "'0'"
+            },
+            {
+              "port": "PSINCDEC",
+              "con": "'0'"
+            },
+            {
+              "port": "PSDONE",
+              "con": "open",
+              "comment": [
+                "-- Other control and status signals"
+              ]
+            },
+            {
+              "port": "LOCKED",
+              "con": "open"
+            },
+            {
+              "port": "CLKINSTOPPED",
+              "con": "open"
+            },
+            {
+              "port": "CLKFBSTOPPED",
+              "con": "open"
+            },
+            {
+              "port": "PWRDWN",
+              "con": "'0'"
+            },
+            {
+              "port": "RST",
+              "con": "adcRst"
+            }
+          ]
+        },
+        {
+          "name": "BUFH_0",
+          "module": "BUFH",
+          "connections": [
+            {
+              "port": "I",
+              "con": "clkFeedBack"
+            },
+            {
+              "port": "O",
+              "con": "clkFeedBackOut"
+            }
+          ]
+        },
+        {
+          "name": "ClkOutBufDiff_0",
+          "module": "ClkOutBufDiff",
+          "connections": [
+            {
+              "port": "clkIn",
+              "con": "clkFeedBackOut"
+            },
+            {
+              "port": "clkOutP",
+              "con": "adcClkP"
+            },
+            {
+              "port": "clkOutN",
+              "con": "adcClkN"
+            }
+          ]
+        },
+        {
+          "name": "SynchronizerOneShot_0",
+          "module": "SynchronizerOneShot",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clkFeedBackOut"
+            },
+            {
+              "port": "dataIn",
+              "con": "adcSync"
+            },
+            {
+              "port": "dataOut",
+              "con": "sync"
+            }
+          ]
+        },
+        {
+          "name": "ODDR_0",
+          "module": "ODDR",
+          "connections": [
+            {
+              "port": "D1",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (positive edge)"
+              ]
+            },
+            {
+              "port": "D2",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (negative edge)"
+              ]
+            },
+            {
+              "port": "Q",
+              "con": "syncOut",
+              "comment": [
+                "-- 1-bit DDR output"
+              ]
+            },
+            {
+              "port": "C",
+              "con": "clkFeedBackOut",
+              "comment": [
+                "-- 1-bit clock input"
+              ]
+            },
+            {
+              "port": "CE",
+              "con": "'1'",
+              "comment": [
+                "-- 1-bit clock enable input"
+              ]
+            },
+            {
+              "port": "R",
+              "con": "'0'",
+              "comment": [
+                "-- 1-bit reset"
+              ]
+            },
+            {
+              "port": "S",
+              "con": "'0'"
+            }
+          ]
+        },
+        {
+          "name": "OBUFDS_0",
+          "module": "OBUFDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "syncOut"
+            },
+            {
+              "port": "O",
+              "con": "adcSyncP"
+            },
+            {
+              "port": "OB",
+              "con": "adcSyncN"
+            }
+          ]
+        },
+        {
+          "name": "ClkOutBufDiff_1",
+          "module": "ClkOutBufDiff",
+          "connections": [
+            {
+              "port": "clkIn",
+              "con": "adcClk"
+            },
+            {
+              "port": "rstIn",
+              "con": "adcRst"
+            },
+            {
+              "port": "clkOutP",
+              "con": "adcClkP"
+            },
+            {
+              "port": "clkOutN",
+              "con": "adcClkN"
+            }
+          ]
+        },
+        {
+          "name": "SynchronizerOneShot_1",
+          "module": "SynchronizerOneShot",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "adcClk"
+            },
+            {
+              "port": "dataIn",
+              "con": "adcSync"
+            },
+            {
+              "port": "dataOut",
+              "con": "sync"
+            }
+          ]
+        },
+        {
+          "name": "ODDR_1",
+          "module": "ODDR",
+          "connections": [
+            {
+              "port": "D1",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (positive edge)"
+              ]
+            },
+            {
+              "port": "D2",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (negative edge)"
+              ]
+            },
+            {
+              "port": "Q",
+              "con": "syncOut",
+              "comment": [
+                "-- 1-bit DDR output"
+              ]
+            },
+            {
+              "port": "C",
+              "con": "adcClk",
+              "comment": [
+                "-- 1-bit clock input"
+              ]
+            },
+            {
+              "port": "CE",
+              "con": "'1'",
+              "comment": [
+                "-- 1-bit clock enable input"
+              ]
+            },
+            {
+              "port": "R",
+              "con": "'0'",
+              "comment": [
+                "-- 1-bit reset"
+              ]
+            },
+            {
+              "port": "S",
+              "con": "'0'"
+            }
+          ]
+        },
+        {
+          "name": "OBUFDS_1",
+          "module": "OBUFDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "syncOut"
+            },
+            {
+              "port": "O",
+              "con": "adcSyncP"
+            },
+            {
+              "port": "OB",
+              "con": "adcSyncN"
+            }
+          ]
+        },
+        {
+          "name": "IBUFGDS_1",
+          "module": "IBUFGDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcClkFbP"
+            },
+            {
+              "port": "IB",
+              "con": "adcClkFbN"
+            },
+            {
+              "port": "O",
+              "con": "adcInClk"
+            }
+          ]
+        },
+        {
+          "name": "BUFG_1",
+          "module": "BUFG",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcInClk"
+            },
+            {
+              "port": "O",
+              "con": "adcClock"
+            }
+          ]
+        },
+        {
+          "name": "IBUFGDS_1",
+          "module": "IBUFGDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcClkFbP"
+            },
+            {
+              "port": "IB",
+              "con": "adcClkFbN"
+            },
+            {
+              "port": "O",
+              "con": "open"
+            }
+          ]
+        },
+        {
+          "name": "ClkOutBufDiff_1",
+          "module": "ClkOutBufDiff",
+          "connections": [
+            {
+              "port": "clkIn",
+              "con": "adcClk"
+            },
+            {
+              "port": "rstIn",
+              "con": "adcRst"
+            },
+            {
+              "port": "clkOutP",
+              "con": "adcClkP"
+            },
+            {
+              "port": "clkOutN",
+              "con": "adcClkN"
+            }
+          ]
+        },
+        {
+          "name": "SynchronizerOneShot_1",
+          "module": "SynchronizerOneShot",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "adcClk"
+            },
+            {
+              "port": "dataIn",
+              "con": "adcSync"
+            },
+            {
+              "port": "dataOut",
+              "con": "sync"
+            }
+          ]
+        },
+        {
+          "name": "ODDRE1_1",
+          "module": "ODDRE1",
+          "connections": [
+            {
+              "port": "D1",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (positive edge)"
+              ]
+            },
+            {
+              "port": "D2",
+              "con": "sync",
+              "comment": [
+                "-- 1-bit data input (negative edge)"
+              ]
+            },
+            {
+              "port": "Q",
+              "con": "syncOut",
+              "comment": [
+                "-- 1-bit DDR output"
+              ]
+            },
+            {
+              "port": "C",
+              "con": "adcClk",
+              "comment": [
+                "-- 1-bit clock input"
+              ]
+            },
+            {
+              "port": "SR",
+              "con": "'0'"
+            }
+          ]
+        },
+        {
+          "name": "OBUFDS_1",
+          "module": "OBUFDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "syncOut"
+            },
+            {
+              "port": "O",
+              "con": "adcSyncP"
+            },
+            {
+              "port": "OB",
+              "con": "adcSyncN"
+            }
+          ]
+        },
+        {
+          "name": "IBUFGDS_1",
+          "module": "IBUFGDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcClkFbP"
+            },
+            {
+              "port": "IB",
+              "con": "adcClkFbN"
+            },
+            {
+              "port": "O",
+              "con": "adcInClk"
+            }
+          ]
+        },
+        {
+          "name": "BUFG_1",
+          "module": "BUFG",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcInClk"
+            },
+            {
+              "port": "O",
+              "con": "adcClock"
+            }
+          ]
+        },
+        {
+          "name": "IBUFGDS_1",
+          "module": "IBUFGDS",
+          "connections": [
+            {
+              "port": "I",
+              "con": "adcClkFbP"
+            },
+            {
+              "port": "IB",
+              "con": "adcClkFbN"
+            },
+            {
+              "port": "O",
+              "con": "open"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -32,17 +32,17 @@ it extracts information from. Everything else is skipped:
 * procedural code and other blocks are skipped up to their closing keyword,
 * nothing is ever skipped beyond `endmodule`.
 
-Supporting a new construct means adding one branch to the related `_parse_*` function.
+Supporting a new construct means adding one branch to the related `_parse_*` function. Module items are
+dispatched by their leading keyword: a new one is a function decorated with `_handles`.
 """
 
-from bisect import bisect_left
+from collections.abc import Callable
 from typing import NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
-from .tokenizer import EOF, ID, KW, MACRO, TYPE_KEYWORDS, Token, Tokens, tokenize
+from .._tokens import EOF, ID, KW, OPEN, Cursor, Token  # noqa: TID252
+from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
 
-_OPEN = frozenset("([{")
-_CLOSE = frozenset(")]}")
 # Parsing never continues beyond these keywords
 _MODULE_START = frozenset(("module", "macromodule"))
 _HARD_STOPS = frozenset((*_MODULE_START, "endmodule"))
@@ -174,141 +174,6 @@ class _Module(NamedTuple):
     params: list[_Decl]
     ports: list[_Decl]
     insts: list[_Inst]
-
-
-class Cursor:
-    """Position Within The Token Stream.
-
-    Comments are not part of the token stream. They are handed over to `sink` (if set), as soon as the token
-    behind them is consumed. A declaration sets `sink` to its own comment list, to receive all comments up to
-    the next declaration.
-    """
-
-    __slots__ = ("_gap_starts", "comments", "gaps", "last", "pos", "sink", "source", "toks")
-
-    def __init__(self, tokens: Tokens):
-        self.source = tokens.source
-        self.toks = tokens.tokens
-        self.comments = tokens.comments
-        self.gaps = tokens.gaps
-        self._gap_starts = [gap[0] for gap in tokens.gaps]
-        self.last = len(self.toks) - 1
-        self.pos = 0
-        self.sink: list[str] | None = None
-
-    def peek(self, offset: int = 0) -> Token:
-        """Token at current position plus `offset`, without consuming it."""
-        idx = self.pos + offset
-        return self.toks[idx] if idx < self.last else self.toks[-1]
-
-    def next(self) -> Token:
-        """Consume one token."""
-        pos = self.pos
-        tok = self.toks[pos]
-        if pos < self.last:
-            if self.sink is not None and pos in self.comments:
-                self.sink += self.comments[pos]
-            self.pos = pos + 1
-        return tok
-
-    def accept(self, text: str) -> bool:
-        """Consume next token if it is `text`."""
-        if self.toks[self.pos].text == text:
-            self.next()
-            return True
-        return False
-
-    def start_comment(self) -> list[str]:
-        """Start a new comment list. Pending comments still belong to the previous one."""
-        pending = self.comments.pop(self.pos, None)
-        if pending and self.sink is not None:
-            self.sink += pending
-        self.sink = []
-        return self.sink
-
-    def match(self, idx: int) -> int:
-        """Index behind the bracket group starting at `idx`."""
-        toks = self.toks
-        depth = 0
-        while True:
-            tok = toks[idx]
-            text = tok.text
-            if text in _OPEN:
-                depth += 1
-            elif text in _CLOSE:
-                depth -= 1
-                if depth <= 0:
-                    return idx + 1
-            elif tok.kind == EOF or (text in _HARD_STOPS and tok.kind == KW):
-                return idx
-            idx += 1
-
-    def skip_to(self, idx: int) -> None:
-        """Consume all tokens up to `idx`."""
-        if self.sink is None:
-            self.pos = idx
-        else:
-            while self.pos < idx:
-                self.next()
-
-    def skip_balanced(self) -> None:
-        """Consume the bracket group at the current position."""
-        self.skip_to(self.match(self.pos))
-
-    def skip_until(self, stops: frozenset[str]) -> None:
-        """Consume tokens until one of `stops`. Bracket groups are skipped as a whole.
-
-        The stop token itself is not consumed. An unmatched closing bracket or a hard stop ends the search.
-        """
-        toks = self.toks
-        while True:
-            tok = toks[self.pos]
-            text = tok.text
-            if text in _OPEN:
-                self.skip_balanced()
-            elif text in stops or text in _CLOSE or tok.kind == EOF or (text in _HARD_STOPS and tok.kind == KW):
-                return
-            else:
-                self.next()
-
-    def skip_past(self, stops: frozenset[str], nested: frozenset[str] = frozenset()) -> None:
-        """Consume tokens up to and including the keyword of `stops`, which closes the keyword of `nested`."""
-        toks = self.toks
-        depth = 0
-        idx = self.pos + 1
-        while True:
-            tok = toks[idx]
-            if tok.kind == KW:
-                text = tok.text
-                if text in _HARD_STOPS:
-                    break
-                if text in nested:
-                    depth += 1
-                elif text in stops:
-                    if not depth:
-                        idx += 1
-                        break
-                    depth -= 1
-            elif tok.kind == EOF:
-                break
-            idx += 1
-        self.skip_to(idx)
-
-    def text(self, start: int, end: int) -> str:
-        """Source text of tokens `start` to `end` (exclusive), without comments and directives."""
-        if start >= end:
-            return ""
-        pos = self.toks[start].start
-        stop = self.toks[end - 1].end
-        gaps = self.gaps
-        idx = bisect_left(self._gap_starts, pos)
-        parts = []
-        while idx < len(gaps) and gaps[idx][0] < stop:
-            parts.append(self.source[pos : gaps[idx][0]])
-            pos = gaps[idx][1]
-            idx += 1
-        parts.append(self.source[pos:stop])
-        return "".join(parts)
 
 
 # --- types and declarations ---
@@ -448,7 +313,7 @@ def _parse_decl_list(c: Cursor, kind: str) -> list[_Decl]:
                 decls += items
         if c.pos == pos:
             # nothing we understand
-            if tok.text in _OPEN:
+            if tok.text in OPEN:
                 c.skip_balanced()
             else:
                 c.next()
@@ -633,8 +498,98 @@ def _skip_statement(c: Cursor) -> None:  # noqa: C901, PLR0911, PLR0912, PLR0915
 # --- module ---
 
 
-def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901, PLR0912, PLR0915
-    """Parse module items up to `endmodule`."""
+_BodyHandler = Callable[[Cursor, _Module], None]
+# Module item parsers by their leading keyword
+_BODY_HANDLERS: dict[str, _BodyHandler] = {}
+
+
+def _handles(*keywords: str) -> Callable[[_BodyHandler], _BodyHandler]:
+    """Register the decorated function as parser of the module items starting with one of `keywords`."""
+
+    def decorator(func: _BodyHandler) -> _BodyHandler:
+        for keyword in keywords:
+            if keyword in _BODY_HANDLERS:
+                raise ValueError(f"Duplicate handler for {keyword!r}")
+            _BODY_HANDLERS[keyword] = func
+        return func
+
+    return decorator
+
+
+@_handles(*_DIRECTIONS)
+def _handle_port(c: Cursor, mod: _Module) -> None:
+    mod.ports.extend(_parse_item_decl(c))
+
+
+@_handles(*_PARAMS)
+def _handle_param(c: Cursor, mod: _Module) -> None:
+    mod.params.extend(_parse_item_decl(c))
+
+
+@_handles(*_PROCEDURES)
+def _handle_procedure(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.next()
+    _skip_statement(c)
+
+
+@_handles(*_ASSERTIONS)
+def _handle_assertion(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    _skip_statement(c)
+
+
+@_handles(*_CONDITIONALS)
+def _handle_conditional(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    """Generate construct: the items within are parsed like any other item."""
+    c.next()
+    if c.peek().text == "(":
+        c.skip_balanced()
+
+
+@_handles(*_LABELED)
+def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.next()
+    _skip_label(c)
+
+
+@_handles(*_BLOCKS)
+def _handle_block(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.skip_past(frozenset((_BLOCKS[c.peek().text],)))
+
+
+@_handles("default")
+def _handle_default(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    """`default clocking cb;` and `default disable iff (rst);`."""
+    c.next()
+    if c.peek().text == "disable" or (c.peek().text == "clocking" and c.peek(2).text == ";"):
+        c.skip_until(_SEMI)
+
+
+@_handles(*_DECLARATIONS)
+def _handle_declaration(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
+    c.skip_until(_SEMI)
+    c.accept(";")
+
+
+def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
+    """Parse module item starting with an identifier."""
+    if c.peek(1).text == ":":
+        # label
+        c.next()
+        c.next()
+    elif _is_instance(c):
+        mod.insts.extend(_parse_instances(c))
+    else:
+        # declaration or statement, or the expression of a case-generate item
+        c.skip_until(_LABEL_OR_SEMI)
+        c.next()
+
+
+def _parse_body(c: Cursor, mod: _Module) -> None:
+    """Parse module items up to `endmodule`.
+
+    Items starting with a keyword are parsed by the related function of `_BODY_HANDLERS`.
+    """
+    handlers = _BODY_HANDLERS
     while True:
         tok = c.peek()
         text = tok.text
@@ -646,56 +601,21 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901, PLR0912, PLR091
             if text in _MODULE_START:
                 # missing endmodule
                 return
-            if text in _DIRECTIONS:
-                mod.ports.extend(_parse_item_decl(c))
-            elif text in _PARAMS:
-                mod.params.extend(_parse_item_decl(c))
-            elif text in _PROCEDURES:
-                c.next()
-                _skip_statement(c)
-            elif text in _ASSERTIONS:
-                _skip_statement(c)
-            elif text in _CONDITIONALS:
-                # generate construct: the items within are parsed like any other item
-                c.next()
-                if c.peek().text == "(":
-                    c.skip_balanced()
-            elif text in _LABELED:
-                c.next()
-                _skip_label(c)
-            elif text in _BLOCKS:
-                c.skip_past(frozenset((_BLOCKS[text],)))
-            elif text == "default" and c.peek(1).text in ("clocking", "disable"):
-                # default clocking cb; default disable iff (rst);
-                c.next()
-                if c.peek().text == "disable" or c.peek(2).text == ";":
-                    c.skip_until(_SEMI)
-            elif text in _DECLARATIONS:
-                c.skip_until(_SEMI)
-                c.accept(";")
+            handler = handlers.get(text)
+            if handler:
+                handler(c, mod)
             else:
                 c.next()
         elif kind == ID:
-            if c.peek(1).text == ":":
-                # label
-                c.next()
-                c.next()
-            elif _is_instance(c):
-                mod.insts.extend(_parse_instances(c))
-            else:
-                # declaration or statement, or the expression of a case-generate item
-                c.skip_until(_LABEL_OR_SEMI)
-                c.next()
+            _parse_identifier_item(c, mod)
         elif kind == EOF:
             return
-        elif kind == MACRO:
-            c.next()
-            if c.peek().text == "(":
-                c.skip_balanced()
-        elif text in _OPEN:
+        elif text in OPEN:
             c.skip_balanced()
         else:
             c.next()
+            if kind == MACRO and c.peek().text == "(":
+                c.skip_balanced()
 
 
 def _parse_module(c: Cursor) -> _Module | None:
@@ -799,5 +719,5 @@ def parse(text: str) -> tuple[dm.Module, ...]:
             insts=_create_insts(mod.insts),
             ifdefs=mod.token.ifdefs,
         )
-        for mod in _parse_modules(Cursor(tokenize(text)))
+        for mod in _parse_modules(Cursor(tokenize(text), _HARD_STOPS))
     )

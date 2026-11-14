@@ -1,0 +1,217 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_csr_unit.vhd",
+  "modules": [
+    {
+      "name": "pp_csr_unit",
+      "params": [
+        {
+          "name": "PROCESSOR_ID",
+          "dim": "[31:0]"
+        },
+        {
+          "name": "MTIME_DIVIDER",
+          "default": "5",
+          "comment": [
+            "--! Divider for the clock driving the MTIME counter."
+          ]
+        },
+        {
+          "name": "TIME_DIVIDER",
+          "default": "5",
+          "comment": [
+            "--! Divider for the clock driving the TIME counter."
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "-- IRQ signals:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "irq",
+          "dim": "[7:0]",
+          "comment": [
+            "-- Count retired instruction:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "count_instruction",
+          "comment": [
+            "-- Test interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "test_context",
+          "name": "test_context_out",
+          "comment": [
+            "-- Read port:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_address",
+          "name": "read_address"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "read_data_out",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Write port:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_address",
+          "name": "write_address"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "write_data_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_write_mode",
+          "name": "write_mode",
+          "comment": [
+            "-- Exception context write port:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "csr_exception_context",
+          "name": "exception_context"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "exception_context_write",
+          "comment": [
+            "-- Interrupts originating from this unit:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "software_interrupt_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "timer_interrupt_out",
+          "comment": [
+            "-- Registers needed for exception handling, always read:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mie_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mtvec_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ie_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "ie1_out"
+        }
+      ],
+      "insts": [
+        {
+          "name": "timer_counter",
+          "module": "pp_counter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "time_clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "count",
+              "con": "counter_time"
+            },
+            {
+              "port": "increment",
+              "con": "'1'"
+            }
+          ]
+        },
+        {
+          "name": "cycle_counter",
+          "module": "pp_counter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "count",
+              "con": "counter_cycle"
+            },
+            {
+              "port": "increment",
+              "con": "'1'"
+            }
+          ]
+        },
+        {
+          "name": "instret_counter",
+          "module": "pp_counter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "count",
+              "con": "counter_instret"
+            },
+            {
+              "port": "increment",
+              "con": "count_instruction"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

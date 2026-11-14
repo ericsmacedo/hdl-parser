@@ -1,0 +1,87 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/RstSync.vhd",
+  "modules": [
+    {
+      "name": "RstSync",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns",
+          "comment": [
+            "-- Simulation FF output delay"
+          ]
+        },
+        {
+          "name": "IN_POLARITY_G",
+          "default": "'1'",
+          "comment": [
+            "-- 0 for active low rst, 1 for high"
+          ]
+        },
+        {
+          "name": "OUT_POLARITY_G",
+          "default": "'1'"
+        },
+        {
+          "name": "BYPASS_SYNC_G",
+          "default": "false",
+          "comment": [
+            "-- Bypass Synchronizer module for synchronous data configuration"
+          ]
+        },
+        {
+          "name": "RELEASE_DELAY_G",
+          "default": "3",
+          "comment": [
+            "-- Delay between deassertion of async and sync resets"
+          ]
+        },
+        {
+          "name": "OUT_REG_RST_G",
+          "default": "true"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "asyncRst"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "syncRst"
+        }
+      ],
+      "insts": [
+        {
+          "name": "Synchronizer_1",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "asyncRst"
+            },
+            {
+              "port": "dataIn",
+              "con": "not OUT_POLARITY_G"
+            },
+            {
+              "port": "dataOut",
+              "con": "syncInt"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_decode.vhd",
+  "modules": [
+    {
+      "name": "pp_decode",
+      "params": [
+        {
+          "name": "RESET_ADDRESS",
+          "dim": "[31:0]"
+        },
+        {
+          "name": "PROCESSOR_ID",
+          "dim": "[31:0]"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "flush"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "stall",
+          "comment": [
+            "-- Instruction input:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "instruction_data",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "instruction_address",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "instruction_ready"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "instruction_count",
+          "comment": [
+            "-- Register addresses:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "register_address",
+          "name": "rs1_addr"
+        },
+        {
+          "direction": "out",
+          "dtype": "register_address",
+          "name": "rs2_addr"
+        },
+        {
+          "direction": "out",
+          "dtype": "register_address",
+          "name": "rd_addr"
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_address",
+          "name": "csr_addr",
+          "comment": [
+            "-- Shamt value for shift operations:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "shamt",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "funct3",
+          "dim": "[2:0]",
+          "comment": [
+            "-- Immediate value for immediate instructions:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "immediate",
+          "dim": "[31:0]",
+          "comment": [
+            "-- Control signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "rd_write"
+        },
+        {
+          "direction": "out",
+          "dtype": "branch_type",
+          "name": "branch"
+        },
+        {
+          "direction": "out",
+          "dtype": "alu_operand_source",
+          "name": "alu_x_src"
+        },
+        {
+          "direction": "out",
+          "dtype": "alu_operand_source",
+          "name": "alu_y_src"
+        },
+        {
+          "direction": "out",
+          "dtype": "alu_operation",
+          "name": "alu_op"
+        },
+        {
+          "direction": "out",
+          "dtype": "memory_operation_type",
+          "name": "mem_op"
+        },
+        {
+          "direction": "out",
+          "dtype": "memory_operation_size",
+          "name": "mem_size"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "count_instruction",
+          "comment": [
+            "-- Instruction address:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "pc",
+          "dim": "[31:0]",
+          "comment": [
+            "-- CSR control signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_write_mode",
+          "name": "csr_write"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "csr_use_imm",
+          "comment": [
+            "-- Exception output signals:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "decode_exception"
+        },
+        {
+          "direction": "out",
+          "dtype": "csr_exception_cause",
+          "name": "decode_exception_cause"
+        }
+      ],
+      "insts": [
+        {
+          "name": "immediate_decoder",
+          "module": "pp_imm_decoder",
+          "connections": [
+            {
+              "port": "instruction",
+              "con": "instruction(31 downto 2)"
+            },
+            {
+              "port": "immediate",
+              "con": "immediate_value"
+            }
+          ]
+        },
+        {
+          "name": "control_unit",
+          "module": "pp_control_unit",
+          "connections": [
+            {
+              "port": "opcode",
+              "con": "instruction(6 downto 2)"
+            },
+            {
+              "port": "funct3",
+              "con": "instruction(14 downto 12)"
+            },
+            {
+              "port": "funct7",
+              "con": "instruction(31 downto 25)"
+            },
+            {
+              "port": "funct12",
+              "con": "instruction(31 downto 20)"
+            },
+            {
+              "port": "rd_write",
+              "con": "rd_write"
+            },
+            {
+              "port": "branch",
+              "con": "branch"
+            },
+            {
+              "port": "alu_x_src",
+              "con": "alu_x_src"
+            },
+            {
+              "port": "alu_y_src",
+              "con": "alu_y_src"
+            },
+            {
+              "port": "alu_op",
+              "con": "alu_op"
+            },
+            {
+              "port": "mem_op",
+              "con": "mem_op"
+            },
+            {
+              "port": "mem_size",
+              "con": "mem_size"
+            },
+            {
+              "port": "decode_exception",
+              "con": "decode_exception"
+            },
+            {
+              "port": "decode_exception_cause",
+              "con": "decode_exception_cause"
+            },
+            {
+              "port": "csr_write",
+              "con": "csr_write"
+            },
+            {
+              "port": "csr_imm",
+              "con": "csr_use_imm"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
