@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 ericsmacedo
+# Copyright (c) 2025-2026 ericsmacedo
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,9 +45,9 @@ REPLACEMENTS = ((Path("examples"), "EXAMPLES"),)
 
 
 @mark.parametrize("example", EXAMPLES)
-def test_gen_sv_instance(tmp_path, runner_iso, example):
+def test_gen_sv_instance(tmp_path, runner, example):
     """Test Info Command."""
-    result = runner_iso.invoke(cli, ["gen-sv-instance", str(example)])
+    result = runner.invoke(cli, ["gen-sv-instance", str(example)])
 
     assert result.exit_code == 0
     (tmp_path / "output.txt").write_text(result.output)

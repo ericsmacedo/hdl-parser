@@ -1,0 +1,1226 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_cpu.vhd",
+  "modules": [
+    {
+      "name": "neorv32_cpu",
+      "params": [
+        {
+          "name": "HART_ID",
+          "default": "0",
+          "comment": [
+            "-- hardware thread ID"
+          ]
+        },
+        {
+          "name": "VENDOR_ID",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "-- vendor ID"
+          ]
+        },
+        {
+          "name": "BOOT_ADDR",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "-- CPU boot address"
+          ]
+        },
+        {
+          "name": "DEBUG_PARK_ADDR",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "-- CPU debug mode parking loop entry address"
+          ]
+        },
+        {
+          "name": "DEBUG_EXC_ADDR",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "-- CPU debug mode exception entry address"
+          ]
+        },
+        {
+          "name": "TRACE_PORT_EN",
+          "default": "false",
+          "comment": [
+            "-- enable CPU trace port"
+          ]
+        },
+        {
+          "name": "TRACE_SIMLOG_EN",
+          "default": "false",
+          "comment": [
+            "-- enable simulation trace logging",
+            "-- RISC-V ISA Extensions --"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_C",
+          "default": "false",
+          "comment": [
+            "-- compressed extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_E",
+          "default": "false",
+          "comment": [
+            "-- embedded RF extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_M",
+          "default": "false",
+          "comment": [
+            "-- mul/div extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_U",
+          "default": "false",
+          "comment": [
+            "-- user mode extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zaamo",
+          "default": "false",
+          "comment": [
+            "-- atomic read-modify-write operations extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zalrsc",
+          "default": "false",
+          "comment": [
+            "-- atomic reservation-set operations extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zba",
+          "default": "false",
+          "comment": [
+            "-- shifted-add bit-manipulation extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbb",
+          "default": "false",
+          "comment": [
+            "-- basic bit-manipulation extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbc",
+          "default": "false",
+          "comment": [
+            "-- carry-less multiplication instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkb",
+          "default": "false",
+          "comment": [
+            "-- bit-manipulation instructions for cryptography"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkc",
+          "default": "false",
+          "comment": [
+            "-- carry-less multiplication instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbkx",
+          "default": "false",
+          "comment": [
+            "-- cryptography crossbar permutation extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zbs",
+          "default": "false",
+          "comment": [
+            "-- single-bit bit-manipulation extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zcb",
+          "default": "false",
+          "comment": [
+            "-- additional code size reduction instructions"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zcmop",
+          "default": "false",
+          "comment": [
+            "-- compressed may-be-operations"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zfinx",
+          "default": "false",
+          "comment": [
+            "-- 32-bit floating-point extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zibi",
+          "default": "false",
+          "comment": [
+            "-- branch with immediate"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zicntr",
+          "default": "false",
+          "comment": [
+            "-- base counters"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zicond",
+          "default": "false",
+          "comment": [
+            "-- integer conditional operations"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zihpm",
+          "default": "false",
+          "comment": [
+            "-- hardware performance monitors"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zimop",
+          "default": "false",
+          "comment": [
+            "-- may-be-operations"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zknd",
+          "default": "false",
+          "comment": [
+            "-- cryptography NIST AES decryption extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zkne",
+          "default": "false",
+          "comment": [
+            "-- cryptography NIST AES encryption extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zknh",
+          "default": "false",
+          "comment": [
+            "-- cryptography NIST hash extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zksed",
+          "default": "false",
+          "comment": [
+            "-- ShangMi hash extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zksh",
+          "default": "false",
+          "comment": [
+            "-- ShangMi block cipher extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Zmmul",
+          "default": "false",
+          "comment": [
+            "-- multiply-only M sub-extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Sdext",
+          "default": "false",
+          "comment": [
+            "-- external debug mode extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Sdtrig",
+          "default": "false",
+          "comment": [
+            "-- trigger module extension"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Smcntrpmf",
+          "default": "false",
+          "comment": [
+            "-- counter privilege-mode filtering"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Smpmp",
+          "default": "false",
+          "comment": [
+            "-- physical memory protection"
+          ]
+        },
+        {
+          "name": "RISCV_ISA_Xcfu",
+          "default": "false",
+          "comment": [
+            "-- custom (instr.) functions unit",
+            "-- Tuning Options --"
+          ]
+        },
+        {
+          "name": "CPU_CONSTT_BR_EN",
+          "default": "false",
+          "comment": [
+            "-- constant-time branches"
+          ]
+        },
+        {
+          "name": "CPU_FAST_MUL_EN",
+          "default": "false",
+          "comment": [
+            "-- use DSPs for M extension's multiplier"
+          ]
+        },
+        {
+          "name": "CPU_FAST_MUL_REGS",
+          "default": "1",
+          "comment": [
+            "-- number of fast multiplier register stages (needs CPU_FAST_MUL_EN)"
+          ]
+        },
+        {
+          "name": "CPU_FAST_SHIFT_EN",
+          "default": "false",
+          "comment": [
+            "-- use barrel shifter for shift operations"
+          ]
+        },
+        {
+          "name": "CPU_RF_ARCH_SEL",
+          "default": "0",
+          "comment": [
+            "-- register file implementation style select",
+            "-- Physical Memory Protection (PMP) --"
+          ]
+        },
+        {
+          "name": "PMP_NUM_REGIONS",
+          "default": "0",
+          "comment": [
+            "-- number of regions"
+          ]
+        },
+        {
+          "name": "PMP_MIN_GRANULARITY",
+          "default": "4",
+          "comment": [
+            "-- minimal region granularity in bytes, has to be a power of 2, min 4 bytes"
+          ]
+        },
+        {
+          "name": "PMP_TOR_MODE_EN",
+          "default": "false",
+          "comment": [
+            "-- enable TOR mode"
+          ]
+        },
+        {
+          "name": "PMP_NAP_MODE_EN",
+          "default": "false",
+          "comment": [
+            "-- enable NAPOT/NA4 modes",
+            "-- Hardware Performance Monitors (HPM) --"
+          ]
+        },
+        {
+          "name": "HPM_NUM_CNTS",
+          "default": "0",
+          "comment": [
+            "-- number of implemented HPM counters"
+          ]
+        },
+        {
+          "name": "HPM_CNT_WIDTH",
+          "default": "0",
+          "comment": [
+            "-- total size of HPM counters",
+            "-- Trigger Module (TM) --"
+          ]
+        },
+        {
+          "name": "NUM_HW_TRIGGERS",
+          "default": "0",
+          "comment": [
+            "-- number of hardware triggers"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock, rising edge"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset, low-active, async",
+            "-- status --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "mtime_i",
+          "dim": "[63:0]",
+          "comment": [
+            "-- system time input from CLINT/MTIME"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "trace_port_t",
+          "name": "trace_o",
+          "comment": [
+            "-- execution trace port (enabled when TRACE_PORT_EN = true)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "sleep_o",
+          "comment": [
+            "-- CPU is in sleep mode",
+            "-- interrupts --"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "msi_i",
+          "comment": [
+            "-- RISC-V machine software interrupt"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "mei_i",
+          "comment": [
+            "-- RISC-V machine external interrupt"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "mti_i",
+          "comment": [
+            "-- RISC-V machine timer interrupt"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "firq_i",
+          "dim": "[15:0]",
+          "comment": [
+            "-- custom fast interrupts"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "dbi_i",
+          "comment": [
+            "-- RISC-V debug halt request interrupt",
+            "-- instruction bus interface --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "ifence_o",
+          "comment": [
+            "-- instruction fence"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "ibus_req_o",
+          "comment": [
+            "-- request bus"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "ibus_rsp_i",
+          "comment": [
+            "-- response bus",
+            "-- data bus interface --"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "dfence_o",
+          "comment": [
+            "-- data fence"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_req_t",
+          "name": "dbus_req_o",
+          "comment": [
+            "-- request bus"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_rsp_t",
+          "name": "dbus_rsp_i",
+          "comment": [
+            "-- response bus"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "cpu_frontend_inst",
+          "module": "neorv32_cpu_frontend",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- instruction fetch interface --"
+              ]
+            },
+            {
+              "port": "ibus_req_o",
+              "con": "ibus_req_o",
+              "comment": [
+                "-- request"
+              ]
+            },
+            {
+              "port": "ibus_rsp_i",
+              "con": "ibus_rsp_i",
+              "comment": [
+                "-- response",
+                "-- PMP interface --"
+              ]
+            },
+            {
+              "port": "pmp_addr_o",
+              "con": "if_pmp_addr",
+              "comment": [
+                "-- access address"
+              ]
+            },
+            {
+              "port": "pmp_priv_o",
+              "con": "if_pmp_priv",
+              "comment": [
+                "-- access privilege level"
+              ]
+            },
+            {
+              "port": "pmp_err_i",
+              "con": "if_pmp_err",
+              "comment": [
+                "-- PMP access fault",
+                "-- back-end interface --"
+              ]
+            },
+            {
+              "port": "frontend_o",
+              "con": "frontend",
+              "comment": [
+                "-- fetch data and status"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_control_inst",
+          "module": "neorv32_cpu_control",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_o",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- misc --"
+              ]
+            },
+            {
+              "port": "frontend_i",
+              "con": "frontend",
+              "comment": [
+                "-- front-end status and data"
+              ]
+            },
+            {
+              "port": "hwtrig_i",
+              "con": "hwtrig",
+              "comment": [
+                "-- hardware trigger",
+                "-- data path interface --"
+              ]
+            },
+            {
+              "port": "alu_cp_done_i",
+              "con": "alu_cp_done",
+              "comment": [
+                "-- ALU iterative operation done"
+              ]
+            },
+            {
+              "port": "alu_cmp_i",
+              "con": "alu_cmp",
+              "comment": [
+                "-- comparator status"
+              ]
+            },
+            {
+              "port": "alu_add_i",
+              "con": "alu_add",
+              "comment": [
+                "-- ALU address result"
+              ]
+            },
+            {
+              "port": "rf_rs1_i",
+              "con": "rs1",
+              "comment": [
+                "-- register file source 1"
+              ]
+            },
+            {
+              "port": "csr_rdata_o",
+              "con": "csr_rdata",
+              "comment": [
+                "-- CSR read data"
+              ]
+            },
+            {
+              "port": "xcsr_rdata_i",
+              "con": "xcsr_res",
+              "comment": [
+                "-- external CSR read data",
+                "-- interrupts --"
+              ]
+            },
+            {
+              "port": "irq_dbg_i",
+              "con": "dbi_i",
+              "comment": [
+                "-- debug mode (halt) request"
+              ]
+            },
+            {
+              "port": "irq_machine_i",
+              "con": "irq_machine",
+              "comment": [
+                "-- RISC-V interrupts"
+              ]
+            },
+            {
+              "port": "irq_fast_i",
+              "con": "firq_i",
+              "comment": [
+                "-- fast interrupts",
+                "-- load/store unit interface --"
+              ]
+            },
+            {
+              "port": "lsu_wait_i",
+              "con": "lsu_wait",
+              "comment": [
+                "-- wait for data bus"
+              ]
+            },
+            {
+              "port": "lsu_mar_i",
+              "con": "lsu_mar",
+              "comment": [
+                "-- memory address register"
+              ]
+            },
+            {
+              "port": "lsu_err_i",
+              "con": "lsu_err",
+              "comment": [
+                "-- alignment/access errors"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_hwtrig_inst",
+          "module": "neorv32_cpu_hwtrig",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- data path --"
+              ]
+            },
+            {
+              "port": "mar_i",
+              "con": "lsu_mar",
+              "comment": [
+                "-- memory address register"
+              ]
+            },
+            {
+              "port": "csr_o",
+              "con": "xcsr_tm",
+              "comment": [
+                "-- CSR read data",
+                "-- trigger firing --"
+              ]
+            },
+            {
+              "port": "hit_o",
+              "con": "hwtrig",
+              "comment": [
+                "-- high until debug-mode is entered"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_counters_inst",
+          "module": "neorv32_cpu_counters",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- system time --"
+              ]
+            },
+            {
+              "port": "mtime_i",
+              "con": "mtime_i",
+              "comment": [
+                "-- from CLINT/MTIME",
+                "-- read back --"
+              ]
+            },
+            {
+              "port": "rdata_o",
+              "con": "xcsr_cnt",
+              "comment": [
+                "-- read data"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_regfile_inst",
+          "module": "neorv32_cpu_regfile",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "zero_i",
+              "con": "ctrl.rf_zero",
+              "comment": [
+                "-- write port (rd) --"
+              ]
+            },
+            {
+              "port": "rd_we_i",
+              "con": "ctrl.rf_wb_en"
+            },
+            {
+              "port": "rd_addr_i",
+              "con": "ctrl.rf_rd"
+            },
+            {
+              "port": "rd_data_i",
+              "con": "rf_wdata",
+              "comment": [
+                "-- read port 1 (rs1) --"
+              ]
+            },
+            {
+              "port": "rs1_addr_i",
+              "con": "ctrl.rf_rs1"
+            },
+            {
+              "port": "rs1_data_o",
+              "con": "rs1",
+              "comment": [
+                "-- read port 1 (rs2) --"
+              ]
+            },
+            {
+              "port": "rs2_addr_i",
+              "con": "ctrl.rf_rs2"
+            },
+            {
+              "port": "rs2_data_o",
+              "con": "rs2"
+            }
+          ]
+        },
+        {
+          "name": "cpu_alu_inst",
+          "module": "neorv32_cpu_alu",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- data input --"
+              ]
+            },
+            {
+              "port": "rs1_i",
+              "con": "rs1",
+              "comment": [
+                "-- rf source 1"
+              ]
+            },
+            {
+              "port": "rs2_i",
+              "con": "rs2",
+              "comment": [
+                "-- rf source 2",
+                "-- data output --"
+              ]
+            },
+            {
+              "port": "cmp_o",
+              "con": "alu_cmp",
+              "comment": [
+                "-- comparator status"
+              ]
+            },
+            {
+              "port": "res_o",
+              "con": "alu_res",
+              "comment": [
+                "-- ALU result"
+              ]
+            },
+            {
+              "port": "add_o",
+              "con": "alu_add",
+              "comment": [
+                "-- address computation result"
+              ]
+            },
+            {
+              "port": "csr_o",
+              "con": "xcsr_alu",
+              "comment": [
+                "-- CSR read data",
+                "-- status --"
+              ]
+            },
+            {
+              "port": "done_o",
+              "con": "alu_cp_done",
+              "comment": [
+                "-- iterative processing units done?"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_lsu_inst",
+          "module": "neorv32_cpu_lsu",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- memory data access interface --"
+              ]
+            },
+            {
+              "port": "addr_i",
+              "con": "alu_add",
+              "comment": [
+                "-- access address"
+              ]
+            },
+            {
+              "port": "wdata_i",
+              "con": "rs2",
+              "comment": [
+                "-- write data"
+              ]
+            },
+            {
+              "port": "rdata_o",
+              "con": "lsu_rdata",
+              "comment": [
+                "-- read data"
+              ]
+            },
+            {
+              "port": "mar_o",
+              "con": "lsu_mar",
+              "comment": [
+                "-- memory address register"
+              ]
+            },
+            {
+              "port": "wait_o",
+              "con": "lsu_wait",
+              "comment": [
+                "-- wait for access to complete"
+              ]
+            },
+            {
+              "port": "err_o",
+              "con": "lsu_err",
+              "comment": [
+                "-- alignment/access errors"
+              ]
+            },
+            {
+              "port": "pmp_fault_i",
+              "con": "rw_pmp_err",
+              "comment": [
+                "-- PMP read/write access fault",
+                "-- data bus --"
+              ]
+            },
+            {
+              "port": "dbus_req_o",
+              "con": "dbus_req",
+              "comment": [
+                "-- request"
+              ]
+            },
+            {
+              "port": "dbus_rsp_i",
+              "con": "dbus_rsp_i",
+              "comment": [
+                "-- response"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_pmp_inst",
+          "module": "neorv32_cpu_pmp",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus"
+              ]
+            },
+            {
+              "port": "csr_o",
+              "con": "xcsr_pmp",
+              "comment": [
+                "-- CSR read data",
+                "-- instruction access check --"
+              ]
+            },
+            {
+              "port": "i_addr_i",
+              "con": "if_pmp_addr",
+              "comment": [
+                "-- access address"
+              ]
+            },
+            {
+              "port": "i_priv_i",
+              "con": "if_pmp_priv",
+              "comment": [
+                "-- access privilege"
+              ]
+            },
+            {
+              "port": "i_err_o",
+              "con": "if_pmp_err",
+              "comment": [
+                "-- PMP fault",
+                "-- data access check --"
+              ]
+            },
+            {
+              "port": "d_addr_i",
+              "con": "alu_add",
+              "comment": [
+                "-- access address"
+              ]
+            },
+            {
+              "port": "d_priv_i",
+              "con": "ctrl.lsu_priv",
+              "comment": [
+                "-- access privilege"
+              ]
+            },
+            {
+              "port": "d_err_o",
+              "con": "rw_pmp_err",
+              "comment": [
+                "-- PMP fault"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "cpu_trace_inst",
+          "module": "neorv32_cpu_trace",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i",
+              "comment": [
+                "-- global clock, rising edge"
+              ]
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i",
+              "comment": [
+                "-- global reset, low-active, async"
+              ]
+            },
+            {
+              "port": "ctrl_i",
+              "con": "ctrl",
+              "comment": [
+                "-- main control bus",
+                "-- operands --"
+              ]
+            },
+            {
+              "port": "rs1_rdata_i",
+              "con": "rs1",
+              "comment": [
+                "-- rs1 read data"
+              ]
+            },
+            {
+              "port": "rs2_rdata_i",
+              "con": "rs2",
+              "comment": [
+                "-- rs2 read data"
+              ]
+            },
+            {
+              "port": "rd_wdata_i",
+              "con": "rf_wdata",
+              "comment": [
+                "-- rd write data"
+              ]
+            },
+            {
+              "port": "mem_ben_i",
+              "con": "dbus_req.ben",
+              "comment": [
+                "-- memory byte-enable"
+              ]
+            },
+            {
+              "port": "mem_addr_i",
+              "con": "dbus_req.addr",
+              "comment": [
+                "-- memory address"
+              ]
+            },
+            {
+              "port": "mem_wdata_i",
+              "con": "dbus_req.data",
+              "comment": [
+                "-- memory write data",
+                "-- trace port --"
+              ]
+            },
+            {
+              "port": "trace_o",
+              "con": "trace",
+              "comment": [
+                "-- execution trace port"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "trace_simlog_inst",
+          "module": "neorv32_cpu_trace_simlog",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "trace_i",
+              "con": "trace"
+            }
+          ]
+        },
+        {
+          "name": "trace_simlog_inst",
+          "module": "neorv32_cpu_trace_simlog",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "trace_i",
+              "con": "trace"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/cache_mem.vhdl",
+  "modules": [
+    {
+      "name": "cache_mem",
+      "params": [
+        {
+          "name": "REPLACEMENT_POLICY",
+          "default": "\"LRU\""
+        },
+        {
+          "name": "CACHE_LINES"
+        },
+        {
+          "name": "ASSOCIATIVITY"
+        },
+        {
+          "name": "CPU_DATA_BITS"
+        },
+        {
+          "name": "MEM_ADDR_BITS"
+        },
+        {
+          "name": "MEM_DATA_BITS"
+        },
+        {
+          "name": "OUTSTANDING_REQ",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk",
+          "comment": [
+            "-- clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst",
+          "comment": [
+            "-- reset",
+            "-- \"CPU\" side"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "cpu_req"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "cpu_write"
+        },
+        {
+          "direction": "in",
+          "dtype": "unsigned",
+          "name": "cpu_addr",
+          "dim": "[log2ceil(MEM_DATA_BITS/CPU_DATA_BITS)+MEM_ADDR_BITS-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "cpu_wdata",
+          "dim": "[CPU_DATA_BITS-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "cpu_wmask",
+          "dim": "[CPU_DATA_BITS/8-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "cpu_rdy"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "cpu_rstb"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "cpu_rdata",
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "comment": [
+            "-- Memory side"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "mem_req"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "mem_write"
+        },
+        {
+          "direction": "out",
+          "dtype": "unsigned",
+          "name": "mem_addr",
+          "dim": "[MEM_ADDR_BITS-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mem_wdata",
+          "dim": "[MEM_DATA_BITS-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "mem_wmask",
+          "dim": "[MEM_DATA_BITS/8-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "mem_rdy"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "mem_rstb"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "mem_rdata",
+          "dim": "[MEM_DATA_BITS-1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "cache_cpu_inst",
+          "module": "cache_cpu",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst"
+            },
+            {
+              "port": "cpu_req",
+              "con": "int_req"
+            },
+            {
+              "port": "cpu_write",
+              "con": "int_write"
+            },
+            {
+              "port": "cpu_addr",
+              "con": "int_addr"
+            },
+            {
+              "port": "cpu_wdata",
+              "con": "int_wdata"
+            },
+            {
+              "port": "cpu_wmask",
+              "con": "int_wmask"
+            },
+            {
+              "port": "cpu_got",
+              "con": "int_got"
+            },
+            {
+              "port": "cpu_rdata",
+              "con": "int_rdata"
+            },
+            {
+              "port": "mem_req",
+              "con": "mem_req"
+            },
+            {
+              "port": "mem_write",
+              "con": "mem_write"
+            },
+            {
+              "port": "mem_addr",
+              "con": "mem_addr"
+            },
+            {
+              "port": "mem_wdata",
+              "con": "mem_wdata"
+            },
+            {
+              "port": "mem_wmask",
+              "con": "mem_wmask"
+            },
+            {
+              "port": "mem_rdy",
+              "con": "mem_rdy"
+            },
+            {
+              "port": "mem_rstb",
+              "con": "mem_rstb"
+            },
+            {
+              "port": "mem_rdata",
+              "con": "mem_rdata"
+            }
+          ]
+        },
+        {
+          "name": "req_fifo",
+          "module": "fifo_glue",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst"
+            },
+            {
+              "port": "put",
+              "con": "put"
+            },
+            {
+              "port": "di",
+              "con": "din"
+            },
+            {
+              "port": "ful",
+              "con": "full"
+            },
+            {
+              "port": "vld",
+              "con": "valid"
+            },
+            {
+              "port": "do",
+              "con": "dout"
+            },
+            {
+              "port": "got",
+              "con": "int_got"
+            }
+          ]
+        },
+        {
+          "name": "req_fifo",
+          "module": "fifo_cc_got",
+          "connections": [
+            {
+              "port": "rst",
+              "con": "rst"
+            },
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "put",
+              "con": "put"
+            },
+            {
+              "port": "din",
+              "con": "din"
+            },
+            {
+              "port": "full",
+              "con": "full"
+            },
+            {
+              "port": "estate_wr",
+              "con": "open"
+            },
+            {
+              "port": "got",
+              "con": "int_got"
+            },
+            {
+              "port": "dout",
+              "con": "dout"
+            },
+            {
+              "port": "valid",
+              "con": "valid"
+            },
+            {
+              "port": "fstate_rd",
+              "con": "open"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1078 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/core.vhdl",
+  "modules": [
+    {
+      "name": "core",
+      "params": [
+        {
+          "name": "SIM",
+          "default": "false"
+        },
+        {
+          "name": "CPU_INDEX",
+          "default": "0"
+        },
+        {
+          "name": "NCPUS",
+          "default": "1"
+        },
+        {
+          "name": "DISABLE_FLATTEN",
+          "default": "false"
+        },
+        {
+          "name": "EX1_BYPASS",
+          "default": "true"
+        },
+        {
+          "name": "HAS_FPU",
+          "default": "true"
+        },
+        {
+          "name": "HAS_BTC",
+          "default": "true"
+        },
+        {
+          "name": "ALT_RESET_ADDRESS",
+          "dim": "[63:0]",
+          "default": "(others => '0')"
+        },
+        {
+          "name": "LOG_LENGTH",
+          "default": "512"
+        },
+        {
+          "name": "ICACHE_NUM_LINES",
+          "default": "64"
+        },
+        {
+          "name": "ICACHE_NUM_WAYS",
+          "default": "2"
+        },
+        {
+          "name": "ICACHE_TLB_SIZE",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_NUM_LINES",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_NUM_WAYS",
+          "default": "2"
+        },
+        {
+          "name": "DCACHE_TLB_SET_SIZE",
+          "default": "64"
+        },
+        {
+          "name": "DCACHE_TLB_NUM_WAYS",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rst",
+          "comment": [
+            "-- Alternate reset (0xffff0000) for use by DRAM init fw"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "alt_reset",
+          "comment": [
+            "-- Global timebase control"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "timebase_ctrl",
+          "name": "tb_ctrl",
+          "comment": [
+            "-- Wishbone interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "wishbone_slave_out",
+          "name": "wishbone_insn_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "wishbone_master_out",
+          "name": "wishbone_insn_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "wishbone_slave_out",
+          "name": "wishbone_data_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "wishbone_master_out",
+          "name": "wishbone_data_out"
+        },
+        {
+          "direction": "in",
+          "dtype": "wishbone_master_out",
+          "name": "wb_snoop_in"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "dmi_addr",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "dmi_din",
+          "dim": "[63:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "dmi_dout",
+          "dim": "[63:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "dmi_req"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "dmi_wr"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "dmi_ack"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "ext_irq"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "msg_in"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "msg_out",
+          "dim": "[NCPUS-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "run_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "terminated_out"
+        }
+      ],
+      "insts": [
+        {
+          "name": "fetch1_0",
+          "module": "fetch1",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_fetch1"
+            },
+            {
+              "port": "alt_reset_in",
+              "con": "alt_reset_d"
+            },
+            {
+              "port": "stall_in",
+              "con": "fetch1_stall_in"
+            },
+            {
+              "port": "flush_in",
+              "con": "fetch1_flush"
+            },
+            {
+              "port": "inval_btc",
+              "con": "ex1_icache_inval or mmu_to_itlb.tlbie"
+            },
+            {
+              "port": "stop_in",
+              "con": "dbg_core_stop"
+            },
+            {
+              "port": "m_in",
+              "con": "mmu_to_itlb"
+            },
+            {
+              "port": "d_in",
+              "con": "decode1_to_fetch1"
+            },
+            {
+              "port": "w_in",
+              "con": "writeback_to_fetch1"
+            },
+            {
+              "port": "i_out",
+              "con": "fetch1_to_icache"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(42 downto 0)"
+            }
+          ]
+        },
+        {
+          "name": "icache_0",
+          "module": "icache",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_icache"
+            },
+            {
+              "port": "i_in",
+              "con": "fetch1_to_icache"
+            },
+            {
+              "port": "i_out",
+              "con": "icache_to_decode1"
+            },
+            {
+              "port": "flush_in",
+              "con": "fetch1_flush"
+            },
+            {
+              "port": "inval_in",
+              "con": "dbg_icache_rst or ex1_icache_inval"
+            },
+            {
+              "port": "stall_in",
+              "con": "icache_stall_in"
+            },
+            {
+              "port": "stall_out",
+              "con": "icache_stall_out"
+            },
+            {
+              "port": "wishbone_out",
+              "con": "wishbone_insn_out"
+            },
+            {
+              "port": "wishbone_in",
+              "con": "wishbone_insn_in"
+            },
+            {
+              "port": "wb_snoop_in",
+              "con": "wb_snoop_in"
+            },
+            {
+              "port": "events",
+              "con": "icache_events"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(100 downto 43)"
+            }
+          ]
+        },
+        {
+          "name": "decode1_0",
+          "module": "decode1",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_dec1"
+            },
+            {
+              "port": "stall_in",
+              "con": "decode1_stall_in"
+            },
+            {
+              "port": "flush_in",
+              "con": "flush"
+            },
+            {
+              "port": "flush_out",
+              "con": "decode1_flush"
+            },
+            {
+              "port": "busy_out",
+              "con": "decode1_busy"
+            },
+            {
+              "port": "f_in",
+              "con": "icache_to_decode1"
+            },
+            {
+              "port": "d_out",
+              "con": "decode1_to_decode2"
+            },
+            {
+              "port": "f_out",
+              "con": "decode1_to_fetch1"
+            },
+            {
+              "port": "r_out",
+              "con": "decode1_to_register_file"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(113 downto 101)"
+            }
+          ]
+        },
+        {
+          "name": "decode2_0",
+          "module": "decode2",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_dec2"
+            },
+            {
+              "port": "busy_in",
+              "con": "decode2_busy_in"
+            },
+            {
+              "port": "stall_out",
+              "con": "decode2_stall_out"
+            },
+            {
+              "port": "flush_in",
+              "con": "flush"
+            },
+            {
+              "port": "tb_ctrl",
+              "con": "tb_ctrl"
+            },
+            {
+              "port": "complete_in",
+              "con": "complete"
+            },
+            {
+              "port": "stopped_out",
+              "con": "dbg_core_is_stopped"
+            },
+            {
+              "port": "d_in",
+              "con": "decode1_to_decode2"
+            },
+            {
+              "port": "e_out",
+              "con": "decode2_to_execute1"
+            },
+            {
+              "port": "r_in",
+              "con": "register_file_to_decode2"
+            },
+            {
+              "port": "r_out",
+              "con": "decode2_to_register_file"
+            },
+            {
+              "port": "c_in",
+              "con": "cr_file_to_decode2"
+            },
+            {
+              "port": "c_out",
+              "con": "decode2_to_cr_file"
+            },
+            {
+              "port": "execute_bypass",
+              "con": "execute1_bypass"
+            },
+            {
+              "port": "execute_cr_bypass",
+              "con": "execute1_cr_bypass"
+            },
+            {
+              "port": "execute2_bypass",
+              "con": "execute2_bypass"
+            },
+            {
+              "port": "execute2_cr_bypass",
+              "con": "execute2_cr_bypass"
+            },
+            {
+              "port": "writeback_bypass",
+              "con": "writeback_bypass"
+            },
+            {
+              "port": "dbg_spr_req",
+              "con": "dbg_spr_req"
+            },
+            {
+              "port": "dbg_spr_addr",
+              "con": "dbg_spr_addr"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(123 downto 114)"
+            }
+          ]
+        },
+        {
+          "name": "register_file_0",
+          "module": "register_file",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "stall",
+              "con": "decode2_stall_out"
+            },
+            {
+              "port": "d1_in",
+              "con": "decode1_to_register_file"
+            },
+            {
+              "port": "d_in",
+              "con": "decode2_to_register_file"
+            },
+            {
+              "port": "d_out",
+              "con": "register_file_to_decode2"
+            },
+            {
+              "port": "w_in",
+              "con": "writeback_to_register_file"
+            },
+            {
+              "port": "dbg_gpr_req",
+              "con": "dbg_gpr_req"
+            },
+            {
+              "port": "dbg_gpr_ack",
+              "con": "dbg_gpr_ack"
+            },
+            {
+              "port": "dbg_gpr_addr",
+              "con": "dbg_gpr_addr"
+            },
+            {
+              "port": "dbg_gpr_data",
+              "con": "dbg_gpr_data"
+            },
+            {
+              "port": "sim_dump",
+              "con": "terminate"
+            },
+            {
+              "port": "sim_dump_done",
+              "con": "sim_ex_dump"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(255 downto 184)"
+            }
+          ]
+        },
+        {
+          "name": "cr_file_0",
+          "module": "cr_file",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "d_in",
+              "con": "decode2_to_cr_file"
+            },
+            {
+              "port": "d_out",
+              "con": "cr_file_to_decode2"
+            },
+            {
+              "port": "w_in",
+              "con": "writeback_to_cr_file"
+            },
+            {
+              "port": "sim_dump",
+              "con": "sim_cr_dump"
+            },
+            {
+              "port": "ctrl",
+              "con": "ctrl_debug"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(183 downto 171)"
+            }
+          ]
+        },
+        {
+          "name": "execute1_0",
+          "module": "execute1",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_ex1"
+            },
+            {
+              "port": "tb_ctrl",
+              "con": "tb_ctrl"
+            },
+            {
+              "port": "flush_in",
+              "con": "flush"
+            },
+            {
+              "port": "busy_out",
+              "con": "ex1_busy_out"
+            },
+            {
+              "port": "e_in",
+              "con": "decode2_to_execute1"
+            },
+            {
+              "port": "l_in",
+              "con": "loadstore1_to_execute1"
+            },
+            {
+              "port": "fp_in",
+              "con": "fpu_to_execute1"
+            },
+            {
+              "port": "ext_irq_in",
+              "con": "ext_irq"
+            },
+            {
+              "port": "interrupt_in",
+              "con": "wb_interrupt"
+            },
+            {
+              "port": "l_out",
+              "con": "execute1_to_loadstore1"
+            },
+            {
+              "port": "fp_out",
+              "con": "execute1_to_fpu"
+            },
+            {
+              "port": "e_out",
+              "con": "execute1_to_writeback"
+            },
+            {
+              "port": "bypass_data",
+              "con": "execute1_bypass"
+            },
+            {
+              "port": "bypass_cr_data",
+              "con": "execute1_cr_bypass"
+            },
+            {
+              "port": "bypass2_data",
+              "con": "execute2_bypass"
+            },
+            {
+              "port": "bypass2_cr_data",
+              "con": "execute2_cr_bypass"
+            },
+            {
+              "port": "icache_inval",
+              "con": "ex1_icache_inval"
+            },
+            {
+              "port": "dbg_ctrl_out",
+              "con": "ctrl_debug"
+            },
+            {
+              "port": "wb_events",
+              "con": "writeback_events"
+            },
+            {
+              "port": "ls_events",
+              "con": "loadstore_events"
+            },
+            {
+              "port": "dc_events",
+              "con": "dcache_events"
+            },
+            {
+              "port": "ic_events",
+              "con": "icache_events"
+            },
+            {
+              "port": "msg_out",
+              "con": "msg_out"
+            },
+            {
+              "port": "msg_in",
+              "con": "msg_in"
+            },
+            {
+              "port": "run_out",
+              "con": "run_out"
+            },
+            {
+              "port": "terminate_out",
+              "con": "terminate"
+            },
+            {
+              "port": "dbg_spr_req",
+              "con": "dbg_spr_req"
+            },
+            {
+              "port": "dbg_spr_ack",
+              "con": "dbg_spr_ack"
+            },
+            {
+              "port": "dbg_spr_addr",
+              "con": "dbg_spr_addr"
+            },
+            {
+              "port": "dbg_spr_data",
+              "con": "dbg_spr_data"
+            },
+            {
+              "port": "sim_dump",
+              "con": "sim_ex_dump"
+            },
+            {
+              "port": "sim_dump_done",
+              "con": "sim_cr_dump"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(135 downto 124)"
+            },
+            {
+              "port": "log_rd_addr",
+              "con": "log_rd_addr"
+            },
+            {
+              "port": "log_rd_data",
+              "con": "log_rd_data"
+            },
+            {
+              "port": "log_wr_addr",
+              "con": "log_wr_addr"
+            }
+          ]
+        },
+        {
+          "name": "fpu_0",
+          "module": "fpu",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_fpu"
+            },
+            {
+              "port": "flush_in",
+              "con": "flush"
+            },
+            {
+              "port": "e_in",
+              "con": "execute1_to_fpu"
+            },
+            {
+              "port": "e_out",
+              "con": "fpu_to_execute1"
+            },
+            {
+              "port": "w_out",
+              "con": "fpu_to_writeback"
+            }
+          ]
+        },
+        {
+          "name": "loadstore1_0",
+          "module": "loadstore1",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_ls1"
+            },
+            {
+              "port": "l_in",
+              "con": "execute1_to_loadstore1"
+            },
+            {
+              "port": "e_out",
+              "con": "loadstore1_to_execute1"
+            },
+            {
+              "port": "l_out",
+              "con": "loadstore1_to_writeback"
+            },
+            {
+              "port": "d_out",
+              "con": "loadstore1_to_dcache"
+            },
+            {
+              "port": "d_in",
+              "con": "dcache_to_loadstore1"
+            },
+            {
+              "port": "m_out",
+              "con": "loadstore1_to_mmu"
+            },
+            {
+              "port": "m_in",
+              "con": "mmu_to_loadstore1"
+            },
+            {
+              "port": "dc_stall",
+              "con": "dcache_stall_out"
+            },
+            {
+              "port": "events",
+              "con": "loadstore_events"
+            },
+            {
+              "port": "dbg_spr_req",
+              "con": "dbg_ls_spr_req"
+            },
+            {
+              "port": "dbg_spr_ack",
+              "con": "dbg_ls_spr_ack"
+            },
+            {
+              "port": "dbg_spr_addr",
+              "con": "dbg_ls_spr_addr"
+            },
+            {
+              "port": "dbg_spr_data",
+              "con": "dbg_ls_spr_data"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(149 downto 140)"
+            }
+          ]
+        },
+        {
+          "name": "mmu_0",
+          "module": "mmu",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "core_rst"
+            },
+            {
+              "port": "l_in",
+              "con": "loadstore1_to_mmu"
+            },
+            {
+              "port": "l_out",
+              "con": "mmu_to_loadstore1"
+            },
+            {
+              "port": "d_out",
+              "con": "mmu_to_dcache"
+            },
+            {
+              "port": "d_in",
+              "con": "dcache_to_mmu"
+            },
+            {
+              "port": "i_out",
+              "con": "mmu_to_itlb"
+            }
+          ]
+        },
+        {
+          "name": "dcache_0",
+          "module": "dcache",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_dcache"
+            },
+            {
+              "port": "d_in",
+              "con": "loadstore1_to_dcache"
+            },
+            {
+              "port": "d_out",
+              "con": "dcache_to_loadstore1"
+            },
+            {
+              "port": "m_in",
+              "con": "mmu_to_dcache"
+            },
+            {
+              "port": "m_out",
+              "con": "dcache_to_mmu"
+            },
+            {
+              "port": "stall_out",
+              "con": "dcache_stall_out"
+            },
+            {
+              "port": "wishbone_in",
+              "con": "wishbone_data_in"
+            },
+            {
+              "port": "wishbone_out",
+              "con": "wishbone_data_out"
+            },
+            {
+              "port": "snoop_in",
+              "con": "wb_snoop_in"
+            },
+            {
+              "port": "events",
+              "con": "dcache_events"
+            },
+            {
+              "port": "log_out",
+              "con": "log_data(170 downto 151)"
+            }
+          ]
+        },
+        {
+          "name": "writeback_0",
+          "module": "writeback",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_wback"
+            },
+            {
+              "port": "flush_out",
+              "con": "flush"
+            },
+            {
+              "port": "e_in",
+              "con": "execute1_to_writeback"
+            },
+            {
+              "port": "l_in",
+              "con": "loadstore1_to_writeback"
+            },
+            {
+              "port": "fp_in",
+              "con": "fpu_to_writeback"
+            },
+            {
+              "port": "w_out",
+              "con": "writeback_to_register_file"
+            },
+            {
+              "port": "c_out",
+              "con": "writeback_to_cr_file"
+            },
+            {
+              "port": "f_out",
+              "con": "writeback_to_fetch1"
+            },
+            {
+              "port": "wb_bypass",
+              "con": "writeback_bypass"
+            },
+            {
+              "port": "events",
+              "con": "writeback_events"
+            },
+            {
+              "port": "interrupt_out",
+              "con": "wb_interrupt"
+            },
+            {
+              "port": "complete_out",
+              "con": "complete"
+            }
+          ]
+        },
+        {
+          "name": "debug_0",
+          "module": "core_debug",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "rst",
+              "con": "rst_dbg"
+            },
+            {
+              "port": "dmi_addr",
+              "con": "dmi_addr"
+            },
+            {
+              "port": "dmi_din",
+              "con": "dmi_din"
+            },
+            {
+              "port": "dmi_dout",
+              "con": "dmi_dout"
+            },
+            {
+              "port": "dmi_req",
+              "con": "dmi_req"
+            },
+            {
+              "port": "dmi_wr",
+              "con": "dmi_wr"
+            },
+            {
+              "port": "dmi_ack",
+              "con": "dmi_ack"
+            },
+            {
+              "port": "core_stop",
+              "con": "dbg_core_stop"
+            },
+            {
+              "port": "core_rst",
+              "con": "dbg_core_rst"
+            },
+            {
+              "port": "icache_rst",
+              "con": "dbg_icache_rst"
+            },
+            {
+              "port": "terminate",
+              "con": "terminate"
+            },
+            {
+              "port": "core_stopped",
+              "con": "dbg_core_is_stopped"
+            },
+            {
+              "port": "nia",
+              "con": "fetch1_to_icache.nia"
+            },
+            {
+              "port": "msr",
+              "con": "ctrl_debug.msr"
+            },
+            {
+              "port": "wb_snoop_in",
+              "con": "wb_snoop_in"
+            },
+            {
+              "port": "dbg_gpr_req",
+              "con": "dbg_gpr_req"
+            },
+            {
+              "port": "dbg_gpr_ack",
+              "con": "dbg_gpr_ack"
+            },
+            {
+              "port": "dbg_gpr_addr",
+              "con": "dbg_gpr_addr"
+            },
+            {
+              "port": "dbg_gpr_data",
+              "con": "dbg_gpr_data"
+            },
+            {
+              "port": "dbg_spr_req",
+              "con": "dbg_spr_req"
+            },
+            {
+              "port": "dbg_spr_ack",
+              "con": "dbg_spr_ack"
+            },
+            {
+              "port": "dbg_spr_addr",
+              "con": "dbg_spr_addr"
+            },
+            {
+              "port": "dbg_spr_data",
+              "con": "dbg_spr_data"
+            },
+            {
+              "port": "dbg_ls_spr_req",
+              "con": "dbg_ls_spr_req"
+            },
+            {
+              "port": "dbg_ls_spr_ack",
+              "con": "dbg_ls_spr_ack"
+            },
+            {
+              "port": "dbg_ls_spr_addr",
+              "con": "dbg_ls_spr_addr"
+            },
+            {
+              "port": "dbg_ls_spr_data",
+              "con": "dbg_ls_spr_data"
+            },
+            {
+              "port": "log_data",
+              "con": "log_data"
+            },
+            {
+              "port": "log_read_addr",
+              "con": "log_rd_addr"
+            },
+            {
+              "port": "log_read_data",
+              "con": "log_rd_data"
+            },
+            {
+              "port": "log_write_addr",
+              "con": "log_wr_addr"
+            },
+            {
+              "port": "terminated_out",
+              "con": "terminated_out"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

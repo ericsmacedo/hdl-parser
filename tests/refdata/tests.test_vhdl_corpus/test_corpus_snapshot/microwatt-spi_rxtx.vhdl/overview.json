@@ -1,0 +1,178 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/microwatt/spi_rxtx.vhdl",
+  "modules": [
+    {
+      "name": "spi_rxtx",
+      "params": [
+        {
+          "name": "DATA_LINES",
+          "default": "1",
+          "comment": [
+            "-- Number of data lines",
+            "-- 1=MISO/MOSI, otherwise 2 or 4"
+          ]
+        },
+        {
+          "name": "INPUT_DELAY",
+          "default": "1",
+          "comment": [
+            "-- Delay latching of SPI input:",
+            "-- 0=no delay, 1=clk/2"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rst",
+          "comment": [
+            "--",
+            "-- Clock divider",
+            "-- SCK = CLK/((CLK_DIV+1)*2) : 0=CLK/2, 1=CLK/4, 2=CLK/6....",
+            "--",
+            "-- This need to be changed before a command.",
+            "-- XX TODO add handshake"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "natural",
+          "name": "clk_div_i",
+          "comment": [
+            "--",
+            "-- Command port (includes write data)",
+            "--",
+            "-- Valid & ready: command sampled when valid=1 and ready=1"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "cmd_valid_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "cmd_ready_o",
+          "comment": [
+            "-- Command modes:",
+            "--  000 : Single bit read+write",
+            "--  010 : Single bit read",
+            "--  011 : Single bit write",
+            "--  100 : Dual read",
+            "--  101 : Dual write",
+            "--  110 : Quad read",
+            "--  111 : Quad write"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "cmd_mode_i",
+          "dim": "[2:0]",
+          "comment": [
+            "-- # clocks-1 in a command (#bits-1)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "cmd_clks_i",
+          "dim": "[2:0]",
+          "comment": [
+            "-- Write data (sampled with command)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "cmd_txd_i",
+          "dim": "[7:0]",
+          "comment": [
+            "--",
+            "-- Read data port. Data valid when d_ack=1, no ready",
+            "-- signal, receiver must be ready",
+            "--"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "d_rxd_o",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "d_ack_o",
+          "comment": [
+            "-- Set when all commands are done. Needed for callers to know when",
+            "-- to release CS#"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "bus_idle_o",
+          "comment": [
+            "--",
+            "-- SPI port. These might need to go into special IOBUFs or STARTUPE2 on",
+            "-- Xilinx.",
+            "--",
+            "-- Data lines are organized as follow:",
+            "--",
+            "-- DATA_LINES = 1",
+            "--",
+            "--   sdat_o(0) is MOSI (master output slave input)",
+            "--   sdat_i(0) is MISO (master input slave output)",
+            "--",
+            "-- DATA_LINES > 1",
+            "--",
+            "--   sdat_o(0..n) are DQ(0..n)",
+            "--   sdat_i(0..n) are DQ(0..n)",
+            "--",
+            "--   as such, beware that:",
+            "--",
+            "--   sdat_o(0) is MOSI (master output slave input)",
+            "--   sdat_i(1) is MISO (master input slave output)",
+            "--",
+            "-- In order to leave dealing with the details of how to wire the tristate",
+            "-- and bidirectional pins to the system specific toplevel, we separate",
+            "-- the input and output signals, and provide a \"sdat_oe\" signal which",
+            "-- is the \"output enable\" of each line.",
+            "--"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "sck"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "sdat_o",
+          "dim": "[DATA_LINES-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "sdat_oe",
+          "dim": "[DATA_LINES-1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "sdat_i",
+          "dim": "[DATA_LINES-1:0]"
+        }
+      ]
+    }
+  ]
+}

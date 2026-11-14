@@ -1,0 +1,241 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_clint.vhd",
+  "modules": [
+    {
+      "name": "neorv32_clint",
+      "params": [
+        {
+          "name": "NUM_HARTS",
+          "comment": [
+            "-- number of physical CPU cores"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock line"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset line, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "bus_req_i",
+          "comment": [
+            "-- bus request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "bus_rsp_o",
+          "comment": [
+            "-- bus response"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "time_o",
+          "dim": "[63:0]",
+          "comment": [
+            "-- current system time (HI/LO are not synchronized!)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "mti_o",
+          "dim": "[NUM_HARTS-1:0]",
+          "comment": [
+            "-- machine timer interrupt"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "msi_o",
+          "dim": "[NUM_HARTS-1:0]",
+          "comment": [
+            "-- machine software interrupt"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "neorv32_clint_mtime_inst",
+          "module": "neorv32_prim_cnt",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "inc_i",
+              "con": "'1'",
+              "comment": [
+                "-- permanent increment"
+              ]
+            },
+            {
+              "port": "we_i",
+              "con": "mtime_we"
+            },
+            {
+              "port": "data_i",
+              "con": "bus_req_i.data"
+            },
+            {
+              "port": "oe_i",
+              "con": "'1'",
+              "comment": [
+                "-- permanent output (required for comparators)"
+              ]
+            },
+            {
+              "port": "cnt_o",
+              "con": "mtime"
+            }
+          ]
+        },
+        {
+          "name": "neorv32_clint_mtimecmp_inst",
+          "module": "neorv32_clint_mtimecmp",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "mtime_i",
+              "con": "mtime"
+            },
+            {
+              "port": "we_i",
+              "con": "mtimecmp_we(i)"
+            },
+            {
+              "port": "re_i",
+              "con": "mtimecmp_re(i)"
+            },
+            {
+              "port": "addr_i",
+              "con": "bus_req_i.addr(2)"
+            },
+            {
+              "port": "wdata_i",
+              "con": "bus_req_i.data"
+            },
+            {
+              "port": "rdata_o",
+              "con": "mtimecmp_rd(i)"
+            },
+            {
+              "port": "mti_o",
+              "con": "mti_o(i)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neorv32_clint_mtimecmp",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock line"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset line, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "mtime_i",
+          "dim": "[63:0]",
+          "comment": [
+            "-- global mtime (async words!)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "we_i",
+          "comment": [
+            "-- write enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "re_i",
+          "comment": [
+            "-- read enable"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "addr_i",
+          "comment": [
+            "-- HI/LO word select"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic_vector",
+          "name": "wdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "-- write data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata_o",
+          "dim": "[31:0]",
+          "comment": [
+            "-- read data"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "mti_o",
+          "comment": [
+            "-- interrupt"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "path": "$PRJ/examples/vhdl/port_types.vhd",
+  "modules": [
+    {
+      "name": "port_types",
+      "params": [
+        {
+          "name": "ADDR_WIDTH",
+          "default": "8"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk_i",
+          "comment": [
+            "-- Clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "rst_an_i",
+          "comment": [
+            "-- Reset with default value",
+            "-- Arithmetic types"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "unsigned",
+          "name": "count_o",
+          "dim": "[ADDR_WIDTH - 1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "signed",
+          "name": "offset_i",
+          "dim": "[clog2(ADDR_WIDTH) - 1:0]",
+          "comment": [
+            "-- Function call within the range"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "integer",
+          "name": "level_i"
+        },
+        {
+          "direction": "in",
+          "dtype": "real",
+          "name": "gain_i",
+          "comment": [
+            "-- Ascending range"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bit_vector",
+          "name": "mask_i",
+          "dim": "[0:7]",
+          "comment": [
+            "-- Types of a package"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "work.bus_pkg.req_t",
+          "name": "req_i"
+        },
+        {
+          "direction": "out",
+          "dtype": "rsp_t",
+          "name": "rsp_o",
+          "comment": [
+            "-- Array of vectors (VHDL-2008)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "slv_array_t",
+          "name": "mem_o",
+          "dim": "[0:3][15:0]",
+          "comment": [
+            "-- Other modes"
+          ]
+        },
+        {
+          "direction": "inout",
+          "dtype": "std_logic_vector",
+          "name": "data_io",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "buffer",
+          "dtype": "std_logic_vector",
+          "name": "state_o",
+          "dim": "[1:0]",
+          "comment": [
+            "-- No mode is 'in'"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "enable"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,364 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/uart_fifo.vhdl",
+  "modules": [
+    {
+      "name": "uart_fifo",
+      "params": [
+        {
+          "name": "CLOCK_FREQ"
+        },
+        {
+          "name": "BAUDRATE"
+        },
+        {
+          "name": "ADD_INPUT_SYNCHRONIZERS",
+          "default": "TRUE",
+          "comment": [
+            "-- Buffer Dimensioning"
+          ]
+        },
+        {
+          "name": "TX_MIN_DEPTH",
+          "default": "16"
+        },
+        {
+          "name": "TX_ESTATE_BITS",
+          "default": "0"
+        },
+        {
+          "name": "RX_MIN_DEPTH",
+          "default": "16"
+        },
+        {
+          "name": "RX_FSTATE_BITS",
+          "default": "0",
+          "comment": [
+            "-- Flow Control"
+          ]
+        },
+        {
+          "name": "FLOWCONTROL",
+          "default": "UART_FLOWCONTROL_NONE"
+        },
+        {
+          "name": "SWFC_XON_CHAR",
+          "dim": "[7:0]",
+          "default": "x\"11\"",
+          "comment": [
+            "-- ^Q"
+          ]
+        },
+        {
+          "name": "SWFC_XON_TRIGGER",
+          "default": "0.0625"
+        },
+        {
+          "name": "SWFC_XOFF_CHAR",
+          "dim": "[7:0]",
+          "default": "x\"13\"",
+          "comment": [
+            "-- ^S"
+          ]
+        },
+        {
+          "name": "SWFC_XOFF_TRIGGER",
+          "default": "0.75"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Clock"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "Reset",
+          "comment": [
+            "-- FIFO interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "TX_put"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "TX_Data",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "TX_Full"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "TX_EmptyState",
+          "dim": "[imax(0, TX_ESTATE_BITS-1):0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "RX_Valid"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "RX_Data",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "RX_got"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "RX_FullState",
+          "dim": "[imax(0, RX_FSTATE_BITS-1):0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "RX_Overflow",
+          "comment": [
+            "-- External pins"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "UART_TX"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "UART_RX"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "UART_RTS"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "UART_CTS"
+        }
+      ],
+      "insts": [
+        {
+          "name": "TXFIFO",
+          "module": "fifo_cc_got",
+          "connections": [
+            {
+              "port": "rst",
+              "con": "Reset"
+            },
+            {
+              "port": "clk",
+              "con": "Clock"
+            },
+            {
+              "port": "put",
+              "con": "TX_put"
+            },
+            {
+              "port": "din",
+              "con": "TX_Data"
+            },
+            {
+              "port": "full",
+              "con": "TX_Full"
+            },
+            {
+              "port": "estate_wr",
+              "con": "TX_EmptyState"
+            },
+            {
+              "port": "valid",
+              "con": "TXFIFO_Valid"
+            },
+            {
+              "port": "dout",
+              "con": "TXFIFO_Data"
+            },
+            {
+              "port": "got",
+              "con": "FC_TX_got"
+            },
+            {
+              "port": "fstate_rd",
+              "con": "open"
+            }
+          ]
+        },
+        {
+          "name": "RXFIFO",
+          "module": "fifo_cc_got",
+          "connections": [
+            {
+              "port": "rst",
+              "con": "Reset"
+            },
+            {
+              "port": "clk",
+              "con": "Clock"
+            },
+            {
+              "port": "put",
+              "con": "FC_RX_put"
+            },
+            {
+              "port": "din",
+              "con": "FC_RX_Data"
+            },
+            {
+              "port": "full",
+              "con": "RXFIFO_Full"
+            },
+            {
+              "port": "estate_wr",
+              "con": "open"
+            },
+            {
+              "port": "valid",
+              "con": "RX_Valid"
+            },
+            {
+              "port": "dout",
+              "con": "RX_Data"
+            },
+            {
+              "port": "got",
+              "con": "RX_got"
+            },
+            {
+              "port": "fstate_rd",
+              "con": "RX_FullState"
+            }
+          ]
+        },
+        {
+          "name": "sync_i",
+          "module": "sync_Bits",
+          "connections": [
+            {
+              "port": "Clock",
+              "con": "Clock",
+              "comment": [
+                "-- Clock to be synchronized to"
+              ]
+            },
+            {
+              "port": "Input(0)",
+              "con": "UART_RX",
+              "comment": [
+                "-- Data to be synchronized"
+              ]
+            },
+            {
+              "port": "Output(0)",
+              "con": "UART_RX_sync",
+              "comment": [
+                "-- synchronised data"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bclk",
+          "module": "uart_bclk",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "Clock"
+            },
+            {
+              "port": "rst",
+              "con": "Reset"
+            },
+            {
+              "port": "bclk",
+              "con": "BitClock"
+            },
+            {
+              "port": "bclk_x8",
+              "con": "BitClock_x8"
+            }
+          ]
+        },
+        {
+          "name": "TX",
+          "module": "uart_tx",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "Clock"
+            },
+            {
+              "port": "rst",
+              "con": "Reset"
+            },
+            {
+              "port": "bclk",
+              "con": "BitClock"
+            },
+            {
+              "port": "tx",
+              "con": "UART_TX"
+            },
+            {
+              "port": "di",
+              "con": "FC_TX_Data"
+            },
+            {
+              "port": "put",
+              "con": "FC_TX_Strobe"
+            },
+            {
+              "port": "ful",
+              "con": "TXUART_Full"
+            }
+          ]
+        },
+        {
+          "name": "RX",
+          "module": "uart_rx",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "Clock"
+            },
+            {
+              "port": "rst",
+              "con": "Reset"
+            },
+            {
+              "port": "bclk_x8",
+              "con": "BitClock_x8"
+            },
+            {
+              "port": "rx",
+              "con": "UART_RX_sync"
+            },
+            {
+              "port": "do",
+              "con": "RXUART_Data"
+            },
+            {
+              "port": "stb",
+              "con": "RXUART_Strobe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,709 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/XadcSimpleCore.vhd",
+  "modules": [
+    {
+      "name": "XadcSimpleCore",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "COMMON_CLK_G",
+          "default": "true"
+        },
+        {
+          "name": "SIM_DEVICE_G",
+          "default": "\"7SERIES\""
+        },
+        {
+          "name": "SIM_MONITOR_FILE_G",
+          "default": "\"design.txt\"",
+          "comment": [
+            "-- Global XADC configurations"
+          ]
+        },
+        {
+          "name": "SEQUENCER_MODE_G",
+          "default": "\"DEFAULT\"",
+          "comment": [
+            "-- SINGLE_PASS, CONTINUOUS, SINGLE_CHANNEL,",
+            "-- SIMULTANEOUS, INDEPENDENT"
+          ]
+        },
+        {
+          "name": "SAMPLING_MODE_G",
+          "default": "\"CONTINUOUS\"",
+          "comment": [
+            "-- or \"EVENT-DRIVEN\""
+          ]
+        },
+        {
+          "name": "MUX_EN_G",
+          "default": "false",
+          "comment": [
+            "-- Enable external multiplexer"
+          ]
+        },
+        {
+          "name": "ADCCLK_RATIO_G",
+          "default": "7"
+        },
+        {
+          "name": "SAMPLE_AVG_G",
+          "dim": "[1:0]",
+          "default": "\"11\"",
+          "comment": [
+            "-- No averaging, 16  64 or 256 samples"
+          ]
+        },
+        {
+          "name": "COEF_AVG_EN_G",
+          "default": "true",
+          "comment": [
+            "-- Enable averaging for calibration coefficients",
+            "-- Configurations for single channel operation"
+          ]
+        },
+        {
+          "name": "SING_ADC_CH_SEL_G",
+          "dim": "[4:0]",
+          "default": "\"00000\"",
+          "comment": [
+            "-- Only valid for single channel or ext"
+          ]
+        },
+        {
+          "name": "SING_ACQ_EN_G",
+          "default": "false",
+          "comment": [
+            "-- Extra settling time in single channel mode"
+          ]
+        },
+        {
+          "name": "SING_BIPOLAR_G",
+          "default": "false",
+          "comment": [
+            "-- false: unipolar, true: bipolar",
+            "-- Alarm configuration"
+          ]
+        },
+        {
+          "name": "OVERTEMP_AUTO_SHDN_G",
+          "default": "true"
+        },
+        {
+          "name": "OVERTEMP_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "OVERTEMP_LIMIT_G",
+          "default": "125.0"
+        },
+        {
+          "name": "OVERTEMP_RESET_G",
+          "default": "50.0"
+        },
+        {
+          "name": "TEMP_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "TEMP_UPPER_G",
+          "default": "80.0"
+        },
+        {
+          "name": "TEMP_LOWER_G",
+          "default": "70.0"
+        },
+        {
+          "name": "VCCINT_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCINT_UPPER_G",
+          "default": "1.1"
+        },
+        {
+          "name": "VCCINT_LOWER_G",
+          "default": "0.9"
+        },
+        {
+          "name": "VCCAUX_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCAUX_UPPER_G",
+          "default": "1.9"
+        },
+        {
+          "name": "VCCAUX_LOWER_G",
+          "default": "1.7"
+        },
+        {
+          "name": "VCCBRAM_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCBRAM_UPPER_G",
+          "default": "1.1"
+        },
+        {
+          "name": "VCCBRAM_LOWER_G",
+          "default": "0.9"
+        },
+        {
+          "name": "VCCPINT_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCPINT_UPPER_G",
+          "default": "1.1"
+        },
+        {
+          "name": "VCCPINT_LOWER_G",
+          "default": "0.9"
+        },
+        {
+          "name": "VCCPAUX_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCPAUX_UPPER_G",
+          "default": "1.9"
+        },
+        {
+          "name": "VCCPAUX_LOWER_G",
+          "default": "1.7"
+        },
+        {
+          "name": "VCCODDR_ALM_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "VCCODDR_UPPER_G",
+          "default": "1.9"
+        },
+        {
+          "name": "VCCODDR_LOWER_G",
+          "default": "1.7",
+          "comment": [
+            "-- Calibration coefficient configuration"
+          ]
+        },
+        {
+          "name": "ADC_OFFSET_CORR_EN_G",
+          "default": "true",
+          "comment": [
+            "-- CAL0"
+          ]
+        },
+        {
+          "name": "ADC_GAIN_CORR_EN_G",
+          "default": "true",
+          "comment": [
+            "-- CAL1"
+          ]
+        },
+        {
+          "name": "SUPPLY_OFFSET_CORR_EN_G",
+          "default": "true",
+          "comment": [
+            "-- CAL2"
+          ]
+        },
+        {
+          "name": "SUPPLY_GAIN_CORR_EN_G",
+          "default": "true",
+          "comment": [
+            "-- CAL3",
+            "-- Sequencer configurations"
+          ]
+        },
+        {
+          "name": "SEQ_XADC_CAL_SEL_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCPINT_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCPAUX_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCODDR_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_TEMPERATURE_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCINT_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCAUX_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VPVN_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VREFP_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VREFN_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCBRAM_SEL_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VAUX_SEL_EN_G",
+          "dim": "[15:0]",
+          "default": "(others => false)"
+        },
+        {
+          "name": "SEQ_XADC_CAL_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCPINT_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCPAUX_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCODDR_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_TEMPERATURE_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCINT_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCAUX_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VPVN_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VREFP_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VREFN_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VCCBRAM_AVG_EN_G",
+          "default": "true"
+        },
+        {
+          "name": "SEQ_VAUX_AVG_EN_G",
+          "dim": "[15:0]",
+          "default": "(others => true)"
+        },
+        {
+          "name": "SEQ_VPVN_BIPOLAR_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VAUX_BIPOLAR_G",
+          "dim": "[15:0]",
+          "default": "(others => false)"
+        },
+        {
+          "name": "SEQ_XADC_CAL_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCPINT_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCPAUX_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCODDR_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_TEMPERATURE_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCINT_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCAUX_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VPVN_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VREFP_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VREFN_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VCCBRAM_ACQ_EN_G",
+          "default": "false"
+        },
+        {
+          "name": "SEQ_VAUX_ACQ_EN_G",
+          "dim": "[15:0]",
+          "default": "(others => false)"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axilClk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axilRst"
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitereadmastertype",
+          "name": "axilReadMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitereadslavetype",
+          "name": "axilReadSlave"
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitewritemastertype",
+          "name": "axilWriteMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitewriteslavetype",
+          "name": "axilWriteSlave",
+          "comment": [
+            "--XADC I/O ports"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "xadcClk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "xadcRst"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "vpIn"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "vnIn"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "vAuxP",
+          "dim": "[15:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "slv",
+          "name": "vAuxN",
+          "dim": "[15:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "convSt"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "convStClk"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "alm",
+          "dim": "[7:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "ot"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "busy"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "channel",
+          "dim": "[4:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "eoc"
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "eos"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "muxAddr",
+          "dim": "[4:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "U_AxiLiteToDrp_1",
+          "module": "AxiLiteToDrp",
+          "connections": [
+            {
+              "port": "axilClk",
+              "con": "axilClk",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "axilRst",
+              "con": "axilRst",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "axilReadMaster",
+              "con": "axilReadMaster",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "axilReadSlave",
+              "con": "axilReadSlave",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "axilWriteMaster",
+              "con": "axilWriteMaster",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "axilWriteSlave",
+              "con": "axilWriteSlave",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpClk",
+              "con": "drpClk",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "drpRst",
+              "con": "drpRst",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "drpRdy",
+              "con": "drpRdy",
+              "comment": [
+                "-- [in]"
+              ]
+            },
+            {
+              "port": "drpEn",
+              "con": "drpEn",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpWe",
+              "con": "drpWe",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpUsrRst",
+              "con": "drpUsrRst",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpAddr",
+              "con": "drpAddr",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpDi",
+              "con": "drpDi",
+              "comment": [
+                "-- [out]"
+              ]
+            },
+            {
+              "port": "drpDo",
+              "con": "drpDo"
+            }
+          ]
+        },
+        {
+          "name": "XADC_Inst",
+          "module": "XADC",
+          "connections": [
+            {
+              "port": "CONVST",
+              "con": "convSt"
+            },
+            {
+              "port": "CONVSTCLK",
+              "con": "convStClk"
+            },
+            {
+              "port": "DADDR",
+              "con": "drpAddr"
+            },
+            {
+              "port": "DCLK",
+              "con": "drpClk"
+            },
+            {
+              "port": "DEN",
+              "con": "drpEn"
+            },
+            {
+              "port": "DI",
+              "con": "drpDi"
+            },
+            {
+              "port": "DWE",
+              "con": "drpWe"
+            },
+            {
+              "port": "RESET",
+              "con": "drpUsrRst"
+            },
+            {
+              "port": "VAUXN",
+              "con": "vAuxN"
+            },
+            {
+              "port": "VAUXP",
+              "con": "vAuxP"
+            },
+            {
+              "port": "ALM",
+              "con": "alm"
+            },
+            {
+              "port": "BUSY",
+              "con": "busy"
+            },
+            {
+              "port": "CHANNEL",
+              "con": "channel"
+            },
+            {
+              "port": "DO",
+              "con": "drpDo"
+            },
+            {
+              "port": "DRDY",
+              "con": "drpRdy"
+            },
+            {
+              "port": "EOC",
+              "con": "eoc"
+            },
+            {
+              "port": "EOS",
+              "con": "eos"
+            },
+            {
+              "port": "JTAGBUSY",
+              "con": "open"
+            },
+            {
+              "port": "JTAGLOCKED",
+              "con": "open"
+            },
+            {
+              "port": "JTAGMODIFIED",
+              "con": "open"
+            },
+            {
+              "port": "OT",
+              "con": "ot"
+            },
+            {
+              "port": "MUXADDR",
+              "con": "muxaddr"
+            },
+            {
+              "port": "VN",
+              "con": "vnIn"
+            },
+            {
+              "port": "VP",
+              "con": "vpIn"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

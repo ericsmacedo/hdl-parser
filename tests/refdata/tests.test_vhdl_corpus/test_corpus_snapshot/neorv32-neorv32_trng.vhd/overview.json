@@ -1,0 +1,315 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_trng.vhd",
+  "modules": [
+    {
+      "name": "neorv32_trng",
+      "params": [
+        {
+          "name": "TRNG_FIFO",
+          "comment": [
+            "-- FIFO depth, has to be a power of two, min 1"
+          ]
+        },
+        {
+          "name": "NUM_RO",
+          "comment": [
+            "-- total number of ring-oscillators"
+          ]
+        },
+        {
+          "name": "NUM_INV",
+          "comment": [
+            "-- number of inverters in first ring-oscillator; has to be odd"
+          ]
+        },
+        {
+          "name": "NUM_RBIT",
+          "comment": [
+            "-- number of raw bits to process for one output byte; has to be power of 2"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- global clock line"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- global reset line, low-active, async"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "bus_req_t",
+          "name": "bus_req_i",
+          "comment": [
+            "-- bus request"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "bus_rsp_t",
+          "name": "bus_rsp_o",
+          "comment": [
+            "-- bus response"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "irq_o",
+          "comment": [
+            "-- FIFO full interrupt"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "neoTRNG_inst",
+          "module": "neoTRNG",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "enable_i",
+              "con": "enable"
+            },
+            {
+              "port": "valid_o",
+              "con": "fifo.we"
+            },
+            {
+              "port": "data_o",
+              "con": "fifo.wdata"
+            }
+          ]
+        },
+        {
+          "name": "rnd_fifo_inst",
+          "module": "neorv32_prim_fifo",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "clear_i",
+              "con": "fifo.clear"
+            },
+            {
+              "port": "level_o",
+              "con": "open",
+              "comment": [
+                "-- write port --"
+              ]
+            },
+            {
+              "port": "wdata_i",
+              "con": "fifo.wdata"
+            },
+            {
+              "port": "we_i",
+              "con": "fifo.we"
+            },
+            {
+              "port": "free_o",
+              "con": "fifo.free",
+              "comment": [
+                "-- read port --"
+              ]
+            },
+            {
+              "port": "re_i",
+              "con": "fifo.re"
+            },
+            {
+              "port": "rdata_o",
+              "con": "fifo.rdata"
+            },
+            {
+              "port": "avail_o",
+              "con": "fifo.avail"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neoTRNG",
+      "params": [
+        {
+          "name": "NUM_CELLS",
+          "comment": [
+            "-- number of ring-oscillator cells, min 1"
+          ]
+        },
+        {
+          "name": "NUM_INV_START",
+          "comment": [
+            "-- number of inverters in first ring-oscillator cell, has to be odd"
+          ]
+        },
+        {
+          "name": "NUM_RAW_BITS",
+          "comment": [
+            "-- number of raw bits per random sample byte (has to be a power of 2)"
+          ]
+        },
+        {
+          "name": "SIM_MODE",
+          "comment": [
+            "-- enable simulation mode (no physical random if enabled!)"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- module clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- module reset, low-active, async, optional"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "enable_i",
+          "comment": [
+            "-- module enable (high-active)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "valid_o",
+          "comment": [
+            "-- data_o is valid when set (high for one cycle)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic_vector",
+          "name": "data_o",
+          "dim": "[7:0]",
+          "comment": [
+            "-- random data byte output"
+          ]
+        }
+      ],
+      "insts": [
+        {
+          "name": "neoTRNG_cell_inst",
+          "module": "neoTRNG_cell",
+          "connections": [
+            {
+              "port": "clk_i",
+              "con": "clk_i"
+            },
+            {
+              "port": "rstn_i",
+              "con": "rstn_i"
+            },
+            {
+              "port": "en_i",
+              "con": "cell_en_in(i)"
+            },
+            {
+              "port": "en_o",
+              "con": "cell_en_out(i)"
+            },
+            {
+              "port": "rnd_o",
+              "con": "cell_rnd(i)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "neoTRNG_cell",
+      "params": [
+        {
+          "name": "NUM_INV",
+          "comment": [
+            "-- number of inverters, has to be odd, min 3"
+          ]
+        },
+        {
+          "name": "SIM_MODE",
+          "comment": [
+            "-- enable simulation mode (no physical random if enabled!)"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "clk_i",
+          "comment": [
+            "-- clock"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "rstn_i",
+          "comment": [
+            "-- reset, low-active, async, optional"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_ulogic",
+          "name": "en_i",
+          "comment": [
+            "-- enable-chain input"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "en_o",
+          "comment": [
+            "-- enable-chain output"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_ulogic",
+          "name": "rnd_o",
+          "comment": [
+            "-- random data (sync)"
+          ]
+        }
+      ]
+    }
+  ]
+}

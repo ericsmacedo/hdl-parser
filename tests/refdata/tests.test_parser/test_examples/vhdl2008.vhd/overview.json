@@ -1,0 +1,96 @@
+{
+  "path": "$PRJ/examples/vhdl/vhdl2008.vhd",
+  "modules": [
+    {
+      "name": "vhdl2008",
+      "params": [
+        {
+          "name": "MODE",
+          "default": "0",
+          "comment": [
+            "/* Mode of operation */"
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "sel",
+          "dim": "[1:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "data_t",
+          "name": "din"
+        },
+        {
+          "direction": "out",
+          "dtype": "data_t",
+          "name": "dout"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_fast",
+          "module": "fast",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "din"
+            },
+            {
+              "port": "dout",
+              "con": "a"
+            }
+          ]
+        },
+        {
+          "name": "u_small",
+          "module": "small",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "din"
+            },
+            {
+              "port": "dout",
+              "con": "tmp"
+            }
+          ]
+        },
+        {
+          "name": "u_reg",
+          "module": "reg",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "din",
+              "con": "a"
+            },
+            {
+              "port": "dout",
+              "con": "b"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

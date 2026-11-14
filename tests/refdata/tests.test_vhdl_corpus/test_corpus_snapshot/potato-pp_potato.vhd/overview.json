@@ -1,0 +1,410 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_potato.vhd",
+  "modules": [
+    {
+      "name": "pp_potato",
+      "params": [
+        {
+          "name": "PROCESSOR_ID",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "--! Processor ID."
+          ]
+        },
+        {
+          "name": "RESET_ADDRESS",
+          "dim": "[31:0]",
+          "default": "x\"00000000\"",
+          "comment": [
+            "--! Address of the first instruction to execute."
+          ]
+        },
+        {
+          "name": "MTIME_DIVIDER",
+          "default": "5",
+          "comment": [
+            "--! Divider for the clock driving the MTIME counter."
+          ]
+        },
+        {
+          "name": "ICACHE_ENABLE",
+          "default": "true",
+          "comment": [
+            "--! Whether to enable the instruction cache."
+          ]
+        },
+        {
+          "name": "ICACHE_LINE_SIZE",
+          "default": "4",
+          "comment": [
+            "--! Number of words per instruction cache line."
+          ]
+        },
+        {
+          "name": "ICACHE_NUM_LINES",
+          "default": "128",
+          "comment": [
+            "--! Number of cache lines in the instruction cache."
+          ]
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "clk"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "reset",
+          "comment": [
+            "-- Interrupts:"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "irq",
+          "dim": "[7:0]",
+          "comment": [
+            "-- Test interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "test_context",
+          "name": "test_context_out",
+          "comment": [
+            "-- Wishbone interface:"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "wb_adr_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "wb_sel_out",
+          "dim": "[3:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "wb_cyc_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "wb_stb_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "wb_we_out"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic_vector",
+          "name": "wb_dat_out",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic_vector",
+          "name": "wb_dat_in",
+          "dim": "[31:0]"
+        },
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "wb_ack_in"
+        }
+      ],
+      "insts": [
+        {
+          "name": "processor",
+          "module": "pp_core",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "imem_address",
+              "con": "imem_address"
+            },
+            {
+              "port": "imem_data_in",
+              "con": "imem_data"
+            },
+            {
+              "port": "imem_req",
+              "con": "imem_req"
+            },
+            {
+              "port": "imem_ack",
+              "con": "imem_ack"
+            },
+            {
+              "port": "dmem_address",
+              "con": "dmem_address"
+            },
+            {
+              "port": "dmem_data_in",
+              "con": "dmem_data_in"
+            },
+            {
+              "port": "dmem_data_out",
+              "con": "dmem_data_out"
+            },
+            {
+              "port": "dmem_data_size",
+              "con": "dmem_data_size"
+            },
+            {
+              "port": "dmem_read_req",
+              "con": "dmem_read_req"
+            },
+            {
+              "port": "dmem_read_ack",
+              "con": "dmem_read_ack"
+            },
+            {
+              "port": "dmem_write_req",
+              "con": "dmem_write_req"
+            },
+            {
+              "port": "dmem_write_ack",
+              "con": "dmem_write_ack"
+            },
+            {
+              "port": "test_context_out",
+              "con": "test_context_out"
+            },
+            {
+              "port": "irq",
+              "con": "irq"
+            }
+          ]
+        },
+        {
+          "name": "icache",
+          "module": "pp_icache",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "mem_address_in",
+              "con": "imem_address"
+            },
+            {
+              "port": "mem_data_out",
+              "con": "imem_data"
+            },
+            {
+              "port": "mem_read_req",
+              "con": "imem_req"
+            },
+            {
+              "port": "mem_read_ack",
+              "con": "imem_ack"
+            },
+            {
+              "port": "wb_inputs",
+              "con": "icache_inputs"
+            },
+            {
+              "port": "wb_outputs",
+              "con": "icache_outputs"
+            }
+          ]
+        },
+        {
+          "name": "imem_if",
+          "module": "pp_wb_adapter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "mem_address",
+              "con": "imem_address"
+            },
+            {
+              "port": "mem_data_in",
+              "con": "(others => '0')"
+            },
+            {
+              "port": "mem_data_out",
+              "con": "imem_data"
+            },
+            {
+              "port": "mem_data_size",
+              "con": "(others => '0')"
+            },
+            {
+              "port": "mem_read_req",
+              "con": "imem_req"
+            },
+            {
+              "port": "mem_read_ack",
+              "con": "imem_ack"
+            },
+            {
+              "port": "mem_write_req",
+              "con": "'0'"
+            },
+            {
+              "port": "mem_write_ack",
+              "con": "open"
+            },
+            {
+              "port": "wb_inputs",
+              "con": "icache_inputs"
+            },
+            {
+              "port": "wb_outputs",
+              "con": "icache_outputs"
+            }
+          ]
+        },
+        {
+          "name": "dmem_if",
+          "module": "pp_wb_adapter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "mem_address",
+              "con": "dmem_address"
+            },
+            {
+              "port": "mem_data_in",
+              "con": "dmem_data_out"
+            },
+            {
+              "port": "mem_data_out",
+              "con": "dmem_data_in"
+            },
+            {
+              "port": "mem_data_size",
+              "con": "dmem_data_size"
+            },
+            {
+              "port": "mem_read_req",
+              "con": "dmem_read_req"
+            },
+            {
+              "port": "mem_read_ack",
+              "con": "dmem_read_ack"
+            },
+            {
+              "port": "mem_write_req",
+              "con": "dmem_write_req"
+            },
+            {
+              "port": "mem_write_ack",
+              "con": "dmem_write_ack"
+            },
+            {
+              "port": "wb_inputs",
+              "con": "dmem_if_inputs"
+            },
+            {
+              "port": "wb_outputs",
+              "con": "dmem_if_outputs"
+            }
+          ]
+        },
+        {
+          "name": "arbiter",
+          "module": "pp_wb_arbiter",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "clk"
+            },
+            {
+              "port": "reset",
+              "con": "reset"
+            },
+            {
+              "port": "m1_inputs",
+              "con": "m1_inputs"
+            },
+            {
+              "port": "m1_outputs",
+              "con": "m1_outputs"
+            },
+            {
+              "port": "m2_inputs",
+              "con": "m2_inputs"
+            },
+            {
+              "port": "m2_outputs",
+              "con": "m2_outputs"
+            },
+            {
+              "port": "wb_adr_out",
+              "con": "wb_adr_out"
+            },
+            {
+              "port": "wb_sel_out",
+              "con": "wb_sel_out"
+            },
+            {
+              "port": "wb_cyc_out",
+              "con": "wb_cyc_out"
+            },
+            {
+              "port": "wb_stb_out",
+              "con": "wb_stb_out"
+            },
+            {
+              "port": "wb_we_out",
+              "con": "wb_we_out"
+            },
+            {
+              "port": "wb_dat_out",
+              "con": "wb_dat_out"
+            },
+            {
+              "port": "wb_dat_in",
+              "con": "wb_dat_in"
+            },
+            {
+              "port": "wb_ack_in",
+              "con": "wb_ack_in"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

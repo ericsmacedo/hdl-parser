@@ -1,0 +1,545 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/surf/Jesd204bRx.vhd",
+  "modules": [
+    {
+      "name": "Jesd204bRx",
+      "params": [
+        {
+          "name": "TPD_G",
+          "default": "1 ns"
+        },
+        {
+          "name": "GEN_ASYNC_G",
+          "default": "false",
+          "comment": [
+            "-- default false don't add synchronizer",
+            "-- Test tx module instead of GTX"
+          ]
+        },
+        {
+          "name": "TEST_G",
+          "default": "false",
+          "comment": [
+            "-- JESD generics",
+            "-- Number of bytes in a frame (1,2,or 4)"
+          ]
+        },
+        {
+          "name": "F_G",
+          "default": "2",
+          "comment": [
+            "-- Number of frames in a multi frame (32)"
+          ]
+        },
+        {
+          "name": "K_G",
+          "default": "32",
+          "comment": [
+            "-- Number of RX lanes (1 to 32)"
+          ]
+        },
+        {
+          "name": "L_G",
+          "default": "2"
+        }
+      ],
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiClk"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "axiRst",
+          "comment": [
+            "-- AXI-Lite Register Interface"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitereadmastertype",
+          "name": "axilReadMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitereadslavetype",
+          "name": "axilReadSlave"
+        },
+        {
+          "direction": "in",
+          "dtype": "axilitewritemastertype",
+          "name": "axilWriteMaster"
+        },
+        {
+          "direction": "out",
+          "dtype": "axilitewriteslavetype",
+          "name": "axilWriteSlave",
+          "comment": [
+            "-- Sample data output (Use if external data acquisition core is attached)"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "sampledataarray",
+          "name": "sampleDataArr_o",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "dataValidVec_o",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- JESD",
+            "-- Clocks and Resets"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "devClk_i"
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "devRst_i",
+          "comment": [
+            "-- SYSREF for subclass 1 fixed latency"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "sl",
+          "name": "sysRef_i",
+          "comment": [
+            "-- SYSREF output for debug"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "sysRefDbg_o",
+          "comment": [
+            "-- Data and character inputs from GT (transceivers)"
+          ]
+        },
+        {
+          "direction": "in",
+          "dtype": "jesdgtrxlanetypearray",
+          "name": "r_jesdGtRxArr",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "gtRxReset_o",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "rxPowerDown",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "rxPolarity",
+          "dim": "[L_G-1:0]",
+          "comment": [
+            "-- Synchronization output combined from all receivers"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "sl",
+          "name": "nSync_o",
+          "comment": [
+            "-- Debug signals"
+          ]
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "pulse_o",
+          "dim": "[L_G-1:0]"
+        },
+        {
+          "direction": "out",
+          "dtype": "slv",
+          "name": "leds_o",
+          "dim": "[1:0]"
+        }
+      ],
+      "insts": [
+        {
+          "name": "U_Reg",
+          "module": "JesdRxReg",
+          "connections": [
+            {
+              "port": "axiClk_i",
+              "con": "axiClk"
+            },
+            {
+              "port": "axiRst_i",
+              "con": "axiRst"
+            },
+            {
+              "port": "axilReadMaster",
+              "con": "axilReadMaster"
+            },
+            {
+              "port": "axilReadSlave",
+              "con": "axilReadSlave"
+            },
+            {
+              "port": "axilWriteMaster",
+              "con": "axilWriteMaster"
+            },
+            {
+              "port": "axilWriteSlave",
+              "con": "axilWriteSlave",
+              "comment": [
+                "-- DevClk domain"
+              ]
+            },
+            {
+              "port": "devClk_i",
+              "con": "devClk_i"
+            },
+            {
+              "port": "devRst_i",
+              "con": "devRst_i"
+            },
+            {
+              "port": "sysrefRe_i",
+              "con": "s_sysrefRe"
+            },
+            {
+              "port": "statusRxArr_i",
+              "con": "s_statusRxArr"
+            },
+            {
+              "port": "rawData_i",
+              "con": "s_rawData"
+            },
+            {
+              "port": "linkErrMask_o",
+              "con": "s_linkErrMask"
+            },
+            {
+              "port": "sysrefDlyRx_o",
+              "con": "s_sysrefDlyRx"
+            },
+            {
+              "port": "enableRx_o",
+              "con": "s_enableRx"
+            },
+            {
+              "port": "replEnable_o",
+              "con": "s_replEnable"
+            },
+            {
+              "port": "scrEnable_o",
+              "con": "s_scrEnable"
+            },
+            {
+              "port": "dlyTxArr_o",
+              "con": "s_dlyTxArr"
+            },
+            {
+              "port": "alignTxArr_o",
+              "con": "s_alignTxArr"
+            },
+            {
+              "port": "subClass_o",
+              "con": "s_subClass"
+            },
+            {
+              "port": "gtReset_o",
+              "con": "s_gtReset"
+            },
+            {
+              "port": "clearErr_o",
+              "con": "s_clearErr"
+            },
+            {
+              "port": "invertSync_o",
+              "con": "s_invertSync"
+            },
+            {
+              "port": "invertData_o",
+              "con": "s_invertData"
+            },
+            {
+              "port": "thresoldHighArr_o",
+              "con": "s_thresoldHighArr"
+            },
+            {
+              "port": "thresoldLowArr_o",
+              "con": "s_thresoldLowArr"
+            },
+            {
+              "port": "rxPowerDown",
+              "con": "rxPowerDown"
+            },
+            {
+              "port": "rxPolarity",
+              "con": "rxPolarity"
+            }
+          ]
+        },
+        {
+          "name": "JesdTxTest_INST",
+          "module": "JesdTxTest",
+          "connections": [
+            {
+              "port": "devClk_i",
+              "con": "devClk_i"
+            },
+            {
+              "port": "devRst_i",
+              "con": "devRst_i"
+            },
+            {
+              "port": "enable_i",
+              "con": "s_enableRx(i)"
+            },
+            {
+              "port": "delay_i",
+              "con": "s_dlyTxArr(i)"
+            },
+            {
+              "port": "align_i",
+              "con": "s_alignTxArr(i)"
+            },
+            {
+              "port": "lmfc_i",
+              "con": "s_lmfc"
+            },
+            {
+              "port": "nSync_i",
+              "con": "r.nSyncAnyD1"
+            },
+            {
+              "port": "r_jesdGtRx",
+              "con": "s_jesdGtRxArr(i)"
+            },
+            {
+              "port": "subClass_i",
+              "con": "s_subClass"
+            },
+            {
+              "port": "txDataValid_o",
+              "con": "open"
+            }
+          ]
+        },
+        {
+          "name": "Synchronizer_INST",
+          "module": "Synchronizer",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rst",
+              "con": "devRst_i"
+            },
+            {
+              "port": "dataIn",
+              "con": "sysref_i"
+            },
+            {
+              "port": "dataOut",
+              "con": "s_sysrefSync"
+            }
+          ]
+        },
+        {
+          "name": "U_SysrefDly",
+          "module": "SlvDelay",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rst",
+              "con": "devRst_i"
+            },
+            {
+              "port": "delay",
+              "con": "s_sysrefDlyRx"
+            },
+            {
+              "port": "din(0)",
+              "con": "s_sysrefSync"
+            },
+            {
+              "port": "dout(0)",
+              "con": "s_sysrefD"
+            }
+          ]
+        },
+        {
+          "name": "LmfcGen_INST",
+          "module": "JesdLmfcGen",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rst",
+              "con": "devRst_i",
+              "comment": [
+                "--nSync_i     => '0', -- r.nSyncAnyD1,"
+              ]
+            },
+            {
+              "port": "nSync_i",
+              "con": "r.nSyncAnyD1"
+            },
+            {
+              "port": "sysref_i",
+              "con": "s_sysrefD",
+              "comment": [
+                "-- Delayed SYSREF IN"
+              ]
+            },
+            {
+              "port": "sysrefRe_o",
+              "con": "s_sysrefRe",
+              "comment": [
+                "-- Rising-edge of SYSREF OUT"
+              ]
+            },
+            {
+              "port": "lmfc_o",
+              "con": "s_lmfc"
+            }
+          ]
+        },
+        {
+          "name": "JesdRx_INST",
+          "module": "JesdRxLane",
+          "connections": [
+            {
+              "port": "devClk_i",
+              "con": "devClk_i"
+            },
+            {
+              "port": "devRst_i",
+              "con": "devRst_i"
+            },
+            {
+              "port": "sysRef_i",
+              "con": "s_sysrefRe",
+              "comment": [
+                "-- Rising-edge of SYSREF"
+              ]
+            },
+            {
+              "port": "enable_i",
+              "con": "s_enableRx(i)"
+            },
+            {
+              "port": "clearErr_i",
+              "con": "s_clearErr"
+            },
+            {
+              "port": "linkErrMask_i",
+              "con": "s_linkErrMask"
+            },
+            {
+              "port": "replEnable_i",
+              "con": "s_replEnable"
+            },
+            {
+              "port": "scrEnable_i",
+              "con": "s_scrEnable"
+            },
+            {
+              "port": "inv_i",
+              "con": "s_invertData(i)"
+            },
+            {
+              "port": "status_o",
+              "con": "s_statusRxArr(i)"
+            },
+            {
+              "port": "r_jesdGtRx",
+              "con": "s_jesdGtRxArr(i)"
+            },
+            {
+              "port": "lmfc_i",
+              "con": "s_lmfc"
+            },
+            {
+              "port": "nSyncAnyD1_i",
+              "con": "r.nSyncAnyD1"
+            },
+            {
+              "port": "nSyncAny_i",
+              "con": "s_nSyncAny"
+            },
+            {
+              "port": "nSync_o",
+              "con": "s_nSyncVec(i)"
+            },
+            {
+              "port": "dataValid_o",
+              "con": "s_dataValidVec(i)"
+            },
+            {
+              "port": "sampleData_o",
+              "con": "s_sampleDataArr(i)"
+            },
+            {
+              "port": "subClass_i",
+              "con": "s_subClass"
+            }
+          ]
+        },
+        {
+          "name": "Pulser_INST",
+          "module": "JesdTestSigGen",
+          "connections": [
+            {
+              "port": "clk",
+              "con": "devClk_i"
+            },
+            {
+              "port": "rst",
+              "con": "devRst_i"
+            },
+            {
+              "port": "enable_i",
+              "con": "s_dataValidVec(i)"
+            },
+            {
+              "port": "thresoldLow_i",
+              "con": "s_thresoldLowArr(i)"
+            },
+            {
+              "port": "thresoldHigh_i",
+              "con": "s_thresoldHighArr(i)"
+            },
+            {
+              "port": "sampleData_i",
+              "con": "s_sampleDataArr(i)"
+            },
+            {
+              "port": "testSig_o",
+              "con": "pulse_o(i)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

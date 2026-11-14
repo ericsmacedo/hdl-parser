@@ -1,0 +1,65 @@
+{
+  "path": "$PRJ/examples/vhdl/units.vhd",
+  "modules": [
+    {
+      "name": "Leaf",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "A"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "Y"
+        }
+      ]
+    },
+    {
+      "name": "branch",
+      "ports": [
+        {
+          "direction": "in",
+          "dtype": "std_logic",
+          "name": "a"
+        },
+        {
+          "direction": "out",
+          "dtype": "std_logic",
+          "name": "y"
+        }
+      ],
+      "insts": [
+        {
+          "name": "u_leaf0",
+          "module": "leaf",
+          "connections": [
+            {
+              "port": "a",
+              "con": "a"
+            },
+            {
+              "port": "y",
+              "con": "mid"
+            }
+          ]
+        },
+        {
+          "name": "u_leaf1",
+          "module": "leaf",
+          "connections": [
+            {
+              "port": "a",
+              "con": "mid"
+            },
+            {
+              "port": "y",
+              "con": "y"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

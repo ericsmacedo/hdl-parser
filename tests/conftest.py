@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 ericsmacedo
+# Copyright (c) 2025-2026 ericsmacedo
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -42,14 +42,6 @@ def examples() -> Path:
 def runner():
     """CLI Runner."""
     yield CliRunner()
-
-
-@fixture
-def runner_iso():
-    """CLI Runner."""
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        yield runner
 
 
 @fixture(autouse=True)
