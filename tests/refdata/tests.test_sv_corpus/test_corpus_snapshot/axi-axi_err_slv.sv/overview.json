@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/axi/axi_err_slv.sv",
   "modules": [
     {
+      "id": "axi_err_slv",
       "name": "axi_err_slv",
       "params": [
         {
+          "id": "axi_err_slv.AxiIdWidth",
           "ptype": "int",
           "name": "AxiIdWidth",
           "default": "0",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "axi_err_slv.axi_req_t",
           "ptype": "type",
           "name": "axi_req_t",
           "default": "logic",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "axi_err_slv.axi_resp_t",
           "ptype": "type",
           "name": "axi_resp_t",
           "default": "logic",
@@ -47,6 +51,7 @@
           }
         },
         {
+          "id": "axi_err_slv.Resp",
           "ptype": "axi_pkg::resp_t",
           "name": "Resp",
           "default": "axi_pkg::RESP_DECERR",
@@ -61,6 +66,7 @@
           }
         },
         {
+          "id": "axi_err_slv.RespWidth",
           "ptype": "int",
           "name": "RespWidth",
           "default": "32'd64",
@@ -75,6 +81,7 @@
           }
         },
         {
+          "id": "axi_err_slv.RespData",
           "ptype": "logic",
           "name": "RespData",
           "dim": "[RespWidth-1:0]",
@@ -90,6 +97,7 @@
           }
         },
         {
+          "id": "axi_err_slv.ATOPs",
           "ptype": "bit",
           "name": "ATOPs",
           "default": "1'b1",
@@ -104,6 +112,7 @@
           }
         },
         {
+          "id": "axi_err_slv.MaxTrans",
           "ptype": "int",
           "name": "MaxTrans",
           "default": "1",
@@ -120,6 +129,7 @@
       ],
       "ports": [
         {
+          "id": "axi_err_slv.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -134,6 +144,7 @@
           }
         },
         {
+          "id": "axi_err_slv.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -148,6 +159,7 @@
           }
         },
         {
+          "id": "axi_err_slv.test_i",
           "direction": "input",
           "ptype": "logic",
           "name": "test_i",
@@ -163,6 +175,7 @@
           }
         },
         {
+          "id": "axi_err_slv.slv_req_i",
           "direction": "input",
           "ptype": "axi_req_t",
           "name": "slv_req_i",
@@ -174,6 +187,7 @@
           }
         },
         {
+          "id": "axi_err_slv.slv_resp_o",
           "direction": "output",
           "ptype": "axi_resp_t",
           "name": "slv_resp_o",
@@ -187,10 +201,12 @@
       ],
       "insts": [
         {
+          "id": "axi_err_slv.i_atop_filter",
           "name": "i_atop_filter",
           "module": "axi_atop_filter",
           "connections": [
             {
+              "id": "axi_err_slv.i_atop_filter.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -201,6 +217,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_atop_filter.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -211,6 +228,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_atop_filter.slv_req_i",
               "port": "slv_req_i",
               "con": "slv_req_i",
               "loc": {
@@ -221,6 +239,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_atop_filter.slv_resp_o",
               "port": "slv_resp_o",
               "con": "slv_resp_o",
               "loc": {
@@ -231,6 +250,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_atop_filter.mst_req_o",
               "port": "mst_req_o",
               "con": "err_req",
               "loc": {
@@ -241,6 +261,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_atop_filter.mst_resp_i",
               "port": "mst_resp_i",
               "con": "err_resp",
               "loc": {
@@ -259,10 +280,12 @@
           }
         },
         {
+          "id": "axi_err_slv.i_w_fifo",
           "name": "i_w_fifo",
           "module": "fifo_v3",
           "connections": [
             {
+              "id": "axi_err_slv.i_w_fifo.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -273,6 +296,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -283,6 +307,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.flush_i",
               "port": "flush_i",
               "con": "1'b0",
               "loc": {
@@ -293,6 +318,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.testmode_i",
               "port": "testmode_i",
               "con": "test_i",
               "loc": {
@@ -303,6 +329,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.full_o",
               "port": "full_o",
               "con": "w_fifo_full",
               "loc": {
@@ -313,6 +340,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.empty_o",
               "port": "empty_o",
               "con": "w_fifo_empty",
               "loc": {
@@ -323,6 +351,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.usage_o",
               "port": "usage_o",
               "loc": {
                 "line": 101,
@@ -332,6 +361,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.data_i",
               "port": "data_i",
               "con": "err_req.aw.id",
               "loc": {
@@ -342,6 +372,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.push_i",
               "port": "push_i",
               "con": "w_fifo_push",
               "loc": {
@@ -352,6 +383,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.data_o",
               "port": "data_o",
               "con": "w_fifo_data",
               "loc": {
@@ -362,6 +394,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_w_fifo.pop_i",
               "port": "pop_i",
               "con": "w_fifo_pop",
               "loc": {
@@ -380,10 +413,12 @@
           }
         },
         {
+          "id": "axi_err_slv.i_b_fifo",
           "name": "i_b_fifo",
           "module": "fifo_v3",
           "connections": [
             {
+              "id": "axi_err_slv.i_b_fifo.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -394,6 +429,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -404,6 +440,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.flush_i",
               "port": "flush_i",
               "con": "1'b0",
               "loc": {
@@ -414,6 +451,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.testmode_i",
               "port": "testmode_i",
               "con": "test_i",
               "loc": {
@@ -424,6 +462,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.full_o",
               "port": "full_o",
               "con": "b_fifo_full",
               "loc": {
@@ -434,6 +473,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.empty_o",
               "port": "empty_o",
               "con": "b_fifo_empty",
               "loc": {
@@ -444,6 +484,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.usage_o",
               "port": "usage_o",
               "loc": {
                 "line": 134,
@@ -453,6 +494,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.data_i",
               "port": "data_i",
               "con": "w_fifo_data",
               "loc": {
@@ -463,6 +505,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.push_i",
               "port": "push_i",
               "con": "b_fifo_push",
               "loc": {
@@ -473,6 +516,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.data_o",
               "port": "data_o",
               "con": "b_fifo_data",
               "loc": {
@@ -483,6 +527,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_b_fifo.pop_i",
               "port": "pop_i",
               "con": "b_fifo_pop",
               "loc": {
@@ -501,10 +546,12 @@
           }
         },
         {
+          "id": "axi_err_slv.i_r_fifo",
           "name": "i_r_fifo",
           "module": "fifo_v3",
           "connections": [
             {
+              "id": "axi_err_slv.i_r_fifo.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -515,6 +562,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -525,6 +573,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.flush_i",
               "port": "flush_i",
               "con": "1'b0",
               "loc": {
@@ -535,6 +584,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.testmode_i",
               "port": "testmode_i",
               "con": "test_i",
               "loc": {
@@ -545,6 +595,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.full_o",
               "port": "full_o",
               "con": "r_fifo_full",
               "loc": {
@@ -555,6 +606,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.empty_o",
               "port": "empty_o",
               "con": "r_fifo_empty",
               "loc": {
@@ -565,6 +617,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.usage_o",
               "port": "usage_o",
               "loc": {
                 "line": 176,
@@ -574,6 +627,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.data_i",
               "port": "data_i",
               "con": "r_fifo_inp",
               "loc": {
@@ -584,6 +638,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.push_i",
               "port": "push_i",
               "con": "r_fifo_push",
               "loc": {
@@ -594,6 +649,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.data_o",
               "port": "data_o",
               "con": "r_fifo_data",
               "loc": {
@@ -604,6 +660,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_fifo.pop_i",
               "port": "pop_i",
               "con": "r_fifo_pop",
               "loc": {
@@ -622,10 +679,12 @@
           }
         },
         {
+          "id": "axi_err_slv.i_r_counter",
           "name": "i_r_counter",
           "module": "counter",
           "connections": [
             {
+              "id": "axi_err_slv.i_r_counter.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -636,6 +695,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -646,6 +706,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.clear_i",
               "port": "clear_i",
               "con": "r_cnt_clear",
               "loc": {
@@ -656,6 +717,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.en_i",
               "port": "en_i",
               "con": "r_cnt_en",
               "loc": {
@@ -666,6 +728,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.load_i",
               "port": "load_i",
               "con": "r_cnt_load",
               "loc": {
@@ -676,6 +739,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.down_i",
               "port": "down_i",
               "con": "1'b1",
               "loc": {
@@ -686,6 +750,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.d_i",
               "port": "d_i",
               "con": "r_fifo_data.len",
               "loc": {
@@ -696,6 +761,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.q_o",
               "port": "q_o",
               "con": "r_current_beat",
               "loc": {
@@ -706,6 +772,7 @@
               }
             },
             {
+              "id": "axi_err_slv.i_r_counter.overflow_o",
               "port": "overflow_o",
               "loc": {
                 "line": 242,

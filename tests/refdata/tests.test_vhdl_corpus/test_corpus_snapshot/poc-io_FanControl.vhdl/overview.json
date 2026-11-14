@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/poc/io_FanControl.vhdl",
   "modules": [
     {
+      "id": "io_fancontrol",
       "name": "io_FanControl",
       "params": [
         {
+          "id": "io_fancontrol.clock_freq",
           "name": "CLOCK_FREQ",
           "loc": {
             "line": 65,
@@ -14,6 +16,7 @@
           }
         },
         {
+          "id": "io_fancontrol.add_input_synchronizers",
           "name": "ADD_INPUT_SYNCHRONIZERS",
           "default": "TRUE",
           "loc": {
@@ -24,6 +27,7 @@
           }
         },
         {
+          "id": "io_fancontrol.enable_tacho",
           "name": "ENABLE_TACHO",
           "default": "FALSE",
           "loc": {
@@ -36,6 +40,7 @@
       ],
       "ports": [
         {
+          "id": "io_fancontrol.clock",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Clock",
@@ -47,6 +52,7 @@
           }
         },
         {
+          "id": "io_fancontrol.reset",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Reset",
@@ -61,6 +67,7 @@
           }
         },
         {
+          "id": "io_fancontrol.fan_pwm",
           "direction": "out",
           "dtype": "std_logic",
           "name": "Fan_PWM",
@@ -75,6 +82,7 @@
           }
         },
         {
+          "id": "io_fancontrol.fan_tacho",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Fan_Tacho",
@@ -86,6 +94,7 @@
           }
         },
         {
+          "id": "io_fancontrol.tachofrequency",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "TachoFrequency",
@@ -100,10 +109,12 @@
       ],
       "insts": [
         {
+          "id": "io_fancontrol.systemmonitor",
           "name": "SystemMonitor",
           "module": "xil_SystemMonitor",
           "connections": [
             {
+              "id": "io_fancontrol.systemmonitor.reset",
               "port": "Reset",
               "con": "Reset",
               "comment": [
@@ -117,6 +128,7 @@
               }
             },
             {
+              "id": "io_fancontrol.systemmonitor.alarm_usertemp",
               "port": "Alarm_UserTemp",
               "con": "UserTemperature_async",
               "comment": [
@@ -130,6 +142,7 @@
               }
             },
             {
+              "id": "io_fancontrol.systemmonitor.alarm_overtemp",
               "port": "Alarm_OverTemp",
               "con": "OverTemperature_async",
               "comment": [
@@ -143,6 +156,7 @@
               }
             },
             {
+              "id": "io_fancontrol.systemmonitor.alarm",
               "port": "Alarm",
               "con": "open",
               "comment": [
@@ -156,6 +170,7 @@
               }
             },
             {
+              "id": "io_fancontrol.systemmonitor.vp",
               "port": "VP",
               "con": "'0'",
               "comment": [
@@ -169,6 +184,7 @@
               }
             },
             {
+              "id": "io_fancontrol.systemmonitor.vn",
               "port": "VN",
               "con": "'0'",
               "loc": {
@@ -187,10 +203,12 @@
           }
         },
         {
+          "id": "io_fancontrol.sync",
           "name": "sync",
           "module": "sync_Bits_Xilinx",
           "connections": [
             {
+              "id": "io_fancontrol.sync.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -201,6 +219,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync.input(0)",
               "port": "Input(0)",
               "con": "OverTemperature_async",
               "loc": {
@@ -211,6 +230,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync.input(1)",
               "port": "Input(1)",
               "con": "UserTemperature_async",
               "loc": {
@@ -221,6 +241,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync.output(0)",
               "port": "Output(0)",
               "con": "OverTemperature_sync",
               "loc": {
@@ -231,6 +252,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync.output(1)",
               "port": "Output(1)",
               "con": "UserTemperature_sync",
               "loc": {
@@ -249,10 +271,12 @@
           }
         },
         {
+          "id": "io_fancontrol.tc",
           "name": "TC",
           "module": "io_TimingCounter",
           "connections": [
             {
+              "id": "io_fancontrol.tc.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -266,6 +290,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc.enable",
               "port": "Enable",
               "con": "StartUp",
               "comment": [
@@ -279,6 +304,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc.load",
               "port": "Load",
               "con": "'0'",
               "comment": [
@@ -292,6 +318,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc.slot",
               "port": "Slot",
               "con": "0",
               "comment": [
@@ -305,6 +332,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc.timeout",
               "port": "Timeout",
               "con": "TC_Timeout",
               "comment": [
@@ -326,10 +354,12 @@
           }
         },
         {
+          "id": "io_fancontrol.tc~2",
           "name": "TC",
           "module": "io_TimingCounter",
           "connections": [
             {
+              "id": "io_fancontrol.tc~2.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -343,6 +373,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc~2.enable",
               "port": "Enable",
               "con": "StartUp",
               "comment": [
@@ -356,6 +387,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc~2.load",
               "port": "Load",
               "con": "'0'",
               "comment": [
@@ -369,6 +401,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc~2.slot",
               "port": "Slot",
               "con": "0",
               "comment": [
@@ -382,6 +415,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tc~2.timeout",
               "port": "Timeout",
               "con": "TC_Timeout",
               "comment": [
@@ -403,10 +437,12 @@
           }
         },
         {
+          "id": "io_fancontrol.pwm",
           "name": "PWM",
           "module": "io_PulseWidthModulation",
           "connections": [
             {
+              "id": "io_fancontrol.pwm.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -417,6 +453,7 @@
               }
             },
             {
+              "id": "io_fancontrol.pwm.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -427,6 +464,7 @@
               }
             },
             {
+              "id": "io_fancontrol.pwm.pwmin",
               "port": "PWMIn",
               "con": "PWM_PWMIn",
               "loc": {
@@ -437,6 +475,7 @@
               }
             },
             {
+              "id": "io_fancontrol.pwm.pwmout",
               "port": "PWMOut",
               "con": "PWM_PWMOut",
               "loc": {
@@ -455,10 +494,12 @@
           }
         },
         {
+          "id": "io_fancontrol.sync_i",
           "name": "sync_i",
           "module": "sync_Bits",
           "connections": [
             {
+              "id": "io_fancontrol.sync_i.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -472,6 +513,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync_i.input(0)",
               "port": "Input(0)",
               "con": "Fan_Tacho",
               "comment": [
@@ -485,6 +527,7 @@
               }
             },
             {
+              "id": "io_fancontrol.sync_i.output(0)",
               "port": "Output(0)",
               "con": "Tacho_sync",
               "comment": [
@@ -506,10 +549,12 @@
           }
         },
         {
+          "id": "io_fancontrol.tacho",
           "name": "Tacho",
           "module": "io_FrequencyCounter",
           "connections": [
             {
+              "id": "io_fancontrol.tacho.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -520,6 +565,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tacho.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -530,6 +576,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tacho.freqin",
               "port": "FreqIn",
               "con": "Tacho_sync",
               "loc": {
@@ -540,6 +587,7 @@
               }
             },
             {
+              "id": "io_fancontrol.tacho.freqout",
               "port": "FreqOut",
               "con": "Tacho_Freq",
               "loc": {

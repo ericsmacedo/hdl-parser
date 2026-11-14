@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/opentitan/prim_fifo_async.sv",
   "modules": [
     {
+      "id": "prim_fifo_async",
       "name": "prim_fifo_async",
       "params": [
         {
+          "id": "prim_fifo_async.Width",
           "ptype": "int",
           "name": "Width",
           "default": "16",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.Depth",
           "ptype": "int",
           "name": "Depth",
           "default": "4",
@@ -27,6 +30,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.OutputZeroIfEmpty",
           "ptype": "bit",
           "name": "OutputZeroIfEmpty",
           "default": "1'b0",
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.OutputZeroIfInvalid",
           "ptype": "bit",
           "name": "OutputZeroIfInvalid",
           "default": "1'b0",
@@ -57,6 +62,7 @@
       ],
       "ports": [
         {
+          "id": "prim_fifo_async.clk_wr_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_wr_i",
@@ -68,6 +74,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rst_wr_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_wr_ni",
@@ -79,6 +86,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.wvalid_i",
           "direction": "input",
           "ptype": "logic",
           "name": "wvalid_i",
@@ -90,6 +98,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.wready_o",
           "direction": "output",
           "ptype": "logic",
           "name": "wready_o",
@@ -101,6 +110,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.wdata_i",
           "direction": "input",
           "ptype": "logic",
           "name": "wdata_i",
@@ -113,6 +123,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.wdepth_o",
           "direction": "output",
           "ptype": "logic",
           "name": "wdepth_o",
@@ -128,6 +139,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.clk_rd_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_rd_i",
@@ -139,6 +151,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rst_rd_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_rd_ni",
@@ -150,6 +163,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rvalid_o",
           "direction": "output",
           "ptype": "logic",
           "name": "rvalid_o",
@@ -161,6 +175,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rready_i",
           "direction": "input",
           "ptype": "logic",
           "name": "rready_i",
@@ -172,6 +187,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rdata_o",
           "direction": "output",
           "ptype": "logic",
           "name": "rdata_o",
@@ -184,6 +200,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.rdepth_o",
           "direction": "output",
           "ptype": "logic",
           "name": "rdepth_o",
@@ -198,6 +215,7 @@
       ],
       "localparams": [
         {
+          "id": "prim_fifo_async.DepthW",
           "ptype": "int",
           "name": "DepthW",
           "default": "$clog2(Depth+1)",
@@ -212,6 +230,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.PTRV_W",
           "ptype": "int",
           "name": "PTRV_W",
           "default": "(Depth == 1) ? 1 : $clog2(Depth)",
@@ -223,6 +242,7 @@
           }
         },
         {
+          "id": "prim_fifo_async.PTR_WIDTH",
           "ptype": "int",
           "name": "PTR_WIDTH",
           "default": "(Depth == 1) ? 1 : PTRV_W+1",
@@ -236,10 +256,12 @@
       ],
       "insts": [
         {
+          "id": "prim_fifo_async.sync_wptr",
           "name": "sync_wptr",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_fifo_async.sync_wptr.clk_i",
               "port": "clk_i",
               "con": "clk_rd_i",
               "loc": {
@@ -250,6 +272,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_wptr.rst_ni",
               "port": "rst_ni",
               "con": "rst_rd_ni",
               "loc": {
@@ -260,6 +283,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_wptr.d_i",
               "port": "d_i",
               "con": "fifo_wptr_gray_q",
               "loc": {
@@ -270,6 +294,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_wptr.q_o",
               "port": "q_o",
               "con": "fifo_wptr_gray_sync",
               "loc": {
@@ -288,10 +313,12 @@
           }
         },
         {
+          "id": "prim_fifo_async.sync_rptr",
           "name": "sync_rptr",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_fifo_async.sync_rptr.clk_i",
               "port": "clk_i",
               "con": "clk_wr_i",
               "loc": {
@@ -302,6 +329,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_rptr.rst_ni",
               "port": "rst_ni",
               "con": "rst_wr_ni",
               "loc": {
@@ -312,6 +340,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_rptr.d_i",
               "port": "d_i",
               "con": "fifo_rptr_gray_q",
               "loc": {
@@ -322,6 +351,7 @@
               }
             },
             {
+              "id": "prim_fifo_async.sync_rptr.q_o",
               "port": "q_o",
               "con": "fifo_rptr_gray_sync",
               "loc": {

@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/common_cells/id_queue.sv",
   "modules": [
     {
+      "id": "id_queue",
       "name": "id_queue",
       "params": [
         {
+          "id": "id_queue.ID_WIDTH",
           "ptype": "int",
           "name": "ID_WIDTH",
           "default": "0",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "id_queue.CAPACITY",
           "ptype": "int",
           "name": "CAPACITY",
           "default": "0",
@@ -27,6 +30,7 @@
           }
         },
         {
+          "id": "id_queue.FULL_BW",
           "ptype": "bit",
           "name": "FULL_BW",
           "default": "0",
@@ -38,6 +42,7 @@
           }
         },
         {
+          "id": "id_queue.CUT_OUP_POP_INP_GNT",
           "ptype": "bit",
           "name": "CUT_OUP_POP_INP_GNT",
           "default": "0",
@@ -49,6 +54,7 @@
           }
         },
         {
+          "id": "id_queue.data_t",
           "ptype": "type",
           "name": "data_t",
           "default": "logic[31:0]",
@@ -65,6 +71,7 @@
       ],
       "ports": [
         {
+          "id": "id_queue.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -76,6 +83,7 @@
           }
         },
         {
+          "id": "id_queue.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -87,6 +95,7 @@
           }
         },
         {
+          "id": "id_queue.inp_id_i",
           "direction": "input",
           "ptype": "id_t",
           "name": "inp_id_i",
@@ -98,6 +107,7 @@
           }
         },
         {
+          "id": "id_queue.inp_data_i",
           "direction": "input",
           "ptype": "data_t",
           "name": "inp_data_i",
@@ -109,6 +119,7 @@
           }
         },
         {
+          "id": "id_queue.inp_req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "inp_req_i",
@@ -120,6 +131,7 @@
           }
         },
         {
+          "id": "id_queue.inp_gnt_o",
           "direction": "output",
           "ptype": "logic",
           "name": "inp_gnt_o",
@@ -131,6 +143,7 @@
           }
         },
         {
+          "id": "id_queue.exists_data_i",
           "direction": "input",
           "ptype": "data_t",
           "name": "exists_data_i",
@@ -142,6 +155,7 @@
           }
         },
         {
+          "id": "id_queue.exists_mask_i",
           "direction": "input",
           "ptype": "data_t",
           "name": "exists_mask_i",
@@ -153,6 +167,7 @@
           }
         },
         {
+          "id": "id_queue.exists_req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "exists_req_i",
@@ -164,6 +179,7 @@
           }
         },
         {
+          "id": "id_queue.exists_o",
           "direction": "output",
           "ptype": "logic",
           "name": "exists_o",
@@ -175,6 +191,7 @@
           }
         },
         {
+          "id": "id_queue.exists_gnt_o",
           "direction": "output",
           "ptype": "logic",
           "name": "exists_gnt_o",
@@ -186,6 +203,7 @@
           }
         },
         {
+          "id": "id_queue.oup_id_i",
           "direction": "input",
           "ptype": "id_t",
           "name": "oup_id_i",
@@ -197,6 +215,7 @@
           }
         },
         {
+          "id": "id_queue.oup_pop_i",
           "direction": "input",
           "ptype": "logic",
           "name": "oup_pop_i",
@@ -208,6 +227,7 @@
           }
         },
         {
+          "id": "id_queue.oup_req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "oup_req_i",
@@ -219,6 +239,7 @@
           }
         },
         {
+          "id": "id_queue.oup_data_o",
           "direction": "output",
           "ptype": "data_t",
           "name": "oup_data_o",
@@ -230,6 +251,7 @@
           }
         },
         {
+          "id": "id_queue.oup_data_valid_o",
           "direction": "output",
           "ptype": "logic",
           "name": "oup_data_valid_o",
@@ -241,6 +263,7 @@
           }
         },
         {
+          "id": "id_queue.oup_gnt_o",
           "direction": "output",
           "ptype": "logic",
           "name": "oup_gnt_o",
@@ -254,6 +277,7 @@
       ],
       "localparams": [
         {
+          "id": "id_queue.id_t",
           "ptype": "type",
           "name": "id_t",
           "default": "logic[ID_WIDTH-1:0]",
@@ -265,6 +289,7 @@
           }
         },
         {
+          "id": "id_queue.NIds",
           "ptype": "int",
           "name": "NIds",
           "default": "2**ID_WIDTH",
@@ -276,6 +301,7 @@
           }
         },
         {
+          "id": "id_queue.HtCapacity",
           "ptype": "int",
           "name": "HtCapacity",
           "default": "(NIds <= CAPACITY) ? NIds : CAPACITY",
@@ -287,6 +313,7 @@
           }
         },
         {
+          "id": "id_queue.HtIdxWidth",
           "ptype": "int",
           "name": "HtIdxWidth",
           "default": "cf_math_pkg::idx_width(HtCapacity)",
@@ -298,6 +325,7 @@
           }
         },
         {
+          "id": "id_queue.LdIdxWidth",
           "ptype": "int",
           "name": "LdIdxWidth",
           "default": "cf_math_pkg::idx_width(CAPACITY)",
@@ -311,10 +339,12 @@
       ],
       "insts": [
         {
+          "id": "id_queue.i_id_ohb_in",
           "name": "i_id_ohb_in",
           "module": "onehot_to_bin",
           "connections": [
             {
+              "id": "id_queue.i_id_ohb_in.onehot",
               "port": "onehot",
               "con": "idx_matches_in_id",
               "loc": {
@@ -325,6 +355,7 @@
               }
             },
             {
+              "id": "id_queue.i_id_ohb_in.bin",
               "port": "bin",
               "con": "match_in_idx",
               "loc": {
@@ -343,10 +374,12 @@
           }
         },
         {
+          "id": "id_queue.i_id_ohb_out",
           "name": "i_id_ohb_out",
           "module": "onehot_to_bin",
           "connections": [
             {
+              "id": "id_queue.i_id_ohb_out.onehot",
               "port": "onehot",
               "con": "idx_matches_out_id",
               "loc": {
@@ -357,6 +390,7 @@
               }
             },
             {
+              "id": "id_queue.i_id_ohb_out.bin",
               "port": "bin",
               "con": "match_out_idx",
               "loc": {
@@ -375,10 +409,12 @@
           }
         },
         {
+          "id": "id_queue.i_ht_free_lzc",
           "name": "i_ht_free_lzc",
           "module": "lzc",
           "connections": [
             {
+              "id": "id_queue.i_ht_free_lzc.in_i",
               "port": "in_i",
               "con": "head_tail_free",
               "loc": {
@@ -389,6 +425,7 @@
               }
             },
             {
+              "id": "id_queue.i_ht_free_lzc.cnt_o",
               "port": "cnt_o",
               "con": "head_tail_free_idx",
               "loc": {
@@ -399,6 +436,7 @@
               }
             },
             {
+              "id": "id_queue.i_ht_free_lzc.empty_o",
               "port": "empty_o",
               "loc": {
                 "line": 168,
@@ -416,10 +454,12 @@
           }
         },
         {
+          "id": "id_queue.i_ld_free_lzc",
           "name": "i_ld_free_lzc",
           "module": "lzc",
           "connections": [
             {
+              "id": "id_queue.i_ld_free_lzc.in_i",
               "port": "in_i",
               "con": "linked_data_free",
               "loc": {
@@ -430,6 +470,7 @@
               }
             },
             {
+              "id": "id_queue.i_ld_free_lzc.cnt_o",
               "port": "cnt_o",
               "con": "linked_data_free_idx",
               "loc": {
@@ -440,6 +481,7 @@
               }
             },
             {
+              "id": "id_queue.i_ld_free_lzc.empty_o",
               "port": "empty_o",
               "loc": {
                 "line": 181,

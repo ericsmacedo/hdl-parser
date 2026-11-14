@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/axi/axi_cut.sv",
   "modules": [
     {
+      "id": "axi_cut",
       "name": "axi_cut",
       "params": [
         {
+          "id": "axi_cut.Bypass",
           "ptype": "bit",
           "name": "Bypass",
           "default": "1'b0",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "axi_cut.aw_chan_t",
           "ptype": "type",
           "name": "aw_chan_t",
           "default": "logic",
@@ -30,6 +33,7 @@
           }
         },
         {
+          "id": "axi_cut.w_chan_t",
           "ptype": "type",
           "name": "w_chan_t",
           "default": "logic",
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "axi_cut.b_chan_t",
           "ptype": "type",
           "name": "b_chan_t",
           "default": "logic",
@@ -52,6 +57,7 @@
           }
         },
         {
+          "id": "axi_cut.ar_chan_t",
           "ptype": "type",
           "name": "ar_chan_t",
           "default": "logic",
@@ -63,6 +69,7 @@
           }
         },
         {
+          "id": "axi_cut.r_chan_t",
           "ptype": "type",
           "name": "r_chan_t",
           "default": "logic",
@@ -77,6 +84,7 @@
           }
         },
         {
+          "id": "axi_cut.axi_req_t",
           "ptype": "type",
           "name": "axi_req_t",
           "default": "logic",
@@ -88,6 +96,7 @@
           }
         },
         {
+          "id": "axi_cut.axi_resp_t",
           "ptype": "type",
           "name": "axi_resp_t",
           "default": "logic",
@@ -101,6 +110,7 @@
       ],
       "ports": [
         {
+          "id": "axi_cut.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -112,6 +122,7 @@
           }
         },
         {
+          "id": "axi_cut.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -126,6 +137,7 @@
           }
         },
         {
+          "id": "axi_cut.slv_req_i",
           "direction": "input",
           "ptype": "axi_req_t",
           "name": "slv_req_i",
@@ -137,6 +149,7 @@
           }
         },
         {
+          "id": "axi_cut.slv_resp_o",
           "direction": "output",
           "ptype": "axi_resp_t",
           "name": "slv_resp_o",
@@ -151,6 +164,7 @@
           }
         },
         {
+          "id": "axi_cut.mst_req_o",
           "direction": "output",
           "ptype": "axi_req_t",
           "name": "mst_req_o",
@@ -162,6 +176,7 @@
           }
         },
         {
+          "id": "axi_cut.mst_resp_i",
           "direction": "input",
           "ptype": "axi_resp_t",
           "name": "mst_resp_i",
@@ -175,10 +190,12 @@
       ],
       "insts": [
         {
+          "id": "axi_cut.i_reg_aw",
           "name": "i_reg_aw",
           "module": "spill_register",
           "connections": [
             {
+              "id": "axi_cut.i_reg_aw.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -189,6 +206,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -199,6 +217,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.valid_i",
               "port": "valid_i",
               "con": "slv_req_i.aw_valid",
               "loc": {
@@ -209,6 +228,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.ready_o",
               "port": "ready_o",
               "con": "slv_resp_o.aw_ready",
               "loc": {
@@ -219,6 +239,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.data_i",
               "port": "data_i",
               "con": "slv_req_i.aw",
               "loc": {
@@ -229,6 +250,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.valid_o",
               "port": "valid_o",
               "con": "mst_req_o.aw_valid",
               "loc": {
@@ -239,6 +261,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.ready_i",
               "port": "ready_i",
               "con": "mst_resp_i.aw_ready",
               "loc": {
@@ -249,6 +272,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_aw.data_o",
               "port": "data_o",
               "con": "mst_req_o.aw",
               "loc": {
@@ -267,10 +291,12 @@
           }
         },
         {
+          "id": "axi_cut.i_reg_w",
           "name": "i_reg_w",
           "module": "spill_register",
           "connections": [
             {
+              "id": "axi_cut.i_reg_w.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -281,6 +307,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -291,6 +318,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.valid_i",
               "port": "valid_i",
               "con": "slv_req_i.w_valid",
               "loc": {
@@ -301,6 +329,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.ready_o",
               "port": "ready_o",
               "con": "slv_resp_o.w_ready",
               "loc": {
@@ -311,6 +340,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.data_i",
               "port": "data_i",
               "con": "slv_req_i.w",
               "loc": {
@@ -321,6 +351,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.valid_o",
               "port": "valid_o",
               "con": "mst_req_o.w_valid",
               "loc": {
@@ -331,6 +362,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.ready_i",
               "port": "ready_i",
               "con": "mst_resp_i.w_ready",
               "loc": {
@@ -341,6 +373,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_w.data_o",
               "port": "data_o",
               "con": "mst_req_o.w",
               "loc": {
@@ -359,10 +392,12 @@
           }
         },
         {
+          "id": "axi_cut.i_reg_b",
           "name": "i_reg_b",
           "module": "spill_register",
           "connections": [
             {
+              "id": "axi_cut.i_reg_b.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -373,6 +408,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -383,6 +419,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.valid_i",
               "port": "valid_i",
               "con": "mst_resp_i.b_valid",
               "loc": {
@@ -393,6 +430,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.ready_o",
               "port": "ready_o",
               "con": "mst_req_o.b_ready",
               "loc": {
@@ -403,6 +441,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.data_i",
               "port": "data_i",
               "con": "mst_resp_i.b",
               "loc": {
@@ -413,6 +452,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.valid_o",
               "port": "valid_o",
               "con": "slv_resp_o.b_valid",
               "loc": {
@@ -423,6 +463,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.ready_i",
               "port": "ready_i",
               "con": "slv_req_i.b_ready",
               "loc": {
@@ -433,6 +474,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_b.data_o",
               "port": "data_o",
               "con": "slv_resp_o.b",
               "loc": {
@@ -451,10 +493,12 @@
           }
         },
         {
+          "id": "axi_cut.i_reg_ar",
           "name": "i_reg_ar",
           "module": "spill_register",
           "connections": [
             {
+              "id": "axi_cut.i_reg_ar.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -465,6 +509,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -475,6 +520,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.valid_i",
               "port": "valid_i",
               "con": "slv_req_i.ar_valid",
               "loc": {
@@ -485,6 +531,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.ready_o",
               "port": "ready_o",
               "con": "slv_resp_o.ar_ready",
               "loc": {
@@ -495,6 +542,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.data_i",
               "port": "data_i",
               "con": "slv_req_i.ar",
               "loc": {
@@ -505,6 +553,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.valid_o",
               "port": "valid_o",
               "con": "mst_req_o.ar_valid",
               "loc": {
@@ -515,6 +564,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.ready_i",
               "port": "ready_i",
               "con": "mst_resp_i.ar_ready",
               "loc": {
@@ -525,6 +575,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_ar.data_o",
               "port": "data_o",
               "con": "mst_req_o.ar",
               "loc": {
@@ -543,10 +594,12 @@
           }
         },
         {
+          "id": "axi_cut.i_reg_r",
           "name": "i_reg_r",
           "module": "spill_register",
           "connections": [
             {
+              "id": "axi_cut.i_reg_r.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -557,6 +610,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -567,6 +621,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.valid_i",
               "port": "valid_i",
               "con": "mst_resp_i.r_valid",
               "loc": {
@@ -577,6 +632,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.ready_o",
               "port": "ready_o",
               "con": "mst_req_o.r_ready",
               "loc": {
@@ -587,6 +643,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.data_i",
               "port": "data_i",
               "con": "mst_resp_i.r",
               "loc": {
@@ -597,6 +654,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.valid_o",
               "port": "valid_o",
               "con": "slv_resp_o.r_valid",
               "loc": {
@@ -607,6 +665,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.ready_i",
               "port": "ready_i",
               "con": "slv_req_i.r_ready",
               "loc": {
@@ -617,6 +676,7 @@
               }
             },
             {
+              "id": "axi_cut.i_reg_r.data_o",
               "port": "data_o",
               "con": "slv_resp_o.r",
               "loc": {
@@ -643,9 +703,11 @@
       }
     },
     {
+      "id": "axi_cut_intf",
       "name": "axi_cut_intf",
       "params": [
         {
+          "id": "axi_cut_intf.BYPASS",
           "ptype": "bit",
           "name": "BYPASS",
           "default": "1'b0",
@@ -660,6 +722,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.ADDR_WIDTH",
           "ptype": "int",
           "name": "ADDR_WIDTH",
           "default": "0",
@@ -674,6 +737,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.DATA_WIDTH",
           "ptype": "int",
           "name": "DATA_WIDTH",
           "default": "0",
@@ -688,6 +752,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.ID_WIDTH",
           "ptype": "int",
           "name": "ID_WIDTH",
           "default": "0",
@@ -702,6 +767,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.USER_WIDTH",
           "ptype": "int",
           "name": "USER_WIDTH",
           "default": "0",
@@ -715,6 +781,7 @@
       ],
       "ports": [
         {
+          "id": "axi_cut_intf.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -726,6 +793,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -737,6 +805,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.in",
           "ptype": "AXI_BUS.Slave",
           "name": "in",
           "loc": {
@@ -747,6 +816,7 @@
           }
         },
         {
+          "id": "axi_cut_intf.out",
           "ptype": "AXI_BUS.Master",
           "name": "out",
           "loc": {
@@ -759,10 +829,12 @@
       ],
       "insts": [
         {
+          "id": "axi_cut_intf.i_axi_cut",
           "name": "i_axi_cut",
           "module": "axi_cut",
           "connections": [
             {
+              "id": "axi_cut_intf.i_axi_cut.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -773,6 +845,7 @@
               }
             },
             {
+              "id": "axi_cut_intf.i_axi_cut.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -783,6 +856,7 @@
               }
             },
             {
+              "id": "axi_cut_intf.i_axi_cut.slv_req_i",
               "port": "slv_req_i",
               "con": "slv_req",
               "loc": {
@@ -793,6 +867,7 @@
               }
             },
             {
+              "id": "axi_cut_intf.i_axi_cut.slv_resp_o",
               "port": "slv_resp_o",
               "con": "slv_resp",
               "loc": {
@@ -803,6 +878,7 @@
               }
             },
             {
+              "id": "axi_cut_intf.i_axi_cut.mst_req_o",
               "port": "mst_req_o",
               "con": "mst_req",
               "loc": {
@@ -813,6 +889,7 @@
               }
             },
             {
+              "id": "axi_cut_intf.i_axi_cut.mst_resp_i",
               "port": "mst_resp_i",
               "con": "mst_resp",
               "loc": {
@@ -839,9 +916,11 @@
       }
     },
     {
+      "id": "axi_lite_cut_intf",
       "name": "axi_lite_cut_intf",
       "params": [
         {
+          "id": "axi_lite_cut_intf.BYPASS",
           "ptype": "bit",
           "name": "BYPASS",
           "default": "1'b0",
@@ -856,6 +935,7 @@
           }
         },
         {
+          "id": "axi_lite_cut_intf.ADDR_WIDTH",
           "ptype": "int",
           "name": "ADDR_WIDTH",
           "default": "0",
@@ -870,6 +950,7 @@
           }
         },
         {
+          "id": "axi_lite_cut_intf.DATA_WIDTH",
           "ptype": "int",
           "name": "DATA_WIDTH",
           "default": "0",
@@ -883,6 +964,7 @@
       ],
       "ports": [
         {
+          "id": "axi_lite_cut_intf.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -894,6 +976,7 @@
           }
         },
         {
+          "id": "axi_lite_cut_intf.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -905,6 +988,7 @@
           }
         },
         {
+          "id": "axi_lite_cut_intf.in",
           "ptype": "AXI_LITE.Slave",
           "name": "in",
           "loc": {
@@ -915,6 +999,7 @@
           }
         },
         {
+          "id": "axi_lite_cut_intf.out",
           "ptype": "AXI_LITE.Master",
           "name": "out",
           "loc": {
@@ -927,10 +1012,12 @@
       ],
       "insts": [
         {
+          "id": "axi_lite_cut_intf.i_axi_cut",
           "name": "i_axi_cut",
           "module": "axi_cut",
           "connections": [
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -941,6 +1028,7 @@
               }
             },
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -951,6 +1039,7 @@
               }
             },
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.slv_req_i",
               "port": "slv_req_i",
               "con": "slv_req",
               "loc": {
@@ -961,6 +1050,7 @@
               }
             },
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.slv_resp_o",
               "port": "slv_resp_o",
               "con": "slv_resp",
               "loc": {
@@ -971,6 +1061,7 @@
               }
             },
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.mst_req_o",
               "port": "mst_req_o",
               "con": "mst_req",
               "loc": {
@@ -981,6 +1072,7 @@
               }
             },
             {
+              "id": "axi_lite_cut_intf.i_axi_cut.mst_resp_i",
               "port": "mst_resp_i",
               "con": "mst_resp",
               "loc": {

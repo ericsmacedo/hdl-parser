@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/ibex/ibex_prefetch_buffer.sv",
   "modules": [
     {
+      "id": "ibex_prefetch_buffer",
       "name": "ibex_prefetch_buffer",
       "params": [
         {
+          "id": "ibex_prefetch_buffer.ResetAll",
           "ptype": "bit",
           "name": "ResetAll",
           "default": "1'b0",
@@ -18,6 +20,7 @@
       ],
       "ports": [
         {
+          "id": "ibex_prefetch_buffer.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -29,6 +32,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -40,6 +44,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "req_i",
@@ -51,6 +56,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.branch_i",
           "direction": "input",
           "ptype": "logic",
           "name": "branch_i",
@@ -62,6 +68,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.addr_i",
           "direction": "input",
           "ptype": "logic",
           "name": "addr_i",
@@ -74,6 +81,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.ready_i",
           "direction": "input",
           "ptype": "logic",
           "name": "ready_i",
@@ -85,6 +93,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.valid_o",
           "direction": "output",
           "ptype": "logic",
           "name": "valid_o",
@@ -96,6 +105,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.rdata_o",
           "direction": "output",
           "ptype": "logic",
           "name": "rdata_o",
@@ -108,6 +118,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.addr_o",
           "direction": "output",
           "ptype": "logic",
           "name": "addr_o",
@@ -120,6 +131,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.err_o",
           "direction": "output",
           "ptype": "logic",
           "name": "err_o",
@@ -131,6 +143,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.err_plus2_o",
           "direction": "output",
           "ptype": "logic",
           "name": "err_plus2_o",
@@ -142,6 +155,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.cheriot_force_uc_i",
           "direction": "input",
           "ptype": "logic",
           "name": "cheriot_force_uc_i",
@@ -156,6 +170,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_req_o",
           "direction": "output",
           "ptype": "logic",
           "name": "instr_req_o",
@@ -167,6 +182,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_gnt_i",
           "direction": "input",
           "ptype": "logic",
           "name": "instr_gnt_i",
@@ -178,6 +194,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_addr_o",
           "direction": "output",
           "ptype": "logic",
           "name": "instr_addr_o",
@@ -190,6 +207,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_rdata_i",
           "direction": "input",
           "ptype": "logic",
           "name": "instr_rdata_i",
@@ -202,6 +220,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_err_i",
           "direction": "input",
           "ptype": "logic",
           "name": "instr_err_i",
@@ -213,6 +232,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.instr_rvalid_i",
           "direction": "input",
           "ptype": "logic",
           "name": "instr_rvalid_i",
@@ -227,6 +247,7 @@
           }
         },
         {
+          "id": "ibex_prefetch_buffer.busy_o",
           "direction": "output",
           "ptype": "logic",
           "name": "busy_o",
@@ -240,6 +261,7 @@
       ],
       "localparams": [
         {
+          "id": "ibex_prefetch_buffer.NUM_REQS",
           "ptype": "int",
           "name": "NUM_REQS",
           "default": "2",
@@ -253,10 +275,12 @@
       ],
       "insts": [
         {
+          "id": "ibex_prefetch_buffer.fifo_i",
           "name": "fifo_i",
           "module": "ibex_fetch_fifo",
           "connections": [
             {
+              "id": "ibex_prefetch_buffer.fifo_i.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -267,6 +291,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -277,6 +302,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.clear_i",
               "port": "clear_i",
               "con": "fifo_clear",
               "loc": {
@@ -287,6 +313,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.busy_o",
               "port": "busy_o",
               "con": "fifo_busy",
               "loc": {
@@ -297,6 +324,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.in_valid_i",
               "port": "in_valid_i",
               "con": "fifo_valid",
               "loc": {
@@ -307,6 +335,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.in_addr_i",
               "port": "in_addr_i",
               "con": "fifo_addr",
               "loc": {
@@ -317,6 +346,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.in_rdata_i",
               "port": "in_rdata_i",
               "con": "instr_rdata_i",
               "loc": {
@@ -327,6 +357,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.in_err_i",
               "port": "in_err_i",
               "con": "instr_err_i",
               "loc": {
@@ -337,6 +368,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.cheriot_force_uc_i",
               "port": "cheriot_force_uc_i",
               "con": "cheriot_force_uc_i",
               "loc": {
@@ -347,6 +379,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_valid_o",
               "port": "out_valid_o",
               "con": "valid_o",
               "loc": {
@@ -357,6 +390,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_ready_i",
               "port": "out_ready_i",
               "con": "ready_i",
               "loc": {
@@ -367,6 +401,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_rdata_o",
               "port": "out_rdata_o",
               "con": "rdata_o",
               "loc": {
@@ -377,6 +412,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_addr_o",
               "port": "out_addr_o",
               "con": "addr_o",
               "loc": {
@@ -387,6 +423,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_err_o",
               "port": "out_err_o",
               "con": "err_o",
               "loc": {
@@ -397,6 +434,7 @@
               }
             },
             {
+              "id": "ibex_prefetch_buffer.fifo_i.out_err_plus2_o",
               "port": "out_err_plus2_o",
               "con": "err_plus2_o",
               "loc": {

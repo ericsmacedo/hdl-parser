@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/common_cells/clk_int_div.sv",
   "modules": [
     {
+      "id": "clk_int_div",
       "name": "clk_int_div",
       "params": [
         {
+          "id": "clk_int_div.DIV_VALUE_WIDTH",
           "ptype": "int",
           "name": "DIV_VALUE_WIDTH",
           "default": "4",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "clk_int_div.DEFAULT_DIV_VALUE",
           "ptype": "int",
           "name": "DEFAULT_DIV_VALUE",
           "default": "0",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "clk_int_div.ENABLE_CLOCK_IN_RESET",
           "ptype": "bit",
           "name": "ENABLE_CLOCK_IN_RESET",
           "default": "1'b0",
@@ -46,6 +50,7 @@
       ],
       "ports": [
         {
+          "id": "clk_int_div.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -57,6 +62,7 @@
           }
         },
         {
+          "id": "clk_int_div.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -73,6 +79,7 @@
           }
         },
         {
+          "id": "clk_int_div.en_i",
           "direction": "input",
           "ptype": "logic",
           "name": "en_i",
@@ -88,6 +95,7 @@
           }
         },
         {
+          "id": "clk_int_div.test_mode_en_i",
           "direction": "input",
           "ptype": "logic",
           "name": "test_mode_en_i",
@@ -104,6 +112,7 @@
           }
         },
         {
+          "id": "clk_int_div.div_i",
           "direction": "input",
           "ptype": "logic",
           "name": "div_i",
@@ -121,6 +130,7 @@
           }
         },
         {
+          "id": "clk_int_div.div_valid_i",
           "direction": "input",
           "ptype": "logic",
           "name": "div_valid_i",
@@ -132,6 +142,7 @@
           }
         },
         {
+          "id": "clk_int_div.div_ready_o",
           "direction": "output",
           "ptype": "logic",
           "name": "div_ready_o",
@@ -151,6 +162,7 @@
           }
         },
         {
+          "id": "clk_int_div.clk_o",
           "direction": "output",
           "ptype": "logic",
           "name": "clk_o",
@@ -166,6 +178,7 @@
           }
         },
         {
+          "id": "clk_int_div.cycl_count_o",
           "direction": "output",
           "ptype": "logic",
           "name": "cycl_count_o",
@@ -180,6 +193,7 @@
       ],
       "localparams": [
         {
+          "id": "clk_int_div.DivResetValue",
           "ptype": "int",
           "name": "DivResetValue",
           "default": "(DEFAULT_DIV_VALUE != 0)? DEFAULT_DIV_VALUE: 1",
@@ -191,6 +205,7 @@
           }
         },
         {
+          "id": "clk_int_div.UseOddDivisionResetValue",
           "ptype": "logic",
           "name": "UseOddDivisionResetValue",
           "default": "DEFAULT_DIV_VALUE[0]",
@@ -202,6 +217,7 @@
           }
         },
         {
+          "id": "clk_int_div.ClkDivBypassEnResetValue",
           "ptype": "logic",
           "name": "ClkDivBypassEnResetValue",
           "default": "(DEFAULT_DIV_VALUE < 2)? 1'b1: 1'b0",
@@ -215,10 +231,12 @@
       ],
       "insts": [
         {
+          "id": "clk_int_div.i_odd_clk_xor",
           "name": "i_odd_clk_xor",
           "module": "tc_clk_xor2",
           "connections": [
             {
+              "id": "clk_int_div.i_odd_clk_xor.clk0_i",
               "port": "clk0_i",
               "con": "t_ff1_q",
               "loc": {
@@ -229,6 +247,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_odd_clk_xor.clk1_i",
               "port": "clk1_i",
               "con": "t_ff2_q",
               "loc": {
@@ -239,6 +258,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_odd_clk_xor.clk_o",
               "port": "clk_o",
               "con": "odd_clk",
               "loc": {
@@ -257,10 +277,12 @@
           }
         },
         {
+          "id": "clk_int_div.i_clk_mux",
           "name": "i_clk_mux",
           "module": "tc_clk_mux2",
           "connections": [
             {
+              "id": "clk_int_div.i_clk_mux.clk0_i",
               "port": "clk0_i",
               "con": "even_clk",
               "loc": {
@@ -271,6 +293,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_mux.clk1_i",
               "port": "clk1_i",
               "con": "odd_clk",
               "loc": {
@@ -281,6 +304,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_mux.clk_sel_i",
               "port": "clk_sel_i",
               "con": "use_odd_division_q",
               "loc": {
@@ -291,6 +315,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_mux.clk_o",
               "port": "clk_o",
               "con": "generated_clock",
               "loc": {
@@ -309,10 +334,12 @@
           }
         },
         {
+          "id": "clk_int_div.i_clk_bypass_mux",
           "name": "i_clk_bypass_mux",
           "module": "tc_clk_mux2",
           "connections": [
             {
+              "id": "clk_int_div.i_clk_bypass_mux.clk0_i",
               "port": "clk0_i",
               "con": "generated_clock",
               "loc": {
@@ -323,6 +350,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_bypass_mux.clk1_i",
               "port": "clk1_i",
               "con": "clk_i",
               "loc": {
@@ -333,6 +361,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_bypass_mux.clk_sel_i",
               "port": "clk_sel_i",
               "con": "clk_div_bypass_en_q || test_mode_en_i",
               "loc": {
@@ -343,6 +372,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_bypass_mux.clk_o",
               "port": "clk_o",
               "con": "ungated_output_clock",
               "loc": {
@@ -361,10 +391,12 @@
           }
         },
         {
+          "id": "clk_int_div.i_clk_gate",
           "name": "i_clk_gate",
           "module": "tc_clk_gating",
           "connections": [
             {
+              "id": "clk_int_div.i_clk_gate.clk_i",
               "port": "clk_i",
               "con": "ungated_output_clock",
               "loc": {
@@ -375,6 +407,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_gate.en_i",
               "port": "en_i",
               "con": "gate_en_q & en_i",
               "loc": {
@@ -385,6 +418,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_gate.test_en_i",
               "port": "test_en_i",
               "con": "test_mode_en_i",
               "loc": {
@@ -395,6 +429,7 @@
               }
             },
             {
+              "id": "clk_int_div.i_clk_gate.clk_o",
               "port": "clk_o",
               "con": "clk_o",
               "loc": {

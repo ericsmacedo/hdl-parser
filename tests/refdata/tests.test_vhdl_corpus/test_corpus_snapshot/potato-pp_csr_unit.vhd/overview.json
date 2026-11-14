@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/potato/pp_csr_unit.vhd",
   "modules": [
     {
+      "id": "pp_csr_unit",
       "name": "pp_csr_unit",
       "params": [
         {
+          "id": "pp_csr_unit.processor_id",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "loc": {
@@ -15,6 +17,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.mtime_divider",
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -28,6 +31,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.time_divider",
           "name": "TIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -43,6 +47,7 @@
       ],
       "ports": [
         {
+          "id": "pp_csr_unit.clk",
           "direction": "in",
           "dtype": "std_logic",
           "name": "clk",
@@ -54,6 +59,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.reset",
           "direction": "in",
           "dtype": "std_logic",
           "name": "reset",
@@ -68,6 +74,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.irq",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "irq",
@@ -83,6 +90,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.count_instruction",
           "direction": "in",
           "dtype": "std_logic",
           "name": "count_instruction",
@@ -97,6 +105,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.test_context_out",
           "direction": "out",
           "dtype": "test_context",
           "name": "test_context_out",
@@ -111,6 +120,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.read_address",
           "direction": "in",
           "dtype": "csr_address",
           "name": "read_address",
@@ -122,6 +132,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.read_data_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "read_data_out",
@@ -137,6 +148,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.write_address",
           "direction": "in",
           "dtype": "csr_address",
           "name": "write_address",
@@ -148,6 +160,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.write_data_in",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "write_data_in",
@@ -160,6 +173,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.write_mode",
           "direction": "in",
           "dtype": "csr_write_mode",
           "name": "write_mode",
@@ -174,6 +188,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.exception_context",
           "direction": "in",
           "dtype": "csr_exception_context",
           "name": "exception_context",
@@ -185,6 +200,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.exception_context_write",
           "direction": "in",
           "dtype": "std_logic",
           "name": "exception_context_write",
@@ -199,6 +215,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.software_interrupt_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "software_interrupt_out",
@@ -210,6 +227,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.timer_interrupt_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "timer_interrupt_out",
@@ -224,6 +242,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.mie_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mie_out",
@@ -236,6 +255,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.mtvec_out",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "mtvec_out",
@@ -248,6 +268,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.ie_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "ie_out",
@@ -259,6 +280,7 @@
           }
         },
         {
+          "id": "pp_csr_unit.ie1_out",
           "direction": "out",
           "dtype": "std_logic",
           "name": "ie1_out",
@@ -272,10 +294,12 @@
       ],
       "insts": [
         {
+          "id": "pp_csr_unit.timer_counter",
           "name": "timer_counter",
           "module": "pp_counter",
           "connections": [
             {
+              "id": "pp_csr_unit.timer_counter.clk",
               "port": "clk",
               "con": "time_clk",
               "loc": {
@@ -286,6 +310,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.timer_counter.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -296,6 +321,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.timer_counter.count",
               "port": "count",
               "con": "counter_time",
               "loc": {
@@ -306,6 +332,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.timer_counter.increment",
               "port": "increment",
               "con": "'1'",
               "loc": {
@@ -324,10 +351,12 @@
           }
         },
         {
+          "id": "pp_csr_unit.cycle_counter",
           "name": "cycle_counter",
           "module": "pp_counter",
           "connections": [
             {
+              "id": "pp_csr_unit.cycle_counter.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -338,6 +367,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.cycle_counter.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -348,6 +378,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.cycle_counter.count",
               "port": "count",
               "con": "counter_cycle",
               "loc": {
@@ -358,6 +389,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.cycle_counter.increment",
               "port": "increment",
               "con": "'1'",
               "loc": {
@@ -376,10 +408,12 @@
           }
         },
         {
+          "id": "pp_csr_unit.instret_counter",
           "name": "instret_counter",
           "module": "pp_counter",
           "connections": [
             {
+              "id": "pp_csr_unit.instret_counter.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -390,6 +424,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.instret_counter.reset",
               "port": "reset",
               "con": "reset",
               "loc": {
@@ -400,6 +435,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.instret_counter.count",
               "port": "count",
               "con": "counter_instret",
               "loc": {
@@ -410,6 +446,7 @@
               }
             },
             {
+              "id": "pp_csr_unit.instret_counter.increment",
               "port": "increment",
               "con": "count_instruction",
               "loc": {

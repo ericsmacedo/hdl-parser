@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/opentitan/prim_sync_reqack.sv",
   "modules": [
     {
+      "id": "prim_sync_reqack",
       "name": "prim_sync_reqack",
       "params": [
         {
+          "id": "prim_sync_reqack.EnRstChks",
           "ptype": "bit",
           "name": "EnRstChks",
           "default": "1'b0",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.EnRzHs",
           "ptype": "bit",
           "name": "EnRzHs",
           "default": "1'b0",
@@ -37,6 +40,7 @@
       ],
       "ports": [
         {
+          "id": "prim_sync_reqack.clk_src_i",
           "direction": "input",
           "name": "clk_src_i",
           "comment": [
@@ -50,6 +54,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.rst_src_ni",
           "direction": "input",
           "name": "rst_src_ni",
           "comment": [
@@ -63,6 +68,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.clk_dst_i",
           "direction": "input",
           "name": "clk_dst_i",
           "comment": [
@@ -76,6 +82,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.rst_dst_ni",
           "direction": "input",
           "name": "rst_dst_ni",
           "comment": [
@@ -89,6 +96,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.req_chk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "req_chk_i",
@@ -103,6 +111,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.src_req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "src_req_i",
@@ -117,6 +126,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.src_ack_o",
           "direction": "output",
           "ptype": "logic",
           "name": "src_ack_o",
@@ -131,6 +141,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.dst_req_o",
           "direction": "output",
           "ptype": "logic",
           "name": "dst_req_o",
@@ -145,6 +156,7 @@
           }
         },
         {
+          "id": "prim_sync_reqack.dst_ack_i",
           "direction": "input",
           "ptype": "logic",
           "name": "dst_ack_i",
@@ -161,10 +173,12 @@
       ],
       "insts": [
         {
+          "id": "prim_sync_reqack.ack_sync",
           "name": "ack_sync",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_sync_reqack.ack_sync.clk_i",
               "port": "clk_i",
               "con": "clk_src_i",
               "loc": {
@@ -175,6 +189,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync.rst_ni",
               "port": "rst_ni",
               "con": "rst_src_ni",
               "loc": {
@@ -185,6 +200,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync.d_i",
               "port": "d_i",
               "con": "dst_ack",
               "loc": {
@@ -195,6 +211,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync.q_o",
               "port": "q_o",
               "con": "src_ack",
               "loc": {
@@ -213,10 +230,12 @@
           }
         },
         {
+          "id": "prim_sync_reqack.req_sync",
           "name": "req_sync",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_sync_reqack.req_sync.clk_i",
               "port": "clk_i",
               "con": "clk_dst_i",
               "loc": {
@@ -227,6 +246,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync.rst_ni",
               "port": "rst_ni",
               "con": "rst_dst_ni",
               "loc": {
@@ -237,6 +257,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync.d_i",
               "port": "d_i",
               "con": "src_req",
               "loc": {
@@ -247,6 +268,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync.q_o",
               "port": "q_o",
               "con": "dst_req",
               "loc": {
@@ -265,10 +287,12 @@
           }
         },
         {
+          "id": "prim_sync_reqack.req_sync~2",
           "name": "req_sync",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_sync_reqack.req_sync~2.clk_i",
               "port": "clk_i",
               "con": "clk_dst_i",
               "loc": {
@@ -279,6 +303,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync~2.rst_ni",
               "port": "rst_ni",
               "con": "rst_dst_ni",
               "loc": {
@@ -289,6 +314,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync~2.d_i",
               "port": "d_i",
               "con": "src_req_q",
               "loc": {
@@ -299,6 +325,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.req_sync~2.q_o",
               "port": "q_o",
               "con": "dst_req",
               "loc": {
@@ -317,10 +344,12 @@
           }
         },
         {
+          "id": "prim_sync_reqack.ack_sync~2",
           "name": "ack_sync",
           "module": "prim_flop_2sync",
           "connections": [
             {
+              "id": "prim_sync_reqack.ack_sync~2.clk_i",
               "port": "clk_i",
               "con": "clk_src_i",
               "loc": {
@@ -331,6 +360,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync~2.rst_ni",
               "port": "rst_ni",
               "con": "rst_src_ni",
               "loc": {
@@ -341,6 +371,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync~2.d_i",
               "port": "d_i",
               "con": "dst_ack_q",
               "loc": {
@@ -351,6 +382,7 @@
               }
             },
             {
+              "id": "prim_sync_reqack.ack_sync~2.q_o",
               "port": "q_o",
               "con": "src_ack",
               "loc": {

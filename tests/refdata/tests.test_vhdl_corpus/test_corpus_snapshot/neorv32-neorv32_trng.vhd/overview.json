@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/neorv32/neorv32_trng.vhd",
   "modules": [
     {
+      "id": "neorv32_trng",
       "name": "neorv32_trng",
       "params": [
         {
+          "id": "neorv32_trng.trng_fifo",
           "name": "TRNG_FIFO",
           "comment": [
             "-- FIFO depth, has to be a power of two, min 1"
@@ -17,6 +19,7 @@
           }
         },
         {
+          "id": "neorv32_trng.num_ro",
           "name": "NUM_RO",
           "comment": [
             "-- total number of ring-oscillators"
@@ -29,6 +32,7 @@
           }
         },
         {
+          "id": "neorv32_trng.num_inv",
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters in first ring-oscillator; has to be odd"
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "neorv32_trng.num_rbit",
           "name": "NUM_RBIT",
           "comment": [
             "-- number of raw bits to process for one output byte; has to be power of 2"
@@ -55,6 +60,7 @@
       ],
       "ports": [
         {
+          "id": "neorv32_trng.clk_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clk_i",
@@ -69,6 +75,7 @@
           }
         },
         {
+          "id": "neorv32_trng.rstn_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "rstn_i",
@@ -83,6 +90,7 @@
           }
         },
         {
+          "id": "neorv32_trng.bus_req_i",
           "direction": "in",
           "dtype": "bus_req_t",
           "name": "bus_req_i",
@@ -97,6 +105,7 @@
           }
         },
         {
+          "id": "neorv32_trng.bus_rsp_o",
           "direction": "out",
           "dtype": "bus_rsp_t",
           "name": "bus_rsp_o",
@@ -111,6 +120,7 @@
           }
         },
         {
+          "id": "neorv32_trng.irq_o",
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "irq_o",
@@ -127,10 +137,12 @@
       ],
       "insts": [
         {
+          "id": "neorv32_trng.neotrng_inst",
           "name": "neoTRNG_inst",
           "module": "neoTRNG",
           "connections": [
             {
+              "id": "neorv32_trng.neotrng_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -141,6 +153,7 @@
               }
             },
             {
+              "id": "neorv32_trng.neotrng_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -151,6 +164,7 @@
               }
             },
             {
+              "id": "neorv32_trng.neotrng_inst.enable_i",
               "port": "enable_i",
               "con": "enable",
               "loc": {
@@ -161,6 +175,7 @@
               }
             },
             {
+              "id": "neorv32_trng.neotrng_inst.valid_o",
               "port": "valid_o",
               "con": "fifo.we",
               "loc": {
@@ -171,6 +186,7 @@
               }
             },
             {
+              "id": "neorv32_trng.neotrng_inst.data_o",
               "port": "data_o",
               "con": "fifo.wdata",
               "loc": {
@@ -189,10 +205,12 @@
           }
         },
         {
+          "id": "neorv32_trng.rnd_fifo_inst",
           "name": "rnd_fifo_inst",
           "module": "neorv32_prim_fifo",
           "connections": [
             {
+              "id": "neorv32_trng.rnd_fifo_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -203,6 +221,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -213,6 +232,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.clear_i",
               "port": "clear_i",
               "con": "fifo.clear",
               "loc": {
@@ -223,6 +243,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.level_o",
               "port": "level_o",
               "con": "open",
               "comment": [
@@ -236,6 +257,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.wdata_i",
               "port": "wdata_i",
               "con": "fifo.wdata",
               "loc": {
@@ -246,6 +268,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.we_i",
               "port": "we_i",
               "con": "fifo.we",
               "loc": {
@@ -256,6 +279,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.free_o",
               "port": "free_o",
               "con": "fifo.free",
               "comment": [
@@ -269,6 +293,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.re_i",
               "port": "re_i",
               "con": "fifo.re",
               "loc": {
@@ -279,6 +304,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.rdata_o",
               "port": "rdata_o",
               "con": "fifo.rdata",
               "loc": {
@@ -289,6 +315,7 @@
               }
             },
             {
+              "id": "neorv32_trng.rnd_fifo_inst.avail_o",
               "port": "avail_o",
               "con": "fifo.avail",
               "loc": {
@@ -315,9 +342,11 @@
       }
     },
     {
+      "id": "neotrng",
       "name": "neoTRNG",
       "params": [
         {
+          "id": "neotrng.num_cells",
           "name": "NUM_CELLS",
           "comment": [
             "-- number of ring-oscillator cells, min 1"
@@ -330,6 +359,7 @@
           }
         },
         {
+          "id": "neotrng.num_inv_start",
           "name": "NUM_INV_START",
           "comment": [
             "-- number of inverters in first ring-oscillator cell, has to be odd"
@@ -342,6 +372,7 @@
           }
         },
         {
+          "id": "neotrng.num_raw_bits",
           "name": "NUM_RAW_BITS",
           "comment": [
             "-- number of raw bits per random sample byte (has to be a power of 2)"
@@ -354,6 +385,7 @@
           }
         },
         {
+          "id": "neotrng.sim_mode",
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
@@ -368,6 +400,7 @@
       ],
       "ports": [
         {
+          "id": "neotrng.clk_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clk_i",
@@ -382,6 +415,7 @@
           }
         },
         {
+          "id": "neotrng.rstn_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "rstn_i",
@@ -396,6 +430,7 @@
           }
         },
         {
+          "id": "neotrng.enable_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "enable_i",
@@ -410,6 +445,7 @@
           }
         },
         {
+          "id": "neotrng.valid_o",
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "valid_o",
@@ -424,6 +460,7 @@
           }
         },
         {
+          "id": "neotrng.data_o",
           "direction": "out",
           "dtype": "std_ulogic_vector",
           "name": "data_o",
@@ -441,10 +478,12 @@
       ],
       "insts": [
         {
+          "id": "neotrng.neotrng_cell_inst",
           "name": "neoTRNG_cell_inst",
           "module": "neoTRNG_cell",
           "connections": [
             {
+              "id": "neotrng.neotrng_cell_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -455,6 +494,7 @@
               }
             },
             {
+              "id": "neotrng.neotrng_cell_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -465,6 +505,7 @@
               }
             },
             {
+              "id": "neotrng.neotrng_cell_inst.en_i",
               "port": "en_i",
               "con": "cell_en_in(i)",
               "loc": {
@@ -475,6 +516,7 @@
               }
             },
             {
+              "id": "neotrng.neotrng_cell_inst.en_o",
               "port": "en_o",
               "con": "cell_en_out(i)",
               "loc": {
@@ -485,6 +527,7 @@
               }
             },
             {
+              "id": "neotrng.neotrng_cell_inst.rnd_o",
               "port": "rnd_o",
               "con": "cell_rnd(i)",
               "loc": {
@@ -511,9 +554,11 @@
       }
     },
     {
+      "id": "neotrng_cell",
       "name": "neoTRNG_cell",
       "params": [
         {
+          "id": "neotrng_cell.num_inv",
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters, has to be odd, min 3"
@@ -526,6 +571,7 @@
           }
         },
         {
+          "id": "neotrng_cell.sim_mode",
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
@@ -540,6 +586,7 @@
       ],
       "ports": [
         {
+          "id": "neotrng_cell.clk_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "clk_i",
@@ -554,6 +601,7 @@
           }
         },
         {
+          "id": "neotrng_cell.rstn_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "rstn_i",
@@ -568,6 +616,7 @@
           }
         },
         {
+          "id": "neotrng_cell.en_i",
           "direction": "in",
           "dtype": "std_ulogic",
           "name": "en_i",
@@ -582,6 +631,7 @@
           }
         },
         {
+          "id": "neotrng_cell.en_o",
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "en_o",
@@ -596,6 +646,7 @@
           }
         },
         {
+          "id": "neotrng_cell.rnd_o",
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "rnd_o",

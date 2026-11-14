@@ -2,9 +2,11 @@
   "path": "$PRJ/examples/sv/macros/reg_macros.sv",
   "modules": [
     {
+      "id": "reg_macros",
       "name": "reg_macros",
       "params": [
         {
+          "id": "reg_macros.WIDTH",
           "ptype": "int",
           "name": "WIDTH",
           "default": "8",
@@ -16,6 +18,7 @@
           }
         },
         {
+          "id": "reg_macros.STAGES",
           "ptype": "int",
           "name": "STAGES",
           "default": "3",
@@ -29,6 +32,7 @@
       ],
       "ports": [
         {
+          "id": "reg_macros.d_i",
           "direction": "input",
           "ptype": "logic",
           "name": "d_i",
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "reg_macros.q_o",
           "direction": "output",
           "ptype": "logic",
           "name": "q_o",
@@ -55,10 +60,12 @@
       ],
       "insts": [
         {
+          "id": "reg_macros.u_delay",
           "name": "u_delay",
           "module": "delay",
           "connections": [
             {
+              "id": "reg_macros.u_delay.#1",
               "con": "`CLK_RST_CON",
               "loc": {
                 "line": 25,
@@ -68,6 +75,7 @@
               }
             },
             {
+              "id": "reg_macros.u_delay.d_i",
               "port": "d_i",
               "con": "stage_q",
               "loc": {
@@ -78,6 +86,7 @@
               }
             },
             {
+              "id": "reg_macros.u_delay.q_o",
               "port": "q_o",
               "loc": {
                 "line": 25,
@@ -97,6 +106,7 @@
       ],
       "unresolved_macros": [
         {
+          "id": "reg_macros.`CLK_RST_PORTS",
           "name": "CLK_RST_PORTS",
           "loc": {
             "line": 13,

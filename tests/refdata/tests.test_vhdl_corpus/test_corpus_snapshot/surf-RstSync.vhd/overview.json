@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/surf/RstSync.vhd",
   "modules": [
     {
+      "id": "rstsync",
       "name": "RstSync",
       "params": [
         {
+          "id": "rstsync.tpd_g",
           "name": "TPD_G",
           "default": "1 ns",
           "comment": [
@@ -18,6 +20,7 @@
           }
         },
         {
+          "id": "rstsync.in_polarity_g",
           "name": "IN_POLARITY_G",
           "default": "'1'",
           "comment": [
@@ -31,6 +34,7 @@
           }
         },
         {
+          "id": "rstsync.out_polarity_g",
           "name": "OUT_POLARITY_G",
           "default": "'1'",
           "loc": {
@@ -41,6 +45,7 @@
           }
         },
         {
+          "id": "rstsync.bypass_sync_g",
           "name": "BYPASS_SYNC_G",
           "default": "false",
           "comment": [
@@ -54,6 +59,7 @@
           }
         },
         {
+          "id": "rstsync.release_delay_g",
           "name": "RELEASE_DELAY_G",
           "default": "3",
           "comment": [
@@ -67,6 +73,7 @@
           }
         },
         {
+          "id": "rstsync.out_reg_rst_g",
           "name": "OUT_REG_RST_G",
           "default": "true",
           "loc": {
@@ -79,6 +86,7 @@
       ],
       "ports": [
         {
+          "id": "rstsync.clk",
           "direction": "in",
           "dtype": "sl",
           "name": "clk",
@@ -90,6 +98,7 @@
           }
         },
         {
+          "id": "rstsync.asyncrst",
           "direction": "in",
           "dtype": "sl",
           "name": "asyncRst",
@@ -101,6 +110,7 @@
           }
         },
         {
+          "id": "rstsync.syncrst",
           "direction": "out",
           "dtype": "sl",
           "name": "syncRst",
@@ -114,10 +124,12 @@
       ],
       "insts": [
         {
+          "id": "rstsync.synchronizer_1",
           "name": "Synchronizer_1",
           "module": "Synchronizer",
           "connections": [
             {
+              "id": "rstsync.synchronizer_1.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -128,6 +140,7 @@
               }
             },
             {
+              "id": "rstsync.synchronizer_1.rst",
               "port": "rst",
               "con": "asyncRst",
               "loc": {
@@ -138,6 +151,7 @@
               }
             },
             {
+              "id": "rstsync.synchronizer_1.datain",
               "port": "dataIn",
               "con": "not OUT_POLARITY_G",
               "loc": {
@@ -148,6 +162,7 @@
               }
             },
             {
+              "id": "rstsync.synchronizer_1.dataout",
               "port": "dataOut",
               "con": "syncInt",
               "loc": {

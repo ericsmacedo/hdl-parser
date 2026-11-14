@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/vhdl/poc/sync_Bits_Xilinx.vhdl",
   "modules": [
     {
+      "id": "sync_bits_xilinx",
       "name": "sync_Bits_Xilinx",
       "params": [
         {
+          "id": "sync_bits_xilinx.bits",
           "name": "BITS",
           "default": "1",
           "comment": [
@@ -18,6 +20,7 @@
           }
         },
         {
+          "id": "sync_bits_xilinx.init",
           "name": "INIT",
           "default": "x\"00000000\"",
           "comment": [
@@ -31,6 +34,7 @@
           }
         },
         {
+          "id": "sync_bits_xilinx.sync_depth",
           "name": "SYNC_DEPTH",
           "default": "T_MISC_SYNC_DEPTH'low",
           "comment": [
@@ -46,6 +50,7 @@
       ],
       "ports": [
         {
+          "id": "sync_bits_xilinx.clock",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Clock",
@@ -60,6 +65,7 @@
           }
         },
         {
+          "id": "sync_bits_xilinx.input",
           "direction": "in",
           "dtype": "std_logic_vector",
           "name": "Input",
@@ -75,6 +81,7 @@
           }
         },
         {
+          "id": "sync_bits_xilinx.output",
           "direction": "out",
           "dtype": "std_logic_vector",
           "name": "Output",
@@ -92,10 +99,12 @@
       ],
       "insts": [
         {
+          "id": "sync_bits_xilinx.sync",
           "name": "Sync",
           "module": "sync_Bit_Xilinx",
           "connections": [
             {
+              "id": "sync_bits_xilinx.sync.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -106,6 +115,7 @@
               }
             },
             {
+              "id": "sync_bits_xilinx.sync.input",
               "port": "Input",
               "con": "Input(i)",
               "loc": {
@@ -116,6 +126,7 @@
               }
             },
             {
+              "id": "sync_bits_xilinx.sync.output",
               "port": "Output",
               "con": "Output(i)",
               "loc": {
@@ -142,9 +153,11 @@
       }
     },
     {
+      "id": "sync_bit_xilinx",
       "name": "sync_Bit_Xilinx",
       "params": [
         {
+          "id": "sync_bit_xilinx.init",
           "name": "INIT",
           "comment": [
             "-- initialization bits"
@@ -157,6 +170,7 @@
           }
         },
         {
+          "id": "sync_bit_xilinx.sync_depth",
           "name": "SYNC_DEPTH",
           "default": "T_MISC_SYNC_DEPTH'low",
           "comment": [
@@ -172,6 +186,7 @@
       ],
       "ports": [
         {
+          "id": "sync_bit_xilinx.clock",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Clock",
@@ -186,6 +201,7 @@
           }
         },
         {
+          "id": "sync_bit_xilinx.input",
           "direction": "in",
           "dtype": "std_logic",
           "name": "Input",
@@ -200,6 +216,7 @@
           }
         },
         {
+          "id": "sync_bit_xilinx.output",
           "direction": "out",
           "dtype": "std_logic",
           "name": "Output",
@@ -216,10 +233,12 @@
       ],
       "insts": [
         {
+          "id": "sync_bit_xilinx.ff1_metastability_ffs",
           "name": "FF1_METASTABILITY_FFS",
           "module": "FD",
           "connections": [
             {
+              "id": "sync_bit_xilinx.ff1_metastability_ffs.c",
               "port": "C",
               "con": "Clock",
               "loc": {
@@ -230,6 +249,7 @@
               }
             },
             {
+              "id": "sync_bit_xilinx.ff1_metastability_ffs.d",
               "port": "D",
               "con": "Data_async",
               "loc": {
@@ -240,6 +260,7 @@
               }
             },
             {
+              "id": "sync_bit_xilinx.ff1_metastability_ffs.q",
               "port": "Q",
               "con": "Data_meta",
               "loc": {
@@ -258,10 +279,12 @@
           }
         },
         {
+          "id": "sync_bit_xilinx.ff2",
           "name": "FF2",
           "module": "FD",
           "connections": [
             {
+              "id": "sync_bit_xilinx.ff2.c",
               "port": "C",
               "con": "Clock",
               "loc": {
@@ -272,6 +295,7 @@
               }
             },
             {
+              "id": "sync_bit_xilinx.ff2.d",
               "port": "D",
               "con": "Data_meta",
               "loc": {
@@ -282,6 +306,7 @@
               }
             },
             {
+              "id": "sync_bit_xilinx.ff2.q",
               "port": "Q",
               "con": "Data_sync",
               "loc": {

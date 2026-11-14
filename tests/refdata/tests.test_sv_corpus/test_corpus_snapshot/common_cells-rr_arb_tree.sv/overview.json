@@ -2,9 +2,11 @@
   "path": "$PRJ/tests/corpus/sv/common_cells/rr_arb_tree.sv",
   "modules": [
     {
+      "id": "rr_arb_tree",
       "name": "rr_arb_tree",
       "params": [
         {
+          "id": "rr_arb_tree.NumIn",
           "ptype": "int",
           "name": "NumIn",
           "default": "64",
@@ -19,6 +21,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.DataWidth",
           "ptype": "int",
           "name": "DataWidth",
           "default": "32",
@@ -33,6 +36,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.DataType",
           "ptype": "type",
           "name": "DataType",
           "default": "logic [DataWidth-1:0]",
@@ -52,6 +56,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.ExtPrio",
           "ptype": "bit",
           "name": "ExtPrio",
           "default": "1'b0",
@@ -71,6 +76,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.AxiVldRdy",
           "ptype": "bit",
           "name": "AxiVldRdy",
           "default": "1'b0",
@@ -90,6 +96,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.LockIn",
           "ptype": "bit",
           "name": "LockIn",
           "default": "1'b0",
@@ -106,6 +113,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.FairArb",
           "ptype": "bit",
           "name": "FairArb",
           "default": "1'b1",
@@ -121,6 +129,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.IdxWidth",
           "ptype": "int",
           "name": "IdxWidth",
           "default": "(NumIn > 32'd1) ? unsigned'($clog2(NumIn)) : 32'd1",
@@ -136,6 +145,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.idx_t",
           "ptype": "type",
           "name": "idx_t",
           "default": "logic [IdxWidth-1:0]",
@@ -149,6 +159,7 @@
       ],
       "ports": [
         {
+          "id": "rr_arb_tree.clk_i",
           "direction": "input",
           "ptype": "logic",
           "name": "clk_i",
@@ -163,6 +174,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.rst_ni",
           "direction": "input",
           "ptype": "logic",
           "name": "rst_ni",
@@ -177,6 +189,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.flush_i",
           "direction": "input",
           "ptype": "logic",
           "name": "flush_i",
@@ -191,6 +204,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.rr_i",
           "direction": "input",
           "ptype": "idx_t",
           "name": "rr_i",
@@ -205,6 +219,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.req_i",
           "direction": "input",
           "ptype": "logic",
           "name": "req_i",
@@ -221,6 +236,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.gnt_o",
           "direction": "output",
           "ptype": "logic",
           "name": "gnt_o",
@@ -237,6 +253,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.data_i",
           "direction": "input",
           "ptype": "DataType",
           "name": "data_i",
@@ -252,6 +269,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.req_o",
           "direction": "output",
           "ptype": "logic",
           "name": "req_o",
@@ -266,6 +284,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.gnt_i",
           "direction": "input",
           "ptype": "logic",
           "name": "gnt_i",
@@ -280,6 +299,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.data_o",
           "direction": "output",
           "ptype": "DataType",
           "name": "data_o",
@@ -294,6 +314,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.idx_o",
           "direction": "output",
           "ptype": "idx_t",
           "name": "idx_o",
@@ -307,6 +328,7 @@
       ],
       "localparams": [
         {
+          "id": "rr_arb_tree.NumLevels",
           "ptype": "int",
           "name": "NumLevels",
           "default": "unsigned'($clog2(NumIn))",
@@ -318,6 +340,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.Idx0",
           "ptype": "int",
           "name": "Idx0",
           "default": "2**level-1+l",
@@ -329,6 +352,7 @@
           }
         },
         {
+          "id": "rr_arb_tree.Idx1",
           "ptype": "int",
           "name": "Idx1",
           "default": "2**(level+1)-1+l*2",
@@ -342,10 +366,12 @@
       ],
       "insts": [
         {
+          "id": "rr_arb_tree.i_lzc_upper",
           "name": "i_lzc_upper",
           "module": "lzc",
           "connections": [
             {
+              "id": "rr_arb_tree.i_lzc_upper.in_i",
               "port": "in_i",
               "con": "upper_mask",
               "loc": {
@@ -356,6 +382,7 @@
               }
             },
             {
+              "id": "rr_arb_tree.i_lzc_upper.cnt_o",
               "port": "cnt_o",
               "con": "upper_idx",
               "loc": {
@@ -366,6 +393,7 @@
               }
             },
             {
+              "id": "rr_arb_tree.i_lzc_upper.empty_o",
               "port": "empty_o",
               "con": "upper_empty",
               "loc": {
@@ -384,10 +412,12 @@
           }
         },
         {
+          "id": "rr_arb_tree.i_lzc_lower",
           "name": "i_lzc_lower",
           "module": "lzc",
           "connections": [
             {
+              "id": "rr_arb_tree.i_lzc_lower.in_i",
               "port": "in_i",
               "con": "lower_mask",
               "loc": {
@@ -398,6 +428,7 @@
               }
             },
             {
+              "id": "rr_arb_tree.i_lzc_lower.cnt_o",
               "port": "cnt_o",
               "con": "lower_idx",
               "loc": {
@@ -408,6 +439,7 @@
               }
             },
             {
+              "id": "rr_arb_tree.i_lzc_lower.empty_o",
               "port": "empty_o",
               "comment": [
                 "unused"

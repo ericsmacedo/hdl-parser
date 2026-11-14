@@ -51,12 +51,16 @@ def enforce_terminal_size(monkeypatch):
     monkeypatch.setenv("HDL_PARSER_WIDTH", "75")
 
 
-def strip_locs(obj):
-    """Return `obj` (data model object, tuple or list of them) without source locations."""
+def plain(obj):
+    """Return `obj` (data model object, tuple or list of them) without source locations and identifiers."""
     if isinstance(obj, tuple | list):
-        return type(obj)(strip_locs(item) for item in obj)
+        return type(obj)(plain(item) for item in obj)
     if isinstance(obj, BaseModel):
         fields = type(obj).model_fields
-        update = {name: None if name == "loc" else strip_locs(getattr(obj, name)) for name in fields}
+        update = {name: plain(getattr(obj, name)) for name in fields}
+        if "loc" in fields:
+            update["loc"] = None
+        if "id" in fields:
+            update["id"] = ""
         return obj.model_copy(update=update)
     return obj
