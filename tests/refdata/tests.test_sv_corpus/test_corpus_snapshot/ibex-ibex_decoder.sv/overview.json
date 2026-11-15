@@ -1,0 +1,1278 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_decoder.sv",
+  "modules": [
+    {
+      "id": "ibex_decoder",
+      "name": "ibex_decoder",
+      "params": [
+        {
+          "id": "ibex_decoder.RV32E",
+          "ptype": "bit",
+          "name": "RV32E",
+          "default": "0",
+          "loc": {
+            "line": 13,
+            "col": 3,
+            "end_line": 13,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_decoder.RV32M",
+          "ptype": "ibex_pkg::rv32m_e",
+          "name": "RV32M",
+          "default": "ibex_pkg::RV32MFast",
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_decoder.RV32B",
+          "ptype": "ibex_pkg::rv32b_e",
+          "name": "RV32B",
+          "default": "ibex_pkg::RV32BNone",
+          "loc": {
+            "line": 15,
+            "col": 3,
+            "end_line": 15,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_decoder.BranchTargetALU",
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "0",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_decoder.BaseIsa",
+          "ptype": "ibex_pkg::base_isa_e",
+          "name": "BaseIsa",
+          "default": "ibex_pkg::BaseIsaRV32IorCHERIoT",
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 82
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "ibex_decoder.cheriot_enable_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::ibex_mubi_t",
+          "name": "cheriot_enable_i",
+          "comment": [
+            "to/from controller"
+          ],
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_decoder.illegal_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "illegal_insn_o",
+          "comment": [
+            "illegal instr encountered"
+          ],
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_decoder.ebrk_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ebrk_insn_o",
+          "comment": [
+            "trap instr encountered"
+          ],
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_decoder.mret_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mret_insn_o",
+          "comment": [
+            "return from exception instr",
+            "encountered"
+          ],
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_decoder.dret_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "dret_insn_o",
+          "comment": [
+            "return from debug instr encountered"
+          ],
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_decoder.ecall_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ecall_insn_o",
+          "comment": [
+            "syscall instr encountered"
+          ],
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_decoder.wfi_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "wfi_insn_o",
+          "comment": [
+            "wait for interrupt instr encountered"
+          ],
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.jump_set_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "jump_set_o",
+          "comment": [
+            "jump taken set signal"
+          ],
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.branch_taken_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "branch_taken_i",
+          "comment": [
+            "registered branch decision"
+          ],
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_decoder.icache_inval_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "icache_inval_o",
+          "comment": [
+            "from IF-ID pipeline register"
+          ],
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_first_cycle_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_first_cycle_i",
+          "comment": [
+            "instruction read is in its first cycle"
+          ],
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_rdata_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "instruction read from memory/cache"
+          ],
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_rdata_alu_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_alu_i",
+          "dim": "[31:0]",
+          "comment": [
+            "instruction read from memory/cache",
+            "replicated to ease fan-out)"
+          ],
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_decoder.illegal_c_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "illegal_c_insn_i",
+          "comment": [
+            "compressed instruction decode failed",
+            "immediates"
+          ],
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_a_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::imm_a_sel_e",
+          "name": "imm_a_mux_sel_o",
+          "comment": [
+            "immediate selection for operand a"
+          ],
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_b_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::imm_b_sel_e",
+          "name": "imm_b_mux_sel_o",
+          "comment": [
+            "immediate selection for operand b"
+          ],
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_decoder.bt_a_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::op_a_sel_e",
+          "name": "bt_a_mux_sel_o",
+          "comment": [
+            "branch target selection operand a"
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_decoder.bt_b_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::imm_b_sel_e",
+          "name": "bt_b_mux_sel_o",
+          "comment": [
+            "branch target selection operand b"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_i_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imm_i_type_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_s_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imm_s_type_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_b_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imm_b_type_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_u_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imm_u_type_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.imm_j_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imm_j_type_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.zimm_rs1_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "zimm_rs1_type_o",
+          "dim": "[31:0]",
+          "comment": [
+            "register file"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_wdata_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::rf_wd_sel_e",
+          "name": "rf_wdata_sel_o",
+          "comment": [
+            "RF write data selection"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_we_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_we_o",
+          "comment": [
+            "write enable for regfile"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_we_or_load_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_we_or_load_o",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_raddr_a_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_a_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_raddr_b_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_b_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_waddr_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_waddr_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_ren_a_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_ren_a_o",
+          "comment": [
+            "Instruction reads from RF addr A"
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_ren_b_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_ren_b_o",
+          "comment": [
+            "Instruction reads from RF addr B",
+            "ALU"
+          ],
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.alu_operator_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::alu_op_e",
+          "name": "alu_operator_o",
+          "comment": [
+            "ALU operation selection"
+          ],
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_decoder.alu_op_a_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::op_a_sel_e",
+          "name": "alu_op_a_mux_sel_o",
+          "comment": [
+            "operand a selection: reg value, PC,",
+            "immediate or zero"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_decoder.alu_op_b_mux_sel_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::op_b_sel_e",
+          "name": "alu_op_b_mux_sel_o",
+          "comment": [
+            "operand b selection: reg value or",
+            "immediate",
+            "MULT & DIV"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_decoder.mult_en_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mult_en_o",
+          "comment": [
+            "perform integer multiplication"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_decoder.div_en_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "div_en_o",
+          "comment": [
+            "perform integer division or remainder"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_decoder.mult_sel_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mult_sel_o",
+          "comment": [
+            "as above but static, for data muxes"
+          ],
+          "loc": {
+            "line": 73,
+            "col": 3,
+            "end_line": 73,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.div_sel_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "div_sel_o",
+          "comment": [
+            "as above but static, for data muxes"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_decoder.multdiv_operator_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::md_op_e",
+          "name": "multdiv_operator_o",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_decoder.multdiv_signed_mode_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_signed_mode_o",
+          "dim": "[1:0]",
+          "comment": [
+            "CSRs"
+          ],
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_access_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_access_o",
+          "comment": [
+            "access to CSR"
+          ],
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_op_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::csr_op_e",
+          "name": "csr_op_o",
+          "comment": [
+            "operation to perform on CSR"
+          ],
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_addr_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::csr_num_e",
+          "name": "csr_addr_o",
+          "comment": [
+            "CSR address"
+          ],
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_cheriot_always_ok_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_cheriot_always_ok_o",
+          "comment": [
+            "CHERIoT safe-listed (no ASR needed) CSRs",
+            "LSU"
+          ],
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_decoder.data_req_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_req_o",
+          "comment": [
+            "start transaction to data memory"
+          ],
+          "loc": {
+            "line": 86,
+            "col": 3,
+            "end_line": 86,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_data_req_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_data_req_o",
+          "comment": [
+            "cheriot lsu transaction"
+          ],
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_decoder.data_we_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_we_o",
+          "comment": [
+            "write enable"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_decoder.data_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_type_o",
+          "dim": "[1:0]",
+          "comment": [
+            "size of transaction: byte, half",
+            "word or word"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_decoder.data_sign_extension_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "data_sign_extension_o",
+          "comment": [
+            "sign extension for data read from",
+            "memory",
+            "jump/branches"
+          ],
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 91,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_decoder.jump_in_dec_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "jump_in_dec_o",
+          "comment": [
+            "jump is being calculated in ALU"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_decoder.branch_in_dec_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "branch_in_dec_o",
+          "comment": [
+            "output to cheriot EX"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_is_cheriot_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_is_cheriot_o",
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_is_legal_cheriot_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_is_legal_cheriot_o",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_imm12_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm12_o",
+          "dim": "[11:0]",
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_imm20_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm20_o",
+          "dim": "[19:0]",
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_imm21_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm21_o",
+          "dim": "[20:0]",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_operator_o",
+          "direction": "output",
+          "ptype": "cheriot_op_t",
+          "name": "cheriot_operator_o",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_cs2_dec_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_cs2_dec_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_cap_field_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_cap_field_e",
+          "name": "cheriot_cap_field_sel_o",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_adder_a_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_adder_a_sel_e",
+          "name": "cheriot_adder_a_sel_o",
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_adder_b_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_adder_b_sel_e",
+          "name": "cheriot_adder_b_sel_o",
+          "loc": {
+            "line": 108,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_setaddr_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_setaddr_sel_e",
+          "name": "cheriot_setaddr_sel_o",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 109,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_decoder.cheriot_setbounds_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_setbounds_sel_e",
+          "name": "cheriot_setbounds_sel_o",
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 57
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "ibex_decoder.CheriLimit16Regs",
+          "ptype": "bit",
+          "name": "CheriLimit16Regs",
+          "default": "(BaseIsa == BaseIsaRV32IorCHERIoT)",
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 72
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_decoder.illegal_insn",
+          "ptype": "logic",
+          "name": "illegal_insn",
+          "loc": {
+            "line": 117,
+            "col": 3,
+            "end_line": 117,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_decoder.illegal_reg_16",
+          "ptype": "logic",
+          "name": "illegal_reg_16",
+          "loc": {
+            "line": 118,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_illegal",
+          "ptype": "logic",
+          "name": "csr_illegal",
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_we",
+          "ptype": "logic",
+          "name": "rf_we",
+          "loc": {
+            "line": 120,
+            "col": 3,
+            "end_line": 120,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_decoder.instr",
+          "ptype": "logic",
+          "name": "instr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 122,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_alu",
+          "ptype": "logic",
+          "name": "instr_alu",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 123,
+            "col": 3,
+            "end_line": 123,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_decoder.unused_instr_alu",
+          "ptype": "logic",
+          "name": "unused_instr_alu",
+          "dim": "[9:0]",
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_rs1",
+          "ptype": "logic",
+          "name": "instr_rs1",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_rs2",
+          "ptype": "logic",
+          "name": "instr_rs2",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 127,
+            "col": 3,
+            "end_line": 127,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_rd",
+          "ptype": "logic",
+          "name": "instr_rd",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_decoder.csr_op",
+          "ptype": "csr_op_e",
+          "name": "csr_op",
+          "loc": {
+            "line": 130,
+            "col": 3,
+            "end_line": 130,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_decoder.opcode",
+          "ptype": "opcode_e",
+          "name": "opcode",
+          "loc": {
+            "line": 132,
+            "col": 3,
+            "end_line": 132,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_decoder.opcode_alu",
+          "ptype": "opcode_e",
+          "name": "opcode_alu",
+          "loc": {
+            "line": 133,
+            "col": 3,
+            "end_line": 133,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_decoder.instr_is_legal_cheriot",
+          "ptype": "logic",
+          "name": "instr_is_legal_cheriot",
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 135,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_decoder.raddr_a",
+          "ptype": "logic",
+          "name": "raddr_a",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 166,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_decoder.raddr_b",
+          "ptype": "logic",
+          "name": "raddr_b",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 166,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_decoder.rf_we_or_load",
+          "ptype": "logic",
+          "name": "rf_we_or_load",
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_decoder.gen_no_cheriot_decoder.unused_cheriot_enable",
+          "ptype": "logic",
+          "name": "unused_cheriot_enable",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_no_cheriot_decoder",
+              "cond": "BaseIsa != BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 1285,
+            "col": 5,
+            "end_line": 1285,
+            "end_col": 33
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_decoder.csr_operand_check",
+          "name": "csr_operand_check",
+          "kind": "always_comb",
+          "comment": [
+            "/////////////////////",
+            "CSR operand check //",
+            "/////////////////////"
+          ],
+          "loc": {
+            "line": 213,
+            "col": 3,
+            "end_line": 222,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_decoder.#always2",
+          "kind": "always_comb",
+          "comment": [
+            "///////////",
+            "Decoder //",
+            "///////////"
+          ],
+          "loc": {
+            "line": 228,
+            "col": 3,
+            "end_line": 858,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_decoder.#always3",
+          "kind": "always_comb",
+          "comment": [
+            "///////////////////////////",
+            "Decoder for ALU control //",
+            "///////////////////////////"
+          ],
+          "loc": {
+            "line": 864,
+            "col": 3,
+            "end_line": 1250,
+            "end_col": 6
+          }
+        }
+      ],
+      "loc": {
+        "line": 12,
+        "col": 1,
+        "end_line": 1289,
+        "end_col": 10
+      }
+    }
+  ]
+}

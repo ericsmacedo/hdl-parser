@@ -134,6 +134,23 @@ Files with interfaces, packages, functions and tasks, retrieved on 2026-11-15 fr
 | `ibex/irq_if.sv` | 951 | `dv/uvm/core_ibex/common/irq_agent/irq_if.sv` |
 | `ibex/ibex_tracer_pkg.sv` | 17623 | `rtl/ibex_tracer_pkg.sv` |
 
+The remaining files of the filelist `rtl/ibex_core.f` and two filelists, retrieved on 2026-11-15 from the same ref.
+With them, the hierarchy below `ibex_core` is complete, except of the `prim_*` cells:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `ibex/ibex_compressed_decoder.sv` | 41467 | `rtl/ibex_compressed_decoder.sv` |
+| `ibex/ibex_controller.sv` | 48679 | `rtl/ibex_controller.sv` |
+| `ibex/ibex_cs_registers.sv` | 84461 | `rtl/ibex_cs_registers.sv` |
+| `ibex/ibex_decoder.sv` | 51113 | `rtl/ibex_decoder.sv` |
+| `ibex/ibex_ex_block.sv` | 7645 | `rtl/ibex_ex_block.sv` |
+| `ibex/ibex_id_stage.sv` | 52278 | `rtl/ibex_id_stage.sv` |
+| `ibex/ibex_if_stage.sv` | 44747 | `rtl/ibex_if_stage.sv` |
+| `ibex/ibex_load_store_unit.sv` | 33131 | `rtl/ibex_load_store_unit.sv` |
+| `ibex/ibex_multdiv_slow.sv` | 13669 | `rtl/ibex_multdiv_slow.sv` |
+| `ibex/ibex_core.f` | 472 | `rtl/ibex_core.f` |
+| `ibex/ibex_dv.f` | 6890 | `dv/uvm/core_ibex/ibex_dv.f` |
+
 ## opentitan
 
 - URL: <https://github.com/lowRISC/opentitan>

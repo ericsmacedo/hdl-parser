@@ -1,0 +1,16 @@
+--- original
++++ expanded
+@@ -886 +886 @@
+-    `ASSERT_IF(IbexPcMuxValid, pc_mux_internal inside {
++    `ASSERT(IbexPcMuxValid, (pc_set_i) |-> (pc_mux_internal inside {
+@@ -892,2 +892 @@
+-        PC_BP},
+-      pc_set_i)
++        PC_BP}), clk_i, !rst_ni)
+@@ -976 +975 @@
+-    `ASSERT_IF(IbexPcMuxValid, pc_mux_internal inside {
++    `ASSERT(IbexPcMuxValid, (pc_set_i) |-> (pc_mux_internal inside {
+@@ -981,2 +980 @@
+-        PC_DRET},
+-      pc_set_i)
++        PC_DRET}), clk_i, !rst_ni)

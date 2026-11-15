@@ -1,0 +1,99 @@
+--- original
++++ expanded
+@@ -202,17 +202 @@
+-`ifndef SYNTHESIS
+-`ifndef DII_SIM
+-  // synopsys translate_off
+-  // make sure we are called later so that we do not generate messages for
+-  // glitches
+-  always_ff @(negedge clk_i) begin
+-    // print warning in case of decoding errors
+-    if ((ctrl_fsm_cs == DECODE) && instr_valid_i && !instr_fetch_err_i
+-        && !wb_exception_o && illegal_insn_d) begin
+-      $display("%t: Illegal instruction (hart %0x) at PC 0x%h: 0x%h", $time, ibex_core.hart_id_i,
+-               ibex_id_stage.pc_id_i,
+-               (instr_is_compressed_i ? 32'(instr_compressed_i) : instr_i));
+-    end
+-  end
+-  // synopsys translate_on
+-`endif
+-`endif
++
+@@ -262 +246 @@
+-  `ASSERT(IllegalInsnOnlyIfInsnValid, illegal_insn_i |-> instr_valid_i)
++
+@@ -374,11 +358 @@
+-  `ASSERT_IF(IbexExceptionPrioOnehot,
+-             $onehot({instr_fetch_err_prio,
+-                      illegal_insn_prio,
+-                      ecall_insn_prio,
+-                      ebrk_insn_prio,
+-                      store_err_prio,
+-                      load_err_prio,
+-                      cheriot_wb_err_prio,
+-                      cheriot_ex_err_prio,
+-                      cheriot_asr_err_prio}),
+-             (ctrl_fsm_cs == FLUSH) & csr_save_cause_o)
++
+@@ -1083,2 +1057 @@
+-  `ASSERT(PipeEmptyOnIrq, ctrl_fsm_cs != IRQ_TAKEN & ctrl_fsm_ns == IRQ_TAKEN |->
+-    ~instr_valid_i & ready_wb_i)
++
+@@ -1090,11 +1063,8 @@
+-  `DV_FCOV_SIGNAL(logic, all_debug_req, debug_req_i || debug_mode_q || debug_single_step_i)
+-  `DV_FCOV_SIGNAL(logic, debug_wakeup, (ctrl_fsm_cs == SLEEP) & (ctrl_fsm_ns == FIRST_FETCH) &
+-                                        (debug_req_i || debug_mode_q || debug_single_step_i))
+-  `DV_FCOV_SIGNAL(logic, interrupt_taken, (ctrl_fsm_cs != IRQ_TAKEN) & (ctrl_fsm_ns == IRQ_TAKEN))
+-  `DV_FCOV_SIGNAL(logic, debug_entry_if,
+-      (ctrl_fsm_cs != DBG_TAKEN_IF) & (ctrl_fsm_ns == DBG_TAKEN_IF))
+-  `DV_FCOV_SIGNAL(logic, debug_entry_id,
+-      (ctrl_fsm_cs != DBG_TAKEN_ID) & (ctrl_fsm_ns == DBG_TAKEN_ID))
+-  `DV_FCOV_SIGNAL(logic, pipe_flush, (ctrl_fsm_cs != FLUSH) & (ctrl_fsm_ns == FLUSH))
+-  `DV_FCOV_SIGNAL(logic, debug_req, debug_req_i & ~debug_mode_q)
+-  `DV_FCOV_SIGNAL(logic, debug_single_step_taken, do_single_step_d & ~do_single_step_q)
++
++
++
++
++
++
++
++
+@@ -1106 +1076 @@
+-  `ASSERT(AlwaysInstrClearOnMispredict, nt_branch_mispredict_o |-> instr_valid_clear_o)
++
+@@ -1109,3 +1079 @@
+-  `ASSERT(IbexCtrlStateValid, ctrl_fsm_cs inside {
+-      RESET, BOOT_SET, WAIT_SLEEP, SLEEP, FIRST_FETCH, DECODE, FLUSH,
+-      IRQ_TAKEN, DBG_TAKEN_IF, DBG_TAKEN_ID})
++
+@@ -1119,4 +1087,3 @@
+-  `ASSERT(IbexPipelineFlushOnChangingDebugMode,
+-    debug_mode_d != debug_mode_q |-> flush_id_o & pc_set_o)
+-
+-`ifdef INC_ASSERT
++
++
++
+@@ -1128,11 +1095,7 @@
+-  `COVER(DbgEbreakWithTriggerMatch,
+-         dbg_entry_with_trigger_match && (debug_cause_d == DBG_CAUSE_EBREAK))
+-  `COVER(DbgStepWithTriggerMatch, dbg_entry_with_trigger_match &&
+-         (debug_cause_d == DBG_CAUSE_STEP) && (ctrl_fsm_cs != FLUSH))
+-  `COVER(DbgStepTrapWithTriggerMatch, dbg_entry_with_trigger_match &&
+-         (debug_cause_d == DBG_CAUSE_STEP) && (ctrl_fsm_cs == FLUSH) && csr_save_cause_o)
+-  `COVER(DbgHaltReqWithTriggerMatch,
+-         dbg_entry_with_trigger_match && (debug_cause_d == DBG_CAUSE_HALTREQ))
+-`endif
+-
+-  `ifdef RVFI
++
++
++
++
++
++
++
+@@ -1144 +1107 @@
+-  `endif
++

@@ -1,0 +1,1328 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_ex_block.sv",
+  "modules": [
+    {
+      "id": "ibex_ex_block",
+      "name": "ibex_ex_block",
+      "params": [
+        {
+          "id": "ibex_ex_block.RV32M",
+          "ptype": "ibex_pkg::rv32m_e",
+          "name": "RV32M",
+          "default": "ibex_pkg::RV32MFast",
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_ex_block.RV32B",
+          "ptype": "ibex_pkg::rv32b_e",
+          "name": "RV32B",
+          "default": "ibex_pkg::RV32BNone",
+          "loc": {
+            "line": 13,
+            "col": 3,
+            "end_line": 13,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_ex_block.BranchTargetALU",
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "0",
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 50
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "ibex_ex_block.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_ex_block.rst_ni",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "comment": [
+            "ALU"
+          ],
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_operator_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::alu_op_e",
+          "name": "alu_operator_i",
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_operand_a_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "alu_operand_a_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_operand_b_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "alu_operand_b_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Branch Target ALU",
+            "All of these signals are unused when BranchTargetALU == 0"
+          ],
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_ex_block.bt_a_operand_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "bt_a_operand_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_ex_block.bt_b_operand_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "bt_b_operand_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Multiplier/Divider"
+          ],
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_operator_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::md_op_e",
+          "name": "multdiv_operator_i",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_ex_block.mult_en_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mult_en_i",
+          "comment": [
+            "dynamic enable signal, for FSM control"
+          ],
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_ex_block.div_en_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_en_i",
+          "comment": [
+            "dynamic enable signal, for FSM control"
+          ],
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_ex_block.mult_sel_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mult_sel_i",
+          "comment": [
+            "static decoder output, for data muxes"
+          ],
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_ex_block.div_sel_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "div_sel_i",
+          "comment": [
+            "static decoder output, for data muxes"
+          ],
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_signed_mode_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_signed_mode_i",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_operand_a_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_operand_a_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_operand_b_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_operand_b_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_ready_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "multdiv_ready_id_i",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_ex_block.data_ind_timing_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_ind_timing_i",
+          "comment": [
+            "intermediate val reg"
+          ],
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_ex_block.imd_val_we_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imd_val_we_o",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_ex_block.imd_val_d_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imd_val_d_o",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_ex_block.imd_val_q_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "imd_val_q_i",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "comment": [
+            "Outputs"
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_adder_result_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alu_adder_result_ex_o",
+          "dim": "[31:0]",
+          "comment": [
+            "to LSU"
+          ],
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_ex_block.result_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "result_ex_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_ex_block.branch_target_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "branch_target_o",
+          "dim": "[31:0]",
+          "comment": [
+            "to IF"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_ex_block.branch_decision_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "branch_decision_o",
+          "comment": [
+            "to ID"
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_ex_block.ex_valid_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ex_valid_o",
+          "comment": [
+            "EX has valid output"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 43
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_ex_block.alu_result",
+          "ptype": "logic",
+          "name": "alu_result",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_result",
+          "ptype": "logic",
+          "name": "multdiv_result",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_alu_operand_b",
+          "ptype": "logic",
+          "name": "multdiv_alu_operand_b",
+          "dim": "[32:0]",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_alu_operand_a",
+          "ptype": "logic",
+          "name": "multdiv_alu_operand_a",
+          "dim": "[32:0]",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_adder_result_ext",
+          "ptype": "logic",
+          "name": "alu_adder_result_ext",
+          "dim": "[33:0]",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_cmp_result",
+          "ptype": "logic",
+          "name": "alu_cmp_result",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_ex_block.alu_is_equal_result",
+          "ptype": "logic",
+          "name": "alu_is_equal_result",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_valid",
+          "ptype": "logic",
+          "name": "multdiv_valid",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_sel",
+          "ptype": "logic",
+          "name": "multdiv_sel",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_imd_val_d",
+          "ptype": "logic",
+          "name": "multdiv_imd_val_d",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_ex_block.multdiv_imd_val_we",
+          "ptype": "logic",
+          "name": "multdiv_imd_val_we",
+          "dim": "[ 1:0]",
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_ex_block.g_branch_target_alu.bt_alu_result",
+          "ptype": "logic",
+          "name": "bt_alu_result",
+          "dim": "[32:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_target_alu",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "loc": {
+            "line": 89,
+            "col": 5,
+            "end_line": 89,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_ex_block.g_branch_target_alu.unused_bt_carry",
+          "ptype": "logic",
+          "name": "unused_bt_carry",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_target_alu",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_ex_block.g_no_branch_target_alu.unused_bt_a_operand",
+          "ptype": "logic",
+          "name": "unused_bt_a_operand",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_branch_target_alu"
+            }
+          ],
+          "loc": {
+            "line": 98,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_ex_block.g_no_branch_target_alu.unused_bt_b_operand",
+          "ptype": "logic",
+          "name": "unused_bt_b_operand",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_branch_target_alu"
+            }
+          ],
+          "loc": {
+            "line": 98,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_ex_block.sva_multdiv_fsm_idle",
+          "ptype": "logic",
+          "name": "sva_multdiv_fsm_idle",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_ex_block.unused_sva_multdiv_fsm_idle",
+          "ptype": "logic",
+          "name": "unused_sva_multdiv_fsm_idle",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 202,
+            "col": 3,
+            "end_line": 202,
+            "end_col": 37
+          }
+        }
+      ],
+      "insts": [
+        {
+          "id": "ibex_ex_block.alu_i",
+          "name": "alu_i",
+          "module": "ibex_alu",
+          "params": [
+            {
+              "id": "ibex_ex_block.alu_i.RV32B",
+              "port": "RV32B",
+              "con": "RV32B",
+              "loc": {
+                "line": 111,
+                "col": 5,
+                "end_line": 111,
+                "end_col": 18
+              }
+            }
+          ],
+          "connections": [
+            {
+              "id": "ibex_ex_block.alu_i.operator_i",
+              "port": "operator_i",
+              "con": "alu_operator_i",
+              "loc": {
+                "line": 113,
+                "col": 5,
+                "end_line": 113,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.operand_a_i",
+              "port": "operand_a_i",
+              "con": "alu_operand_a_i",
+              "loc": {
+                "line": 114,
+                "col": 5,
+                "end_line": 114,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.operand_b_i",
+              "port": "operand_b_i",
+              "con": "alu_operand_b_i",
+              "loc": {
+                "line": 115,
+                "col": 5,
+                "end_line": 115,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.multdiv_operand_a_i",
+              "port": "multdiv_operand_a_i",
+              "con": "multdiv_alu_operand_a",
+              "loc": {
+                "line": 116,
+                "col": 5,
+                "end_line": 116,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.multdiv_operand_b_i",
+              "port": "multdiv_operand_b_i",
+              "con": "multdiv_alu_operand_b",
+              "loc": {
+                "line": 117,
+                "col": 5,
+                "end_line": 117,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.multdiv_sel_i",
+              "port": "multdiv_sel_i",
+              "con": "multdiv_sel",
+              "loc": {
+                "line": 118,
+                "col": 5,
+                "end_line": 118,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.adder_result_o",
+              "port": "adder_result_o",
+              "con": "alu_adder_result_ex_o",
+              "loc": {
+                "line": 119,
+                "col": 5,
+                "end_line": 119,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.adder_result_ext_o",
+              "port": "adder_result_ext_o",
+              "con": "alu_adder_result_ext",
+              "loc": {
+                "line": 120,
+                "col": 5,
+                "end_line": 120,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.result_o",
+              "port": "result_o",
+              "con": "alu_result",
+              "loc": {
+                "line": 121,
+                "col": 5,
+                "end_line": 121,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.comparison_result_o",
+              "port": "comparison_result_o",
+              "con": "alu_cmp_result",
+              "loc": {
+                "line": 122,
+                "col": 5,
+                "end_line": 122,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_ex_block.alu_i.is_equal_result_o",
+              "port": "is_equal_result_o",
+              "con": "alu_is_equal_result",
+              "loc": {
+                "line": 123,
+                "col": 5,
+                "end_line": 123,
+                "end_col": 46
+              }
+            }
+          ],
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i",
+          "name": "multdiv_i",
+          "module": "ibex_multdiv_slow",
+          "connections": [
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.clk_i",
+              "port": "clk_i",
+              "con": "clk_i",
+              "loc": {
+                "line": 132,
+                "col": 7,
+                "end_line": 132,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.rst_ni",
+              "port": "rst_ni",
+              "con": "rst_ni",
+              "loc": {
+                "line": 133,
+                "col": 7,
+                "end_line": 133,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.mult_en_i",
+              "port": "mult_en_i",
+              "con": "mult_en_i",
+              "loc": {
+                "line": 134,
+                "col": 7,
+                "end_line": 134,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.div_en_i",
+              "port": "div_en_i",
+              "con": "div_en_i",
+              "loc": {
+                "line": 135,
+                "col": 7,
+                "end_line": 135,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.mult_sel_i",
+              "port": "mult_sel_i",
+              "con": "mult_sel_i",
+              "loc": {
+                "line": 136,
+                "col": 7,
+                "end_line": 136,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.div_sel_i",
+              "port": "div_sel_i",
+              "con": "div_sel_i",
+              "loc": {
+                "line": 137,
+                "col": 7,
+                "end_line": 137,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.operator_i",
+              "port": "operator_i",
+              "con": "multdiv_operator_i",
+              "loc": {
+                "line": 138,
+                "col": 7,
+                "end_line": 138,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.signed_mode_i",
+              "port": "signed_mode_i",
+              "con": "multdiv_signed_mode_i",
+              "loc": {
+                "line": 139,
+                "col": 7,
+                "end_line": 139,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.op_a_i",
+              "port": "op_a_i",
+              "con": "multdiv_operand_a_i",
+              "loc": {
+                "line": 140,
+                "col": 7,
+                "end_line": 140,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.op_b_i",
+              "port": "op_b_i",
+              "con": "multdiv_operand_b_i",
+              "loc": {
+                "line": 141,
+                "col": 7,
+                "end_line": 141,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.alu_adder_ext_i",
+              "port": "alu_adder_ext_i",
+              "con": "alu_adder_result_ext",
+              "loc": {
+                "line": 142,
+                "col": 7,
+                "end_line": 142,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.alu_adder_i",
+              "port": "alu_adder_i",
+              "con": "alu_adder_result_ex_o",
+              "loc": {
+                "line": 143,
+                "col": 7,
+                "end_line": 143,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.equal_to_zero_i",
+              "port": "equal_to_zero_i",
+              "con": "alu_is_equal_result",
+              "loc": {
+                "line": 144,
+                "col": 7,
+                "end_line": 144,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.data_ind_timing_i",
+              "port": "data_ind_timing_i",
+              "con": "data_ind_timing_i",
+              "loc": {
+                "line": 145,
+                "col": 7,
+                "end_line": 145,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.valid_o",
+              "port": "valid_o",
+              "con": "multdiv_valid",
+              "loc": {
+                "line": 146,
+                "col": 7,
+                "end_line": 146,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.alu_operand_a_o",
+              "port": "alu_operand_a_o",
+              "con": "multdiv_alu_operand_a",
+              "loc": {
+                "line": 147,
+                "col": 7,
+                "end_line": 147,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.alu_operand_b_o",
+              "port": "alu_operand_b_o",
+              "con": "multdiv_alu_operand_b",
+              "loc": {
+                "line": 148,
+                "col": 7,
+                "end_line": 148,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.imd_val_q_i",
+              "port": "imd_val_q_i",
+              "con": "imd_val_q_i",
+              "loc": {
+                "line": 149,
+                "col": 7,
+                "end_line": 149,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.imd_val_d_o",
+              "port": "imd_val_d_o",
+              "con": "multdiv_imd_val_d",
+              "loc": {
+                "line": 150,
+                "col": 7,
+                "end_line": 150,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.imd_val_we_o",
+              "port": "imd_val_we_o",
+              "con": "multdiv_imd_val_we",
+              "loc": {
+                "line": 151,
+                "col": 7,
+                "end_line": 151,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.multdiv_ready_id_i",
+              "port": "multdiv_ready_id_i",
+              "con": "multdiv_ready_id_i",
+              "loc": {
+                "line": 152,
+                "col": 7,
+                "end_line": 152,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_slow.multdiv_i.multdiv_result_o",
+              "port": "multdiv_result_o",
+              "con": "multdiv_result",
+              "loc": {
+                "line": 153,
+                "col": 7,
+                "end_line": 153,
+                "end_col": 42
+              }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_multdiv_slow",
+              "cond": "RV32M == RV32MSlow"
+            }
+          ],
+          "loc": {
+            "line": 131,
+            "col": 5,
+            "end_line": 154,
+            "end_col": 7
+          }
+        },
+        {
+          "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i",
+          "name": "multdiv_i",
+          "module": "ibex_multdiv_fast",
+          "params": [
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.RV32M",
+              "port": "RV32M",
+              "con": "RV32M",
+              "loc": {
+                "line": 157,
+                "col": 7,
+                "end_line": 157,
+                "end_col": 20
+              }
+            }
+          ],
+          "connections": [
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.clk_i",
+              "port": "clk_i",
+              "con": "clk_i",
+              "loc": {
+                "line": 159,
+                "col": 7,
+                "end_line": 159,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.rst_ni",
+              "port": "rst_ni",
+              "con": "rst_ni",
+              "loc": {
+                "line": 160,
+                "col": 7,
+                "end_line": 160,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.mult_en_i",
+              "port": "mult_en_i",
+              "con": "mult_en_i",
+              "loc": {
+                "line": 161,
+                "col": 7,
+                "end_line": 161,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.div_en_i",
+              "port": "div_en_i",
+              "con": "div_en_i",
+              "loc": {
+                "line": 162,
+                "col": 7,
+                "end_line": 162,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.mult_sel_i",
+              "port": "mult_sel_i",
+              "con": "mult_sel_i",
+              "loc": {
+                "line": 163,
+                "col": 7,
+                "end_line": 163,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.div_sel_i",
+              "port": "div_sel_i",
+              "con": "div_sel_i",
+              "loc": {
+                "line": 164,
+                "col": 7,
+                "end_line": 164,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.operator_i",
+              "port": "operator_i",
+              "con": "multdiv_operator_i",
+              "loc": {
+                "line": 165,
+                "col": 7,
+                "end_line": 165,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.signed_mode_i",
+              "port": "signed_mode_i",
+              "con": "multdiv_signed_mode_i",
+              "loc": {
+                "line": 166,
+                "col": 7,
+                "end_line": 166,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.op_a_i",
+              "port": "op_a_i",
+              "con": "multdiv_operand_a_i",
+              "loc": {
+                "line": 167,
+                "col": 7,
+                "end_line": 167,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.op_b_i",
+              "port": "op_b_i",
+              "con": "multdiv_operand_b_i",
+              "loc": {
+                "line": 168,
+                "col": 7,
+                "end_line": 168,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.alu_operand_a_o",
+              "port": "alu_operand_a_o",
+              "con": "multdiv_alu_operand_a",
+              "loc": {
+                "line": 169,
+                "col": 7,
+                "end_line": 169,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.alu_operand_b_o",
+              "port": "alu_operand_b_o",
+              "con": "multdiv_alu_operand_b",
+              "loc": {
+                "line": 170,
+                "col": 7,
+                "end_line": 170,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.alu_adder_ext_i",
+              "port": "alu_adder_ext_i",
+              "con": "alu_adder_result_ext",
+              "loc": {
+                "line": 171,
+                "col": 7,
+                "end_line": 171,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.alu_adder_i",
+              "port": "alu_adder_i",
+              "con": "alu_adder_result_ex_o",
+              "loc": {
+                "line": 172,
+                "col": 7,
+                "end_line": 172,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.equal_to_zero_i",
+              "port": "equal_to_zero_i",
+              "con": "alu_is_equal_result",
+              "loc": {
+                "line": 173,
+                "col": 7,
+                "end_line": 173,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.data_ind_timing_i",
+              "port": "data_ind_timing_i",
+              "con": "data_ind_timing_i",
+              "loc": {
+                "line": 174,
+                "col": 7,
+                "end_line": 174,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.imd_val_q_i",
+              "port": "imd_val_q_i",
+              "con": "imd_val_q_i",
+              "loc": {
+                "line": 175,
+                "col": 7,
+                "end_line": 175,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.imd_val_d_o",
+              "port": "imd_val_d_o",
+              "con": "multdiv_imd_val_d",
+              "loc": {
+                "line": 176,
+                "col": 7,
+                "end_line": 176,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.imd_val_we_o",
+              "port": "imd_val_we_o",
+              "con": "multdiv_imd_val_we",
+              "loc": {
+                "line": 177,
+                "col": 7,
+                "end_line": 177,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.multdiv_ready_id_i",
+              "port": "multdiv_ready_id_i",
+              "con": "multdiv_ready_id_i",
+              "loc": {
+                "line": 178,
+                "col": 7,
+                "end_line": 178,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.valid_o",
+              "port": "valid_o",
+              "con": "multdiv_valid",
+              "loc": {
+                "line": 179,
+                "col": 7,
+                "end_line": 179,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_ex_block.gen_multdiv_fast.multdiv_i.multdiv_result_o",
+              "port": "multdiv_result_o",
+              "con": "multdiv_result",
+              "loc": {
+                "line": 180,
+                "col": 7,
+                "end_line": 180,
+                "end_col": 42
+              }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_multdiv_fast",
+              "cond": "RV32M == RV32MFast || RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 156,
+            "col": 5,
+            "end_line": 181,
+            "end_col": 7
+          }
+        }
+      ],
+      "loc": {
+        "line": 11,
+        "col": 1,
+        "end_line": 206,
+        "end_col": 10
+      }
+    }
+  ]
+}

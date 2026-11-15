@@ -1,0 +1,30 @@
+--- original
++++ expanded
+@@ -1494 +1494 @@
+-      `ASSERT_INIT(PMPAddrRstLowBitsZero_A, PMPRstAddr[i][PMP_ADDR_MSB-PMPAddrWidth:0] == '0)
++
+@@ -1875 +1875 @@
+-`ifdef INC_ASSERT
++
+@@ -1884,5 +1884,2 @@
+-    `ASSERT(IbexTriggerCauseOnlyWhenFired,
+-            csr_save_cause_i & debug_csr_save_i |->
+-            (debug_cause_i != DBG_CAUSE_TRIGGER) |
+-            (|trigger_at_exception_pc & (~dcsr_q.step | (exception_pc == {depc_q[31:1], 1'b0}))))
+-`endif
++
++
+@@ -2007,3 +2004,5 @@
+-  `ASSERT(IbexCsrOpEnRequiresAccess, csr_op_en_i |-> csr_access_i)
+-  `ASSERT_KNOWN_IF(IbexDebugEntryKnown, {debug_cause_i, exception_pc},
+-                   csr_save_cause_i & debug_csr_save_i)
++
++  `ifndef FPV_ON
++
++
++`endif
+@@ -2012,2 +2011,2 @@
+-  `ASSERT_IF(IbexCheriotClrMieDisabled, !cheriot_csr_clr_mie_i, cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexCheriotSetMieDisabled, !cheriot_csr_set_mie_i, cheriot_enable_i != IbexMuBiOn)
++
++
