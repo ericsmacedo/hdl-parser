@@ -687,3 +687,150 @@ def test_ibex_dv_filelist(tmp_path):
     assert project.resolve("ibex_core").id == "rtl/ibex_core.sv:ibex_core"
     tree = project.hierarchy("ibex_top", depth=1)
     assert "rtl/ibex_core.sv:ibex_core" in [node.definition for node in tree.children]
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# cache
+# ---------------------------------------------------------------------------------------------------------------------
+
+CACHED = {
+    "inc/defs.svh": "`define WIDTH 8\n",
+    "rtl/top.sv": (
+        '`include "defs.svh"\n`include "later.svh"\nmodule top (input [`WIDTH-1:0] a);\n  leaf u_leaf ();\nendmodule\n'
+    ),
+    "rtl/leaf.sv": "module leaf; endmodule\n",
+}
+
+
+@fixture
+def parsed(monkeypatch):
+    """Names Of The Files Which Are Parsed."""
+    names = []
+    original = project_module.parse_file
+
+    def parse(path, **kwargs):
+        names.append(path.name)
+        return original(path, **kwargs)
+
+    monkeypatch.setattr(project_module, "parse_file", parse)
+    return names
+
+
+def _cached(tmp_path, **kwargs):
+    return Project.from_dir(tmp_path, expand_macros=True, inc_dirs=[tmp_path / "inc"], cache=True, **kwargs)
+
+
+def test_cache(tmp_path, parsed):
+    """Files Are Parsed Once. The Result Is The Same."""
+    _write(tmp_path, CACHED)
+    plain = Project.from_dir(tmp_path, expand_macros=True, inc_dirs=[tmp_path / "inc"])
+    assert plain.file("rtl/top.sv").includes == ("inc/defs.svh",)
+    parsed.clear()
+    cold = _cached(tmp_path)
+    assert parsed == ["leaf.sv", "top.sv"]
+    warm = _cached(tmp_path)
+    assert parsed == ["leaf.sv", "top.sv"]
+    assert plain == cold == warm
+    assert warm.file("rtl/top.sv").modules[0].ports[0].dim == "[8-1:0]"
+    # the cache is located in the root of the project and never committed
+    cache = tmp_path / project_module.CACHE_DIR
+    assert (cache / ".gitignore").read_text() == "*\n"
+    assert len(list(cache.glob("*.json"))) == 2
+    # the cache is no part of the project
+    assert [file.file_id for file in warm.files] == ["rtl/leaf.sv", "rtl/top.sv"]
+
+
+def test_cache_changed_file(tmp_path, parsed):
+    """A File Which Changed Is Parsed Again. Just This One."""
+    _write(tmp_path, CACHED)
+    _cached(tmp_path)
+    parsed.clear()
+    (tmp_path / "rtl" / "leaf.sv").write_text("module leaf (input a); endmodule\n")
+    project = _cached(tmp_path)
+    assert parsed == ["leaf.sv"]
+    assert [port.name for port in project.file("rtl/leaf.sv").modules[0].ports] == ["a"]
+    _cached(tmp_path)
+    assert parsed == ["leaf.sv"]
+
+
+def test_cache_changed_include(tmp_path, parsed):
+    """A File Is Parsed Again, If A File It Includes Changed, Or Is There Now."""
+    _write(tmp_path, CACHED)
+    project = _cached(tmp_path)
+    assert [diag.code for diag in project.file("rtl/top.sv").diagnostics] == ["include-not-found"]
+    parsed.clear()
+    (tmp_path / "inc" / "defs.svh").write_text("`define WIDTH 16\n")
+    project = _cached(tmp_path)
+    assert parsed == ["top.sv"]
+    assert project.file("rtl/top.sv").modules[0].ports[0].dim == "[16-1:0]"
+    # the included file which has not been found
+    (tmp_path / "inc" / "later.svh").write_text("`undef WIDTH\n`define WIDTH 32\n")
+    project = _cached(tmp_path)
+    assert parsed == ["top.sv", "top.sv"]
+    assert project.file("rtl/top.sv").modules[0].ports[0].dim == "[32-1:0]"
+    assert project.file("rtl/top.sv").includes == ("inc/defs.svh", "inc/later.svh")
+    assert project.file("rtl/top.sv").diagnostics == ()
+    _cached(tmp_path)
+    assert parsed == ["top.sv", "top.sv"]
+
+
+def test_cache_changed_settings(tmp_path, parsed):
+    """All Files Are Parsed Again, If They Are Parsed In Another Way."""
+    _write(tmp_path, CACHED)
+    _cached(tmp_path)
+    parsed.clear()
+    _cached(tmp_path, defines={"X": "1"})
+    assert parsed == ["leaf.sv", "top.sv"]
+    _cached(tmp_path, defines={"X": "2"})
+    assert parsed == ["leaf.sv", "top.sv"] * 2
+    Project.from_dir(tmp_path, cache=True)
+    assert parsed == ["leaf.sv", "top.sv"] * 3
+    # each way has its own results
+    _cached(tmp_path)
+    _cached(tmp_path, defines={"X": "1"})
+    assert parsed == ["leaf.sv", "top.sv"] * 3
+
+
+def test_cache_broken(tmp_path, parsed):
+    """A Broken Cache Is No Cache. Files Which Cannot Be Read Are Not Kept."""
+    _write(tmp_path, CACHED)
+    cache = tmp_path / "my-cache"
+    paths = [tmp_path / "rtl" / "leaf.sv", tmp_path / "rtl" / "none.sv"]
+    project = Project.from_files(paths, root=tmp_path, cache=cache)
+    assert parsed == ["leaf.sv", "none.sv"]
+    assert len(list(cache.glob("*.json"))) == 1
+    next(cache.glob("*.json")).write_text("{ broken")
+    assert Project.from_files(paths, root=tmp_path, cache=str(cache)) == project
+    assert parsed == ["leaf.sv", "none.sv"] * 2
+    # a directory which cannot be created
+    (tmp_path / "file").write_text("")
+    assert Project.from_files(paths, root=tmp_path, cache=tmp_path / "file" / "cache") == project
+
+
+def test_cache_parser_version(tmp_path, parsed, monkeypatch):
+    """A Change Of The Parser Makes All Results Invalid."""
+    _write(tmp_path, CACHED)
+    _cached(tmp_path)
+    parsed.clear()
+    monkeypatch.setattr(project_module, "_parser_version", lambda: "another")
+    _cached(tmp_path)
+    assert parsed == ["leaf.sv", "top.sv"]
+
+
+@mark.parametrize("path", PROJECT_DIRS, ids=lambda path: f"{path.parent.name}/{path.name}")
+def test_cache_corpus(tmp_path, path, parsed):
+    """Real Projects: The Result From The Cache Is The Same, With And Without Macro Expansion."""
+    logging.disable(logging.WARNING)
+    try:
+        for kwargs in (
+            {},
+            {"expand_macros": True, "resolve_ifdefs": True, "inc_dirs": [path.parent, path / "include"]},
+        ):
+            plain = Project.from_dir(path, **kwargs)
+            parsed.clear()
+            assert Project.from_dir(path, cache=tmp_path, **kwargs) == plain
+            assert len(parsed) == len(plain.files)
+            assert Project.from_dir(path, cache=tmp_path, **kwargs) == plain
+            assert len(parsed) == len(plain.files)
+    finally:
+        logging.disable(logging.NOTSET)

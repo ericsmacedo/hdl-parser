@@ -40,10 +40,13 @@ It answers questions about the design, instead of single files:
 A file which cannot be read or parsed never stops the others: it is part of the project, with a diagnostic.
 """
 
+import hashlib
+import json
 import os
+import re
 from collections.abc import Iterable, Iterator, Mapping
 from fnmatch import fnmatch
-from functools import cached_property
+from functools import cache, cached_property
 from pathlib import Path
 from typing import Any, NamedTuple
 
@@ -54,6 +57,9 @@ from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
 SCHEMA_VERSION = 1
 """Version of the JSON document of a project. Incremented on changes, which are not backward compatible."""
+
+CACHE_DIR = ".hdl_parser_cache"
+"""Name of the cache directory within the root of a project."""
 
 Unit = dm.Module | dm.Package
 """Module, Interface Or Package."""
@@ -167,6 +173,7 @@ class Project(dm._BaseModel):
         defines: dict[str, str] | None = None,
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
+        cache: bool | Path | str = False,
     ) -> "Project":
         """Create project from files.
 
@@ -182,9 +189,12 @@ class Project(dm._BaseModel):
             inc_dirs: Include directories. Used by `expand_macros` only.
             prefer: File to be used for a module, interface or package which is defined more than once, by name:
                     `{"fifo": "rtl/fifo.sv"}`.
+            cache: Keep the result of every file, and parse a file again only if it changed: the file itself,
+                   a file it includes, or how it is parsed. `True` uses the directory `.hdl_parser_cache` within
+                   the root of the project, a path any other directory.
         """
         settings = dm.Settings(expand_macros=expand_macros, resolve_ifdefs=resolve_ifdefs, defines=defines or {})
-        return _Builder(cls, root, settings, map(Path, inc_dirs), prefer).build(map(Path, file_paths))
+        return _Builder(cls, root, settings, map(Path, inc_dirs), prefer, cache).build(map(Path, file_paths))
 
     @classmethod
     def from_filelist(  # noqa: PLR0913
@@ -197,6 +207,7 @@ class Project(dm._BaseModel):
         defines: dict[str, str] | None = None,
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
+        cache: bool | Path | str = False,
     ) -> "Project":
         """Create project from a filelist: its files, include directories, macros and libraries.
 
@@ -217,6 +228,7 @@ class Project(dm._BaseModel):
             defines: Macros defined for all files, in addition to the ones of the filelist.
             inc_dirs: Include directories, in addition to the ones of the filelist.
             prefer: See [from_files][hdl_parser.project.Project.from_files].
+            cache: See [from_files][hdl_parser.project.Project.from_files].
         """
         filelist = read_filelist(filelist_path, env=env)
         settings = dm.Settings(
@@ -225,7 +237,7 @@ class Project(dm._BaseModel):
             defines={**filelist.defines, **(defines or {})},
             lib_exts=tuple(filelist.lib_exts) or DEFAULT_LIB_EXTS,
         )
-        builder = _Builder(cls, root, settings, (*filelist.inc_dirs, *map(Path, inc_dirs)), prefer)
+        builder = _Builder(cls, root, settings, (*filelist.inc_dirs, *map(Path, inc_dirs)), prefer, cache)
         return builder.build(filelist.files, filelist.lib_files, filelist.lib_dirs, filelist.diagnostics)
 
     @classmethod
@@ -457,15 +469,17 @@ class Project(dm._BaseModel):
 class _Builder:
     """Parse Files And Create The Project."""
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         cls: type[Project],
         root: Path | str | None,
         settings: dm.Settings,
         inc_dirs: Iterable[Path],
         prefer: dict[str, str] | None,
+        cache: bool | Path | str = False,
     ):
         self.cls = cls
+        self.cache_dir = cache
         self.root = None if root is None else _absolute(Path(root))
         self.settings = settings
         self.inc_dirs = [_absolute(inc_dir) for inc_dir in inc_dirs]
@@ -505,6 +519,7 @@ class _Builder:
             "prefer": self.prefer,
             "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
         }
+        self.cache = self._create_cache(root)
         files = [self._parse(path, root) for path in (*paths, *lib_paths)]
         libraries = [_relative(path, root) for path in lib_paths]
         while True:
@@ -530,7 +545,26 @@ class _Builder:
                 found.append(path)
         return found
 
+    def _create_cache(self, root: Path) -> "_Cache | None":
+        if not self.cache_dir:
+            return None
+        directory = root / CACHE_DIR if self.cache_dir is True else _absolute(Path(self.cache_dir))
+        settings = self.settings
+        # everything, which has an influence on the result of a file
+        how = [settings.expand_macros, settings.resolve_ifdefs, settings.defines, [str(path) for path in self.inc_dirs]]
+        return _Cache(directory, root, self.inc_dirs, json.dumps(how, sort_keys=True))
+
     def _parse(self, path: Path, root: Path) -> dm.File:
+        """Parse the file at `path`, or take it from the cache."""
+        if self.cache is None:
+            return self._parse_file(path, root)
+        file = self.cache.load(path)
+        if file is None:
+            file = self._parse_file(path, root)
+            self.cache.store(path, file)
+        return file
+
+    def _parse_file(self, path: Path, root: Path) -> dm.File:
         """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
         settings = self.settings
         rel = Path(_relative(path, root))
@@ -549,7 +583,100 @@ class _Builder:
         except Exception as exc:
             # never a crash: the other files are still of use
             return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
-        return file.model_copy(update={"path": rel})
+        includes = tuple(_relative(Path(include), root) for include in file.includes)
+        return file.model_copy(update={"path": rel, "includes": includes})
+
+
+_RE_QUOTED = re.compile(r"'([^']*)'")
+
+
+class _Cache:
+    """Results Of Files, Kept In `directory`.
+
+    The result of a file is used again, as long as nothing it depends on changed:
+
+    * the file itself and the files it includes, by their content,
+    * included files which have not been found: they are still not there,
+    * `how` the file is parsed, its path within the project, and the code of the parser.
+    """
+
+    def __init__(self, directory: Path, root: Path, inc_dirs: list[Path], how: str):
+        self.directory = directory
+        self.root = root
+        self.inc_dirs = inc_dirs
+        self.how = f"{_parser_version()} {SCHEMA_VERSION} {how}"
+        self.hashes: dict[Path, str | None] = {}
+
+    def _hash(self, path: Path) -> str | None:
+        """Hash of the content of the file at `path`. `None` if it cannot be read."""
+        if path not in self.hashes:
+            try:
+                self.hashes[path] = hashlib.sha256(path.read_bytes()).hexdigest()
+            except OSError:
+                self.hashes[path] = None
+        return self.hashes[path]
+
+    def _entry(self, path: Path) -> Path:
+        """Path of the cache entry of the file at `path`."""
+        key = hashlib.sha256(f"{_relative(path, self.root)} {self.how}".encode()).hexdigest()
+        return self.directory / f"{key}.json"
+
+    @staticmethod
+    def _missing(file: dm.File) -> list[str]:
+        """Names of the included files, which have not been found."""
+        return [
+            name
+            for diagnostic in file.diagnostics
+            if diagnostic.code == "include-not-found"
+            for name in _RE_QUOTED.findall(diagnostic.message)[:1]
+        ]
+
+    def _is_there(self, name: str, path: Path, file: dm.File) -> bool:
+        """The included file `name`, which has not been found, is there now."""
+        dirs = [path.parent, *(self.root.joinpath(include).parent for include in file.includes), *self.inc_dirs]
+        return any((directory / name).is_file() for directory in dirs)
+
+    def load(self, path: Path) -> dm.File | None:
+        """Result of the file at `path`. `None`, if there is none or it is not valid any more."""
+        try:
+            entry = json.loads(self._entry(path).read_text(encoding="utf-8"))
+            file = dm.File.model_validate(entry["file"])
+            depends = entry["depends"]
+        except (OSError, ValueError, KeyError):
+            return None
+        if depends.pop("", None) != self._hash(path):
+            return None
+        if any(self._hash(self.root.joinpath(include)) != digest for include, digest in depends.items()):
+            return None
+        if any(self._is_there(name, path, file) for name in self._missing(file)):
+            return None
+        return file
+
+    def store(self, path: Path, file: dm.File) -> None:
+        """Keep the result `file` of the file at `path`. A file which cannot be read is not kept."""
+        digest = self._hash(path)
+        if digest is None:
+            return
+        depends = {"": digest, **{include: self._hash(self.root.joinpath(include)) for include in file.includes}}
+        entry = {"depends": depends, "file": file.model_dump(mode="json", exclude_defaults=True)}
+        try:
+            self.directory.mkdir(parents=True, exist_ok=True)
+            ignore = self.directory / ".gitignore"
+            if not ignore.exists():
+                ignore.write_text("*\n", encoding="utf-8")
+            self._entry(path).write_text(json.dumps(entry), encoding="utf-8")
+        except OSError:
+            # a cache which cannot be written is no cache
+            return
+
+
+@cache
+def _parser_version() -> str:
+    """Version of the parser: the hash of its code. Any change of the parser makes all cached results invalid."""
+    digest = hashlib.sha256()
+    for path in sorted(Path(__file__).parent.rglob("*.py")):
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
 
 
 def _relative_file(diagnostic: dm.Diagnostic, root: Path) -> dm.Diagnostic:

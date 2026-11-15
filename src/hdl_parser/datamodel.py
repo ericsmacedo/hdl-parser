@@ -172,6 +172,8 @@ class File(_BaseModel):
     Attributes:
         path: Related File. Within a project, the path is relative to the root of the project.
         lang: Language: `sv` (SystemVerilog) or `vhdl`.
+        includes: Paths of the included files, which have been read to expand macros (the file depends on them).
+                  Within a project, the paths are relative to the root of the project.
         modules: Modules Within That File.
         interfaces: Interfaces Within That File.
         packages: Packages Within That File.
@@ -180,6 +182,7 @@ class File(_BaseModel):
 
     path: Path | None
     lang: Literal["sv", "vhdl"] = "sv"
+    includes: tuple[str, ...] = ()
     modules: tuple["Module", ...] = ()
     interfaces: tuple["Interface", ...] = ()
     packages: tuple["Package", ...] = ()

@@ -173,6 +173,8 @@ class _Preprocessor:
         self.expanding: list[str] = []
         self.including: list[Path] = []
         self.included: set[Path] = set()
+        # all included files which have been read, in the order of reading
+        self.includes: list[Path] = []
         # source map of the main output: the output, its segments, its length and the outermost macro call
         self.main_out: list[str] | None = None
         self.segments: list[Segment] = []
@@ -393,6 +395,8 @@ class _Preprocessor:
             self.included.add(resolved)
         state = self.state
         depth = len(self.conds)
+        if resolved not in self.includes:
+            self.includes.append(resolved)
         try:
             self.process_file(file_path)
         except OSError as exc:
@@ -486,10 +490,11 @@ def expand_mapped(  # noqa: PLR0913
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
+    includes: list[Path] | None = None,
 ) -> tuple[str, SourceMap]:
     """Like [expand][hdl_parser._sv.preproc.expand], but also return the source map of the result.
 
-    Problems are reported to `diagnostics`.
+    Problems are reported to `diagnostics`. The included files which have been read are added to `includes`.
     """
     smap = SourceMap(text)
     if "`" not in text:
@@ -505,6 +510,8 @@ def expand_mapped(  # noqa: PLR0913
     else:
         preproc.process(text, context, None, out)
     # most of the time, there is nothing to do
+    if includes is not None:
+        includes += preproc.includes
     if len(out) == 1:
         return text, smap
     smap.set_segments(preproc.segments)

@@ -1501,6 +1501,7 @@ def parse(  # noqa: PLR0913
     """
     if diagnostics is None:
         diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
+    includes: list[Path] = []
     if expand_macros:
         text, smap = expand_mapped(
             text,
@@ -1509,6 +1510,7 @@ def parse(  # noqa: PLR0913
             inc_dirs=inc_dirs,
             resolve_ifdefs=resolve_ifdefs,
             diagnostics=diagnostics,
+            includes=includes,
         )
     else:
         smap = SourceMap(text)
@@ -1548,4 +1550,10 @@ def parse(  # noqa: PLR0913
             interfaces.append(dm.Interface(modports=_create_modports(mod.modports, smap), **fields))
         else:
             modules.append(dm.Module(**fields))
-    return dm.File(path=None, modules=tuple(modules), interfaces=tuple(interfaces), packages=packages)
+    return dm.File(
+        path=None,
+        includes=tuple(path.as_posix() for path in includes),
+        modules=tuple(modules),
+        interfaces=tuple(interfaces),
+        packages=packages,
+    )

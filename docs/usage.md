@@ -105,6 +105,42 @@ returns one:
 
 Clock and reset of a block are never guessed: they are empty, if the code does not tell them.
 
+## Projects
+
+A project is the model of all files of a design. It is created from a filelist, a directory or single files,
+and answers questions about the design instead of single files:
+
+```python
+>>> from hdl_parser import Project
+>>> project = Project.from_filelist("tests/corpus/sv/ibex/ibex_core.f")
+>>> len(project.files)
+17
+>>> project.resolve("ibex_alu").id
+'ibex_alu.sv:ibex_alu'
+>>> [use.inst for use in project.where_used("ibex_alu")]
+['ibex_ex_block.sv:ibex_ex_block.alu_i']
+>>> tree = project.hierarchy("ibex_ex_block")
+>>> [(node.name, node.module, node.definition) for node in tree.children]  # doctest: +NORMALIZE_WHITESPACE
+[('alu_i', 'ibex_alu', 'ibex_alu.sv:ibex_alu'),
+ ('multdiv_i', 'ibex_multdiv_slow', 'ibex_multdiv_slow.sv:ibex_multdiv_slow'),
+ ('multdiv_i', 'ibex_multdiv_fast', 'ibex_multdiv_fast.sv:ibex_multdiv_fast')]
+>>> project.find("ibex_alu.sv:ibex_alu.operator_i").ptype
+'ibex_pkg::alu_op_e'
+
+```
+
+* The paths of the files, and therefore the full identifiers of all items, are relative to the root of the project.
+* A file which cannot be read or parsed is part of the project with a diagnostic. The other files are still there.
+* Instances of modules which are defined nowhere are reported as `undefined-module`.
+* A module which is defined more than once is reported as `duplicate-definition`. The first definition is used,
+  unless `prefer={"fifo": "rtl/fifo.sv"}` names another one, or `exclude` leaves files of a directory out.
+* A filelist contributes its macros (`+define+`), include directories and libraries (`-v`, `-y`).
+* `cache=True` keeps the result of every file in `.hdl_parser_cache` within the root of the project.
+  A file is parsed again only if it changed, a file it includes changed, or it is parsed in another way.
+* `project.overview` is one JSON document for all files, with a `schema_version`.
+
+See [Project][hdl_parser.project.Project] for a full reference.
+
 ## Macros
 
 Macros are **not** expanded by default. On request (`--expand-macros`, `expand_macros=True`) macros are expanded,
