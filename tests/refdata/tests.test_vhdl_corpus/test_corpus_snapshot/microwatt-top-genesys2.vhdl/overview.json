@@ -1192,12 +1192,12 @@
           }
         },
         {
-          "id": "toplevel.reset_controller",
+          "id": "toplevel.nodram.reset_controller",
           "name": "reset_controller",
           "module": "soc_reset",
           "params": [
             {
-              "id": "toplevel.reset_controller.reset_low",
+              "id": "toplevel.nodram.reset_controller.reset_low",
               "port": "RESET_LOW",
               "con": "RESET_LOW",
               "loc": {
@@ -1210,7 +1210,7 @@
           ],
           "connections": [
             {
-              "id": "toplevel.reset_controller.ext_clk",
+              "id": "toplevel.nodram.reset_controller.ext_clk",
               "port": "ext_clk",
               "con": "ext_clk",
               "loc": {
@@ -1221,7 +1221,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller.pll_clk",
+              "id": "toplevel.nodram.reset_controller.pll_clk",
               "port": "pll_clk",
               "con": "system_clk",
               "loc": {
@@ -1232,7 +1232,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller.pll_locked_in",
+              "id": "toplevel.nodram.reset_controller.pll_locked_in",
               "port": "pll_locked_in",
               "con": "system_clk_locked",
               "loc": {
@@ -1243,7 +1243,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller.ext_rst_in",
+              "id": "toplevel.nodram.reset_controller.ext_rst_in",
               "port": "ext_rst_in",
               "con": "ext_rst_n",
               "loc": {
@@ -1254,7 +1254,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller.pll_rst_out",
+              "id": "toplevel.nodram.reset_controller.pll_rst_out",
               "port": "pll_rst_out",
               "con": "pll_rst",
               "loc": {
@@ -1265,7 +1265,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller.rst_out",
+              "id": "toplevel.nodram.reset_controller.rst_out",
               "port": "rst_out",
               "con": "soc_rst",
               "loc": {
@@ -1276,6 +1276,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
           "loc": {
             "line": 229,
             "col": 2,
@@ -1284,12 +1291,12 @@
           }
         },
         {
-          "id": "toplevel.clkgen",
+          "id": "toplevel.nodram.clkgen",
           "name": "clkgen",
           "module": "clock_generator",
           "params": [
             {
-              "id": "toplevel.clkgen.clk_input_hz",
+              "id": "toplevel.nodram.clkgen.clk_input_hz",
               "port": "CLK_INPUT_HZ",
               "con": "200000000",
               "loc": {
@@ -1300,7 +1307,7 @@
               }
             },
             {
-              "id": "toplevel.clkgen.clk_output_hz",
+              "id": "toplevel.nodram.clkgen.clk_output_hz",
               "port": "CLK_OUTPUT_HZ",
               "con": "CLK_FREQUENCY",
               "loc": {
@@ -1313,7 +1320,7 @@
           ],
           "connections": [
             {
-              "id": "toplevel.clkgen.ext_clk",
+              "id": "toplevel.nodram.clkgen.ext_clk",
               "port": "ext_clk",
               "con": "ext_clk",
               "loc": {
@@ -1324,7 +1331,7 @@
               }
             },
             {
-              "id": "toplevel.clkgen.pll_rst_in",
+              "id": "toplevel.nodram.clkgen.pll_rst_in",
               "port": "pll_rst_in",
               "con": "pll_rst",
               "loc": {
@@ -1335,7 +1342,7 @@
               }
             },
             {
-              "id": "toplevel.clkgen.pll_clk_out",
+              "id": "toplevel.nodram.clkgen.pll_clk_out",
               "port": "pll_clk_out",
               "con": "system_clk",
               "loc": {
@@ -1346,7 +1353,7 @@
               }
             },
             {
-              "id": "toplevel.clkgen.pll_locked_out",
+              "id": "toplevel.nodram.clkgen.pll_locked_out",
               "port": "pll_locked_out",
               "con": "system_clk_locked",
               "loc": {
@@ -1357,6 +1364,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
           "loc": {
             "line": 242,
             "col": 2,
@@ -1365,12 +1379,12 @@
           }
         },
         {
-          "id": "toplevel.dummy_dram_clk",
+          "id": "toplevel.nodram.dummy_dram_clk",
           "name": "dummy_dram_clk",
           "module": "OBUFDS",
           "connections": [
             {
-              "id": "toplevel.dummy_dram_clk.o",
+              "id": "toplevel.nodram.dummy_dram_clk.o",
               "port": "O",
               "con": "ddram_clk_p",
               "loc": {
@@ -1381,7 +1395,7 @@
               }
             },
             {
-              "id": "toplevel.dummy_dram_clk.ob",
+              "id": "toplevel.nodram.dummy_dram_clk.ob",
               "port": "OB",
               "con": "ddram_clk_n",
               "loc": {
@@ -1392,7 +1406,7 @@
               }
             },
             {
-              "id": "toplevel.dummy_dram_clk.i",
+              "id": "toplevel.nodram.dummy_dram_clk.i",
               "port": "I",
               "con": "ddram_clk_dummy",
               "loc": {
@@ -1403,6 +1417,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
           "loc": {
             "line": 262,
             "col": 9,
@@ -1411,12 +1432,12 @@
           }
         },
         {
-          "id": "toplevel.reset_controller~2",
+          "id": "toplevel.has_dram.reset_controller",
           "name": "reset_controller",
           "module": "soc_reset",
           "params": [
             {
-              "id": "toplevel.reset_controller~2.reset_low",
+              "id": "toplevel.has_dram.reset_controller.reset_low",
               "port": "RESET_LOW",
               "con": "RESET_LOW",
               "loc": {
@@ -1427,7 +1448,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.pll_reset_bits",
+              "id": "toplevel.has_dram.reset_controller.pll_reset_bits",
               "port": "PLL_RESET_BITS",
               "con": "18",
               "loc": {
@@ -1438,7 +1459,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.soc_reset_bits",
+              "id": "toplevel.has_dram.reset_controller.soc_reset_bits",
               "port": "SOC_RESET_BITS",
               "con": "1",
               "loc": {
@@ -1451,7 +1472,7 @@
           ],
           "connections": [
             {
-              "id": "toplevel.reset_controller~2.ext_clk",
+              "id": "toplevel.has_dram.reset_controller.ext_clk",
               "port": "ext_clk",
               "con": "ext_clk",
               "loc": {
@@ -1462,7 +1483,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.pll_clk",
+              "id": "toplevel.has_dram.reset_controller.pll_clk",
               "port": "pll_clk",
               "con": "system_clk",
               "loc": {
@@ -1473,7 +1494,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.pll_locked_in",
+              "id": "toplevel.has_dram.reset_controller.pll_locked_in",
               "port": "pll_locked_in",
               "con": "'1'",
               "loc": {
@@ -1484,7 +1505,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.ext_rst_in",
+              "id": "toplevel.has_dram.reset_controller.ext_rst_in",
               "port": "ext_rst_in",
               "con": "ext_rst_n",
               "loc": {
@@ -1495,7 +1516,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.pll_rst_out",
+              "id": "toplevel.has_dram.reset_controller.pll_rst_out",
               "port": "pll_rst_out",
               "con": "pll_rst",
               "loc": {
@@ -1506,7 +1527,7 @@
               }
             },
             {
-              "id": "toplevel.reset_controller~2.rst_out",
+              "id": "toplevel.has_dram.reset_controller.rst_out",
               "port": "rst_out",
               "con": "open",
               "loc": {
@@ -1517,6 +1538,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
           "loc": {
             "line": 282,
             "col": 2,
@@ -1525,12 +1553,12 @@
           }
         },
         {
-          "id": "toplevel.dram",
+          "id": "toplevel.has_dram.dram",
           "name": "dram",
           "module": "litedram_wrapper",
           "params": [
             {
-              "id": "toplevel.dram.dram_abits",
+              "id": "toplevel.has_dram.dram.dram_abits",
               "port": "DRAM_ABITS",
               "con": "25",
               "loc": {
@@ -1541,7 +1569,7 @@
               }
             },
             {
-              "id": "toplevel.dram.dram_alines",
+              "id": "toplevel.has_dram.dram.dram_alines",
               "port": "DRAM_ALINES",
               "con": "15",
               "loc": {
@@ -1552,7 +1580,7 @@
               }
             },
             {
-              "id": "toplevel.dram.dram_dlines",
+              "id": "toplevel.has_dram.dram.dram_dlines",
               "port": "DRAM_DLINES",
               "con": "32",
               "loc": {
@@ -1563,7 +1591,7 @@
               }
             },
             {
-              "id": "toplevel.dram.dram_cklines",
+              "id": "toplevel.has_dram.dram.dram_cklines",
               "port": "DRAM_CKLINES",
               "con": "1",
               "loc": {
@@ -1574,7 +1602,7 @@
               }
             },
             {
-              "id": "toplevel.dram.dram_port_width",
+              "id": "toplevel.has_dram.dram.dram_port_width",
               "port": "DRAM_PORT_WIDTH",
               "con": "256",
               "loc": {
@@ -1585,7 +1613,7 @@
               }
             },
             {
-              "id": "toplevel.dram.payload_file",
+              "id": "toplevel.has_dram.dram.payload_file",
               "port": "PAYLOAD_FILE",
               "con": "RAM_INIT_FILE",
               "loc": {
@@ -1596,7 +1624,7 @@
               }
             },
             {
-              "id": "toplevel.dram.payload_size",
+              "id": "toplevel.has_dram.dram.payload_size",
               "port": "PAYLOAD_SIZE",
               "con": "PAYLOAD_SIZE",
               "loc": {
@@ -1609,7 +1637,7 @@
           ],
           "connections": [
             {
-              "id": "toplevel.dram.clk_in",
+              "id": "toplevel.has_dram.dram.clk_in",
               "port": "clk_in",
               "con": "ext_clk",
               "loc": {
@@ -1620,7 +1648,7 @@
               }
             },
             {
-              "id": "toplevel.dram.rst",
+              "id": "toplevel.has_dram.dram.rst",
               "port": "rst",
               "con": "pll_rst",
               "loc": {
@@ -1631,7 +1659,7 @@
               }
             },
             {
-              "id": "toplevel.dram.system_clk",
+              "id": "toplevel.has_dram.dram.system_clk",
               "port": "system_clk",
               "con": "system_clk",
               "loc": {
@@ -1642,7 +1670,7 @@
               }
             },
             {
-              "id": "toplevel.dram.system_reset",
+              "id": "toplevel.has_dram.dram.system_reset",
               "port": "system_reset",
               "con": "dram_sys_rst",
               "loc": {
@@ -1653,7 +1681,7 @@
               }
             },
             {
-              "id": "toplevel.dram.pll_locked",
+              "id": "toplevel.has_dram.dram.pll_locked",
               "port": "pll_locked",
               "con": "system_clk_locked",
               "loc": {
@@ -1664,7 +1692,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_in",
+              "id": "toplevel.has_dram.dram.wb_in",
               "port": "wb_in",
               "con": "wb_dram_in",
               "loc": {
@@ -1675,7 +1703,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_out",
+              "id": "toplevel.has_dram.dram.wb_out",
               "port": "wb_out",
               "con": "wb_dram_out",
               "loc": {
@@ -1686,7 +1714,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_ctrl_in",
+              "id": "toplevel.has_dram.dram.wb_ctrl_in",
               "port": "wb_ctrl_in",
               "con": "wb_ext_io_in",
               "loc": {
@@ -1697,7 +1725,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_ctrl_out",
+              "id": "toplevel.has_dram.dram.wb_ctrl_out",
               "port": "wb_ctrl_out",
               "con": "wb_dram_ctrl_out",
               "comment": [
@@ -1711,7 +1739,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_ctrl_is_csr",
+              "id": "toplevel.has_dram.dram.wb_ctrl_is_csr",
               "port": "wb_ctrl_is_csr",
               "con": "wb_ext_is_dram_csr",
               "loc": {
@@ -1722,7 +1750,7 @@
               }
             },
             {
-              "id": "toplevel.dram.wb_ctrl_is_init",
+              "id": "toplevel.has_dram.dram.wb_ctrl_is_init",
               "port": "wb_ctrl_is_init",
               "con": "wb_ext_is_dram_init",
               "loc": {
@@ -1733,7 +1761,7 @@
               }
             },
             {
-              "id": "toplevel.dram.init_done",
+              "id": "toplevel.has_dram.dram.init_done",
               "port": "init_done",
               "con": "dram_init_done",
               "loc": {
@@ -1744,7 +1772,7 @@
               }
             },
             {
-              "id": "toplevel.dram.init_error",
+              "id": "toplevel.has_dram.dram.init_error",
               "port": "init_error",
               "con": "dram_init_error",
               "loc": {
@@ -1755,7 +1783,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_a",
+              "id": "toplevel.has_dram.dram.ddram_a",
               "port": "ddram_a",
               "con": "ddram_a",
               "loc": {
@@ -1766,7 +1794,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_ba",
+              "id": "toplevel.has_dram.dram.ddram_ba",
               "port": "ddram_ba",
               "con": "ddram_ba",
               "loc": {
@@ -1777,7 +1805,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_ras_n",
+              "id": "toplevel.has_dram.dram.ddram_ras_n",
               "port": "ddram_ras_n",
               "con": "ddram_ras_n",
               "loc": {
@@ -1788,7 +1816,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_cas_n",
+              "id": "toplevel.has_dram.dram.ddram_cas_n",
               "port": "ddram_cas_n",
               "con": "ddram_cas_n",
               "loc": {
@@ -1799,7 +1827,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_we_n",
+              "id": "toplevel.has_dram.dram.ddram_we_n",
               "port": "ddram_we_n",
               "con": "ddram_we_n",
               "loc": {
@@ -1810,7 +1838,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_cs_n",
+              "id": "toplevel.has_dram.dram.ddram_cs_n",
               "port": "ddram_cs_n",
               "con": "ddram_cs_n",
               "loc": {
@@ -1821,7 +1849,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_dm",
+              "id": "toplevel.has_dram.dram.ddram_dm",
               "port": "ddram_dm",
               "con": "ddram_dm",
               "loc": {
@@ -1832,7 +1860,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_dq",
+              "id": "toplevel.has_dram.dram.ddram_dq",
               "port": "ddram_dq",
               "con": "ddram_dq",
               "loc": {
@@ -1843,7 +1871,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_dqs_p",
+              "id": "toplevel.has_dram.dram.ddram_dqs_p",
               "port": "ddram_dqs_p",
               "con": "ddram_dqs_p",
               "loc": {
@@ -1854,7 +1882,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_dqs_n",
+              "id": "toplevel.has_dram.dram.ddram_dqs_n",
               "port": "ddram_dqs_n",
               "con": "ddram_dqs_n",
               "loc": {
@@ -1865,7 +1893,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_clk_p",
+              "id": "toplevel.has_dram.dram.ddram_clk_p",
               "port": "ddram_clk_p",
               "con": "ddram_clk_p_vec",
               "loc": {
@@ -1876,7 +1904,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_clk_n",
+              "id": "toplevel.has_dram.dram.ddram_clk_n",
               "port": "ddram_clk_n",
               "con": "ddram_clk_n_vec",
               "loc": {
@@ -1887,7 +1915,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_cke",
+              "id": "toplevel.has_dram.dram.ddram_cke",
               "port": "ddram_cke",
               "con": "ddram_cke",
               "loc": {
@@ -1898,7 +1926,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_odt",
+              "id": "toplevel.has_dram.dram.ddram_odt",
               "port": "ddram_odt",
               "con": "ddram_odt",
               "loc": {
@@ -1909,7 +1937,7 @@
               }
             },
             {
-              "id": "toplevel.dram.ddram_reset_n",
+              "id": "toplevel.has_dram.dram.ddram_reset_n",
               "port": "ddram_reset_n",
               "con": "ddram_reset_n",
               "loc": {
@@ -1920,6 +1948,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
           "loc": {
             "line": 310,
             "col": 2,
@@ -1928,12 +1963,12 @@
           }
         },
         {
-          "id": "toplevel.liteeth",
+          "id": "toplevel.has_liteeth.liteeth",
           "name": "liteeth",
           "module": "liteeth_core",
           "connections": [
             {
-              "id": "toplevel.liteeth.sys_clock",
+              "id": "toplevel.has_liteeth.liteeth.sys_clock",
               "port": "sys_clock",
               "con": "system_clk",
               "loc": {
@@ -1944,7 +1979,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.sys_reset",
+              "id": "toplevel.has_liteeth.liteeth.sys_reset",
               "port": "sys_reset",
               "con": "soc_rst",
               "loc": {
@@ -1955,7 +1990,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_clocks_tx",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_clocks_tx",
               "port": "rgmii_clocks_tx",
               "con": "eth_clocks_tx",
               "loc": {
@@ -1966,7 +2001,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_clocks_rx",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_clocks_rx",
               "port": "rgmii_clocks_rx",
               "con": "eth_clocks_rx",
               "loc": {
@@ -1977,7 +2012,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_rst_n",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_rst_n",
               "port": "rgmii_rst_n",
               "con": "eth_rst_n",
               "loc": {
@@ -1988,7 +2023,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_int_n",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_int_n",
               "port": "rgmii_int_n",
               "con": "eth_int_n",
               "loc": {
@@ -1999,7 +2034,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_mdio",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_mdio",
               "port": "rgmii_mdio",
               "con": "eth_mdio",
               "loc": {
@@ -2010,7 +2045,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_mdc",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_mdc",
               "port": "rgmii_mdc",
               "con": "eth_mdc",
               "loc": {
@@ -2021,7 +2056,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_rx_ctl",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_rx_ctl",
               "port": "rgmii_rx_ctl",
               "con": "eth_rx_ctl",
               "loc": {
@@ -2032,7 +2067,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_rx_data",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_rx_data",
               "port": "rgmii_rx_data",
               "con": "eth_rx_data",
               "loc": {
@@ -2043,7 +2078,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_tx_ctl",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_tx_ctl",
               "port": "rgmii_tx_ctl",
               "con": "eth_tx_ctl",
               "loc": {
@@ -2054,7 +2089,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.rgmii_tx_data",
+              "id": "toplevel.has_liteeth.liteeth.rgmii_tx_data",
               "port": "rgmii_tx_data",
               "con": "eth_tx_data",
               "loc": {
@@ -2065,7 +2100,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_adr",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_adr",
               "port": "wishbone_adr",
               "con": "wb_eth_adr",
               "loc": {
@@ -2076,7 +2111,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_dat_w",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_dat_w",
               "port": "wishbone_dat_w",
               "con": "wb_ext_io_in.dat",
               "loc": {
@@ -2087,7 +2122,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_dat_r",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_dat_r",
               "port": "wishbone_dat_r",
               "con": "wb_eth_out.dat",
               "loc": {
@@ -2098,7 +2133,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_sel",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_sel",
               "port": "wishbone_sel",
               "con": "wb_ext_io_in.sel",
               "loc": {
@@ -2109,7 +2144,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_cyc",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_cyc",
               "port": "wishbone_cyc",
               "con": "wb_eth_cyc",
               "loc": {
@@ -2120,7 +2155,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_stb",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_stb",
               "port": "wishbone_stb",
               "con": "wb_ext_io_in.stb",
               "loc": {
@@ -2131,7 +2166,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_ack",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_ack",
               "port": "wishbone_ack",
               "con": "wb_eth_out.ack",
               "loc": {
@@ -2142,7 +2177,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_we",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_we",
               "port": "wishbone_we",
               "con": "wb_ext_io_in.we",
               "loc": {
@@ -2153,7 +2188,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_cti",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_cti",
               "port": "wishbone_cti",
               "con": "\"000\"",
               "loc": {
@@ -2164,7 +2199,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_bte",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_bte",
               "port": "wishbone_bte",
               "con": "\"00\"",
               "loc": {
@@ -2175,7 +2210,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.wishbone_err",
+              "id": "toplevel.has_liteeth.liteeth.wishbone_err",
               "port": "wishbone_err",
               "con": "open",
               "loc": {
@@ -2186,7 +2221,7 @@
               }
             },
             {
-              "id": "toplevel.liteeth.interrupt",
+              "id": "toplevel.has_liteeth.liteeth.interrupt",
               "port": "interrupt",
               "con": "ext_irq_eth",
               "loc": {
@@ -2195,6 +2230,13 @@
                 "end_line": 420,
                 "end_col": 51
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
             }
           ],
           "loc": {

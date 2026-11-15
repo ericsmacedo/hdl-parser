@@ -92,12 +92,12 @@
       ],
       "insts": [
         {
-          "id": "reg_macros.u_delay",
+          "id": "reg_macros.gen_stage.u_delay",
           "name": "u_delay",
           "module": "delay",
           "params": [
             {
-              "id": "reg_macros.u_delay.WIDTH",
+              "id": "reg_macros.gen_stage.u_delay.WIDTH",
               "port": "WIDTH",
               "con": "WIDTH",
               "loc": {
@@ -110,7 +110,7 @@
           ],
           "connections": [
             {
-              "id": "reg_macros.u_delay.clk_i",
+              "id": "reg_macros.gen_stage.u_delay.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -122,7 +122,7 @@
               }
             },
             {
-              "id": "reg_macros.u_delay.rst_ni",
+              "id": "reg_macros.gen_stage.u_delay.rst_ni",
               "port": "rst_ni",
               "con": "rst_ni",
               "loc": {
@@ -134,7 +134,7 @@
               }
             },
             {
-              "id": "reg_macros.u_delay.d_i",
+              "id": "reg_macros.gen_stage.u_delay.d_i",
               "port": "d_i",
               "con": "stage_q",
               "loc": {
@@ -145,7 +145,7 @@
               }
             },
             {
-              "id": "reg_macros.u_delay.q_o",
+              "id": "reg_macros.gen_stage.u_delay.q_o",
               "port": "q_o",
               "loc": {
                 "line": 25,
@@ -153,6 +153,13 @@
                 "end_line": 25,
                 "end_col": 76
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_stage",
+              "cond": "genvar i = 0; i < STAGES; i++"
             }
           ],
           "loc": {

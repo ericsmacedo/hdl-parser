@@ -615,12 +615,12 @@
       ],
       "insts": [
         {
-          "id": "cdc_fifo_gray_src.i_sync",
+          "id": "cdc_fifo_gray_src.gen_sync.i_sync",
           "name": "i_sync",
           "module": "sync",
           "params": [
             {
-              "id": "cdc_fifo_gray_src.i_sync.STAGES",
+              "id": "cdc_fifo_gray_src.gen_sync.i_sync.STAGES",
               "port": "STAGES",
               "con": "SYNC_STAGES",
               "loc": {
@@ -633,7 +633,7 @@
           ],
           "connections": [
             {
-              "id": "cdc_fifo_gray_src.i_sync.clk_i",
+              "id": "cdc_fifo_gray_src.gen_sync.i_sync.clk_i",
               "port": "clk_i",
               "con": "src_clk_i",
               "loc": {
@@ -644,7 +644,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_src.i_sync.rst_ni",
+              "id": "cdc_fifo_gray_src.gen_sync.i_sync.rst_ni",
               "port": "rst_ni",
               "con": "src_rst_ni",
               "loc": {
@@ -655,7 +655,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_src.i_sync.serial_i",
+              "id": "cdc_fifo_gray_src.gen_sync.i_sync.serial_i",
               "port": "serial_i",
               "con": "async_rptr_i[i]",
               "loc": {
@@ -666,7 +666,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_src.i_sync.serial_o",
+              "id": "cdc_fifo_gray_src.gen_sync.i_sync.serial_o",
               "port": "serial_o",
               "con": "rptr[i]",
               "loc": {
@@ -675,6 +675,13 @@
                 "end_line": 207,
                 "end_col": 36
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_sync",
+              "cond": "genvar i = 0; i < PtrWidth; i++"
             }
           ],
           "loc": {
@@ -1098,12 +1105,12 @@
           }
         },
         {
-          "id": "cdc_fifo_gray_dst.i_sync",
+          "id": "cdc_fifo_gray_dst.gen_sync.i_sync",
           "name": "i_sync",
           "module": "sync",
           "params": [
             {
-              "id": "cdc_fifo_gray_dst.i_sync.STAGES",
+              "id": "cdc_fifo_gray_dst.gen_sync.i_sync.STAGES",
               "port": "STAGES",
               "con": "SYNC_STAGES",
               "loc": {
@@ -1116,7 +1123,7 @@
           ],
           "connections": [
             {
-              "id": "cdc_fifo_gray_dst.i_sync.clk_i",
+              "id": "cdc_fifo_gray_dst.gen_sync.i_sync.clk_i",
               "port": "clk_i",
               "con": "dst_clk_i",
               "loc": {
@@ -1127,7 +1134,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_dst.i_sync.rst_ni",
+              "id": "cdc_fifo_gray_dst.gen_sync.i_sync.rst_ni",
               "port": "rst_ni",
               "con": "dst_rst_ni",
               "loc": {
@@ -1138,7 +1145,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_dst.i_sync.serial_i",
+              "id": "cdc_fifo_gray_dst.gen_sync.i_sync.serial_i",
               "port": "serial_i",
               "con": "async_wptr_i[i]",
               "loc": {
@@ -1149,7 +1156,7 @@
               }
             },
             {
-              "id": "cdc_fifo_gray_dst.i_sync.serial_o",
+              "id": "cdc_fifo_gray_dst.gen_sync.i_sync.serial_o",
               "port": "serial_o",
               "con": "wptr[i]",
               "loc": {
@@ -1158,6 +1165,13 @@
                 "end_line": 268,
                 "end_col": 36
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_sync",
+              "cond": "genvar i = 0; i < PtrWidth; i++"
             }
           ],
           "loc": {

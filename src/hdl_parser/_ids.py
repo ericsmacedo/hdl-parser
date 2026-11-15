@@ -70,7 +70,9 @@ def assign_ids(modules: Iterable[dm.Module], casefold: bool = False) -> tuple[dm
         return tuple(result)
 
     def instance(inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
-        inst_id = scope.id(name(inst.name))
+        # the hierarchical name includes the labels of the generate blocks
+        labels = [name(generate.name) for generate in inst.generates if generate.name]
+        inst_id = scope.id(".".join((*labels, name(inst.name))))
         # parameters and ports share the names of the instantiated module
         inst_scope = _Scope(inst_id)
         update = {

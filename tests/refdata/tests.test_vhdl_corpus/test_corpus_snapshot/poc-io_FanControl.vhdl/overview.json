@@ -109,12 +109,12 @@
       ],
       "insts": [
         {
-          "id": "io_fancontrol.systemmonitor",
+          "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor",
           "name": "SystemMonitor",
           "module": "xil_SystemMonitor",
           "connections": [
             {
-              "id": "io_fancontrol.systemmonitor.reset",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.reset",
               "port": "Reset",
               "con": "Reset",
               "comment": [
@@ -128,7 +128,7 @@
               }
             },
             {
-              "id": "io_fancontrol.systemmonitor.alarm_usertemp",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.alarm_usertemp",
               "port": "Alarm_UserTemp",
               "con": "UserTemperature_async",
               "comment": [
@@ -142,7 +142,7 @@
               }
             },
             {
-              "id": "io_fancontrol.systemmonitor.alarm_overtemp",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.alarm_overtemp",
               "port": "Alarm_OverTemp",
               "con": "OverTemperature_async",
               "comment": [
@@ -156,7 +156,7 @@
               }
             },
             {
-              "id": "io_fancontrol.systemmonitor.alarm",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.alarm",
               "port": "Alarm",
               "con": "open",
               "comment": [
@@ -170,7 +170,7 @@
               }
             },
             {
-              "id": "io_fancontrol.systemmonitor.vp",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.vp",
               "port": "VP",
               "con": "'0'",
               "comment": [
@@ -184,7 +184,7 @@
               }
             },
             {
-              "id": "io_fancontrol.systemmonitor.vn",
+              "id": "io_fancontrol.genxilinx.genxilinxboard.systemmonitor.vn",
               "port": "VN",
               "con": "'0'",
               "loc": {
@@ -195,6 +195,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genXilinx",
+              "cond": "VENDOR = VENDOR_XILINX"
+            },
+            {
+              "kind": "if",
+              "name": "genXilinxBoard",
+              "cond": "str_imatch(BOARD_NAME, \"ML605\") or str_imatch(BOARD_NAME, \"KC705\") or\n\t\t                    str_imatch(BOARD_NAME, \"VC707\") or str_imatch(BOARD_NAME, \"KCU105\")"
+            }
+          ],
           "loc": {
             "line": 111,
             "col": 4,
@@ -203,12 +215,12 @@
           }
         },
         {
-          "id": "io_fancontrol.sync",
+          "id": "io_fancontrol.genxilinx.sync",
           "name": "sync",
           "module": "sync_Bits_Xilinx",
           "params": [
             {
-              "id": "io_fancontrol.sync.bits",
+              "id": "io_fancontrol.genxilinx.sync.bits",
               "port": "BITS",
               "con": "2",
               "loc": {
@@ -221,7 +233,7 @@
           ],
           "connections": [
             {
-              "id": "io_fancontrol.sync.clock",
+              "id": "io_fancontrol.genxilinx.sync.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -232,7 +244,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync.input(0)",
+              "id": "io_fancontrol.genxilinx.sync.input(0)",
               "port": "Input(0)",
               "con": "OverTemperature_async",
               "loc": {
@@ -243,7 +255,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync.input(1)",
+              "id": "io_fancontrol.genxilinx.sync.input(1)",
               "port": "Input(1)",
               "con": "UserTemperature_async",
               "loc": {
@@ -254,7 +266,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync.output(0)",
+              "id": "io_fancontrol.genxilinx.sync.output(0)",
               "port": "Output(0)",
               "con": "OverTemperature_sync",
               "loc": {
@@ -265,7 +277,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync.output(1)",
+              "id": "io_fancontrol.genxilinx.sync.output(1)",
               "port": "Output(1)",
               "con": "UserTemperature_sync",
               "loc": {
@@ -276,6 +288,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genXilinx",
+              "cond": "VENDOR = VENDOR_XILINX"
+            }
+          ],
           "loc": {
             "line": 123,
             "col": 3,
@@ -284,12 +303,12 @@
           }
         },
         {
-          "id": "io_fancontrol.tc",
+          "id": "io_fancontrol.genxilinx.tc",
           "name": "TC",
           "module": "io_TimingCounter",
           "params": [
             {
-              "id": "io_fancontrol.tc.timing_table",
+              "id": "io_fancontrol.genxilinx.tc.timing_table",
               "port": "TIMING_TABLE",
               "con": "(0 => CLOCK_FREQ/TIME_STARTUP_INVERSE)",
               "comment": [
@@ -305,7 +324,7 @@
           ],
           "connections": [
             {
-              "id": "io_fancontrol.tc.clock",
+              "id": "io_fancontrol.genxilinx.tc.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -319,7 +338,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc.enable",
+              "id": "io_fancontrol.genxilinx.tc.enable",
               "port": "Enable",
               "con": "StartUp",
               "comment": [
@@ -333,7 +352,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc.load",
+              "id": "io_fancontrol.genxilinx.tc.load",
               "port": "Load",
               "con": "'0'",
               "comment": [
@@ -347,7 +366,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc.slot",
+              "id": "io_fancontrol.genxilinx.tc.slot",
               "port": "Slot",
               "con": "0",
               "comment": [
@@ -361,7 +380,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc.timeout",
+              "id": "io_fancontrol.genxilinx.tc.timeout",
               "port": "Timeout",
               "con": "TC_Timeout",
               "comment": [
@@ -375,6 +394,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genXilinx",
+              "cond": "VENDOR = VENDOR_XILINX"
+            }
+          ],
           "loc": {
             "line": 137,
             "col": 3,
@@ -383,12 +409,12 @@
           }
         },
         {
-          "id": "io_fancontrol.tc~2",
+          "id": "io_fancontrol.genaltera.tc",
           "name": "TC",
           "module": "io_TimingCounter",
           "params": [
             {
-              "id": "io_fancontrol.tc~2.timing_table",
+              "id": "io_fancontrol.genaltera.tc.timing_table",
               "port": "TIMING_TABLE",
               "con": "(0 => CLOCK_FREQ/TIME_STARTUP_INVERSE)",
               "comment": [
@@ -404,7 +430,7 @@
           ],
           "connections": [
             {
-              "id": "io_fancontrol.tc~2.clock",
+              "id": "io_fancontrol.genaltera.tc.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -418,7 +444,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc~2.enable",
+              "id": "io_fancontrol.genaltera.tc.enable",
               "port": "Enable",
               "con": "StartUp",
               "comment": [
@@ -432,7 +458,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc~2.load",
+              "id": "io_fancontrol.genaltera.tc.load",
               "port": "Load",
               "con": "'0'",
               "comment": [
@@ -446,7 +472,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc~2.slot",
+              "id": "io_fancontrol.genaltera.tc.slot",
               "port": "Slot",
               "con": "0",
               "comment": [
@@ -460,7 +486,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tc~2.timeout",
+              "id": "io_fancontrol.genaltera.tc.timeout",
               "port": "Timeout",
               "con": "TC_Timeout",
               "comment": [
@@ -472,6 +498,13 @@
                 "end_line": 187,
                 "end_col": 32
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genAltera",
+              "cond": "VENDOR = VENDOR_ALTERA"
             }
           ],
           "loc": {
@@ -583,12 +616,12 @@
           }
         },
         {
-          "id": "io_fancontrol.sync_i",
+          "id": "io_fancontrol.gentacho.gensync.sync_i",
           "name": "sync_i",
           "module": "sync_Bits",
           "connections": [
             {
-              "id": "io_fancontrol.sync_i.clock",
+              "id": "io_fancontrol.gentacho.gensync.sync_i.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -602,7 +635,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync_i.input(0)",
+              "id": "io_fancontrol.gentacho.gensync.sync_i.input(0)",
               "port": "Input(0)",
               "con": "Fan_Tacho",
               "comment": [
@@ -616,7 +649,7 @@
               }
             },
             {
-              "id": "io_fancontrol.sync_i.output(0)",
+              "id": "io_fancontrol.gentacho.gensync.sync_i.output(0)",
               "port": "Output(0)",
               "con": "Tacho_sync",
               "comment": [
@@ -630,6 +663,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genTacho",
+              "cond": "ENABLE_TACHO"
+            },
+            {
+              "kind": "if",
+              "name": "genSync",
+              "cond": "ADD_INPUT_SYNCHRONIZERS"
+            }
+          ],
           "loc": {
             "line": 234,
             "col": 4,
@@ -638,12 +683,12 @@
           }
         },
         {
-          "id": "io_fancontrol.tacho",
+          "id": "io_fancontrol.gentacho.tacho",
           "name": "Tacho",
           "module": "io_FrequencyCounter",
           "params": [
             {
-              "id": "io_fancontrol.tacho.clock_freq",
+              "id": "io_fancontrol.gentacho.tacho.clock_freq",
               "port": "CLOCK_FREQ",
               "con": "CLOCK_FREQ",
               "comment": [
@@ -657,7 +702,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tacho.timebase",
+              "id": "io_fancontrol.gentacho.tacho.timebase",
               "port": "TIMEBASE",
               "con": "(60 sec / 64)",
               "comment": [
@@ -671,7 +716,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tacho.resolution",
+              "id": "io_fancontrol.gentacho.tacho.resolution",
               "port": "RESOLUTION",
               "con": "8",
               "comment": [
@@ -687,7 +732,7 @@
           ],
           "connections": [
             {
-              "id": "io_fancontrol.tacho.clock",
+              "id": "io_fancontrol.gentacho.tacho.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -698,7 +743,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tacho.reset",
+              "id": "io_fancontrol.gentacho.tacho.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -709,7 +754,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tacho.freqin",
+              "id": "io_fancontrol.gentacho.tacho.freqin",
               "port": "FreqIn",
               "con": "Tacho_sync",
               "loc": {
@@ -720,7 +765,7 @@
               }
             },
             {
-              "id": "io_fancontrol.tacho.freqout",
+              "id": "io_fancontrol.gentacho.tacho.freqout",
               "port": "FreqOut",
               "con": "Tacho_Freq",
               "loc": {
@@ -729,6 +774,13 @@
                 "end_line": 252,
                 "end_col": 32
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genTacho",
+              "cond": "ENABLE_TACHO"
             }
           ],
           "loc": {

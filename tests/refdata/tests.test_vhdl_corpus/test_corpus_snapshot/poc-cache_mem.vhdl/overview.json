@@ -584,12 +584,12 @@
           }
         },
         {
-          "id": "cache_mem.req_fifo",
+          "id": "cache_mem.g2.req_fifo",
           "name": "req_fifo",
           "module": "fifo_glue",
           "params": [
             {
-              "id": "cache_mem.req_fifo.d_bits",
+              "id": "cache_mem.g2.req_fifo.d_bits",
               "port": "D_BITS",
               "con": "D_BITS",
               "loc": {
@@ -602,7 +602,7 @@
           ],
           "connections": [
             {
-              "id": "cache_mem.req_fifo.clk",
+              "id": "cache_mem.g2.req_fifo.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -613,7 +613,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.rst",
+              "id": "cache_mem.g2.req_fifo.rst",
               "port": "rst",
               "con": "rst",
               "loc": {
@@ -624,7 +624,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.put",
+              "id": "cache_mem.g2.req_fifo.put",
               "port": "put",
               "con": "put",
               "loc": {
@@ -635,7 +635,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.di",
+              "id": "cache_mem.g2.req_fifo.di",
               "port": "di",
               "con": "din",
               "loc": {
@@ -646,7 +646,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.ful",
+              "id": "cache_mem.g2.req_fifo.ful",
               "port": "ful",
               "con": "full",
               "loc": {
@@ -657,7 +657,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.vld",
+              "id": "cache_mem.g2.req_fifo.vld",
               "port": "vld",
               "con": "valid",
               "loc": {
@@ -668,7 +668,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.do",
+              "id": "cache_mem.g2.req_fifo.do",
               "port": "do",
               "con": "dout",
               "loc": {
@@ -679,7 +679,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo.got",
+              "id": "cache_mem.g2.req_fifo.got",
               "port": "got",
               "con": "int_got",
               "loc": {
@@ -690,6 +690,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
           "loc": {
             "line": 282,
             "col": 3,
@@ -698,12 +705,12 @@
           }
         },
         {
-          "id": "cache_mem.req_fifo~2",
+          "id": "cache_mem.gt2.req_fifo",
           "name": "req_fifo",
           "module": "fifo_cc_got",
           "params": [
             {
-              "id": "cache_mem.req_fifo~2.d_bits",
+              "id": "cache_mem.gt2.req_fifo.d_bits",
               "port": "D_BITS",
               "con": "D_BITS",
               "loc": {
@@ -714,7 +721,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.min_depth",
+              "id": "cache_mem.gt2.req_fifo.min_depth",
               "port": "MIN_DEPTH",
               "con": "OUTSTANDING_REQ",
               "loc": {
@@ -725,7 +732,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.data_reg",
+              "id": "cache_mem.gt2.req_fifo.data_reg",
               "port": "DATA_REG",
               "con": "false",
               "comment": [
@@ -739,7 +746,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.state_reg",
+              "id": "cache_mem.gt2.req_fifo.state_reg",
               "port": "STATE_REG",
               "con": "true",
               "loc": {
@@ -750,7 +757,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.output_reg",
+              "id": "cache_mem.gt2.req_fifo.output_reg",
               "port": "OUTPUT_REG",
               "con": "true",
               "loc": {
@@ -763,7 +770,7 @@
           ],
           "connections": [
             {
-              "id": "cache_mem.req_fifo~2.rst",
+              "id": "cache_mem.gt2.req_fifo.rst",
               "port": "rst",
               "con": "rst",
               "loc": {
@@ -774,7 +781,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.clk",
+              "id": "cache_mem.gt2.req_fifo.clk",
               "port": "clk",
               "con": "clk",
               "loc": {
@@ -785,7 +792,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.put",
+              "id": "cache_mem.gt2.req_fifo.put",
               "port": "put",
               "con": "put",
               "loc": {
@@ -796,7 +803,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.din",
+              "id": "cache_mem.gt2.req_fifo.din",
               "port": "din",
               "con": "din",
               "loc": {
@@ -807,7 +814,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.full",
+              "id": "cache_mem.gt2.req_fifo.full",
               "port": "full",
               "con": "full",
               "loc": {
@@ -818,7 +825,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.estate_wr",
+              "id": "cache_mem.gt2.req_fifo.estate_wr",
               "port": "estate_wr",
               "con": "open",
               "loc": {
@@ -829,7 +836,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.got",
+              "id": "cache_mem.gt2.req_fifo.got",
               "port": "got",
               "con": "int_got",
               "loc": {
@@ -840,7 +847,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.dout",
+              "id": "cache_mem.gt2.req_fifo.dout",
               "port": "dout",
               "con": "dout",
               "loc": {
@@ -851,7 +858,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.valid",
+              "id": "cache_mem.gt2.req_fifo.valid",
               "port": "valid",
               "con": "valid",
               "loc": {
@@ -862,7 +869,7 @@
               }
             },
             {
-              "id": "cache_mem.req_fifo~2.fstate_rd",
+              "id": "cache_mem.gt2.req_fifo.fstate_rd",
               "port": "fstate_rd",
               "con": "open",
               "loc": {
@@ -871,6 +878,13 @@
                 "end_line": 335,
                 "end_col": 26
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
             }
           ],
           "loc": {

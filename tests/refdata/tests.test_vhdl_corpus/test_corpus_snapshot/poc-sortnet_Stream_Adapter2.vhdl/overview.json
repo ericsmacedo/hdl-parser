@@ -508,12 +508,12 @@
           }
         },
         {
-          "id": "sortnet_stream_adapter2.sort",
+          "id": "sortnet_stream_adapter2.genoes.sort",
           "name": "sort",
           "module": "sortnet_OddEvenSort",
           "params": [
             {
-              "id": "sortnet_stream_adapter2.sort.inputs",
+              "id": "sortnet_stream_adapter2.genoes.sort.inputs",
               "port": "INPUTS",
               "con": "SORTNET_SIZE",
               "loc": {
@@ -524,7 +524,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.key_bits",
+              "id": "sortnet_stream_adapter2.genoes.sort.key_bits",
               "port": "KEY_BITS",
               "con": "SORTNET_KEY_BITS",
               "loc": {
@@ -535,7 +535,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.data_bits",
+              "id": "sortnet_stream_adapter2.genoes.sort.data_bits",
               "port": "DATA_BITS",
               "con": "SORTNET_DATA_BITS",
               "loc": {
@@ -546,7 +546,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.meta_bits",
+              "id": "sortnet_stream_adapter2.genoes.sort.meta_bits",
               "port": "META_BITS",
               "con": "STREAM_META_BITS",
               "loc": {
@@ -557,7 +557,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.pipeline_stage_after",
+              "id": "sortnet_stream_adapter2.genoes.sort.pipeline_stage_after",
               "port": "PIPELINE_STAGE_AFTER",
               "con": "SORTNET_REG_AFTER",
               "loc": {
@@ -568,7 +568,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.add_output_registers",
+              "id": "sortnet_stream_adapter2.genoes.sort.add_output_registers",
               "port": "ADD_OUTPUT_REGISTERS",
               "con": "FALSE",
               "loc": {
@@ -581,7 +581,7 @@
           ],
           "connections": [
             {
-              "id": "sortnet_stream_adapter2.sort.clock",
+              "id": "sortnet_stream_adapter2.genoes.sort.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -592,7 +592,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.reset",
+              "id": "sortnet_stream_adapter2.genoes.sort.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -603,7 +603,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.inverse",
+              "id": "sortnet_stream_adapter2.genoes.sort.inverse",
               "port": "Inverse",
               "con": "Inverse",
               "loc": {
@@ -614,7 +614,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.in_valid",
+              "id": "sortnet_stream_adapter2.genoes.sort.in_valid",
               "port": "In_Valid",
               "con": "gearup_Valid",
               "loc": {
@@ -625,7 +625,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.in_iskey",
+              "id": "sortnet_stream_adapter2.genoes.sort.in_iskey",
               "port": "In_IsKey",
               "con": "gearup_Meta(META_ISKEY_BIT)",
               "loc": {
@@ -636,7 +636,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.in_data",
+              "id": "sortnet_stream_adapter2.genoes.sort.in_data",
               "port": "In_Data",
               "con": "DataInputMatrix",
               "loc": {
@@ -647,7 +647,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.in_meta",
+              "id": "sortnet_stream_adapter2.genoes.sort.in_meta",
               "port": "In_Meta",
               "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)",
               "loc": {
@@ -658,7 +658,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.out_valid",
+              "id": "sortnet_stream_adapter2.genoes.sort.out_valid",
               "port": "Out_Valid",
               "con": "sort_Valid",
               "loc": {
@@ -669,7 +669,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.out_iskey",
+              "id": "sortnet_stream_adapter2.genoes.sort.out_iskey",
               "port": "Out_IsKey",
               "con": "sort_IsKey",
               "loc": {
@@ -680,7 +680,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.out_data",
+              "id": "sortnet_stream_adapter2.genoes.sort.out_data",
               "port": "Out_Data",
               "con": "DataOutputMatrix",
               "loc": {
@@ -691,7 +691,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort.out_meta",
+              "id": "sortnet_stream_adapter2.genoes.sort.out_meta",
               "port": "Out_Meta",
               "con": "sort_Meta",
               "loc": {
@@ -702,6 +702,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOES",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_SORT"
+            }
+          ],
           "loc": {
             "line": 166,
             "col": 3,
@@ -710,12 +717,12 @@
           }
         },
         {
-          "id": "sortnet_stream_adapter2.sort~2",
+          "id": "sortnet_stream_adapter2.genoems.sort",
           "name": "sort",
           "module": "sortnet_OddEvenMergeSort",
           "params": [
             {
-              "id": "sortnet_stream_adapter2.sort~2.inputs",
+              "id": "sortnet_stream_adapter2.genoems.sort.inputs",
               "port": "INPUTS",
               "con": "SORTNET_SIZE",
               "loc": {
@@ -726,7 +733,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.key_bits",
+              "id": "sortnet_stream_adapter2.genoems.sort.key_bits",
               "port": "KEY_BITS",
               "con": "SORTNET_KEY_BITS",
               "loc": {
@@ -737,7 +744,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.data_bits",
+              "id": "sortnet_stream_adapter2.genoems.sort.data_bits",
               "port": "DATA_BITS",
               "con": "SORTNET_DATA_BITS",
               "loc": {
@@ -748,7 +755,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.meta_bits",
+              "id": "sortnet_stream_adapter2.genoems.sort.meta_bits",
               "port": "META_BITS",
               "con": "STREAM_META_BITS",
               "loc": {
@@ -759,7 +766,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.pipeline_stage_after",
+              "id": "sortnet_stream_adapter2.genoems.sort.pipeline_stage_after",
               "port": "PIPELINE_STAGE_AFTER",
               "con": "SORTNET_REG_AFTER",
               "loc": {
@@ -770,7 +777,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.add_output_registers",
+              "id": "sortnet_stream_adapter2.genoems.sort.add_output_registers",
               "port": "ADD_OUTPUT_REGISTERS",
               "con": "FALSE",
               "loc": {
@@ -783,7 +790,7 @@
           ],
           "connections": [
             {
-              "id": "sortnet_stream_adapter2.sort~2.clock",
+              "id": "sortnet_stream_adapter2.genoems.sort.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -794,7 +801,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.reset",
+              "id": "sortnet_stream_adapter2.genoems.sort.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -805,7 +812,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.inverse",
+              "id": "sortnet_stream_adapter2.genoems.sort.inverse",
               "port": "Inverse",
               "con": "Inverse",
               "loc": {
@@ -816,7 +823,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.in_valid",
+              "id": "sortnet_stream_adapter2.genoems.sort.in_valid",
               "port": "In_Valid",
               "con": "gearup_Valid",
               "loc": {
@@ -827,7 +834,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.in_iskey",
+              "id": "sortnet_stream_adapter2.genoems.sort.in_iskey",
               "port": "In_IsKey",
               "con": "gearup_Meta(META_ISKEY_BIT)",
               "loc": {
@@ -838,7 +845,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.in_data",
+              "id": "sortnet_stream_adapter2.genoems.sort.in_data",
               "port": "In_Data",
               "con": "DataInputMatrix",
               "loc": {
@@ -849,7 +856,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.in_meta",
+              "id": "sortnet_stream_adapter2.genoems.sort.in_meta",
               "port": "In_Meta",
               "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)",
               "loc": {
@@ -860,7 +867,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.out_valid",
+              "id": "sortnet_stream_adapter2.genoems.sort.out_valid",
               "port": "Out_Valid",
               "con": "sort_Valid",
               "loc": {
@@ -871,7 +878,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.out_iskey",
+              "id": "sortnet_stream_adapter2.genoems.sort.out_iskey",
               "port": "Out_IsKey",
               "con": "sort_IsKey",
               "loc": {
@@ -882,7 +889,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.out_data",
+              "id": "sortnet_stream_adapter2.genoems.sort.out_data",
               "port": "Out_Data",
               "con": "DataOutputMatrix",
               "loc": {
@@ -893,7 +900,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~2.out_meta",
+              "id": "sortnet_stream_adapter2.genoems.sort.out_meta",
               "port": "Out_Meta",
               "con": "sort_Meta",
               "loc": {
@@ -904,6 +911,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOEMS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+            }
+          ],
           "loc": {
             "line": 203,
             "col": 3,
@@ -912,12 +926,12 @@
           }
         },
         {
-          "id": "sortnet_stream_adapter2.sort~3",
+          "id": "sortnet_stream_adapter2.genbs.sort",
           "name": "sort",
           "module": "sortnet_BitonicSort",
           "params": [
             {
-              "id": "sortnet_stream_adapter2.sort~3.inputs",
+              "id": "sortnet_stream_adapter2.genbs.sort.inputs",
               "port": "INPUTS",
               "con": "SORTNET_SIZE",
               "loc": {
@@ -928,7 +942,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.key_bits",
+              "id": "sortnet_stream_adapter2.genbs.sort.key_bits",
               "port": "KEY_BITS",
               "con": "SORTNET_KEY_BITS",
               "loc": {
@@ -939,7 +953,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.data_bits",
+              "id": "sortnet_stream_adapter2.genbs.sort.data_bits",
               "port": "DATA_BITS",
               "con": "SORTNET_DATA_BITS",
               "loc": {
@@ -950,7 +964,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.meta_bits",
+              "id": "sortnet_stream_adapter2.genbs.sort.meta_bits",
               "port": "META_BITS",
               "con": "STREAM_META_BITS",
               "loc": {
@@ -961,7 +975,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.pipeline_stage_after",
+              "id": "sortnet_stream_adapter2.genbs.sort.pipeline_stage_after",
               "port": "PIPELINE_STAGE_AFTER",
               "con": "SORTNET_REG_AFTER",
               "loc": {
@@ -972,7 +986,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.add_output_registers",
+              "id": "sortnet_stream_adapter2.genbs.sort.add_output_registers",
               "port": "ADD_OUTPUT_REGISTERS",
               "con": "FALSE",
               "loc": {
@@ -985,7 +999,7 @@
           ],
           "connections": [
             {
-              "id": "sortnet_stream_adapter2.sort~3.clock",
+              "id": "sortnet_stream_adapter2.genbs.sort.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -996,7 +1010,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.reset",
+              "id": "sortnet_stream_adapter2.genbs.sort.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -1007,7 +1021,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.inverse",
+              "id": "sortnet_stream_adapter2.genbs.sort.inverse",
               "port": "Inverse",
               "con": "Inverse",
               "loc": {
@@ -1018,7 +1032,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.in_valid",
+              "id": "sortnet_stream_adapter2.genbs.sort.in_valid",
               "port": "In_Valid",
               "con": "gearup_Valid",
               "loc": {
@@ -1029,7 +1043,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.in_iskey",
+              "id": "sortnet_stream_adapter2.genbs.sort.in_iskey",
               "port": "In_IsKey",
               "con": "gearup_Meta(META_ISKEY_BIT)",
               "loc": {
@@ -1040,7 +1054,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.in_data",
+              "id": "sortnet_stream_adapter2.genbs.sort.in_data",
               "port": "In_Data",
               "con": "DataInputMatrix",
               "loc": {
@@ -1051,7 +1065,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.in_meta",
+              "id": "sortnet_stream_adapter2.genbs.sort.in_meta",
               "port": "In_Meta",
               "con": "gearup_Meta(META_BITS - 1 downto META_BITS - STREAM_META_BITS)",
               "loc": {
@@ -1062,7 +1076,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.out_valid",
+              "id": "sortnet_stream_adapter2.genbs.sort.out_valid",
               "port": "Out_Valid",
               "con": "sort_Valid",
               "loc": {
@@ -1073,7 +1087,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.out_iskey",
+              "id": "sortnet_stream_adapter2.genbs.sort.out_iskey",
               "port": "Out_IsKey",
               "con": "sort_IsKey",
               "loc": {
@@ -1084,7 +1098,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.out_data",
+              "id": "sortnet_stream_adapter2.genbs.sort.out_data",
               "port": "Out_Data",
               "con": "DataOutputMatrix",
               "loc": {
@@ -1095,7 +1109,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.sort~3.out_meta",
+              "id": "sortnet_stream_adapter2.genbs.sort.out_meta",
               "port": "Out_Meta",
               "con": "sort_Meta",
               "loc": {
@@ -1106,6 +1120,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genBS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_BITONIC_SORT"
+            }
+          ],
           "loc": {
             "line": 240,
             "col": 3,
@@ -1114,12 +1135,12 @@
           }
         },
         {
-          "id": "sortnet_stream_adapter2.transform",
+          "id": "sortnet_stream_adapter2.blktransform.transform",
           "name": "transform",
           "module": "sortnet_Transform",
           "params": [
             {
-              "id": "sortnet_stream_adapter2.transform.rows",
+              "id": "sortnet_stream_adapter2.blktransform.transform.rows",
               "port": "ROWS",
               "con": "SORTNET_SIZE",
               "loc": {
@@ -1130,7 +1151,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.columns",
+              "id": "sortnet_stream_adapter2.blktransform.transform.columns",
               "port": "COLUMNS",
               "con": "DATA_COLUMNS",
               "loc": {
@@ -1141,7 +1162,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.data_bits",
+              "id": "sortnet_stream_adapter2.blktransform.transform.data_bits",
               "port": "DATA_BITS",
               "con": "SORTNET_DATA_BITS",
               "loc": {
@@ -1154,7 +1175,7 @@
           ],
           "connections": [
             {
-              "id": "sortnet_stream_adapter2.transform.clock",
+              "id": "sortnet_stream_adapter2.blktransform.transform.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -1165,7 +1186,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.reset",
+              "id": "sortnet_stream_adapter2.blktransform.transform.reset",
               "port": "Reset",
               "con": "Reset",
               "comment": [
@@ -1179,7 +1200,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.in_valid",
+              "id": "sortnet_stream_adapter2.blktransform.transform.in_valid",
               "port": "In_Valid",
               "con": "sort_Valid",
               "loc": {
@@ -1190,7 +1211,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.in_data",
+              "id": "sortnet_stream_adapter2.blktransform.transform.in_data",
               "port": "In_Data",
               "con": "DataInputMatrix",
               "loc": {
@@ -1201,7 +1222,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.in_sof",
+              "id": "sortnet_stream_adapter2.blktransform.transform.in_sof",
               "port": "In_SOF",
               "con": "sort_IsKey",
               "loc": {
@@ -1212,7 +1233,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.in_eof",
+              "id": "sortnet_stream_adapter2.blktransform.transform.in_eof",
               "port": "In_EOF",
               "con": "'0'",
               "loc": {
@@ -1223,7 +1244,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.out_valid",
+              "id": "sortnet_stream_adapter2.blktransform.transform.out_valid",
               "port": "Out_Valid",
               "con": "transform_Valid",
               "loc": {
@@ -1234,7 +1255,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.out_data",
+              "id": "sortnet_stream_adapter2.blktransform.transform.out_data",
               "port": "Out_Data",
               "con": "DataOutputMatrix",
               "loc": {
@@ -1245,7 +1266,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.out_sof",
+              "id": "sortnet_stream_adapter2.blktransform.transform.out_sof",
               "port": "Out_SOF",
               "con": "transform_SOF",
               "loc": {
@@ -1256,7 +1277,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.transform.out_eof",
+              "id": "sortnet_stream_adapter2.blktransform.transform.out_eof",
               "port": "Out_EOF",
               "con": "transform_EOF",
               "loc": {
@@ -1267,6 +1288,12 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkTransform"
+            }
+          ],
           "loc": {
             "line": 276,
             "col": 3,
@@ -1275,12 +1302,12 @@
           }
         },
         {
-          "id": "sortnet_stream_adapter2.merge",
+          "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge",
           "name": "merge",
           "module": "sortnet_MergeSort_Streamed",
           "params": [
             {
-              "id": "sortnet_stream_adapter2.merge.fifo_depth",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.fifo_depth",
               "port": "FIFO_DEPTH",
               "con": "FIFO_DEPTH",
               "loc": {
@@ -1291,7 +1318,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.key_bits",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.key_bits",
               "port": "KEY_BITS",
               "con": "SORTNET_KEY_BITS",
               "loc": {
@@ -1302,7 +1329,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.data_bits",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.data_bits",
               "port": "DATA_BITS",
               "con": "MERGE_BITS",
               "loc": {
@@ -1315,7 +1342,7 @@
           ],
           "connections": [
             {
-              "id": "sortnet_stream_adapter2.merge.clock",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -1326,7 +1353,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.reset",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.reset",
               "port": "Reset",
               "con": "Reset",
               "loc": {
@@ -1337,7 +1364,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.inverse",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.inverse",
               "port": "Inverse",
               "con": "Inverse",
               "loc": {
@@ -1348,7 +1375,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_valid",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_valid",
               "port": "In_Valid",
               "con": "MergeSortMatrix_Valid(i)",
               "loc": {
@@ -1359,7 +1386,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_data",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_data",
               "port": "In_Data",
               "con": "MergeSortMatrix_Data(i)",
               "loc": {
@@ -1370,7 +1397,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_sof",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_sof",
               "port": "In_SOF",
               "con": "MergeSortMatrix_SOF(i)",
               "loc": {
@@ -1381,7 +1408,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_iskey",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_iskey",
               "port": "In_IsKey",
               "con": "'1'",
               "loc": {
@@ -1392,7 +1419,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_eof",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_eof",
               "port": "In_EOF",
               "con": "MergeSortMatrix_EOF(i)",
               "loc": {
@@ -1403,7 +1430,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.in_ack",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.in_ack",
               "port": "In_Ack",
               "con": "MergeSortMatrix_Ack(i)",
               "loc": {
@@ -1414,7 +1441,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_valid",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_valid",
               "port": "Out_Valid",
               "con": "MergeSortMatrix_Valid(i + 1)",
               "loc": {
@@ -1425,7 +1452,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_data",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_data",
               "port": "Out_Data",
               "con": "MergeSortMatrix_Data(i + 1)",
               "loc": {
@@ -1436,7 +1463,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_sof",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_sof",
               "port": "Out_SOF",
               "con": "MergeSortMatrix_SOF(i + 1)",
               "loc": {
@@ -1447,7 +1474,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_iskey",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_iskey",
               "port": "Out_IsKey",
               "con": "open",
               "loc": {
@@ -1458,7 +1485,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_eof",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_eof",
               "port": "Out_EOF",
               "con": "MergeSortMatrix_EOF(i + 1)",
               "loc": {
@@ -1469,7 +1496,7 @@
               }
             },
             {
-              "id": "sortnet_stream_adapter2.merge.out_ack",
+              "id": "sortnet_stream_adapter2.blkmergesort.genmerge.merge.out_ack",
               "port": "Out_Ack",
               "con": "MergeSortMatrix_Ack(i + 1)",
               "loc": {
@@ -1478,6 +1505,17 @@
                 "end_line": 344,
                 "end_col": 45
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            },
+            {
+              "kind": "for",
+              "name": "genMerge",
+              "cond": "i in 0 to MERGENET_STAGES - 1"
             }
           ],
           "loc": {

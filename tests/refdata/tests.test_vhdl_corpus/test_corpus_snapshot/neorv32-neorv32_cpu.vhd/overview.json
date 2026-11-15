@@ -2040,12 +2040,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.cpu_hwtrig_inst",
+          "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst",
           "name": "cpu_hwtrig_inst",
           "module": "neorv32_cpu_hwtrig",
           "params": [
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.num_triggers",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.num_triggers",
               "port": "NUM_TRIGGERS",
               "con": "NUM_HW_TRIGGERS",
               "comment": [
@@ -2059,7 +2059,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.riscv_isa_u",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.riscv_isa_u",
               "port": "RISCV_ISA_U",
               "con": "RISCV_ISA_U",
               "comment": [
@@ -2075,7 +2075,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.clk_i",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -2089,7 +2089,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.rstn_i",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -2103,7 +2103,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.ctrl_i",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl",
               "comment": [
@@ -2118,7 +2118,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.mar_i",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.mar_i",
               "port": "mar_i",
               "con": "lsu_mar",
               "comment": [
@@ -2132,7 +2132,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.csr_o",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.csr_o",
               "port": "csr_o",
               "con": "xcsr_tm",
               "comment": [
@@ -2147,7 +2147,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_hwtrig_inst.hit_o",
+              "id": "neorv32_cpu.trigger_module_enabled.cpu_hwtrig_inst.hit_o",
               "port": "hit_o",
               "con": "hwtrig",
               "comment": [
@@ -2161,6 +2161,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "trigger_module_enabled",
+              "cond": "(RISCV_ISA_Sdtrig = true) and (NUM_HW_TRIGGERS > 0)"
+            }
+          ],
           "loc": {
             "line": 347,
             "col": 5,
@@ -2169,12 +2176,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.cpu_counters_inst",
+          "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst",
           "name": "cpu_counters_inst",
           "module": "neorv32_cpu_counters",
           "params": [
             {
-              "id": "neorv32_cpu.cpu_counters_inst.zicntr_en",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.zicntr_en",
               "port": "ZICNTR_EN",
               "con": "RISCV_ISA_Zicntr",
               "comment": [
@@ -2188,7 +2195,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.zihpm_en",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.zihpm_en",
               "port": "ZIHPM_EN",
               "con": "RISCV_ISA_Zihpm",
               "comment": [
@@ -2202,7 +2209,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.smcntrpmf_en",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.smcntrpmf_en",
               "port": "SMCNTRPMF_EN",
               "con": "RISCV_ISA_Smcntrpmf",
               "comment": [
@@ -2216,7 +2223,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.umode_en",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.umode_en",
               "port": "UMODE_EN",
               "con": "RISCV_ISA_U",
               "comment": [
@@ -2230,7 +2237,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.hpm_num",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.hpm_num",
               "port": "HPM_NUM",
               "con": "HPM_NUM_CNTS",
               "comment": [
@@ -2244,7 +2251,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.hpm_width",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.hpm_width",
               "port": "HPM_WIDTH",
               "con": "HPM_CNT_WIDTH",
               "comment": [
@@ -2260,7 +2267,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu.cpu_counters_inst.clk_i",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -2274,7 +2281,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.rstn_i",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -2288,7 +2295,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.ctrl_i",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl",
               "comment": [
@@ -2303,7 +2310,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.mtime_i",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.mtime_i",
               "port": "mtime_i",
               "con": "mtime_i",
               "comment": [
@@ -2318,7 +2325,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_counters_inst.rdata_o",
+              "id": "neorv32_cpu.cnts_enabled.cpu_counters_inst.rdata_o",
               "port": "rdata_o",
               "con": "xcsr_cnt",
               "comment": [
@@ -2330,6 +2337,13 @@
                 "end_line": 393,
                 "end_col": 26
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cnts_enabled",
+              "cond": "RISCV_ISA_Zicntr or RISCV_ISA_Zihpm"
             }
           ],
           "loc": {
@@ -3168,12 +3182,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.cpu_pmp_inst",
+          "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst",
           "name": "cpu_pmp_inst",
           "module": "neorv32_cpu_pmp",
           "params": [
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.num_regions",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.num_regions",
               "port": "NUM_REGIONS",
               "con": "PMP_NUM_REGIONS",
               "comment": [
@@ -3187,7 +3201,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.granularity",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.granularity",
               "port": "GRANULARITY",
               "con": "PMP_MIN_GRANULARITY",
               "comment": [
@@ -3201,7 +3215,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.tor_en",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.tor_en",
               "port": "TOR_EN",
               "con": "PMP_TOR_MODE_EN",
               "comment": [
@@ -3215,7 +3229,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.nap_en",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.nap_en",
               "port": "NAP_EN",
               "con": "PMP_NAP_MODE_EN",
               "comment": [
@@ -3231,7 +3245,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.clk_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -3245,7 +3259,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.rstn_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -3259,7 +3273,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.ctrl_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl",
               "comment": [
@@ -3273,7 +3287,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.csr_o",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.csr_o",
               "port": "csr_o",
               "con": "xcsr_pmp",
               "comment": [
@@ -3288,7 +3302,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.i_addr_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.i_addr_i",
               "port": "i_addr_i",
               "con": "if_pmp_addr",
               "comment": [
@@ -3302,7 +3316,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.i_priv_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.i_priv_i",
               "port": "i_priv_i",
               "con": "if_pmp_priv",
               "comment": [
@@ -3316,7 +3330,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.i_err_o",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.i_err_o",
               "port": "i_err_o",
               "con": "if_pmp_err",
               "comment": [
@@ -3331,7 +3345,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.d_addr_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.d_addr_i",
               "port": "d_addr_i",
               "con": "alu_add",
               "comment": [
@@ -3345,7 +3359,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.d_priv_i",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.d_priv_i",
               "port": "d_priv_i",
               "con": "ctrl.lsu_priv",
               "comment": [
@@ -3359,7 +3373,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_pmp_inst.d_err_o",
+              "id": "neorv32_cpu.pmp_enabled.cpu_pmp_inst.d_err_o",
               "port": "d_err_o",
               "con": "rw_pmp_err",
               "comment": [
@@ -3373,6 +3387,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "pmp_enabled",
+              "cond": "RISCV_ISA_Smpmp"
+            }
+          ],
           "loc": {
             "line": 511,
             "col": 5,
@@ -3381,12 +3402,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.cpu_trace_inst",
+          "id": "neorv32_cpu.trace_enabled.cpu_trace_inst",
           "name": "cpu_trace_inst",
           "module": "neorv32_cpu_trace",
           "connections": [
             {
-              "id": "neorv32_cpu.cpu_trace_inst.clk_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "comment": [
@@ -3400,7 +3421,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.rstn_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "comment": [
@@ -3414,7 +3435,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.ctrl_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.ctrl_i",
               "port": "ctrl_i",
               "con": "ctrl",
               "comment": [
@@ -3429,7 +3450,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.rs1_rdata_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.rs1_rdata_i",
               "port": "rs1_rdata_i",
               "con": "rs1",
               "comment": [
@@ -3443,7 +3464,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.rs2_rdata_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.rs2_rdata_i",
               "port": "rs2_rdata_i",
               "con": "rs2",
               "comment": [
@@ -3457,7 +3478,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.rd_wdata_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.rd_wdata_i",
               "port": "rd_wdata_i",
               "con": "rf_wdata",
               "comment": [
@@ -3471,7 +3492,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.mem_ben_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.mem_ben_i",
               "port": "mem_ben_i",
               "con": "dbus_req.ben",
               "comment": [
@@ -3485,7 +3506,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.mem_addr_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.mem_addr_i",
               "port": "mem_addr_i",
               "con": "dbus_req.addr",
               "comment": [
@@ -3499,7 +3520,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.mem_wdata_i",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.mem_wdata_i",
               "port": "mem_wdata_i",
               "con": "dbus_req.data",
               "comment": [
@@ -3514,7 +3535,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.cpu_trace_inst.trace_o",
+              "id": "neorv32_cpu.trace_enabled.cpu_trace_inst.trace_o",
               "port": "trace_o",
               "con": "trace",
               "comment": [
@@ -3528,6 +3549,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "trace_enabled",
+              "cond": "TRACE_PORT_EN or (TRACE_SIMLOG_EN and is_simulation_c)"
+            }
+          ],
           "loc": {
             "line": 547,
             "col": 5,
@@ -3536,12 +3564,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.trace_simlog_inst",
+          "id": "neorv32_cpu.sim_trace0_enabled.trace_simlog_inst",
           "name": "trace_simlog_inst",
           "module": "neorv32_cpu_trace_simlog",
           "params": [
             {
-              "id": "neorv32_cpu.trace_simlog_inst.log_file",
+              "id": "neorv32_cpu.sim_trace0_enabled.trace_simlog_inst.log_file",
               "port": "LOG_FILE",
               "con": "\"neorv32_trace0.log\"",
               "loc": {
@@ -3554,7 +3582,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu.trace_simlog_inst.clk_i",
+              "id": "neorv32_cpu.sim_trace0_enabled.trace_simlog_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -3565,7 +3593,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.trace_simlog_inst.rstn_i",
+              "id": "neorv32_cpu.sim_trace0_enabled.trace_simlog_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -3576,7 +3604,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.trace_simlog_inst.trace_i",
+              "id": "neorv32_cpu.sim_trace0_enabled.trace_simlog_inst.trace_i",
               "port": "trace_i",
               "con": "trace",
               "loc": {
@@ -3587,6 +3615,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "sim_trace0_enabled",
+              "cond": "TRACE_SIMLOG_EN and is_simulation_c and (HART_ID = 0)"
+            }
+          ],
           "loc": {
             "line": 573,
             "col": 5,
@@ -3595,12 +3630,12 @@
           }
         },
         {
-          "id": "neorv32_cpu.trace_simlog_inst~2",
+          "id": "neorv32_cpu.sim_trace1_enabled.trace_simlog_inst",
           "name": "trace_simlog_inst",
           "module": "neorv32_cpu_trace_simlog",
           "params": [
             {
-              "id": "neorv32_cpu.trace_simlog_inst~2.log_file",
+              "id": "neorv32_cpu.sim_trace1_enabled.trace_simlog_inst.log_file",
               "port": "LOG_FILE",
               "con": "\"neorv32_trace1.log\"",
               "loc": {
@@ -3613,7 +3648,7 @@
           ],
           "connections": [
             {
-              "id": "neorv32_cpu.trace_simlog_inst~2.clk_i",
+              "id": "neorv32_cpu.sim_trace1_enabled.trace_simlog_inst.clk_i",
               "port": "clk_i",
               "con": "clk_i",
               "loc": {
@@ -3624,7 +3659,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.trace_simlog_inst~2.rstn_i",
+              "id": "neorv32_cpu.sim_trace1_enabled.trace_simlog_inst.rstn_i",
               "port": "rstn_i",
               "con": "rstn_i",
               "loc": {
@@ -3635,7 +3670,7 @@
               }
             },
             {
-              "id": "neorv32_cpu.trace_simlog_inst~2.trace_i",
+              "id": "neorv32_cpu.sim_trace1_enabled.trace_simlog_inst.trace_i",
               "port": "trace_i",
               "con": "trace",
               "loc": {
@@ -3644,6 +3679,13 @@
                 "end_line": 594,
                 "end_col": 23
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "sim_trace1_enabled",
+              "cond": "TRACE_SIMLOG_EN and is_simulation_c and (HART_ID = 1)"
             }
           ],
           "loc": {

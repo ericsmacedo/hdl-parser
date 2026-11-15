@@ -790,12 +790,12 @@
           }
         },
         {
-          "id": "uart_fifo.sync_i",
+          "id": "uart_fifo.gensync.sync_i",
           "name": "sync_i",
           "module": "sync_Bits",
           "connections": [
             {
-              "id": "uart_fifo.sync_i.clock",
+              "id": "uart_fifo.gensync.sync_i.clock",
               "port": "Clock",
               "con": "Clock",
               "comment": [
@@ -809,7 +809,7 @@
               }
             },
             {
-              "id": "uart_fifo.sync_i.input(0)",
+              "id": "uart_fifo.gensync.sync_i.input(0)",
               "port": "Input(0)",
               "con": "UART_RX",
               "comment": [
@@ -823,7 +823,7 @@
               }
             },
             {
-              "id": "uart_fifo.sync_i.output(0)",
+              "id": "uart_fifo.gensync.sync_i.output(0)",
               "port": "Output(0)",
               "con": "UART_RX_sync",
               "comment": [
@@ -835,6 +835,13 @@
                 "end_line": 284,
                 "end_col": 30
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSync",
+              "cond": "ADD_INPUT_SYNCHRONIZERS"
             }
           ],
           "loc": {

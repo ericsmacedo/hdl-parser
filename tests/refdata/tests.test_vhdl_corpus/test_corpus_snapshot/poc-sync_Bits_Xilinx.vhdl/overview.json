@@ -99,12 +99,12 @@
       ],
       "insts": [
         {
-          "id": "sync_bits_xilinx.sync",
+          "id": "sync_bits_xilinx.gen.sync",
           "name": "Sync",
           "module": "sync_Bit_Xilinx",
           "params": [
             {
-              "id": "sync_bits_xilinx.sync.init",
+              "id": "sync_bits_xilinx.gen.sync.init",
               "port": "INIT",
               "con": "INIT_I(i)",
               "loc": {
@@ -115,7 +115,7 @@
               }
             },
             {
-              "id": "sync_bits_xilinx.sync.sync_depth",
+              "id": "sync_bits_xilinx.gen.sync.sync_depth",
               "port": "SYNC_DEPTH",
               "con": "SYNC_DEPTH",
               "loc": {
@@ -128,7 +128,7 @@
           ],
           "connections": [
             {
-              "id": "sync_bits_xilinx.sync.clock",
+              "id": "sync_bits_xilinx.gen.sync.clock",
               "port": "Clock",
               "con": "Clock",
               "loc": {
@@ -139,7 +139,7 @@
               }
             },
             {
-              "id": "sync_bits_xilinx.sync.input",
+              "id": "sync_bits_xilinx.gen.sync.input",
               "port": "Input",
               "con": "Input(i)",
               "loc": {
@@ -150,7 +150,7 @@
               }
             },
             {
-              "id": "sync_bits_xilinx.sync.output",
+              "id": "sync_bits_xilinx.gen.sync.output",
               "port": "Output",
               "con": "Output(i)",
               "loc": {
@@ -159,6 +159,13 @@
                 "end_line": 118,
                 "end_col": 25
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen",
+              "cond": "i in 0 to BITS - 1"
             }
           ],
           "loc": {

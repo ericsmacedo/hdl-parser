@@ -648,12 +648,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_statusrxarr",
+          "id": "jesdrxreg.gen_0.u_statusrxarr",
           "name": "U_statusRxArr",
           "module": "SynchronizerVector",
           "params": [
             {
-              "id": "jesdrxreg.u_statusrxarr.tpd_g",
+              "id": "jesdrxreg.gen_0.u_statusrxarr.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -664,7 +664,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_statusrxarr.width_g",
+              "id": "jesdrxreg.gen_0.u_statusrxarr.width_g",
               "port": "WIDTH_G",
               "con": "RX_STAT_WIDTH_C",
               "loc": {
@@ -677,7 +677,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_statusrxarr.clk",
+              "id": "jesdrxreg.gen_0.u_statusrxarr.clk",
               "port": "clk",
               "con": "axiClk_i",
               "loc": {
@@ -688,7 +688,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_statusrxarr.datain",
+              "id": "jesdrxreg.gen_0.u_statusrxarr.datain",
               "port": "dataIn",
               "con": "statusRxArr_i(i)",
               "loc": {
@@ -699,7 +699,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_statusrxarr.dataout",
+              "id": "jesdrxreg.gen_0.u_statusrxarr.dataout",
               "port": "dataOut",
               "con": "s_statusRxArr(i)",
               "loc": {
@@ -710,6 +710,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_0",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 319,
             "col": 7,
@@ -718,12 +725,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_rawdata",
+          "id": "jesdrxreg.gen_0.u_rawdata",
           "name": "U_rawData",
           "module": "SynchronizerFifo",
           "params": [
             {
-              "id": "jesdrxreg.u_rawdata.tpd_g",
+              "id": "jesdrxreg.gen_0.u_rawdata.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -734,7 +741,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_rawdata.data_width_g",
+              "id": "jesdrxreg.gen_0.u_rawdata.data_width_g",
               "port": "DATA_WIDTH_G",
               "con": "32",
               "loc": {
@@ -747,7 +754,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_rawdata.wr_clk",
+              "id": "jesdrxreg.gen_0.u_rawdata.wr_clk",
               "port": "wr_clk",
               "con": "devClk_i",
               "loc": {
@@ -758,7 +765,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_rawdata.din",
+              "id": "jesdrxreg.gen_0.u_rawdata.din",
               "port": "din",
               "con": "rawData_i(i)",
               "loc": {
@@ -769,7 +776,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_rawdata.rd_clk",
+              "id": "jesdrxreg.gen_0.u_rawdata.rd_clk",
               "port": "rd_clk",
               "con": "axiClk_i",
               "loc": {
@@ -780,7 +787,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_rawdata.dout",
+              "id": "jesdrxreg.gen_0.u_rawdata.dout",
               "port": "dout",
               "con": "s_rawData(i)",
               "loc": {
@@ -789,6 +796,13 @@
                 "end_line": 336,
                 "end_col": 35
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_0",
+              "cond": "i in L_G-1 downto 0"
             }
           ],
           "loc": {
@@ -2067,12 +2081,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_dlytxarr",
+          "id": "jesdrxreg.gen_1.u_dlytxarr",
           "name": "U_dlyTxArr",
           "module": "SynchronizerVector",
           "params": [
             {
-              "id": "jesdrxreg.u_dlytxarr.tpd_g",
+              "id": "jesdrxreg.gen_1.u_dlytxarr.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2083,7 +2097,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr.width_g",
+              "id": "jesdrxreg.gen_1.u_dlytxarr.width_g",
               "port": "WIDTH_G",
               "con": "4",
               "loc": {
@@ -2096,7 +2110,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_dlytxarr.clk",
+              "id": "jesdrxreg.gen_1.u_dlytxarr.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2107,7 +2121,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr.datain",
+              "id": "jesdrxreg.gen_1.u_dlytxarr.datain",
               "port": "dataIn",
               "con": "r.testTXItf(i)(11 downto 8)",
               "loc": {
@@ -2118,7 +2132,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr.dataout",
+              "id": "jesdrxreg.gen_1.u_dlytxarr.dataout",
               "port": "dataOut",
               "con": "dlyTxArr(i)",
               "loc": {
@@ -2129,6 +2143,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 532,
             "col": 7,
@@ -2137,12 +2158,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_dlytxarr_pipeline",
+          "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline",
           "name": "U_dlyTxArr_Pipeline",
           "module": "RstPipelineVector",
           "params": [
             {
-              "id": "jesdrxreg.u_dlytxarr_pipeline.tpd_g",
+              "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2153,7 +2174,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr_pipeline.width_g",
+              "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline.width_g",
               "port": "WIDTH_G",
               "con": "4",
               "loc": {
@@ -2166,7 +2187,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_dlytxarr_pipeline.clk",
+              "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2177,7 +2198,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr_pipeline.rstin",
+              "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline.rstin",
               "port": "rstIn",
               "con": "dlyTxArr(i)",
               "loc": {
@@ -2188,7 +2209,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_dlytxarr_pipeline.rstout",
+              "id": "jesdrxreg.gen_1.u_dlytxarr_pipeline.rstout",
               "port": "rstOut",
               "con": "dlyTxArr_o(i)",
               "loc": {
@@ -2199,6 +2220,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 541,
             "col": 7,
@@ -2207,12 +2235,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_aligntxarr",
+          "id": "jesdrxreg.gen_1.u_aligntxarr",
           "name": "U_alignTxArr",
           "module": "SynchronizerVector",
           "params": [
             {
-              "id": "jesdrxreg.u_aligntxarr.tpd_g",
+              "id": "jesdrxreg.gen_1.u_aligntxarr.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2223,7 +2251,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr.width_g",
+              "id": "jesdrxreg.gen_1.u_aligntxarr.width_g",
               "port": "WIDTH_G",
               "con": "GT_WORD_SIZE_C",
               "loc": {
@@ -2236,7 +2264,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_aligntxarr.clk",
+              "id": "jesdrxreg.gen_1.u_aligntxarr.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2247,7 +2275,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr.datain",
+              "id": "jesdrxreg.gen_1.u_aligntxarr.datain",
               "port": "dataIn",
               "con": "r.testTXItf(i) (GT_WORD_SIZE_C-1 downto 0)",
               "loc": {
@@ -2258,7 +2286,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr.dataout",
+              "id": "jesdrxreg.gen_1.u_aligntxarr.dataout",
               "port": "dataOut",
               "con": "alignTxArr(i)",
               "loc": {
@@ -2269,6 +2297,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 552,
             "col": 7,
@@ -2277,12 +2312,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_aligntxarr_pipeline",
+          "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline",
           "name": "U_alignTxArr_Pipeline",
           "module": "RstPipelineVector",
           "params": [
             {
-              "id": "jesdrxreg.u_aligntxarr_pipeline.tpd_g",
+              "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2293,7 +2328,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr_pipeline.width_g",
+              "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline.width_g",
               "port": "WIDTH_G",
               "con": "GT_WORD_SIZE_C",
               "loc": {
@@ -2306,7 +2341,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_aligntxarr_pipeline.clk",
+              "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2317,7 +2352,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr_pipeline.rstin",
+              "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline.rstin",
               "port": "rstIn",
               "con": "alignTxArr(i)",
               "loc": {
@@ -2328,7 +2363,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_aligntxarr_pipeline.rstout",
+              "id": "jesdrxreg.gen_1.u_aligntxarr_pipeline.rstout",
               "port": "rstOut",
               "con": "alignTxArr_o(i)",
               "loc": {
@@ -2339,6 +2374,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 561,
             "col": 7,
@@ -2347,12 +2389,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_thresoldlowarr_a",
+          "id": "jesdrxreg.gen_1.u_thresoldlowarr_a",
           "name": "U_thresoldLowArr_A",
           "module": "SynchronizerVector",
           "params": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a.tpd_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2363,7 +2405,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a.width_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a.width_g",
               "port": "WIDTH_G",
               "con": "16",
               "loc": {
@@ -2376,7 +2418,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a.clk",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2387,7 +2429,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a.datain",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a.datain",
               "port": "dataIn",
               "con": "r.testSigThr(i) (31 downto 16)",
               "loc": {
@@ -2398,7 +2440,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a.dataout",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a.dataout",
               "port": "dataOut",
               "con": "thresoldHighArr(i)",
               "loc": {
@@ -2409,6 +2451,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 572,
             "col": 7,
@@ -2417,12 +2466,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_thresoldlowarr_a_pipeline",
+          "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline",
           "name": "U_thresoldLowArr_A_Pipeline",
           "module": "RstPipelineVector",
           "params": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a_pipeline.tpd_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2433,7 +2482,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a_pipeline.width_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline.width_g",
               "port": "WIDTH_G",
               "con": "16",
               "loc": {
@@ -2446,7 +2495,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a_pipeline.clk",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2457,7 +2506,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a_pipeline.rstin",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline.rstin",
               "port": "rstIn",
               "con": "thresoldHighArr(i)",
               "loc": {
@@ -2468,7 +2517,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_a_pipeline.rstout",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_a_pipeline.rstout",
               "port": "rstOut",
               "con": "thresoldHighArr_o(i)",
               "loc": {
@@ -2479,6 +2528,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 581,
             "col": 7,
@@ -2487,12 +2543,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_thresoldlowarr_b",
+          "id": "jesdrxreg.gen_1.u_thresoldlowarr_b",
           "name": "U_thresoldLowArr_B",
           "module": "SynchronizerVector",
           "params": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b.tpd_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2503,7 +2559,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b.width_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b.width_g",
               "port": "WIDTH_G",
               "con": "16",
               "loc": {
@@ -2516,7 +2572,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b.clk",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2527,7 +2583,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b.datain",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b.datain",
               "port": "dataIn",
               "con": "r.testSigThr(i) (15 downto 0)",
               "loc": {
@@ -2538,7 +2594,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b.dataout",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b.dataout",
               "port": "dataOut",
               "con": "thresoldLowArr(i)",
               "loc": {
@@ -2549,6 +2605,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 592,
             "col": 7,
@@ -2557,12 +2620,12 @@
           }
         },
         {
-          "id": "jesdrxreg.u_thresoldlowarr_b_pipeline",
+          "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline",
           "name": "U_thresoldLowArr_B_Pipeline",
           "module": "RstPipelineVector",
           "params": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b_pipeline.tpd_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -2573,7 +2636,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b_pipeline.width_g",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline.width_g",
               "port": "WIDTH_G",
               "con": "16",
               "loc": {
@@ -2586,7 +2649,7 @@
           ],
           "connections": [
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b_pipeline.clk",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -2597,7 +2660,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b_pipeline.rstin",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline.rstin",
               "port": "rstIn",
               "con": "thresoldLowArr(i)",
               "loc": {
@@ -2608,7 +2671,7 @@
               }
             },
             {
-              "id": "jesdrxreg.u_thresoldlowarr_b_pipeline.rstout",
+              "id": "jesdrxreg.gen_1.u_thresoldlowarr_b_pipeline.rstout",
               "port": "rstOut",
               "con": "thresoldLowArr_o(i)",
               "loc": {
@@ -2617,6 +2680,13 @@
                 "end_line": 608,
                 "end_col": 42
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_1",
+              "cond": "i in L_G-1 downto 0"
             }
           ],
           "loc": {

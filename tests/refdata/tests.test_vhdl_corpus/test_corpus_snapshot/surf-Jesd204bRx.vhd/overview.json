@@ -688,12 +688,12 @@
           }
         },
         {
-          "id": "jesd204brx.jesdtxtest_inst",
+          "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst",
           "name": "JesdTxTest_INST",
           "module": "JesdTxTest",
           "params": [
             {
-              "id": "jesd204brx.jesdtxtest_inst.tpd_g",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -706,7 +706,7 @@
           ],
           "connections": [
             {
-              "id": "jesd204brx.jesdtxtest_inst.devclk_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.devclk_i",
               "port": "devClk_i",
               "con": "devClk_i",
               "loc": {
@@ -717,7 +717,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.devrst_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.devrst_i",
               "port": "devRst_i",
               "con": "devRst_i",
               "loc": {
@@ -728,7 +728,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.enable_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.enable_i",
               "port": "enable_i",
               "con": "s_enableRx(i)",
               "loc": {
@@ -739,7 +739,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.delay_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.delay_i",
               "port": "delay_i",
               "con": "s_dlyTxArr(i)",
               "loc": {
@@ -750,7 +750,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.align_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.align_i",
               "port": "align_i",
               "con": "s_alignTxArr(i)",
               "loc": {
@@ -761,7 +761,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.lmfc_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.lmfc_i",
               "port": "lmfc_i",
               "con": "s_lmfc",
               "loc": {
@@ -772,7 +772,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.nsync_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.nsync_i",
               "port": "nSync_i",
               "con": "r.nSyncAnyD1",
               "loc": {
@@ -783,7 +783,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.r_jesdgtrx",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.r_jesdgtrx",
               "port": "r_jesdGtRx",
               "con": "s_jesdGtRxArr(i)",
               "loc": {
@@ -794,7 +794,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.subclass_i",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.subclass_i",
               "port": "subClass_i",
               "con": "s_subClass",
               "loc": {
@@ -805,7 +805,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdtxtest_inst.txdatavalid_o",
+              "id": "jesd204brx.test_gen.tx_lanes_gen.jesdtxtest_inst.txdatavalid_o",
               "port": "txDataValid_o",
               "con": "open",
               "loc": {
@@ -816,6 +816,18 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "TEST_GEN",
+              "cond": "TEST_G = true"
+            },
+            {
+              "kind": "for",
+              "name": "TX_LANES_GEN",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 224,
             "col": 10,
@@ -824,12 +836,12 @@
           }
         },
         {
-          "id": "jesd204brx.synchronizer_inst",
+          "id": "jesd204brx.gen_async.synchronizer_inst",
           "name": "Synchronizer_INST",
           "module": "Synchronizer",
           "params": [
             {
-              "id": "jesd204brx.synchronizer_inst.tpd_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -840,7 +852,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.rst_polarity_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.rst_polarity_g",
               "port": "RST_POLARITY_G",
               "con": "'1'",
               "loc": {
@@ -851,7 +863,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.out_polarity_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.out_polarity_g",
               "port": "OUT_POLARITY_G",
               "con": "'1'",
               "loc": {
@@ -862,7 +874,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.rst_async_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.rst_async_g",
               "port": "RST_ASYNC_G",
               "con": "false",
               "loc": {
@@ -873,7 +885,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.stages_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.stages_g",
               "port": "STAGES_G",
               "con": "2",
               "loc": {
@@ -884,7 +896,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.bypass_sync_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.bypass_sync_g",
               "port": "BYPASS_SYNC_G",
               "con": "false",
               "loc": {
@@ -895,7 +907,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.init_g",
+              "id": "jesd204brx.gen_async.synchronizer_inst.init_g",
               "port": "INIT_G",
               "con": "\"0\"",
               "loc": {
@@ -908,7 +920,7 @@
           ],
           "connections": [
             {
-              "id": "jesd204brx.synchronizer_inst.clk",
+              "id": "jesd204brx.gen_async.synchronizer_inst.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -919,7 +931,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.rst",
+              "id": "jesd204brx.gen_async.synchronizer_inst.rst",
               "port": "rst",
               "con": "devRst_i",
               "loc": {
@@ -930,7 +942,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.datain",
+              "id": "jesd204brx.gen_async.synchronizer_inst.datain",
               "port": "dataIn",
               "con": "sysref_i",
               "loc": {
@@ -941,7 +953,7 @@
               }
             },
             {
-              "id": "jesd204brx.synchronizer_inst.dataout",
+              "id": "jesd204brx.gen_async.synchronizer_inst.dataout",
               "port": "dataOut",
               "con": "s_sysrefSync",
               "loc": {
@@ -950,6 +962,13 @@
                 "end_line": 268,
                 "end_col": 36
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ASYNC",
+              "cond": "(GEN_ASYNC_G = true)"
             }
           ],
           "loc": {
@@ -1186,12 +1205,12 @@
           }
         },
         {
-          "id": "jesd204brx.jesdrx_inst",
+          "id": "jesd204brx.generaterxlanes.jesdrx_inst",
           "name": "JesdRx_INST",
           "module": "JesdRxLane",
           "params": [
             {
-              "id": "jesd204brx.jesdrx_inst.tpd_g",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -1202,7 +1221,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.f_g",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.f_g",
               "port": "F_G",
               "con": "F_G",
               "loc": {
@@ -1213,7 +1232,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.k_g",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.k_g",
               "port": "K_G",
               "con": "K_G",
               "loc": {
@@ -1226,7 +1245,7 @@
           ],
           "connections": [
             {
-              "id": "jesd204brx.jesdrx_inst.devclk_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.devclk_i",
               "port": "devClk_i",
               "con": "devClk_i",
               "loc": {
@@ -1237,7 +1256,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.devrst_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.devrst_i",
               "port": "devRst_i",
               "con": "devRst_i",
               "loc": {
@@ -1248,7 +1267,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.sysref_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.sysref_i",
               "port": "sysRef_i",
               "con": "s_sysrefRe",
               "comment": [
@@ -1262,7 +1281,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.enable_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.enable_i",
               "port": "enable_i",
               "con": "s_enableRx(i)",
               "loc": {
@@ -1273,7 +1292,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.clearerr_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.clearerr_i",
               "port": "clearErr_i",
               "con": "s_clearErr",
               "loc": {
@@ -1284,7 +1303,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.linkerrmask_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.linkerrmask_i",
               "port": "linkErrMask_i",
               "con": "s_linkErrMask",
               "loc": {
@@ -1295,7 +1314,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.replenable_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.replenable_i",
               "port": "replEnable_i",
               "con": "s_replEnable",
               "loc": {
@@ -1306,7 +1325,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.screnable_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.screnable_i",
               "port": "scrEnable_i",
               "con": "s_scrEnable",
               "loc": {
@@ -1317,7 +1336,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.inv_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.inv_i",
               "port": "inv_i",
               "con": "s_invertData(i)",
               "loc": {
@@ -1328,7 +1347,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.status_o",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.status_o",
               "port": "status_o",
               "con": "s_statusRxArr(i)",
               "loc": {
@@ -1339,7 +1358,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.r_jesdgtrx",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.r_jesdgtrx",
               "port": "r_jesdGtRx",
               "con": "s_jesdGtRxArr(i)",
               "loc": {
@@ -1350,7 +1369,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.lmfc_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.lmfc_i",
               "port": "lmfc_i",
               "con": "s_lmfc",
               "loc": {
@@ -1361,7 +1380,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.nsyncanyd1_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.nsyncanyd1_i",
               "port": "nSyncAnyD1_i",
               "con": "r.nSyncAnyD1",
               "loc": {
@@ -1372,7 +1391,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.nsyncany_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.nsyncany_i",
               "port": "nSyncAny_i",
               "con": "s_nSyncAny",
               "loc": {
@@ -1383,7 +1402,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.nsync_o",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.nsync_o",
               "port": "nSync_o",
               "con": "s_nSyncVec(i)",
               "loc": {
@@ -1394,7 +1413,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.datavalid_o",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.datavalid_o",
               "port": "dataValid_o",
               "con": "s_dataValidVec(i)",
               "loc": {
@@ -1405,7 +1424,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.sampledata_o",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.sampledata_o",
               "port": "sampleData_o",
               "con": "s_sampleDataArr(i)",
               "loc": {
@@ -1416,7 +1435,7 @@
               }
             },
             {
-              "id": "jesd204brx.jesdrx_inst.subclass_i",
+              "id": "jesd204brx.generaterxlanes.jesdrx_inst.subclass_i",
               "port": "subClass_i",
               "con": "s_subClass",
               "loc": {
@@ -1427,6 +1446,13 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "generateRxLanes",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
           "loc": {
             "line": 314,
             "col": 7,
@@ -1435,12 +1461,12 @@
           }
         },
         {
-          "id": "jesd204brx.pulser_inst",
+          "id": "jesd204brx.generatepulserlanes.pulser_inst",
           "name": "Pulser_INST",
           "module": "JesdTestSigGen",
           "params": [
             {
-              "id": "jesd204brx.pulser_inst.tpd_g",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.tpd_g",
               "port": "TPD_G",
               "con": "TPD_G",
               "loc": {
@@ -1451,7 +1477,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.f_g",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.f_g",
               "port": "F_G",
               "con": "F_G",
               "loc": {
@@ -1464,7 +1490,7 @@
           ],
           "connections": [
             {
-              "id": "jesd204brx.pulser_inst.clk",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.clk",
               "port": "clk",
               "con": "devClk_i",
               "loc": {
@@ -1475,7 +1501,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.rst",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.rst",
               "port": "rst",
               "con": "devRst_i",
               "loc": {
@@ -1486,7 +1512,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.enable_i",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.enable_i",
               "port": "enable_i",
               "con": "s_dataValidVec(i)",
               "loc": {
@@ -1497,7 +1523,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.thresoldlow_i",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.thresoldlow_i",
               "port": "thresoldLow_i",
               "con": "s_thresoldLowArr(i)",
               "loc": {
@@ -1508,7 +1534,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.thresoldhigh_i",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.thresoldhigh_i",
               "port": "thresoldHigh_i",
               "con": "s_thresoldHighArr(i)",
               "loc": {
@@ -1519,7 +1545,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.sampledata_i",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.sampledata_i",
               "port": "sampleData_i",
               "con": "s_sampleDataArr(i)",
               "loc": {
@@ -1530,7 +1556,7 @@
               }
             },
             {
-              "id": "jesd204brx.pulser_inst.testsig_o",
+              "id": "jesd204brx.generatepulserlanes.pulser_inst.testsig_o",
               "port": "testSig_o",
               "con": "pulse_o(i)",
               "loc": {
@@ -1539,6 +1565,13 @@
                 "end_line": 353,
                 "end_col": 41
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "generatePulserLanes",
+              "cond": "i in L_G-1 downto 0"
             }
           ],
           "loc": {

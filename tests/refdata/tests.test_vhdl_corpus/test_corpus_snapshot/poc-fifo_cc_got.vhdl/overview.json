@@ -251,12 +251,12 @@
       ],
       "insts": [
         {
-          "id": "fifo_cc_got.incip",
+          "id": "fifo_cc_got.blkpointer.incip",
           "name": "incIP",
           "module": "arith_carrychain_inc",
           "params": [
             {
-              "id": "fifo_cc_got.incip.bits",
+              "id": "fifo_cc_got.blkpointer.incip.bits",
               "port": "BITS",
               "con": "A_BITS",
               "loc": {
@@ -269,7 +269,7 @@
           ],
           "connections": [
             {
-              "id": "fifo_cc_got.incip.x",
+              "id": "fifo_cc_got.blkpointer.incip.x",
               "port": "X",
               "con": "IP0_slv",
               "loc": {
@@ -280,7 +280,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.incip.y",
+              "id": "fifo_cc_got.blkpointer.incip.y",
               "port": "Y",
               "con": "IP1_slv",
               "loc": {
@@ -291,6 +291,12 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
           "loc": {
             "line": 169,
             "col": 3,
@@ -299,12 +305,12 @@
           }
         },
         {
-          "id": "fifo_cc_got.incop",
+          "id": "fifo_cc_got.blkpointer.incop",
           "name": "incOP",
           "module": "arith_carrychain_inc",
           "params": [
             {
-              "id": "fifo_cc_got.incop.bits",
+              "id": "fifo_cc_got.blkpointer.incop.bits",
               "port": "BITS",
               "con": "A_BITS",
               "loc": {
@@ -317,7 +323,7 @@
           ],
           "connections": [
             {
-              "id": "fifo_cc_got.incop.x",
+              "id": "fifo_cc_got.blkpointer.incop.x",
               "port": "X",
               "con": "OP0_slv",
               "loc": {
@@ -328,7 +334,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.incop.y",
+              "id": "fifo_cc_got.blkpointer.incop.y",
               "port": "Y",
               "con": "OP1_slv",
               "loc": {
@@ -339,6 +345,12 @@
               }
             }
           ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
           "loc": {
             "line": 178,
             "col": 3,
@@ -347,12 +359,12 @@
           }
         },
         {
-          "id": "fifo_cc_got.ram",
+          "id": "fifo_cc_got.genlarge.ram",
           "name": "ram",
           "module": "ocram_sdp",
           "params": [
             {
-              "id": "fifo_cc_got.ram.a_bits",
+              "id": "fifo_cc_got.genlarge.ram.a_bits",
               "port": "A_BITS",
               "con": "A_BITS",
               "loc": {
@@ -363,7 +375,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.d_bits",
+              "id": "fifo_cc_got.genlarge.ram.d_bits",
               "port": "D_BITS",
               "con": "D_BITS",
               "loc": {
@@ -376,7 +388,7 @@
           ],
           "connections": [
             {
-              "id": "fifo_cc_got.ram.wclk",
+              "id": "fifo_cc_got.genlarge.ram.wclk",
               "port": "wclk",
               "con": "clk",
               "loc": {
@@ -387,7 +399,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.rclk",
+              "id": "fifo_cc_got.genlarge.ram.rclk",
               "port": "rclk",
               "con": "clk",
               "loc": {
@@ -398,7 +410,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.wce",
+              "id": "fifo_cc_got.genlarge.ram.wce",
               "port": "wce",
               "con": "'1'",
               "loc": {
@@ -409,7 +421,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.wa",
+              "id": "fifo_cc_got.genlarge.ram.wa",
               "port": "wa",
               "con": "wa",
               "loc": {
@@ -420,7 +432,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.we",
+              "id": "fifo_cc_got.genlarge.ram.we",
               "port": "we",
               "con": "we",
               "loc": {
@@ -431,7 +443,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.d",
+              "id": "fifo_cc_got.genlarge.ram.d",
               "port": "d",
               "con": "din",
               "loc": {
@@ -442,7 +454,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.ra",
+              "id": "fifo_cc_got.genlarge.ram.ra",
               "port": "ra",
               "con": "ra",
               "loc": {
@@ -453,7 +465,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.rce",
+              "id": "fifo_cc_got.genlarge.ram.rce",
               "port": "rce",
               "con": "re",
               "loc": {
@@ -464,7 +476,7 @@
               }
             },
             {
-              "id": "fifo_cc_got.ram.q",
+              "id": "fifo_cc_got.genlarge.ram.q",
               "port": "q",
               "con": "do",
               "loc": {
@@ -473,6 +485,13 @@
                 "end_line": 333,
                 "end_col": 21
               }
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
             }
           ],
           "loc": {

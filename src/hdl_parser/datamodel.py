@@ -125,6 +125,7 @@ class File(_BaseModel):
     | Module                                   | `top`                |
     | Parameter, local parameter, port         | `top.WIDTH`          |
     | Instance                                 | `top.u_sub`          |
+    | Instance within labeled generate blocks  | `top.g_a.u_sub`      |
     | Connection, parameter value by name      | `top.u_sub.clk`      |
     | Connection by order (first, second, ...) | `top.u_sub.#1`       |
     | Parameter value by order                 | `top.u_sub.#p1`      |
@@ -290,6 +291,35 @@ class Connection(_BaseModel):
     loc: Location | None = None
 
 
+GenerateKind: TypeAlias = Literal["if", "else", "for", "case", "begin", "block"]
+"""Kind Of Generate Construct."""
+
+
+class Generate(_BaseModel):
+    """Generate Construct An Instance Is Located In.
+
+    | SystemVerilog                     | VHDL                               | `kind` | `name` | `cond`      |
+    | --------------------------------- | ---------------------------------- | ------ | ------ | ----------- |
+    | `if (A) begin : g_a`              | `g_a : if A generate`              | `if`   | `g_a`  | `A`         |
+    | `else begin : g_b`                |                                    | `else` | `g_b`  |             |
+    | `for (i = 0; i < N; i++) begin`   | `g : for i in 0 to N-1 generate`   | `for`  |        | `i = 0; ...`|
+    | `case (W)`                        | `g : case W generate`              | `case` |        | `W`         |
+    | `begin : g_c` (i.e. a case item)  |                                    | `begin`| `g_c`  |             |
+    |                                   | `b : block`                        | `block`| `b`    |             |
+
+    An instance within a `for` is created multiple times.
+
+    Attributes:
+        kind: Kind of construct. See table above.
+        name: Label. Empty for blocks without label, and constructs without `begin`.
+        cond: Condition of `if`, loop of `for` or expression of `case`.
+    """
+
+    kind: GenerateKind
+    name: str = ""
+    cond: str = ""
+
+
 class ModuleInstance(_BaseModel):
     """Represents An Instance Of A Module Within Another Module.
 
@@ -299,6 +329,7 @@ class ModuleInstance(_BaseModel):
         dim: Dimension of an array of instances: `[3:0]`.
         params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.
         connections: Connections
+        generates: Generate constructs the instance is located in, from the outermost to the innermost.
         ifdefs: Conditions the instance is created at.
         loc: Source Location of the instantiation. Instances created together share it.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -310,6 +341,7 @@ class ModuleInstance(_BaseModel):
     dim: str = ""
     params: tuple[Connection, ...] = ()
     connections: tuple[Connection, ...] = ()
+    generates: tuple[Generate, ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
