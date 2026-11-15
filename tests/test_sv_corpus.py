@@ -112,7 +112,8 @@ def test_corpus_expand(tmp_path, path):
     """Macro Expansion On The Corpus, With The Macro Files Of The Projects.
 
     None of the corpus files creates parameters, ports or instances by macros, so the result has to be the same
-    as without macro expansion - except of types and always blocks. The changes made by the preprocessor are compared with 'refdata'.
+    as without macro expansion - except of types and always blocks. The changes made by the preprocessor are
+    compared with 'refdata'.
     """
     inc_dirs = _inc_dirs(path)
     file = parse_file(path, expand_macros=True, resolve_ifdefs=True, inc_dirs=inc_dirs)
