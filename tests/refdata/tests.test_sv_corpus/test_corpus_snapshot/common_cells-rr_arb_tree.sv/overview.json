@@ -830,6 +830,126 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.p_lock_reg",
+          "name": "p_lock_reg",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 161,
+            "col": 9,
+            "end_line": 171,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.p_req_regs",
+          "name": "p_req_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 9,
+            "end_line": 201,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.p_rr_regs",
+          "name": "p_rr_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            }
+          ],
+          "comment": [
+            "this holds the highest priority"
+          ],
+          "loc": {
+            "line": 242,
+            "col": 7,
+            "end_line": 252,
+            "end_col": 10
+          }
+        }
+      ],
       "insts": [
         {
           "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.i_lzc_upper",

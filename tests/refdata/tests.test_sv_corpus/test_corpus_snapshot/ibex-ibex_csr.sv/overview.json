@@ -152,6 +152,63 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_csr.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_csr.gen_shadow.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_shadow",
+              "cond": "ShadowCopy"
+            }
+          ],
+          "loc": {
+            "line": 41,
+            "col": 5,
+            "end_line": 47,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 11,
         "col": 1,

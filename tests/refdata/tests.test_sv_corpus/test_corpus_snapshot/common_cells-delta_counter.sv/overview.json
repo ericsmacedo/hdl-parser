@@ -229,6 +229,86 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "delta_counter.gen_sticky_overflow.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 31,
+            "col": 9,
+            "end_line": 31,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "delta_counter.gen_sticky_overflow.#always2",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 32,
+            "col": 9,
+            "end_line": 43,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "delta_counter.#always3",
+          "kind": "always_comb",
+          "loc": {
+            "line": 51,
+            "col": 5,
+            "end_line": 65,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "delta_counter.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 13,
         "col": 1,

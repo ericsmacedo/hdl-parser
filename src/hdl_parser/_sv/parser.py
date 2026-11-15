@@ -68,7 +68,9 @@ _LABEL_OR_SEMI = frozenset((";", ":"))
 # A parameter or port default ends here. Keywords are included to survive missing separators.
 _VALUE_STOPS = frozenset((",", ";", *_PARAMS, *_DIRECTIONS))
 
-_PROCEDURES = frozenset(("always", "always_comb", "always_ff", "always_latch", "initial", "final"))
+_ALWAYS = frozenset(("always", "always_comb", "always_ff", "always_latch"))
+_PROCEDURES = frozenset(("initial", "final"))
+_EDGES = frozenset(("posedge", "negedge", "edge"))
 _ASSERTIONS = frozenset(("assert", "assume", "cover", "restrict", "expect"))
 _CONDITIONALS = frozenset(("if", "for"))
 _CASE_GENERATES = frozenset(("case", "casex", "casez"))
@@ -223,6 +225,19 @@ class _Function(NamedTuple):
     comment: list[str]
 
 
+class _Process(NamedTuple):
+    """One `always` Block. `first` and `last` span the whole block."""
+
+    first: Token
+    last: Token
+    name: str
+    events: list[dm.Event]
+    # identifiers within the condition of the leading `if`
+    checked: frozenset[str]
+    generates: tuple[dm.Generate, ...]
+    comment: list[str]
+
+
 @dataclass
 class _Package:
     """One Package. `last` is known as soon as the package is parsed completely."""
@@ -263,6 +278,7 @@ class _Module:
     signals: list[tuple[_Decl, tuple[dm.Generate, ...]]] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
     functions: list[_Function] = field(default_factory=list)
+    processes: list[_Process] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
@@ -932,6 +948,60 @@ def _handle_procedure(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_statement(c)
 
 
+def _parse_events(c: Cursor) -> list[dm.Event]:
+    """Parse the sensitivity list `@(posedge a or negedge b, c)`, `@*` or `@name` at the current position."""
+    c.next()
+    if c.peek().text != "(":
+        tok = c.next()
+        return [dm.Event(signal=tok.text)] if tok.kind == ID else []
+    events: list[dm.Event] = []
+    end = c.match(c.pos) - 1
+    c.next()
+    while c.pos < end:
+        edge = c.next().text if c.peek().text in _EDGES else ""
+        # the signal ends at `or`, `,` or the condition `iff`. Parenthesis around are of no interest: posedge (clk)
+        while c.peek().text == "(" and c.toks[c.match(c.pos)].text in ("or", ",", "iff", ")"):
+            c.next()
+        start = c.pos
+        while c.pos < end and c.peek().text not in ("or", ",", "iff", ")"):
+            if c.peek().text in OPEN:
+                c.skip_balanced()
+            else:
+                c.next()
+        signal = c.text(start, c.pos).strip()
+        if signal and signal != "*":
+            events.append(dm.Event(edge=edge, signal=signal))  # type: ignore[arg-type]
+        while c.pos < end and c.peek().text not in ("or", ","):
+            c.next()
+        if c.pos < end:
+            c.next()
+    c.skip_to(end + 1)
+    return events
+
+
+@_handles(*_ALWAYS)
+def _handle_always(c: Cursor, mod: _Module) -> None:
+    """`always[_ff|_comb|_latch] [@(events)] statement`."""
+    # the comments in front describe the block
+    comment = list(c.comments.get(c.pos, ()))
+    first = c.next()
+    events = _parse_events(c) if c.peek().text == "@" else []
+    # label and leading `if`, without consuming them: begin [: label] if (condition)
+    toks = c.toks
+    idx = c.pos
+    name = ""
+    if toks[idx].text == "begin":
+        idx += 1
+        if toks[idx].text == ":" and toks[idx + 1].kind == ID:
+            name = toks[idx + 1].text
+            idx += 2
+    checked: frozenset[str] = frozenset()
+    if toks[idx].text == "if" and toks[idx + 1].text == "(":
+        checked = frozenset(tok.text for tok in toks[idx + 2 : c.match(idx + 1)] if tok.kind == ID)
+    _skip_statement(c)
+    mod.processes.append(_Process(first, toks[c.pos - 1], name, events, checked, tuple(mod.generates), comment))
+
+
 @_handles(*_ASSERTIONS)
 def _handle_assertion(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_statement(c)
@@ -1309,6 +1379,34 @@ def _create_signals(mod: _Module, smap: SourceMap) -> tuple[dm.Signal, ...]:
     )
 
 
+def _create_processes(processes: list[_Process], smap: SourceMap) -> tuple[dm.Process, ...]:
+    result = []
+    for process in processes:
+        # Clock and reset are never guessed: the reset is the edge checked by the leading `if`,
+        # the clock is the one other edge.
+        edges = [event for event in process.events if event.edge in ("posedge", "negedge")]
+        resets = [event for event in edges if event.signal in process.checked] if len(edges) > 1 else []
+        clocks = [event for event in edges if event not in resets[:1]]
+        clock = clocks[0] if len(clocks) == 1 else None
+        reset = resets[0] if resets and clock else None
+        result.append(
+            dm.Process(
+                name=process.name,
+                kind=process.first.text,  # type: ignore[arg-type]
+                events=tuple(process.events),
+                clock=clock.signal if clock else "",
+                clock_edge=clock.edge if clock else "",
+                reset=reset.signal if reset else "",
+                reset_edge=reset.edge if reset else "",
+                generates=process.generates,
+                comment=tuple(process.comment),
+                ifdefs=process.first.ifdefs,
+                loc=smap.span(process.first, process.last),
+            )
+        )
+    return tuple(result)
+
+
 def _create_functions(functions: list[_Function], smap: SourceMap) -> tuple[dm.Function, ...]:
     return tuple(
         dm.Function(
@@ -1439,6 +1537,7 @@ def parse(  # noqa: PLR0913
             "signals": _create_signals(mod, smap),
             "typedefs": _create_typedefs(mod.typedefs, smap),
             "functions": _create_functions(mod.functions, smap),
+            "processes": _create_processes(mod.processes, smap),
             "insts": _create_insts(mod.insts, smap),
             "ifdefs": mod.first.ifdefs,
             "unresolved_macros": _create_macros(mod, smap),

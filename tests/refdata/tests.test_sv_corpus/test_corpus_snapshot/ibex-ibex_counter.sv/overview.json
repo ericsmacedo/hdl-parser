@@ -278,6 +278,82 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_counter.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "Update"
+          ],
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_counter.g_cnt_dsp.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cnt_dsp",
+              "cond": "UseDsp == \"yes\""
+            }
+          ],
+          "comment": [
+            "Use sync. reset for DSP."
+          ],
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_counter.g_cnt_no_dsp.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_cnt_no_dsp"
+            }
+          ],
+          "comment": [
+            "Use async. reset for flop."
+          ],
+          "loc": {
+            "line": 76,
+            "col": 5,
+            "end_line": 82,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 5,
         "col": 1,

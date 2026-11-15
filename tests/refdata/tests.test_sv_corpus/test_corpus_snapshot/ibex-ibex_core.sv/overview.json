@@ -7210,6 +7210,484 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_core.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1404,
+            "col": 3,
+            "end_line": 1415,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always2",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1815,
+            "col": 3,
+            "end_line": 1833,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.gen_rvfi_wb_stage.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rvfi_wb_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1883,
+            "col": 5,
+            "end_line": 1889,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_core.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1940,
+            "col": 3,
+            "end_line": 1983,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "Pass the captured irq/debug_req/nmi state to the rvfi_ext interface tracking pipeline.",
+            "",
+            "To correctly capture we need to factor in various enable terms, should there be a fault in this",
+            "logic we won't tell the DV environment about a trap that should have been taken. So if there's",
+            "no valid capture we grab the raw values of the irq/debug_req/nmi inputs whatever they are and",
+            "the DV environment will see if a trap should have been taken but wasn't."
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1991,
+            "col": 3,
+            "end_line": 2010,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.g_rvfi_stages.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_rvfi_stages",
+              "cond": "genvar i = 0; i < RVFI_STAGES; i = i + 1"
+            }
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2013,
+            "col": 5,
+            "end_line": 2208,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_core.#always7",
+          "kind": "always_comb",
+          "comment": [
+            "Memory address/write data available first cycle of ld/st instruction from register read"
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2213,
+            "col": 3,
+            "end_line": 2225,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always8",
+          "kind": "always_comb",
+          "comment": [
+            "Capture read data from LSU when it becomes valid"
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2228,
+            "col": 3,
+            "end_line": 2239,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always9",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2241,
+            "col": 3,
+            "end_line": 2257,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always10",
+          "kind": "always_comb",
+          "comment": [
+            "Byte enable based on data type"
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2259,
+            "col": 3,
+            "end_line": 2267,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always11",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2269,
+            "col": 3,
+            "end_line": 2275,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always12",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2277,
+            "col": 3,
+            "end_line": 2288,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.g_rvfi_cap.#always13",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_rvfi_cap",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2293,
+            "col": 5,
+            "end_line": 2301,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_core.#always14",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2309,
+            "col": 3,
+            "end_line": 2325,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always15",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2327,
+            "col": 3,
+            "end_line": 2343,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always16",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2345,
+            "col": 3,
+            "end_line": 2369,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always17",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "RD write register is refreshed only once per cycle and",
+            "then it is kept stable for the cycle."
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2373,
+            "col": 3,
+            "end_line": 2383,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.g_rvfi_rf_wr_suppress_wb.#always18",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_rvfi_rf_wr_suppress_wb",
+              "cond": "WritebackStage"
+            }
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2393,
+            "col": 5,
+            "end_line": 2399,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_core.#always19",
+          "kind": "always_comb",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2411,
+            "col": 3,
+            "end_line": 2421,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always20",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2423,
+            "col": 3,
+            "end_line": 2431,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_core.#always21",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 2443,
+            "col": 3,
+            "end_line": 2451,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "ibex_core.g_core_busy_secure.u_fetch_enable_buf",

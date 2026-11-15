@@ -1495,6 +1495,151 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_multdiv_fast.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.gen_mult_single_cycle.#always2",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 188,
+            "col": 5,
+            "end_line": 243,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.gen_mult_single_cycle.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 245,
+            "col": 5,
+            "end_line": 253,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.gen_mult_fast.#always4",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast"
+            }
+          ],
+          "loc": {
+            "line": 282,
+            "col": 5,
+            "end_line": 365,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.gen_mult_fast.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast"
+            }
+          ],
+          "loc": {
+            "line": 367,
+            "col": 5,
+            "end_line": 375,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.#always6",
+          "kind": "always_comb",
+          "comment": [
+            "The adder in the ALU computes alu_operand_a_o + alu_operand_b_o which means",
+            "Remainder - Divisor. If Remainder - Divisor >= 0, is_greater_equal is equal to 1,",
+            "the next Remainder is Remainder - Divisor contained in res_adder_h and the"
+          ],
+          "loc": {
+            "line": 398,
+            "col": 3,
+            "end_line": 404,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_multdiv_fast.#always7",
+          "kind": "always_comb",
+          "loc": {
+            "line": 412,
+            "col": 3,
+            "end_line": 526,
+            "end_col": 6
+          }
+        }
+      ],
       "loc": {
         "line": 17,
         "col": 1,

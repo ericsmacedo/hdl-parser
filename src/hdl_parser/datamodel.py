@@ -117,6 +117,7 @@ Item: TypeAlias = Union[
     "Param",
     "Port",
     "Signal",
+    "Process",
     "Modport",
     "Function",
     "Typedef",
@@ -142,6 +143,7 @@ class File(_BaseModel):
     | Signal within labeled generate blocks    | `top.g_a.data`       |
     | Type                                     | `bus_pkg.req_t`      |
     | Function or task, argument               | `bus_pkg.f.arg`      |
+    | Process with label, without label        | `top.p_reg`, `top.#always1` |
     | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
     | Instance                                 | `top.u_sub`          |
     | Instance within labeled generate blocks  | `top.g_a.u_sub`      |
@@ -216,6 +218,7 @@ class File(_BaseModel):
             for function in module.functions:
                 yield function
                 yield from function.args
+            yield from module.processes
             yield from module.unresolved_macros
             for modport in getattr(module, "modports", ()):
                 yield modport
@@ -246,6 +249,7 @@ class Module(_BaseModel):
         signals: Signals: the nets and variables declared within the module.
         typedefs: Types declared within the module.
         functions: Functions and tasks declared within the module.
+        processes: The `always` blocks (VHDL: processes) with their clock and reset.
         insts: Submodule Instances.
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
@@ -262,6 +266,7 @@ class Module(_BaseModel):
     signals: tuple["Signal", ...] = ()
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
+    processes: tuple["Process", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
@@ -493,6 +498,63 @@ class Signal(_BaseModel):
     generates: tuple["Generate", ...] = ()
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Event(_BaseModel):
+    """One entry of a sensitivity list: `posedge clk_i`.
+
+    Attributes:
+        edge: `posedge`, `negedge` or `edge`. Empty for a level sensitive signal.
+        signal: The signal.
+    """
+
+    edge: Literal["posedge", "negedge", "edge", ""] = ""
+    signal: str
+
+
+class Process(_BaseModel):
+    """Represents an `always` block (VHDL: a process), with its clock and reset.
+
+    | Code                                                       | `clock`  | `reset`   |
+    | ---------------------------------------------------------- | -------- | --------- |
+    | `always_ff @(posedge clk_i)`                               | `clk_i`  |           |
+    | `always_ff @(posedge clk_i or negedge rst_ni) if (!rst_ni)`| `clk_i`  | `rst_ni`  |
+    | `always_comb`, `always @*`, `always @(a or b)`             |          |           |
+    | `process (clk) ... if rising_edge(clk)` (VHDL)             | `clk`    |           |
+
+    Clock and reset are never guessed. The reset is the edge of the sensitivity list, which is checked by the
+    leading `if` of the block. The clock is the one other edge. Both are empty, if this does not apply. A reset
+    which is not part of the sensitivity list (a synchronous one) cannot be told from any other condition, and is
+    therefore not reported.
+
+    Attributes:
+        name: Label of the block: `begin : name`. VHDL: the label of the process. Empty, if there is none.
+        kind: `always`, `always_ff`, `always_comb`, `always_latch` or `process` (VHDL).
+        events: Sensitivity list. Empty for `always_comb`, `always_latch` and `@*`.
+        clock: Clock signal. Empty, if there is none or it is not known.
+        clock_edge: Active edge of the clock: `posedge` or `negedge`.
+        reset: Asynchronous reset signal. Empty, if there is none or it is not known.
+        reset_edge: Edge the reset gets active at: `negedge` for an active low reset.
+        generates: Generate constructs the block is located in, from the outermost to the innermost.
+        comment: tuple of associated comments
+        ifdefs: Conditions the block is defined at.
+        loc: Source Location of the whole block.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+            Blocks without label are numbered. This number changes, if a block is added in front.
+    """
+
+    id: str = ""
+    name: str = ""
+    kind: Literal["always", "always_ff", "always_comb", "always_latch", "process"]
+    events: tuple[Event, ...] = ()
+    clock: str = ""
+    clock_edge: str = ""
+    reset: str = ""
+    reset_edge: str = ""
+    generates: tuple["Generate", ...] = ()
+    comment: tuple[str, ...] = ()
+    ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
 

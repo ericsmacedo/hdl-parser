@@ -1028,6 +1028,179 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 119,
+            "col": 5,
+            "end_line": 125,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_wb_regs_ra.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_wb_regs_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 128,
+            "col": 7,
+            "end_line": 160,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_wb_regs_nr.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "else",
+              "name": "g_wb_regs_nr"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 7,
+            "end_line": 179,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_dummy_instr_wb.g_dummy_instr_wb_regs_ra.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb_regs_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 230,
+            "col": 9,
+            "end_line": 236,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_dummy_instr_wb.g_dummy_instr_wb_regs_nr.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            },
+            {
+              "kind": "else",
+              "name": "g_dummy_instr_wb_regs_nr"
+            }
+          ],
+          "loc": {
+            "line": 238,
+            "col": 9,
+            "end_line": 242,
+            "end_col": 12
+          }
+        }
+      ],
       "loc": {
         "line": 18,
         "col": 1,

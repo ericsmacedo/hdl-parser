@@ -4599,6 +4599,279 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_top.g_clock_en_non_secure.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_clock_en_non_secure"
+            }
+          ],
+          "comment": [
+            "For non secure Ibex only the bottom bit of core_busy_q is considered. Other FFs can be",
+            "optimized away during synthesis."
+          ],
+          "loc": {
+            "line": 318,
+            "col": 5,
+            "end_line": 324,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_top.gen_scramble.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_scramble",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "loc": {
+            "line": 632,
+            "col": 5,
+            "end_line": 640,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_top.gen_scramble.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_scramble",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "loc": {
+            "line": 642,
+            "col": 5,
+            "end_line": 650,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_top.gen_rams.gen_rams_inner.gen_scramble_rams.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "if",
+              "name": "gen_scramble_rams",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 768,
+            "col": 11,
+            "end_line": 774,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_top.g_dside_tracker.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_dside_tracker",
+              "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1466,
+            "col": 7,
+            "end_line": 1472,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_top.g_dside_tracker.#always6",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_dside_tracker",
+              "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1474,
+            "col": 7,
+            "end_line": 1484,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_top.g_dside_tracker.g_track_first_entry.#always7",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_dside_tracker",
+              "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_track_first_entry",
+              "cond": "i == 0"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1487,
+            "col": 9,
+            "end_line": 1494,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_top.g_dside_tracker.g_track_other_entries.#always8",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_dside_tracker",
+              "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_track_other_entries"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1496,
+            "col": 9,
+            "end_line": 1504,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_top.#always9",
+          "kind": "always",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1583,
+            "col": 5,
+            "end_line": 1603,
+            "end_col": 8
+          }
+        }
+      ],
       "insts": [
         {
           "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop",

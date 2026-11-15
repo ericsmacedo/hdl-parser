@@ -593,6 +593,172 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_fetch_fifo.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "//////////////////////////////////////",
+            "Instruction aligner (if unaligned) //",
+            "//////////////////////////////////////"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_instr_addr_ra.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_instr_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 5,
+            "end_line": 190,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_instr_addr_nr.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_instr_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 192,
+            "col": 5,
+            "end_line": 196,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "//////////////////",
+            "FIFO registers //",
+            "//////////////////"
+          ],
+          "loc": {
+            "line": 259,
+            "col": 3,
+            "end_line": 265,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_fifo_regs.g_rdata_ra.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_regs",
+              "cond": "genvar i = 0; i < DEPTH; i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_rdata_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 7,
+            "end_line": 277,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_fifo_regs.g_rdata_nr.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_regs",
+              "cond": "genvar i = 0; i < DEPTH; i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_rdata_nr"
+            }
+          ],
+          "loc": {
+            "line": 279,
+            "col": 7,
+            "end_line": 284,
+            "end_col": 10
+          }
+        }
+      ],
       "loc": {
         "line": 15,
         "col": 1,

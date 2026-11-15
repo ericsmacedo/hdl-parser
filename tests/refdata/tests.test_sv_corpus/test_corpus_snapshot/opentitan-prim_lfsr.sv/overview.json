@@ -1001,6 +1001,107 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "prim_lfsr.gen_out_non_linear.p_rotrev",
+          "name": "p_rotrev",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            }
+          ],
+          "loc": {
+            "line": 405,
+            "col": 5,
+            "end_line": 410,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_lfsr.gen_out_non_linear.p_perm_check",
+          "name": "p_perm_check",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 421,
+            "col": 7,
+            "end_line": 426,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "prim_lfsr.p_reg",
+          "name": "p_reg",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 486,
+            "col": 3,
+            "end_line": 492,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_lfsr.gen_max_len_sva.p_max_len",
+          "name": "p_max_len",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_max_len_sva",
+              "cond": "MaxLenSVA"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 617,
+            "col": 5,
+            "end_line": 625,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 29,
         "col": 1,

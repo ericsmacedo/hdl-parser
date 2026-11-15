@@ -764,6 +764,112 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "id_queue.#always1",
+          "kind": "always_comb",
+          "loc": {
+            "line": 192,
+            "col": 5,
+            "end_line": 357,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "id_queue.gen_lookup.gen_mask.#always2",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_lookup",
+              "cond": "genvar i = 0; i < CAPACITY; i++"
+            },
+            {
+              "kind": "for",
+              "name": "gen_mask",
+              "cond": "genvar j = 0; j < $bits(data_t); j++"
+            }
+          ],
+          "loc": {
+            "line": 363,
+            "col": 13,
+            "end_line": 373,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "id_queue.#always3",
+          "kind": "always_comb",
+          "loc": {
+            "line": 377,
+            "col": 5,
+            "end_line": 384,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "id_queue.gen_ht_ffs.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_ht_ffs",
+              "cond": "genvar i = 0; i < HtCapacity; i++"
+            }
+          ],
+          "loc": {
+            "line": 388,
+            "col": 9,
+            "end_line": 394,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "id_queue.gen_data_ffs.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_data_ffs",
+              "cond": "genvar i = 0; i < CAPACITY; i++"
+            }
+          ],
+          "loc": {
+            "line": 397,
+            "col": 9,
+            "end_line": 405,
+            "end_col": 12
+          }
+        }
+      ],
       "insts": [
         {
           "id": "id_queue.i_id_ohb_in",

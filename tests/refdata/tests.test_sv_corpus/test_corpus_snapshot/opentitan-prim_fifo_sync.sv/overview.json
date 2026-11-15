@@ -468,6 +468,95 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 68,
+            "col": 5,
+            "end_line": 74,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.gen_depth_eq1.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            },
+            {
+              "kind": "if",
+              "name": "gen_depth_eq1",
+              "cond": "Depth == 1"
+            }
+          ],
+          "loc": {
+            "line": 110,
+            "col": 7,
+            "end_line": 113,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.gen_depth_gt1.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            },
+            {
+              "kind": "else",
+              "name": "gen_depth_gt1"
+            }
+          ],
+          "loc": {
+            "line": 122,
+            "col": 7,
+            "end_line": 125,
+            "end_col": 12
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_fifo_sync.gen_normal_fifo.u_fifo_cnt",

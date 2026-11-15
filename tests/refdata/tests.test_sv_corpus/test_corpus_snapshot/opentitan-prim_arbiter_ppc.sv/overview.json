@@ -397,6 +397,131 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.#always1",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "comment": [
+            "PPC",
+            "Even below code looks O(n) but DC optimizes it to O(log(N))",
+            "Using Parallel Prefix Computation"
+          ],
+          "loc": {
+            "line": 81,
+            "col": 5,
+            "end_line": 86,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 95,
+            "col": 5,
+            "end_line": 105,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.gen_datapath.#always3",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            },
+            {
+              "kind": "if",
+              "name": "gen_datapath",
+              "cond": "EnDataPort == 1"
+            }
+          ],
+          "loc": {
+            "line": 108,
+            "col": 7,
+            "end_line": 115,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.#always4",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 123,
+            "col": 5,
+            "end_line": 130,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_fairness.p_cnt",
+          "name": "p_cnt",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_fairness",
+              "cond": "genvar n = 1; n <= N; n++"
+            }
+          ],
+          "ifdefs": [
+            "FPV_ON"
+          ],
+          "loc": {
+            "line": 211,
+            "col": 5,
+            "end_line": 217,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 27,
         "col": 1,

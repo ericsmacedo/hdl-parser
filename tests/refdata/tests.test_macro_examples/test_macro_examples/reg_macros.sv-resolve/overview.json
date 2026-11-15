@@ -184,6 +184,90 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "reg_macros.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 17,
+            "col": 5,
+            "end_line": 17,
+            "end_col": 23,
+            "macro": "REG"
+          }
+        },
+        {
+          "id": "reg_macros.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 18,
+            "col": 5,
+            "end_line": 18,
+            "end_col": 25,
+            "macro": "REG"
+          }
+        },
+        {
+          "id": "reg_macros.gen_stage.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_stage",
+              "cond": "genvar i = 0; i < STAGES; i++"
+            }
+          ],
+          "loc": {
+            "line": 24,
+            "col": 9,
+            "end_line": 24,
+            "end_col": 27,
+            "macro": "REG"
+          }
+        }
+      ],
       "insts": [
         {
           "id": "reg_macros.gen_stage.u_delay",

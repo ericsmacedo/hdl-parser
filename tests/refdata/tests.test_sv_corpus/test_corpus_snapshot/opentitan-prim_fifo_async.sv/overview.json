@@ -711,6 +711,186 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "prim_fifo_async.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "gray-coded version"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 73,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_rd_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_rd_ni"
+            }
+          ],
+          "clock": "clk_rd_i",
+          "clock_edge": "posedge",
+          "reset": "rst_rd_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_rd_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_rd_ni"
+            }
+          ],
+          "clock": "clk_rd_i",
+          "clock_edge": "posedge",
+          "reset": "rst_rd_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "gray-coded version"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "Registered version of synced read pointer"
+          ],
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 122,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_storage_mux.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_storage_mux",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 181,
+            "col": 5,
+            "end_line": 185,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_storage_simple.#always7",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_storage_simple"
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 5,
+            "end_line": 195,
+            "end_col": 8
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_fifo_async.sync_wptr",

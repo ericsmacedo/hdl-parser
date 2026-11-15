@@ -89,10 +89,18 @@ class _Assigner:
             result.append(con.model_copy(update={"id": con_id}))
         return tuple(result)
 
-    def hierarchical(self, item: dm.ModuleInstance | dm.Signal) -> str:
+    def hierarchical(self, item: dm.ModuleInstance | dm.Signal | dm.Process, name: str = "") -> str:
         """Hierarchical name: it includes the labels of the generate blocks."""
         labels = [self.name(generate.name) for generate in item.generates if generate.name]
-        return ".".join((*labels, self.name(item.name)))
+        return ".".join((*labels, name or self.name(item.name)))
+
+    def processes(self, processes: tuple[dm.Process, ...], scope: _Scope) -> tuple[dm.Process, ...]:
+        result = []
+        for number, process in enumerate(processes, 1):
+            # blocks without label are numbered
+            name = "" if process.name else f"#always{number}"
+            result.append(process.model_copy(update={"id": scope.id(self.hierarchical(process, name))}))
+        return tuple(result)
 
     def signals(self, signals: tuple[dm.Signal, ...], scope: _Scope) -> tuple[dm.Signal, ...]:
         return tuple(signal.model_copy(update={"id": scope.id(self.hierarchical(signal))}) for signal in signals)
@@ -132,6 +140,7 @@ class _Assigner:
             "signals": self.signals(mod.signals, scope),
             "typedefs": self.typedefs(mod.typedefs, scope),
             "functions": self.functions(mod.functions, scope),
+            "processes": self.processes(mod.processes, scope),
             "insts": tuple(self.instance(inst, scope) for inst in mod.insts),
             "unresolved_macros": tuple(
                 macro.model_copy(update={"id": scope.id(f"`{self.name(macro.name)}")})

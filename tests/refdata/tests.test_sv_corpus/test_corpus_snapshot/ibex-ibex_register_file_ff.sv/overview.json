@@ -912,6 +912,297 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.we_a_decoder",
+          "name": "we_a_decoder",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 5,
+            "end_line": 96,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_rf_data_flops.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_data_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 105,
+            "col": 7,
+            "end_line": 111,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_rf_shared_flops.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_shared_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 120,
+            "col": 7,
+            "end_line": 127,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 152,
+            "col": 7,
+            "end_line": 158,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 163,
+            "col": 7,
+            "end_line": 169,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_normal_r0.g_rf_shared0_x16.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0"
+            },
+            {
+              "kind": "if",
+              "name": "g_rf_shared0_x16",
+              "cond": "!RV32E"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 9,
+            "end_line": 192,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.we_a_decoder",
+          "name": "we_a_decoder",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 237,
+            "col": 5,
+            "end_line": 241,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_rf_flops.#always8",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_flops",
+              "cond": "genvar i = 1; i < NUM_WORDS; i++"
+            }
+          ],
+          "loc": {
+            "line": 250,
+            "col": 7,
+            "end_line": 256,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_dummy_r0.#always9",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 7,
+            "end_line": 278,
+            "end_col": 10
+          }
+        }
+      ],
       "loc": {
         "line": 38,
         "col": 1,

@@ -684,6 +684,316 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "prim_sync_reqack.gen_rz_hs_protocol.src_fsm",
+          "name": "src_fsm",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rz_hs_protocol",
+              "cond": "EnRzHs"
+            }
+          ],
+          "comment": [
+            "REQ-side FSM (SRC domain)"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 5,
+            "end_line": 103,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_rz_hs_protocol.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_src_ni"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "rst_src_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rz_hs_protocol",
+              "cond": "EnRzHs"
+            }
+          ],
+          "comment": [
+            "Registers"
+          ],
+          "loc": {
+            "line": 116,
+            "col": 5,
+            "end_line": 122,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_rz_hs_protocol.dst_fsm",
+          "name": "dst_fsm",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rz_hs_protocol",
+              "cond": "EnRzHs"
+            }
+          ],
+          "comment": [
+            "ACK-side FSM (DST domain)"
+          ],
+          "loc": {
+            "line": 125,
+            "col": 5,
+            "end_line": 155,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_rz_hs_protocol.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_dst_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_dst_ni"
+            }
+          ],
+          "clock": "clk_dst_i",
+          "clock_edge": "posedge",
+          "reset": "rst_dst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rz_hs_protocol",
+              "cond": "EnRzHs"
+            }
+          ],
+          "comment": [
+            "Registers"
+          ],
+          "loc": {
+            "line": 168,
+            "col": 5,
+            "end_line": 174,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_nrz_hs_protocol.src_fsm",
+          "name": "src_fsm",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol"
+            }
+          ],
+          "comment": [
+            "REQ-side FSM (SRC domain)"
+          ],
+          "loc": {
+            "line": 218,
+            "col": 5,
+            "end_line": 259,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_nrz_hs_protocol.dst_fsm",
+          "name": "dst_fsm",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol"
+            }
+          ],
+          "comment": [
+            "ACK-side FSM (DST domain)"
+          ],
+          "loc": {
+            "line": 262,
+            "col": 5,
+            "end_line": 303,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_nrz_hs_protocol.#always7",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_src_ni"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "rst_src_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol"
+            }
+          ],
+          "comment": [
+            "Registers"
+          ],
+          "loc": {
+            "line": 306,
+            "col": 5,
+            "end_line": 314,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_nrz_hs_protocol.#always8",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_dst_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_dst_ni"
+            }
+          ],
+          "clock": "clk_dst_i",
+          "clock_edge": "posedge",
+          "reset": "rst_dst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol"
+            }
+          ],
+          "loc": {
+            "line": 315,
+            "col": 5,
+            "end_line": 323,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.#always9",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "effective_rst_n"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "effective_rst_n",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 338,
+            "col": 5,
+            "end_line": 344,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_assert_en_rst_chks.#always10",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_src_ni"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "rst_src_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_assert_en_rst_chks",
+              "cond": "EnRstChks"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 372,
+            "col": 5,
+            "end_line": 378,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_sync_reqack.gen_assert_en_rst_chks.#always11",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_dst_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_dst_ni"
+            }
+          ],
+          "clock": "clk_dst_i",
+          "clock_edge": "posedge",
+          "reset": "rst_dst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_assert_en_rst_chks",
+              "cond": "EnRstChks"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 5,
+            "end_line": 387,
+            "end_col": 8
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_sync_reqack.gen_rz_hs_protocol.ack_sync",

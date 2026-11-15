@@ -591,6 +591,205 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "clk_int_div.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "-------------------- Divider Load FSM --------------------"
+          ],
+          "loc": {
+            "line": 153,
+            "col": 3,
+            "end_line": 224,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 229,
+            "col": 3,
+            "end_line": 243,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always3",
+          "kind": "always_comb",
+          "comment": [
+            "---------------------- Cycle Counter ----------------------",
+            "Cycle Counter"
+          ],
+          "loc": {
+            "line": 248,
+            "col": 3,
+            "end_line": 265,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 267,
+            "col": 3,
+            "end_line": 273,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "----------------------- T-Flip-Flops -----------------------",
+            "These T-Flip-Flop intentionally use blocking assignments! If we were to use",
+            "non-blocking assignment like we normally do for flip-flops, we would create",
+            "a race condition when sampling data from the fast clock domain into",
+            "flip-flops clocked by t_ff1_q and t_ff2_q. To avoid this, we use blocking assignments",
+            "which is the recomended method acording to:",
+            "S. Sutherland and D. Mills,",
+            "Verilog and System Verilog gotchas: 101 common coding errors and how to",
+            "avoid them. New York: Springer, 2007. page 64."
+          ],
+          "loc": {
+            "line": 288,
+            "col": 3,
+            "end_line": 296,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "negedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "negedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The second flip-flop is required for odd integer division and needs to",
+            "negative edge tirggered."
+          ],
+          "loc": {
+            "line": 300,
+            "col": 3,
+            "end_line": 308,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always7",
+          "kind": "always_comb",
+          "loc": {
+            "line": 310,
+            "col": 3,
+            "end_line": 318,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always8",
+          "kind": "always_comb",
+          "comment": [
+            "----- FSM to control T-FF enable and clk_div_bypass_en -----"
+          ],
+          "loc": {
+            "line": 323,
+            "col": 3,
+            "end_line": 334,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "clk_int_div.#always9",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "ungated_output_clock"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "ungated_output_clock",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "--------------------- Clock gate logic ---------------------",
+            "During the transitioning phase, we gate the clock to prevent clock glitches",
+            "The gate_is_open_q signal is used by the FSM to determine whether the",
+            "gate_en signal has been latched by the clock gate cell, i.e. if this signal",
+            "is 1'b0, it means not only that the clock gate should be disabled but also that",
+            "clk_o is currently LOW and thus the enable signal has been latched and the",
+            "output clock will remain LOW until we enable the clock again.",
+            "The FSM needs to know this to not disable the T-FFs and the cycle counter",
+            "to early. Otherwise the clock might get stuck active high or we deassert a",
+            "clock to early"
+          ],
+          "loc": {
+            "line": 372,
+            "col": 3,
+            "end_line": 378,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "clk_int_div.i_odd_clk_xor",

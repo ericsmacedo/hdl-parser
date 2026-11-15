@@ -576,6 +576,147 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "ibex_prefetch_buffer.g_stored_addr_ra.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_stored_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 154,
+            "col": 5,
+            "end_line": 160,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_stored_addr_nr.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_stored_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 5,
+            "end_line": 166,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_fetch_addr_ra.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_fetch_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 178,
+            "col": 5,
+            "end_line": 184,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_fetch_addr_nr.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_fetch_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 5,
+            "end_line": 190,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "/////////////",
+            "Registers //",
+            "/////////////"
+          ],
+          "loc": {
+            "line": 246,
+            "col": 3,
+            "end_line": 258,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "ibex_prefetch_buffer.fifo_i",
