@@ -1,0 +1,2228 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_tracer_pkg.sv",
+  "modules": [],
+  "packages": [
+    {
+      "id": "ibex_tracer_pkg",
+      "name": "ibex_tracer_pkg",
+      "params": [
+        {
+          "id": "ibex_tracer_pkg.OPCODE_C0",
+          "ptype": "logic",
+          "name": "OPCODE_C0",
+          "dim": "[1:0]",
+          "default": "2'b00",
+          "loc": {
+            "line": 10,
+            "col": 3,
+            "end_line": 10,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.OPCODE_C1",
+          "ptype": "logic",
+          "name": "OPCODE_C1",
+          "dim": "[1:0]",
+          "default": "2'b01",
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.OPCODE_C2",
+          "ptype": "logic",
+          "name": "OPCODE_C2",
+          "dim": "[1:0]",
+          "default": "2'b10",
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_LUI",
+          "ptype": "logic",
+          "name": "INSN_LUI",
+          "dim": "[31:0]",
+          "default": "{ 25'h?,                           {OPCODE_LUI  } }",
+          "loc": {
+            "line": 15,
+            "col": 3,
+            "end_line": 15,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_AUIPC",
+          "ptype": "logic",
+          "name": "INSN_AUIPC",
+          "dim": "[31:0]",
+          "default": "{ 25'h?,                           {OPCODE_AUIPC} }",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_JAL",
+          "ptype": "logic",
+          "name": "INSN_JAL",
+          "dim": "[31:0]",
+          "default": "{ 25'h?,                           {OPCODE_JAL  } }",
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_JALR",
+          "ptype": "logic",
+          "name": "INSN_JALR",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b000, 5'h?, {OPCODE_JALR } }",
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BEQ",
+          "ptype": "logic",
+          "name": "INSN_BEQ",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b000, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BNE",
+          "ptype": "logic",
+          "name": "INSN_BNE",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b001, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BLT",
+          "ptype": "logic",
+          "name": "INSN_BLT",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b100, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BGE",
+          "ptype": "logic",
+          "name": "INSN_BGE",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b101, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BLTU",
+          "ptype": "logic",
+          "name": "INSN_BLTU",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b110, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BGEU",
+          "ptype": "logic",
+          "name": "INSN_BGEU",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b111, 5'h?, {OPCODE_BRANCH} }",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ADDI",
+          "ptype": "logic",
+          "name": "INSN_ADDI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b000, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLTI",
+          "ptype": "logic",
+          "name": "INSN_SLTI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b010, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLTIU",
+          "ptype": "logic",
+          "name": "INSN_SLTIU",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b011, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_XORI",
+          "ptype": "logic",
+          "name": "INSN_XORI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b100, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ORI",
+          "ptype": "logic",
+          "name": "INSN_ORI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b110, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ANDI",
+          "ptype": "logic",
+          "name": "INSN_ANDI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b111, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLLI",
+          "ptype": "logic",
+          "name": "INSN_SLLI",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SRLI",
+          "ptype": "logic",
+          "name": "INSN_SRLI",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SRAI",
+          "ptype": "logic",
+          "name": "INSN_SRAI",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ADD",
+          "ptype": "logic",
+          "name": "INSN_ADD",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b000, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SUB",
+          "ptype": "logic",
+          "name": "INSN_SUB",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b000, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLL",
+          "ptype": "logic",
+          "name": "INSN_SLL",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLT",
+          "ptype": "logic",
+          "name": "INSN_SLT",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b010, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SLTU",
+          "ptype": "logic",
+          "name": "INSN_SLTU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b011, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_XOR",
+          "ptype": "logic",
+          "name": "INSN_XOR",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SRL",
+          "ptype": "logic",
+          "name": "INSN_SRL",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SRA",
+          "ptype": "logic",
+          "name": "INSN_SRA",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_OR",
+          "ptype": "logic",
+          "name": "INSN_OR",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b110, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_AND",
+          "ptype": "logic",
+          "name": "INSN_AND",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000000, 10'h?, 3'b111, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRW",
+          "ptype": "logic",
+          "name": "INSN_CSRRW",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b001, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRS",
+          "ptype": "logic",
+          "name": "INSN_CSRRS",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b010, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRC",
+          "ptype": "logic",
+          "name": "INSN_CSRRC",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b011, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRWI",
+          "ptype": "logic",
+          "name": "INSN_CSRRWI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b101, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRSI",
+          "ptype": "logic",
+          "name": "INSN_CSRRSI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b110, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRRCI",
+          "ptype": "logic",
+          "name": "INSN_CSRRCI",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b111, 5'h?, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ECALL",
+          "ptype": "logic",
+          "name": "INSN_ECALL",
+          "dim": "[31:0]",
+          "default": "{ 12'b000000000000,         13'b0, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_EBREAK",
+          "ptype": "logic",
+          "name": "INSN_EBREAK",
+          "dim": "[31:0]",
+          "default": "{ 12'b000000000001,         13'b0, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_MRET",
+          "ptype": "logic",
+          "name": "INSN_MRET",
+          "dim": "[31:0]",
+          "default": "{ 12'b001100000010,         13'b0, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_DRET",
+          "ptype": "logic",
+          "name": "INSN_DRET",
+          "dim": "[31:0]",
+          "default": "{ 12'b011110110010,         13'b0, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_WFI",
+          "ptype": "logic",
+          "name": "INSN_WFI",
+          "dim": "[31:0]",
+          "default": "{ 12'b000100000101,         13'b0, {OPCODE_SYSTEM} }",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_DIV",
+          "ptype": "logic",
+          "name": "INSN_DIV",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_DIVU",
+          "ptype": "logic",
+          "name": "INSN_DIVU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 66,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_REM",
+          "ptype": "logic",
+          "name": "INSN_REM",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b110, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_REMU",
+          "ptype": "logic",
+          "name": "INSN_REMU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b111, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 68,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PMUL",
+          "ptype": "logic",
+          "name": "INSN_PMUL",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b000, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 69,
+            "col": 3,
+            "end_line": 69,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PMUH",
+          "ptype": "logic",
+          "name": "INSN_PMUH",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PMULHSU",
+          "ptype": "logic",
+          "name": "INSN_PMULHSU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b010, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PMULHU",
+          "ptype": "logic",
+          "name": "INSN_PMULHU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000001, 10'h?, 3'b011, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SH1ADD",
+          "ptype": "logic",
+          "name": "INSN_SH1ADD",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010000, 10'h?, 3'b010, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SH2ADD",
+          "ptype": "logic",
+          "name": "INSN_SH2ADD",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010000, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SH3ADD",
+          "ptype": "logic",
+          "name": "INSN_SH3ADD",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010000, 10'h?, 3'b110, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_RORI",
+          "ptype": "logic",
+          "name": "INSN_RORI",
+          "dim": "[31:0]",
+          "default": "{ 5'b01100  , 1'b0, 11'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLZ",
+          "ptype": "logic",
+          "name": "INSN_CLZ",
+          "dim": "[31:0]",
+          "default": "{ 12'b011000000000, 5'h?,  3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CTZ",
+          "ptype": "logic",
+          "name": "INSN_CTZ",
+          "dim": "[31:0]",
+          "default": "{ 12'b011000000001, 5'h?,  3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 86,
+            "col": 3,
+            "end_line": 86,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CPOP",
+          "ptype": "logic",
+          "name": "INSN_CPOP",
+          "dim": "[31:0]",
+          "default": "{ 12'b011000000010, 5'h?,  3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SEXTB",
+          "ptype": "logic",
+          "name": "INSN_SEXTB",
+          "dim": "[31:0]",
+          "default": "{ 12'b011000000100, 5'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SEXTH",
+          "ptype": "logic",
+          "name": "INSN_SEXTH",
+          "dim": "[31:0]",
+          "default": "{ 12'b011000000101, 5'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ZEXTH",
+          "ptype": "logic",
+          "name": "INSN_ZEXTH",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000100, 5'b00000, 5'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 92,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ROL",
+          "ptype": "logic",
+          "name": "INSN_ROL",
+          "dim": "[31:0]",
+          "default": "{ 7'b0110000, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ROR",
+          "ptype": "logic",
+          "name": "INSN_ROR",
+          "dim": "[31:0]",
+          "default": "{ 7'b0110000, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_MIN",
+          "ptype": "logic",
+          "name": "INSN_MIN",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000101, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 96,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_MAX",
+          "ptype": "logic",
+          "name": "INSN_MAX",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000101, 10'h?, 3'b110, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_MINU",
+          "ptype": "logic",
+          "name": "INSN_MINU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000101, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_MAXU",
+          "ptype": "logic",
+          "name": "INSN_MAXU",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000101, 10'h?, 3'b111, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_XNOR",
+          "ptype": "logic",
+          "name": "INSN_XNOR",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ORN",
+          "ptype": "logic",
+          "name": "INSN_ORN",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b110, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ANDN",
+          "ptype": "logic",
+          "name": "INSN_ANDN",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100000, 10'h?, 3'b111, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PACK",
+          "ptype": "logic",
+          "name": "INSN_PACK",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000100, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_PACKH",
+          "ptype": "logic",
+          "name": "INSN_PACKH",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000100, 10'h?, 3'b111, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BCLRI",
+          "ptype": "logic",
+          "name": "INSN_BCLRI",
+          "dim": "[31:0]",
+          "default": "{ 5'b01001, 12'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BSETI",
+          "ptype": "logic",
+          "name": "INSN_BSETI",
+          "dim": "[31:0]",
+          "default": "{ 5'b00101, 12'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 108,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BINVI",
+          "ptype": "logic",
+          "name": "INSN_BINVI",
+          "dim": "[31:0]",
+          "default": "{ 5'b01101, 12'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 109,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BEXTI",
+          "ptype": "logic",
+          "name": "INSN_BEXTI",
+          "dim": "[31:0]",
+          "default": "{ 5'b01001, 1'b0, 11'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 112,
+            "col": 3,
+            "end_line": 112,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BCLR",
+          "ptype": "logic",
+          "name": "INSN_BCLR",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100100, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BSET",
+          "ptype": "logic",
+          "name": "INSN_BSET",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010100, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BINV",
+          "ptype": "logic",
+          "name": "INSN_BINV",
+          "dim": "[31:0]",
+          "default": "{ 7'b0110100, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 116,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BEXT",
+          "ptype": "logic",
+          "name": "INSN_BEXT",
+          "dim": "[31:0]",
+          "default": "{ 7'b0100100, 10'h?, 3'b101, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 117,
+            "col": 3,
+            "end_line": 117,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_REV8",
+          "ptype": "logic",
+          "name": "INSN_REV8",
+          "dim": "[31:0]",
+          "default": "{ 5'b01101, 1'b0, 1'b0, 5'b11000, 5'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 123,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_BREV8",
+          "ptype": "logic",
+          "name": "INSN_BREV8",
+          "dim": "[31:0]",
+          "default": "{ 5'b01101, 1'b0, 1'b0, 5'b00111, 5'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 125,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ORC_B",
+          "ptype": "logic",
+          "name": "INSN_ORC_B",
+          "dim": "[31:0]",
+          "default": "{ 5'b00101, 1'b0, 1'b0, 5'b00111, 5'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 127,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_ZIP",
+          "ptype": "logic",
+          "name": "INSN_ZIP",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000100, 5'b01111, 5'h?, 3'b001, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 131,
+            "col": 3,
+            "end_line": 132,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_UNZIP",
+          "ptype": "logic",
+          "name": "INSN_UNZIP",
+          "dim": "[31:0]",
+          "default": "{ 7'b0000100, 5'b01111, 5'h?, 3'b101, 5'h?, {OPCODE_OP_IMM} }",
+          "loc": {
+            "line": 133,
+            "col": 3,
+            "end_line": 134,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_XPERM4",
+          "ptype": "logic",
+          "name": "INSN_XPERM4",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010100, 10'h?, 3'b010, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 136,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_XPERM8",
+          "ptype": "logic",
+          "name": "INSN_XPERM8",
+          "dim": "[31:0]",
+          "default": "{ 7'b0010100, 10'h?, 3'b100, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLMUL",
+          "ptype": "logic",
+          "name": "INSN_CLMUL",
+          "dim": "[31:0]",
+          "default": "{7'b0000101, 10'h?, 3'b001, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLMULR",
+          "ptype": "logic",
+          "name": "INSN_CLMULR",
+          "dim": "[31:0]",
+          "default": "{7'b0000101, 10'h?, 3'b010, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLMULH",
+          "ptype": "logic",
+          "name": "INSN_CLMULH",
+          "dim": "[31:0]",
+          "default": "{7'b0000101, 10'h?, 3'b011, 5'h?, {OPCODE_OP} }",
+          "loc": {
+            "line": 142,
+            "col": 3,
+            "end_line": 142,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_LOAD",
+          "ptype": "logic",
+          "name": "INSN_LOAD",
+          "dim": "[31:0]",
+          "default": "{25'h?,                            {OPCODE_LOAD } }",
+          "loc": {
+            "line": 145,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_STORE",
+          "ptype": "logic",
+          "name": "INSN_STORE",
+          "dim": "[31:0]",
+          "default": "{25'h?,                            {OPCODE_STORE} }",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_FENCE",
+          "ptype": "logic",
+          "name": "INSN_FENCE",
+          "dim": "[31:0]",
+          "default": "{ 17'h?,             3'b000, 5'h?, {OPCODE_MISC_MEM} }",
+          "loc": {
+            "line": 149,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_FENCEI",
+          "ptype": "logic",
+          "name": "INSN_FENCEI",
+          "dim": "[31:0]",
+          "default": "{ 17'h0,             3'b001, 5'h0, {OPCODE_MISC_MEM} }",
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CADDI4SPN",
+          "ptype": "logic",
+          "name": "INSN_CADDI4SPN",
+          "dim": "[15:0]",
+          "default": "{ 3'b000,       11'h?,                    {OPCODE_C0} }",
+          "loc": {
+            "line": 154,
+            "col": 3,
+            "end_line": 154,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLW",
+          "ptype": "logic",
+          "name": "INSN_CLW",
+          "dim": "[15:0]",
+          "default": "{ 3'b010,       11'h?,                    {OPCODE_C0} }",
+          "loc": {
+            "line": 155,
+            "col": 3,
+            "end_line": 155,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSW",
+          "ptype": "logic",
+          "name": "INSN_CSW",
+          "dim": "[15:0]",
+          "default": "{ 3'b110,       11'h?,                    {OPCODE_C0} }",
+          "loc": {
+            "line": 156,
+            "col": 3,
+            "end_line": 156,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CCLC",
+          "ptype": "logic",
+          "name": "INSN_CCLC",
+          "dim": "[15:0]",
+          "default": "{ 3'b011,       11'h?,                    {OPCODE_C0} }",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CCSC",
+          "ptype": "logic",
+          "name": "INSN_CCSC",
+          "dim": "[15:0]",
+          "default": "{ 3'b111,       11'h?,                    {OPCODE_C0} }",
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLBU",
+          "ptype": "logic",
+          "name": "INSN_CLBU",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b000, 8'h?,                   {OPCODE_C0} }",
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 160,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLHU",
+          "ptype": "logic",
+          "name": "INSN_CLHU",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b001, 3'h?, 1'b0, 4'h?,       {OPCODE_C0} }",
+          "loc": {
+            "line": 161,
+            "col": 3,
+            "end_line": 161,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLH",
+          "ptype": "logic",
+          "name": "INSN_CLH",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b001, 3'h?, 1'b1, 4'h?,       {OPCODE_C0} }",
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSB",
+          "ptype": "logic",
+          "name": "INSN_CSB",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b010, 8'h?,                   {OPCODE_C0} }",
+          "loc": {
+            "line": 163,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSH",
+          "ptype": "logic",
+          "name": "INSN_CSH",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b011, 3'h?, 1'b0, 4'h?,       {OPCODE_C0} }",
+          "loc": {
+            "line": 164,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CADDI",
+          "ptype": "logic",
+          "name": "INSN_CADDI",
+          "dim": "[15:0]",
+          "default": "{ 3'b000,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 167,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CJAL",
+          "ptype": "logic",
+          "name": "INSN_CJAL",
+          "dim": "[15:0]",
+          "default": "{ 3'b001,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 168,
+            "col": 3,
+            "end_line": 168,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CJ",
+          "ptype": "logic",
+          "name": "INSN_CJ",
+          "dim": "[15:0]",
+          "default": "{ 3'b101,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 169,
+            "col": 3,
+            "end_line": 169,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLI",
+          "ptype": "logic",
+          "name": "INSN_CLI",
+          "dim": "[15:0]",
+          "default": "{ 3'b010,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 170,
+            "col": 3,
+            "end_line": 170,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLUI",
+          "ptype": "logic",
+          "name": "INSN_CLUI",
+          "dim": "[15:0]",
+          "default": "{ 3'b011,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 171,
+            "col": 3,
+            "end_line": 171,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CBEQZ",
+          "ptype": "logic",
+          "name": "INSN_CBEQZ",
+          "dim": "[15:0]",
+          "default": "{ 3'b110,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 172,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CBNEZ",
+          "ptype": "logic",
+          "name": "INSN_CBNEZ",
+          "dim": "[15:0]",
+          "default": "{ 3'b111,       11'h?,                    {OPCODE_C1} }",
+          "loc": {
+            "line": 173,
+            "col": 3,
+            "end_line": 173,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRLI",
+          "ptype": "logic",
+          "name": "INSN_CSRLI",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'h?, 2'b00, 8'h?,              {OPCODE_C1} }",
+          "loc": {
+            "line": 174,
+            "col": 3,
+            "end_line": 174,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSRAI",
+          "ptype": "logic",
+          "name": "INSN_CSRAI",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'h?, 2'b01, 8'h?,              {OPCODE_C1} }",
+          "loc": {
+            "line": 175,
+            "col": 3,
+            "end_line": 175,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CANDI",
+          "ptype": "logic",
+          "name": "INSN_CANDI",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'h?, 2'b10, 8'h?,              {OPCODE_C1} }",
+          "loc": {
+            "line": 176,
+            "col": 3,
+            "end_line": 176,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSUB",
+          "ptype": "logic",
+          "name": "INSN_CSUB",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0, 2'b11, 3'h?, 2'b00, 3'h?, {OPCODE_C1} }",
+          "loc": {
+            "line": 177,
+            "col": 3,
+            "end_line": 177,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CXOR",
+          "ptype": "logic",
+          "name": "INSN_CXOR",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0, 2'b11, 3'h?, 2'b01, 3'h?, {OPCODE_C1} }",
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_COR",
+          "ptype": "logic",
+          "name": "INSN_COR",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0, 2'b11, 3'h?, 2'b10, 3'h?, {OPCODE_C1} }",
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CAND",
+          "ptype": "logic",
+          "name": "INSN_CAND",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0, 2'b11, 3'h?, 2'b11, 3'h?, {OPCODE_C1} }",
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CZEXTB",
+          "ptype": "logic",
+          "name": "INSN_CZEXTB",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b11, 3'b000,    {OPCODE_C1} }",
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSEXTB",
+          "ptype": "logic",
+          "name": "INSN_CSEXTB",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b11, 3'b001,    {OPCODE_C1} }",
+          "loc": {
+            "line": 183,
+            "col": 3,
+            "end_line": 183,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CZEXTH",
+          "ptype": "logic",
+          "name": "INSN_CZEXTH",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b11, 3'b010,    {OPCODE_C1} }",
+          "loc": {
+            "line": 184,
+            "col": 3,
+            "end_line": 184,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSEXTH",
+          "ptype": "logic",
+          "name": "INSN_CSEXTH",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b11, 3'b011,    {OPCODE_C1} }",
+          "loc": {
+            "line": 185,
+            "col": 3,
+            "end_line": 185,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CNOT",
+          "ptype": "logic",
+          "name": "INSN_CNOT",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b11, 3'b101,    {OPCODE_C1} }",
+          "loc": {
+            "line": 186,
+            "col": 3,
+            "end_line": 186,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMUL",
+          "ptype": "logic",
+          "name": "INSN_CMUL",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 3'b111, 3'h?, 2'b10, 3'h?,      {OPCODE_C1} }",
+          "loc": {
+            "line": 187,
+            "col": 3,
+            "end_line": 187,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CSLLI",
+          "ptype": "logic",
+          "name": "INSN_CSLLI",
+          "dim": "[15:0]",
+          "default": "{ 3'b000,       11'h?,                    {OPCODE_C2} }",
+          "loc": {
+            "line": 190,
+            "col": 3,
+            "end_line": 190,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CLWSP",
+          "ptype": "logic",
+          "name": "INSN_CLWSP",
+          "dim": "[15:0]",
+          "default": "{ 3'b010,       11'h?,                    {OPCODE_C2} }",
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_SWSP",
+          "ptype": "logic",
+          "name": "INSN_SWSP",
+          "dim": "[15:0]",
+          "default": "{ 3'b110,       11'h?,                    {OPCODE_C2} }",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMV",
+          "ptype": "logic",
+          "name": "INSN_CMV",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0, 10'h?,                    {OPCODE_C2} }",
+          "loc": {
+            "line": 193,
+            "col": 3,
+            "end_line": 193,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CADD",
+          "ptype": "logic",
+          "name": "INSN_CADD",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b1, 10'h?,                    {OPCODE_C2} }",
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CEBREAK",
+          "ptype": "logic",
+          "name": "INSN_CEBREAK",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b1,        5'h0,  5'h0,       {OPCODE_C2} }",
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CJR",
+          "ptype": "logic",
+          "name": "INSN_CJR",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b0,        5'h0,  5'h0,       {OPCODE_C2} }",
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CJALR",
+          "ptype": "logic",
+          "name": "INSN_CJALR",
+          "dim": "[15:0]",
+          "default": "{ 3'b100, 1'b1,        5'h?,  5'h0,       {OPCODE_C2} }",
+          "loc": {
+            "line": 197,
+            "col": 3,
+            "end_line": 197,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CCLCSP",
+          "ptype": "logic",
+          "name": "INSN_CCLCSP",
+          "dim": "[15:0]",
+          "default": "{ 3'b011,       11'h?,           {OPCODE_C2} }",
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CCSCSP",
+          "ptype": "logic",
+          "name": "INSN_CCSCSP",
+          "dim": "[15:0]",
+          "default": "{ 3'b111,       11'h?,           {OPCODE_C2} }",
+          "loc": {
+            "line": 199,
+            "col": 3,
+            "end_line": 199,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMPUSH",
+          "ptype": "logic",
+          "name": "INSN_CMPUSH",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b110, 2'b00, 4'h?, 2'b?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMPOP",
+          "ptype": "logic",
+          "name": "INSN_CMPOP",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b110, 2'b10, 4'h?, 2'b?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 202,
+            "col": 3,
+            "end_line": 202,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMPOPRETZ",
+          "ptype": "logic",
+          "name": "INSN_CMPOPRETZ",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b111, 2'b00, 4'h?, 2'b?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 203,
+            "col": 3,
+            "end_line": 203,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMPOPRET",
+          "ptype": "logic",
+          "name": "INSN_CMPOPRET",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b111, 2'b10, 4'h?, 2'b?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 204,
+            "col": 3,
+            "end_line": 204,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMMVSA01",
+          "ptype": "logic",
+          "name": "INSN_CMMVSA01",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b011, 3'h?, 2'b01, 3'h?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 205,
+            "col": 3,
+            "end_line": 205,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CMMVA01S",
+          "ptype": "logic",
+          "name": "INSN_CMMVA01S",
+          "dim": "[15:0]",
+          "default": "{ 3'b101, 3'b011, 3'h?, 2'b11, 3'h?,      {OPCODE_C2} }",
+          "loc": {
+            "line": 206,
+            "col": 3,
+            "end_line": 206,
+            "end_col": 100
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETPERM",
+          "ptype": "logic",
+          "name": "INSN_CHGETPERM",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h0, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETTYPE",
+          "ptype": "logic",
+          "name": "INSN_CHGETTYPE",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h1, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 210,
+            "col": 3,
+            "end_line": 210,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETBASE",
+          "ptype": "logic",
+          "name": "INSN_CHGETBASE",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h2, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 211,
+            "col": 3,
+            "end_line": 211,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETHIGH",
+          "ptype": "logic",
+          "name": "INSN_CHGETHIGH",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h17, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 212,
+            "col": 3,
+            "end_line": 212,
+            "end_col": 99
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETTOP",
+          "ptype": "logic",
+          "name": "INSN_CHGETTOP",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h18, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 213,
+            "col": 3,
+            "end_line": 213,
+            "end_col": 99
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETLEN",
+          "ptype": "logic",
+          "name": "INSN_CHGETLEN",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h3, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 214,
+            "col": 3,
+            "end_line": 214,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETTAG",
+          "ptype": "logic",
+          "name": "INSN_CHGETTAG",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h4, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETSEALED",
+          "ptype": "logic",
+          "name": "INSN_CHGETSEALED",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h5, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHGETADDR",
+          "ptype": "logic",
+          "name": "INSN_CHGETADDR",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'hf, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 217,
+            "col": 3,
+            "end_line": 217,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSEAL",
+          "ptype": "logic",
+          "name": "INSN_CHSEAL",
+          "dim": "[31:0]",
+          "default": "{ 7'h0b, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 219,
+            "col": 3,
+            "end_line": 219,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHUNSEAL",
+          "ptype": "logic",
+          "name": "INSN_CHUNSEAL",
+          "dim": "[31:0]",
+          "default": "{ 7'h0c, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 220,
+            "col": 3,
+            "end_line": 220,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHANDPERM",
+          "ptype": "logic",
+          "name": "INSN_CHANDPERM",
+          "dim": "[31:0]",
+          "default": "{ 7'h0d, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 221,
+            "col": 3,
+            "end_line": 221,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETADDR",
+          "ptype": "logic",
+          "name": "INSN_CHSETADDR",
+          "dim": "[31:0]",
+          "default": "{ 7'h10, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 222,
+            "col": 3,
+            "end_line": 222,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHINCADDR",
+          "ptype": "logic",
+          "name": "INSN_CHINCADDR",
+          "dim": "[31:0]",
+          "default": "{ 7'h11, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 223,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHINCADDRIMM",
+          "ptype": "logic",
+          "name": "INSN_CHINCADDRIMM",
+          "dim": "[31:0]",
+          "default": "{ 12'h?, 5'h?,  3'b001, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 224,
+            "col": 3,
+            "end_line": 224,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETBOUNDS",
+          "ptype": "logic",
+          "name": "INSN_CHSETBOUNDS",
+          "dim": "[31:0]",
+          "default": "{ 7'h08, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 225,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETBOUNDSEX",
+          "ptype": "logic",
+          "name": "INSN_CHSETBOUNDSEX",
+          "dim": "[31:0]",
+          "default": "{ 7'h09, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 226,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETBOUNDSRNDN",
+          "ptype": "logic",
+          "name": "INSN_CHSETBOUNDSRNDN",
+          "dim": "[31:0]",
+          "default": "{ 7'h0a, 10'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 227,
+            "col": 3,
+            "end_line": 227,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETBOUNDSIMM",
+          "ptype": "logic",
+          "name": "INSN_CHSETBOUNDSIMM",
+          "dim": "[31:0]",
+          "default": "{ 12'h?, 5'h?,  3'b010, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 228,
+            "col": 3,
+            "end_line": 228,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHCLEARTAG",
+          "ptype": "logic",
+          "name": "INSN_CHCLEARTAG",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'hb, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 229,
+            "col": 3,
+            "end_line": 229,
+            "end_col": 101
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHCRRL",
+          "ptype": "logic",
+          "name": "INSN_CHCRRL",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h8, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 230,
+            "col": 3,
+            "end_line": 230,
+            "end_col": 101
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHCRAM",
+          "ptype": "logic",
+          "name": "INSN_CHCRAM",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'h9, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 231,
+            "col": 3,
+            "end_line": 231,
+            "end_col": 101
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSUB",
+          "ptype": "logic",
+          "name": "INSN_CHSUB",
+          "dim": "[31:0]",
+          "default": "{ 7'h14, 5'h?, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 233,
+            "col": 3,
+            "end_line": 233,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHMOVE",
+          "ptype": "logic",
+          "name": "INSN_CHMOVE",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'ha, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 234,
+            "col": 3,
+            "end_line": 234,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHTESTSUB",
+          "ptype": "logic",
+          "name": "INSN_CHTESTSUB",
+          "dim": "[31:0]",
+          "default": "{ 7'h20, 5'h?, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 235,
+            "col": 3,
+            "end_line": 235,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETEQUAL",
+          "ptype": "logic",
+          "name": "INSN_CHSETEQUAL",
+          "dim": "[31:0]",
+          "default": "{ 7'h21, 5'h?, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 236,
+            "col": 3,
+            "end_line": 236,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHSETHIGH",
+          "ptype": "logic",
+          "name": "INSN_CHSETHIGH",
+          "dim": "[31:0]",
+          "default": "{ 7'h16, 5'h?, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 237,
+            "col": 3,
+            "end_line": 237,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHJALR",
+          "ptype": "logic",
+          "name": "INSN_CHJALR",
+          "dim": "[31:0]",
+          "default": "{ 7'h7f, 5'hc, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 239,
+            "col": 3,
+            "end_line": 239,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_CHCSRRW",
+          "ptype": "logic",
+          "name": "INSN_CHCSRRW",
+          "dim": "[31:0]",
+          "default": "{ 7'h01, 5'h?, 5'h?, 3'b000, 5'h?, {OPCODE_CHERI} }",
+          "loc": {
+            "line": 241,
+            "col": 3,
+            "end_line": 241,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "ibex_tracer_pkg.INSN_AUICGP",
+          "ptype": "logic",
+          "name": "INSN_AUICGP",
+          "dim": "[31:0]",
+          "default": "{ 25'h?,                          {OPCODE_AUICGP} }",
+          "loc": {
+            "line": 242,
+            "col": 3,
+            "end_line": 242,
+            "end_col": 93
+          }
+        }
+      ],
+      "loc": {
+        "line": 7,
+        "col": 1,
+        "end_line": 244,
+        "end_col": 11
+      }
+    }
+  ]
+}

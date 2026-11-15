@@ -54,6 +54,13 @@ Macro files, for the macro expansion (include directory `common_cells/include`):
 |---|---|---|
 | `common_cells/include/common_cells/assertions.svh` | 9449 | `include/common_cells/assertions.svh` |
 
+Files with interfaces, packages, functions and tasks, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `common_cells/cf_math_pkg.sv` | 2726 | `src/cf_math_pkg.sv` |
+| `common_cells/ecc_pkg.sv` | 1410 | `src/ecc_pkg.sv` |
+
 ## axi
 
 - URL: <https://github.com/pulp-platform/axi>
@@ -75,6 +82,13 @@ Macro files, for the macro expansion (include directory `axi/include`):
 |---|---|---|
 | `axi/include/axi/assign.svh` | 43285 | `include/axi/assign.svh` |
 | `axi/include/axi/typedef.svh` | 14368 | `include/axi/typedef.svh` |
+
+Files with interfaces, packages, functions and tasks, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `axi/axi_intf.sv` | 21878 | `src/axi_intf.sv` |
+| `axi/axi_pkg.sv` | 26252 | `src/axi_pkg.sv` |
 
 ## ibex
 
@@ -112,6 +126,14 @@ Macro files, for the macro expansion (include directory `ibex/include`):
 | `ibex/include/prim_assert_yosys_macros.svh` | 2709 | `vendor/lowrisc_ip/ip/prim/rtl/prim_assert_yosys_macros.svh` |
 | `ibex/include/prim_flop_macros.sv` | 3576 | `vendor/lowrisc_ip/ip/prim/rtl/prim_flop_macros.sv` |
 
+Files with interfaces, packages, functions and tasks, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `ibex/ibex_mem_intf.sv` | 2173 | `dv/uvm/core_ibex/common/ibex_mem_intf_agent/ibex_mem_intf.sv` |
+| `ibex/irq_if.sv` | 951 | `dv/uvm/core_ibex/common/irq_agent/irq_if.sv` |
+| `ibex/ibex_tracer_pkg.sv` | 17623 | `rtl/ibex_tracer_pkg.sv` |
+
 ## opentitan
 
 - URL: <https://github.com/lowRISC/opentitan>
@@ -141,3 +163,12 @@ Macro files, for the macro expansion (include directory `opentitan/include`):
 | `opentitan/include/prim_assert_standard_macros.svh` | 6614 | `hw/ip/prim/rtl/prim_assert_standard_macros.svh` |
 | `opentitan/include/prim_assert_yosys_macros.svh` | 2709 | `hw/ip/prim/rtl/prim_assert_yosys_macros.svh` |
 | `opentitan/include/prim_flop_macros.sv` | 3576 | `hw/ip/prim/rtl/prim_flop_macros.sv` |
+
+Files with interfaces, packages, functions and tasks, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `opentitan/clk_rst_if.sv` | 12630 | `hw/dv/sv/common_ifs/clk_rst_if.sv` |
+| `opentitan/pins_if.sv` | 4193 | `hw/dv/sv/common_ifs/pins_if.sv` |
+| `opentitan/prim_util_pkg.sv` | 3502 | `hw/ip/prim/rtl/prim_util_pkg.sv` |
+| `opentitan/tlul_pkg.sv` | 7496 | `hw/ip/tlul/rtl/tlul_pkg.sv` |
