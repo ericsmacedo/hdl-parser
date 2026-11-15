@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "spi_rxtx.data_lines",
+          "dtype": "positive",
           "name": "DATA_LINES",
           "default": "1",
           "comment": [
@@ -22,6 +23,7 @@
         },
         {
           "id": "spi_rxtx.input_delay",
+          "dtype": "natural",
           "name": "INPUT_DELAY",
           "default": "1",
           "comment": [
@@ -190,6 +192,7 @@
           "direction": "out",
           "dtype": "std_ulogic",
           "name": "d_ack_o",
+          "default": "'0'",
           "comment": [
             "-- Set when all commands are done. Needed for callers to know when",
             "-- to release CS#"
@@ -290,6 +293,506 @@
             "col": 9,
             "end_line": 91,
             "end_col": 63
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "spi_rxtx.sck_0",
+          "dtype": "std_ulogic",
+          "name": "sck_0",
+          "loc": {
+            "line": 98,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "spi_rxtx.sck_1",
+          "dtype": "std_ulogic",
+          "name": "sck_1",
+          "loc": {
+            "line": 99,
+            "col": 5,
+            "end_line": 99,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "spi_rxtx.clk_div",
+          "dtype": "natural",
+          "name": "clk_div",
+          "loc": {
+            "line": 102,
+            "col": 5,
+            "end_line": 102,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "spi_rxtx.sck_send",
+          "dtype": "std_ulogic",
+          "name": "sck_send",
+          "loc": {
+            "line": 113,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "spi_rxtx.sck_recv",
+          "dtype": "std_ulogic",
+          "name": "sck_recv",
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 114,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "spi_rxtx.cmd_mode",
+          "dtype": "std_ulogic_vector",
+          "name": "cmd_mode",
+          "dim": "[2:0]",
+          "loc": {
+            "line": 117,
+            "col": 5,
+            "end_line": 117,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "spi_rxtx.oreg",
+          "dtype": "std_ulogic_vector",
+          "name": "oreg",
+          "dim": "[7:0]",
+          "loc": {
+            "line": 120,
+            "col": 5,
+            "end_line": 120,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "spi_rxtx.dat_i_l",
+          "dtype": "std_ulogic_vector",
+          "name": "dat_i_l",
+          "dim": "[DATA_LINES-1:0]",
+          "loc": {
+            "line": 123,
+            "col": 5,
+            "end_line": 123,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "spi_rxtx.dat_ack_l",
+          "dtype": "std_ulogic",
+          "name": "dat_ack_l",
+          "loc": {
+            "line": 126,
+            "col": 5,
+            "end_line": 126,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "spi_rxtx.sck_recv_d",
+          "dtype": "std_ulogic",
+          "name": "sck_recv_d",
+          "loc": {
+            "line": 129,
+            "col": 5,
+            "end_line": 129,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "spi_rxtx.ireg",
+          "dtype": "std_ulogic_vector",
+          "name": "ireg",
+          "dim": "[7:0]",
+          "loc": {
+            "line": 132,
+            "col": 5,
+            "end_line": 132,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "spi_rxtx.bit_count",
+          "dtype": "std_ulogic_vector",
+          "name": "bit_count",
+          "dim": "[2:0]",
+          "loc": {
+            "line": 135,
+            "col": 5,
+            "end_line": 135,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "spi_rxtx.next_cmd",
+          "dtype": "std_ulogic",
+          "name": "next_cmd",
+          "loc": {
+            "line": 138,
+            "col": 5,
+            "end_line": 138,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "spi_rxtx.start_cmd",
+          "dtype": "std_ulogic",
+          "name": "start_cmd",
+          "loc": {
+            "line": 139,
+            "col": 5,
+            "end_line": 139,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "spi_rxtx.end_cmd",
+          "dtype": "std_ulogic",
+          "name": "end_cmd",
+          "loc": {
+            "line": 140,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "spi_rxtx.state",
+          "dtype": "state_t",
+          "name": "state",
+          "loc": {
+            "line": 160,
+            "col": 5,
+            "end_line": 160,
+            "end_col": 27
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "spi_rxtx.state_t",
+          "name": "state_t",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "spi_rxtx.state_t.standby",
+              "name": "STANDBY",
+              "loc": {
+                "line": 159,
+                "col": 22,
+                "end_line": 159,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "spi_rxtx.state_t.data",
+              "name": "DATA",
+              "loc": {
+                "line": 159,
+                "col": 31,
+                "end_line": 159,
+                "end_col": 35
+              }
+            }
+          ],
+          "loc": {
+            "line": 159,
+            "col": 5,
+            "end_line": 159,
+            "end_col": 37
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "spi_rxtx.data_single",
+          "name": "data_single",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "spi_rxtx.data_single.mode",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "mode",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 142,
+                "col": 26,
+                "end_line": 142,
+                "end_col": 62
+              }
+            }
+          ],
+          "loc": {
+            "line": 142,
+            "col": 5,
+            "end_line": 145,
+            "end_col": 9
+          }
+        },
+        {
+          "id": "spi_rxtx.data_dual",
+          "name": "data_dual",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "spi_rxtx.data_dual.mode",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "mode",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 146,
+                "col": 24,
+                "end_line": 146,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 146,
+            "col": 5,
+            "end_line": 149,
+            "end_col": 9
+          }
+        },
+        {
+          "id": "spi_rxtx.data_quad",
+          "name": "data_quad",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "spi_rxtx.data_quad.mode",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "mode",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 150,
+                "col": 24,
+                "end_line": 150,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 150,
+            "col": 5,
+            "end_line": 153,
+            "end_col": 9
+          }
+        },
+        {
+          "id": "spi_rxtx.data_write",
+          "name": "data_write",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "spi_rxtx.data_write.mode",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "mode",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 154,
+                "col": 25,
+                "end_line": 154,
+                "end_col": 61
+              }
+            }
+          ],
+          "loc": {
+            "line": 154,
+            "col": 5,
+            "end_line": 157,
+            "end_col": 9
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "spi_rxtx.sck_gen",
+          "name": "sck_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Clock generation",
+            "--",
+            "-- XX HARD WIRE CPOL=1 CPHA=1 for now"
+          ],
+          "loc": {
+            "line": 170,
+            "col": 5,
+            "end_line": 209,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "spi_rxtx.machine",
+          "name": "machine",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Main state machine. Also generates cmd and data ACKs"
+          ],
+          "loc": {
+            "line": 237,
+            "col": 5,
+            "end_line": 254,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "spi_rxtx.count_bit",
+          "name": "count_bit",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Run the bit counter in DATA state. It will update on rising",
+            "-- SCK edges. It starts at d_clks on command latch"
+          ],
+          "loc": {
+            "line": 258,
+            "col": 5,
+            "end_line": 273,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "spi_rxtx.shift_out",
+          "name": "shift_out",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Shift output data"
+          ],
+          "loc": {
+            "line": 276,
+            "col": 5,
+            "end_line": 293,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "spi_rxtx.dlines",
+          "name": "dlines",
+          "kind": "process",
+          "comment": [
+            "-- Data lines direction"
+          ],
+          "loc": {
+            "line": 306,
+            "col": 5,
+            "end_line": 326,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "spi_rxtx.input_delay_0.#process6",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "input_delay_0",
+              "cond": "INPUT_DELAY = 0"
+            }
+          ],
+          "loc": {
+            "line": 330,
+            "col": 9,
+            "end_line": 335,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "spi_rxtx.input_delay_1.#process7",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "input_delay_1",
+              "cond": "INPUT_DELAY = 1"
+            }
+          ],
+          "loc": {
+            "line": 340,
+            "col": 9,
+            "end_line": 345,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "spi_rxtx.shift_in",
+          "name": "shift_in",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Shift input data"
+          ],
+          "loc": {
+            "line": 349,
+            "col": 5,
+            "end_line": 389,
+            "end_col": 17
           }
         }
       ],

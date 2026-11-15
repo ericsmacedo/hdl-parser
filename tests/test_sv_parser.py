@@ -138,8 +138,8 @@ endmodule
     assert plain(module.params) == (
         Param(ptype="type", name="T", default="logic [7:0]"),
         Param(ptype="T", name="X", dim="[1:0]", default="'{1, 2}"),
-        Param(ptype="int", name="Y", default="f(1, 2)"),
-        Param(ptype="int", name="Z", default="cond ? 3 : 4"),
+        Param(ptype="int", dtype="unsigned", name="Y", default="f(1, 2)"),
+        Param(ptype="int", dtype="unsigned", name="Z", default="cond ? 3 : 4"),
         Param(ptype="my_pkg::enum_t", name="E", default="my_pkg::A"),
     )
     assert plain(module.localparams) == (

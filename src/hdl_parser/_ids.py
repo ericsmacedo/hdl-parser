@@ -77,6 +77,19 @@ class _Assigner:
             result.append(function.model_copy(update=update))
         return tuple(result)
 
+    def components(self, components: tuple[dm.Module, ...], scope: _Scope) -> tuple[dm.Module, ...]:
+        result = []
+        for component in components:
+            component_id = scope.id(self.name(component.name))
+            component_scope = _Scope(component_id)
+            update = {
+                "id": component_id,
+                "params": self.named(component.params, component_scope),
+                "ports": self.named(component.ports, component_scope),
+            }
+            result.append(component.model_copy(update=update))
+        return tuple(result)
+
     def connections(self, cons: tuple[dm.Connection, ...], scope: _Scope, by_order: str) -> tuple[dm.Connection, ...]:
         position = 0
         result = []
@@ -98,7 +111,8 @@ class _Assigner:
         result = []
         for number, process in enumerate(processes, 1):
             # blocks without label are numbered
-            name = "" if process.name else f"#always{number}"
+            kind = "process" if process.kind == "process" else "always"
+            name = "" if process.name else f"#{kind}{number}"
             result.append(process.model_copy(update={"id": scope.id(self.hierarchical(process, name))}))
         return tuple(result)
 
@@ -125,6 +139,7 @@ class _Assigner:
             "localparams": self.named(pkg.localparams, scope),
             "typedefs": self.typedefs(pkg.typedefs, scope),
             "functions": self.functions(pkg.functions, scope),
+            "components": self.components(pkg.components, scope),
         }
         return pkg.model_copy(update=update)
 
@@ -141,6 +156,7 @@ class _Assigner:
             "typedefs": self.typedefs(mod.typedefs, scope),
             "functions": self.functions(mod.functions, scope),
             "processes": self.processes(mod.processes, scope),
+            "components": self.components(mod.components, scope),
             "insts": tuple(self.instance(inst, scope) for inst in mod.insts),
             "unresolved_macros": tuple(
                 macro.model_copy(update={"id": scope.id(f"`{self.name(macro.name)}")})

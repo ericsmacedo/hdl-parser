@@ -381,6 +381,105 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "pp_memory.mem_op",
+          "dtype": "memory_operation_type",
+          "name": "mem_op",
+          "loc": {
+            "line": 62,
+            "col": 2,
+            "end_line": 62,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "pp_memory.mem_size",
+          "dtype": "memory_operation_size",
+          "name": "mem_size",
+          "loc": {
+            "line": 63,
+            "col": 2,
+            "end_line": 63,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "pp_memory.rd_data",
+          "dtype": "std_logic_vector",
+          "name": "rd_data",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 65,
+            "col": 2,
+            "end_line": 65,
+            "end_col": 48
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_memory.pipeline_register",
+          "name": "pipeline_register",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 70,
+            "col": 2,
+            "end_line": 100,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "pp_memory.update_exception_context",
+          "name": "update_exception_context",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 102,
+            "col": 2,
+            "end_line": 128,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_memory.rd_data_mux",
+          "name": "rd_data_mux",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rd_data"
+            },
+            {
+              "signal": "dmem_data_in"
+            },
+            {
+              "signal": "mem_op"
+            },
+            {
+              "signal": "mem_size"
+            }
+          ],
+          "loc": {
+            "line": 130,
+            "col": 2,
+            "end_line": 152,
+            "end_col": 26
+          }
+        }
+      ],
       "loc": {
         "line": 13,
         "col": 1,

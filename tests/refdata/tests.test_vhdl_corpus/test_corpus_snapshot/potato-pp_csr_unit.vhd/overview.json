@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_csr_unit.processor_id",
+          "dtype": "std_logic_vector",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "pp_csr_unit.mtime_divider",
+          "dtype": "positive",
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -32,6 +34,7 @@
         },
         {
           "id": "pp_csr_unit.time_divider",
+          "dtype": "positive",
           "name": "TIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -289,6 +292,323 @@
             "col": 3,
             "end_line": 53,
             "end_col": 34
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_csr_unit.time_clk",
+          "dtype": "std_logic",
+          "name": "time_clk",
+          "loc": {
+            "line": 60,
+            "col": 2,
+            "end_line": 60,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "pp_csr_unit.time_clk_counter",
+          "dtype": "natural",
+          "name": "time_clk_counter",
+          "default": "0",
+          "loc": {
+            "line": 61,
+            "col": 2,
+            "end_line": 61,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "pp_csr_unit.counter_time",
+          "dtype": "std_logic_vector",
+          "name": "counter_time",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 64,
+            "col": 2,
+            "end_line": 64,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_csr_unit.counter_cycle",
+          "dtype": "std_logic_vector",
+          "name": "counter_cycle",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 65,
+            "col": 2,
+            "end_line": 65,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_csr_unit.counter_instret",
+          "dtype": "std_logic_vector",
+          "name": "counter_instret",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 66,
+            "col": 2,
+            "end_line": 66,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_csr_unit.mtime_clock_counter",
+          "dtype": "natural",
+          "name": "mtime_clock_counter",
+          "default": "0",
+          "loc": {
+            "line": 69,
+            "col": 2,
+            "end_line": 69,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "pp_csr_unit.counter_mtime",
+          "dtype": "std_logic_vector",
+          "name": "counter_mtime",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 70,
+            "col": 2,
+            "end_line": 70,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "pp_csr_unit.mtime_compare",
+          "dtype": "std_logic_vector",
+          "name": "mtime_compare",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 71,
+            "col": 2,
+            "end_line": 71,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "pp_csr_unit.mcause",
+          "dtype": "csr_exception_cause",
+          "name": "mcause",
+          "loc": {
+            "line": 74,
+            "col": 2,
+            "end_line": 74,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_csr_unit.mbadaddr",
+          "dtype": "std_logic_vector",
+          "name": "mbadaddr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 75,
+            "col": 2,
+            "end_line": 75,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "pp_csr_unit.mscratch",
+          "dtype": "std_logic_vector",
+          "name": "mscratch",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 76,
+            "col": 2,
+            "end_line": 76,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "pp_csr_unit.mepc",
+          "dtype": "std_logic_vector",
+          "name": "mepc",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 77,
+            "col": 2,
+            "end_line": 77,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "pp_csr_unit.mtvec",
+          "dtype": "std_logic_vector",
+          "name": "mtvec",
+          "dim": "[31:2]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 78,
+            "col": 2,
+            "end_line": 78,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "pp_csr_unit.mie",
+          "dtype": "std_logic_vector",
+          "name": "mie",
+          "dim": "[31:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 79,
+            "col": 2,
+            "end_line": 79,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "pp_csr_unit.ie",
+          "dtype": "std_logic",
+          "name": "ie",
+          "loc": {
+            "line": 82,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "pp_csr_unit.ie1",
+          "dtype": "std_logic",
+          "name": "ie1",
+          "loc": {
+            "line": 82,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "pp_csr_unit.test_register",
+          "dtype": "test_context",
+          "name": "test_register",
+          "loc": {
+            "line": 85,
+            "col": 2,
+            "end_line": 85,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "pp_csr_unit.timer_interrupt",
+          "dtype": "std_logic",
+          "name": "timer_interrupt",
+          "loc": {
+            "line": 88,
+            "col": 2,
+            "end_line": 88,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_csr_unit.software_interrupt",
+          "dtype": "std_logic",
+          "name": "software_interrupt",
+          "loc": {
+            "line": 89,
+            "col": 2,
+            "end_line": 89,
+            "end_col": 39
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_csr_unit.time_clk_gen",
+          "name": "time_clk_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 118,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "pp_csr_unit.mtime_counter",
+          "name": "mtime_counter",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 120,
+            "col": 2,
+            "end_line": 135,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "pp_csr_unit.mtime_interrupt",
+          "name": "mtime_interrupt",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 137,
+            "col": 2,
+            "end_line": 150,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "pp_csr_unit.write",
+          "name": "write",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 152,
+            "col": 2,
+            "end_line": 198,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "pp_csr_unit.read",
+          "name": "read",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 200,
+            "col": 2,
+            "end_line": 280,
+            "end_col": 19
           }
         }
       ],

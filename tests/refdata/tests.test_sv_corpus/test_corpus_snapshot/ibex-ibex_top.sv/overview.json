@@ -32,6 +32,7 @@
         {
           "id": "ibex_top.PMPGranularity",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PMPGranularity",
           "default": "0",
           "loc": {
@@ -44,6 +45,7 @@
         {
           "id": "ibex_top.PMPNumRegions",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PMPNumRegions",
           "default": "4",
           "loc": {
@@ -56,6 +58,7 @@
         {
           "id": "ibex_top.MHPMCounterNum",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "MHPMCounterNum",
           "default": "0",
           "loc": {
@@ -68,6 +71,7 @@
         {
           "id": "ibex_top.MHPMCounterWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "MHPMCounterWidth",
           "default": "40",
           "loc": {
@@ -119,6 +123,7 @@
         {
           "id": "ibex_top.CheriotRevBitmapAddrWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "CheriotRevBitmapAddrWidth",
           "default": "32'd11",
           "loc": {
@@ -131,6 +136,7 @@
         {
           "id": "ibex_top.CheriotRevBitmapBaseAddr",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "CheriotRevBitmapBaseAddr",
           "default": "32'h0",
           "loc": {
@@ -275,6 +281,7 @@
         {
           "id": "ibex_top.DbgHwBreakNum",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DbgHwBreakNum",
           "default": "1",
           "loc": {
@@ -299,6 +306,7 @@
         {
           "id": "ibex_top.LockstepOffset",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "LockstepOffset",
           "default": "1",
           "loc": {
@@ -323,6 +331,7 @@
         {
           "id": "ibex_top.MemDataWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "MemDataWidth",
           "default": "MemECC ? 32 + 7 : 32",
           "loc": {
@@ -347,6 +356,7 @@
         {
           "id": "ibex_top.ICacheScrNumPrinceRoundsHalf",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "ICacheScrNumPrinceRoundsHalf",
           "default": "2",
           "loc": {
@@ -395,6 +405,7 @@
         {
           "id": "ibex_top.DmBaseAddr",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DmBaseAddr",
           "default": "32'h1A110000",
           "loc": {
@@ -407,6 +418,7 @@
         {
           "id": "ibex_top.DmAddrMask",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DmAddrMask",
           "default": "32'h00000FFF",
           "loc": {
@@ -419,6 +431,7 @@
         {
           "id": "ibex_top.DmHaltAddr",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DmHaltAddr",
           "default": "32'h1A110800",
           "loc": {
@@ -431,6 +444,7 @@
         {
           "id": "ibex_top.DmExceptionAddr",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DmExceptionAddr",
           "default": "32'h1A110808",
           "comment": [
@@ -2123,6 +2137,7 @@
         {
           "id": "ibex_top.RegFileDataWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "RegFileDataWidth",
           "default": "32",
           "loc": {
@@ -2135,6 +2150,7 @@
         {
           "id": "ibex_top.RegFileDataEccWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "RegFileDataEccWidth",
           "default": "32 + 7",
           "loc": {
@@ -2147,6 +2163,7 @@
         {
           "id": "ibex_top.RegFileCapEccWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "RegFileCapEccWidth",
           "default": "REGCAP_W + 7",
           "loc": {
@@ -2159,6 +2176,7 @@
         {
           "id": "ibex_top.BusSizeECC",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "BusSizeECC",
           "default": "ICacheECC ? (BUS_SIZE + IC_DATA_ECC_SIZE) :\n                                                           BUS_SIZE",
           "loc": {
@@ -2171,6 +2189,7 @@
         {
           "id": "ibex_top.LineSizeECC",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "LineSizeECC",
           "default": "BusSizeECC * IC_LINE_BEATS",
           "loc": {
@@ -2183,6 +2202,7 @@
         {
           "id": "ibex_top.TagSizeECC",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "TagSizeECC",
           "default": "ICacheECC ? (IC_TAG_SIZE + IC_TAG_ECC_SIZE) :\n                                                           IC_TAG_SIZE",
           "loc": {
@@ -2195,6 +2215,7 @@
         {
           "id": "ibex_top.NumAddrScrRounds",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NumAddrScrRounds",
           "default": "ICacheScramble ? 2 : 0",
           "loc": {
@@ -2207,6 +2228,7 @@
         {
           "id": "ibex_top.MaxOutstandingDSideAccesses",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "MaxOutstandingDSideAccesses",
           "default": "2",
           "loc": {
@@ -2219,6 +2241,7 @@
         {
           "id": "ibex_top.NumBufferBits",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NumBufferBits",
           "default": "$bits({\n      hart_id_i,\n      boot_addr_i,\n      instr_req_o,\n      instr_gnt_i,\n      instr_rvalid_i,\n      instr_addr_o,\n      instr_rdata_core,\n      instr_err_i,\n      trvk_req,\n      trvk_gnt,\n      trvk_rvalid,\n      trvk_we,\n      trvk_be,\n      trvk_addr,\n      trvk_wdata,\n      trvk_wtag,\n      data_rdata_core,\n      trvk_rtag,\n      trvk_err,\n      rf_raddr_a,\n      rf_raddr_b,\n      rf_waddr_wb,\n      rf_we_wb,\n      rf_wdata_wb,\n      rf_rdata_a,\n      rf_rdata_b,\n      ic_tag_req,\n      ic_tag_write,\n      ic_tag_addr,\n      ic_tag_wdata,\n      ic_data_req,\n      ic_data_write,\n      ic_data_addr,\n      ic_data_wdata,\n      scramble_key_valid_i,\n      ic_scr_key_req,\n      irq_software_i,\n      irq_timer_i,\n      irq_external_i,\n      irq_fast_i,\n      irq_nm_i,\n      irq_pending,\n      debug_req_i,\n      crash_dump_o,\n      double_fault_seen_o,\n      fetch_enable_i,\n      mcounteren_writable_i,\n      core_busy_d,\n      cheriot_enable_i,\n      rf_wcap,\n      rf_rcap_a,\n      rf_rcap_b\n    })",
           "loc": {

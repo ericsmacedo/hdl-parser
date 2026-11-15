@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "fifo_cc_got.d_bits",
+          "dtype": "positive",
           "name": "D_BITS",
           "comment": [
             "-- Data Width"
@@ -20,6 +21,7 @@
         },
         {
           "id": "fifo_cc_got.min_depth",
+          "dtype": "positive",
           "name": "MIN_DEPTH",
           "comment": [
             "-- Minimum FIFO Depth"
@@ -33,6 +35,7 @@
         },
         {
           "id": "fifo_cc_got.data_reg",
+          "dtype": "boolean",
           "name": "DATA_REG",
           "default": "false",
           "comment": [
@@ -47,6 +50,7 @@
         },
         {
           "id": "fifo_cc_got.state_reg",
+          "dtype": "boolean",
           "name": "STATE_REG",
           "default": "false",
           "comment": [
@@ -61,6 +65,7 @@
         },
         {
           "id": "fifo_cc_got.output_reg",
+          "dtype": "boolean",
           "name": "OUTPUT_REG",
           "default": "false",
           "comment": [
@@ -75,6 +80,7 @@
         },
         {
           "id": "fifo_cc_got.estate_wr_bits",
+          "dtype": "natural",
           "name": "ESTATE_WR_BITS",
           "default": "0",
           "comment": [
@@ -89,6 +95,7 @@
         },
         {
           "id": "fifo_cc_got.fstate_rd_bits",
+          "dtype": "natural",
           "name": "FSTATE_RD_BITS",
           "default": "0",
           "comment": [
@@ -246,6 +253,604 @@
             "col": 5,
             "end_line": 122,
             "end_col": 73
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "fifo_cc_got.a_bits",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "A_BITS",
+          "default": "log2ceil(MIN_DEPTH)",
+          "loc": {
+            "line": 129,
+            "col": 3,
+            "end_line": 129,
+            "end_col": 51
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "fifo_cc_got.ip0",
+          "dtype": "unsigned",
+          "name": "IP0",
+          "dim": "[A_BITS-1:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 135,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "fifo_cc_got.op0",
+          "dtype": "unsigned",
+          "name": "OP0",
+          "dim": "[A_BITS-1:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 136,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "fifo_cc_got.ip1",
+          "dtype": "unsigned",
+          "name": "IP1",
+          "dim": "[A_BITS-1:0]",
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "fifo_cc_got.op1",
+          "dtype": "unsigned",
+          "name": "OP1",
+          "dim": "[A_BITS-1:0]",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "fifo_cc_got.wa",
+          "dtype": "unsigned",
+          "name": "wa",
+          "dim": "[A_BITS-1:0]",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "fifo_cc_got.we",
+          "dtype": "std_logic",
+          "name": "we",
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "fifo_cc_got.ra",
+          "dtype": "unsigned",
+          "name": "ra",
+          "dim": "[A_BITS-1:0]",
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "fifo_cc_got.re",
+          "dtype": "std_logic",
+          "name": "re",
+          "loc": {
+            "line": 151,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "fifo_cc_got.fulli",
+          "dtype": "std_logic",
+          "name": "fulli",
+          "loc": {
+            "line": 154,
+            "col": 3,
+            "end_line": 154,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "fifo_cc_got.empti",
+          "dtype": "std_logic",
+          "name": "empti",
+          "loc": {
+            "line": 155,
+            "col": 3,
+            "end_line": 155,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "fifo_cc_got.blkpointer.ip0_slv",
+          "dtype": "std_logic_vector",
+          "name": "IP0_slv",
+          "dim": "[IP0'range]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 161,
+            "col": 3,
+            "end_line": 161,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "fifo_cc_got.blkpointer.ip1_slv",
+          "dtype": "std_logic_vector",
+          "name": "IP1_slv",
+          "dim": "[IP0'range]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "fifo_cc_got.blkpointer.op0_slv",
+          "dtype": "std_logic_vector",
+          "name": "OP0_slv",
+          "dim": "[IP0'range]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 163,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "fifo_cc_got.blkpointer.op1_slv",
+          "dtype": "std_logic_vector",
+          "name": "OP1_slv",
+          "dim": "[IP0'range]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 164,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatecmb.df",
+          "dtype": "std_logic",
+          "name": "DF",
+          "default": "'0'",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "comment": [
+            "-- Direction Flag"
+          ],
+          "loc": {
+            "line": 247,
+            "col": 5,
+            "end_line": 247,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatecmb.peq",
+          "dtype": "std_logic",
+          "name": "Peq",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "comment": [
+            "-- Pointer Comparison"
+          ],
+          "loc": {
+            "line": 248,
+            "col": 5,
+            "end_line": 248,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatereg.ful",
+          "dtype": "std_logic",
+          "name": "Ful",
+          "default": "'0'",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateReg",
+              "cond": "STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 5,
+            "end_line": 272,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatereg.avl",
+          "dtype": "std_logic",
+          "name": "Avl",
+          "default": "'0'",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateReg",
+              "cond": "STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 273,
+            "col": 5,
+            "end_line": 273,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.do",
+          "dtype": "std_logic_vector",
+          "name": "do",
+          "dim": "[D_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            }
+          ],
+          "loc": {
+            "line": 313,
+            "col": 5,
+            "end_line": 313,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.genoutputcmb.vld",
+          "dtype": "std_logic",
+          "name": "Vld",
+          "default": "'0'",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputCmb",
+              "cond": "not OUTPUT_REG"
+            }
+          ],
+          "comment": [
+            "-- valid output of RAM module"
+          ],
+          "loc": {
+            "line": 338,
+            "col": 7,
+            "end_line": 338,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.genoutputreg.buf",
+          "dtype": "std_logic_vector",
+          "name": "Buf",
+          "dim": "[D_BITS-1:0]",
+          "default": "(others => '-')",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 357,
+            "col": 7,
+            "end_line": 357,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.genoutputreg.vld",
+          "dtype": "std_logic_vector",
+          "name": "Vld",
+          "dim": "[0:1]",
+          "default": "(others => '0')",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 358,
+            "col": 7,
+            "end_line": 358,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "fifo_cc_got.gensmall.regfile",
+          "dtype": "regfile_t",
+          "name": "regfile",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSmall",
+              "cond": "DATA_REG"
+            }
+          ],
+          "loc": {
+            "line": 388,
+            "col": 5,
+            "end_line": 388,
+            "end_col": 31
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "fifo_cc_got.regfile_t",
+          "name": "regfile_t",
+          "kind": "alias",
+          "dtype": "array(0 to 2**A_BITS-1) of std_logic_vector(D_BITS-1 downto 0)",
+          "comment": [
+            "-- Memory modelled as Array"
+          ],
+          "loc": {
+            "line": 387,
+            "col": 5,
+            "end_line": 387,
+            "end_col": 86
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "fifo_cc_got.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 210,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "fifo_cc_got.#process2",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "IP0"
+            },
+            {
+              "signal": "OP0"
+            },
+            {
+              "signal": "fulli"
+            }
+          ],
+          "comment": [
+            "-- Fill State Computation (soft indicators)"
+          ],
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 237,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatecmb.#process3",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "comment": [
+            "-- Direction Flag remembering the last Operation"
+          ],
+          "loc": {
+            "line": 252,
+            "col": 5,
+            "end_line": 261,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "fifo_cc_got.genstatereg.#process4",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateReg",
+              "cond": "STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 275,
+            "col": 5,
+            "end_line": 299,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.genoutputcmb.#process5",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputCmb",
+              "cond": "not OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 340,
+            "col": 7,
+            "end_line": 349,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "fifo_cc_got.genlarge.genoutputreg.#process6",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 362,
+            "col": 7,
+            "end_line": 376,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "fifo_cc_got.gensmall.#process7",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSmall",
+              "cond": "DATA_REG"
+            }
+          ],
+          "comment": [
+            "-- Memory State"
+          ],
+          "loc": {
+            "line": 400,
+            "col": 5,
+            "end_line": 415,
+            "end_col": 17
           }
         }
       ],

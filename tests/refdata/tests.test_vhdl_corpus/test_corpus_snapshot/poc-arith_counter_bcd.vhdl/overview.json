@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "arith_counter_bcd.digits",
+          "dtype": "positive",
           "name": "DIGITS",
           "comment": [
             "-- Number of BCD digits"
@@ -76,6 +77,86 @@
             "col": 3,
             "end_line": 59,
             "end_col": 44
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "arith_counter_bcd.p",
+          "dtype": "unsigned",
+          "name": "p",
+          "dim": "[DIGITS-1:0]",
+          "comment": [
+            "-- Stage Overflows=Propagates"
+          ],
+          "loc": {
+            "line": 66,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "arith_counter_bcd.c",
+          "dtype": "unsigned",
+          "name": "c",
+          "dim": "[DIGITS:0]",
+          "comment": [
+            "-- Inter-Stage Carries"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "arith_counter_bcd.gdigit.cnt_r",
+          "dtype": "t_bcd",
+          "name": "cnt_r",
+          "default": "x\"0\"",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gDigit",
+              "cond": "i in 0 to DIGITS-1"
+            }
+          ],
+          "comment": [
+            "-- Counter Digit of this Stage"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 31
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "arith_counter_bcd.gdigit.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gDigit",
+              "cond": "i in 0 to DIGITS-1"
+            }
+          ],
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 15
           }
         }
       ],

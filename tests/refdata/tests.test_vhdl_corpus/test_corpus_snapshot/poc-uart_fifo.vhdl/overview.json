@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "uart_fifo.clock_freq",
+          "dtype": "freq",
           "name": "CLOCK_FREQ",
           "loc": {
             "line": 55,
@@ -17,6 +18,7 @@
         },
         {
           "id": "uart_fifo.baudrate",
+          "dtype": "baud",
           "name": "BAUDRATE",
           "loc": {
             "line": 56,
@@ -27,6 +29,7 @@
         },
         {
           "id": "uart_fifo.add_input_synchronizers",
+          "dtype": "boolean",
           "name": "ADD_INPUT_SYNCHRONIZERS",
           "default": "TRUE",
           "comment": [
@@ -41,6 +44,7 @@
         },
         {
           "id": "uart_fifo.tx_min_depth",
+          "dtype": "positive",
           "name": "TX_MIN_DEPTH",
           "default": "16",
           "loc": {
@@ -52,6 +56,7 @@
         },
         {
           "id": "uart_fifo.tx_estate_bits",
+          "dtype": "natural",
           "name": "TX_ESTATE_BITS",
           "default": "0",
           "loc": {
@@ -63,6 +68,7 @@
         },
         {
           "id": "uart_fifo.rx_min_depth",
+          "dtype": "positive",
           "name": "RX_MIN_DEPTH",
           "default": "16",
           "loc": {
@@ -74,6 +80,7 @@
         },
         {
           "id": "uart_fifo.rx_fstate_bits",
+          "dtype": "natural",
           "name": "RX_FSTATE_BITS",
           "default": "0",
           "comment": [
@@ -88,6 +95,7 @@
         },
         {
           "id": "uart_fifo.flowcontrol",
+          "dtype": "t_io_uart_flowcontrol_kind",
           "name": "FLOWCONTROL",
           "default": "UART_FLOWCONTROL_NONE",
           "loc": {
@@ -99,6 +107,7 @@
         },
         {
           "id": "uart_fifo.swfc_xon_char",
+          "dtype": "std_logic_vector",
           "name": "SWFC_XON_CHAR",
           "dim": "[7:0]",
           "default": "x\"11\"",
@@ -114,6 +123,7 @@
         },
         {
           "id": "uart_fifo.swfc_xon_trigger",
+          "dtype": "real",
           "name": "SWFC_XON_TRIGGER",
           "default": "0.0625",
           "loc": {
@@ -125,6 +135,7 @@
         },
         {
           "id": "uart_fifo.swfc_xoff_char",
+          "dtype": "std_logic_vector",
           "name": "SWFC_XOFF_CHAR",
           "dim": "[7:0]",
           "default": "x\"13\"",
@@ -140,6 +151,7 @@
         },
         {
           "id": "uart_fifo.swfc_xoff_trigger",
+          "dtype": "real",
           "name": "SWFC_XOFF_TRIGGER",
           "default": "0.75",
           "loc": {
@@ -339,6 +351,369 @@
             "col": 3,
             "end_line": 92,
             "end_col": 28
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "uart_fifo.xon",
+          "ptype": "constant",
+          "dtype": "std_logic_vector",
+          "name": "XON",
+          "dim": "[7:0]",
+          "default": "x\"11\"",
+          "comment": [
+            "-- ^Q"
+          ],
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "uart_fifo.xoff",
+          "ptype": "constant",
+          "dtype": "std_logic_vector",
+          "name": "XOFF",
+          "dim": "[7:0]",
+          "default": "x\"13\"",
+          "comment": [
+            "-- ^S"
+          ],
+          "loc": {
+            "line": 193,
+            "col": 3,
+            "end_line": 193,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "uart_fifo.xon_trig",
+          "ptype": "constant",
+          "dtype": "integer",
+          "name": "XON_TRIG",
+          "default": "integer(SWFC_XON_TRIGGER\t\t* real(2**RX_FSTATE_BITS))",
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "uart_fifo.xoff_trig",
+          "ptype": "constant",
+          "dtype": "integer",
+          "name": "XOFF_TRIG",
+          "default": "integer(SWFC_XOFF_TRIGGER\t* real(2**RX_FSTATE_BITS))",
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 87
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "uart_fifo.fc_tx_strobe",
+          "dtype": "std_logic",
+          "name": "FC_TX_Strobe",
+          "loc": {
+            "line": 99,
+            "col": 2,
+            "end_line": 99,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "uart_fifo.fc_tx_data",
+          "dtype": "t_slv_8",
+          "name": "FC_TX_Data",
+          "loc": {
+            "line": 100,
+            "col": 2,
+            "end_line": 100,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "uart_fifo.fc_tx_got",
+          "dtype": "std_logic",
+          "name": "FC_TX_got",
+          "loc": {
+            "line": 101,
+            "col": 2,
+            "end_line": 101,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "uart_fifo.fc_rx_put",
+          "dtype": "std_logic",
+          "name": "FC_RX_put",
+          "loc": {
+            "line": 102,
+            "col": 2,
+            "end_line": 102,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "uart_fifo.fc_rx_data",
+          "dtype": "t_slv_8",
+          "name": "FC_RX_Data",
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 103,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "uart_fifo.txfifo_valid",
+          "dtype": "std_logic",
+          "name": "TXFIFO_Valid",
+          "loc": {
+            "line": 105,
+            "col": 2,
+            "end_line": 105,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "uart_fifo.txfifo_data",
+          "dtype": "t_slv_8",
+          "name": "TXFIFO_Data",
+          "loc": {
+            "line": 106,
+            "col": 2,
+            "end_line": 106,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "uart_fifo.rxfifo_full",
+          "dtype": "std_logic",
+          "name": "RXFIFO_Full",
+          "loc": {
+            "line": 108,
+            "col": 2,
+            "end_line": 108,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "uart_fifo.txuart_full",
+          "dtype": "std_logic",
+          "name": "TXUART_Full",
+          "loc": {
+            "line": 110,
+            "col": 2,
+            "end_line": 110,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "uart_fifo.rxuart_strobe",
+          "dtype": "std_logic",
+          "name": "RXUART_Strobe",
+          "loc": {
+            "line": 111,
+            "col": 2,
+            "end_line": 111,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "uart_fifo.rxuart_data",
+          "dtype": "t_slv_8",
+          "name": "RXUART_Data",
+          "loc": {
+            "line": 112,
+            "col": 2,
+            "end_line": 112,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "uart_fifo.bitclock",
+          "dtype": "std_logic",
+          "name": "BitClock",
+          "loc": {
+            "line": 114,
+            "col": 2,
+            "end_line": 114,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "uart_fifo.bitclock_x8",
+          "dtype": "std_logic",
+          "name": "BitClock_x8",
+          "loc": {
+            "line": 115,
+            "col": 2,
+            "end_line": 115,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "uart_fifo.uart_rx_sync",
+          "dtype": "std_logic",
+          "name": "UART_RX_sync",
+          "loc": {
+            "line": 117,
+            "col": 2,
+            "end_line": 117,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "uart_fifo.gennofc.overflow_r",
+          "dtype": "std_logic",
+          "name": "Overflow_r",
+          "default": "'0'",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 174,
+            "col": 3,
+            "end_line": 174,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.send_xoff",
+          "dtype": "std_logic",
+          "name": "send_xoff",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.send_xon",
+          "dtype": "std_logic",
+          "name": "send_xon",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 199,
+            "col": 3,
+            "end_line": 199,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.set_xoff_transmitted",
+          "dtype": "std_logic",
+          "name": "set_xoff_transmitted",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.clr_xoff_transmitted",
+          "dtype": "std_logic",
+          "name": "clr_xoff_transmitted",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 202,
+            "col": 3,
+            "end_line": 202,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.discard_user",
+          "dtype": "std_logic",
+          "name": "discard_user",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 203,
+            "col": 3,
+            "end_line": 203,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.set_overflow",
+          "dtype": "std_logic",
+          "name": "set_overflow",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 205,
+            "col": 3,
+            "end_line": 205,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "uart_fifo.genswfc.xoff_transmitted",
+          "dtype": "std_logic",
+          "name": "xoff_transmitted",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSWFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_XON_XOFF"
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 40
           }
         }
       ],

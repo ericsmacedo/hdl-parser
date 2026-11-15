@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_decode.reset_address",
+          "dtype": "std_logic_vector",
           "name": "RESET_ADDRESS",
           "dim": "[31:0]",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "pp_decode.processor_id",
+          "dtype": "std_logic_vector",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "loc": {
@@ -393,6 +395,68 @@
             "col": 3,
             "end_line": 62,
             "end_col": 51
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_decode.instruction",
+          "dtype": "std_logic_vector",
+          "name": "instruction",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 68,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_decode.immediate_value",
+          "dtype": "std_logic_vector",
+          "name": "immediate_value",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 69,
+            "col": 2,
+            "end_line": 69,
+            "end_col": 56
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_decode.get_instruction",
+          "name": "get_instruction",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 74,
+            "col": 2,
+            "end_line": 92,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "pp_decode.decode_csr_addr",
+          "name": "decode_csr_addr",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "immediate_value"
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 2,
+            "end_line": 119,
+            "end_col": 30
           }
         }
       ],

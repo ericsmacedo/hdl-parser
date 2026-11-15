@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "jesd204brx.tpd_g",
+          "dtype": "time",
           "name": "TPD_G",
           "default": "1 ns",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "jesd204brx.gen_async_g",
+          "dtype": "boolean",
           "name": "GEN_ASYNC_G",
           "default": "false",
           "comment": [
@@ -33,6 +35,7 @@
         },
         {
           "id": "jesd204brx.test_g",
+          "dtype": "boolean",
           "name": "TEST_G",
           "default": "false",
           "comment": [
@@ -48,6 +51,7 @@
         },
         {
           "id": "jesd204brx.f_g",
+          "dtype": "positive",
           "name": "F_G",
           "default": "2",
           "comment": [
@@ -62,6 +66,7 @@
         },
         {
           "id": "jesd204brx.k_g",
+          "dtype": "positive",
           "name": "K_G",
           "default": "32",
           "comment": [
@@ -76,6 +81,7 @@
         },
         {
           "id": "jesd204brx.l_g",
+          "dtype": "positive",
           "name": "L_G",
           "default": "2",
           "loc": {
@@ -346,6 +352,453 @@
             "col": 7,
             "end_line": 98,
             "end_col": 36
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "jesd204brx.reg_init_c",
+          "ptype": "constant",
+          "dtype": "regtype",
+          "name": "REG_INIT_C",
+          "default": "(\n      nSyncAnyD1 => '0')",
+          "loc": {
+            "line": 108,
+            "col": 4,
+            "end_line": 109,
+            "end_col": 25
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "jesd204brx.r",
+          "dtype": "regtype",
+          "name": "r",
+          "default": "REG_INIT_C",
+          "loc": {
+            "line": 111,
+            "col": 4,
+            "end_line": 111,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "jesd204brx.rin",
+          "dtype": "regtype",
+          "name": "rin",
+          "loc": {
+            "line": 112,
+            "col": 4,
+            "end_line": 112,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "jesd204brx.s_lmfc",
+          "dtype": "sl",
+          "name": "s_lmfc",
+          "loc": {
+            "line": 117,
+            "col": 4,
+            "end_line": 117,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "jesd204brx.s_nsyncvec",
+          "dtype": "slv",
+          "name": "s_nSyncVec",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 120,
+            "col": 4,
+            "end_line": 120,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "jesd204brx.s_nsyncvecen",
+          "dtype": "slv",
+          "name": "s_nSyncVecEn",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 121,
+            "col": 4,
+            "end_line": 121,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "jesd204brx.s_datavalidvec",
+          "dtype": "slv",
+          "name": "s_dataValidVec",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 122,
+            "col": 4,
+            "end_line": 122,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "jesd204brx.s_nsyncall",
+          "dtype": "sl",
+          "name": "s_nSyncAll",
+          "loc": {
+            "line": 124,
+            "col": 4,
+            "end_line": 124,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "jesd204brx.s_nsyncany",
+          "dtype": "sl",
+          "name": "s_nSyncAny",
+          "loc": {
+            "line": 125,
+            "col": 4,
+            "end_line": 125,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "jesd204brx.s_sysrefdlyrx",
+          "dtype": "slv",
+          "name": "s_sysrefDlyRx",
+          "dim": "[SYSRF_DLY_WIDTH_C-1:0]",
+          "loc": {
+            "line": 129,
+            "col": 4,
+            "end_line": 129,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "jesd204brx.s_enablerx",
+          "dtype": "slv",
+          "name": "s_enableRx",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 130,
+            "col": 4,
+            "end_line": 130,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "jesd204brx.s_replenable",
+          "dtype": "sl",
+          "name": "s_replEnable",
+          "loc": {
+            "line": 131,
+            "col": 4,
+            "end_line": 131,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "jesd204brx.s_screnable",
+          "dtype": "sl",
+          "name": "s_scrEnable",
+          "loc": {
+            "line": 132,
+            "col": 4,
+            "end_line": 132,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "jesd204brx.s_invertdata",
+          "dtype": "slv",
+          "name": "s_invertData",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 133,
+            "col": 4,
+            "end_line": 133,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "jesd204brx.s_subclass",
+          "dtype": "sl",
+          "name": "s_subClass",
+          "loc": {
+            "line": 136,
+            "col": 4,
+            "end_line": 136,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "jesd204brx.s_gtreset",
+          "dtype": "sl",
+          "name": "s_gtReset",
+          "loc": {
+            "line": 138,
+            "col": 4,
+            "end_line": 138,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "jesd204brx.s_invertsync",
+          "dtype": "sl",
+          "name": "s_invertSync",
+          "loc": {
+            "line": 140,
+            "col": 4,
+            "end_line": 140,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "jesd204brx.s_clearerr",
+          "dtype": "sl",
+          "name": "s_clearErr",
+          "loc": {
+            "line": 141,
+            "col": 4,
+            "end_line": 141,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "jesd204brx.s_statusrxarr",
+          "dtype": "rxstaturegisterarray",
+          "name": "s_statusRxArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 142,
+            "col": 4,
+            "end_line": 142,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "jesd204brx.s_thresoldhigharr",
+          "dtype": "slv16array",
+          "name": "s_thresoldHighArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 143,
+            "col": 4,
+            "end_line": 143,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "jesd204brx.s_thresoldlowarr",
+          "dtype": "slv16array",
+          "name": "s_thresoldLowArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 144,
+            "col": 4,
+            "end_line": 144,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "jesd204brx.s_dlytxarr",
+          "dtype": "slv4array",
+          "name": "s_dlyTxArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 147,
+            "col": 4,
+            "end_line": 147,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "jesd204brx.s_aligntxarr",
+          "dtype": "aligntxarray",
+          "name": "s_alignTxArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 148,
+            "col": 4,
+            "end_line": 148,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "jesd204brx.s_sampledataarr",
+          "dtype": "sampledataarray",
+          "name": "s_sampleDataArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 151,
+            "col": 4,
+            "end_line": 151,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "jesd204brx.s_sysrefsync",
+          "dtype": "sl",
+          "name": "s_sysrefSync",
+          "loc": {
+            "line": 154,
+            "col": 4,
+            "end_line": 154,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "jesd204brx.s_sysrefd",
+          "dtype": "sl",
+          "name": "s_sysrefD",
+          "loc": {
+            "line": 155,
+            "col": 4,
+            "end_line": 155,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "jesd204brx.s_sysrefre",
+          "dtype": "sl",
+          "name": "s_sysrefRe",
+          "loc": {
+            "line": 156,
+            "col": 4,
+            "end_line": 156,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "jesd204brx.s_jesdgtrxarr",
+          "dtype": "jesdgtrxlanetypearray",
+          "name": "s_jesdGtRxArr",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 159,
+            "col": 4,
+            "end_line": 159,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "jesd204brx.s_rawdata",
+          "dtype": "slv32array",
+          "name": "s_rawData",
+          "dim": "[L_G-1:0]",
+          "loc": {
+            "line": 160,
+            "col": 4,
+            "end_line": 160,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "jesd204brx.s_linkerrmask",
+          "dtype": "slv",
+          "name": "s_linkErrMask",
+          "dim": "[5:0]",
+          "loc": {
+            "line": 163,
+            "col": 4,
+            "end_line": 163,
+            "end_col": 42
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "jesd204brx.regtype",
+          "name": "RegType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "jesd204brx.regtype.nsyncanyd1",
+              "name": "nSyncAnyD1",
+              "dtype": "sl",
+              "loc": {
+                "line": 105,
+                "col": 7,
+                "end_line": 105,
+                "end_col": 22
+              }
+            }
+          ],
+          "comment": [
+            "-- Register"
+          ],
+          "loc": {
+            "line": 104,
+            "col": 4,
+            "end_line": 106,
+            "end_col": 23
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "jesd204brx.gen_sync.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "devClk_i"
+            }
+          ],
+          "clock": "devClk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_SYNC",
+              "cond": "(GEN_ASYNC_G = false)"
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 7,
+            "end_line": 277,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "jesd204brx.comb",
+          "name": "comb",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "devRst_i"
+            },
+            {
+              "signal": "s_nSyncAny"
+            }
+          ],
+          "comment": [
+            "-- DFF"
+          ],
+          "loc": {
+            "line": 365,
+            "col": 4,
+            "end_line": 375,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "jesd204brx.seq",
+          "name": "seq",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "devClk_i"
+            }
+          ],
+          "clock": "devClk_i",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 377,
+            "col": 4,
+            "end_line": 382,
+            "end_col": 20
           }
         }
       ],

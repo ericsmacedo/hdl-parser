@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "lutram.tpd_g",
+          "dtype": "time",
           "name": "TPD_G",
           "default": "1 ns",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "lutram.rst_polarity_g",
+          "dtype": "sl",
           "name": "RST_POLARITY_G",
           "default": "'1'",
           "comment": [
@@ -32,6 +34,7 @@
         },
         {
           "id": "lutram.rst_async_g",
+          "dtype": "boolean",
           "name": "RST_ASYNC_G",
           "default": "false",
           "loc": {
@@ -43,6 +46,7 @@
         },
         {
           "id": "lutram.reg_en_g",
+          "dtype": "boolean",
           "name": "REG_EN_G",
           "default": "true",
           "loc": {
@@ -54,6 +58,7 @@
         },
         {
           "id": "lutram.mode_g",
+          "dtype": "string",
           "name": "MODE_G",
           "default": "\"no-change\"",
           "loc": {
@@ -65,6 +70,7 @@
         },
         {
           "id": "lutram.byte_wr_en_g",
+          "dtype": "boolean",
           "name": "BYTE_WR_EN_G",
           "default": "false",
           "loc": {
@@ -76,6 +82,7 @@
         },
         {
           "id": "lutram.data_width_g",
+          "dtype": "positive",
           "name": "DATA_WIDTH_G",
           "default": "16",
           "loc": {
@@ -87,6 +94,7 @@
         },
         {
           "id": "lutram.byte_width_g",
+          "dtype": "positive",
           "name": "BYTE_WIDTH_G",
           "default": "8",
           "loc": {
@@ -98,6 +106,7 @@
         },
         {
           "id": "lutram.addr_width_g",
+          "dtype": "positive",
           "name": "ADDR_WIDTH_G",
           "default": "4",
           "loc": {
@@ -109,6 +118,7 @@
         },
         {
           "id": "lutram.num_ports_g",
+          "dtype": "positive",
           "name": "NUM_PORTS_G",
           "loc": {
             "line": 35,
@@ -119,6 +129,7 @@
         },
         {
           "id": "lutram.init_g",
+          "dtype": "slv",
           "name": "INIT_G",
           "default": "\"0\"",
           "loc": {
@@ -135,6 +146,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clka",
+          "default": "'0'",
           "loc": {
             "line": 39,
             "col": 7,
@@ -147,6 +159,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_a",
+          "default": "'1'",
           "loc": {
             "line": 40,
             "col": 7,
@@ -159,6 +172,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "wea",
+          "default": "'0'",
           "loc": {
             "line": 41,
             "col": 7,
@@ -172,6 +186,7 @@
           "dtype": "slv",
           "name": "weaByte",
           "dim": "[wordCount(DATA_WIDTH_G, BYTE_WIDTH_G)-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 42,
             "col": 7,
@@ -184,6 +199,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rsta",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 43,
             "col": 7,
@@ -197,6 +213,7 @@
           "dtype": "slv",
           "name": "addra",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 44,
             "col": 7,
@@ -210,6 +227,7 @@
           "dtype": "slv",
           "name": "dina",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 45,
             "col": 7,
@@ -238,6 +256,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkb",
+          "default": "'0'",
           "loc": {
             "line": 48,
             "col": 7,
@@ -250,6 +269,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_b",
+          "default": "'1'",
           "loc": {
             "line": 49,
             "col": 7,
@@ -262,6 +282,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rstb",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 50,
             "col": 7,
@@ -275,6 +296,7 @@
           "dtype": "slv",
           "name": "addrb",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 51,
             "col": 7,
@@ -288,6 +310,7 @@
           "dtype": "slv",
           "name": "doutb",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port C (Read Only, NUM_PORTS_G>=3)"
           ],
@@ -303,6 +326,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_c",
+          "default": "'1'",
           "loc": {
             "line": 54,
             "col": 7,
@@ -315,6 +339,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkc",
+          "default": "'0'",
           "loc": {
             "line": 55,
             "col": 7,
@@ -327,6 +352,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rstc",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 56,
             "col": 7,
@@ -340,6 +366,7 @@
           "dtype": "slv",
           "name": "addrc",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 57,
             "col": 7,
@@ -353,6 +380,7 @@
           "dtype": "slv",
           "name": "doutc",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port D (Read Only, NUM_PORTS_G>=4)"
           ],
@@ -368,6 +396,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_d",
+          "default": "'1'",
           "loc": {
             "line": 60,
             "col": 7,
@@ -380,6 +409,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkd",
+          "default": "'0'",
           "loc": {
             "line": 61,
             "col": 7,
@@ -392,6 +422,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rstd",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 62,
             "col": 7,
@@ -405,6 +436,7 @@
           "dtype": "slv",
           "name": "addrd",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 63,
             "col": 7,
@@ -418,6 +450,7 @@
           "dtype": "slv",
           "name": "doutd",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port E (Read Only, NUM_PORTS_G>=5)"
           ],
@@ -433,6 +466,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_e",
+          "default": "'1'",
           "loc": {
             "line": 66,
             "col": 7,
@@ -445,6 +479,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clke",
+          "default": "'0'",
           "loc": {
             "line": 67,
             "col": 7,
@@ -457,6 +492,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rste",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 68,
             "col": 7,
@@ -470,6 +506,7 @@
           "dtype": "slv",
           "name": "addre",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 69,
             "col": 7,
@@ -483,6 +520,7 @@
           "dtype": "slv",
           "name": "doute",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port F (Read Only, NUM_PORTS_G>=6)"
           ],
@@ -498,6 +536,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_f",
+          "default": "'1'",
           "loc": {
             "line": 72,
             "col": 7,
@@ -510,6 +549,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkf",
+          "default": "'0'",
           "loc": {
             "line": 73,
             "col": 7,
@@ -522,6 +562,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rstf",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 74,
             "col": 7,
@@ -535,6 +576,7 @@
           "dtype": "slv",
           "name": "addrf",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 75,
             "col": 7,
@@ -548,6 +590,7 @@
           "dtype": "slv",
           "name": "doutf",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port G (Read Only, NUM_PORTS_G>=7)"
           ],
@@ -563,6 +606,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_g",
+          "default": "'1'",
           "loc": {
             "line": 78,
             "col": 7,
@@ -575,6 +619,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkg",
+          "default": "'0'",
           "loc": {
             "line": 79,
             "col": 7,
@@ -587,6 +632,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rstg",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 80,
             "col": 7,
@@ -600,6 +646,7 @@
           "dtype": "slv",
           "name": "addrg",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 81,
             "col": 7,
@@ -613,6 +660,7 @@
           "dtype": "slv",
           "name": "doutg",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "comment": [
             "-- Port H (Read Only, NUM_PORTS_G>=8)"
           ],
@@ -628,6 +676,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "en_h",
+          "default": "'1'",
           "loc": {
             "line": 84,
             "col": 7,
@@ -640,6 +689,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "clkh",
+          "default": "'0'",
           "loc": {
             "line": 85,
             "col": 7,
@@ -652,6 +702,7 @@
           "direction": "in",
           "dtype": "sl",
           "name": "rsth",
+          "default": "not(RST_POLARITY_G)",
           "loc": {
             "line": 86,
             "col": 7,
@@ -665,6 +716,7 @@
           "dtype": "slv",
           "name": "addrh",
           "dim": "[ADDR_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 87,
             "col": 7,
@@ -678,11 +730,457 @@
           "dtype": "slv",
           "name": "douth",
           "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 88,
             "col": 7,
             "end_line": 88,
             "end_col": 93
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "lutram.num_bytes_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "NUM_BYTES_C",
+          "default": "wordCount(DATA_WIDTH_G, BYTE_WIDTH_G)",
+          "loc": {
+            "line": 94,
+            "col": 4,
+            "end_line": 94,
+            "end_col": 81
+          }
+        },
+        {
+          "id": "lutram.full_data_width_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "FULL_DATA_WIDTH_C",
+          "default": "NUM_BYTES_C*BYTE_WIDTH_G",
+          "loc": {
+            "line": 95,
+            "col": 4,
+            "end_line": 95,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "lutram.init_c",
+          "ptype": "constant",
+          "dtype": "slv",
+          "name": "INIT_C",
+          "dim": "[DATA_WIDTH_G-1:0]",
+          "default": "ite(INIT_G = \"0\", slvZero(DATA_WIDTH_G), INIT_G)",
+          "loc": {
+            "line": 97,
+            "col": 4,
+            "end_line": 97,
+            "end_col": 102
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "lutram.mem",
+          "dtype": "memtype",
+          "name": "mem",
+          "default": "(others => INIT_C)",
+          "loc": {
+            "line": 101,
+            "col": 4,
+            "end_line": 101,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "lutram.weabyteint",
+          "dtype": "slv",
+          "name": "weaByteInt",
+          "dim": "[weaByte'range]",
+          "loc": {
+            "line": 103,
+            "col": 4,
+            "end_line": 103,
+            "end_col": 42
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "lutram.memtype",
+          "name": "MemType",
+          "kind": "alias",
+          "dtype": "array ((2**ADDR_WIDTH_G)-1 downto 0) of slv(DATA_WIDTH_G-1 downto 0)",
+          "comment": [
+            "-- Shared memory"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 4,
+            "end_line": 100,
+            "end_col": 89
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "lutram.port_a_not_reg.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clka"
+            }
+          ],
+          "clock": "clka",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_NOT_REG",
+              "cond": "(REG_EN_G = false)"
+            }
+          ],
+          "loc": {
+            "line": 132,
+            "col": 7,
+            "end_line": 144,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_a_reg.no_change_mode.#process2",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clka"
+            }
+          ],
+          "clock": "clka",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_REG",
+              "cond": "(REG_EN_G = true)"
+            },
+            {
+              "kind": "if",
+              "name": "NO_CHANGE_MODE",
+              "cond": "MODE_G = \"no-change\""
+            }
+          ],
+          "loc": {
+            "line": 154,
+            "col": 10,
+            "end_line": 166,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "lutram.port_a_reg.no_change_mode.#process3",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clka"
+            },
+            {
+              "signal": "rsta"
+            }
+          ],
+          "clock": "clka",
+          "clock_edge": "posedge",
+          "reset": "rsta",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_REG",
+              "cond": "(REG_EN_G = true)"
+            },
+            {
+              "kind": "if",
+              "name": "NO_CHANGE_MODE",
+              "cond": "MODE_G = \"no-change\""
+            }
+          ],
+          "loc": {
+            "line": 168,
+            "col": 10,
+            "end_line": 180,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "lutram.port_a_reg.read_first_mode.#process4",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clka"
+            },
+            {
+              "signal": "rsta"
+            }
+          ],
+          "clock": "clka",
+          "clock_edge": "posedge",
+          "reset": "rsta",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_REG",
+              "cond": "(REG_EN_G = true)"
+            },
+            {
+              "kind": "if",
+              "name": "READ_FIRST_MODE",
+              "cond": "MODE_G = \"read-first\""
+            }
+          ],
+          "loc": {
+            "line": 185,
+            "col": 10,
+            "end_line": 203,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "lutram.port_a_reg.write_first_mode.#process5",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clka"
+            },
+            {
+              "signal": "rsta"
+            }
+          ],
+          "clock": "clka",
+          "clock_edge": "posedge",
+          "reset": "rsta",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_REG",
+              "cond": "(REG_EN_G = true)"
+            },
+            {
+              "kind": "if",
+              "name": "WRITE_FIRST_MODE",
+              "cond": "MODE_G = \"write-first\""
+            }
+          ],
+          "loc": {
+            "line": 207,
+            "col": 10,
+            "end_line": 226,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "lutram.port_b_reg.#process6",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkb"
+            },
+            {
+              "signal": "rstb"
+            }
+          ],
+          "clock": "clkb",
+          "clock_edge": "posedge",
+          "reset": "rstb",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_B_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 2)"
+            }
+          ],
+          "loc": {
+            "line": 233,
+            "col": 7,
+            "end_line": 244,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_c_reg.#process7",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkc"
+            },
+            {
+              "signal": "rstc"
+            }
+          ],
+          "clock": "clkc",
+          "clock_edge": "posedge",
+          "reset": "rstc",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_C_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 3)"
+            }
+          ],
+          "loc": {
+            "line": 253,
+            "col": 7,
+            "end_line": 264,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_d_reg.#process8",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkd"
+            },
+            {
+              "signal": "rstd"
+            }
+          ],
+          "clock": "clkd",
+          "clock_edge": "posedge",
+          "reset": "rstd",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_D_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 4)"
+            }
+          ],
+          "loc": {
+            "line": 273,
+            "col": 7,
+            "end_line": 284,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_e_reg.#process9",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clke"
+            },
+            {
+              "signal": "rste"
+            }
+          ],
+          "clock": "clke",
+          "clock_edge": "posedge",
+          "reset": "rste",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_E_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 5)"
+            }
+          ],
+          "loc": {
+            "line": 293,
+            "col": 7,
+            "end_line": 304,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_f_reg.#process10",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkf"
+            },
+            {
+              "signal": "rstf"
+            }
+          ],
+          "clock": "clkf",
+          "clock_edge": "posedge",
+          "reset": "rstf",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_F_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 6)"
+            }
+          ],
+          "loc": {
+            "line": 313,
+            "col": 7,
+            "end_line": 324,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_g_reg.#process11",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkg"
+            },
+            {
+              "signal": "rstg"
+            }
+          ],
+          "clock": "clkg",
+          "clock_edge": "posedge",
+          "reset": "rstg",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_G_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 7)"
+            }
+          ],
+          "loc": {
+            "line": 333,
+            "col": 7,
+            "end_line": 344,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "lutram.port_h_reg.#process12",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clkh"
+            },
+            {
+              "signal": "rsth"
+            }
+          ],
+          "clock": "clkh",
+          "clock_edge": "posedge",
+          "reset": "rsth",
+          "reset_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_H_REG",
+              "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 8)"
+            }
+          ],
+          "loc": {
+            "line": 353,
+            "col": 7,
+            "end_line": 364,
+            "end_col": 19
           }
         }
       ],

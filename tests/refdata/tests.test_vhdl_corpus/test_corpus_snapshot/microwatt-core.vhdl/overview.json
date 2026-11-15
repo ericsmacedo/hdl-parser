@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "core.sim",
+          "dtype": "boolean",
           "name": "SIM",
           "default": "false",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "core.cpu_index",
+          "dtype": "natural",
           "name": "CPU_INDEX",
           "default": "0",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "core.ncpus",
+          "dtype": "positive",
           "name": "NCPUS",
           "default": "1",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "core.disable_flatten",
+          "dtype": "boolean",
           "name": "DISABLE_FLATTEN",
           "default": "false",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "core.ex1_bypass",
+          "dtype": "boolean",
           "name": "EX1_BYPASS",
           "default": "true",
           "loc": {
@@ -62,6 +67,7 @@
         },
         {
           "id": "core.has_fpu",
+          "dtype": "boolean",
           "name": "HAS_FPU",
           "default": "true",
           "loc": {
@@ -73,6 +79,7 @@
         },
         {
           "id": "core.has_btc",
+          "dtype": "boolean",
           "name": "HAS_BTC",
           "default": "true",
           "loc": {
@@ -84,6 +91,7 @@
         },
         {
           "id": "core.alt_reset_address",
+          "dtype": "std_ulogic_vector",
           "name": "ALT_RESET_ADDRESS",
           "dim": "[63:0]",
           "default": "(others => '0')",
@@ -96,6 +104,7 @@
         },
         {
           "id": "core.log_length",
+          "dtype": "natural",
           "name": "LOG_LENGTH",
           "default": "512",
           "loc": {
@@ -107,6 +116,7 @@
         },
         {
           "id": "core.icache_num_lines",
+          "dtype": "natural",
           "name": "ICACHE_NUM_LINES",
           "default": "64",
           "loc": {
@@ -118,6 +128,7 @@
         },
         {
           "id": "core.icache_num_ways",
+          "dtype": "natural",
           "name": "ICACHE_NUM_WAYS",
           "default": "2",
           "loc": {
@@ -129,6 +140,7 @@
         },
         {
           "id": "core.icache_tlb_size",
+          "dtype": "natural",
           "name": "ICACHE_TLB_SIZE",
           "default": "64",
           "loc": {
@@ -140,6 +152,7 @@
         },
         {
           "id": "core.dcache_num_lines",
+          "dtype": "natural",
           "name": "DCACHE_NUM_LINES",
           "default": "64",
           "loc": {
@@ -151,6 +164,7 @@
         },
         {
           "id": "core.dcache_num_ways",
+          "dtype": "natural",
           "name": "DCACHE_NUM_WAYS",
           "default": "2",
           "loc": {
@@ -162,6 +176,7 @@
         },
         {
           "id": "core.dcache_tlb_set_size",
+          "dtype": "natural",
           "name": "DCACHE_TLB_SET_SIZE",
           "default": "64",
           "loc": {
@@ -173,6 +188,7 @@
         },
         {
           "id": "core.dcache_tlb_num_ways",
+          "dtype": "natural",
           "name": "DCACHE_TLB_NUM_WAYS",
           "default": "2",
           "loc": {
@@ -435,6 +451,1033 @@
             "col": 2,
             "end_line": 60,
             "end_col": 34
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "core.fetch1_to_icache",
+          "dtype": "fetch1toicachetype",
+          "name": "fetch1_to_icache",
+          "loc": {
+            "line": 66,
+            "col": 5,
+            "end_line": 66,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "core.writeback_to_fetch1",
+          "dtype": "writebacktofetch1type",
+          "name": "writeback_to_fetch1",
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 67,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "core.icache_to_decode1",
+          "dtype": "icachetodecode1type",
+          "name": "icache_to_decode1",
+          "loc": {
+            "line": 68,
+            "col": 5,
+            "end_line": 68,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "core.mmu_to_itlb",
+          "dtype": "mmutoitlbtype",
+          "name": "mmu_to_itlb",
+          "loc": {
+            "line": 69,
+            "col": 5,
+            "end_line": 69,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "core.decode1_to_decode2",
+          "dtype": "decode1todecode2type",
+          "name": "decode1_to_decode2",
+          "loc": {
+            "line": 72,
+            "col": 5,
+            "end_line": 72,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "core.decode1_to_fetch1",
+          "dtype": "decode1tofetch1type",
+          "name": "decode1_to_fetch1",
+          "loc": {
+            "line": 73,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "core.decode1_to_register_file",
+          "dtype": "decode1toregisterfiletype",
+          "name": "decode1_to_register_file",
+          "loc": {
+            "line": 74,
+            "col": 5,
+            "end_line": 74,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "core.decode2_to_execute1",
+          "dtype": "decode2toexecute1type",
+          "name": "decode2_to_execute1",
+          "loc": {
+            "line": 75,
+            "col": 5,
+            "end_line": 75,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "core.register_file_to_decode2",
+          "dtype": "registerfiletodecode2type",
+          "name": "register_file_to_decode2",
+          "loc": {
+            "line": 78,
+            "col": 5,
+            "end_line": 78,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "core.decode2_to_register_file",
+          "dtype": "decode2toregisterfiletype",
+          "name": "decode2_to_register_file",
+          "loc": {
+            "line": 79,
+            "col": 5,
+            "end_line": 79,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "core.writeback_to_register_file",
+          "dtype": "writebacktoregisterfiletype",
+          "name": "writeback_to_register_file",
+          "loc": {
+            "line": 80,
+            "col": 5,
+            "end_line": 80,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "core.decode2_to_cr_file",
+          "dtype": "decode2tocrfiletype",
+          "name": "decode2_to_cr_file",
+          "loc": {
+            "line": 83,
+            "col": 5,
+            "end_line": 83,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "core.cr_file_to_decode2",
+          "dtype": "crfiletodecode2type",
+          "name": "cr_file_to_decode2",
+          "loc": {
+            "line": 84,
+            "col": 5,
+            "end_line": 84,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "core.writeback_to_cr_file",
+          "dtype": "writebacktocrfiletype",
+          "name": "writeback_to_cr_file",
+          "loc": {
+            "line": 85,
+            "col": 5,
+            "end_line": 85,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "core.execute1_to_writeback",
+          "dtype": "execute1towritebacktype",
+          "name": "execute1_to_writeback",
+          "loc": {
+            "line": 88,
+            "col": 5,
+            "end_line": 88,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "core.execute1_bypass",
+          "dtype": "bypass_data_t",
+          "name": "execute1_bypass",
+          "loc": {
+            "line": 89,
+            "col": 5,
+            "end_line": 89,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "core.execute1_cr_bypass",
+          "dtype": "cr_bypass_data_t",
+          "name": "execute1_cr_bypass",
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "core.execute2_bypass",
+          "dtype": "bypass_data_t",
+          "name": "execute2_bypass",
+          "loc": {
+            "line": 91,
+            "col": 5,
+            "end_line": 91,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "core.execute2_cr_bypass",
+          "dtype": "cr_bypass_data_t",
+          "name": "execute2_cr_bypass",
+          "loc": {
+            "line": 92,
+            "col": 5,
+            "end_line": 92,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "core.execute1_to_loadstore1",
+          "dtype": "execute1toloadstore1type",
+          "name": "execute1_to_loadstore1",
+          "loc": {
+            "line": 95,
+            "col": 5,
+            "end_line": 95,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "core.loadstore1_to_execute1",
+          "dtype": "loadstore1toexecute1type",
+          "name": "loadstore1_to_execute1",
+          "loc": {
+            "line": 96,
+            "col": 5,
+            "end_line": 96,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "core.loadstore1_to_writeback",
+          "dtype": "loadstore1towritebacktype",
+          "name": "loadstore1_to_writeback",
+          "loc": {
+            "line": 97,
+            "col": 5,
+            "end_line": 97,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "core.loadstore1_to_mmu",
+          "dtype": "loadstore1tommutype",
+          "name": "loadstore1_to_mmu",
+          "loc": {
+            "line": 98,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "core.mmu_to_loadstore1",
+          "dtype": "mmutoloadstore1type",
+          "name": "mmu_to_loadstore1",
+          "loc": {
+            "line": 99,
+            "col": 5,
+            "end_line": 99,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "core.loadstore1_to_dcache",
+          "dtype": "loadstore1todcachetype",
+          "name": "loadstore1_to_dcache",
+          "loc": {
+            "line": 102,
+            "col": 5,
+            "end_line": 102,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "core.dcache_to_loadstore1",
+          "dtype": "dcachetoloadstore1type",
+          "name": "dcache_to_loadstore1",
+          "loc": {
+            "line": 103,
+            "col": 5,
+            "end_line": 103,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "core.mmu_to_dcache",
+          "dtype": "mmutodcachetype",
+          "name": "mmu_to_dcache",
+          "loc": {
+            "line": 104,
+            "col": 5,
+            "end_line": 104,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "core.dcache_to_mmu",
+          "dtype": "dcachetommutype",
+          "name": "dcache_to_mmu",
+          "loc": {
+            "line": 105,
+            "col": 5,
+            "end_line": 105,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "core.execute1_to_fpu",
+          "dtype": "execute1tofputype",
+          "name": "execute1_to_fpu",
+          "loc": {
+            "line": 108,
+            "col": 5,
+            "end_line": 108,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "core.fpu_to_execute1",
+          "dtype": "fputoexecute1type",
+          "name": "fpu_to_execute1",
+          "loc": {
+            "line": 109,
+            "col": 5,
+            "end_line": 109,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "core.fpu_to_writeback",
+          "dtype": "fputowritebacktype",
+          "name": "fpu_to_writeback",
+          "loc": {
+            "line": 110,
+            "col": 5,
+            "end_line": 110,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "core.writeback_bypass",
+          "dtype": "bypass_data_t",
+          "name": "writeback_bypass",
+          "loc": {
+            "line": 113,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "core.wb_interrupt",
+          "dtype": "writebacktoexecute1type",
+          "name": "wb_interrupt",
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 114,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "core.fetch1_stall_in",
+          "dtype": "std_ulogic",
+          "name": "fetch1_stall_in",
+          "loc": {
+            "line": 117,
+            "col": 5,
+            "end_line": 117,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "core.icache_stall_out",
+          "dtype": "std_ulogic",
+          "name": "icache_stall_out",
+          "loc": {
+            "line": 118,
+            "col": 5,
+            "end_line": 118,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "core.icache_stall_in",
+          "dtype": "std_ulogic",
+          "name": "icache_stall_in",
+          "loc": {
+            "line": 119,
+            "col": 5,
+            "end_line": 119,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "core.decode1_stall_in",
+          "dtype": "std_ulogic",
+          "name": "decode1_stall_in",
+          "loc": {
+            "line": 120,
+            "col": 5,
+            "end_line": 120,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "core.decode1_busy",
+          "dtype": "std_ulogic",
+          "name": "decode1_busy",
+          "loc": {
+            "line": 121,
+            "col": 5,
+            "end_line": 121,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "core.decode2_busy_in",
+          "dtype": "std_ulogic",
+          "name": "decode2_busy_in",
+          "loc": {
+            "line": 122,
+            "col": 5,
+            "end_line": 122,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "core.decode2_stall_out",
+          "dtype": "std_ulogic",
+          "name": "decode2_stall_out",
+          "loc": {
+            "line": 123,
+            "col": 5,
+            "end_line": 123,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "core.ex1_icache_inval",
+          "dtype": "std_ulogic",
+          "name": "ex1_icache_inval",
+          "loc": {
+            "line": 124,
+            "col": 5,
+            "end_line": 124,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "core.ex1_busy_out",
+          "dtype": "std_ulogic",
+          "name": "ex1_busy_out",
+          "loc": {
+            "line": 125,
+            "col": 5,
+            "end_line": 125,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dcache_stall_out",
+          "dtype": "std_ulogic",
+          "name": "dcache_stall_out",
+          "loc": {
+            "line": 126,
+            "col": 5,
+            "end_line": 126,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "core.flush",
+          "dtype": "std_ulogic",
+          "name": "flush",
+          "loc": {
+            "line": 128,
+            "col": 5,
+            "end_line": 128,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "core.decode1_flush",
+          "dtype": "std_ulogic",
+          "name": "decode1_flush",
+          "loc": {
+            "line": 129,
+            "col": 5,
+            "end_line": 129,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "core.fetch1_flush",
+          "dtype": "std_ulogic",
+          "name": "fetch1_flush",
+          "loc": {
+            "line": 130,
+            "col": 5,
+            "end_line": 130,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.complete",
+          "dtype": "instr_tag_t",
+          "name": "complete",
+          "loc": {
+            "line": 132,
+            "col": 5,
+            "end_line": 132,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "core.terminate",
+          "dtype": "std_ulogic",
+          "name": "terminate",
+          "loc": {
+            "line": 133,
+            "col": 5,
+            "end_line": 133,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "core.core_rst",
+          "dtype": "std_ulogic",
+          "name": "core_rst",
+          "loc": {
+            "line": 134,
+            "col": 5,
+            "end_line": 134,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "core.rst_fetch1",
+          "dtype": "std_ulogic",
+          "name": "rst_fetch1",
+          "loc": {
+            "line": 137,
+            "col": 5,
+            "end_line": 137,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_fetch2",
+          "dtype": "std_ulogic",
+          "name": "rst_fetch2",
+          "loc": {
+            "line": 138,
+            "col": 5,
+            "end_line": 138,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_icache",
+          "dtype": "std_ulogic",
+          "name": "rst_icache",
+          "loc": {
+            "line": 139,
+            "col": 5,
+            "end_line": 139,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_dcache",
+          "dtype": "std_ulogic",
+          "name": "rst_dcache",
+          "loc": {
+            "line": 140,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_dec1",
+          "dtype": "std_ulogic",
+          "name": "rst_dec1",
+          "loc": {
+            "line": 141,
+            "col": 5,
+            "end_line": 141,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_dec2",
+          "dtype": "std_ulogic",
+          "name": "rst_dec2",
+          "loc": {
+            "line": 142,
+            "col": 5,
+            "end_line": 142,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_ex1",
+          "dtype": "std_ulogic",
+          "name": "rst_ex1",
+          "loc": {
+            "line": 143,
+            "col": 5,
+            "end_line": 143,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_fpu",
+          "dtype": "std_ulogic",
+          "name": "rst_fpu",
+          "loc": {
+            "line": 144,
+            "col": 5,
+            "end_line": 144,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_ls1",
+          "dtype": "std_ulogic",
+          "name": "rst_ls1",
+          "loc": {
+            "line": 145,
+            "col": 5,
+            "end_line": 145,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_wback",
+          "dtype": "std_ulogic",
+          "name": "rst_wback",
+          "loc": {
+            "line": 146,
+            "col": 5,
+            "end_line": 146,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.rst_dbg",
+          "dtype": "std_ulogic",
+          "name": "rst_dbg",
+          "loc": {
+            "line": 147,
+            "col": 5,
+            "end_line": 147,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.alt_reset_d",
+          "dtype": "std_ulogic",
+          "name": "alt_reset_d",
+          "loc": {
+            "line": 148,
+            "col": 5,
+            "end_line": 148,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.sim_ex_dump",
+          "dtype": "std_ulogic",
+          "name": "sim_ex_dump",
+          "loc": {
+            "line": 150,
+            "col": 5,
+            "end_line": 150,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "core.sim_cr_dump",
+          "dtype": "std_ulogic",
+          "name": "sim_cr_dump",
+          "loc": {
+            "line": 151,
+            "col": 5,
+            "end_line": 151,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "core.dbg_core_stop",
+          "dtype": "std_ulogic",
+          "name": "dbg_core_stop",
+          "loc": {
+            "line": 154,
+            "col": 5,
+            "end_line": 154,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "core.dbg_core_rst",
+          "dtype": "std_ulogic",
+          "name": "dbg_core_rst",
+          "loc": {
+            "line": 155,
+            "col": 5,
+            "end_line": 155,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dbg_icache_rst",
+          "dtype": "std_ulogic",
+          "name": "dbg_icache_rst",
+          "loc": {
+            "line": 156,
+            "col": 5,
+            "end_line": 156,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "core.dbg_gpr_req",
+          "dtype": "std_ulogic",
+          "name": "dbg_gpr_req",
+          "loc": {
+            "line": 158,
+            "col": 5,
+            "end_line": 158,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dbg_gpr_ack",
+          "dtype": "std_ulogic",
+          "name": "dbg_gpr_ack",
+          "loc": {
+            "line": 159,
+            "col": 5,
+            "end_line": 159,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dbg_gpr_addr",
+          "dtype": "gspr_index_t",
+          "name": "dbg_gpr_addr",
+          "loc": {
+            "line": 160,
+            "col": 5,
+            "end_line": 160,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "core.dbg_gpr_data",
+          "dtype": "std_ulogic_vector",
+          "name": "dbg_gpr_data",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 161,
+            "col": 5,
+            "end_line": 161,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "core.dbg_spr_req",
+          "dtype": "std_ulogic",
+          "name": "dbg_spr_req",
+          "loc": {
+            "line": 162,
+            "col": 5,
+            "end_line": 162,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dbg_spr_ack",
+          "dtype": "std_ulogic",
+          "name": "dbg_spr_ack",
+          "loc": {
+            "line": 163,
+            "col": 5,
+            "end_line": 163,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "core.dbg_spr_addr",
+          "dtype": "std_ulogic_vector",
+          "name": "dbg_spr_addr",
+          "dim": "[7:0]",
+          "loc": {
+            "line": 164,
+            "col": 5,
+            "end_line": 164,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "core.dbg_spr_data",
+          "dtype": "std_ulogic_vector",
+          "name": "dbg_spr_data",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 165,
+            "col": 5,
+            "end_line": 165,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "core.dbg_ls_spr_req",
+          "dtype": "std_ulogic",
+          "name": "dbg_ls_spr_req",
+          "loc": {
+            "line": 166,
+            "col": 5,
+            "end_line": 166,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "core.dbg_ls_spr_ack",
+          "dtype": "std_ulogic",
+          "name": "dbg_ls_spr_ack",
+          "loc": {
+            "line": 167,
+            "col": 5,
+            "end_line": 167,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "core.dbg_ls_spr_addr",
+          "dtype": "std_ulogic_vector",
+          "name": "dbg_ls_spr_addr",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 168,
+            "col": 5,
+            "end_line": 168,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "core.dbg_ls_spr_data",
+          "dtype": "std_ulogic_vector",
+          "name": "dbg_ls_spr_data",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 169,
+            "col": 5,
+            "end_line": 169,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "core.ctrl_debug",
+          "dtype": "ctrl_t",
+          "name": "ctrl_debug",
+          "loc": {
+            "line": 171,
+            "col": 5,
+            "end_line": 171,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "core.icache_events",
+          "dtype": "icacheeventtype",
+          "name": "icache_events",
+          "loc": {
+            "line": 174,
+            "col": 5,
+            "end_line": 174,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "core.loadstore_events",
+          "dtype": "loadstore1eventtype",
+          "name": "loadstore_events",
+          "loc": {
+            "line": 175,
+            "col": 5,
+            "end_line": 175,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "core.dcache_events",
+          "dtype": "dcacheeventtype",
+          "name": "dcache_events",
+          "loc": {
+            "line": 176,
+            "col": 5,
+            "end_line": 176,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "core.writeback_events",
+          "dtype": "writebackeventtype",
+          "name": "writeback_events",
+          "loc": {
+            "line": 177,
+            "col": 5,
+            "end_line": 177,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "core.dbg_core_is_stopped",
+          "dtype": "std_ulogic",
+          "name": "dbg_core_is_stopped",
+          "loc": {
+            "line": 180,
+            "col": 5,
+            "end_line": 180,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "core.log_data",
+          "dtype": "std_ulogic_vector",
+          "name": "log_data",
+          "dim": "[255:0]",
+          "loc": {
+            "line": 183,
+            "col": 5,
+            "end_line": 183,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "core.log_rd_addr",
+          "dtype": "std_ulogic_vector",
+          "name": "log_rd_addr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 184,
+            "col": 5,
+            "end_line": 184,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "core.log_wr_addr",
+          "dtype": "std_ulogic_vector",
+          "name": "log_wr_addr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 185,
+            "col": 5,
+            "end_line": 185,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "core.log_rd_data",
+          "dtype": "std_ulogic_vector",
+          "name": "log_rd_data",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 186,
+            "col": 5,
+            "end_line": 186,
+            "end_col": 56
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "core.keep_h",
+          "name": "keep_h",
+          "kind": "function",
+          "rtype": "string",
+          "args": [
+            {
+              "id": "core.keep_h.disable",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "disable",
+              "loc": {
+                "line": 188,
+                "col": 21,
+                "end_line": 188,
+                "end_col": 38
+              }
+            }
+          ],
+          "loc": {
+            "line": 188,
+            "col": 5,
+            "end_line": 195,
+            "end_col": 18
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "core.resets",
+          "name": "resets",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 213,
+            "col": 5,
+            "end_line": 229,
+            "end_col": 17
           }
         }
       ],

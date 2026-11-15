@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "arith_addw.n",
+          "dtype": "positive",
           "name": "N",
           "comment": [
             "-- Operand Width"
@@ -20,6 +21,7 @@
         },
         {
           "id": "arith_addw.k",
+          "dtype": "positive",
           "name": "K",
           "comment": [
             "-- Block Count"
@@ -33,6 +35,7 @@
         },
         {
           "id": "arith_addw.arch",
+          "dtype": "tarch",
           "name": "ARCH",
           "default": "AAM",
           "comment": [
@@ -47,6 +50,7 @@
         },
         {
           "id": "arith_addw.blocking",
+          "dtype": "tblocking",
           "name": "BLOCKING",
           "default": "DFLT",
           "comment": [
@@ -61,6 +65,7 @@
         },
         {
           "id": "arith_addw.skipping",
+          "dtype": "tskipping",
           "name": "SKIPPING",
           "default": "CCC",
           "comment": [
@@ -75,6 +80,7 @@
         },
         {
           "id": "arith_addw.p_inclusive",
+          "dtype": "boolean",
           "name": "P_INCLUSIVE",
           "default": "false",
           "comment": [
@@ -150,6 +156,683 @@
             "col": 5,
             "end_line": 69,
             "end_col": 25
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "arith_addw.default_blocking",
+          "ptype": "constant",
+          "dtype": "tblocking_vector",
+          "name": "DEFAULT_BLOCKING",
+          "default": "(AAM => ASC, CAI => DESC, PAI => DESC, CCA => DESC)",
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 102
+          }
+        },
+        {
+          "id": "arith_addw.blocks",
+          "ptype": "constant",
+          "dtype": "integer_vector",
+          "name": "BLOCKS",
+          "dim": "[K-1:0]",
+          "default": "compute_blocks",
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "arith_addw.m",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "M",
+          "default": "BLOCKS(0)",
+          "comment": [
+            "-- Rightmost Block Width"
+          ],
+          "loc": {
+            "line": 147,
+            "col": 5,
+            "end_line": 147,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.levels",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "LEVELS",
+          "default": "log2ceil(K)",
+          "loc": {
+            "line": 198,
+            "col": 5,
+            "end_line": 198,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "arith_addw.d",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "D",
+          "default": "2**(i-1)",
+          "loc": {
+            "line": 205,
+            "col": 6,
+            "end_line": 205,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.levels~2",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "LEVELS",
+          "default": "log2ceil(K)",
+          "loc": {
+            "line": 218,
+            "col": 5,
+            "end_line": 218,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "arith_addw.d~2",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "D",
+          "default": "2**(i-1)",
+          "loc": {
+            "line": 225,
+            "col": 6,
+            "end_line": 225,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.d~3",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "D",
+          "default": "2**(2*LEVELS-i-1)",
+          "loc": {
+            "line": 239,
+            "col": 6,
+            "end_line": 239,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "arith_addw.lo",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "LO",
+          "default": "BLOCKS(i-1)",
+          "comment": [
+            "-- Low  Bit Index"
+          ],
+          "loc": {
+            "line": 266,
+            "col": 5,
+            "end_line": 266,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "arith_addw.hi",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "HI",
+          "default": "BLOCKS(i)-1",
+          "comment": [
+            "-- High Bit Index"
+          ],
+          "loc": {
+            "line": 267,
+            "col": 5,
+            "end_line": 267,
+            "end_col": 42
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "arith_addw.g",
+          "dtype": "std_logic_vector",
+          "name": "g",
+          "dim": "[K-1:1]",
+          "comment": [
+            "-- Block Generate"
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "arith_addw.p",
+          "dtype": "std_logic_vector",
+          "name": "p",
+          "dim": "[K-1:1]",
+          "comment": [
+            "-- Block Propagate"
+          ],
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "arith_addw.c",
+          "dtype": "std_logic_vector",
+          "name": "c",
+          "dim": "[K-1:1]",
+          "comment": [
+            "-- Block Carry-in"
+          ],
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genccc.x",
+          "dtype": "unsigned",
+          "name": "x",
+          "dim": "[K+M-2:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genCCC",
+              "cond": "SKIPPING = CCC"
+            }
+          ],
+          "loc": {
+            "line": 152,
+            "col": 7,
+            "end_line": 152,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genccc.y",
+          "dtype": "unsigned",
+          "name": "y",
+          "dim": "[K+M-2:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genCCC",
+              "cond": "SKIPPING = CCC"
+            }
+          ],
+          "loc": {
+            "line": 152,
+            "col": 7,
+            "end_line": 152,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genccc.z",
+          "dtype": "unsigned",
+          "name": "z",
+          "dim": "[K+M-1:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genCCC",
+              "cond": "SKIPPING = CCC"
+            }
+          ],
+          "loc": {
+            "line": 153,
+            "col": 7,
+            "end_line": 153,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.z",
+          "dtype": "unsigned",
+          "name": "z",
+          "dim": "[M:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            }
+          ],
+          "loc": {
+            "line": 177,
+            "col": 7,
+            "end_line": 177,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.genplain.t",
+          "dtype": "std_logic_vector",
+          "name": "t",
+          "dim": "[K:1]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            },
+            {
+              "kind": "if",
+              "name": "genPlain",
+              "cond": "SKIPPING = PLAIN"
+            }
+          ],
+          "loc": {
+            "line": 185,
+            "col": 9,
+            "end_line": 185,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.genppn_ks.pp",
+          "dtype": "tlevels",
+          "name": "pp",
+          "dim": "[0:LEVELS]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            },
+            {
+              "kind": "if",
+              "name": "genPPN_KS",
+              "cond": "SKIPPING = PPN_KS"
+            }
+          ],
+          "loc": {
+            "line": 199,
+            "col": 5,
+            "end_line": 199,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.genppn_ks.gg",
+          "dtype": "tlevels",
+          "name": "gg",
+          "dim": "[0:LEVELS]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            },
+            {
+              "kind": "if",
+              "name": "genPPN_KS",
+              "cond": "SKIPPING = PPN_KS"
+            }
+          ],
+          "loc": {
+            "line": 199,
+            "col": 5,
+            "end_line": 199,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.genppn_bk.pp",
+          "dtype": "tlevels",
+          "name": "pp",
+          "dim": "[0:2*LEVELS-1]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            },
+            {
+              "kind": "if",
+              "name": "genPPN_BK",
+              "cond": "SKIPPING = PPN_BK"
+            }
+          ],
+          "loc": {
+            "line": 219,
+            "col": 5,
+            "end_line": 219,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "arith_addw.blkcore.genlut.genppn_bk.gg",
+          "dtype": "tlevels",
+          "name": "gg",
+          "dim": "[0:2*LEVELS-1]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkCore"
+            },
+            {
+              "kind": "if",
+              "name": "genLUT",
+              "cond": "SKIPPING /= CCC"
+            },
+            {
+              "kind": "if",
+              "name": "genPPN_BK",
+              "cond": "SKIPPING = PPN_BK"
+            }
+          ],
+          "loc": {
+            "line": 219,
+            "col": 5,
+            "end_line": 219,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.aa",
+          "dtype": "unsigned",
+          "name": "aa",
+          "dim": "[HI:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            }
+          ],
+          "loc": {
+            "line": 270,
+            "col": 5,
+            "end_line": 270,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.bb",
+          "dtype": "unsigned",
+          "name": "bb",
+          "dim": "[HI:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            }
+          ],
+          "loc": {
+            "line": 271,
+            "col": 5,
+            "end_line": 271,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.ss",
+          "dtype": "unsigned",
+          "name": "ss",
+          "dim": "[HI:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 5,
+            "end_line": 272,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.genaam.s0",
+          "dtype": "unsigned",
+          "name": "s0",
+          "dim": "[HI+1:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            },
+            {
+              "kind": "if",
+              "name": "genAAM",
+              "cond": "ARCH = AAM"
+            }
+          ],
+          "comment": [
+            "-- Block Sum (cin=0)"
+          ],
+          "loc": {
+            "line": 284,
+            "col": 7,
+            "end_line": 284,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.genaam.s1",
+          "dtype": "unsigned",
+          "name": "s1",
+          "dim": "[HI+1:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            },
+            {
+              "kind": "if",
+              "name": "genAAM",
+              "cond": "ARCH = AAM"
+            }
+          ],
+          "comment": [
+            "-- Block Sum (cin=1)"
+          ],
+          "loc": {
+            "line": 285,
+            "col": 7,
+            "end_line": 285,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.gencai.s0",
+          "dtype": "unsigned",
+          "name": "s0",
+          "dim": "[HI+1:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            },
+            {
+              "kind": "if",
+              "name": "genCAI",
+              "cond": "ARCH = CAI"
+            }
+          ],
+          "comment": [
+            "-- Block Sum (cin=0)"
+          ],
+          "loc": {
+            "line": 302,
+            "col": 7,
+            "end_line": 302,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith_addw.genblocks.genpai.s0",
+          "dtype": "unsigned",
+          "name": "s0",
+          "dim": "[HI+1:LO]",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "genBlocks",
+              "cond": "i in 1 to K-1"
+            },
+            {
+              "kind": "if",
+              "name": "genPAI",
+              "cond": "ARCH = PAI"
+            }
+          ],
+          "comment": [
+            "-- Block Sum (cin=0)"
+          ],
+          "loc": {
+            "line": 319,
+            "col": 7,
+            "end_line": 319,
+            "end_col": 43
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "arith_addw.tblocking_vector",
+          "name": "tBlocking_vector",
+          "kind": "alias",
+          "dtype": "array(tArch) of tBlocking",
+          "comment": [
+            "-- Determine Block Boundaries"
+          ],
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "arith_addw.integer_vector",
+          "name": "integer_vector",
+          "kind": "alias",
+          "dtype": "array(natural range<>) of integer",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "arith_addw.tlevel",
+          "name": "tLevel",
+          "kind": "alias",
+          "dtype": "std_logic_vector(K-1 downto 0)",
+          "loc": {
+            "line": 196,
+            "col": 5,
+            "end_line": 196,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "arith_addw.tlevels",
+          "name": "tLevels",
+          "kind": "alias",
+          "dtype": "array(natural range<>) of tLevel",
+          "loc": {
+            "line": 197,
+            "col": 5,
+            "end_line": 197,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "arith_addw.tlevel~2",
+          "name": "tLevel",
+          "kind": "alias",
+          "dtype": "std_logic_vector(K-1 downto 0)",
+          "loc": {
+            "line": 216,
+            "col": 5,
+            "end_line": 216,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "arith_addw.tlevels~2",
+          "name": "tLevels",
+          "kind": "alias",
+          "dtype": "array(natural range<>) of tLevel",
+          "loc": {
+            "line": 217,
+            "col": 5,
+            "end_line": 217,
+            "end_col": 54
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "arith_addw.compute_blocks",
+          "name": "compute_blocks",
+          "kind": "function",
+          "rtype": "integer_vector",
+          "loc": {
+            "line": 86,
+            "col": 10,
+            "end_line": 136,
+            "end_col": 22
           }
         }
       ],

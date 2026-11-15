@@ -267,6 +267,230 @@
           }
         }
       ],
+      "localparams": [
+        {
+          "id": "axilitecrossbaripintegrator.num_axil_masters_c",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "NUM_AXIL_MASTERS_C",
+          "default": "2",
+          "loc": {
+            "line": 49,
+            "col": 4,
+            "end_line": 49,
+            "end_col": 102
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axil_xbar_config_c",
+          "ptype": "constant",
+          "dtype": "axilitecrossbarmasterconfigarray",
+          "name": "AXIL_XBAR_CONFIG_C",
+          "dim": "[NUM_AXIL_MASTERS_C-1:0]",
+          "default": "genAxiLiteConfig(NUM_AXIL_MASTERS_C, x\"0000_0000\", 22, 20)",
+          "loc": {
+            "line": 50,
+            "col": 4,
+            "end_line": 50,
+            "end_col": 159
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.num_cascade_masters_c",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "NUM_CASCADE_MASTERS_C",
+          "default": "2",
+          "loc": {
+            "line": 52,
+            "col": 4,
+            "end_line": 52,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.cascade_xbar_config_c",
+          "ptype": "constant",
+          "dtype": "axilitecrossbarmasterconfigarray",
+          "name": "CASCADE_XBAR_CONFIG_C",
+          "dim": "[NUM_CASCADE_MASTERS_C-1:0]",
+          "default": "(\n      0               => (\n         baseAddr     => x\"0010_2000\",\n         addrBits     => 12,\n         connectivity => X\"0001\"),\n      1               => (\n         baseAddr     => x\"0016_0000\",\n         addrBits     => 17,\n         connectivity => X\"0001\"))",
+          "loc": {
+            "line": 53,
+            "col": 4,
+            "end_line": 61,
+            "end_col": 35
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "axilitecrossbaripintegrator.axilclk",
+          "dtype": "sl",
+          "name": "axilClk",
+          "loc": {
+            "line": 63,
+            "col": 4,
+            "end_line": 63,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilrst",
+          "dtype": "sl",
+          "name": "axilRst",
+          "loc": {
+            "line": 64,
+            "col": 4,
+            "end_line": 64,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilreadmaster",
+          "dtype": "axilitereadmastertype",
+          "name": "axilReadMaster",
+          "loc": {
+            "line": 65,
+            "col": 4,
+            "end_line": 65,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilreadslave",
+          "dtype": "axilitereadslavetype",
+          "name": "axilReadSlave",
+          "loc": {
+            "line": 66,
+            "col": 4,
+            "end_line": 66,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilwritemaster",
+          "dtype": "axilitewritemastertype",
+          "name": "axilWriteMaster",
+          "loc": {
+            "line": 67,
+            "col": 4,
+            "end_line": 67,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilwriteslave",
+          "dtype": "axilitewriteslavetype",
+          "name": "axilWriteSlave",
+          "loc": {
+            "line": 68,
+            "col": 4,
+            "end_line": 68,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilreadmasters",
+          "dtype": "axilitereadmasterarray",
+          "name": "axilReadMasters",
+          "dim": "[NUM_AXIL_MASTERS_C-1:0]",
+          "loc": {
+            "line": 69,
+            "col": 4,
+            "end_line": 69,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilreadslaves",
+          "dtype": "axilitereadslavearray",
+          "name": "axilReadSlaves",
+          "dim": "[NUM_AXIL_MASTERS_C-1:0]",
+          "default": "(others => AXI_LITE_READ_SLAVE_EMPTY_DECERR_C)",
+          "loc": {
+            "line": 70,
+            "col": 4,
+            "end_line": 70,
+            "end_col": 139
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilwritemasters",
+          "dtype": "axilitewritemasterarray",
+          "name": "axilWriteMasters",
+          "dim": "[NUM_AXIL_MASTERS_C-1:0]",
+          "loc": {
+            "line": 71,
+            "col": 4,
+            "end_line": 71,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.axilwriteslaves",
+          "dtype": "axilitewriteslavearray",
+          "name": "axilWriteSlaves",
+          "dim": "[NUM_AXIL_MASTERS_C-1:0]",
+          "default": "(others => AXI_LITE_WRITE_SLAVE_EMPTY_DECERR_C)",
+          "loc": {
+            "line": 72,
+            "col": 4,
+            "end_line": 72,
+            "end_col": 140
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.cascadereadmasters",
+          "dtype": "axilitereadmasterarray",
+          "name": "cascadeReadMasters",
+          "dim": "[NUM_CASCADE_MASTERS_C-1:0]",
+          "loc": {
+            "line": 73,
+            "col": 4,
+            "end_line": 73,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.cascadereadslaves",
+          "dtype": "axilitereadslavearray",
+          "name": "cascadeReadSlaves",
+          "dim": "[NUM_CASCADE_MASTERS_C-1:0]",
+          "default": "(others => AXI_LITE_READ_SLAVE_EMPTY_DECERR_C)",
+          "loc": {
+            "line": 74,
+            "col": 4,
+            "end_line": 74,
+            "end_col": 139
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.cascadewritemasters",
+          "dtype": "axilitewritemasterarray",
+          "name": "cascadeWriteMasters",
+          "dim": "[NUM_CASCADE_MASTERS_C-1:0]",
+          "loc": {
+            "line": 75,
+            "col": 4,
+            "end_line": 75,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "axilitecrossbaripintegrator.cascadewriteslaves",
+          "dtype": "axilitewriteslavearray",
+          "name": "cascadeWriteSlaves",
+          "dim": "[NUM_CASCADE_MASTERS_C-1:0]",
+          "default": "(others => AXI_LITE_WRITE_SLAVE_EMPTY_DECERR_C)",
+          "loc": {
+            "line": 76,
+            "col": 4,
+            "end_line": 76,
+            "end_col": 140
+          }
+        }
+      ],
       "insts": [
         {
           "id": "axilitecrossbaripintegrator.u_shimlayer",

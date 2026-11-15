@@ -144,6 +144,7 @@ class File(_BaseModel):
     | Type                                     | `bus_pkg.req_t`      |
     | Function or task, argument               | `bus_pkg.f.arg`      |
     | Process with label, without label        | `top.p_reg`, `top.#always1` |
+    | Component (VHDL), its generics and ports | `pkg.comp`, `pkg.comp.clk` |
     | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
     | Instance                                 | `top.u_sub`          |
     | Instance within labeled generate blocks  | `top.g_a.u_sub`      |
@@ -196,37 +197,9 @@ class File(_BaseModel):
 
     def iter_items(self) -> Iterator["Item"]:
         """All items: packages, interfaces and modules with their parameters, types, ports, instances and so on."""
-        for package in self.packages:
-            yield package
-            yield from package.params
-            yield from package.localparams
-            for typedef in package.typedefs:
-                yield typedef
-                yield from typedef.members
-            for function in package.functions:
-                yield function
-                yield from function.args
-        for module in (*self.interfaces, *self.modules):
-            yield module
-            yield from module.params
-            yield from module.localparams
-            yield from module.ports
-            yield from module.signals
-            for typedef in module.typedefs:
-                yield typedef
-                yield from typedef.members
-            for function in module.functions:
-                yield function
-                yield from function.args
-            yield from module.processes
-            yield from module.unresolved_macros
-            for modport in getattr(module, "modports", ()):
-                yield modport
-                yield from modport.ports
-            for inst in module.insts:
-                yield inst
-                yield from inst.params
-                yield from inst.connections
+        units: tuple[Module | Package, ...] = (*self.packages, *self.interfaces, *self.modules)
+        for unit in units:
+            yield from _iter_unit(unit)
 
     def find(self, id_: str) -> "Item | None":
         """Item with the identifier `id_`: local (`top.a`) or full (`rtl/top.sv:top.a`). `None` if not found."""
@@ -236,6 +209,27 @@ class File(_BaseModel):
             if file_id != self.file_id:
                 return None
         return next((item for item in self.iter_items() if item.id == id_), None)
+
+
+def _iter_unit(unit: "Module | Package") -> Iterator["Item"]:
+    """`unit` (a module, interface or package) and all its items."""
+    yield unit
+    yield from unit.params
+    yield from unit.localparams
+    yield from getattr(unit, "ports", ())
+    yield from getattr(unit, "signals", ())
+    for typedef in unit.typedefs:
+        yield from (typedef, *typedef.members)
+    for function in unit.functions:
+        yield from (function, *function.args)
+    yield from getattr(unit, "processes", ())
+    for component in unit.components:
+        yield from (component, *component.params, *component.ports)
+    yield from getattr(unit, "unresolved_macros", ())
+    for modport in getattr(unit, "modports", ()):
+        yield from (modport, *modport.ports)
+    for inst in getattr(unit, "insts", ()):
+        yield from (inst, *inst.params, *inst.connections)
 
 
 class Module(_BaseModel):
@@ -250,6 +244,7 @@ class Module(_BaseModel):
         typedefs: Types declared within the module.
         functions: Functions and tasks declared within the module.
         processes: The `always` blocks (VHDL: processes) with their clock and reset.
+        components: Component declarations (VHDL): modules with name, parameters and ports.
         insts: Submodule Instances.
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
@@ -267,6 +262,7 @@ class Module(_BaseModel):
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
     processes: tuple["Process", ...] = ()
+    components: tuple["Module", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
@@ -305,14 +301,17 @@ class Interface(Module):
 
 
 class Package(_BaseModel):
-    """Represents a SystemVerilog Package with parameters and types.
+    """Represents a SystemVerilog or VHDL Package with parameters, types and functions.
+
+    The constants of a VHDL package are its local parameters.
 
     Attributes:
         name: Package Name
         params: Parameters
         localparams: Local Parameters
         typedefs: Types
-        functions: Functions and tasks
+        functions: Functions and tasks (VHDL: procedures)
+        components: Component declarations (VHDL): modules with name, parameters and ports.
         ifdefs: Conditions the package is defined at.
         loc: Source Location: from `package` to `endpackage`.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -324,6 +323,7 @@ class Package(_BaseModel):
     localparams: tuple["Param", ...] = ()
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
+    components: tuple["Module", ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
@@ -419,7 +419,8 @@ class Param(_BaseModel):
     """Represents a parameter in a SystemVerilog module.
 
     Attributes:
-        ptype: Parameter type ('integer', 'real', 'string', etc.)
+        ptype: Parameter type ('integer', 'real', 'string', etc.). VHDL: `constant`, if stated.
+        dtype: Data Type: `signed` or `unsigned`. VHDL: the type.
         name: Name of the parameter
         dim: Dimension (Packed)
         dim_unpacked: Unpacked Dimension
@@ -430,6 +431,7 @@ class Param(_BaseModel):
 
     id: str = ""
     ptype: str = ""
+    dtype: str = ""
     name: str
     dim: str = ""
     dim_unpacked: str = ""

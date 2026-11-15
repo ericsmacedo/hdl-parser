@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "udp_rx.debug",
+          "dtype": "boolean",
           "name": "DEBUG",
           "default": "FALSE",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "udp_rx.ip_version",
+          "dtype": "positive",
           "name": "IP_VERSION",
           "default": "6",
           "loc": {
@@ -516,6 +518,428 @@
             "col": 3,
             "end_line": 93,
             "end_col": 42
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "udp_rx.state",
+          "dtype": "t_state",
+          "name": "State",
+          "default": "ST_IDLE",
+          "loc": {
+            "line": 177,
+            "col": 2,
+            "end_line": 177,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "udp_rx.nextstate",
+          "dtype": "t_state",
+          "name": "NextState",
+          "loc": {
+            "line": 178,
+            "col": 2,
+            "end_line": 178,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "udp_rx.in_ack_i",
+          "dtype": "std_logic",
+          "name": "In_Ack_i",
+          "loc": {
+            "line": 181,
+            "col": 2,
+            "end_line": 181,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "udp_rx.is_dataflow",
+          "dtype": "std_logic",
+          "name": "Is_DataFlow",
+          "loc": {
+            "line": 182,
+            "col": 2,
+            "end_line": 182,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "udp_rx.is_sof",
+          "dtype": "std_logic",
+          "name": "Is_SOF",
+          "loc": {
+            "line": 183,
+            "col": 2,
+            "end_line": 183,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "udp_rx.is_eof",
+          "dtype": "std_logic",
+          "name": "Is_EOF",
+          "loc": {
+            "line": 184,
+            "col": 2,
+            "end_line": 184,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "udp_rx.out_valid_i",
+          "dtype": "std_logic",
+          "name": "Out_Valid_i",
+          "loc": {
+            "line": 186,
+            "col": 2,
+            "end_line": 186,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "udp_rx.out_sof_i",
+          "dtype": "std_logic",
+          "name": "Out_SOF_i",
+          "loc": {
+            "line": 187,
+            "col": 2,
+            "end_line": 187,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "udp_rx.out_eof_i",
+          "dtype": "std_logic",
+          "name": "Out_EOF_i",
+          "loc": {
+            "line": 188,
+            "col": 2,
+            "end_line": 188,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "udp_rx.register_rst",
+          "dtype": "std_logic",
+          "name": "Register_rst",
+          "loc": {
+            "line": 190,
+            "col": 2,
+            "end_line": 190,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "udp_rx.sourceport_en0",
+          "dtype": "std_logic",
+          "name": "SourcePort_en0",
+          "loc": {
+            "line": 193,
+            "col": 2,
+            "end_line": 193,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "udp_rx.sourceport_en1",
+          "dtype": "std_logic",
+          "name": "SourcePort_en1",
+          "loc": {
+            "line": 194,
+            "col": 2,
+            "end_line": 194,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "udp_rx.destinationport_en0",
+          "dtype": "std_logic",
+          "name": "DestinationPort_en0",
+          "loc": {
+            "line": 195,
+            "col": 2,
+            "end_line": 195,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "udp_rx.destinationport_en1",
+          "dtype": "std_logic",
+          "name": "DestinationPort_en1",
+          "loc": {
+            "line": 196,
+            "col": 2,
+            "end_line": 196,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "udp_rx.length_en0",
+          "dtype": "std_logic",
+          "name": "Length_en0",
+          "loc": {
+            "line": 197,
+            "col": 2,
+            "end_line": 197,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "udp_rx.length_en1",
+          "dtype": "std_logic",
+          "name": "Length_en1",
+          "loc": {
+            "line": 198,
+            "col": 2,
+            "end_line": 198,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "udp_rx.sourceport_d",
+          "dtype": "t_slv_16",
+          "name": "SourcePort_d",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 200,
+            "col": 2,
+            "end_line": 200,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "udp_rx.destinationport_d",
+          "dtype": "t_slv_16",
+          "name": "DestinationPort_d",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 201,
+            "col": 2,
+            "end_line": 201,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "udp_rx.length_d",
+          "dtype": "t_slv_16",
+          "name": "Length_d",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 202,
+            "col": 2,
+            "end_line": 202,
+            "end_col": 60
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "udp_rx.t_state",
+          "name": "T_STATE",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "udp_rx.t_state.st_idle",
+              "name": "ST_IDLE",
+              "loc": {
+                "line": 167,
+                "col": 3,
+                "end_line": 167,
+                "end_col": 10
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_source_port_1",
+              "name": "ST_RECEIVE_SOURCE_PORT_1",
+              "loc": {
+                "line": 168,
+                "col": 4,
+                "end_line": 168,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_dest_port_0",
+              "name": "ST_RECEIVE_DEST_PORT_0",
+              "loc": {
+                "line": 169,
+                "col": 4,
+                "end_line": 169,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_dest_port_1",
+              "name": "ST_RECEIVE_DEST_PORT_1",
+              "loc": {
+                "line": 169,
+                "col": 29,
+                "end_line": 169,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_length_0",
+              "name": "ST_RECEIVE_LENGTH_0",
+              "loc": {
+                "line": 170,
+                "col": 4,
+                "end_line": 170,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_length_1",
+              "name": "ST_RECEIVE_LENGTH_1",
+              "loc": {
+                "line": 170,
+                "col": 27,
+                "end_line": 170,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_checksum_0",
+              "name": "ST_RECEIVE_CHECKSUM_0",
+              "loc": {
+                "line": 171,
+                "col": 4,
+                "end_line": 171,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_checksum_1",
+              "name": "ST_RECEIVE_CHECKSUM_1",
+              "loc": {
+                "line": 171,
+                "col": 28,
+                "end_line": 171,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_data_1",
+              "name": "ST_RECEIVE_DATA_1",
+              "loc": {
+                "line": 172,
+                "col": 4,
+                "end_line": 172,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_receive_data_n",
+              "name": "ST_RECEIVE_DATA_N",
+              "loc": {
+                "line": 172,
+                "col": 26,
+                "end_line": 172,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_discard_frame",
+              "name": "ST_DISCARD_FRAME",
+              "loc": {
+                "line": 173,
+                "col": 3,
+                "end_line": 173,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "udp_rx.t_state.st_error",
+              "name": "ST_ERROR",
+              "loc": {
+                "line": 174,
+                "col": 3,
+                "end_line": 174,
+                "end_col": 11
+              }
+            }
+          ],
+          "loc": {
+            "line": 166,
+            "col": 2,
+            "end_line": 175,
+            "end_col": 4
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "udp_rx.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "Clock"
+            }
+          ],
+          "clock": "Clock",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 211,
+            "col": 2,
+            "end_line": 220,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "udp_rx.#process2",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "State"
+            },
+            {
+              "signal": "Is_DataFlow"
+            },
+            {
+              "signal": "Is_SOF"
+            },
+            {
+              "signal": "Is_EOF"
+            },
+            {
+              "signal": "In_Valid"
+            },
+            {
+              "signal": "In_Data"
+            },
+            {
+              "signal": "In_EOF"
+            },
+            {
+              "signal": "Out_Ack"
+            }
+          ],
+          "loc": {
+            "line": 222,
+            "col": 2,
+            "end_line": 372,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "udp_rx.#process3",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "Clock"
+            }
+          ],
+          "clock": "Clock",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 374,
+            "col": 2,
+            "end_line": 404,
+            "end_col": 14
           }
         }
       ],

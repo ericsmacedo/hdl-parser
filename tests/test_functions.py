@@ -198,3 +198,10 @@ def test_corpus_has_functions():
     assert sum(function.kind == "task" for function in functions) >= 10
     assert sum(len(function.args) for function in functions) >= 130
     assert sum(bool(function.rtype) for function in functions) >= 50
+
+
+def test_tolerant_arguments():
+    """Arguments Which Are Not Understood Are Skipped."""
+    text = "package p;\n  function int f(int a, (strange), [1:0], int b);\n  endfunction\nendpackage\n"
+    (function,) = parse_text(text).packages[0].functions
+    assert [arg.name for arg in function.args] == ["a", "b"]

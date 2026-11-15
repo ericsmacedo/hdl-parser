@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "axiresizeipintegrator.tpd_g",
+          "dtype": "time",
           "name": "TPD_G",
           "default": "1 ns",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "axiresizeipintegrator.addr_width_g",
+          "dtype": "positive",
           "name": "ADDR_WIDTH_G",
           "default": "16",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "axiresizeipintegrator.id_width_g",
+          "dtype": "positive",
           "name": "ID_WIDTH_G",
           "default": "4",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "axiresizeipintegrator.slave_data_bytes_g",
+          "dtype": "positive",
           "name": "SLAVE_DATA_BYTES_G",
           "default": "4",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "axiresizeipintegrator.master_data_bytes_g",
+          "dtype": "positive",
           "name": "MASTER_DATA_BYTES_G",
           "default": "8",
           "loc": {
@@ -1096,6 +1101,170 @@
             "col": 7,
             "end_line": 111,
             "end_col": 30
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "axiresizeipintegrator.slave_axi_config_c",
+          "ptype": "constant",
+          "dtype": "axiconfigtype",
+          "name": "SLAVE_AXI_CONFIG_C",
+          "default": "axiConfig(ADDR_WIDTH_G, SLAVE_DATA_BYTES_G, ID_WIDTH_G, 8)",
+          "loc": {
+            "line": 116,
+            "col": 4,
+            "end_line": 116,
+            "end_col": 110
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.master_axi_config_c",
+          "ptype": "constant",
+          "dtype": "axiconfigtype",
+          "name": "MASTER_AXI_CONFIG_C",
+          "default": "axiConfig(ADDR_WIDTH_G, MASTER_DATA_BYTES_G, ID_WIDTH_G, 8)",
+          "loc": {
+            "line": 117,
+            "col": 4,
+            "end_line": 117,
+            "end_col": 111
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "axiresizeipintegrator.axiresetn",
+          "dtype": "sl",
+          "name": "axiResetN",
+          "default": "'1'",
+          "loc": {
+            "line": 119,
+            "col": 4,
+            "end_line": 119,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxiawlock",
+          "dtype": "slv",
+          "name": "mAxiAwLock",
+          "dim": "[1:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 120,
+            "col": 4,
+            "end_line": 120,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxiarlock",
+          "dtype": "slv",
+          "name": "mAxiArLock",
+          "dim": "[1:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 121,
+            "col": 4,
+            "end_line": 121,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.saxireadmaster",
+          "dtype": "axireadmastertype",
+          "name": "sAxiReadMaster",
+          "default": "AXI_READ_MASTER_INIT_C",
+          "loc": {
+            "line": 122,
+            "col": 4,
+            "end_line": 122,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.saxireadslave",
+          "dtype": "axireadslavetype",
+          "name": "sAxiReadSlave",
+          "default": "AXI_READ_SLAVE_INIT_C",
+          "loc": {
+            "line": 123,
+            "col": 4,
+            "end_line": 123,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.saxiwritemaster",
+          "dtype": "axiwritemastertype",
+          "name": "sAxiWriteMaster",
+          "default": "AXI_WRITE_MASTER_INIT_C",
+          "loc": {
+            "line": 124,
+            "col": 4,
+            "end_line": 124,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.saxiwriteslave",
+          "dtype": "axiwriteslavetype",
+          "name": "sAxiWriteSlave",
+          "default": "AXI_WRITE_SLAVE_INIT_C",
+          "loc": {
+            "line": 125,
+            "col": 4,
+            "end_line": 125,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxireadmaster",
+          "dtype": "axireadmastertype",
+          "name": "mAxiReadMaster",
+          "default": "AXI_READ_MASTER_INIT_C",
+          "loc": {
+            "line": 126,
+            "col": 4,
+            "end_line": 126,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxireadslave",
+          "dtype": "axireadslavetype",
+          "name": "mAxiReadSlave",
+          "default": "AXI_READ_SLAVE_INIT_C",
+          "loc": {
+            "line": 127,
+            "col": 4,
+            "end_line": 127,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxiwritemaster",
+          "dtype": "axiwritemastertype",
+          "name": "mAxiWriteMaster",
+          "default": "AXI_WRITE_MASTER_INIT_C",
+          "loc": {
+            "line": 128,
+            "col": 4,
+            "end_line": 128,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "axiresizeipintegrator.maxiwriteslave",
+          "dtype": "axiwriteslavetype",
+          "name": "mAxiWriteSlave",
+          "default": "AXI_WRITE_SLAVE_INIT_C",
+          "loc": {
+            "line": 129,
+            "col": 4,
+            "end_line": 129,
+            "end_col": 73
           }
         }
       ],

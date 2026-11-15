@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_potato.processor_id",
+          "dtype": "std_logic_vector",
           "name": "PROCESSOR_ID",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -22,6 +23,7 @@
         },
         {
           "id": "pp_potato.reset_address",
+          "dtype": "std_logic_vector",
           "name": "RESET_ADDRESS",
           "dim": "[31:0]",
           "default": "x\"00000000\"",
@@ -37,6 +39,7 @@
         },
         {
           "id": "pp_potato.mtime_divider",
+          "dtype": "positive",
           "name": "MTIME_DIVIDER",
           "default": "5",
           "comment": [
@@ -51,6 +54,7 @@
         },
         {
           "id": "pp_potato.icache_enable",
+          "dtype": "boolean",
           "name": "ICACHE_ENABLE",
           "default": "true",
           "comment": [
@@ -65,6 +69,7 @@
         },
         {
           "id": "pp_potato.icache_line_size",
+          "dtype": "natural",
           "name": "ICACHE_LINE_SIZE",
           "default": "4",
           "comment": [
@@ -79,6 +84,7 @@
         },
         {
           "id": "pp_potato.icache_num_lines",
+          "dtype": "natural",
           "name": "ICACHE_NUM_LINES",
           "default": "128",
           "comment": [
@@ -249,6 +255,234 @@
             "col": 3,
             "end_line": 40,
             "end_col": 29
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_potato.imem_address",
+          "dtype": "std_logic_vector",
+          "name": "imem_address",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 47,
+            "col": 2,
+            "end_line": 47,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "pp_potato.imem_data",
+          "dtype": "std_logic_vector",
+          "name": "imem_data",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 48,
+            "col": 2,
+            "end_line": 48,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "pp_potato.imem_req",
+          "dtype": "std_logic",
+          "name": "imem_req",
+          "loc": {
+            "line": 49,
+            "col": 2,
+            "end_line": 49,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_potato.imem_ack",
+          "dtype": "std_logic",
+          "name": "imem_ack",
+          "loc": {
+            "line": 49,
+            "col": 2,
+            "end_line": 49,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_potato.dmem_address",
+          "dtype": "std_logic_vector",
+          "name": "dmem_address",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 52,
+            "col": 2,
+            "end_line": 52,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "pp_potato.dmem_data_in",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_in",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 53,
+            "col": 2,
+            "end_line": 53,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "pp_potato.dmem_data_out",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_out",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 54,
+            "col": 2,
+            "end_line": 54,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "pp_potato.dmem_data_size",
+          "dtype": "std_logic_vector",
+          "name": "dmem_data_size",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 55,
+            "col": 2,
+            "end_line": 55,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "pp_potato.dmem_read_req",
+          "dtype": "std_logic",
+          "name": "dmem_read_req",
+          "loc": {
+            "line": 56,
+            "col": 2,
+            "end_line": 56,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "pp_potato.dmem_read_ack",
+          "dtype": "std_logic",
+          "name": "dmem_read_ack",
+          "loc": {
+            "line": 57,
+            "col": 2,
+            "end_line": 57,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "pp_potato.dmem_write_req",
+          "dtype": "std_logic",
+          "name": "dmem_write_req",
+          "loc": {
+            "line": 58,
+            "col": 2,
+            "end_line": 58,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "pp_potato.dmem_write_ack",
+          "dtype": "std_logic",
+          "name": "dmem_write_ack",
+          "loc": {
+            "line": 59,
+            "col": 2,
+            "end_line": 59,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "pp_potato.icache_inputs",
+          "dtype": "wishbone_master_inputs",
+          "name": "icache_inputs",
+          "loc": {
+            "line": 62,
+            "col": 2,
+            "end_line": 62,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "pp_potato.dmem_if_inputs",
+          "dtype": "wishbone_master_inputs",
+          "name": "dmem_if_inputs",
+          "loc": {
+            "line": 62,
+            "col": 2,
+            "end_line": 62,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "pp_potato.icache_outputs",
+          "dtype": "wishbone_master_outputs",
+          "name": "icache_outputs",
+          "loc": {
+            "line": 63,
+            "col": 2,
+            "end_line": 63,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "pp_potato.dmem_if_outputs",
+          "dtype": "wishbone_master_outputs",
+          "name": "dmem_if_outputs",
+          "loc": {
+            "line": 63,
+            "col": 2,
+            "end_line": 63,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "pp_potato.m1_inputs",
+          "dtype": "wishbone_master_inputs",
+          "name": "m1_inputs",
+          "loc": {
+            "line": 66,
+            "col": 2,
+            "end_line": 66,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_potato.m2_inputs",
+          "dtype": "wishbone_master_inputs",
+          "name": "m2_inputs",
+          "loc": {
+            "line": 66,
+            "col": 2,
+            "end_line": 66,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "pp_potato.m1_outputs",
+          "dtype": "wishbone_master_outputs",
+          "name": "m1_outputs",
+          "loc": {
+            "line": 67,
+            "col": 2,
+            "end_line": 67,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "pp_potato.m2_outputs",
+          "dtype": "wishbone_master_outputs",
+          "name": "m2_outputs",
+          "loc": {
+            "line": 67,
+            "col": 2,
+            "end_line": 67,
+            "end_col": 57
           }
         }
       ],

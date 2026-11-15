@@ -1278,6 +1278,7 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
         dm.Param(
             name=decl.name.text,
             ptype=decl.ptype,
+            dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             default=decl.default,

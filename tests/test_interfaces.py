@@ -179,3 +179,12 @@ def test_corpus_has_interfaces():
     axi = next(intf for intf in interfaces if intf.name == "AXI_BUS")
     assert [modport.name for modport in axi.modports] == ["Master", "Slave", "Monitor"]
     assert axi.modports[0].ports[0] == axi.modports[0].ports[0].model_copy(update={"direction": "output"})
+
+
+def test_generic_interface_port():
+    """Generic Interface Port With Modport."""
+    (module,) = parse_text("module top (interface.master bus, interface any);\nendmodule\n").modules
+    assert [(port.ptype, port.name, port.direction) for port in module.ports] == [
+        ("interface.master", "bus", ""),
+        ("interface", "any", ""),
+    ]

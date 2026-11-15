@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "sync_bits_xilinx.bits",
+          "dtype": "positive",
           "name": "BITS",
           "default": "1",
           "comment": [
@@ -21,6 +22,7 @@
         },
         {
           "id": "sync_bits_xilinx.init",
+          "dtype": "std_logic_vector",
           "name": "INIT",
           "default": "x\"00000000\"",
           "comment": [
@@ -35,6 +37,7 @@
         },
         {
           "id": "sync_bits_xilinx.sync_depth",
+          "dtype": "t_misc_sync_depth",
           "name": "SYNC_DEPTH",
           "default": "T_MISC_SYNC_DEPTH'low",
           "comment": [
@@ -94,6 +97,21 @@
             "col": 5,
             "end_line": 78,
             "end_col": 60
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "sync_bits_xilinx.init_i",
+          "ptype": "constant",
+          "dtype": "bit_vector",
+          "name": "INIT_I",
+          "default": "to_bitvector(resize(descend(INIT), BITS))",
+          "loc": {
+            "line": 107,
+            "col": 2,
+            "end_line": 107,
+            "end_col": 89
           }
         }
       ],
@@ -189,6 +207,7 @@
       "params": [
         {
           "id": "sync_bit_xilinx.init",
+          "dtype": "bit",
           "name": "INIT",
           "comment": [
             "-- initialization bits"
@@ -202,6 +221,7 @@
         },
         {
           "id": "sync_bit_xilinx.sync_depth",
+          "dtype": "t_misc_sync_depth",
           "name": "SYNC_DEPTH",
           "default": "T_MISC_SYNC_DEPTH'low",
           "comment": [
@@ -259,6 +279,41 @@
             "col": 5,
             "end_line": 101,
             "end_col": 34
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "sync_bit_xilinx.data_async",
+          "dtype": "std_logic",
+          "name": "Data_async",
+          "loc": {
+            "line": 129,
+            "col": 2,
+            "end_line": 129,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sync_bit_xilinx.data_meta",
+          "dtype": "std_logic",
+          "name": "Data_meta",
+          "loc": {
+            "line": 130,
+            "col": 2,
+            "end_line": 130,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "sync_bit_xilinx.data_sync",
+          "dtype": "std_logic",
+          "name": "Data_sync",
+          "loc": {
+            "line": 131,
+            "col": 2,
+            "end_line": 131,
+            "end_col": 37
           }
         }
       ],

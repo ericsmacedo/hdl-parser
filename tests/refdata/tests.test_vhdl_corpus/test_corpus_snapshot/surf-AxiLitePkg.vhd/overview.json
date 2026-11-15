@@ -1,11 +1,3232 @@
 {
   "path": "$PRJ/tests/corpus/vhdl/surf/AxiLitePkg.vhd",
   "modules": [],
-  "diagnostics": [
+  "packages": [
     {
-      "code": "no-module",
-      "severity": "info",
-      "message": "no module found."
+      "id": "axilitepkg",
+      "name": "AxiLitePkg",
+      "localparams": [
+        {
+          "id": "axilitepkg.axi_resp_ok_c",
+          "ptype": "constant",
+          "dtype": "slv",
+          "name": "AXI_RESP_OK_C",
+          "dim": "[1:0]",
+          "default": "\"00\"",
+          "comment": [
+            "-- Access ok"
+          ],
+          "loc": {
+            "line": 28,
+            "col": 4,
+            "end_line": 28,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "axilitepkg.axi_resp_exokay_c",
+          "ptype": "constant",
+          "dtype": "slv",
+          "name": "AXI_RESP_EXOKAY_C",
+          "dim": "[1:0]",
+          "default": "\"01\"",
+          "comment": [
+            "-- Exclusive access ok"
+          ],
+          "loc": {
+            "line": 30,
+            "col": 4,
+            "end_line": 30,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "axilitepkg.axi_resp_slverr_c",
+          "ptype": "constant",
+          "dtype": "slv",
+          "name": "AXI_RESP_SLVERR_C",
+          "dim": "[1:0]",
+          "default": "\"10\"",
+          "comment": [
+            "-- Slave Error"
+          ],
+          "loc": {
+            "line": 33,
+            "col": 4,
+            "end_line": 33,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "axilitepkg.axi_resp_decerr_c",
+          "ptype": "constant",
+          "dtype": "slv",
+          "name": "AXI_RESP_DECERR_C",
+          "dim": "[1:0]",
+          "default": "\"11\"",
+          "comment": [
+            "-- Decode Error"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 4,
+            "end_line": 46,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_read_master_init_c",
+          "ptype": "constant",
+          "dtype": "axilitereadmastertype",
+          "name": "AXI_LITE_READ_MASTER_INIT_C",
+          "default": "(\n      araddr  => (others => '0'),\n      arprot  => (others => '0'),\n      arvalid => '0',\n      rready  => '1'\n      )",
+          "loc": {
+            "line": 66,
+            "col": 4,
+            "end_line": 71,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_read_slave_init_c",
+          "ptype": "constant",
+          "dtype": "axilitereadslavetype",
+          "name": "AXI_LITE_READ_SLAVE_INIT_C",
+          "default": "(\n      arready => '0',\n      rdata   => (others => '0'),\n      rresp   => (others => '0'),\n      rvalid  => '0'\n      )",
+          "loc": {
+            "line": 92,
+            "col": 4,
+            "end_line": 97,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_read_slave_empty_ok_c",
+          "ptype": "constant",
+          "dtype": "axilitereadslavetype",
+          "name": "AXI_LITE_READ_SLAVE_EMPTY_OK_C",
+          "default": "axiLiteReadSlaveEmptyInit(rresp => AXI_RESP_OK_C)",
+          "loc": {
+            "line": 104,
+            "col": 4,
+            "end_line": 104,
+            "end_col": 123
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_read_slave_empty_slverr_c",
+          "ptype": "constant",
+          "dtype": "axilitereadslavetype",
+          "name": "AXI_LITE_READ_SLAVE_EMPTY_SLVERR_C",
+          "default": "axiLiteReadSlaveEmptyInit(rresp => AXI_RESP_SLVERR_C)",
+          "loc": {
+            "line": 105,
+            "col": 4,
+            "end_line": 105,
+            "end_col": 127
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_read_slave_empty_decerr_c",
+          "ptype": "constant",
+          "dtype": "axilitereadslavetype",
+          "name": "AXI_LITE_READ_SLAVE_EMPTY_DECERR_C",
+          "default": "axiLiteReadSlaveEmptyInit(rresp => AXI_RESP_DECERR_C)",
+          "loc": {
+            "line": 106,
+            "col": 4,
+            "end_line": 106,
+            "end_col": 127
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_write_master_init_c",
+          "ptype": "constant",
+          "dtype": "axilitewritemastertype",
+          "name": "AXI_LITE_WRITE_MASTER_INIT_C",
+          "default": "(\n      awaddr  => (others => '0'),\n      awprot  => (others => '0'),\n      awvalid => '0',\n      wdata   => (others => '0'),\n      wstrb   => (others => '1'),\n      wvalid  => '0',\n      bready  => '1'\n      )",
+          "loc": {
+            "line": 131,
+            "col": 4,
+            "end_line": 139,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_write_slave_init_c",
+          "ptype": "constant",
+          "dtype": "axilitewriteslavetype",
+          "name": "AXI_LITE_WRITE_SLAVE_INIT_C",
+          "default": "(\n      awready => '0',\n      wready  => '0',\n      bresp   => (others => '0'),\n      bvalid  => '0'\n      )",
+          "loc": {
+            "line": 161,
+            "col": 4,
+            "end_line": 166,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_write_slave_empty_ok_c",
+          "ptype": "constant",
+          "dtype": "axilitewriteslavetype",
+          "name": "AXI_LITE_WRITE_SLAVE_EMPTY_OK_C",
+          "default": "axiLiteWriteSlaveEmptyInit(bresp => AXI_RESP_OK_C)",
+          "loc": {
+            "line": 172,
+            "col": 4,
+            "end_line": 172,
+            "end_col": 126
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_write_slave_empty_slverr_c",
+          "ptype": "constant",
+          "dtype": "axilitewriteslavetype",
+          "name": "AXI_LITE_WRITE_SLAVE_EMPTY_SLVERR_C",
+          "default": "axiLiteWriteSlaveEmptyInit(bresp => AXI_RESP_SLVERR_C)",
+          "loc": {
+            "line": 173,
+            "col": 4,
+            "end_line": 173,
+            "end_col": 130
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_write_slave_empty_decerr_c",
+          "ptype": "constant",
+          "dtype": "axilitewriteslavetype",
+          "name": "AXI_LITE_WRITE_SLAVE_EMPTY_DECERR_C",
+          "default": "axiLiteWriteSlaveEmptyInit(bresp => AXI_RESP_DECERR_C)",
+          "loc": {
+            "line": 174,
+            "col": 4,
+            "end_line": 174,
+            "end_col": 130
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_status_init_c",
+          "ptype": "constant",
+          "dtype": "axilitestatustype",
+          "name": "AXI_LITE_STATUS_INIT_C",
+          "default": "(\n      writeEnable => '0',\n      readEnable  => '0')",
+          "loc": {
+            "line": 185,
+            "col": 4,
+            "end_line": 187,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_endpoint_init_c",
+          "ptype": "constant",
+          "dtype": "axiliteendpointtype",
+          "name": "AXI_LITE_ENDPOINT_INIT_C",
+          "default": "(\n      axiReadMaster  => AXI_LITE_READ_MASTER_INIT_C,\n      axiReadSlave   => AXI_LITE_READ_SLAVE_INIT_C,\n      axiWriteMaster => AXI_LITE_WRITE_MASTER_INIT_C,\n      axiWriteSlave  => AXI_LITE_WRITE_SLAVE_INIT_C,\n      axiStatus      => AXI_LITE_STATUS_INIT_C)",
+          "loc": {
+            "line": 202,
+            "col": 4,
+            "end_line": 207,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_req_init_c",
+          "ptype": "constant",
+          "dtype": "axilitereqtype",
+          "name": "AXI_LITE_REQ_INIT_C",
+          "default": "(\n      request => '0',\n      rnw     => '1',\n      address => (others => '0'),\n      wrData  => (others => '0'))",
+          "loc": {
+            "line": 222,
+            "col": 4,
+            "end_line": 226,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axilitepkg.axi_lite_ack_init_c",
+          "ptype": "constant",
+          "dtype": "axiliteacktype",
+          "name": "AXI_LITE_ACK_INIT_C",
+          "default": "(\n      done   => '0',\n      resp   => (others => '0'),\n      rdData => (others => '0'))",
+          "loc": {
+            "line": 234,
+            "col": 4,
+            "end_line": 237,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "axilitepkg.axil_xbar_cfg_default_c",
+          "ptype": "constant",
+          "dtype": "axilitecrossbarmasterconfigarray",
+          "name": "AXIL_XBAR_CFG_DEFAULT_C",
+          "dim": "[0:3]",
+          "default": "(\n      0                  => (baseAddr => X\"00000000\",\n            addrBits     => 16,\n            connectivity => X\"FFFF\"),\n      1                  => (baseAddr => X\"00010000\",\n            addrBits     => 16,\n            connectivity => X\"FFFF\"),\n      2                  => (baseAddr => X\"00020000\",\n            addrBits     => 16,\n            connectivity => X\"FFFF\"),\n      3                  => (baseAddr => X\"00030000\",\n            addrBits     => 16,\n            connectivity => X\"FFFF\"))",
+          "loc": {
+            "line": 250,
+            "col": 4,
+            "end_line": 262,
+            "end_col": 38
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "axilitepkg.axilitereadmastertype",
+          "name": "AxiLiteReadMasterType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitereadmastertype.araddr",
+              "name": "araddr",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 58,
+                "col": 7,
+                "end_line": 58,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadmastertype.arprot",
+              "name": "arprot",
+              "dtype": "slv",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 59,
+                "col": 7,
+                "end_line": 59,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadmastertype.arvalid",
+              "name": "arvalid",
+              "dtype": "sl",
+              "comment": [
+                "-- Read data channel"
+              ],
+              "loc": {
+                "line": 60,
+                "col": 7,
+                "end_line": 60,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadmastertype.rready",
+              "name": "rready",
+              "dtype": "sl",
+              "loc": {
+                "line": 62,
+                "col": 7,
+                "end_line": 62,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "-- Note: Any transaction that does not decode to a legal master interface destination,",
+            "--       or programmers view register, receives a DECERR response. For an AHB master,",
+            "--       the AXI DECERR is mapped back to an AHB ERROR.",
+            "--------------------------------------------------------",
+            "-- AXI bus, read master signal record",
+            "--------------------------------------------------------",
+            "-- Base Record",
+            "-- Read Address channel"
+          ],
+          "loc": {
+            "line": 56,
+            "col": 4,
+            "end_line": 63,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "axilitepkg.axilitereadmasterarray",
+          "name": "AxiLiteReadMasterArray",
+          "kind": "alias",
+          "dtype": "array (natural range<>) of AxiLiteReadMasterType",
+          "comment": [
+            "-- Array"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 4,
+            "end_line": 74,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "axilitepkg.axilitereadslavetype",
+          "name": "AxiLiteReadSlaveType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitereadslavetype.arready",
+              "name": "arready",
+              "dtype": "sl",
+              "comment": [
+                "-- Read data channel"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 7,
+                "end_line": 84,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadslavetype.rdata",
+              "name": "rdata",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 86,
+                "col": 7,
+                "end_line": 86,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadslavetype.rresp",
+              "name": "rresp",
+              "dtype": "slv",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 87,
+                "col": 7,
+                "end_line": 87,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadslavetype.rvalid",
+              "name": "rvalid",
+              "dtype": "sl",
+              "loc": {
+                "line": 88,
+                "col": 7,
+                "end_line": 88,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "--------------------------------------------------------",
+            "-- AXI bus, read slave signal record",
+            "--------------------------------------------------------",
+            "-- Base Record",
+            "-- Read Address channel"
+          ],
+          "loc": {
+            "line": 82,
+            "col": 4,
+            "end_line": 89,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "axilitepkg.axilitereadslavearray",
+          "name": "AxiLiteReadSlaveArray",
+          "kind": "alias",
+          "dtype": "array (natural range<>) of AxiLiteReadSlaveType",
+          "comment": [
+            "-- Array"
+          ],
+          "loc": {
+            "line": 109,
+            "col": 4,
+            "end_line": 109,
+            "end_col": 82
+          }
+        },
+        {
+          "id": "axilitepkg.axilitewritemastertype",
+          "name": "AxiLiteWriteMasterType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitewritemastertype.awaddr",
+              "name": "awaddr",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 119,
+                "col": 7,
+                "end_line": 119,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.awprot",
+              "name": "awprot",
+              "dtype": "slv",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 120,
+                "col": 7,
+                "end_line": 120,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.awvalid",
+              "name": "awvalid",
+              "dtype": "sl",
+              "comment": [
+                "-- Write data channel"
+              ],
+              "loc": {
+                "line": 121,
+                "col": 7,
+                "end_line": 121,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.wdata",
+              "name": "wdata",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 123,
+                "col": 7,
+                "end_line": 123,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.wstrb",
+              "name": "wstrb",
+              "dtype": "slv",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 124,
+                "col": 7,
+                "end_line": 124,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.wvalid",
+              "name": "wvalid",
+              "dtype": "sl",
+              "comment": [
+                "-- Write ack channel"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 7,
+                "end_line": 125,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewritemastertype.bready",
+              "name": "bready",
+              "dtype": "sl",
+              "loc": {
+                "line": 127,
+                "col": 7,
+                "end_line": 127,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "--------------------------------------------------------",
+            "-- AXI bus, write master signal record",
+            "--------------------------------------------------------",
+            "-- Base Record",
+            "-- Write address channel"
+          ],
+          "loc": {
+            "line": 117,
+            "col": 4,
+            "end_line": 128,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "axilitepkg.axilitewritemasterarray",
+          "name": "AxiLiteWriteMasterArray",
+          "kind": "alias",
+          "dtype": "array (natural range<>) of AxiLiteWriteMasterType",
+          "comment": [
+            "-- Array"
+          ],
+          "loc": {
+            "line": 142,
+            "col": 4,
+            "end_line": 142,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "axilitepkg.axilitewriteslavetype",
+          "name": "AxiLiteWriteSlaveType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitewriteslavetype.awready",
+              "name": "awready",
+              "dtype": "sl",
+              "comment": [
+                "-- Write data channel"
+              ],
+              "loc": {
+                "line": 152,
+                "col": 7,
+                "end_line": 152,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewriteslavetype.wready",
+              "name": "wready",
+              "dtype": "sl",
+              "comment": [
+                "-- Write ack channel"
+              ],
+              "loc": {
+                "line": 154,
+                "col": 7,
+                "end_line": 154,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewriteslavetype.bresp",
+              "name": "bresp",
+              "dtype": "slv",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 156,
+                "col": 7,
+                "end_line": 156,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axilitepkg.axilitewriteslavetype.bvalid",
+              "name": "bvalid",
+              "dtype": "sl",
+              "loc": {
+                "line": 157,
+                "col": 7,
+                "end_line": 157,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "--------------------------------------------------------",
+            "-- AXI bus, write slave signal record",
+            "--------------------------------------------------------",
+            "-- Base Record",
+            "-- Write address channel"
+          ],
+          "loc": {
+            "line": 150,
+            "col": 4,
+            "end_line": 158,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "axilitepkg.axilitewriteslavearray",
+          "name": "AxiLiteWriteSlaveArray",
+          "kind": "alias",
+          "dtype": "array (natural range<>) of AxiLiteWriteSlaveType",
+          "comment": [
+            "-- Array"
+          ],
+          "loc": {
+            "line": 178,
+            "col": 4,
+            "end_line": 178,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "axilitepkg.axilitestatustype",
+          "name": "AxiLiteStatusType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitestatustype.writeenable",
+              "name": "writeEnable",
+              "dtype": "sl",
+              "loc": {
+                "line": 181,
+                "col": 7,
+                "end_line": 181,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "axilitepkg.axilitestatustype.readenable",
+              "name": "readEnable",
+              "dtype": "sl",
+              "loc": {
+                "line": 182,
+                "col": 7,
+                "end_line": 182,
+                "end_col": 23
+              }
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 4,
+            "end_line": 183,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "axilitepkg.axiliteendpointtype",
+          "name": "AxiLiteEndpointType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axiliteendpointtype.axireadmaster",
+              "name": "axiReadMaster",
+              "dtype": "axilitereadmastertype",
+              "loc": {
+                "line": 194,
+                "col": 7,
+                "end_line": 194,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteendpointtype.axireadslave",
+              "name": "axiReadSlave",
+              "dtype": "axilitereadslavetype",
+              "loc": {
+                "line": 195,
+                "col": 7,
+                "end_line": 195,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteendpointtype.axiwritemaster",
+              "name": "axiWriteMaster",
+              "dtype": "axilitewritemastertype",
+              "loc": {
+                "line": 196,
+                "col": 7,
+                "end_line": 196,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteendpointtype.axiwriteslave",
+              "name": "axiWriteSlave",
+              "dtype": "axilitewriteslavetype",
+              "loc": {
+                "line": 197,
+                "col": 7,
+                "end_line": 197,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteendpointtype.axistatus",
+              "name": "axiStatus",
+              "dtype": "axilitestatustype",
+              "loc": {
+                "line": 198,
+                "col": 7,
+                "end_line": 198,
+                "end_col": 41
+              }
+            }
+          ],
+          "comment": [
+            "--------------------------------------------------------",
+            "-- AXI bus, read/write endpoint record",
+            "--------------------------------------------------------",
+            "-- Base Record"
+          ],
+          "loc": {
+            "line": 193,
+            "col": 4,
+            "end_line": 199,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "axilitepkg.axiliteendpointarray",
+          "name": "AxiLiteEndpointArray",
+          "kind": "alias",
+          "dtype": "array (natural range<>) of AxiLiteEndpointType",
+          "comment": [
+            "-- Array"
+          ],
+          "loc": {
+            "line": 210,
+            "col": 4,
+            "end_line": 210,
+            "end_col": 80
+          }
+        },
+        {
+          "id": "axilitepkg.axilitereqtype",
+          "name": "AxiLiteReqType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitereqtype.request",
+              "name": "request",
+              "dtype": "sl",
+              "loc": {
+                "line": 216,
+                "col": 7,
+                "end_line": 216,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereqtype.rnw",
+              "name": "rnw",
+              "dtype": "sl",
+              "loc": {
+                "line": 217,
+                "col": 7,
+                "end_line": 217,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereqtype.address",
+              "name": "address",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 218,
+                "col": 7,
+                "end_line": 218,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereqtype.wrdata",
+              "name": "wrData",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 219,
+                "col": 7,
+                "end_line": 219,
+                "end_col": 33
+              }
+            }
+          ],
+          "comment": [
+            "----------------------------------------------------------------------------------",
+            "-- Constants for endpoint abstractions (migrated from legacy AxiLiteMasterPkg.vhd)",
+            "----------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 215,
+            "col": 4,
+            "end_line": 220,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "axilitepkg.axiliteacktype",
+          "name": "AxiLiteAckType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axiliteacktype.done",
+              "name": "done",
+              "dtype": "sl",
+              "loc": {
+                "line": 229,
+                "col": 7,
+                "end_line": 229,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteacktype.resp",
+              "name": "resp",
+              "dtype": "slv",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 230,
+                "col": 7,
+                "end_line": 230,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "axilitepkg.axiliteacktype.rddata",
+              "name": "rdData",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 231,
+                "col": 7,
+                "end_line": 231,
+                "end_col": 32
+              }
+            }
+          ],
+          "loc": {
+            "line": 228,
+            "col": 4,
+            "end_line": 232,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "axilitepkg.axilitecrossbarmasterconfigtype",
+          "name": "AxiLiteCrossbarMasterConfigType",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "axilitepkg.axilitecrossbarmasterconfigtype.baseaddr",
+              "name": "baseAddr",
+              "dtype": "slv",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 243,
+                "col": 7,
+                "end_line": 243,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axilitepkg.axilitecrossbarmasterconfigtype.addrbits",
+              "name": "addrBits",
+              "dtype": "natural",
+              "loc": {
+                "line": 244,
+                "col": 7,
+                "end_line": 244,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "axilitepkg.axilitecrossbarmasterconfigtype.connectivity",
+              "name": "connectivity",
+              "dtype": "slv",
+              "dim": "[15:0]",
+              "loc": {
+                "line": 245,
+                "col": 7,
+                "end_line": 245,
+                "end_col": 38
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Crossbar Config Generic Types",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 242,
+            "col": 4,
+            "end_line": 246,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "axilitepkg.axilitecrossbarmasterconfigarray",
+          "name": "AxiLiteCrossbarMasterConfigArray",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of AxiLiteCrossbarMasterConfigType",
+          "loc": {
+            "line": 248,
+            "col": 4,
+            "end_line": 248,
+            "end_col": 105
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "axilitepkg.axilitereadslaveemptyinit",
+          "name": "axiLiteReadSlaveEmptyInit",
+          "kind": "function",
+          "rtype": "axilitereadslavetype",
+          "args": [
+            {
+              "id": "axilitepkg.axilitereadslaveemptyinit.rresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "rresp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 100,
+                "col": 7,
+                "end_line": 100,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "axilitepkg.axilitereadslaveemptyinit.rdata",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "rdata",
+              "dim": "[31:0]",
+              "default": "(others => '0')",
+              "loc": {
+                "line": 101,
+                "col": 7,
+                "end_line": 101,
+                "end_col": 50
+              }
+            }
+          ],
+          "loc": {
+            "line": 99,
+            "col": 4,
+            "end_line": 102,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "axilitepkg.axilitewriteslaveemptyinit",
+          "name": "axiLiteWriteSlaveEmptyInit",
+          "kind": "function",
+          "rtype": "axilitewriteslavetype",
+          "args": [
+            {
+              "id": "axilitepkg.axilitewriteslaveemptyinit.bresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "bresp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 169,
+                "col": 7,
+                "end_line": 169,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 168,
+            "col": 4,
+            "end_line": 170,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "axilitepkg.axiwritemasterinit",
+          "name": "axiWriteMasterInit",
+          "kind": "function",
+          "rtype": "axilitewritemasterarray",
+          "args": [
+            {
+              "id": "axilitepkg.axiwritemasterinit.config",
+              "direction": "in",
+              "ptype": "constant",
+              "dtype": "axilitecrossbarmasterconfigarray",
+              "name": "config",
+              "loc": {
+                "line": 267,
+                "col": 33,
+                "end_line": 267,
+                "end_col": 83
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Initialize masters with upper address bits already set to configuration base address",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 267,
+            "col": 4,
+            "end_line": 267,
+            "end_col": 116
+          }
+        },
+        {
+          "id": "axilitepkg.axiwritemasterinit~2",
+          "name": "axiWriteMasterInit",
+          "kind": "function",
+          "rtype": "axilitewritemastertype",
+          "args": [
+            {
+              "id": "axilitepkg.axiwritemasterinit~2.config",
+              "direction": "in",
+              "ptype": "constant",
+              "dtype": "axilitecrossbarmasterconfigtype",
+              "name": "config",
+              "loc": {
+                "line": 268,
+                "col": 33,
+                "end_line": 268,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 268,
+            "col": 4,
+            "end_line": 268,
+            "end_col": 114
+          }
+        },
+        {
+          "id": "axilitepkg.axireadmasterinit",
+          "name": "axiReadMasterInit",
+          "kind": "function",
+          "rtype": "axilitereadmasterarray",
+          "args": [
+            {
+              "id": "axilitepkg.axireadmasterinit.config",
+              "direction": "in",
+              "ptype": "constant",
+              "dtype": "axilitecrossbarmasterconfigarray",
+              "name": "config",
+              "loc": {
+                "line": 269,
+                "col": 32,
+                "end_line": 269,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 4,
+            "end_line": 269,
+            "end_col": 115
+          }
+        },
+        {
+          "id": "axilitepkg.axireadmasterinit~2",
+          "name": "axiReadMasterInit",
+          "kind": "function",
+          "rtype": "axilitereadmastertype",
+          "args": [
+            {
+              "id": "axilitepkg.axireadmasterinit~2.config",
+              "direction": "in",
+              "ptype": "constant",
+              "dtype": "axilitecrossbarmasterconfigtype",
+              "name": "config",
+              "loc": {
+                "line": 270,
+                "col": 32,
+                "end_line": 270,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 270,
+            "col": 4,
+            "end_line": 270,
+            "end_col": 113
+          }
+        },
+        {
+          "id": "axilitepkg.axislavewaitwritetxn",
+          "name": "axiSlaveWaitWriteTxn",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavewaitwritetxn.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 278,
+                "col": 7,
+                "end_line": 278,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaitwritetxn.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 279,
+                "col": 7,
+                "end_line": 279,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaitwritetxn.writeenable",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "sl",
+              "name": "writeEnable",
+              "loc": {
+                "line": 280,
+                "col": 7,
+                "end_line": 280,
+                "end_col": 40
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Slave AXI Processing procedures",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 277,
+            "col": 4,
+            "end_line": 280,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "axilitepkg.axislavewaitreadtxn",
+          "name": "axiSlaveWaitReadTxn",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavewaitreadtxn.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 283,
+                "col": 7,
+                "end_line": 283,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaitreadtxn.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 284,
+                "col": 7,
+                "end_line": 284,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaitreadtxn.readenable",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "sl",
+              "name": "readEnable",
+              "loc": {
+                "line": 285,
+                "col": 7,
+                "end_line": 285,
+                "end_col": 39
+              }
+            }
+          ],
+          "loc": {
+            "line": 282,
+            "col": 4,
+            "end_line": 285,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axilitepkg.axislavewaittxn",
+          "name": "axiSlaveWaitTxn",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavewaittxn.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 288,
+                "col": 7,
+                "end_line": 288,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 289,
+                "col": 7,
+                "end_line": 289,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 290,
+                "col": 7,
+                "end_line": 290,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 291,
+                "col": 7,
+                "end_line": 291,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn.axistatus",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 292,
+                "col": 7,
+                "end_line": 292,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 287,
+            "col": 4,
+            "end_line": 292,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "axilitepkg.axislavewriteresponse",
+          "name": "axiSlaveWriteResponse",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavewriteresponse.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 295,
+                "col": 7,
+                "end_line": 295,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewriteresponse.axiresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "axiResp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 296,
+                "col": 7,
+                "end_line": 296,
+                "end_col": 70
+              }
+            }
+          ],
+          "loc": {
+            "line": 294,
+            "col": 4,
+            "end_line": 296,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "axilitepkg.axislavereadresponse",
+          "name": "axiSlaveReadResponse",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavereadresponse.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 299,
+                "col": 7,
+                "end_line": 299,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislavereadresponse.axiresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "axiResp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 300,
+                "col": 7,
+                "end_line": 300,
+                "end_col": 69
+              }
+            }
+          ],
+          "loc": {
+            "line": 298,
+            "col": 4,
+            "end_line": 300,
+            "end_col": 71
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 306,
+                "col": 7,
+                "end_line": 306,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 307,
+                "col": 7,
+                "end_line": 307,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 308,
+                "col": 7,
+                "end_line": 308,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 309,
+                "col": 7,
+                "end_line": 309,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.axistatus",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 310,
+                "col": 7,
+                "end_line": 310,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 311,
+                "col": 7,
+                "end_line": 311,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 312,
+                "col": 7,
+                "end_line": 312,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.reg",
+              "direction": "inout",
+              "dtype": "slv",
+              "name": "reg",
+              "loc": {
+                "line": 313,
+                "col": 7,
+                "end_line": 313,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.constassign",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "constAssign",
+              "default": "false",
+              "loc": {
+                "line": 314,
+                "col": 7,
+                "end_line": 314,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister.constval",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "constVal",
+              "default": "\"0\"",
+              "loc": {
+                "line": 315,
+                "col": 7,
+                "end_line": 315,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Address decode procedures",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 305,
+            "col": 4,
+            "end_line": 315,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~2",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~2.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 318,
+                "col": 7,
+                "end_line": 318,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~2.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 319,
+                "col": 7,
+                "end_line": 319,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~2.axistatus",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 320,
+                "col": 7,
+                "end_line": 320,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~2.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 321,
+                "col": 7,
+                "end_line": 321,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~2.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 322,
+                "col": 7,
+                "end_line": 322,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~2.reg",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "reg",
+              "loc": {
+                "line": 323,
+                "col": 7,
+                "end_line": 323,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 317,
+            "col": 4,
+            "end_line": 323,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~3",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~3.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 326,
+                "col": 7,
+                "end_line": 326,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 327,
+                "col": 7,
+                "end_line": 327,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 328,
+                "col": 7,
+                "end_line": 328,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 329,
+                "col": 7,
+                "end_line": 329,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.axistatus",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 330,
+                "col": 7,
+                "end_line": 330,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 331,
+                "col": 7,
+                "end_line": 331,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 332,
+                "col": 7,
+                "end_line": 332,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.reg",
+              "direction": "inout",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 333,
+                "col": 7,
+                "end_line": 333,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.constassign",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "constAssign",
+              "default": "false",
+              "loc": {
+                "line": 334,
+                "col": 7,
+                "end_line": 334,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~3.constval",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "constVal",
+              "default": "'0'",
+              "loc": {
+                "line": 335,
+                "col": 7,
+                "end_line": 335,
+                "end_col": 52
+              }
+            }
+          ],
+          "loc": {
+            "line": 325,
+            "col": 4,
+            "end_line": 335,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~4",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~4.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 338,
+                "col": 7,
+                "end_line": 338,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~4.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 339,
+                "col": 7,
+                "end_line": 339,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~4.axistatus",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 340,
+                "col": 7,
+                "end_line": 340,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~4.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 341,
+                "col": 7,
+                "end_line": 341,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~4.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 342,
+                "col": 7,
+                "end_line": 342,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~4.reg",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 343,
+                "col": 7,
+                "end_line": 343,
+                "end_col": 39
+              }
+            }
+          ],
+          "loc": {
+            "line": 337,
+            "col": 4,
+            "end_line": 343,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axilitepkg.axislavedefault",
+          "name": "axiSlaveDefault",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavedefault.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 346,
+                "col": 7,
+                "end_line": 346,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 347,
+                "col": 7,
+                "end_line": 347,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 348,
+                "col": 7,
+                "end_line": 348,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 349,
+                "col": 7,
+                "end_line": 349,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.axistatus",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitestatustype",
+              "name": "axiStatus",
+              "loc": {
+                "line": 350,
+                "col": 7,
+                "end_line": 350,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.axiresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "axiResp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 351,
+                "col": 7,
+                "end_line": 351,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault.exttxn",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "extTxn",
+              "default": "'0'",
+              "loc": {
+                "line": 352,
+                "col": 7,
+                "end_line": 352,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 345,
+            "col": 4,
+            "end_line": 352,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "axilitepkg.axislavewaittxn~2",
+          "name": "axiSlaveWaitTxn",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavewaittxn~2.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 359,
+                "col": 7,
+                "end_line": 359,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn~2.axiwritemaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axiWriteMaster",
+              "loc": {
+                "line": 360,
+                "col": 7,
+                "end_line": 360,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn~2.axireadmaster",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axiReadMaster",
+              "loc": {
+                "line": 361,
+                "col": 7,
+                "end_line": 361,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn~2.axiwriteslave",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 362,
+                "col": 7,
+                "end_line": 362,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavewaittxn~2.axireadslave",
+              "direction": "in",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 363,
+                "col": 7,
+                "end_line": 363,
+                "end_col": 58
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Simplified Address decode procedures, RTH 1/27/2016",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 358,
+            "col": 4,
+            "end_line": 363,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~5",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~5.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 366,
+                "col": 7,
+                "end_line": 366,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~5.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 367,
+                "col": 7,
+                "end_line": 367,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~5.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 368,
+                "col": 7,
+                "end_line": 368,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~5.reg",
+              "direction": "inout",
+              "dtype": "slv",
+              "name": "reg",
+              "loc": {
+                "line": 369,
+                "col": 7,
+                "end_line": 369,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~5.constval",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "constVal",
+              "loc": {
+                "line": 370,
+                "col": 7,
+                "end_line": 370,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 365,
+            "col": 4,
+            "end_line": 370,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~6",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~6.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 373,
+                "col": 7,
+                "end_line": 373,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~6.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 374,
+                "col": 7,
+                "end_line": 374,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~6.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 375,
+                "col": 7,
+                "end_line": 375,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~6.reg",
+              "direction": "inout",
+              "dtype": "slv",
+              "name": "reg",
+              "loc": {
+                "line": 376,
+                "col": 7,
+                "end_line": 376,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 372,
+            "col": 4,
+            "end_line": 376,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregisterr",
+          "name": "axiSlaveRegisterR",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregisterr.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 379,
+                "col": 7,
+                "end_line": 379,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 380,
+                "col": 7,
+                "end_line": 380,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 381,
+                "col": 7,
+                "end_line": 381,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr.reg",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "reg",
+              "loc": {
+                "line": 382,
+                "col": 7,
+                "end_line": 382,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 378,
+            "col": 4,
+            "end_line": 382,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~7",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~7.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 385,
+                "col": 7,
+                "end_line": 385,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~7.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 386,
+                "col": 7,
+                "end_line": 386,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~7.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 387,
+                "col": 7,
+                "end_line": 387,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~7.reg",
+              "direction": "inout",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 388,
+                "col": 7,
+                "end_line": 388,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~7.constval",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "constVal",
+              "loc": {
+                "line": 389,
+                "col": 7,
+                "end_line": 389,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 384,
+            "col": 4,
+            "end_line": 389,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~8",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~8.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 392,
+                "col": 7,
+                "end_line": 392,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~8.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 393,
+                "col": 7,
+                "end_line": 393,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~8.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 394,
+                "col": 7,
+                "end_line": 394,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~8.reg",
+              "direction": "inout",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 395,
+                "col": 7,
+                "end_line": 395,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 391,
+            "col": 4,
+            "end_line": 395,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregisterr~2",
+          "name": "axiSlaveRegisterR",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregisterr~2.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 398,
+                "col": 7,
+                "end_line": 398,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr~2.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 399,
+                "col": 7,
+                "end_line": 399,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr~2.offset",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "offset",
+              "loc": {
+                "line": 400,
+                "col": 7,
+                "end_line": 400,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr~2.reg",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 401,
+                "col": 7,
+                "end_line": 401,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 397,
+            "col": 4,
+            "end_line": 401,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregister~9",
+          "name": "axiSlaveRegister",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregister~9.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 404,
+                "col": 7,
+                "end_line": 404,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~9.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 405,
+                "col": 7,
+                "end_line": 405,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregister~9.regs",
+              "direction": "inout",
+              "dtype": "slv32array",
+              "name": "regs",
+              "loc": {
+                "line": 406,
+                "col": 7,
+                "end_line": 406,
+                "end_col": 37
+              }
+            }
+          ],
+          "loc": {
+            "line": 403,
+            "col": 4,
+            "end_line": 406,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "axilitepkg.axislaveregisterr~3",
+          "name": "axiSlaveRegisterR",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislaveregisterr~3.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 409,
+                "col": 7,
+                "end_line": 409,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr~3.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 410,
+                "col": 7,
+                "end_line": 410,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axislaveregisterr~3.regs",
+              "direction": "in",
+              "dtype": "slv32array",
+              "name": "regs",
+              "loc": {
+                "line": 411,
+                "col": 7,
+                "end_line": 411,
+                "end_col": 37
+              }
+            }
+          ],
+          "loc": {
+            "line": 408,
+            "col": 4,
+            "end_line": 411,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "axilitepkg.axiwrdetect",
+          "name": "axiWrDetect",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axiwrdetect.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 414,
+                "col": 7,
+                "end_line": 414,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axiwrdetect.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 415,
+                "col": 7,
+                "end_line": 415,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axiwrdetect.reg",
+              "direction": "inout",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 416,
+                "col": 7,
+                "end_line": 416,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 413,
+            "col": 4,
+            "end_line": 416,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "axilitepkg.axirddetect",
+          "name": "axiRdDetect",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axirddetect.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 419,
+                "col": 7,
+                "end_line": 419,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "axilitepkg.axirddetect.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "loc": {
+                "line": 420,
+                "col": 7,
+                "end_line": 420,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axilitepkg.axirddetect.reg",
+              "direction": "inout",
+              "dtype": "sl",
+              "name": "reg",
+              "loc": {
+                "line": 421,
+                "col": 7,
+                "end_line": 421,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 418,
+            "col": 4,
+            "end_line": 421,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "axilitepkg.axislavedefault~2",
+          "name": "axiSlaveDefault",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axislavedefault~2.ep",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axiliteendpointtype",
+              "name": "ep",
+              "loc": {
+                "line": 425,
+                "col": 7,
+                "end_line": 425,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault~2.axiwriteslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitewriteslavetype",
+              "name": "axiWriteSlave",
+              "loc": {
+                "line": 426,
+                "col": 7,
+                "end_line": 426,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault~2.axireadslave",
+              "direction": "inout",
+              "ptype": "variable",
+              "dtype": "axilitereadslavetype",
+              "name": "axiReadSlave",
+              "loc": {
+                "line": 427,
+                "col": 7,
+                "end_line": 427,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault~2.axiresp",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "axiResp",
+              "dim": "[1:0]",
+              "default": "AXI_RESP_OK_C",
+              "loc": {
+                "line": 428,
+                "col": 7,
+                "end_line": 428,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "axilitepkg.axislavedefault~2.exttxn",
+              "direction": "in",
+              "dtype": "sl",
+              "name": "extTxn",
+              "default": "'0'",
+              "loc": {
+                "line": 429,
+                "col": 7,
+                "end_line": 429,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 424,
+            "col": 4,
+            "end_line": 429,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "axilitepkg.genaxiliteconfig",
+          "name": "genAxiLiteConfig",
+          "kind": "function",
+          "rtype": "axilitecrossbarmasterconfigarray",
+          "args": [
+            {
+              "id": "axilitepkg.genaxiliteconfig.num",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "num",
+              "loc": {
+                "line": 437,
+                "col": 31,
+                "end_line": 437,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "axilitepkg.genaxiliteconfig.base",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "base",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 438,
+                "col": 31,
+                "end_line": 438,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.genaxiliteconfig.basebot",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "baseBot",
+              "loc": {
+                "line": 439,
+                "col": 31,
+                "end_line": 439,
+                "end_col": 63
+              }
+            },
+            {
+              "id": "axilitepkg.genaxiliteconfig.addrbits",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "addrBits",
+              "loc": {
+                "line": 440,
+                "col": 31,
+                "end_line": 440,
+                "end_col": 63
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Slave AXI Processing functions",
+            "-------------------------------------------------------------------------------------------------",
+            "-- Generate evenly distributed address map"
+          ],
+          "loc": {
+            "line": 437,
+            "col": 4,
+            "end_line": 441,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "axilitepkg.genaxislavestrobemask",
+          "name": "genAxiSlaveStrobeMask",
+          "kind": "function",
+          "rtype": "slv",
+          "args": [
+            {
+              "id": "axilitepkg.genaxislavestrobemask.bushighbit",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "busHighBit",
+              "loc": {
+                "line": 443,
+                "col": 36,
+                "end_line": 443,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "axilitepkg.genaxislavestrobemask.normaloffset",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "normalOffset",
+              "loc": {
+                "line": 443,
+                "col": 58,
+                "end_line": 443,
+                "end_col": 80
+              }
+            }
+          ],
+          "loc": {
+            "line": 443,
+            "col": 4,
+            "end_line": 443,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "axilitepkg.axilitebussimwrite",
+          "name": "axiLiteBusSimWrite",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axilitebussimwrite.axilclk",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "sl",
+              "name": "axilClk",
+              "loc": {
+                "line": 449,
+                "col": 7,
+                "end_line": 449,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimwrite.axilwritemaster",
+              "direction": "out",
+              "ptype": "signal",
+              "dtype": "axilitewritemastertype",
+              "name": "axilWriteMaster",
+              "loc": {
+                "line": 450,
+                "col": 7,
+                "end_line": 450,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimwrite.axilwriteslave",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitewriteslavetype",
+              "name": "axilWriteSlave",
+              "loc": {
+                "line": 451,
+                "col": 7,
+                "end_line": 451,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimwrite.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 452,
+                "col": 7,
+                "end_line": 452,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimwrite.data",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "data",
+              "loc": {
+                "line": 453,
+                "col": 7,
+                "end_line": 453,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimwrite.debug",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "debug",
+              "default": "false",
+              "loc": {
+                "line": 454,
+                "col": 7,
+                "end_line": 454,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "-------------------------------------------------------------------------------------------------",
+            "-- Simulation procedures",
+            "-------------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 448,
+            "col": 4,
+            "end_line": 454,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "axilitepkg.axilitebussimread",
+          "name": "axiLiteBusSimRead",
+          "kind": "procedure",
+          "args": [
+            {
+              "id": "axilitepkg.axilitebussimread.axilclk",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "sl",
+              "name": "axilClk",
+              "loc": {
+                "line": 457,
+                "col": 7,
+                "end_line": 457,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimread.axilreadmaster",
+              "direction": "out",
+              "ptype": "signal",
+              "dtype": "axilitereadmastertype",
+              "name": "axilReadMaster",
+              "loc": {
+                "line": 458,
+                "col": 7,
+                "end_line": 458,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimread.axilreadslave",
+              "direction": "in",
+              "ptype": "signal",
+              "dtype": "axilitereadslavetype",
+              "name": "axilReadSlave",
+              "loc": {
+                "line": 459,
+                "col": 7,
+                "end_line": 459,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimread.addr",
+              "direction": "in",
+              "dtype": "slv",
+              "name": "addr",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 460,
+                "col": 7,
+                "end_line": 460,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimread.data",
+              "direction": "out",
+              "dtype": "slv",
+              "name": "data",
+              "loc": {
+                "line": 461,
+                "col": 7,
+                "end_line": 461,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axilitepkg.axilitebussimread.debug",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "debug",
+              "default": "false",
+              "loc": {
+                "line": 462,
+                "col": 7,
+                "end_line": 462,
+                "end_col": 51
+              }
+            }
+          ],
+          "loc": {
+            "line": 456,
+            "col": 4,
+            "end_line": 462,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "axilitepkg.ite",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "axilitereadmastertype",
+          "args": [
+            {
+              "id": "axilitepkg.ite.i",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "i",
+              "loc": {
+                "line": 464,
+                "col": 17,
+                "end_line": 464,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axilitepkg.ite.t",
+              "direction": "in",
+              "dtype": "axilitereadmastertype",
+              "name": "t",
+              "loc": {
+                "line": 464,
+                "col": 30,
+                "end_line": 464,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.ite.e",
+              "direction": "in",
+              "dtype": "axilitereadmastertype",
+              "name": "e",
+              "loc": {
+                "line": 464,
+                "col": 57,
+                "end_line": 464,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 464,
+            "col": 4,
+            "end_line": 464,
+            "end_col": 113
+          }
+        },
+        {
+          "id": "axilitepkg.ite~2",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "axilitereadslavetype",
+          "args": [
+            {
+              "id": "axilitepkg.ite~2.i",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "i",
+              "loc": {
+                "line": 465,
+                "col": 17,
+                "end_line": 465,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axilitepkg.ite~2.t",
+              "direction": "in",
+              "dtype": "axilitereadslavetype",
+              "name": "t",
+              "loc": {
+                "line": 465,
+                "col": 30,
+                "end_line": 465,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axilitepkg.ite~2.e",
+              "direction": "in",
+              "dtype": "axilitereadslavetype",
+              "name": "e",
+              "loc": {
+                "line": 465,
+                "col": 56,
+                "end_line": 465,
+                "end_col": 80
+              }
+            }
+          ],
+          "loc": {
+            "line": 465,
+            "col": 4,
+            "end_line": 465,
+            "end_col": 110
+          }
+        },
+        {
+          "id": "axilitepkg.ite~3",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "axilitewritemastertype",
+          "args": [
+            {
+              "id": "axilitepkg.ite~3.i",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "i",
+              "loc": {
+                "line": 466,
+                "col": 17,
+                "end_line": 466,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axilitepkg.ite~3.t",
+              "direction": "in",
+              "dtype": "axilitewritemastertype",
+              "name": "t",
+              "loc": {
+                "line": 466,
+                "col": 30,
+                "end_line": 466,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "axilitepkg.ite~3.e",
+              "direction": "in",
+              "dtype": "axilitewritemastertype",
+              "name": "e",
+              "loc": {
+                "line": 466,
+                "col": 58,
+                "end_line": 466,
+                "end_col": 84
+              }
+            }
+          ],
+          "loc": {
+            "line": 466,
+            "col": 4,
+            "end_line": 466,
+            "end_col": 116
+          }
+        },
+        {
+          "id": "axilitepkg.ite~4",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "axilitewriteslavetype",
+          "args": [
+            {
+              "id": "axilitepkg.ite~4.i",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "i",
+              "loc": {
+                "line": 467,
+                "col": 17,
+                "end_line": 467,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axilitepkg.ite~4.t",
+              "direction": "in",
+              "dtype": "axilitewriteslavetype",
+              "name": "t",
+              "loc": {
+                "line": 467,
+                "col": 30,
+                "end_line": 467,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axilitepkg.ite~4.e",
+              "direction": "in",
+              "dtype": "axilitewriteslavetype",
+              "name": "e",
+              "loc": {
+                "line": 467,
+                "col": 57,
+                "end_line": 467,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 467,
+            "col": 4,
+            "end_line": 467,
+            "end_col": 113
+          }
+        }
+      ],
+      "loc": {
+        "line": 23,
+        "col": 1,
+        "end_line": 469,
+        "end_col": 16
+      }
     }
   ]
 }

@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "xbus2axi4_bridge.burst_en",
+          "dtype": "boolean",
           "name": "BURST_EN",
           "comment": [
             "-- enable burst transfers"
@@ -20,6 +21,7 @@
         },
         {
           "id": "xbus2axi4_bridge.burst_len",
+          "dtype": "natural",
           "name": "BURST_LEN",
           "comment": [
             "-- bytes per burst, has to be a multiple of 4"
@@ -462,6 +464,453 @@
             "col": 5,
             "end_line": 67,
             "end_col": 34
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "xbus2axi4_bridge.fifo_awidth_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "fifo_awidth_c",
+          "default": "fifo_awidth_f(BURST_EN, BURST_LEN/4)",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.blen_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "blen_c",
+          "dim": "[7:0]",
+          "default": "std_ulogic_vector(to_unsigned((BURST_LEN/4)-1, 8))",
+          "loc": {
+            "line": 90,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 104
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "xbus2axi4_bridge.fifo",
+          "dtype": "fifo_t",
+          "name": "fifo",
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.state",
+          "dtype": "state_t",
+          "name": "state",
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.busy",
+          "dtype": "std_ulogic",
+          "name": "busy",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.burst",
+          "dtype": "std_ulogic",
+          "name": "burst",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.rw",
+          "dtype": "std_ulogic",
+          "name": "rw",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.w_ack",
+          "dtype": "std_ulogic",
+          "name": "w_ack",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.err",
+          "dtype": "std_ulogic",
+          "name": "err",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.arvalid",
+          "dtype": "std_ulogic",
+          "name": "arvalid",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.awvalid",
+          "dtype": "std_ulogic",
+          "name": "awvalid",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.xbus_rd_ack",
+          "dtype": "std_ulogic",
+          "name": "xbus_rd_ack",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.xbus_rd_err",
+          "dtype": "std_ulogic",
+          "name": "xbus_rd_err",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.xbus_wr_ack",
+          "dtype": "std_ulogic",
+          "name": "xbus_wr_ack",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.xbus_wr_err",
+          "dtype": "std_ulogic",
+          "name": "xbus_wr_err",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.address",
+          "dtype": "std_ulogic_vector",
+          "name": "address",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 50
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "xbus2axi4_bridge.fifo_t",
+          "name": "fifo_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xbus2axi4_bridge.fifo_t.we",
+              "name": "we",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 94,
+                "col": 5,
+                "end_line": 94,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_t.re",
+              "name": "re",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 94,
+                "col": 5,
+                "end_line": 94,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_t.wdata",
+              "name": "wdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[32:0]",
+              "loc": {
+                "line": 95,
+                "col": 5,
+                "end_line": 95,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_t.rdata",
+              "name": "rdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[32:0]",
+              "loc": {
+                "line": 95,
+                "col": 5,
+                "end_line": 95,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_t.avail",
+              "name": "avail",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 96,
+                "col": 5,
+                "end_line": 96,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_t.clr",
+              "name": "clr",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 96,
+                "col": 5,
+                "end_line": 96,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "-- FIFO interface --"
+          ],
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.state_t",
+          "name": "state_t",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "xbus2axi4_bridge.state_t.s_idle",
+              "name": "S_IDLE",
+              "loc": {
+                "line": 101,
+                "col": 20,
+                "end_line": 101,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.state_t.s_single_read",
+              "name": "S_SINGLE_READ",
+              "loc": {
+                "line": 101,
+                "col": 28,
+                "end_line": 101,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.state_t.s_single_write",
+              "name": "S_SINGLE_WRITE",
+              "loc": {
+                "line": 101,
+                "col": 43,
+                "end_line": 101,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.state_t.s_burst_read",
+              "name": "S_BURST_READ",
+              "loc": {
+                "line": 101,
+                "col": 59,
+                "end_line": 101,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.state_t.s_burst_write",
+              "name": "S_BURST_WRITE",
+              "loc": {
+                "line": 101,
+                "col": 73,
+                "end_line": 101,
+                "end_col": 86
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.state_t.s_burst_end",
+              "name": "S_BURST_END",
+              "loc": {
+                "line": 101,
+                "col": 88,
+                "end_line": 101,
+                "end_col": 99
+              }
+            }
+          ],
+          "comment": [
+            "-- arbitration --"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 101
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "xbus2axi4_bridge.fifo_awidth_f",
+          "name": "fifo_awidth_f",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "xbus2axi4_bridge.fifo_awidth_f.e",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "e",
+              "loc": {
+                "line": 74,
+                "col": 26,
+                "end_line": 74,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "xbus2axi4_bridge.fifo_awidth_f.n",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "n",
+              "loc": {
+                "line": 74,
+                "col": 39,
+                "end_line": 74,
+                "end_col": 50
+              }
+            }
+          ],
+          "comment": [
+            "-- determine FIFO address width --"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 86,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "xbus2axi4_bridge.address_arbiter",
+          "name": "address_arbiter",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "resetn"
+            },
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "reset": "resetn",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Address Channels -----------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 132,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "xbus2axi4_bridge.access_arbiter",
+          "name": "access_arbiter",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "resetn"
+            },
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "reset": "resetn",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Transfer Arbiter -----------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 266,
+            "end_col": 15
           }
         }
       ],

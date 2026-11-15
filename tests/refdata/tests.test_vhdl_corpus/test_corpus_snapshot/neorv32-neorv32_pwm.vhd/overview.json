@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_pwm.num_channels",
+          "dtype": "natural",
           "name": "NUM_CHANNELS",
           "comment": [
             "-- number of PWM channels (0..32)"
@@ -110,6 +111,412 @@
             "col": 5,
             "end_line": 31,
             "end_col": 51
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_pwm.enable",
+          "dtype": "std_ulogic_vector",
+          "name": "enable",
+          "dim": "[NUM_CHANNELS-1:0]",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "neorv32_pwm.polarity",
+          "dtype": "std_ulogic_vector",
+          "name": "polarity",
+          "dim": "[NUM_CHANNELS-1:0]",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "neorv32_pwm.mode",
+          "dtype": "std_ulogic_vector",
+          "name": "mode",
+          "dim": "[NUM_CHANNELS-1:0]",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "neorv32_pwm.clkprsc",
+          "dtype": "std_ulogic_vector",
+          "name": "clkprsc",
+          "dim": "[2:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "neorv32_pwm.addr",
+          "dtype": "std_ulogic_vector",
+          "name": "addr",
+          "dim": "[2:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "neorv32_pwm.rdata",
+          "dtype": "rdata_t",
+          "name": "rdata",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "neorv32_pwm.rdata_sum",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata_sum",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_pwm.cs",
+          "dtype": "std_ulogic_vector",
+          "name": "cs",
+          "dim": "[NUM_CHANNELS-1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "neorv32_pwm.pwm",
+          "dtype": "std_ulogic_vector",
+          "name": "pwm",
+          "dim": "[NUM_CHANNELS-1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "neorv32_pwm.clken",
+          "dtype": "std_ulogic",
+          "name": "clken",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 28
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_pwm.rdata_t",
+          "name": "rdata_t",
+          "kind": "alias",
+          "dtype": "array (NUM_CHANNELS-1 downto 0) of std_ulogic_vector(31 downto 0)",
+          "comment": [
+            "-- wiring --"
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 85
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_pwm.bus_write",
+          "name": "bus_write",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- write access --"
+          ],
+          "loc": {
+            "line": 73,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm.bus_response",
+          "name": "bus_response",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- read access & bus handshake --"
+          ],
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm.clk_gen",
+          "name": "clk_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- clock generator --"
+          ],
+          "loc": {
+            "line": 144,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm.read_back",
+          "name": "read_back",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rdata"
+            }
+          ],
+          "comment": [
+            "-- channel read-back --"
+          ],
+          "loc": {
+            "line": 152,
+            "col": 3,
+            "end_line": 160,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm.channel_output",
+          "name": "channel_output",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "pwm"
+            }
+          ],
+          "comment": [
+            "-- PWM output --"
+          ],
+          "loc": {
+            "line": 163,
+            "col": 3,
+            "end_line": 167,
+            "end_col": 30
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "neorv32_pwm.neorv32_pwm_channel",
+          "name": "neorv32_pwm_channel",
+          "ports": [
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.clk_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "clk_i",
+              "loc": {
+                "line": 40,
+                "col": 5,
+                "end_line": 40,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.rstn_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rstn_i",
+              "loc": {
+                "line": 41,
+                "col": 5,
+                "end_line": 41,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.clken_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "clken_i",
+              "loc": {
+                "line": 42,
+                "col": 5,
+                "end_line": 42,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.en_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "en_i",
+              "loc": {
+                "line": 43,
+                "col": 5,
+                "end_line": 43,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.pol_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "pol_i",
+              "loc": {
+                "line": 44,
+                "col": 5,
+                "end_line": 44,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.mode_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "mode_i",
+              "loc": {
+                "line": 45,
+                "col": 5,
+                "end_line": 45,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.cs_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "cs_i",
+              "loc": {
+                "line": 46,
+                "col": 5,
+                "end_line": 46,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.we_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "we_i",
+              "loc": {
+                "line": 47,
+                "col": 5,
+                "end_line": 47,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.ben_i",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "ben_i",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.wdata_i",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wdata_i",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 49,
+                "col": 5,
+                "end_line": 49,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.rdata_o",
+              "direction": "out",
+              "dtype": "std_ulogic_vector",
+              "name": "rdata_o",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 50,
+                "col": 5,
+                "end_line": 50,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_pwm.neorv32_pwm_channel.pwm_o",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "pwm_o",
+              "loc": {
+                "line": 51,
+                "col": 5,
+                "end_line": 51,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 17
           }
         }
       ],
@@ -467,6 +874,155 @@
             "col": 5,
             "end_line": 202,
             "end_col": 29
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_pwm_channel.cnt",
+          "dtype": "std_ulogic_vector",
+          "name": "cnt",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.cmp",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.top",
+          "dtype": "std_ulogic_vector",
+          "name": "top",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.dir",
+          "dtype": "std_ulogic",
+          "name": "dir",
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.cmp_zero",
+          "dtype": "std_ulogic",
+          "name": "cmp_zero",
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.cmp_top",
+          "dtype": "std_ulogic",
+          "name": "cmp_top",
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 45
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_pwm_channel.write_access",
+          "name": "write_access",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Register Interface ---------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 230,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.pwm_counter",
+          "name": "pwm_counter",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- PWM Counter ----------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 237,
+            "col": 3,
+            "end_line": 256,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_pwm_channel.pwm_drive",
+          "name": "pwm_drive",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Output / Duty Cycle Control ------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 264,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 15
           }
         }
       ],
