@@ -185,6 +185,164 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "ibex_pmp.region_start_addr",
+          "ptype": "logic",
+          "name": "region_start_addr",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMPNumRegions]",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "ibex_pmp.region_addr_mask",
+          "ptype": "logic",
+          "name": "region_addr_mask",
+          "dim": "[PMP_ADDR_MSB:PMPGranularity+PMP_ADDR_LSB]",
+          "dim_unpacked": "[PMPNumRegions]",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "ibex_pmp.region_match_gt",
+          "ptype": "logic",
+          "name": "region_match_gt",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_pmp.region_match_lt",
+          "ptype": "logic",
+          "name": "region_match_lt",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_pmp.region_match_eq",
+          "ptype": "logic",
+          "name": "region_match_eq",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_pmp.region_match_all",
+          "ptype": "logic",
+          "name": "region_match_all",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_pmp.region_basic_perm_check",
+          "ptype": "logic",
+          "name": "region_basic_perm_check",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "ibex_pmp.region_perm_check",
+          "ptype": "logic",
+          "name": "region_perm_check",
+          "dim": "[PMPNumChan-1:0][PMPNumRegions-1:0]",
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "ibex_pmp.access_fault_check_res",
+          "ptype": "logic",
+          "name": "access_fault_check_res",
+          "dim": "[PMPNumChan-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "ibex_pmp.debug_mode_allowed_access",
+          "ptype": "logic",
+          "name": "debug_mode_allowed_access",
+          "dim": "[PMPNumChan-1:0]",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 78
+          }
+        },
+        {
+          "id": "ibex_pmp.g_access_check.g_regions.unused_sigs",
+          "ptype": "logic",
+          "name": "unused_sigs",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_access_check",
+              "cond": "genvar c = 0; c < PMPNumChan; c++"
+            },
+            {
+              "kind": "for",
+              "name": "g_regions",
+              "cond": "genvar r = 0; r < PMPNumRegions; r++"
+            }
+          ],
+          "loc": {
+            "line": 230,
+            "col": 7,
+            "end_line": 230,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_pmp.unused_csr_pmp_mseccfg_rlb",
+          "ptype": "logic",
+          "name": "unused_csr_pmp_mseccfg_rlb",
+          "loc": {
+            "line": 261,
+            "col": 3,
+            "end_line": 261,
+            "end_col": 36
+          }
+        }
+      ],
       "functions": [
         {
           "id": "ibex_pmp.mml_perm_check",

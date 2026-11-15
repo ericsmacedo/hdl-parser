@@ -251,6 +251,223 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_fifo_sync.gen_passthru_fifo.unused_clr",
+          "ptype": "logic",
+          "name": "unused_clr",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 52,
+            "col": 5,
+            "end_line": 52,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.fifo_wptr",
+          "ptype": "logic",
+          "name": "fifo_wptr",
+          "dim": "[PtrW-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 63,
+            "col": 5,
+            "end_line": 63,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.fifo_rptr",
+          "ptype": "logic",
+          "name": "fifo_rptr",
+          "dim": "[PtrW-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 63,
+            "col": 5,
+            "end_line": 63,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.fifo_incr_wptr",
+          "ptype": "logic",
+          "name": "fifo_incr_wptr",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 64,
+            "col": 5,
+            "end_line": 64,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.fifo_incr_rptr",
+          "ptype": "logic",
+          "name": "fifo_incr_rptr",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 64,
+            "col": 5,
+            "end_line": 64,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.fifo_empty",
+          "ptype": "logic",
+          "name": "fifo_empty",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 64,
+            "col": 5,
+            "end_line": 64,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.under_rst",
+          "ptype": "logic",
+          "name": "under_rst",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 67,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.empty",
+          "ptype": "logic",
+          "name": "empty",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 76,
+            "col": 5,
+            "end_line": 76,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.storage",
+          "ptype": "logic",
+          "name": "storage",
+          "dim": "[Depth-1:0][Width-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 105,
+            "col": 5,
+            "end_line": 105,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.storage_rdata",
+          "ptype": "logic",
+          "name": "storage_rdata",
+          "dim": "[Width-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 106,
+            "col": 5,
+            "end_line": 106,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.gen_depth_eq1.unused_ptrs",
+          "ptype": "logic",
+          "name": "unused_ptrs",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            },
+            {
+              "kind": "if",
+              "name": "gen_depth_eq1",
+              "cond": "Depth == 1"
+            }
+          ],
+          "loc": {
+            "line": 115,
+            "col": 7,
+            "end_line": 115,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "prim_fifo_sync.gen_normal_fifo.rdata_int",
+          "ptype": "logic",
+          "name": "rdata_int",
+          "dim": "[Width-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo"
+            }
+          ],
+          "loc": {
+            "line": 128,
+            "col": 5,
+            "end_line": 128,
+            "end_col": 33
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_fifo_sync.gen_normal_fifo.u_fifo_cnt",

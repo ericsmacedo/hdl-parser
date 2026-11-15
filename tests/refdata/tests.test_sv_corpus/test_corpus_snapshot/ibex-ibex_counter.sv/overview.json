@@ -168,6 +168,116 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "ibex_counter.counter",
+          "ptype": "logic",
+          "name": "counter",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_counter.counter_upd",
+          "ptype": "logic",
+          "name": "counter_upd",
+          "dim": "[CounterWidth-1:0]",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_counter.counter_load",
+          "ptype": "logic",
+          "name": "counter_load",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_counter.we",
+          "ptype": "logic",
+          "name": "we",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_counter.counter_d",
+          "ptype": "logic",
+          "name": "counter_d",
+          "dim": "[CounterWidth-1:0]",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_counter.counter_q",
+          "ptype": "logic",
+          "name": "counter_q",
+          "dim": "[CounterWidth-1:0]",
+          "ifdefs": [
+            "FPGA_XILINX"
+          ],
+          "loc": {
+            "line": 59,
+            "col": 26,
+            "end_line": 59,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_counter.counter_q~2",
+          "ptype": "logic",
+          "name": "counter_q",
+          "dim": "[CounterWidth-1:0]",
+          "ifdefs": [
+            "!FPGA_XILINX"
+          ],
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_counter.g_counter_narrow.unused_counter_load",
+          "ptype": "logic",
+          "name": "unused_counter_load",
+          "dim": "[63:CounterWidth]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            }
+          ],
+          "loc": {
+            "line": 87,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 49
+          }
+        }
+      ],
       "loc": {
         "line": 5,
         "col": 1,

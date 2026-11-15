@@ -289,6 +289,382 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_packer.valid_next",
+          "ptype": "logic",
+          "name": "valid_next",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "prim_packer.ready_next",
+          "ptype": "logic",
+          "name": "ready_next",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "prim_packer.stored_data",
+          "ptype": "logic",
+          "name": "stored_data",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.stored_mask",
+          "ptype": "logic",
+          "name": "stored_mask",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.concat_data",
+          "ptype": "logic",
+          "name": "concat_data",
+          "dim": "[ConcatW-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.concat_mask",
+          "ptype": "logic",
+          "name": "concat_mask",
+          "dim": "[ConcatW-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.shiftl_data",
+          "ptype": "logic",
+          "name": "shiftl_data",
+          "dim": "[ConcatW-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.shiftl_mask",
+          "ptype": "logic",
+          "name": "shiftl_mask",
+          "dim": "[ConcatW-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.shiftr_data",
+          "ptype": "logic",
+          "name": "shiftr_data",
+          "dim": "[InW-1:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.shiftr_mask",
+          "ptype": "logic",
+          "name": "shiftr_mask",
+          "dim": "[InW-1:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "prim_packer.pos_q",
+          "ptype": "logic",
+          "name": "pos_q",
+          "dim": "[PtrW-1:0]",
+          "comment": [
+            "Current write position"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "prim_packer.lod_idx",
+          "ptype": "logic",
+          "name": "lod_idx",
+          "dim": "[IdxW-1:0]",
+          "comment": [
+            "result of Leading One Detector"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "prim_packer.inmask_ones",
+          "ptype": "logic",
+          "name": "inmask_ones",
+          "dim": "[OnesCntW-1:0]",
+          "comment": [
+            "Counting Ones for mask_i"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "prim_packer.ack_in",
+          "ptype": "logic",
+          "name": "ack_in",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "prim_packer.ack_out",
+          "ptype": "logic",
+          "name": "ack_out",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "prim_packer.flush_valid",
+          "ptype": "logic",
+          "name": "flush_valid",
+          "comment": [
+            "flush data out request"
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "prim_packer.flush_done",
+          "ptype": "logic",
+          "name": "flush_done",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "prim_packer.pos_with_input",
+          "ptype": "logic",
+          "name": "pos_with_input",
+          "dim": "[PtrW-1:0]",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_nodup.pos_d",
+          "ptype": "logic",
+          "name": "pos_d",
+          "dim": "[PtrW-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_pos_nodup",
+              "cond": "EnProtection == 1'b 0"
+            }
+          ],
+          "loc": {
+            "line": 75,
+            "col": 5,
+            "end_line": 75,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_dupcnt.cnt_incr_en",
+          "ptype": "logic",
+          "name": "cnt_incr_en",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt"
+            }
+          ],
+          "loc": {
+            "line": 107,
+            "col": 5,
+            "end_line": 107,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_dupcnt.cnt_decr_en",
+          "ptype": "logic",
+          "name": "cnt_decr_en",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt"
+            }
+          ],
+          "loc": {
+            "line": 107,
+            "col": 5,
+            "end_line": 107,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_dupcnt.cnt_set_en",
+          "ptype": "logic",
+          "name": "cnt_set_en",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt"
+            }
+          ],
+          "loc": {
+            "line": 107,
+            "col": 5,
+            "end_line": 107,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_dupcnt.cnt_step",
+          "ptype": "logic",
+          "name": "cnt_step",
+          "dim": "[PtrW-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt"
+            }
+          ],
+          "loc": {
+            "line": 108,
+            "col": 5,
+            "end_line": 108,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "prim_packer.g_pos_dupcnt.cnt_set",
+          "ptype": "logic",
+          "name": "cnt_set",
+          "dim": "[PtrW-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt"
+            }
+          ],
+          "loc": {
+            "line": 108,
+            "col": 5,
+            "end_line": 108,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "prim_packer.stored_data_next",
+          "ptype": "logic",
+          "name": "stored_data_next",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "prim_packer.stored_mask_next",
+          "ptype": "logic",
+          "name": "stored_mask_next",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "prim_packer.flush_st",
+          "ptype": "flush_st_e",
+          "name": "flush_st",
+          "loc": {
+            "line": 232,
+            "col": 3,
+            "end_line": 232,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "prim_packer.flush_st_next",
+          "ptype": "flush_st_e",
+          "name": "flush_st_next",
+          "loc": {
+            "line": 232,
+            "col": 3,
+            "end_line": 232,
+            "end_col": 38
+          }
+        }
+      ],
       "typedefs": [
         {
           "id": "prim_packer.flush_st_e",

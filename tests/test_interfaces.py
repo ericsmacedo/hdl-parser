@@ -110,10 +110,13 @@ def test_ids_and_locations():
     """Identifiers And Source Locations."""
     file = parse_text(TEXT)
     ids = [item.id for item in file.iter_items()]
-    assert ids[:8] == [
+    assert ids[:11] == [
         "bus_if",
         "bus_if.AW",
         "bus_if.clk_i",
+        "bus_if.addr",
+        "bus_if.req",
+        "bus_if.ack",
         "bus_if.addr_t",
         "bus_if.master",
         "bus_if.master.addr",

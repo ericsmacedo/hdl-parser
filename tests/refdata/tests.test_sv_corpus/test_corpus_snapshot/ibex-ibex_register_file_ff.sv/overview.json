@@ -333,6 +333,585 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.cheriot_enabled",
+          "ptype": "logic",
+          "name": "cheriot_enabled",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 81,
+            "col": 5,
+            "end_line": 81,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.rf_data",
+          "ptype": "logic",
+          "name": "rf_data",
+          "dim": "[DataWidth-1:0]",
+          "dim_unpacked": "[16]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "comment": [
+            "x0-x15 data (both modes)"
+          ],
+          "loc": {
+            "line": 85,
+            "col": 5,
+            "end_line": 85,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.rf_shared",
+          "ptype": "logic",
+          "name": "rf_shared",
+          "dim": "[CapWidth-1:0]",
+          "dim_unpacked": "[16]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "comment": [
+            "shared: cap (CHERIoT) or x16-x31 data (!CHERIoT,!RV32E)"
+          ],
+          "loc": {
+            "line": 86,
+            "col": 5,
+            "end_line": 86,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.we_a_dec",
+          "ptype": "logic",
+          "name": "we_a_dec",
+          "dim": "[15:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 91,
+            "col": 5,
+            "end_line": 91,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.wshared_data",
+          "ptype": "logic",
+          "name": "wshared_data",
+          "dim": "[CapWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 99,
+            "col": 5,
+            "end_line": 99,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_rf_data_flops.rf_reg_q",
+          "ptype": "logic",
+          "name": "rf_reg_q",
+          "dim": "[DataWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_data_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 104,
+            "col": 7,
+            "end_line": 104,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_rf_shared_flops.rf_reg_q",
+          "ptype": "logic",
+          "name": "rf_reg_q",
+          "dim": "[CapWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_shared_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 119,
+            "col": 7,
+            "end_line": 119,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.rcap_r0",
+          "ptype": "logic",
+          "name": "rcap_r0",
+          "dim": "[CapWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "comment": [
+            "x0 cap read value (null or dummy-dependent)"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 5,
+            "end_line": 132,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.we_data_r0",
+          "ptype": "logic",
+          "name": "we_data_r0",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 142,
+            "col": 7,
+            "end_line": 142,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.we_shared_r0",
+          "ptype": "logic",
+          "name": "we_shared_r0",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 143,
+            "col": 7,
+            "end_line": 143,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.rf_data_r0_q",
+          "ptype": "logic",
+          "name": "rf_data_r0_q",
+          "dim": "[DataWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 151,
+            "col": 7,
+            "end_line": 151,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_dummy_r0.rf_shared_r0_q",
+          "ptype": "logic",
+          "name": "rf_shared_r0_q",
+          "dim": "[CapWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 7,
+            "end_line": 162,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_normal_r0.unused_dummy_instr",
+          "ptype": "logic",
+          "name": "unused_dummy_instr",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0"
+            }
+          ],
+          "loc": {
+            "line": 179,
+            "col": 7,
+            "end_line": 179,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_normal_r0.g_rf_shared0_x16.rf_shared_r0_q",
+          "ptype": "logic",
+          "name": "rf_shared_r0_q",
+          "dim": "[DataWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0"
+            },
+            {
+              "kind": "if",
+              "name": "g_rf_shared0_x16",
+              "cond": "!RV32E"
+            }
+          ],
+          "loc": {
+            "line": 185,
+            "col": 9,
+            "end_line": 185,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.g_normal_r0.g_rf_shared0_no_x16.unused_we_a_dec0",
+          "ptype": "logic",
+          "name": "unused_we_a_dec0",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0"
+            },
+            {
+              "kind": "else",
+              "name": "g_rf_shared0_no_x16"
+            }
+          ],
+          "loc": {
+            "line": 197,
+            "col": 9,
+            "end_line": 197,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_cheriot_rf.unused_test_en",
+          "ptype": "logic",
+          "name": "unused_test_en",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 219,
+            "col": 5,
+            "end_line": 219,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.rf_reg",
+          "ptype": "logic",
+          "name": "rf_reg",
+          "dim": "[DataWidth-1:0]",
+          "dim_unpacked": "[NUM_WORDS]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 234,
+            "col": 5,
+            "end_line": 234,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.we_a_dec",
+          "ptype": "logic",
+          "name": "we_a_dec",
+          "dim": "[NUM_WORDS-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 235,
+            "col": 5,
+            "end_line": 235,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.unused_strobe",
+          "ptype": "logic",
+          "name": "unused_strobe",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 243,
+            "col": 5,
+            "end_line": 243,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_rf_flops.rf_reg_q",
+          "ptype": "logic",
+          "name": "rf_reg_q",
+          "dim": "[DataWidth-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_flops",
+              "cond": "genvar i = 1; i < NUM_WORDS; i++"
+            }
+          ],
+          "loc": {
+            "line": 248,
+            "col": 7,
+            "end_line": 248,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_dummy_r0.we_r0_dummy",
+          "ptype": "logic",
+          "name": "we_r0_dummy",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 265,
+            "col": 7,
+            "end_line": 265,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_dummy_r0.rf_r0_q",
+          "ptype": "logic",
+          "name": "rf_r0_q",
+          "dim": "[DataWidth-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 266,
+            "col": 7,
+            "end_line": 266,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_normal_r0.unused_dummy_instr",
+          "ptype": "logic",
+          "name": "unused_dummy_instr",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0"
+            }
+          ],
+          "loc": {
+            "line": 284,
+            "col": 7,
+            "end_line": 284,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.g_unused_raddr_msb.unused_raddr_msb",
+          "ptype": "logic",
+          "name": "unused_raddr_msb",
+          "dim": "[1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            },
+            {
+              "kind": "if",
+              "name": "g_unused_raddr_msb",
+              "cond": "RV32E"
+            }
+          ],
+          "loc": {
+            "line": 296,
+            "col": 7,
+            "end_line": 296,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.unused_test_en",
+          "ptype": "logic",
+          "name": "unused_test_en",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 301,
+            "col": 5,
+            "end_line": 301,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.unused_wcap_a",
+          "ptype": "logic",
+          "name": "unused_wcap_a",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 308,
+            "col": 5,
+            "end_line": 308,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_register_file_ff.g_plain_rf.unused_cheriot_enable",
+          "ptype": "logic",
+          "name": "unused_cheriot_enable",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf"
+            }
+          ],
+          "loc": {
+            "line": 311,
+            "col": 5,
+            "end_line": 311,
+            "end_col": 33
+          }
+        }
+      ],
       "loc": {
         "line": 38,
         "col": 1,

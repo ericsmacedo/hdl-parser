@@ -116,6 +116,7 @@ Item: TypeAlias = Union[
     "Package",
     "Param",
     "Port",
+    "Signal",
     "Modport",
     "Function",
     "Typedef",
@@ -137,7 +138,8 @@ class File(_BaseModel):
     | ---------------------------------------- | -------------------- |
     | Module, interface, package               | `top`, `bus_pkg`     |
     | Modport, port of a modport               | `bus_if.master.req`  |
-    | Parameter, local parameter, port         | `top.WIDTH`          |
+    | Parameter, local parameter, port, signal | `top.WIDTH`          |
+    | Signal within labeled generate blocks    | `top.g_a.data`       |
     | Type                                     | `bus_pkg.req_t`      |
     | Function or task, argument               | `bus_pkg.f.arg`      |
     | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
@@ -207,6 +209,7 @@ class File(_BaseModel):
             yield from module.params
             yield from module.localparams
             yield from module.ports
+            yield from module.signals
             for typedef in module.typedefs:
                 yield typedef
                 yield from typedef.members
@@ -240,6 +243,7 @@ class Module(_BaseModel):
         params: Parameters
         ports: Ports
         localparams: Local Parameters
+        signals: Signals: the nets and variables declared within the module.
         typedefs: Types declared within the module.
         functions: Functions and tasks declared within the module.
         insts: Submodule Instances.
@@ -255,6 +259,7 @@ class Module(_BaseModel):
     params: tuple["Param", ...] = ()
     ports: tuple["Port", ...] = ()
     localparams: tuple["Param", ...] = ()
+    signals: tuple["Signal", ...] = ()
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
@@ -454,6 +459,38 @@ class Port(_BaseModel):
     dim: str = ""
     dim_unpacked: str = ""
     default: str = ""
+    ifdefs: tuple[str, ...] = ()
+    comment: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Signal(_BaseModel):
+    """Represents a net or variable declared within a module: `logic [7:0] data_q;`.
+
+    Variables of functions, tasks and procedural code are no signals of the module.
+
+    Attributes:
+        ptype: Type: `logic`, `wire`, `reg`, `my_pkg::my_t`, `enum`, `struct`, ...
+        dtype: Data Type: `signed` or `unsigned`. VHDL: the type.
+        name: Name of the signal
+        dim: Dimension (Packed)
+        dim_unpacked: Unpacked Dimension
+        default: Initial value, or the expression assigned to a net. Empty, if not given.
+        generates: Generate constructs the signal is declared in, from the outermost to the innermost.
+        ifdefs: Conditions the signal is declared at.
+        comment: tuple of associated comments
+        loc: Source Location of the declaration. Names declared together share it.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    ptype: str = ""
+    dtype: str = ""
+    name: str
+    dim: str = ""
+    dim_unpacked: str = ""
+    default: str = ""
+    generates: tuple["Generate", ...] = ()
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
     loc: Location | None = None

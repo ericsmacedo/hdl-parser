@@ -92,7 +92,6 @@ _BLOCKS = {
 _DECLARATIONS = frozenset(
     (
         # fmt: off
-        *TYPE_KEYWORDS,
         "alias",
         "assign",
         "automatic",
@@ -100,7 +99,6 @@ _DECLARATIONS = frozenset(
         "deassign",
         "defparam",
         "disable",
-        "enum",
         "export",
         "extern",
         "force",
@@ -113,10 +111,8 @@ _DECLARATIONS = frozenset(
         "release",
         "specparam",
         "static",
-        "struct",
         "timeprecision",
         "timeunit",
-        "union",
         "virtual",
         # gates and switches
         "and",
@@ -263,6 +259,8 @@ class _Module:
     ended: bool = False
     params: list[_Decl] = field(default_factory=list)
     ports: list[_Decl] = field(default_factory=list)
+    # signals with the generate constructs around
+    signals: list[tuple[_Decl, tuple[dm.Generate, ...]]] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
     functions: list[_Function] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
@@ -1008,6 +1006,17 @@ def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_label(c)
 
 
+def _parse_signals(c: Cursor, mod: _Module) -> None:
+    """Parse the declaration of nets or variables: `type [dims] name [dims] [= value] {, ...};`."""
+    generates = tuple(mod.generates)
+    mod.signals += [(decl, generates) for decl in _parse_item_decl(c)]
+
+
+@_handles(*TYPE_KEYWORDS, "enum", "struct", "union")
+def _handle_signal(c: Cursor, mod: _Module) -> None:
+    _parse_signals(c, mod)
+
+
 @_handles("function", "task")
 def _handle_function(c: Cursor, mod: _Module) -> None:
     function = _parse_function(c)
@@ -1044,8 +1053,11 @@ def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
             mod.open_generate(dm.Generate(kind="begin", name=_skip_label(c) or name))
     elif _is_instance(c):
         mod.insts.extend(_parse_instances(c, tuple(mod.generates)))
+    elif _type_ref_end(c, c.pos):
+        # signal of a user-defined type: my_t name;
+        _parse_signals(c, mod)
     else:
-        # declaration or statement, or the expression of a case-generate item
+        # statement, or the expression of a case-generate item
         c.skip_until(_LABEL_OR_SEMI)
         c.next()
 
@@ -1276,6 +1288,27 @@ def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     )
 
 
+def _create_signals(mod: _Module, smap: SourceMap) -> tuple[dm.Signal, ...]:
+    # Verilog declares the type of a port on its own: `output q; reg q;`. This is no signal.
+    ports = {port.name.text for port in mod.ports}
+    return tuple(
+        dm.Signal(
+            name=decl.name.text,
+            ptype=decl.ptype,
+            dtype=decl.dtype,
+            dim=decl.dim,
+            dim_unpacked=decl.dim_unpacked,
+            default=decl.default,
+            generates=generates,
+            comment=tuple(decl.comment),
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
+        )
+        for decl, generates in mod.signals
+        if decl.name.text not in ports
+    )
+
+
 def _create_functions(functions: list[_Function], smap: SourceMap) -> tuple[dm.Function, ...]:
     return tuple(
         dm.Function(
@@ -1403,6 +1436,7 @@ def parse(  # noqa: PLR0913
             "params": _create_params(mod.params, "parameter", smap),
             "localparams": _create_params(mod.params, "localparam", smap),
             "ports": _create_ports(mod.ports, smap),
+            "signals": _create_signals(mod, smap),
             "typedefs": _create_typedefs(mod.typedefs, smap),
             "functions": _create_functions(mod.functions, smap),
             "insts": _create_insts(mod.insts, smap),

@@ -49,6 +49,7 @@ from .datamodel import (
     Package,
     Param,
     Port,
+    Signal,
     Typedef,
 )
 from .filelistparser import parse_filelist
@@ -70,6 +71,7 @@ __all__ = [
     "Package",
     "Param",
     "Port",
+    "Signal",
     "Typedef",
     "parse_defines",
     "parse_defines_text",

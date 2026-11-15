@@ -163,6 +163,8 @@ endmodule
         "p.t",
         "top",
         "top.a",
+        "top.sw",
+        "top.var_without_type",
         "top.sw_t",
         "top.sw_t.OFF",
         "top.sw_t.ON",

@@ -189,6 +189,214 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_arbiter_ppc.unused_req_chk",
+          "ptype": "logic",
+          "name": "unused_req_chk",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.masked_req",
+          "ptype": "logic",
+          "name": "masked_req",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 69,
+            "col": 5,
+            "end_line": 69,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.ppc_out",
+          "ptype": "logic",
+          "name": "ppc_out",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 70,
+            "col": 5,
+            "end_line": 70,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.arb_req",
+          "ptype": "logic",
+          "name": "arb_req",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 71,
+            "col": 5,
+            "end_line": 71,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.mask",
+          "ptype": "logic",
+          "name": "mask",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 72,
+            "col": 5,
+            "end_line": 72,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.mask_next",
+          "ptype": "logic",
+          "name": "mask_next",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 72,
+            "col": 5,
+            "end_line": 72,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.winner",
+          "ptype": "logic",
+          "name": "winner",
+          "dim": "[N-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            }
+          ],
+          "loc": {
+            "line": 73,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_normal_case.gen_nodatapath.unused_data",
+          "ptype": "logic",
+          "name": "unused_data",
+          "dim": "[DW-1:0]",
+          "dim_unpacked": "[N]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case"
+            },
+            {
+              "kind": "else",
+              "name": "gen_nodatapath"
+            }
+          ],
+          "loc": {
+            "line": 119,
+            "col": 7,
+            "end_line": 119,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.k",
+          "ptype": "bit",
+          "name": "k",
+          "dim": "[IdxW-1:0]",
+          "ifdefs": [
+            "FPV_ON"
+          ],
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.ReadyIsStable",
+          "ptype": "bit",
+          "name": "ReadyIsStable",
+          "ifdefs": [
+            "FPV_ON"
+          ],
+          "loc": {
+            "line": 181,
+            "col": 3,
+            "end_line": 181,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.ReqsAreStable",
+          "ptype": "bit",
+          "name": "ReqsAreStable",
+          "ifdefs": [
+            "FPV_ON"
+          ],
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "prim_arbiter_ppc.gen_fairness.gnt_cnt",
+          "ptype": "integer",
+          "name": "gnt_cnt",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_fairness",
+              "cond": "genvar n = 1; n <= N; n++"
+            }
+          ],
+          "ifdefs": [
+            "FPV_ON"
+          ],
+          "loc": {
+            "line": 205,
+            "col": 5,
+            "end_line": 205,
+            "end_col": 21
+          }
+        }
+      ],
       "loc": {
         "line": 27,
         "col": 1,

@@ -89,10 +89,16 @@ class _Assigner:
             result.append(con.model_copy(update={"id": con_id}))
         return tuple(result)
 
+    def hierarchical(self, item: dm.ModuleInstance | dm.Signal) -> str:
+        """Hierarchical name: it includes the labels of the generate blocks."""
+        labels = [self.name(generate.name) for generate in item.generates if generate.name]
+        return ".".join((*labels, self.name(item.name)))
+
+    def signals(self, signals: tuple[dm.Signal, ...], scope: _Scope) -> tuple[dm.Signal, ...]:
+        return tuple(signal.model_copy(update={"id": scope.id(self.hierarchical(signal))}) for signal in signals)
+
     def instance(self, inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
-        # the hierarchical name includes the labels of the generate blocks
-        labels = [self.name(generate.name) for generate in inst.generates if generate.name]
-        inst_id = scope.id(".".join((*labels, self.name(inst.name))))
+        inst_id = scope.id(self.hierarchical(inst))
         # parameters and ports share the names of the instantiated module
         inst_scope = _Scope(inst_id)
         update = {
@@ -123,6 +129,7 @@ class _Assigner:
             "params": self.named(mod.params, scope),
             "localparams": self.named(mod.localparams, scope),
             "ports": self.named(mod.ports, scope),
+            "signals": self.signals(mod.signals, scope),
             "typedefs": self.typedefs(mod.typedefs, scope),
             "functions": self.functions(mod.functions, scope),
             "insts": tuple(self.instance(inst, scope) for inst in mod.insts),
