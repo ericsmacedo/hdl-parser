@@ -337,6 +337,151 @@
           }
         }
       ],
+      "typedefs": [
+        {
+          "id": "id_queue.ht_idx_t",
+          "name": "ht_idx_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[HtIdxWidth-1:0]",
+          "comment": [
+            "Type for indexing the head-tail table."
+          ],
+          "loc": {
+            "line": 87,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "id_queue.ld_idx_t",
+          "name": "ld_idx_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[LdIdxWidth-1:0]",
+          "comment": [
+            "Type for indexing the lined data table."
+          ],
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "id_queue.head_tail_t",
+          "name": "head_tail_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "id_queue.head_tail_t.id",
+              "name": "id",
+              "dtype": "id_t",
+              "loc": {
+                "line": 94,
+                "col": 9,
+                "end_line": 94,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "id_queue.head_tail_t.head",
+              "name": "head",
+              "dtype": "ld_idx_t",
+              "loc": {
+                "line": 95,
+                "col": 9,
+                "end_line": 96,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "id_queue.head_tail_t.tail",
+              "name": "tail",
+              "dtype": "ld_idx_t",
+              "loc": {
+                "line": 95,
+                "col": 9,
+                "end_line": 96,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "id_queue.head_tail_t.free",
+              "name": "free",
+              "dtype": "logic",
+              "loc": {
+                "line": 97,
+                "col": 9,
+                "end_line": 97,
+                "end_col": 25
+              }
+            }
+          ],
+          "comment": [
+            "Type of an entry in the head-tail table."
+          ],
+          "loc": {
+            "line": 93,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "id_queue.linked_data_t",
+          "name": "linked_data_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "id_queue.linked_data_t.data",
+              "name": "data",
+              "dtype": "data_t",
+              "loc": {
+                "line": 102,
+                "col": 9,
+                "end_line": 102,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "id_queue.linked_data_t.next",
+              "name": "next",
+              "dtype": "ld_idx_t",
+              "loc": {
+                "line": 103,
+                "col": 9,
+                "end_line": 103,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "id_queue.linked_data_t.free",
+              "name": "free",
+              "dtype": "logic",
+              "loc": {
+                "line": 104,
+                "col": 9,
+                "end_line": 104,
+                "end_col": 25
+              }
+            }
+          ],
+          "comment": [
+            "Type of an entry in the linked data table."
+          ],
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 105,
+            "end_col": 21
+          }
+        }
+      ],
       "insts": [
         {
           "id": "id_queue.i_id_ohb_in",

@@ -47,55 +47,89 @@ class _Scope:
         return f"{self._prefix}{local}" if count == 1 else f"{self._prefix}{local}~{count}"
 
 
-def assign_ids(modules: Iterable[dm.Module], casefold: bool = False) -> tuple[dm.Module, ...]:
-    """Return `modules` with the `id` of all items set. `casefold`: names are case insensitive (VHDL)."""
+class _Assigner:
+    """Set the `id` of items. `casefold`: names are case insensitive (VHDL)."""
 
-    def name(text: str) -> str:
-        # percent-encode the separators
-        return _ESCAPE.sub(lambda mat: f"%{ord(mat.group()):02X}", text.lower() if casefold else text)
+    def __init__(self, casefold: bool):
+        self.casefold = casefold
+        # modules and packages share the names of the file
+        self.files = _Scope()
 
-    def named(items, scope):
-        return tuple(item.model_copy(update={"id": scope.id(name(item.name))}) for item in items)
+    def name(self, text: str) -> str:
+        """Name as part of an identifier: the separators are percent-encoded."""
+        return _ESCAPE.sub(lambda mat: f"%{ord(mat.group()):02X}", text.lower() if self.casefold else text)
 
-    def connections(cons: tuple[dm.Connection, ...], scope: _Scope, by_order: str) -> tuple[dm.Connection, ...]:
+    def named(self, items, scope: _Scope):
+        return tuple(item.model_copy(update={"id": scope.id(self.name(item.name))}) for item in items)
+
+    def typedefs(self, typedefs: tuple[dm.Typedef, ...], scope: _Scope) -> tuple[dm.Typedef, ...]:
+        result = []
+        for typedef in typedefs:
+            typedef_id = scope.id(self.name(typedef.name))
+            update = {"id": typedef_id, "members": self.named(typedef.members, _Scope(typedef_id))}
+            result.append(typedef.model_copy(update=update))
+        return tuple(result)
+
+    def connections(self, cons: tuple[dm.Connection, ...], scope: _Scope, by_order: str) -> tuple[dm.Connection, ...]:
         position = 0
         result = []
         for con in cons:
             if con.port:
-                con_id = scope.id(name(con.port))
+                con_id = scope.id(self.name(con.port))
             else:
                 position += 1
                 con_id = scope.id(f"{by_order}{position}")
             result.append(con.model_copy(update={"id": con_id}))
         return tuple(result)
 
-    def instance(inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
+    def instance(self, inst: dm.ModuleInstance, scope: _Scope) -> dm.ModuleInstance:
         # the hierarchical name includes the labels of the generate blocks
-        labels = [name(generate.name) for generate in inst.generates if generate.name]
-        inst_id = scope.id(".".join((*labels, name(inst.name))))
+        labels = [self.name(generate.name) for generate in inst.generates if generate.name]
+        inst_id = scope.id(".".join((*labels, self.name(inst.name))))
         # parameters and ports share the names of the instantiated module
         inst_scope = _Scope(inst_id)
         update = {
             "id": inst_id,
-            "params": connections(inst.params, inst_scope, "#p"),
-            "connections": connections(inst.connections, inst_scope, "#"),
+            "params": self.connections(inst.params, inst_scope, "#p"),
+            "connections": self.connections(inst.connections, inst_scope, "#"),
         }
         return inst.model_copy(update=update)
 
-    files = _Scope()
-    result = []
-    for mod in modules:
-        mod_id = files.id(name(mod.name))
+    def package(self, pkg: dm.Package) -> dm.Package:
+        pkg_id = self.files.id(self.name(pkg.name))
+        scope = _Scope(pkg_id)
+        update = {
+            "id": pkg_id,
+            "params": self.named(pkg.params, scope),
+            "localparams": self.named(pkg.localparams, scope),
+            "typedefs": self.typedefs(pkg.typedefs, scope),
+        }
+        return pkg.model_copy(update=update)
+
+    def module(self, mod: dm.Module) -> dm.Module:
+        mod_id = self.files.id(self.name(mod.name))
         scope = _Scope(mod_id)
         update = {
             "id": mod_id,
-            "params": named(mod.params, scope),
-            "localparams": named(mod.localparams, scope),
-            "ports": named(mod.ports, scope),
-            "insts": tuple(instance(inst, scope) for inst in mod.insts),
+            "params": self.named(mod.params, scope),
+            "localparams": self.named(mod.localparams, scope),
+            "ports": self.named(mod.ports, scope),
+            "typedefs": self.typedefs(mod.typedefs, scope),
+            "insts": tuple(self.instance(inst, scope) for inst in mod.insts),
             "unresolved_macros": tuple(
-                macro.model_copy(update={"id": scope.id(f"`{name(macro.name)}")}) for macro in mod.unresolved_macros
+                macro.model_copy(update={"id": scope.id(f"`{self.name(macro.name)}")})
+                for macro in mod.unresolved_macros
             ),
         }
-        result.append(mod.model_copy(update=update))
-    return tuple(result)
+        return mod.model_copy(update=update)
+
+
+def assign_ids(
+    modules: Iterable[dm.Module], packages: Iterable[dm.Package] = (), casefold: bool = False
+) -> tuple[tuple[dm.Module, ...], tuple[dm.Package, ...]]:
+    """Return `modules` and `packages` with the `id` of all items set.
+
+    `casefold`: names are case insensitive (VHDL).
+    """
+    assigner = _Assigner(casefold)
+    return tuple(assigner.module(mod) for mod in modules), tuple(assigner.package(pkg) for pkg in packages)

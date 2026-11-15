@@ -85,7 +85,7 @@ class Diagnostic(_BaseModel):
     | `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |
     | `missing-end`         | warning  | Module, entity or architecture without end.                       |
     | `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |
-    | `no-module`           | info     | File without module, i.e. a package.                              |
+    | `no-module`           | info     | File without module or package, i.e. an included file.            |
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
@@ -110,7 +110,9 @@ class Diagnostic(_BaseModel):
     file: str = ""
 
 
-Item: TypeAlias = Union["Module", "Param", "Port", "ModuleInstance", "Connection", "MacroCall"]
+Item: TypeAlias = Union[
+    "Module", "Package", "Param", "Port", "Typedef", "Member", "ModuleInstance", "Connection", "MacroCall"
+]
 """Any Item With An Identifier."""
 
 
@@ -122,8 +124,10 @@ class File(_BaseModel):
 
     | Item                                     | `id`                 |
     | ---------------------------------------- | -------------------- |
-    | Module                                   | `top`                |
+    | Module, package                          | `top`, `bus_pkg`     |
     | Parameter, local parameter, port         | `top.WIDTH`          |
+    | Type                                     | `bus_pkg.req_t`      |
+    | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
     | Instance                                 | `top.u_sub`          |
     | Instance within labeled generate blocks  | `top.g_a.u_sub`      |
     | Connection, parameter value by name      | `top.u_sub.clk`      |
@@ -140,11 +144,13 @@ class File(_BaseModel):
     Attributes:
         path: Related File.
         modules: Modules Within That File.
+        packages: Packages Within That File.
         diagnostics: Problems found while parsing, in the order of the file.
     """
 
     path: Path | None
     modules: tuple["Module", ...]
+    packages: tuple["Package", ...] = ()
     diagnostics: tuple[Diagnostic, ...] = ()
 
     @property
@@ -170,12 +176,22 @@ class File(_BaseModel):
         return f"{self.file_id}:{local}"
 
     def iter_items(self) -> Iterator["Item"]:
-        """All items, in the order of the file: modules with their parameters, ports, instances and so on."""
+        """All items: packages and modules with their parameters, types, ports, instances and so on."""
+        for package in self.packages:
+            yield package
+            yield from package.params
+            yield from package.localparams
+            for typedef in package.typedefs:
+                yield typedef
+                yield from typedef.members
         for module in self.modules:
             yield module
             yield from module.params
             yield from module.localparams
             yield from module.ports
+            for typedef in module.typedefs:
+                yield typedef
+                yield from typedef.members
             yield from module.unresolved_macros
             for inst in module.insts:
                 yield inst
@@ -200,6 +216,7 @@ class Module(_BaseModel):
         params: Parameters
         ports: Ports
         localparams: Local Parameters
+        typedefs: Types declared within the module.
         insts: Submodule Instances.
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
@@ -213,9 +230,93 @@ class Module(_BaseModel):
     params: tuple["Param", ...] = ()
     ports: tuple["Port", ...] = ()
     localparams: tuple["Param", ...] = ()
+    typedefs: tuple["Typedef", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
+    loc: Location | None = None
+
+
+class Package(_BaseModel):
+    """Represents a SystemVerilog Package with parameters and types.
+
+    Attributes:
+        name: Package Name
+        params: Parameters
+        localparams: Local Parameters
+        typedefs: Types
+        ifdefs: Conditions the package is defined at.
+        loc: Source Location: from `package` to `endpackage`.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    name: str
+    params: tuple["Param", ...] = ()
+    localparams: tuple["Param", ...] = ()
+    typedefs: tuple["Typedef", ...] = ()
+    ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Member(_BaseModel):
+    """Member Of An Enumeration, Or Field Of A Struct Or Union.
+
+    Attributes:
+        name: Name
+        dtype: Data type of a field: `logic`, `logic signed`, `pkg::other_t`. Empty for enumeration members.
+        dim: Dimension (Packed) of a field.
+        dim_unpacked: Unpacked dimension of a field. Range of an enumeration member: `[3]` of `NAME[3]`.
+        value: Value of an enumeration member, or default of a field. Empty, if not given.
+        comment: tuple of associated comments
+        ifdefs: Conditions the member is defined at.
+        loc: Source Location. Fields declared together share it.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    name: str
+    dtype: str = ""
+    dim: str = ""
+    dim_unpacked: str = ""
+    value: str = ""
+    comment: tuple[str, ...] = ()
+    ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Typedef(_BaseModel):
+    """Represents a type: `typedef ... name;`.
+
+    | `typedef`                                      | `kind`   | `dtype`  | `dim`   | `members` |
+    | ---------------------------------------------- | -------- | -------- | ------- | --------- |
+    | `typedef logic [7:0] byte_t;`                  | `alias`  | `logic`  | `[7:0]` |           |
+    | `typedef enum logic [1:0] {IDLE, BUSY} st_t;`  | `enum`   | `logic`  | `[1:0]` | 2         |
+    | `typedef struct packed {logic a;} req_t;`      | `struct` | `packed` |         | 1         |
+    | `typedef union {int i; real r;} num_t;`        | `union`  |          |         | 2         |
+
+    Attributes:
+        name: Name of the type
+        kind: `alias`, `enum`, `struct` or `union`.
+        dtype: Aliased type, base type of an enumeration or qualifiers of a struct or union.
+        dim: Dimension (Packed)
+        dim_unpacked: Unpacked Dimension
+        members: Members of an enumeration, fields of a struct or union.
+        comment: tuple of associated comments
+        ifdefs: Conditions the type is defined at.
+        loc: Source Location: from `typedef` to `;`.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    name: str
+    kind: Literal["alias", "enum", "struct", "union"]
+    dtype: str = ""
+    dim: str = ""
+    dim_unpacked: str = ""
+    members: tuple[Member, ...] = ()
+    comment: tuple[str, ...] = ()
+    ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
 

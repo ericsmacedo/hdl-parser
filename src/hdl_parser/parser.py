@@ -182,6 +182,7 @@ def parse_text(  # noqa: PLR0913
 
     Returns:
         Parsed Data. `modules` is empty, if there is no module (i.e. a file with packages only).
+        SystemVerilog packages are listed in `packages`.
     """
     if macros and not expand_macros:
         raise ValueError("'macros' requires 'expand_macros=True'.")
@@ -196,9 +197,9 @@ def parse_text(  # noqa: PLR0913
 
     diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
     if lang == "vhdl":
-        modules = assign_ids(parse_vhdl(text, diagnostics), casefold=True)
+        modules, packages = assign_ids(parse_vhdl(text, diagnostics), casefold=True)
     else:
-        modules = parse_sv(
+        modules, packages = parse_sv(
             text,
             file_path=file_path,
             expand_macros=expand_macros,
@@ -207,10 +208,10 @@ def parse_text(  # noqa: PLR0913
             resolve_ifdefs=resolve_ifdefs,
             diagnostics=diagnostics,
         )
-        modules = assign_ids(modules)
+        modules, packages = assign_ids(modules, packages)
 
-    if not modules:
-        # this is fine: packages, interfaces, included files, ...
+    if not modules and not packages:
+        # this is fine: interfaces, included files, ...
         diagnostics.add("no-module", "no module found.")
     for module in modules:
         for macro in module.unresolved_macros:
@@ -222,4 +223,9 @@ def parse_text(  # noqa: PLR0913
                 item=macro.id,
             )
 
-    return dm.File(path=file_path, modules=modules, diagnostics=diagnostics.finish(modules))
+    return dm.File(
+        path=file_path,
+        modules=modules,
+        packages=packages,
+        diagnostics=diagnostics.finish((*modules, *packages)),
+    )

@@ -41,6 +41,29 @@ There are two major use-cases:
     --8<-- "examples/sv/adder.json"
     ```
 
+## Packages And Types
+
+SystemVerilog packages are listed in `packages` of the file, with their parameters and types.
+Enumerations list their members, structs and unions their fields:
+
+```python
+>>> import hdl_parser
+>>> file = hdl_parser.parse_text("""
+... package bus_pkg;
+...   localparam int AW = 32;
+...   typedef enum logic [1:0] {IDLE, BUSY = 2} state_t;
+...   typedef struct packed { logic [AW-1:0] addr; logic we; } req_t;
+... endpackage
+... """)
+>>> for typedef in file.packages[0].typedefs:
+...     print(typedef.id, typedef.kind, [(member.name, member.dtype, member.dim, member.value) for member in typedef.members])
+bus_pkg.state_t enum [('IDLE', '', '', ''), ('BUSY', '', '', '2')]
+bus_pkg.req_t struct [('addr', 'logic', '[AW-1:0]', ''), ('we', 'logic', '', '')]
+
+```
+
+Types declared within a module are listed in `typedefs` of the module.
+
 ## Macros
 
 Macros are **not** expanded by default. On request (`--expand-macros`, `expand_macros=True`) macros are expanded,

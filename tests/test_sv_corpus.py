@@ -102,17 +102,22 @@ def _diff(path: Path, expanded: str) -> str:
     return "".join(f"{line.rstrip()}\n" for line in lines)
 
 
+def _without_typedefs(modules):
+    return [module.model_copy(update={"typedefs": ()}) for module in modules]
+
+
 @mark.parametrize("path", _cases(KNOWN_ISSUES_SNAPSHOT))
 def test_corpus_expand(tmp_path, path):
     """Macro Expansion On The Corpus, With The Macro Files Of The Projects.
 
     None of the corpus files creates parameters, ports or instances by macros, so the result has to be the same
-    as without macro expansion. The changes made by the preprocessor are compared with 'refdata'.
+    as without macro expansion - except of the types. The changes made by the preprocessor are compared with 'refdata'.
     """
     inc_dirs = _inc_dirs(path)
     file = parse_file(path, expand_macros=True, resolve_ifdefs=True, inc_dirs=inc_dirs)
     # the diagnostics differ: macros which cannot be expanded, included files which are not found
-    assert file.modules == parse_file(path).modules
+    # the types differ: some are created by macros (i.e. AXI_TYPEDEF_*)
+    assert _without_typedefs(file.modules) == _without_typedefs(parse_file(path).modules)
 
     source = path.read_text()
     expanded = expand(source, file_path=path, inc_dirs=inc_dirs, resolve_ifdefs=True)

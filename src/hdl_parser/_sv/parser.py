@@ -52,7 +52,8 @@ LOGGER = logging.getLogger(__name__)
 
 # Parsing never continues beyond these keywords
 _MODULE_START = frozenset(("module", "macromodule"))
-_HARD_STOPS = frozenset((*_MODULE_START, "endmodule"))
+_UNIT_START = frozenset((*_MODULE_START, "package"))
+_HARD_STOPS = frozenset((*_UNIT_START, "endmodule", "endpackage"))
 
 _DIRECTIONS = frozenset(("input", "output", "inout"))
 _PARAMS = frozenset(("parameter", "localparam"))
@@ -115,7 +116,6 @@ _DECLARATIONS = frozenset(
         "struct",
         "timeprecision",
         "timeunit",
-        "typedef",
         "union",
         "virtual",
         # gates and switches
@@ -200,6 +200,33 @@ class _Macro(NamedTuple):
     call: dm.MacroCall
 
 
+class _Typedef(NamedTuple):
+    """One Type. `first` and `last` span the whole `typedef`."""
+
+    first: Token
+    last: Token
+    name: Token
+    kind: str  # alias, enum, struct or union
+    dtype: str
+    dim: str
+    dim_unpacked: str
+    members: list[_Decl]
+    comment: list[str]
+
+
+@dataclass
+class _Package:
+    """One Package. `last` is known as soon as the package is parsed completely."""
+
+    first: Token
+    last: Token
+    name: Token
+    params: list[_Decl] = field(default_factory=list)
+    typedefs: list[_Typedef] = field(default_factory=list)
+    # there is an `endpackage`
+    ended: bool = False
+
+
 @dataclass
 class _Module:
     """One Module. `last` is known as soon as the module is parsed completely."""
@@ -209,6 +236,7 @@ class _Module:
     name: Token
     params: list[_Decl] = field(default_factory=list)
     ports: list[_Decl] = field(default_factory=list)
+    typedefs: list[_Typedef] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
@@ -431,6 +459,96 @@ def _parse_item_decl(c: Cursor) -> list[_Decl]:
     return _set_last(c, decls)
 
 
+# --- types ---
+
+
+def _parse_enum_members(c: Cursor) -> list[_Decl]:
+    """Parse `{ name [range] [= value] {, name [range] [= value]} }`."""
+    members: list[_Decl] = []
+    opening = c.next()
+    while True:
+        tok = c.peek()
+        if tok.text == "}":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        if tok.kind != ID:
+            c.next()
+            continue
+        comment = c.start_comment()
+        name = c.next()
+        dim_unpacked = _parse_dims(c)
+        value = ""
+        if c.accept("="):
+            start = c.pos
+            c.skip_until(_COMMA)
+            value = c.text(start, c.pos).strip()
+        members.append(_Decl(name, c.toks[c.pos - 1], name, "", "", "", "", dim_unpacked, value, comment))
+    return members
+
+
+def _parse_struct_members(c: Cursor) -> list[_Decl]:
+    """Parse `{ type [dims] name [dims] {, name [dims]} [= default]; ... }`."""
+    members: list[_Decl] = []
+    opening = c.next()
+    while True:
+        tok = c.peek()
+        if tok.text == "}":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        pos = c.pos
+        if tok.text != ";":
+            members += _parse_decl(c, "")
+            c.skip_until(_SEMI)
+        if c.pos == pos:
+            c.next()
+    return members
+
+
+def _parse_typedef(c: Cursor) -> _Typedef | None:
+    """Parse `typedef type [dims] name [dims];`. The type may be an enumeration, struct or union.
+
+    Forward declarations (`typedef name;`, `typedef class name;`) are no types on their own.
+    """
+    # the comments in front describe the type
+    leading = list(c.comments.get(c.pos, ()))
+    comment = c.start_comment()
+    comment += leading
+    first = c.next()
+    kind = c.peek().text
+    members: list[_Decl] = []
+    if kind in ("enum", "struct", "union"):
+        c.next()
+        # base type of the enumeration, or qualifiers of the struct
+        start = c.pos
+        while c.peek().kind in (KW, ID) or c.peek().text == "::":
+            c.next()
+        dtype = c.text(start, c.pos)
+        dim = _parse_dims(c)
+        if c.peek().text == "{":
+            members = _parse_enum_members(c) if kind == "enum" else _parse_struct_members(c)
+            c.sink = comment
+    else:
+        kind = "alias"
+        ptype, signing = _parse_type(c)
+        dtype = f"{ptype} {signing}".strip()
+        dim = _parse_dims(c)
+    name = c.peek()
+    typedef = None
+    if name.kind == ID and (dtype or members):
+        c.next()
+        typedef = _Typedef(first, name, name, kind, dtype, dim, _parse_dims(c), members, comment)
+    c.skip_until(_SEMI)
+    c.accept(";")
+    c.sink = None
+    return typedef._replace(last=c.toks[c.pos - 1]) if typedef else None
+
+
 # --- instances ---
 
 
@@ -627,6 +745,13 @@ def _handle_param(c: Cursor, mod: _Module) -> None:
     mod.params.extend(_parse_item_decl(c))
 
 
+@_handles("typedef")
+def _handle_typedef(c: Cursor, mod: _Module) -> None:
+    typedef = _parse_typedef(c)
+    if typedef:
+        mod.typedefs.append(typedef)
+
+
 @_handles(*_PROCEDURES)
 def _handle_procedure(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     c.next()
@@ -761,7 +886,7 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
             if text == "endmodule":
                 c.next()
                 return
-            if text in _MODULE_START:
+            if text in _UNIT_START:
                 # missing endmodule
                 return
             handler = handlers.get(text)
@@ -805,17 +930,69 @@ def _parse_module(c: Cursor) -> _Module | None:
     return mod
 
 
-def _parse_modules(c: Cursor) -> list[_Module]:
-    """Parse all modules."""
+def _parse_package_item(c: Cursor, pkg: _Package) -> None:
+    """Parse one item of a package."""
+    tok = c.peek()
+    text = tok.text
+    if text in _PARAMS:
+        pkg.params.extend(_parse_item_decl(c))
+    elif text == "typedef":
+        typedef = _parse_typedef(c)
+        if typedef:
+            pkg.typedefs.append(typedef)
+    elif text in _BLOCKS and tok.kind == KW:
+        # functions, tasks, classes, ...
+        c.skip_past(frozenset((_BLOCKS[text],)))
+    else:
+        # anything else: imports, variables, ...
+        c.skip_until(_SEMI)
+        c.accept(";")
+
+
+def _parse_package(c: Cursor) -> _Package | None:
+    """Parse `package name; items endpackage`."""
+    start = c.next()
+    while c.peek().text in ("static", "automatic"):
+        c.next()
+    if c.peek().kind != ID:
+        return None
+    name = c.next()
+    pkg = _Package(start, name, name)
+    c.accept(";")
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF or (tok.text in _UNIT_START and tok.kind == KW):
+            # missing endpackage
+            break
+        if tok.text == "endpackage":
+            c.next()
+            _skip_label(c)
+            pkg.ended = True
+            break
+        pos = c.pos
+        _parse_package_item(c, pkg)
+        if c.pos == pos:
+            c.next()
+    pkg.last = c.toks[c.pos - 1]
+    return pkg
+
+
+def _parse_units(c: Cursor) -> tuple[list[_Module], list[_Package]]:
+    """Parse all modules and packages."""
     mods: list[_Module] = []
+    pkgs: list[_Package] = []
     while True:
         tok = c.peek()
         if tok.kind == EOF:
-            return mods
+            return mods, pkgs
         if tok.kind == KW and tok.text in _MODULE_START:
             mod = _parse_module(c)
             if mod:
                 mods.append(mod)
+        elif tok.kind == KW and tok.text == "package":
+            pkg = _parse_package(c)
+            if pkg:
+                pkgs.append(pkg)
         elif tok.text == "extern":
             c.skip_until(_SEMI)
             c.next()
@@ -840,6 +1017,35 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
         )
         for decl in decls
         if decl.kind == kind
+    )
+
+
+def _create_typedefs(typedefs: list[_Typedef], smap: SourceMap) -> tuple[dm.Typedef, ...]:
+    return tuple(
+        dm.Typedef(
+            name=typedef.name.text,
+            kind=typedef.kind,  # type: ignore[arg-type]
+            dtype=typedef.dtype,
+            dim=typedef.dim,
+            dim_unpacked=typedef.dim_unpacked,
+            members=tuple(
+                dm.Member(
+                    name=member.name.text,
+                    dtype=f"{member.ptype} {member.dtype}".strip(),
+                    dim=member.dim,
+                    dim_unpacked=member.dim_unpacked,
+                    value=member.default,
+                    comment=tuple(member.comment),
+                    ifdefs=member.name.ifdefs,
+                    loc=smap.span(member.first, member.last, member.name),
+                )
+                for member in typedef.members
+            ),
+            comment=tuple(typedef.comment),
+            ifdefs=typedef.name.ifdefs,
+            loc=smap.span(typedef.first, typedef.last, typedef.name),
+        )
+        for typedef in typedefs
     )
 
 
@@ -893,8 +1099,13 @@ def _create_macros(mod: _Module, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
     return tuple(macro.call.model_copy(update={"loc": smap.span(macro.first, macro.last)}) for macro in mod.macros)
 
 
-def _report(c: Cursor, mods: list[_Module], smap: SourceMap, diagnostics: Diagnostics) -> None:
+def _report(c: Cursor, mods: list[_Module], pkgs: list[_Package], smap: SourceMap, diagnostics: Diagnostics) -> None:
     """Report everything, which has not been parsed properly."""
+    for pkg in pkgs:
+        if not pkg.ended:
+            diagnostics.add(
+                "missing-end", f"package '{pkg.name.text}' has no 'endpackage'.", smap.span(pkg.first, pkg.name)
+            )
     for mod in mods:
         name = mod.name.text
         for start, end in mod.skipped:
@@ -918,8 +1129,8 @@ def parse(  # noqa: PLR0913
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
-) -> tuple[dm.Module, ...]:
-    """Parse SystemVerilog `text` and return its modules.
+) -> tuple[tuple[dm.Module, ...], tuple[dm.Package, ...]]:
+    """Parse SystemVerilog `text` and return its modules and packages.
 
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
@@ -940,14 +1151,26 @@ def parse(  # noqa: PLR0913
     else:
         smap = SourceMap(text)
     c = Cursor(tokenize(text), _HARD_STOPS)
-    mods = _parse_modules(c)
-    _report(c, mods, smap, diagnostics)
-    return tuple(
+    mods, pkgs = _parse_units(c)
+    _report(c, mods, pkgs, smap, diagnostics)
+    packages = tuple(
+        dm.Package(
+            name=pkg.name.text,
+            params=_create_params(pkg.params, "parameter", smap),
+            localparams=_create_params(pkg.params, "localparam", smap),
+            typedefs=_create_typedefs(pkg.typedefs, smap),
+            ifdefs=pkg.first.ifdefs,
+            loc=smap.span(pkg.first, pkg.last, pkg.name),
+        )
+        for pkg in pkgs
+    )
+    modules = tuple(
         dm.Module(
             name=mod.name.text,
             params=_create_params(mod.params, "parameter", smap),
             localparams=_create_params(mod.params, "localparam", smap),
             ports=_create_ports(mod.ports, smap),
+            typedefs=_create_typedefs(mod.typedefs, smap),
             insts=_create_insts(mod.insts, smap),
             ifdefs=mod.first.ifdefs,
             unresolved_macros=_create_macros(mod, smap),
@@ -955,3 +1178,4 @@ def parse(  # noqa: PLR0913
         )
         for mod in mods
     )
+    return modules, packages
