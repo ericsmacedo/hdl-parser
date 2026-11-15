@@ -40,7 +40,7 @@ import logging
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
 from .._diagnostics import Diagnostics, shorten  # noqa: TID252
@@ -52,10 +52,13 @@ LOGGER = logging.getLogger(__name__)
 
 # Parsing never continues beyond these keywords
 _MODULE_START = frozenset(("module", "macromodule"))
+_MODULE_END = frozenset(("endmodule", "endinterface"))
 _UNIT_START = frozenset((*_MODULE_START, "package"))
-_HARD_STOPS = frozenset((*_UNIT_START, "endmodule", "endpackage"))
+# `interface` is no hard stop: it is used within modules too (`virtual interface`, interface ports)
+_HARD_STOPS = frozenset((*_UNIT_START, "endmodule", "endpackage", "endinterface"))
 
 _DIRECTIONS = frozenset(("input", "output", "inout"))
+_MODPORT_DIRECTIONS = frozenset(("input", "output", "inout", "ref"))
 _PARAMS = frozenset(("parameter", "localparam"))
 _SIGNING = frozenset(("signed", "unsigned"))
 _STRUCT_QUALIFIERS = frozenset(("packed", "signed", "unsigned", "tagged", "soft"))
@@ -107,7 +110,6 @@ _DECLARATIONS = frozenset(
         "import",
         "interconnect",
         "let",
-        "modport",
         "nettype",
         "rand",
         "release",
@@ -227,13 +229,26 @@ class _Package:
     ended: bool = False
 
 
-@dataclass
-class _Module:
-    """One Module. `last` is known as soon as the module is parsed completely."""
+class _Modport(NamedTuple):
+    """One Modport. `first` and `last` span the whole `modport` statement."""
 
     first: Token
     last: Token
     name: Token
+    ports: list[_Decl]
+    comment: list[str]
+
+
+@dataclass
+class _Module:
+    """One Module Or Interface. `last` is known as soon as the module is parsed completely."""
+
+    first: Token
+    last: Token
+    name: Token
+    modports: list[_Modport] = field(default_factory=list)
+    # there is an `endmodule`
+    ended: bool = False
     params: list[_Decl] = field(default_factory=list)
     ports: list[_Decl] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
@@ -306,6 +321,14 @@ def _parse_type(c: Cursor) -> tuple[str, str]:  # noqa: C901, PLR0912
                 ptype = text
                 if text == "type" and c.peek().text == "(":
                     c.skip_balanced()
+            elif text == "interface":
+                # generic interface port: interface[.modport] name
+                start = c.pos
+                c.next()
+                if c.peek().text == "." and c.peek(1).kind == ID:
+                    c.next()
+                    c.next()
+                ptype = c.text(start, c.pos)
             elif text in ("struct", "union", "enum"):
                 c.next()
                 ptype = text
@@ -359,7 +382,7 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
         ptype, dtype = _parse_type(c)
     else:
         ptype, dtype = _parse_type(c)
-        if "." in ptype:
+        if "." in ptype or ptype == "interface":
             # interface port: my_if.modport name
             kind = ""
     dim = _parse_dims(c)
@@ -745,6 +768,58 @@ def _handle_param(c: Cursor, mod: _Module) -> None:
     mod.params.extend(_parse_item_decl(c))
 
 
+def _parse_modport_ports(c: Cursor) -> list[_Decl]:
+    """Parse `( direction name {, name} {, direction name ...} )` of a modport.
+
+    Imported and exported tasks and functions, and clocking blocks are skipped.
+    """
+    ports: list[_Decl] = []
+    opening = c.next()
+    direction = ""
+    while True:
+        tok = c.peek()
+        text = tok.text
+        if text == ")":
+            c.next()
+            break
+        if tok.kind == EOF or (text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        if text in OPEN:
+            # arguments of an imported task or function, or the expression of `.name(expression)`
+            c.skip_balanced()
+            continue
+        c.next()
+        if tok.kind == KW:
+            # input, output, inout or ref. Anything else (import, export, clocking) has no direction
+            direction = text if text in _MODPORT_DIRECTIONS else ""
+        elif tok.kind == ID and direction:
+            ports.append(_Decl(tok, tok, tok, direction, "", "", "", "", "", []))
+    return ports
+
+
+@_handles("modport")
+def _handle_modport(c: Cursor, mod: _Module) -> None:
+    """`modport name (...) {, name (...)};`."""
+    # the comments in front describe the (first) modport
+    leading = list(c.comments.get(c.pos, ()))
+    first = c.next()
+    modports: list[_Modport] = []
+    while c.peek().kind == ID:
+        comment = c.start_comment()
+        if not modports:
+            comment += leading
+        name = c.next()
+        ports = _parse_modport_ports(c) if c.peek().text == "(" else []
+        modports.append(_Modport(first, name, name, ports, comment))
+        if not c.accept(","):
+            break
+    c.skip_until(_SEMI)
+    c.accept(";")
+    c.sink = None
+    mod.modports += _set_last(c, modports)
+
+
 @_handles("typedef")
 def _handle_typedef(c: Cursor, mod: _Module) -> None:
     typedef = _parse_typedef(c)
@@ -867,8 +942,8 @@ def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
         c.next()
 
 
-def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
-    """Parse module items up to `endmodule`.
+def _parse_body(c: Cursor, mod: _Module) -> bool:  # noqa: C901
+    """Parse module items up to `endmodule`. Return whether there is an `endmodule`.
 
     Items starting with a keyword are parsed by the related function of `_BODY_HANDLERS`.
     """
@@ -883,12 +958,13 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
         text = tok.text
         kind = tok.kind
         if kind == KW:
-            if text == "endmodule":
+            if text in _MODULE_END:
                 c.next()
-                return
+                _skip_label(c)
+                return True
             if text in _UNIT_START:
                 # missing endmodule
-                return
+                return False
             handler = handlers.get(text)
             if handler:
                 handler(c, mod)
@@ -897,7 +973,7 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
         elif kind == ID:
             _parse_identifier_item(c, mod)
         elif kind == EOF:
-            return
+            return False
         elif text in OPEN:
             c.skip_balanced()
         else:
@@ -907,7 +983,7 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
 
 
 def _parse_module(c: Cursor) -> _Module | None:
-    """Parse `module name [imports] [#(parameters)] [(ports)]; items endmodule`."""
+    """Parse `module name [imports] [#(parameters)] [(ports)]; items endmodule`. Likewise interfaces."""
     start = c.next()
     while c.peek().text in ("static", "automatic"):
         c.next()
@@ -925,7 +1001,7 @@ def _parse_module(c: Cursor) -> _Module | None:
         # names of a non-ANSI port list have neither direction nor type
         mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod) if decl.kind or decl.ptype)
     c.accept(";")
-    _parse_body(c, mod)
+    mod.ended = _parse_body(c, mod)
     mod.last = c.toks[c.pos - 1]
     return mod
 
@@ -985,7 +1061,7 @@ def _parse_units(c: Cursor) -> tuple[list[_Module], list[_Package]]:
         tok = c.peek()
         if tok.kind == EOF:
             return mods, pkgs
-        if tok.kind == KW and tok.text in _MODULE_START:
+        if tok.kind == KW and (tok.text in _MODULE_START or (tok.text == "interface" and c.peek(1).text != "class")):
             mod = _parse_module(c)
             if mod:
                 mods.append(mod)
@@ -1017,6 +1093,27 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
         )
         for decl in decls
         if decl.kind == kind
+    )
+
+
+def _create_modports(modports: list[_Modport], smap: SourceMap) -> tuple[dm.Modport, ...]:
+    return tuple(
+        dm.Modport(
+            name=modport.name.text,
+            ports=tuple(
+                dm.Port(
+                    name=port.name.text,
+                    direction=port.kind,
+                    ifdefs=port.name.ifdefs,
+                    loc=smap.span(port.name, port.name),
+                )
+                for port in modport.ports
+            ),
+            comment=tuple(modport.comment),
+            ifdefs=modport.name.ifdefs,
+            loc=smap.span(modport.first, modport.last, modport.name),
+        )
+        for modport in modports
     )
 
 
@@ -1107,16 +1204,18 @@ def _report(c: Cursor, mods: list[_Module], pkgs: list[_Package], smap: SourceMa
                 "missing-end", f"package '{pkg.name.text}' has no 'endpackage'.", smap.span(pkg.first, pkg.name)
             )
     for mod in mods:
+        # module or interface
+        kind = mod.first.text
         name = mod.name.text
         for start, end in mod.skipped:
             diagnostics.add(
                 "header-item-skipped",
-                f"module '{name}': '{shorten(c.text(start, end))}' in module header is not understood. "
+                f"{kind} '{name}': '{shorten(c.text(start, end))}' in {kind} header is not understood. "
                 "Ports or parameters may be missing.",
                 smap.span(c.toks[start], c.toks[end - 1]),
             )
-        if mod.last.text != "endmodule":
-            diagnostics.add("missing-end", f"module '{name}' has no 'endmodule'.", smap.span(mod.first, mod.name))
+        if not mod.ended:
+            diagnostics.add("missing-end", f"{kind} '{name}' has no 'end{kind}'.", smap.span(mod.first, mod.name))
     for tok in c.unclosed:
         diagnostics.add("unbalanced-bracket", f"'{tok.text}' is never closed.", smap.span(tok, tok))
 
@@ -1129,8 +1228,10 @@ def parse(  # noqa: PLR0913
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
-) -> tuple[tuple[dm.Module, ...], tuple[dm.Package, ...]]:
-    """Parse SystemVerilog `text` and return its modules and packages.
+) -> dm.File:
+    """Parse SystemVerilog `text` and return its modules, interfaces and packages.
+
+    The result has neither path, nor identifiers, nor diagnostics.
 
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
@@ -1164,18 +1265,22 @@ def parse(  # noqa: PLR0913
         )
         for pkg in pkgs
     )
-    modules = tuple(
-        dm.Module(
-            name=mod.name.text,
-            params=_create_params(mod.params, "parameter", smap),
-            localparams=_create_params(mod.params, "localparam", smap),
-            ports=_create_ports(mod.ports, smap),
-            typedefs=_create_typedefs(mod.typedefs, smap),
-            insts=_create_insts(mod.insts, smap),
-            ifdefs=mod.first.ifdefs,
-            unresolved_macros=_create_macros(mod, smap),
-            loc=smap.span(mod.first, mod.last, mod.name),
-        )
-        for mod in mods
-    )
-    return modules, packages
+    modules = []
+    interfaces = []
+    for mod in mods:
+        fields: dict[str, Any] = {
+            "name": mod.name.text,
+            "params": _create_params(mod.params, "parameter", smap),
+            "localparams": _create_params(mod.params, "localparam", smap),
+            "ports": _create_ports(mod.ports, smap),
+            "typedefs": _create_typedefs(mod.typedefs, smap),
+            "insts": _create_insts(mod.insts, smap),
+            "ifdefs": mod.first.ifdefs,
+            "unresolved_macros": _create_macros(mod, smap),
+            "loc": smap.span(mod.first, mod.last, mod.name),
+        }
+        if mod.first.text == "interface":
+            interfaces.append(dm.Interface(modports=_create_modports(mod.modports, smap), **fields))
+        else:
+            modules.append(dm.Module(**fields))
+    return dm.File(path=None, modules=tuple(modules), interfaces=tuple(interfaces), packages=packages)

@@ -26,7 +26,6 @@ Set the `id` of all items, after parsing. See [hdl_parser.datamodel.File][] for 
 """
 
 import re
-from collections.abc import Iterable
 
 from . import datamodel as dm
 
@@ -106,10 +105,11 @@ class _Assigner:
         }
         return pkg.model_copy(update=update)
 
-    def module(self, mod: dm.Module) -> dm.Module:
+    def module(self, mod):
+        """Module or interface."""
         mod_id = self.files.id(self.name(mod.name))
         scope = _Scope(mod_id)
-        update = {
+        update: dict = {
             "id": mod_id,
             "params": self.named(mod.params, scope),
             "localparams": self.named(mod.localparams, scope),
@@ -121,15 +121,25 @@ class _Assigner:
                 for macro in mod.unresolved_macros
             ),
         }
+        if isinstance(mod, dm.Interface):
+            update["modports"] = self.modports(mod.modports, scope)
         return mod.model_copy(update=update)
 
+    def modports(self, modports: tuple[dm.Modport, ...], scope: _Scope) -> tuple[dm.Modport, ...]:
+        result = []
+        for modport in modports:
+            modport_id = scope.id(self.name(modport.name))
+            update = {"id": modport_id, "ports": self.named(modport.ports, _Scope(modport_id))}
+            result.append(modport.model_copy(update=update))
+        return tuple(result)
 
-def assign_ids(
-    modules: Iterable[dm.Module], packages: Iterable[dm.Package] = (), casefold: bool = False
-) -> tuple[tuple[dm.Module, ...], tuple[dm.Package, ...]]:
-    """Return `modules` and `packages` with the `id` of all items set.
 
-    `casefold`: names are case insensitive (VHDL).
-    """
+def assign_ids(file: dm.File, casefold: bool = False) -> dm.File:
+    """Return `file` with the `id` of all items set. `casefold`: names are case insensitive (VHDL)."""
     assigner = _Assigner(casefold)
-    return tuple(assigner.module(mod) for mod in modules), tuple(assigner.package(pkg) for pkg in packages)
+    update = {
+        "modules": tuple(assigner.module(mod) for mod in file.modules),
+        "interfaces": tuple(assigner.module(mod) for mod in file.interfaces),
+        "packages": tuple(assigner.package(pkg) for pkg in file.packages),
+    }
+    return file.model_copy(update=update)

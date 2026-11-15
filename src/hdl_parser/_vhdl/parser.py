@@ -576,10 +576,13 @@ def _parse_units(tokens: Tokens, diagnostics: Diagnostics) -> list[_Unit]:
 # --- data model ---
 
 
-def parse(text: str, diagnostics: Diagnostics | None = None) -> tuple[dm.Module, ...]:
-    """Parse VHDL `text` and return its entities as modules. Problems are reported to `diagnostics`."""
+def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
+    """Parse VHDL `text` and return its entities as modules. Problems are reported to `diagnostics`.
+
+    The result has neither path, nor identifiers, nor diagnostics.
+    """
     units = _parse_units(tokenize(text), diagnostics or Diagnostics("<text>"))
-    return tuple(
+    modules = tuple(
         dm.Module(
             name=unit.name,
             params=tuple(
@@ -610,3 +613,4 @@ def parse(text: str, diagnostics: Diagnostics | None = None) -> tuple[dm.Module,
         )
         for unit in units
     )
+    return dm.File(path=None, modules=modules)

@@ -85,7 +85,7 @@ class Diagnostic(_BaseModel):
     | `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |
     | `missing-end`         | warning  | Module, entity or architecture without end.                       |
     | `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |
-    | `no-module`           | info     | File without module or package, i.e. an included file.            |
+    | `no-module`           | info     | File without module, interface or package, i.e. an included file. |
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
@@ -111,7 +111,17 @@ class Diagnostic(_BaseModel):
 
 
 Item: TypeAlias = Union[
-    "Module", "Package", "Param", "Port", "Typedef", "Member", "ModuleInstance", "Connection", "MacroCall"
+    "Module",
+    "Interface",
+    "Package",
+    "Param",
+    "Port",
+    "Modport",
+    "Typedef",
+    "Member",
+    "ModuleInstance",
+    "Connection",
+    "MacroCall",
 ]
 """Any Item With An Identifier."""
 
@@ -124,7 +134,8 @@ class File(_BaseModel):
 
     | Item                                     | `id`                 |
     | ---------------------------------------- | -------------------- |
-    | Module, package                          | `top`, `bus_pkg`     |
+    | Module, interface, package               | `top`, `bus_pkg`     |
+    | Modport, port of a modport               | `bus_if.master.req`  |
     | Parameter, local parameter, port         | `top.WIDTH`          |
     | Type                                     | `bus_pkg.req_t`      |
     | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
@@ -144,12 +155,14 @@ class File(_BaseModel):
     Attributes:
         path: Related File.
         modules: Modules Within That File.
+        interfaces: Interfaces Within That File.
         packages: Packages Within That File.
         diagnostics: Problems found while parsing, in the order of the file.
     """
 
     path: Path | None
     modules: tuple["Module", ...]
+    interfaces: tuple["Interface", ...] = ()
     packages: tuple["Package", ...] = ()
     diagnostics: tuple[Diagnostic, ...] = ()
 
@@ -176,7 +189,7 @@ class File(_BaseModel):
         return f"{self.file_id}:{local}"
 
     def iter_items(self) -> Iterator["Item"]:
-        """All items: packages and modules with their parameters, types, ports, instances and so on."""
+        """All items: packages, interfaces and modules with their parameters, types, ports, instances and so on."""
         for package in self.packages:
             yield package
             yield from package.params
@@ -184,7 +197,7 @@ class File(_BaseModel):
             for typedef in package.typedefs:
                 yield typedef
                 yield from typedef.members
-        for module in self.modules:
+        for module in (*self.interfaces, *self.modules):
             yield module
             yield from module.params
             yield from module.localparams
@@ -193,6 +206,9 @@ class File(_BaseModel):
                 yield typedef
                 yield from typedef.members
             yield from module.unresolved_macros
+            for modport in getattr(module, "modports", ()):
+                yield modport
+                yield from modport.ports
             for inst in module.insts:
                 yield inst
                 yield from inst.params
@@ -235,6 +251,37 @@ class Module(_BaseModel):
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
     loc: Location | None = None
+
+
+class Modport(_BaseModel):
+    """Represents a modport of a SystemVerilog interface: `modport master (output req, input ack);`.
+
+    Attributes:
+        name: Name of the modport
+        ports: Signals of the interface with their direction. Just `name` and `direction` are set.
+               Imported and exported tasks and functions, and clocking blocks are not listed.
+        comment: tuple of associated comments
+        ifdefs: Conditions the modport is defined at.
+        loc: Source Location. Modports declared together share it.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    name: str
+    ports: tuple["Port", ...] = ()
+    comment: tuple[str, ...] = ()
+    ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Interface(Module):
+    """Represents a SystemVerilog Interface. It has everything a module has, and modports.
+
+    Attributes:
+        modports: Modports
+    """
+
+    modports: tuple[Modport, ...] = ()
 
 
 class Package(_BaseModel):

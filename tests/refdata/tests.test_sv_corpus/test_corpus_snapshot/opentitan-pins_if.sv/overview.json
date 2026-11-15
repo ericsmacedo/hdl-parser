@@ -1,11 +1,69 @@
 {
   "path": "$PRJ/tests/corpus/sv/opentitan/pins_if.sv",
   "modules": [],
-  "diagnostics": [
+  "interfaces": [
     {
-      "code": "no-module",
-      "severity": "info",
-      "message": "no module found."
+      "id": "pins_if",
+      "name": "pins_if",
+      "params": [
+        {
+          "id": "pins_if.Width",
+          "ptype": "int",
+          "name": "Width",
+          "default": "1",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "pins_if.PullStrength",
+          "ptype": "bit",
+          "name": "PullStrength",
+          "dim": "[8*4-1:0]",
+          "default": "\"Pull\"",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 48
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "pins_if.pins",
+          "direction": "inout",
+          "name": "pins",
+          "dim": "[Width-1:0]",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 25
+          }
+        }
+      ],
+      "ifdefs": [
+        "!SYNTHESIS"
+      ],
+      "loc": {
+        "line": 10,
+        "col": 1,
+        "end_line": 115,
+        "end_col": 13
+      }
     }
   ]
 }

@@ -1,11 +1,7023 @@
 {
   "path": "$PRJ/tests/corpus/sv/axi/axi_intf.sv",
   "modules": [],
-  "diagnostics": [
+  "interfaces": [
     {
-      "code": "no-module",
-      "severity": "info",
-      "message": "no module found."
+      "id": "AXI_BUS",
+      "name": "AXI_BUS",
+      "params": [
+        {
+          "id": "AXI_BUS.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS.AXI_ID_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS.AXI_USER_WIDTH",
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 44
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_BUS.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_BUS.id_t",
+          "name": "id_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ID_WIDTH-1:0]",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "AXI_BUS.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS.user_t",
+          "name": "user_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_USER_WIDTH-1:0]",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 20,
+        "col": 1,
+        "end_line": 109,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_BUS.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_BUS.Master.aw_id",
+              "direction": "output",
+              "name": "aw_id",
+              "loc": {
+                "line": 86,
+                "col": 12,
+                "end_line": 86,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_addr",
+              "direction": "output",
+              "name": "aw_addr",
+              "loc": {
+                "line": 86,
+                "col": 19,
+                "end_line": 86,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_len",
+              "direction": "output",
+              "name": "aw_len",
+              "loc": {
+                "line": 86,
+                "col": 28,
+                "end_line": 86,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_size",
+              "direction": "output",
+              "name": "aw_size",
+              "loc": {
+                "line": 86,
+                "col": 36,
+                "end_line": 86,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_burst",
+              "direction": "output",
+              "name": "aw_burst",
+              "loc": {
+                "line": 86,
+                "col": 45,
+                "end_line": 86,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_lock",
+              "direction": "output",
+              "name": "aw_lock",
+              "loc": {
+                "line": 86,
+                "col": 55,
+                "end_line": 86,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_cache",
+              "direction": "output",
+              "name": "aw_cache",
+              "loc": {
+                "line": 86,
+                "col": 64,
+                "end_line": 86,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_prot",
+              "direction": "output",
+              "name": "aw_prot",
+              "loc": {
+                "line": 86,
+                "col": 74,
+                "end_line": 86,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_qos",
+              "direction": "output",
+              "name": "aw_qos",
+              "loc": {
+                "line": 86,
+                "col": 83,
+                "end_line": 86,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_region",
+              "direction": "output",
+              "name": "aw_region",
+              "loc": {
+                "line": 86,
+                "col": 91,
+                "end_line": 86,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_atop",
+              "direction": "output",
+              "name": "aw_atop",
+              "loc": {
+                "line": 86,
+                "col": 102,
+                "end_line": 86,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_user",
+              "direction": "output",
+              "name": "aw_user",
+              "loc": {
+                "line": 86,
+                "col": 111,
+                "end_line": 86,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_valid",
+              "direction": "output",
+              "name": "aw_valid",
+              "loc": {
+                "line": 86,
+                "col": 120,
+                "end_line": 86,
+                "end_col": 128
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 86,
+                "col": 136,
+                "end_line": 86,
+                "end_col": 144
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 87,
+                "col": 12,
+                "end_line": 87,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_strb",
+              "direction": "output",
+              "name": "w_strb",
+              "loc": {
+                "line": 87,
+                "col": 20,
+                "end_line": 87,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_last",
+              "direction": "output",
+              "name": "w_last",
+              "loc": {
+                "line": 87,
+                "col": 28,
+                "end_line": 87,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_user",
+              "direction": "output",
+              "name": "w_user",
+              "loc": {
+                "line": 87,
+                "col": 36,
+                "end_line": 87,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_valid",
+              "direction": "output",
+              "name": "w_valid",
+              "loc": {
+                "line": 87,
+                "col": 44,
+                "end_line": 87,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 87,
+                "col": 59,
+                "end_line": 87,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.b_id",
+              "direction": "input",
+              "name": "b_id",
+              "loc": {
+                "line": 88,
+                "col": 11,
+                "end_line": 88,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 88,
+                "col": 17,
+                "end_line": 88,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.b_user",
+              "direction": "input",
+              "name": "b_user",
+              "loc": {
+                "line": 88,
+                "col": 25,
+                "end_line": 88,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 88,
+                "col": 33,
+                "end_line": 88,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.b_ready",
+              "direction": "output",
+              "name": "b_ready",
+              "loc": {
+                "line": 88,
+                "col": 49,
+                "end_line": 88,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_id",
+              "direction": "output",
+              "name": "ar_id",
+              "loc": {
+                "line": 89,
+                "col": 12,
+                "end_line": 89,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_addr",
+              "direction": "output",
+              "name": "ar_addr",
+              "loc": {
+                "line": 89,
+                "col": 19,
+                "end_line": 89,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_len",
+              "direction": "output",
+              "name": "ar_len",
+              "loc": {
+                "line": 89,
+                "col": 28,
+                "end_line": 89,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_size",
+              "direction": "output",
+              "name": "ar_size",
+              "loc": {
+                "line": 89,
+                "col": 36,
+                "end_line": 89,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_burst",
+              "direction": "output",
+              "name": "ar_burst",
+              "loc": {
+                "line": 89,
+                "col": 45,
+                "end_line": 89,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_lock",
+              "direction": "output",
+              "name": "ar_lock",
+              "loc": {
+                "line": 89,
+                "col": 55,
+                "end_line": 89,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_cache",
+              "direction": "output",
+              "name": "ar_cache",
+              "loc": {
+                "line": 89,
+                "col": 64,
+                "end_line": 89,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_prot",
+              "direction": "output",
+              "name": "ar_prot",
+              "loc": {
+                "line": 89,
+                "col": 74,
+                "end_line": 89,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_qos",
+              "direction": "output",
+              "name": "ar_qos",
+              "loc": {
+                "line": 89,
+                "col": 83,
+                "end_line": 89,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_region",
+              "direction": "output",
+              "name": "ar_region",
+              "loc": {
+                "line": 89,
+                "col": 91,
+                "end_line": 89,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_user",
+              "direction": "output",
+              "name": "ar_user",
+              "loc": {
+                "line": 89,
+                "col": 102,
+                "end_line": 89,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_valid",
+              "direction": "output",
+              "name": "ar_valid",
+              "loc": {
+                "line": 89,
+                "col": 111,
+                "end_line": 89,
+                "end_col": 119
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 89,
+                "col": 127,
+                "end_line": 89,
+                "end_col": 135
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_id",
+              "direction": "input",
+              "name": "r_id",
+              "loc": {
+                "line": 90,
+                "col": 11,
+                "end_line": 90,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 90,
+                "col": 17,
+                "end_line": 90,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 90,
+                "col": 25,
+                "end_line": 90,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_last",
+              "direction": "input",
+              "name": "r_last",
+              "loc": {
+                "line": 90,
+                "col": 33,
+                "end_line": 90,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_user",
+              "direction": "input",
+              "name": "r_user",
+              "loc": {
+                "line": 90,
+                "col": 41,
+                "end_line": 90,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 90,
+                "col": 49,
+                "end_line": 90,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS.Master.r_ready",
+              "direction": "output",
+              "name": "r_ready",
+              "loc": {
+                "line": 90,
+                "col": 65,
+                "end_line": 90,
+                "end_col": 72
+              }
+            }
+          ],
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 91,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_BUS.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_BUS.Slave.aw_id",
+              "direction": "input",
+              "name": "aw_id",
+              "loc": {
+                "line": 94,
+                "col": 11,
+                "end_line": 94,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 94,
+                "col": 18,
+                "end_line": 94,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_len",
+              "direction": "input",
+              "name": "aw_len",
+              "loc": {
+                "line": 94,
+                "col": 27,
+                "end_line": 94,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_size",
+              "direction": "input",
+              "name": "aw_size",
+              "loc": {
+                "line": 94,
+                "col": 35,
+                "end_line": 94,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_burst",
+              "direction": "input",
+              "name": "aw_burst",
+              "loc": {
+                "line": 94,
+                "col": 44,
+                "end_line": 94,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_lock",
+              "direction": "input",
+              "name": "aw_lock",
+              "loc": {
+                "line": 94,
+                "col": 54,
+                "end_line": 94,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_cache",
+              "direction": "input",
+              "name": "aw_cache",
+              "loc": {
+                "line": 94,
+                "col": 63,
+                "end_line": 94,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 94,
+                "col": 73,
+                "end_line": 94,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_qos",
+              "direction": "input",
+              "name": "aw_qos",
+              "loc": {
+                "line": 94,
+                "col": 82,
+                "end_line": 94,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_region",
+              "direction": "input",
+              "name": "aw_region",
+              "loc": {
+                "line": 94,
+                "col": 90,
+                "end_line": 94,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_atop",
+              "direction": "input",
+              "name": "aw_atop",
+              "loc": {
+                "line": 94,
+                "col": 101,
+                "end_line": 94,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_user",
+              "direction": "input",
+              "name": "aw_user",
+              "loc": {
+                "line": 94,
+                "col": 110,
+                "end_line": 94,
+                "end_col": 117
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 94,
+                "col": 119,
+                "end_line": 94,
+                "end_col": 127
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.aw_ready",
+              "direction": "output",
+              "name": "aw_ready",
+              "loc": {
+                "line": 94,
+                "col": 136,
+                "end_line": 94,
+                "end_col": 144
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 95,
+                "col": 11,
+                "end_line": 95,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 95,
+                "col": 19,
+                "end_line": 95,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_last",
+              "direction": "input",
+              "name": "w_last",
+              "loc": {
+                "line": 95,
+                "col": 27,
+                "end_line": 95,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_user",
+              "direction": "input",
+              "name": "w_user",
+              "loc": {
+                "line": 95,
+                "col": 35,
+                "end_line": 95,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 95,
+                "col": 43,
+                "end_line": 95,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.w_ready",
+              "direction": "output",
+              "name": "w_ready",
+              "loc": {
+                "line": 95,
+                "col": 59,
+                "end_line": 95,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.b_id",
+              "direction": "output",
+              "name": "b_id",
+              "loc": {
+                "line": 96,
+                "col": 12,
+                "end_line": 96,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.b_resp",
+              "direction": "output",
+              "name": "b_resp",
+              "loc": {
+                "line": 96,
+                "col": 18,
+                "end_line": 96,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.b_user",
+              "direction": "output",
+              "name": "b_user",
+              "loc": {
+                "line": 96,
+                "col": 26,
+                "end_line": 96,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.b_valid",
+              "direction": "output",
+              "name": "b_valid",
+              "loc": {
+                "line": 96,
+                "col": 34,
+                "end_line": 96,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 96,
+                "col": 49,
+                "end_line": 96,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_id",
+              "direction": "input",
+              "name": "ar_id",
+              "loc": {
+                "line": 97,
+                "col": 11,
+                "end_line": 97,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 97,
+                "col": 18,
+                "end_line": 97,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_len",
+              "direction": "input",
+              "name": "ar_len",
+              "loc": {
+                "line": 97,
+                "col": 27,
+                "end_line": 97,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_size",
+              "direction": "input",
+              "name": "ar_size",
+              "loc": {
+                "line": 97,
+                "col": 35,
+                "end_line": 97,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_burst",
+              "direction": "input",
+              "name": "ar_burst",
+              "loc": {
+                "line": 97,
+                "col": 44,
+                "end_line": 97,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_lock",
+              "direction": "input",
+              "name": "ar_lock",
+              "loc": {
+                "line": 97,
+                "col": 54,
+                "end_line": 97,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_cache",
+              "direction": "input",
+              "name": "ar_cache",
+              "loc": {
+                "line": 97,
+                "col": 63,
+                "end_line": 97,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 97,
+                "col": 73,
+                "end_line": 97,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_qos",
+              "direction": "input",
+              "name": "ar_qos",
+              "loc": {
+                "line": 97,
+                "col": 82,
+                "end_line": 97,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_region",
+              "direction": "input",
+              "name": "ar_region",
+              "loc": {
+                "line": 97,
+                "col": 90,
+                "end_line": 97,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_user",
+              "direction": "input",
+              "name": "ar_user",
+              "loc": {
+                "line": 97,
+                "col": 101,
+                "end_line": 97,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 97,
+                "col": 110,
+                "end_line": 97,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.ar_ready",
+              "direction": "output",
+              "name": "ar_ready",
+              "loc": {
+                "line": 97,
+                "col": 127,
+                "end_line": 97,
+                "end_col": 135
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_id",
+              "direction": "output",
+              "name": "r_id",
+              "loc": {
+                "line": 98,
+                "col": 12,
+                "end_line": 98,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 98,
+                "col": 18,
+                "end_line": 98,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_resp",
+              "direction": "output",
+              "name": "r_resp",
+              "loc": {
+                "line": 98,
+                "col": 26,
+                "end_line": 98,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_last",
+              "direction": "output",
+              "name": "r_last",
+              "loc": {
+                "line": 98,
+                "col": 34,
+                "end_line": 98,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_user",
+              "direction": "output",
+              "name": "r_user",
+              "loc": {
+                "line": 98,
+                "col": 42,
+                "end_line": 98,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_valid",
+              "direction": "output",
+              "name": "r_valid",
+              "loc": {
+                "line": 98,
+                "col": 50,
+                "end_line": 98,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "AXI_BUS.Slave.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 98,
+                "col": 65,
+                "end_line": 98,
+                "end_col": 72
+              }
+            }
+          ],
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_BUS.Monitor",
+          "name": "Monitor",
+          "ports": [
+            {
+              "id": "AXI_BUS.Monitor.aw_id",
+              "direction": "input",
+              "name": "aw_id",
+              "loc": {
+                "line": 102,
+                "col": 11,
+                "end_line": 102,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 102,
+                "col": 18,
+                "end_line": 102,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_len",
+              "direction": "input",
+              "name": "aw_len",
+              "loc": {
+                "line": 102,
+                "col": 27,
+                "end_line": 102,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_size",
+              "direction": "input",
+              "name": "aw_size",
+              "loc": {
+                "line": 102,
+                "col": 35,
+                "end_line": 102,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_burst",
+              "direction": "input",
+              "name": "aw_burst",
+              "loc": {
+                "line": 102,
+                "col": 44,
+                "end_line": 102,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_lock",
+              "direction": "input",
+              "name": "aw_lock",
+              "loc": {
+                "line": 102,
+                "col": 54,
+                "end_line": 102,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_cache",
+              "direction": "input",
+              "name": "aw_cache",
+              "loc": {
+                "line": 102,
+                "col": 63,
+                "end_line": 102,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 102,
+                "col": 73,
+                "end_line": 102,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_qos",
+              "direction": "input",
+              "name": "aw_qos",
+              "loc": {
+                "line": 102,
+                "col": 82,
+                "end_line": 102,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_region",
+              "direction": "input",
+              "name": "aw_region",
+              "loc": {
+                "line": 102,
+                "col": 90,
+                "end_line": 102,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_atop",
+              "direction": "input",
+              "name": "aw_atop",
+              "loc": {
+                "line": 102,
+                "col": 101,
+                "end_line": 102,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_user",
+              "direction": "input",
+              "name": "aw_user",
+              "loc": {
+                "line": 102,
+                "col": 110,
+                "end_line": 102,
+                "end_col": 117
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 102,
+                "col": 119,
+                "end_line": 102,
+                "end_col": 127
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 102,
+                "col": 129,
+                "end_line": 102,
+                "end_col": 137
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 103,
+                "col": 11,
+                "end_line": 103,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 103,
+                "col": 19,
+                "end_line": 103,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_last",
+              "direction": "input",
+              "name": "w_last",
+              "loc": {
+                "line": 103,
+                "col": 27,
+                "end_line": 103,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_user",
+              "direction": "input",
+              "name": "w_user",
+              "loc": {
+                "line": 103,
+                "col": 35,
+                "end_line": 103,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 103,
+                "col": 43,
+                "end_line": 103,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 103,
+                "col": 52,
+                "end_line": 103,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.b_id",
+              "direction": "input",
+              "name": "b_id",
+              "loc": {
+                "line": 104,
+                "col": 11,
+                "end_line": 104,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 104,
+                "col": 17,
+                "end_line": 104,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.b_user",
+              "direction": "input",
+              "name": "b_user",
+              "loc": {
+                "line": 104,
+                "col": 25,
+                "end_line": 104,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 104,
+                "col": 33,
+                "end_line": 104,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 104,
+                "col": 42,
+                "end_line": 104,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_id",
+              "direction": "input",
+              "name": "ar_id",
+              "loc": {
+                "line": 105,
+                "col": 11,
+                "end_line": 105,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 105,
+                "col": 18,
+                "end_line": 105,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_len",
+              "direction": "input",
+              "name": "ar_len",
+              "loc": {
+                "line": 105,
+                "col": 27,
+                "end_line": 105,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_size",
+              "direction": "input",
+              "name": "ar_size",
+              "loc": {
+                "line": 105,
+                "col": 35,
+                "end_line": 105,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_burst",
+              "direction": "input",
+              "name": "ar_burst",
+              "loc": {
+                "line": 105,
+                "col": 44,
+                "end_line": 105,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_lock",
+              "direction": "input",
+              "name": "ar_lock",
+              "loc": {
+                "line": 105,
+                "col": 54,
+                "end_line": 105,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_cache",
+              "direction": "input",
+              "name": "ar_cache",
+              "loc": {
+                "line": 105,
+                "col": 63,
+                "end_line": 105,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 105,
+                "col": 73,
+                "end_line": 105,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_qos",
+              "direction": "input",
+              "name": "ar_qos",
+              "loc": {
+                "line": 105,
+                "col": 82,
+                "end_line": 105,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_region",
+              "direction": "input",
+              "name": "ar_region",
+              "loc": {
+                "line": 105,
+                "col": 90,
+                "end_line": 105,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_user",
+              "direction": "input",
+              "name": "ar_user",
+              "loc": {
+                "line": 105,
+                "col": 101,
+                "end_line": 105,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 105,
+                "col": 110,
+                "end_line": 105,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 105,
+                "col": 120,
+                "end_line": 105,
+                "end_col": 128
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_id",
+              "direction": "input",
+              "name": "r_id",
+              "loc": {
+                "line": 106,
+                "col": 11,
+                "end_line": 106,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 106,
+                "col": 17,
+                "end_line": 106,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 106,
+                "col": 25,
+                "end_line": 106,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_last",
+              "direction": "input",
+              "name": "r_last",
+              "loc": {
+                "line": 106,
+                "col": 33,
+                "end_line": 106,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_user",
+              "direction": "input",
+              "name": "r_user",
+              "loc": {
+                "line": 106,
+                "col": 41,
+                "end_line": 106,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 106,
+                "col": 49,
+                "end_line": 106,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS.Monitor.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 106,
+                "col": 58,
+                "end_line": 106,
+                "end_col": 65
+              }
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_BUS_DV",
+      "name": "AXI_BUS_DV",
+      "params": [
+        {
+          "id": "AXI_BUS_DV.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.AXI_ID_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 116,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.AXI_USER_WIDTH",
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 117,
+            "col": 3,
+            "end_line": 117,
+            "end_col": 44
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "AXI_BUS_DV.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 20
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_BUS_DV.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 122,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_BUS_DV.id_t",
+          "name": "id_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ID_WIDTH-1:0]",
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 125,
+            "col": 3,
+            "end_line": 125,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 127,
+            "col": 3,
+            "end_line": 127,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.user_t",
+          "name": "user_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_USER_WIDTH-1:0]",
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 113,
+        "col": 1,
+        "end_line": 265,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_BUS_DV.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_BUS_DV.Master.aw_id",
+              "direction": "output",
+              "name": "aw_id",
+              "loc": {
+                "line": 181,
+                "col": 12,
+                "end_line": 181,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_addr",
+              "direction": "output",
+              "name": "aw_addr",
+              "loc": {
+                "line": 181,
+                "col": 19,
+                "end_line": 181,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_len",
+              "direction": "output",
+              "name": "aw_len",
+              "loc": {
+                "line": 181,
+                "col": 28,
+                "end_line": 181,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_size",
+              "direction": "output",
+              "name": "aw_size",
+              "loc": {
+                "line": 181,
+                "col": 36,
+                "end_line": 181,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_burst",
+              "direction": "output",
+              "name": "aw_burst",
+              "loc": {
+                "line": 181,
+                "col": 45,
+                "end_line": 181,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_lock",
+              "direction": "output",
+              "name": "aw_lock",
+              "loc": {
+                "line": 181,
+                "col": 55,
+                "end_line": 181,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_cache",
+              "direction": "output",
+              "name": "aw_cache",
+              "loc": {
+                "line": 181,
+                "col": 64,
+                "end_line": 181,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_prot",
+              "direction": "output",
+              "name": "aw_prot",
+              "loc": {
+                "line": 181,
+                "col": 74,
+                "end_line": 181,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_qos",
+              "direction": "output",
+              "name": "aw_qos",
+              "loc": {
+                "line": 181,
+                "col": 83,
+                "end_line": 181,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_region",
+              "direction": "output",
+              "name": "aw_region",
+              "loc": {
+                "line": 181,
+                "col": 91,
+                "end_line": 181,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_atop",
+              "direction": "output",
+              "name": "aw_atop",
+              "loc": {
+                "line": 181,
+                "col": 102,
+                "end_line": 181,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_user",
+              "direction": "output",
+              "name": "aw_user",
+              "loc": {
+                "line": 181,
+                "col": 111,
+                "end_line": 181,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_valid",
+              "direction": "output",
+              "name": "aw_valid",
+              "loc": {
+                "line": 181,
+                "col": 120,
+                "end_line": 181,
+                "end_col": 128
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 181,
+                "col": 136,
+                "end_line": 181,
+                "end_col": 144
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 182,
+                "col": 12,
+                "end_line": 182,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_strb",
+              "direction": "output",
+              "name": "w_strb",
+              "loc": {
+                "line": 182,
+                "col": 20,
+                "end_line": 182,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_last",
+              "direction": "output",
+              "name": "w_last",
+              "loc": {
+                "line": 182,
+                "col": 28,
+                "end_line": 182,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_user",
+              "direction": "output",
+              "name": "w_user",
+              "loc": {
+                "line": 182,
+                "col": 36,
+                "end_line": 182,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_valid",
+              "direction": "output",
+              "name": "w_valid",
+              "loc": {
+                "line": 182,
+                "col": 44,
+                "end_line": 182,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 182,
+                "col": 59,
+                "end_line": 182,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.b_id",
+              "direction": "input",
+              "name": "b_id",
+              "loc": {
+                "line": 183,
+                "col": 11,
+                "end_line": 183,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 183,
+                "col": 17,
+                "end_line": 183,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.b_user",
+              "direction": "input",
+              "name": "b_user",
+              "loc": {
+                "line": 183,
+                "col": 25,
+                "end_line": 183,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 183,
+                "col": 33,
+                "end_line": 183,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.b_ready",
+              "direction": "output",
+              "name": "b_ready",
+              "loc": {
+                "line": 183,
+                "col": 49,
+                "end_line": 183,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_id",
+              "direction": "output",
+              "name": "ar_id",
+              "loc": {
+                "line": 184,
+                "col": 12,
+                "end_line": 184,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_addr",
+              "direction": "output",
+              "name": "ar_addr",
+              "loc": {
+                "line": 184,
+                "col": 19,
+                "end_line": 184,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_len",
+              "direction": "output",
+              "name": "ar_len",
+              "loc": {
+                "line": 184,
+                "col": 28,
+                "end_line": 184,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_size",
+              "direction": "output",
+              "name": "ar_size",
+              "loc": {
+                "line": 184,
+                "col": 36,
+                "end_line": 184,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_burst",
+              "direction": "output",
+              "name": "ar_burst",
+              "loc": {
+                "line": 184,
+                "col": 45,
+                "end_line": 184,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_lock",
+              "direction": "output",
+              "name": "ar_lock",
+              "loc": {
+                "line": 184,
+                "col": 55,
+                "end_line": 184,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_cache",
+              "direction": "output",
+              "name": "ar_cache",
+              "loc": {
+                "line": 184,
+                "col": 64,
+                "end_line": 184,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_prot",
+              "direction": "output",
+              "name": "ar_prot",
+              "loc": {
+                "line": 184,
+                "col": 74,
+                "end_line": 184,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_qos",
+              "direction": "output",
+              "name": "ar_qos",
+              "loc": {
+                "line": 184,
+                "col": 83,
+                "end_line": 184,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_region",
+              "direction": "output",
+              "name": "ar_region",
+              "loc": {
+                "line": 184,
+                "col": 91,
+                "end_line": 184,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_user",
+              "direction": "output",
+              "name": "ar_user",
+              "loc": {
+                "line": 184,
+                "col": 102,
+                "end_line": 184,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_valid",
+              "direction": "output",
+              "name": "ar_valid",
+              "loc": {
+                "line": 184,
+                "col": 111,
+                "end_line": 184,
+                "end_col": 119
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 184,
+                "col": 127,
+                "end_line": 184,
+                "end_col": 135
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_id",
+              "direction": "input",
+              "name": "r_id",
+              "loc": {
+                "line": 185,
+                "col": 11,
+                "end_line": 185,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 185,
+                "col": 17,
+                "end_line": 185,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 185,
+                "col": 25,
+                "end_line": 185,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_last",
+              "direction": "input",
+              "name": "r_last",
+              "loc": {
+                "line": 185,
+                "col": 33,
+                "end_line": 185,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_user",
+              "direction": "input",
+              "name": "r_user",
+              "loc": {
+                "line": 185,
+                "col": 41,
+                "end_line": 185,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 185,
+                "col": 49,
+                "end_line": 185,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Master.r_ready",
+              "direction": "output",
+              "name": "r_ready",
+              "loc": {
+                "line": 185,
+                "col": 65,
+                "end_line": 185,
+                "end_col": 72
+              }
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 186,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_BUS_DV.Slave.aw_id",
+              "direction": "input",
+              "name": "aw_id",
+              "loc": {
+                "line": 189,
+                "col": 11,
+                "end_line": 189,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 189,
+                "col": 18,
+                "end_line": 189,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_len",
+              "direction": "input",
+              "name": "aw_len",
+              "loc": {
+                "line": 189,
+                "col": 27,
+                "end_line": 189,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_size",
+              "direction": "input",
+              "name": "aw_size",
+              "loc": {
+                "line": 189,
+                "col": 35,
+                "end_line": 189,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_burst",
+              "direction": "input",
+              "name": "aw_burst",
+              "loc": {
+                "line": 189,
+                "col": 44,
+                "end_line": 189,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_lock",
+              "direction": "input",
+              "name": "aw_lock",
+              "loc": {
+                "line": 189,
+                "col": 54,
+                "end_line": 189,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_cache",
+              "direction": "input",
+              "name": "aw_cache",
+              "loc": {
+                "line": 189,
+                "col": 63,
+                "end_line": 189,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 189,
+                "col": 73,
+                "end_line": 189,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_qos",
+              "direction": "input",
+              "name": "aw_qos",
+              "loc": {
+                "line": 189,
+                "col": 82,
+                "end_line": 189,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_region",
+              "direction": "input",
+              "name": "aw_region",
+              "loc": {
+                "line": 189,
+                "col": 90,
+                "end_line": 189,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_atop",
+              "direction": "input",
+              "name": "aw_atop",
+              "loc": {
+                "line": 189,
+                "col": 101,
+                "end_line": 189,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_user",
+              "direction": "input",
+              "name": "aw_user",
+              "loc": {
+                "line": 189,
+                "col": 110,
+                "end_line": 189,
+                "end_col": 117
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 189,
+                "col": 119,
+                "end_line": 189,
+                "end_col": 127
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.aw_ready",
+              "direction": "output",
+              "name": "aw_ready",
+              "loc": {
+                "line": 189,
+                "col": 136,
+                "end_line": 189,
+                "end_col": 144
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 190,
+                "col": 11,
+                "end_line": 190,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 190,
+                "col": 19,
+                "end_line": 190,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_last",
+              "direction": "input",
+              "name": "w_last",
+              "loc": {
+                "line": 190,
+                "col": 27,
+                "end_line": 190,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_user",
+              "direction": "input",
+              "name": "w_user",
+              "loc": {
+                "line": 190,
+                "col": 35,
+                "end_line": 190,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 190,
+                "col": 43,
+                "end_line": 190,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.w_ready",
+              "direction": "output",
+              "name": "w_ready",
+              "loc": {
+                "line": 190,
+                "col": 59,
+                "end_line": 190,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.b_id",
+              "direction": "output",
+              "name": "b_id",
+              "loc": {
+                "line": 191,
+                "col": 12,
+                "end_line": 191,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.b_resp",
+              "direction": "output",
+              "name": "b_resp",
+              "loc": {
+                "line": 191,
+                "col": 18,
+                "end_line": 191,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.b_user",
+              "direction": "output",
+              "name": "b_user",
+              "loc": {
+                "line": 191,
+                "col": 26,
+                "end_line": 191,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.b_valid",
+              "direction": "output",
+              "name": "b_valid",
+              "loc": {
+                "line": 191,
+                "col": 34,
+                "end_line": 191,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 191,
+                "col": 49,
+                "end_line": 191,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_id",
+              "direction": "input",
+              "name": "ar_id",
+              "loc": {
+                "line": 192,
+                "col": 11,
+                "end_line": 192,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 192,
+                "col": 18,
+                "end_line": 192,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_len",
+              "direction": "input",
+              "name": "ar_len",
+              "loc": {
+                "line": 192,
+                "col": 27,
+                "end_line": 192,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_size",
+              "direction": "input",
+              "name": "ar_size",
+              "loc": {
+                "line": 192,
+                "col": 35,
+                "end_line": 192,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_burst",
+              "direction": "input",
+              "name": "ar_burst",
+              "loc": {
+                "line": 192,
+                "col": 44,
+                "end_line": 192,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_lock",
+              "direction": "input",
+              "name": "ar_lock",
+              "loc": {
+                "line": 192,
+                "col": 54,
+                "end_line": 192,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_cache",
+              "direction": "input",
+              "name": "ar_cache",
+              "loc": {
+                "line": 192,
+                "col": 63,
+                "end_line": 192,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 192,
+                "col": 73,
+                "end_line": 192,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_qos",
+              "direction": "input",
+              "name": "ar_qos",
+              "loc": {
+                "line": 192,
+                "col": 82,
+                "end_line": 192,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_region",
+              "direction": "input",
+              "name": "ar_region",
+              "loc": {
+                "line": 192,
+                "col": 90,
+                "end_line": 192,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_user",
+              "direction": "input",
+              "name": "ar_user",
+              "loc": {
+                "line": 192,
+                "col": 101,
+                "end_line": 192,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 192,
+                "col": 110,
+                "end_line": 192,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.ar_ready",
+              "direction": "output",
+              "name": "ar_ready",
+              "loc": {
+                "line": 192,
+                "col": 127,
+                "end_line": 192,
+                "end_col": 135
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_id",
+              "direction": "output",
+              "name": "r_id",
+              "loc": {
+                "line": 193,
+                "col": 12,
+                "end_line": 193,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 193,
+                "col": 18,
+                "end_line": 193,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_resp",
+              "direction": "output",
+              "name": "r_resp",
+              "loc": {
+                "line": 193,
+                "col": 26,
+                "end_line": 193,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_last",
+              "direction": "output",
+              "name": "r_last",
+              "loc": {
+                "line": 193,
+                "col": 34,
+                "end_line": 193,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_user",
+              "direction": "output",
+              "name": "r_user",
+              "loc": {
+                "line": 193,
+                "col": 42,
+                "end_line": 193,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_valid",
+              "direction": "output",
+              "name": "r_valid",
+              "loc": {
+                "line": 193,
+                "col": 50,
+                "end_line": 193,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Slave.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 193,
+                "col": 65,
+                "end_line": 193,
+                "end_col": 72
+              }
+            }
+          ],
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_BUS_DV.Monitor",
+          "name": "Monitor",
+          "ports": [
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_id",
+              "direction": "input",
+              "name": "aw_id",
+              "loc": {
+                "line": 197,
+                "col": 11,
+                "end_line": 197,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 197,
+                "col": 18,
+                "end_line": 197,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_len",
+              "direction": "input",
+              "name": "aw_len",
+              "loc": {
+                "line": 197,
+                "col": 27,
+                "end_line": 197,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_size",
+              "direction": "input",
+              "name": "aw_size",
+              "loc": {
+                "line": 197,
+                "col": 35,
+                "end_line": 197,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_burst",
+              "direction": "input",
+              "name": "aw_burst",
+              "loc": {
+                "line": 197,
+                "col": 44,
+                "end_line": 197,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_lock",
+              "direction": "input",
+              "name": "aw_lock",
+              "loc": {
+                "line": 197,
+                "col": 54,
+                "end_line": 197,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_cache",
+              "direction": "input",
+              "name": "aw_cache",
+              "loc": {
+                "line": 197,
+                "col": 63,
+                "end_line": 197,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 197,
+                "col": 73,
+                "end_line": 197,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_qos",
+              "direction": "input",
+              "name": "aw_qos",
+              "loc": {
+                "line": 197,
+                "col": 82,
+                "end_line": 197,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_region",
+              "direction": "input",
+              "name": "aw_region",
+              "loc": {
+                "line": 197,
+                "col": 90,
+                "end_line": 197,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_atop",
+              "direction": "input",
+              "name": "aw_atop",
+              "loc": {
+                "line": 197,
+                "col": 101,
+                "end_line": 197,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_user",
+              "direction": "input",
+              "name": "aw_user",
+              "loc": {
+                "line": 197,
+                "col": 110,
+                "end_line": 197,
+                "end_col": 117
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 197,
+                "col": 119,
+                "end_line": 197,
+                "end_col": 127
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 197,
+                "col": 129,
+                "end_line": 197,
+                "end_col": 137
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 198,
+                "col": 11,
+                "end_line": 198,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 198,
+                "col": 19,
+                "end_line": 198,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_last",
+              "direction": "input",
+              "name": "w_last",
+              "loc": {
+                "line": 198,
+                "col": 27,
+                "end_line": 198,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_user",
+              "direction": "input",
+              "name": "w_user",
+              "loc": {
+                "line": 198,
+                "col": 35,
+                "end_line": 198,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 198,
+                "col": 43,
+                "end_line": 198,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 198,
+                "col": 52,
+                "end_line": 198,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.b_id",
+              "direction": "input",
+              "name": "b_id",
+              "loc": {
+                "line": 199,
+                "col": 11,
+                "end_line": 199,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 199,
+                "col": 17,
+                "end_line": 199,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.b_user",
+              "direction": "input",
+              "name": "b_user",
+              "loc": {
+                "line": 199,
+                "col": 25,
+                "end_line": 199,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 199,
+                "col": 33,
+                "end_line": 199,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 199,
+                "col": 42,
+                "end_line": 199,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_id",
+              "direction": "input",
+              "name": "ar_id",
+              "loc": {
+                "line": 200,
+                "col": 11,
+                "end_line": 200,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 200,
+                "col": 18,
+                "end_line": 200,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_len",
+              "direction": "input",
+              "name": "ar_len",
+              "loc": {
+                "line": 200,
+                "col": 27,
+                "end_line": 200,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_size",
+              "direction": "input",
+              "name": "ar_size",
+              "loc": {
+                "line": 200,
+                "col": 35,
+                "end_line": 200,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_burst",
+              "direction": "input",
+              "name": "ar_burst",
+              "loc": {
+                "line": 200,
+                "col": 44,
+                "end_line": 200,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_lock",
+              "direction": "input",
+              "name": "ar_lock",
+              "loc": {
+                "line": 200,
+                "col": 54,
+                "end_line": 200,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_cache",
+              "direction": "input",
+              "name": "ar_cache",
+              "loc": {
+                "line": 200,
+                "col": 63,
+                "end_line": 200,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 200,
+                "col": 73,
+                "end_line": 200,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_qos",
+              "direction": "input",
+              "name": "ar_qos",
+              "loc": {
+                "line": 200,
+                "col": 82,
+                "end_line": 200,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_region",
+              "direction": "input",
+              "name": "ar_region",
+              "loc": {
+                "line": 200,
+                "col": 90,
+                "end_line": 200,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_user",
+              "direction": "input",
+              "name": "ar_user",
+              "loc": {
+                "line": 200,
+                "col": 101,
+                "end_line": 200,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 200,
+                "col": 110,
+                "end_line": 200,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 200,
+                "col": 120,
+                "end_line": 200,
+                "end_col": 128
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_id",
+              "direction": "input",
+              "name": "r_id",
+              "loc": {
+                "line": 201,
+                "col": 11,
+                "end_line": 201,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 201,
+                "col": 17,
+                "end_line": 201,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 201,
+                "col": 25,
+                "end_line": 201,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_last",
+              "direction": "input",
+              "name": "r_last",
+              "loc": {
+                "line": 201,
+                "col": 33,
+                "end_line": 201,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_user",
+              "direction": "input",
+              "name": "r_user",
+              "loc": {
+                "line": 201,
+                "col": 41,
+                "end_line": 201,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 201,
+                "col": 49,
+                "end_line": 201,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS_DV.Monitor.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 201,
+                "col": 58,
+                "end_line": 201,
+                "end_col": 65
+              }
+            }
+          ],
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 202,
+            "end_col": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_BUS_ASYNC",
+      "name": "AXI_BUS_ASYNC",
+      "params": [
+        {
+          "id": "AXI_BUS_ASYNC.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 271,
+            "col": 3,
+            "end_line": 271,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 272,
+            "col": 3,
+            "end_line": 272,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.AXI_ID_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 273,
+            "col": 3,
+            "end_line": 273,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.AXI_USER_WIDTH",
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 274,
+            "col": 3,
+            "end_line": 274,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.BUFFER_WIDTH",
+          "ptype": "int",
+          "name": "BUFFER_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 275,
+            "col": 3,
+            "end_line": 275,
+            "end_col": 44
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_BUS_ASYNC.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 278,
+            "col": 3,
+            "end_line": 278,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_BUS_ASYNC.id_t",
+          "name": "id_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ID_WIDTH-1:0]",
+          "loc": {
+            "line": 280,
+            "col": 3,
+            "end_line": 280,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 281,
+            "col": 3,
+            "end_line": 281,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 282,
+            "col": 3,
+            "end_line": 282,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 283,
+            "col": 3,
+            "end_line": 283,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.user_t",
+          "name": "user_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_USER_WIDTH-1:0]",
+          "loc": {
+            "line": 284,
+            "col": 3,
+            "end_line": 284,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.buffer_t",
+          "name": "buffer_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[BUFFER_WIDTH-1:0]",
+          "loc": {
+            "line": 285,
+            "col": 3,
+            "end_line": 285,
+            "end_col": 47
+          }
+        }
+      ],
+      "loc": {
+        "line": 269,
+        "col": 1,
+        "end_line": 353,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_BUS_ASYNC.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_id",
+              "direction": "output",
+              "name": "aw_id",
+              "loc": {
+                "line": 338,
+                "col": 12,
+                "end_line": 338,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_addr",
+              "direction": "output",
+              "name": "aw_addr",
+              "loc": {
+                "line": 338,
+                "col": 19,
+                "end_line": 338,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_len",
+              "direction": "output",
+              "name": "aw_len",
+              "loc": {
+                "line": 338,
+                "col": 28,
+                "end_line": 338,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_size",
+              "direction": "output",
+              "name": "aw_size",
+              "loc": {
+                "line": 338,
+                "col": 36,
+                "end_line": 338,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_burst",
+              "direction": "output",
+              "name": "aw_burst",
+              "loc": {
+                "line": 338,
+                "col": 45,
+                "end_line": 338,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_lock",
+              "direction": "output",
+              "name": "aw_lock",
+              "loc": {
+                "line": 338,
+                "col": 55,
+                "end_line": 338,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_cache",
+              "direction": "output",
+              "name": "aw_cache",
+              "loc": {
+                "line": 338,
+                "col": 64,
+                "end_line": 338,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_prot",
+              "direction": "output",
+              "name": "aw_prot",
+              "loc": {
+                "line": 338,
+                "col": 74,
+                "end_line": 338,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_qos",
+              "direction": "output",
+              "name": "aw_qos",
+              "loc": {
+                "line": 338,
+                "col": 83,
+                "end_line": 338,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_region",
+              "direction": "output",
+              "name": "aw_region",
+              "loc": {
+                "line": 338,
+                "col": 91,
+                "end_line": 338,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_atop",
+              "direction": "output",
+              "name": "aw_atop",
+              "loc": {
+                "line": 338,
+                "col": 102,
+                "end_line": 338,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_user",
+              "direction": "output",
+              "name": "aw_user",
+              "loc": {
+                "line": 338,
+                "col": 111,
+                "end_line": 338,
+                "end_col": 118
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_writetoken",
+              "direction": "output",
+              "name": "aw_writetoken",
+              "loc": {
+                "line": 338,
+                "col": 120,
+                "end_line": 338,
+                "end_col": 133
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.aw_readpointer",
+              "direction": "input",
+              "name": "aw_readpointer",
+              "loc": {
+                "line": 338,
+                "col": 141,
+                "end_line": 338,
+                "end_col": 155
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 339,
+                "col": 12,
+                "end_line": 339,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_strb",
+              "direction": "output",
+              "name": "w_strb",
+              "loc": {
+                "line": 339,
+                "col": 20,
+                "end_line": 339,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_last",
+              "direction": "output",
+              "name": "w_last",
+              "loc": {
+                "line": 339,
+                "col": 28,
+                "end_line": 339,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_user",
+              "direction": "output",
+              "name": "w_user",
+              "loc": {
+                "line": 339,
+                "col": 36,
+                "end_line": 339,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_writetoken",
+              "direction": "output",
+              "name": "w_writetoken",
+              "loc": {
+                "line": 339,
+                "col": 44,
+                "end_line": 339,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.w_readpointer",
+              "direction": "input",
+              "name": "w_readpointer",
+              "loc": {
+                "line": 339,
+                "col": 64,
+                "end_line": 339,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.b_id",
+              "direction": "input",
+              "name": "b_id",
+              "loc": {
+                "line": 340,
+                "col": 11,
+                "end_line": 340,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 340,
+                "col": 17,
+                "end_line": 340,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.b_user",
+              "direction": "input",
+              "name": "b_user",
+              "loc": {
+                "line": 340,
+                "col": 25,
+                "end_line": 340,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.b_writetoken",
+              "direction": "input",
+              "name": "b_writetoken",
+              "loc": {
+                "line": 340,
+                "col": 33,
+                "end_line": 340,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.b_readpointer",
+              "direction": "output",
+              "name": "b_readpointer",
+              "loc": {
+                "line": 340,
+                "col": 54,
+                "end_line": 340,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_id",
+              "direction": "output",
+              "name": "ar_id",
+              "loc": {
+                "line": 341,
+                "col": 12,
+                "end_line": 341,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_addr",
+              "direction": "output",
+              "name": "ar_addr",
+              "loc": {
+                "line": 341,
+                "col": 19,
+                "end_line": 341,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_len",
+              "direction": "output",
+              "name": "ar_len",
+              "loc": {
+                "line": 341,
+                "col": 28,
+                "end_line": 341,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_size",
+              "direction": "output",
+              "name": "ar_size",
+              "loc": {
+                "line": 341,
+                "col": 36,
+                "end_line": 341,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_burst",
+              "direction": "output",
+              "name": "ar_burst",
+              "loc": {
+                "line": 341,
+                "col": 45,
+                "end_line": 341,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_lock",
+              "direction": "output",
+              "name": "ar_lock",
+              "loc": {
+                "line": 341,
+                "col": 55,
+                "end_line": 341,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_cache",
+              "direction": "output",
+              "name": "ar_cache",
+              "loc": {
+                "line": 341,
+                "col": 64,
+                "end_line": 341,
+                "end_col": 72
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_prot",
+              "direction": "output",
+              "name": "ar_prot",
+              "loc": {
+                "line": 341,
+                "col": 74,
+                "end_line": 341,
+                "end_col": 81
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_qos",
+              "direction": "output",
+              "name": "ar_qos",
+              "loc": {
+                "line": 341,
+                "col": 83,
+                "end_line": 341,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_region",
+              "direction": "output",
+              "name": "ar_region",
+              "loc": {
+                "line": 341,
+                "col": 91,
+                "end_line": 341,
+                "end_col": 100
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_user",
+              "direction": "output",
+              "name": "ar_user",
+              "loc": {
+                "line": 341,
+                "col": 102,
+                "end_line": 341,
+                "end_col": 109
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_writetoken",
+              "direction": "output",
+              "name": "ar_writetoken",
+              "loc": {
+                "line": 341,
+                "col": 111,
+                "end_line": 341,
+                "end_col": 124
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.ar_readpointer",
+              "direction": "input",
+              "name": "ar_readpointer",
+              "loc": {
+                "line": 341,
+                "col": 132,
+                "end_line": 341,
+                "end_col": 146
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_id",
+              "direction": "input",
+              "name": "r_id",
+              "loc": {
+                "line": 342,
+                "col": 11,
+                "end_line": 342,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 342,
+                "col": 17,
+                "end_line": 342,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 342,
+                "col": 25,
+                "end_line": 342,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_last",
+              "direction": "input",
+              "name": "r_last",
+              "loc": {
+                "line": 342,
+                "col": 33,
+                "end_line": 342,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_user",
+              "direction": "input",
+              "name": "r_user",
+              "loc": {
+                "line": 342,
+                "col": 41,
+                "end_line": 342,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_writetoken",
+              "direction": "input",
+              "name": "r_writetoken",
+              "loc": {
+                "line": 342,
+                "col": 49,
+                "end_line": 342,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Master.r_readpointer",
+              "direction": "output",
+              "name": "r_readpointer",
+              "loc": {
+                "line": 342,
+                "col": 70,
+                "end_line": 342,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 337,
+            "col": 3,
+            "end_line": 343,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_id",
+              "direction": "input",
+              "name": "aw_id",
+              "loc": {
+                "line": 346,
+                "col": 11,
+                "end_line": 346,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 346,
+                "col": 18,
+                "end_line": 346,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_len",
+              "direction": "input",
+              "name": "aw_len",
+              "loc": {
+                "line": 346,
+                "col": 27,
+                "end_line": 346,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_size",
+              "direction": "input",
+              "name": "aw_size",
+              "loc": {
+                "line": 346,
+                "col": 35,
+                "end_line": 346,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_burst",
+              "direction": "input",
+              "name": "aw_burst",
+              "loc": {
+                "line": 346,
+                "col": 44,
+                "end_line": 346,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_lock",
+              "direction": "input",
+              "name": "aw_lock",
+              "loc": {
+                "line": 346,
+                "col": 54,
+                "end_line": 346,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_cache",
+              "direction": "input",
+              "name": "aw_cache",
+              "loc": {
+                "line": 346,
+                "col": 63,
+                "end_line": 346,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 346,
+                "col": 73,
+                "end_line": 346,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_qos",
+              "direction": "input",
+              "name": "aw_qos",
+              "loc": {
+                "line": 346,
+                "col": 82,
+                "end_line": 346,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_region",
+              "direction": "input",
+              "name": "aw_region",
+              "loc": {
+                "line": 346,
+                "col": 90,
+                "end_line": 346,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_atop",
+              "direction": "input",
+              "name": "aw_atop",
+              "loc": {
+                "line": 346,
+                "col": 101,
+                "end_line": 346,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_user",
+              "direction": "input",
+              "name": "aw_user",
+              "loc": {
+                "line": 346,
+                "col": 110,
+                "end_line": 346,
+                "end_col": 117
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_writetoken",
+              "direction": "input",
+              "name": "aw_writetoken",
+              "loc": {
+                "line": 346,
+                "col": 119,
+                "end_line": 346,
+                "end_col": 132
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.aw_readpointer",
+              "direction": "output",
+              "name": "aw_readpointer",
+              "loc": {
+                "line": 346,
+                "col": 141,
+                "end_line": 346,
+                "end_col": 155
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 347,
+                "col": 11,
+                "end_line": 347,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 347,
+                "col": 19,
+                "end_line": 347,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_last",
+              "direction": "input",
+              "name": "w_last",
+              "loc": {
+                "line": 347,
+                "col": 27,
+                "end_line": 347,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_user",
+              "direction": "input",
+              "name": "w_user",
+              "loc": {
+                "line": 347,
+                "col": 35,
+                "end_line": 347,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_writetoken",
+              "direction": "input",
+              "name": "w_writetoken",
+              "loc": {
+                "line": 347,
+                "col": 43,
+                "end_line": 347,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.w_readpointer",
+              "direction": "output",
+              "name": "w_readpointer",
+              "loc": {
+                "line": 347,
+                "col": 64,
+                "end_line": 347,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.b_id",
+              "direction": "output",
+              "name": "b_id",
+              "loc": {
+                "line": 348,
+                "col": 12,
+                "end_line": 348,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.b_resp",
+              "direction": "output",
+              "name": "b_resp",
+              "loc": {
+                "line": 348,
+                "col": 18,
+                "end_line": 348,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.b_user",
+              "direction": "output",
+              "name": "b_user",
+              "loc": {
+                "line": 348,
+                "col": 26,
+                "end_line": 348,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.b_writetoken",
+              "direction": "output",
+              "name": "b_writetoken",
+              "loc": {
+                "line": 348,
+                "col": 34,
+                "end_line": 348,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.b_readpointer",
+              "direction": "input",
+              "name": "b_readpointer",
+              "loc": {
+                "line": 348,
+                "col": 54,
+                "end_line": 348,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_id",
+              "direction": "input",
+              "name": "ar_id",
+              "loc": {
+                "line": 349,
+                "col": 11,
+                "end_line": 349,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 349,
+                "col": 18,
+                "end_line": 349,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_len",
+              "direction": "input",
+              "name": "ar_len",
+              "loc": {
+                "line": 349,
+                "col": 27,
+                "end_line": 349,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_size",
+              "direction": "input",
+              "name": "ar_size",
+              "loc": {
+                "line": 349,
+                "col": 35,
+                "end_line": 349,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_burst",
+              "direction": "input",
+              "name": "ar_burst",
+              "loc": {
+                "line": 349,
+                "col": 44,
+                "end_line": 349,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_lock",
+              "direction": "input",
+              "name": "ar_lock",
+              "loc": {
+                "line": 349,
+                "col": 54,
+                "end_line": 349,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_cache",
+              "direction": "input",
+              "name": "ar_cache",
+              "loc": {
+                "line": 349,
+                "col": 63,
+                "end_line": 349,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 349,
+                "col": 73,
+                "end_line": 349,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_qos",
+              "direction": "input",
+              "name": "ar_qos",
+              "loc": {
+                "line": 349,
+                "col": 82,
+                "end_line": 349,
+                "end_col": 88
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_region",
+              "direction": "input",
+              "name": "ar_region",
+              "loc": {
+                "line": 349,
+                "col": 90,
+                "end_line": 349,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_user",
+              "direction": "input",
+              "name": "ar_user",
+              "loc": {
+                "line": 349,
+                "col": 101,
+                "end_line": 349,
+                "end_col": 108
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_writetoken",
+              "direction": "input",
+              "name": "ar_writetoken",
+              "loc": {
+                "line": 349,
+                "col": 110,
+                "end_line": 349,
+                "end_col": 123
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.ar_readpointer",
+              "direction": "output",
+              "name": "ar_readpointer",
+              "loc": {
+                "line": 349,
+                "col": 132,
+                "end_line": 349,
+                "end_col": 146
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_id",
+              "direction": "output",
+              "name": "r_id",
+              "loc": {
+                "line": 350,
+                "col": 12,
+                "end_line": 350,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 350,
+                "col": 18,
+                "end_line": 350,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_resp",
+              "direction": "output",
+              "name": "r_resp",
+              "loc": {
+                "line": 350,
+                "col": 26,
+                "end_line": 350,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_last",
+              "direction": "output",
+              "name": "r_last",
+              "loc": {
+                "line": 350,
+                "col": 34,
+                "end_line": 350,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_user",
+              "direction": "output",
+              "name": "r_user",
+              "loc": {
+                "line": 350,
+                "col": 42,
+                "end_line": 350,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_writetoken",
+              "direction": "output",
+              "name": "r_writetoken",
+              "loc": {
+                "line": 350,
+                "col": 50,
+                "end_line": 350,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC.Slave.r_readpointer",
+              "direction": "input",
+              "name": "r_readpointer",
+              "loc": {
+                "line": 350,
+                "col": 70,
+                "end_line": 350,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 345,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_BUS_ASYNC_GRAY",
+      "name": "AXI_BUS_ASYNC_GRAY",
+      "params": [
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 360,
+            "col": 3,
+            "end_line": 360,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 361,
+            "col": 3,
+            "end_line": 361,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.AXI_ID_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ID_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 362,
+            "col": 3,
+            "end_line": 362,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.AXI_USER_WIDTH",
+          "ptype": "int",
+          "name": "AXI_USER_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 363,
+            "col": 3,
+            "end_line": 363,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.LOG_DEPTH",
+          "ptype": "int",
+          "name": "LOG_DEPTH",
+          "default": "0",
+          "loc": {
+            "line": 364,
+            "col": 3,
+            "end_line": 364,
+            "end_col": 39
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 367,
+            "col": 3,
+            "end_line": 367,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.id_t",
+          "name": "id_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ID_WIDTH-1:0]",
+          "loc": {
+            "line": 369,
+            "col": 3,
+            "end_line": 369,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 370,
+            "col": 3,
+            "end_line": 370,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 371,
+            "col": 3,
+            "end_line": 371,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 372,
+            "col": 3,
+            "end_line": 372,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.user_t",
+          "name": "user_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_USER_WIDTH-1:0]",
+          "loc": {
+            "line": 373,
+            "col": 3,
+            "end_line": 373,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 359,
+        "col": 1,
+        "end_line": 406,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.aw_data",
+              "direction": "output",
+              "name": "aw_data",
+              "loc": {
+                "line": 393,
+                "col": 12,
+                "end_line": 393,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.aw_wptr",
+              "direction": "output",
+              "name": "aw_wptr",
+              "loc": {
+                "line": 393,
+                "col": 21,
+                "end_line": 393,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.aw_rptr",
+              "direction": "input",
+              "name": "aw_rptr",
+              "loc": {
+                "line": 393,
+                "col": 36,
+                "end_line": 393,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 394,
+                "col": 12,
+                "end_line": 394,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.w_wptr",
+              "direction": "output",
+              "name": "w_wptr",
+              "loc": {
+                "line": 394,
+                "col": 20,
+                "end_line": 394,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.w_rptr",
+              "direction": "input",
+              "name": "w_rptr",
+              "loc": {
+                "line": 394,
+                "col": 34,
+                "end_line": 394,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.b_data",
+              "direction": "input",
+              "name": "b_data",
+              "loc": {
+                "line": 395,
+                "col": 11,
+                "end_line": 395,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.b_wptr",
+              "direction": "input",
+              "name": "b_wptr",
+              "loc": {
+                "line": 395,
+                "col": 19,
+                "end_line": 395,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.b_rptr",
+              "direction": "output",
+              "name": "b_rptr",
+              "loc": {
+                "line": 395,
+                "col": 34,
+                "end_line": 395,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.ar_data",
+              "direction": "output",
+              "name": "ar_data",
+              "loc": {
+                "line": 396,
+                "col": 12,
+                "end_line": 396,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.ar_wptr",
+              "direction": "output",
+              "name": "ar_wptr",
+              "loc": {
+                "line": 396,
+                "col": 21,
+                "end_line": 396,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.ar_rptr",
+              "direction": "input",
+              "name": "ar_rptr",
+              "loc": {
+                "line": 396,
+                "col": 36,
+                "end_line": 396,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 397,
+                "col": 11,
+                "end_line": 397,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.r_wptr",
+              "direction": "input",
+              "name": "r_wptr",
+              "loc": {
+                "line": 397,
+                "col": 19,
+                "end_line": 397,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Master.r_rptr",
+              "direction": "output",
+              "name": "r_rptr",
+              "loc": {
+                "line": 397,
+                "col": 34,
+                "end_line": 397,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 392,
+            "col": 3,
+            "end_line": 397,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "AXI_BUS_ASYNC_GRAY.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.aw_data",
+              "direction": "input",
+              "name": "aw_data",
+              "loc": {
+                "line": 400,
+                "col": 11,
+                "end_line": 400,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.aw_wptr",
+              "direction": "input",
+              "name": "aw_wptr",
+              "loc": {
+                "line": 400,
+                "col": 20,
+                "end_line": 400,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.aw_rptr",
+              "direction": "output",
+              "name": "aw_rptr",
+              "loc": {
+                "line": 400,
+                "col": 36,
+                "end_line": 400,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 401,
+                "col": 11,
+                "end_line": 401,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.w_wptr",
+              "direction": "input",
+              "name": "w_wptr",
+              "loc": {
+                "line": 401,
+                "col": 19,
+                "end_line": 401,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.w_rptr",
+              "direction": "output",
+              "name": "w_rptr",
+              "loc": {
+                "line": 401,
+                "col": 34,
+                "end_line": 401,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.b_data",
+              "direction": "output",
+              "name": "b_data",
+              "loc": {
+                "line": 402,
+                "col": 12,
+                "end_line": 402,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.b_wptr",
+              "direction": "output",
+              "name": "b_wptr",
+              "loc": {
+                "line": 402,
+                "col": 20,
+                "end_line": 402,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.b_rptr",
+              "direction": "input",
+              "name": "b_rptr",
+              "loc": {
+                "line": 402,
+                "col": 34,
+                "end_line": 402,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.ar_data",
+              "direction": "input",
+              "name": "ar_data",
+              "loc": {
+                "line": 403,
+                "col": 11,
+                "end_line": 403,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.ar_wptr",
+              "direction": "input",
+              "name": "ar_wptr",
+              "loc": {
+                "line": 403,
+                "col": 20,
+                "end_line": 403,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.ar_rptr",
+              "direction": "output",
+              "name": "ar_rptr",
+              "loc": {
+                "line": 403,
+                "col": 36,
+                "end_line": 403,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 404,
+                "col": 12,
+                "end_line": 404,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.r_wptr",
+              "direction": "output",
+              "name": "r_wptr",
+              "loc": {
+                "line": 404,
+                "col": 20,
+                "end_line": 404,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_BUS_ASYNC_GRAY.Slave.r_rptr",
+              "direction": "input",
+              "name": "r_rptr",
+              "loc": {
+                "line": 404,
+                "col": 34,
+                "end_line": 404,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 399,
+            "col": 3,
+            "end_line": 404,
+            "end_col": 42
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_LITE",
+      "name": "AXI_LITE",
+      "params": [
+        {
+          "id": "AXI_LITE.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 411,
+            "col": 3,
+            "end_line": 411,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_LITE.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 412,
+            "col": 3,
+            "end_line": 412,
+            "end_col": 44
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_LITE.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 415,
+            "col": 3,
+            "end_line": 415,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_LITE.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 417,
+            "col": 3,
+            "end_line": 417,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 418,
+            "col": 3,
+            "end_line": 418,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 419,
+            "col": 3,
+            "end_line": 419,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 410,
+        "col": 1,
+        "end_line": 470,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_LITE.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_LITE.Master.aw_addr",
+              "direction": "output",
+              "name": "aw_addr",
+              "loc": {
+                "line": 447,
+                "col": 12,
+                "end_line": 447,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.aw_prot",
+              "direction": "output",
+              "name": "aw_prot",
+              "loc": {
+                "line": 447,
+                "col": 21,
+                "end_line": 447,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.aw_valid",
+              "direction": "output",
+              "name": "aw_valid",
+              "loc": {
+                "line": 447,
+                "col": 30,
+                "end_line": 447,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 447,
+                "col": 46,
+                "end_line": 447,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 448,
+                "col": 12,
+                "end_line": 448,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.w_strb",
+              "direction": "output",
+              "name": "w_strb",
+              "loc": {
+                "line": 448,
+                "col": 20,
+                "end_line": 448,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.w_valid",
+              "direction": "output",
+              "name": "w_valid",
+              "loc": {
+                "line": 448,
+                "col": 28,
+                "end_line": 448,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 448,
+                "col": 43,
+                "end_line": 448,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 449,
+                "col": 11,
+                "end_line": 449,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 449,
+                "col": 19,
+                "end_line": 449,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.b_ready",
+              "direction": "output",
+              "name": "b_ready",
+              "loc": {
+                "line": 449,
+                "col": 35,
+                "end_line": 449,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.ar_addr",
+              "direction": "output",
+              "name": "ar_addr",
+              "loc": {
+                "line": 450,
+                "col": 12,
+                "end_line": 450,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.ar_prot",
+              "direction": "output",
+              "name": "ar_prot",
+              "loc": {
+                "line": 450,
+                "col": 21,
+                "end_line": 450,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.ar_valid",
+              "direction": "output",
+              "name": "ar_valid",
+              "loc": {
+                "line": 450,
+                "col": 30,
+                "end_line": 450,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 450,
+                "col": 46,
+                "end_line": 450,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 451,
+                "col": 11,
+                "end_line": 451,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 451,
+                "col": 19,
+                "end_line": 451,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 451,
+                "col": 27,
+                "end_line": 451,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE.Master.r_ready",
+              "direction": "output",
+              "name": "r_ready",
+              "loc": {
+                "line": 451,
+                "col": 43,
+                "end_line": 451,
+                "end_col": 50
+              }
+            }
+          ],
+          "loc": {
+            "line": 446,
+            "col": 3,
+            "end_line": 452,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_LITE.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_LITE.Slave.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 455,
+                "col": 11,
+                "end_line": 455,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 455,
+                "col": 20,
+                "end_line": 455,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 455,
+                "col": 29,
+                "end_line": 455,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.aw_ready",
+              "direction": "output",
+              "name": "aw_ready",
+              "loc": {
+                "line": 455,
+                "col": 46,
+                "end_line": 455,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 456,
+                "col": 11,
+                "end_line": 456,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 456,
+                "col": 19,
+                "end_line": 456,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 456,
+                "col": 27,
+                "end_line": 456,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.w_ready",
+              "direction": "output",
+              "name": "w_ready",
+              "loc": {
+                "line": 456,
+                "col": 43,
+                "end_line": 456,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.b_resp",
+              "direction": "output",
+              "name": "b_resp",
+              "loc": {
+                "line": 457,
+                "col": 12,
+                "end_line": 457,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.b_valid",
+              "direction": "output",
+              "name": "b_valid",
+              "loc": {
+                "line": 457,
+                "col": 20,
+                "end_line": 457,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 457,
+                "col": 35,
+                "end_line": 457,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 458,
+                "col": 11,
+                "end_line": 458,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 458,
+                "col": 20,
+                "end_line": 458,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 458,
+                "col": 29,
+                "end_line": 458,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.ar_ready",
+              "direction": "output",
+              "name": "ar_ready",
+              "loc": {
+                "line": 458,
+                "col": 46,
+                "end_line": 458,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 459,
+                "col": 12,
+                "end_line": 459,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.r_resp",
+              "direction": "output",
+              "name": "r_resp",
+              "loc": {
+                "line": 459,
+                "col": 20,
+                "end_line": 459,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.r_valid",
+              "direction": "output",
+              "name": "r_valid",
+              "loc": {
+                "line": 459,
+                "col": 28,
+                "end_line": 459,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE.Slave.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 459,
+                "col": 43,
+                "end_line": 459,
+                "end_col": 50
+              }
+            }
+          ],
+          "loc": {
+            "line": 454,
+            "col": 3,
+            "end_line": 460,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_LITE.Monitor",
+          "name": "Monitor",
+          "ports": [
+            {
+              "id": "AXI_LITE.Monitor.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 463,
+                "col": 11,
+                "end_line": 463,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 463,
+                "col": 20,
+                "end_line": 463,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 463,
+                "col": 29,
+                "end_line": 463,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 463,
+                "col": 39,
+                "end_line": 463,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 464,
+                "col": 11,
+                "end_line": 464,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 464,
+                "col": 19,
+                "end_line": 464,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 464,
+                "col": 27,
+                "end_line": 464,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 464,
+                "col": 36,
+                "end_line": 464,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 465,
+                "col": 11,
+                "end_line": 465,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 465,
+                "col": 19,
+                "end_line": 465,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 465,
+                "col": 28,
+                "end_line": 465,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 466,
+                "col": 11,
+                "end_line": 466,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 466,
+                "col": 20,
+                "end_line": 466,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 466,
+                "col": 29,
+                "end_line": 466,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 466,
+                "col": 39,
+                "end_line": 466,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 467,
+                "col": 11,
+                "end_line": 467,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 467,
+                "col": 19,
+                "end_line": 467,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 467,
+                "col": 27,
+                "end_line": 467,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE.Monitor.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 467,
+                "col": 36,
+                "end_line": 467,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 462,
+            "col": 3,
+            "end_line": 468,
+            "end_col": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_LITE_DV",
+      "name": "AXI_LITE_DV",
+      "params": [
+        {
+          "id": "AXI_LITE_DV.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 475,
+            "col": 3,
+            "end_line": 475,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_LITE_DV.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 476,
+            "col": 3,
+            "end_line": 476,
+            "end_col": 44
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "AXI_LITE_DV.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 478,
+            "col": 3,
+            "end_line": 478,
+            "end_col": 20
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_LITE_DV.AXI_STRB_WIDTH",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 481,
+            "col": 3,
+            "end_line": 481,
+            "end_col": 50
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_LITE_DV.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 483,
+            "col": 3,
+            "end_line": 483,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE_DV.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 484,
+            "col": 3,
+            "end_line": 484,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE_DV.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 485,
+            "col": 3,
+            "end_line": 485,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 474,
+        "col": 1,
+        "end_line": 536,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_LITE_DV.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_LITE_DV.Master.aw_addr",
+              "direction": "output",
+              "name": "aw_addr",
+              "loc": {
+                "line": 513,
+                "col": 12,
+                "end_line": 513,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.aw_prot",
+              "direction": "output",
+              "name": "aw_prot",
+              "loc": {
+                "line": 513,
+                "col": 21,
+                "end_line": 513,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.aw_valid",
+              "direction": "output",
+              "name": "aw_valid",
+              "loc": {
+                "line": 513,
+                "col": 30,
+                "end_line": 513,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 513,
+                "col": 46,
+                "end_line": 513,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 514,
+                "col": 12,
+                "end_line": 514,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.w_strb",
+              "direction": "output",
+              "name": "w_strb",
+              "loc": {
+                "line": 514,
+                "col": 20,
+                "end_line": 514,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.w_valid",
+              "direction": "output",
+              "name": "w_valid",
+              "loc": {
+                "line": 514,
+                "col": 28,
+                "end_line": 514,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 514,
+                "col": 43,
+                "end_line": 514,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 515,
+                "col": 11,
+                "end_line": 515,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 515,
+                "col": 19,
+                "end_line": 515,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.b_ready",
+              "direction": "output",
+              "name": "b_ready",
+              "loc": {
+                "line": 515,
+                "col": 35,
+                "end_line": 515,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.ar_addr",
+              "direction": "output",
+              "name": "ar_addr",
+              "loc": {
+                "line": 516,
+                "col": 12,
+                "end_line": 516,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.ar_prot",
+              "direction": "output",
+              "name": "ar_prot",
+              "loc": {
+                "line": 516,
+                "col": 21,
+                "end_line": 516,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.ar_valid",
+              "direction": "output",
+              "name": "ar_valid",
+              "loc": {
+                "line": 516,
+                "col": 30,
+                "end_line": 516,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 516,
+                "col": 46,
+                "end_line": 516,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 517,
+                "col": 11,
+                "end_line": 517,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 517,
+                "col": 19,
+                "end_line": 517,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 517,
+                "col": 27,
+                "end_line": 517,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Master.r_ready",
+              "direction": "output",
+              "name": "r_ready",
+              "loc": {
+                "line": 517,
+                "col": 43,
+                "end_line": 517,
+                "end_col": 50
+              }
+            }
+          ],
+          "loc": {
+            "line": 512,
+            "col": 3,
+            "end_line": 518,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_LITE_DV.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_LITE_DV.Slave.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 521,
+                "col": 11,
+                "end_line": 521,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 521,
+                "col": 20,
+                "end_line": 521,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 521,
+                "col": 29,
+                "end_line": 521,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.aw_ready",
+              "direction": "output",
+              "name": "aw_ready",
+              "loc": {
+                "line": 521,
+                "col": 46,
+                "end_line": 521,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 522,
+                "col": 11,
+                "end_line": 522,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 522,
+                "col": 19,
+                "end_line": 522,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 522,
+                "col": 27,
+                "end_line": 522,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.w_ready",
+              "direction": "output",
+              "name": "w_ready",
+              "loc": {
+                "line": 522,
+                "col": 43,
+                "end_line": 522,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.b_resp",
+              "direction": "output",
+              "name": "b_resp",
+              "loc": {
+                "line": 523,
+                "col": 12,
+                "end_line": 523,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.b_valid",
+              "direction": "output",
+              "name": "b_valid",
+              "loc": {
+                "line": 523,
+                "col": 20,
+                "end_line": 523,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 523,
+                "col": 35,
+                "end_line": 523,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 524,
+                "col": 11,
+                "end_line": 524,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 524,
+                "col": 20,
+                "end_line": 524,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 524,
+                "col": 29,
+                "end_line": 524,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.ar_ready",
+              "direction": "output",
+              "name": "ar_ready",
+              "loc": {
+                "line": 524,
+                "col": 46,
+                "end_line": 524,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 525,
+                "col": 12,
+                "end_line": 525,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.r_resp",
+              "direction": "output",
+              "name": "r_resp",
+              "loc": {
+                "line": 525,
+                "col": 20,
+                "end_line": 525,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.r_valid",
+              "direction": "output",
+              "name": "r_valid",
+              "loc": {
+                "line": 525,
+                "col": 28,
+                "end_line": 525,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Slave.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 525,
+                "col": 43,
+                "end_line": 525,
+                "end_col": 50
+              }
+            }
+          ],
+          "loc": {
+            "line": 520,
+            "col": 3,
+            "end_line": 526,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "AXI_LITE_DV.Monitor",
+          "name": "Monitor",
+          "ports": [
+            {
+              "id": "AXI_LITE_DV.Monitor.aw_addr",
+              "direction": "input",
+              "name": "aw_addr",
+              "loc": {
+                "line": 529,
+                "col": 11,
+                "end_line": 529,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.aw_prot",
+              "direction": "input",
+              "name": "aw_prot",
+              "loc": {
+                "line": 529,
+                "col": 20,
+                "end_line": 529,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.aw_valid",
+              "direction": "input",
+              "name": "aw_valid",
+              "loc": {
+                "line": 529,
+                "col": 29,
+                "end_line": 529,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.aw_ready",
+              "direction": "input",
+              "name": "aw_ready",
+              "loc": {
+                "line": 529,
+                "col": 39,
+                "end_line": 529,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 530,
+                "col": 11,
+                "end_line": 530,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.w_strb",
+              "direction": "input",
+              "name": "w_strb",
+              "loc": {
+                "line": 530,
+                "col": 19,
+                "end_line": 530,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.w_valid",
+              "direction": "input",
+              "name": "w_valid",
+              "loc": {
+                "line": 530,
+                "col": 27,
+                "end_line": 530,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.w_ready",
+              "direction": "input",
+              "name": "w_ready",
+              "loc": {
+                "line": 530,
+                "col": 36,
+                "end_line": 530,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.b_resp",
+              "direction": "input",
+              "name": "b_resp",
+              "loc": {
+                "line": 531,
+                "col": 11,
+                "end_line": 531,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.b_valid",
+              "direction": "input",
+              "name": "b_valid",
+              "loc": {
+                "line": 531,
+                "col": 19,
+                "end_line": 531,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.b_ready",
+              "direction": "input",
+              "name": "b_ready",
+              "loc": {
+                "line": 531,
+                "col": 28,
+                "end_line": 531,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.ar_addr",
+              "direction": "input",
+              "name": "ar_addr",
+              "loc": {
+                "line": 532,
+                "col": 11,
+                "end_line": 532,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.ar_prot",
+              "direction": "input",
+              "name": "ar_prot",
+              "loc": {
+                "line": 532,
+                "col": 20,
+                "end_line": 532,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.ar_valid",
+              "direction": "input",
+              "name": "ar_valid",
+              "loc": {
+                "line": 532,
+                "col": 29,
+                "end_line": 532,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.ar_ready",
+              "direction": "input",
+              "name": "ar_ready",
+              "loc": {
+                "line": 532,
+                "col": 39,
+                "end_line": 532,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 533,
+                "col": 11,
+                "end_line": 533,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.r_resp",
+              "direction": "input",
+              "name": "r_resp",
+              "loc": {
+                "line": 533,
+                "col": 19,
+                "end_line": 533,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.r_valid",
+              "direction": "input",
+              "name": "r_valid",
+              "loc": {
+                "line": 533,
+                "col": 27,
+                "end_line": 533,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "AXI_LITE_DV.Monitor.r_ready",
+              "direction": "input",
+              "name": "r_ready",
+              "loc": {
+                "line": 533,
+                "col": 36,
+                "end_line": 533,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 528,
+            "col": 3,
+            "end_line": 534,
+            "end_col": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "AXI_LITE_ASYNC_GRAY",
+      "name": "AXI_LITE_ASYNC_GRAY",
+      "params": [
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.AXI_ADDR_WIDTH",
+          "ptype": "int",
+          "name": "AXI_ADDR_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 541,
+            "col": 3,
+            "end_line": 541,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.AXI_DATA_WIDTH",
+          "ptype": "int",
+          "name": "AXI_DATA_WIDTH",
+          "default": "0",
+          "loc": {
+            "line": 542,
+            "col": 3,
+            "end_line": 542,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.LOG_DEPTH",
+          "ptype": "int",
+          "name": "LOG_DEPTH",
+          "default": "0",
+          "loc": {
+            "line": 543,
+            "col": 3,
+            "end_line": 543,
+            "end_col": 39
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.AXI_STRB_WIDTH",
+          "ptype": "int",
+          "name": "AXI_STRB_WIDTH",
+          "default": "AXI_DATA_WIDTH / 8",
+          "loc": {
+            "line": 546,
+            "col": 3,
+            "end_line": 546,
+            "end_col": 63
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 548,
+            "col": 3,
+            "end_line": 548,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 549,
+            "col": 3,
+            "end_line": 549,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[AXI_STRB_WIDTH-1:0]",
+          "loc": {
+            "line": 550,
+            "col": 3,
+            "end_line": 550,
+            "end_col": 45
+          }
+        }
+      ],
+      "loc": {
+        "line": 540,
+        "col": 1,
+        "end_line": 583,
+        "end_col": 13
+      },
+      "modports": [
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.Master",
+          "name": "Master",
+          "ports": [
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.aw_data",
+              "direction": "output",
+              "name": "aw_data",
+              "loc": {
+                "line": 570,
+                "col": 12,
+                "end_line": 570,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.aw_wptr",
+              "direction": "output",
+              "name": "aw_wptr",
+              "loc": {
+                "line": 570,
+                "col": 21,
+                "end_line": 570,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.aw_rptr",
+              "direction": "input",
+              "name": "aw_rptr",
+              "loc": {
+                "line": 570,
+                "col": 36,
+                "end_line": 570,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.w_data",
+              "direction": "output",
+              "name": "w_data",
+              "loc": {
+                "line": 571,
+                "col": 12,
+                "end_line": 571,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.w_wptr",
+              "direction": "output",
+              "name": "w_wptr",
+              "loc": {
+                "line": 571,
+                "col": 20,
+                "end_line": 571,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.w_rptr",
+              "direction": "input",
+              "name": "w_rptr",
+              "loc": {
+                "line": 571,
+                "col": 34,
+                "end_line": 571,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.b_data",
+              "direction": "input",
+              "name": "b_data",
+              "loc": {
+                "line": 572,
+                "col": 11,
+                "end_line": 572,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.b_wptr",
+              "direction": "input",
+              "name": "b_wptr",
+              "loc": {
+                "line": 572,
+                "col": 19,
+                "end_line": 572,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.b_rptr",
+              "direction": "output",
+              "name": "b_rptr",
+              "loc": {
+                "line": 572,
+                "col": 34,
+                "end_line": 572,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.ar_data",
+              "direction": "output",
+              "name": "ar_data",
+              "loc": {
+                "line": 573,
+                "col": 12,
+                "end_line": 573,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.ar_wptr",
+              "direction": "output",
+              "name": "ar_wptr",
+              "loc": {
+                "line": 573,
+                "col": 21,
+                "end_line": 573,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.ar_rptr",
+              "direction": "input",
+              "name": "ar_rptr",
+              "loc": {
+                "line": 573,
+                "col": 36,
+                "end_line": 573,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.r_data",
+              "direction": "input",
+              "name": "r_data",
+              "loc": {
+                "line": 574,
+                "col": 11,
+                "end_line": 574,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.r_wptr",
+              "direction": "input",
+              "name": "r_wptr",
+              "loc": {
+                "line": 574,
+                "col": 19,
+                "end_line": 574,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Master.r_rptr",
+              "direction": "output",
+              "name": "r_rptr",
+              "loc": {
+                "line": 574,
+                "col": 34,
+                "end_line": 574,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 569,
+            "col": 3,
+            "end_line": 574,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "AXI_LITE_ASYNC_GRAY.Slave",
+          "name": "Slave",
+          "ports": [
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.aw_data",
+              "direction": "input",
+              "name": "aw_data",
+              "loc": {
+                "line": 577,
+                "col": 11,
+                "end_line": 577,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.aw_wptr",
+              "direction": "input",
+              "name": "aw_wptr",
+              "loc": {
+                "line": 577,
+                "col": 20,
+                "end_line": 577,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.aw_rptr",
+              "direction": "output",
+              "name": "aw_rptr",
+              "loc": {
+                "line": 577,
+                "col": 36,
+                "end_line": 577,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.w_data",
+              "direction": "input",
+              "name": "w_data",
+              "loc": {
+                "line": 578,
+                "col": 11,
+                "end_line": 578,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.w_wptr",
+              "direction": "input",
+              "name": "w_wptr",
+              "loc": {
+                "line": 578,
+                "col": 19,
+                "end_line": 578,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.w_rptr",
+              "direction": "output",
+              "name": "w_rptr",
+              "loc": {
+                "line": 578,
+                "col": 34,
+                "end_line": 578,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.b_data",
+              "direction": "output",
+              "name": "b_data",
+              "loc": {
+                "line": 579,
+                "col": 12,
+                "end_line": 579,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.b_wptr",
+              "direction": "output",
+              "name": "b_wptr",
+              "loc": {
+                "line": 579,
+                "col": 20,
+                "end_line": 579,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.b_rptr",
+              "direction": "input",
+              "name": "b_rptr",
+              "loc": {
+                "line": 579,
+                "col": 34,
+                "end_line": 579,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.ar_data",
+              "direction": "input",
+              "name": "ar_data",
+              "loc": {
+                "line": 580,
+                "col": 11,
+                "end_line": 580,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.ar_wptr",
+              "direction": "input",
+              "name": "ar_wptr",
+              "loc": {
+                "line": 580,
+                "col": 20,
+                "end_line": 580,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.ar_rptr",
+              "direction": "output",
+              "name": "ar_rptr",
+              "loc": {
+                "line": 580,
+                "col": 36,
+                "end_line": 580,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.r_data",
+              "direction": "output",
+              "name": "r_data",
+              "loc": {
+                "line": 581,
+                "col": 12,
+                "end_line": 581,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.r_wptr",
+              "direction": "output",
+              "name": "r_wptr",
+              "loc": {
+                "line": 581,
+                "col": 20,
+                "end_line": 581,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "AXI_LITE_ASYNC_GRAY.Slave.r_rptr",
+              "direction": "input",
+              "name": "r_rptr",
+              "loc": {
+                "line": 581,
+                "col": 34,
+                "end_line": 581,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 576,
+            "col": 3,
+            "end_line": 581,
+            "end_col": 42
+          }
+        }
+      ]
     }
   ]
 }
