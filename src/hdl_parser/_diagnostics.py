@@ -51,6 +51,9 @@ SEVERITIES: dict[str, dm.Severity] = {
     "parse-failed": "error",
     "duplicate-definition": "warning",
     "undefined-module": "warning",
+    "filelist-not-found": "error",
+    "filelist-unknown": "warning",
+    "filelist-variable": "warning",
 }
 """Severity of all diagnostic codes. Documented at [Diagnostic][hdl_parser.datamodel.Diagnostic]."""
 

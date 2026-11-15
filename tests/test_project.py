@@ -561,3 +561,129 @@ def test_corpus(path):
                 assert re.search(rf"\b{re.escape(definition.name)}\b", text)
             else:
                 assert not node.children
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# filelists
+# ---------------------------------------------------------------------------------------------------------------------
+
+LIBRARY = {
+    "design.f": "+define+WITH_B\n+incdir+inc\nrtl/top.sv\n-v lib/cells.v\n-y lib/dir\n+libext+.sv\n-unknown\n",
+    "rtl/top.sv": """\
+module top (
+`ifdef WITH_B
+  input logic b,
+`endif
+  input logic a
+);
+  cell_a u_a ();
+  searched u_searched ();
+  nowhere u_nowhere ();
+  local_cell u_local ();
+endmodule
+module local_cell; endmodule
+""",
+    "lib/cells.v": "module cell_a; endmodule\nmodule local_cell; endmodule\nmodule unused; endmodule\n",
+    "lib/dir/searched.sv": "module searched;\n  deeper u_deeper ();\nendmodule\n",
+    "lib/dir/deeper.sv": "module deeper; endmodule\n",
+    "lib/dir/not_needed.sv": "module not_needed; endmodule\n",
+    "lib/dir/nowhere.v": "module nowhere; endmodule\n",
+}
+
+
+def test_filelist_libraries(tmp_path):
+    """Library Files And Directories Of A Filelist."""
+    _write(tmp_path, LIBRARY)
+    project = Project.from_filelist(tmp_path / "design.f")
+    assert project.root == tmp_path
+    # the files of the library directory are found by the name of the modules, which are not defined
+    assert [file.file_id for file in project.files] == [
+        "rtl/top.sv",
+        "lib/cells.v",
+        "lib/dir/searched.sv",
+        "lib/dir/deeper.sv",
+    ]
+    assert project.libraries == ("lib/cells.v", "lib/dir/searched.sv", "lib/dir/deeper.sv")
+    assert project.settings.lib_dirs == ("lib/dir",)
+    assert project.settings.lib_exts == (".sv",)
+    assert _tree(project.hierarchy("top")) == [
+        "top: rtl/top.sv:top",
+        "  u_a: lib/cells.v:cell_a",
+        "  u_searched: lib/dir/searched.sv:searched",
+        "    u_deeper: lib/dir/deeper.sv:deeper",
+        # the extension `.v` is not one of the library
+        "  u_nowhere: ?",
+        # a module of the design is used, before the one of a library
+        "  u_local: rtl/top.sv:local_cell",
+    ]
+    assert _codes(project) == [
+        ("", "filelist-unknown"),
+        ("rtl/top.sv", "undefined-module"),
+        ("rtl/top.sv", "duplicate-definition"),
+        ("lib/cells.v", "duplicate-definition"),
+    ]
+    assert project.diagnostics[0].file == "design.f"
+    assert project.diagnostics[0].loc.line == 7
+
+
+def test_filelist_library_order(tmp_path):
+    """A Library Named First Is Still A Library."""
+    _write(tmp_path, {**LIBRARY, "design.f": "-v lib/cells.v\nrtl/top.sv\n"})
+    project = Project.from_filelist(tmp_path / "design.f")
+    assert [file.file_id for file in project.files] == ["rtl/top.sv", "lib/cells.v"]
+    assert project.resolve("local_cell").id == "rtl/top.sv:local_cell"
+    assert project.settings.lib_exts == (".v", ".sv")
+
+
+def test_filelist_defines(tmp_path):
+    """The Macros Of A Filelist Are Used By Macro Expansion."""
+    _write(tmp_path, LIBRARY)
+    project = Project.from_filelist(tmp_path / "design.f", expand_macros=True, resolve_ifdefs=True, defines={"X": "1"})
+    assert project.settings.defines == {"WITH_B": "", "X": "1"}
+    assert project.settings.inc_dirs == ("inc",)
+    assert [(port.name, port.ifdefs) for port in project.files[0].modules[0].ports] == [("b", ()), ("a", ())]
+    # without, the condition is kept
+    project = Project.from_filelist(tmp_path / "design.f")
+    assert [(port.name, port.ifdefs) for port in project.files[0].modules[0].ports] == [("b", ("WITH_B",)), ("a", ())]
+
+
+def test_filelist_not_found(tmp_path):
+    """A Filelist Which Is Not There Is A Project Without Files, With A Diagnostic."""
+    project = Project.from_filelist(tmp_path / "none.f")
+    assert project.files == ()
+    assert [(diag.code, diag.severity) for diag in project.diagnostics] == [("filelist-not-found", "error")]
+
+
+def test_veer_filelist():
+    """A Real Filelist, Without Its Files: Every File Is Part Of The Project, With A Diagnostic."""
+    path = CORPUS / "filelists" / "veer_el2" / "flist"
+    project = Project.from_filelist(path, env={"RV_ROOT": "/veer"})
+    assert project.root.as_posix() == "/veer"
+    assert len(project.files) == 56
+    assert len(project.libraries) == 4
+    assert project.files[0].file_id == "design/lib/el2_assert.sv"
+    assert project.settings.defines == {"RV_OPENSOURCE": ""}
+    assert project.settings.inc_dirs == ("testbench", "design/include")
+    assert project.settings.lib_dirs == ("design/lib",)
+    assert {code for _, code in _codes(project)} == {"file-not-found"}
+    assert project.tops() == ()
+
+    project = Project.from_filelist(path, env={})
+    assert project.files == ()
+    assert [(diag.code, diag.loc.line) for diag in project.diagnostics] == [("filelist-variable", 4)]
+
+
+def test_ibex_dv_filelist(tmp_path):
+    """A Real Filelist With Variables: The Files Which Are There Are Parsed, The Others Are Reported."""
+    project = Project.from_filelist(IBEX / "ibex_dv.f", env={"PRJ_DIR": str(tmp_path), "LOWRISC_IP_DIR": str(tmp_path)})
+    assert len(project.files) == 114
+    assert {code for _, code in _codes(project)} == {"file-not-found"}
+    # with the directory of the files
+    rtl = tmp_path / "rtl"
+    rtl.symlink_to(IBEX, target_is_directory=True)
+    project = Project.from_filelist(IBEX / "ibex_dv.f", env={"PRJ_DIR": str(tmp_path), "LOWRISC_IP_DIR": str(tmp_path)})
+    found = [file for file in project.files if not any(diag.code == "file-not-found" for diag in file.diagnostics)]
+    assert len(found) == 24
+    assert project.resolve("ibex_core").id == "rtl/ibex_core.sv:ibex_core"
+    tree = project.hierarchy("ibex_top", depth=1)
+    assert "rtl/ibex_core.sv:ibex_core" in [node.definition for node in tree.children]

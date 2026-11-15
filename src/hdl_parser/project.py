@@ -41,15 +41,15 @@ A file which cannot be read or parsed never stops the others: it is part of the 
 """
 
 import os
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable, Iterator, Mapping
 from fnmatch import fnmatch
 from functools import cached_property
 from pathlib import Path
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 from . import datamodel as dm
 from ._diagnostics import Diagnostics
-from .filelistparser import parse_filelist
+from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
 from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
 SCHEMA_VERSION = 1
@@ -184,23 +184,49 @@ class Project(dm._BaseModel):
                     `{"fifo": "rtl/fifo.sv"}`.
         """
         settings = dm.Settings(expand_macros=expand_macros, resolve_ifdefs=resolve_ifdefs, defines=defines or {})
-        return _create(cls, map(Path, file_paths), root, settings, map(Path, inc_dirs), prefer)
+        return _Builder(cls, root, settings, map(Path, inc_dirs), prefer).build(map(Path, file_paths))
 
     @classmethod
-    def from_filelist(cls, filelist_path: Path | str, root: Path | str | None = None, **kwargs) -> "Project":
-        """Create project from the files and include directories of a filelist.
+    def from_filelist(  # noqa: PLR0913
+        cls,
+        filelist_path: Path | str,
+        root: Path | str | None = None,
+        env: Mapping[str, str] | None = None,
+        expand_macros: bool = False,
+        resolve_ifdefs: bool = False,
+        defines: dict[str, str] | None = None,
+        inc_dirs: Iterable[Path | str] = (),
+        prefer: dict[str, str] | None = None,
+    ) -> "Project":
+        """Create project from a filelist: its files, include directories, macros and libraries.
+
+        See [hdl_parser.filelistparser][] for the format. What is not understood is reported in `diagnostics`.
+
+        A module which is not defined by the files is searched for in the library directories of the filelist
+        (`-y`), as `<directory>/<module><extension>`. Library files (`-v`) and the files found this way are
+        listed in `libraries`: their modules are used, if they are not defined by another file.
 
         Args:
             filelist_path: Path to the filelist.
 
         Keyword Args:
             root: Root directory. The common directory of all files by default.
-            kwargs: See [from_files][hdl_parser.project.Project.from_files].
+            env: Environment variables used by the filelist. The ones of the process by default.
+            expand_macros: Expand macros with known definition.
+            resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
+            defines: Macros defined for all files, in addition to the ones of the filelist.
+            inc_dirs: Include directories, in addition to the ones of the filelist.
+            prefer: See [from_files][hdl_parser.project.Project.from_files].
         """
-        file_paths: list[Path] = []
-        inc_dirs: list[Path] = [Path(inc_dir) for inc_dir in kwargs.pop("inc_dirs", ())]
-        parse_filelist(file_paths, inc_dirs, Path(filelist_path))
-        return cls.from_files(file_paths, root=root, inc_dirs=inc_dirs, **kwargs)
+        filelist = read_filelist(filelist_path, env=env)
+        settings = dm.Settings(
+            expand_macros=expand_macros,
+            resolve_ifdefs=resolve_ifdefs,
+            defines={**filelist.defines, **(defines or {})},
+            lib_exts=tuple(filelist.lib_exts) or DEFAULT_LIB_EXTS,
+        )
+        builder = _Builder(cls, root, settings, (*filelist.inc_dirs, *map(Path, inc_dirs)), prefer)
+        return builder.build(filelist.files, filelist.lib_files, filelist.lib_dirs, filelist.diagnostics)
 
     @classmethod
     def from_dir(cls, dir_path: Path | str, exclude: Iterable[str] = (), **kwargs) -> "Project":
@@ -348,6 +374,16 @@ class Project(dm._BaseModel):
                     uses.setdefault(definition.id, []).append(use)
         return uses
 
+    @cached_property
+    def _undefined(self) -> tuple[tuple[dm.File, dm.ModuleInstance], ...]:
+        """Instances of modules which are not defined, with their file."""
+        return tuple(
+            (file, inst)
+            for parent in self._all_modules
+            for file, inst in parent.insts
+            if self._resolve_inst(file, inst) is None
+        )
+
     def where_used(self, name: str) -> tuple[dm.Use, ...]:
         """All instances of the module or interface `name` (a name, or a full identifier).
 
@@ -418,30 +454,109 @@ class Project(dm._BaseModel):
 # --- creation ---
 
 
-def _create(  # noqa: PLR0913
-    cls: type[Project],
-    file_paths: Iterable[Path],
-    root: Path | str | None,
-    settings: dm.Settings,
-    inc_dirs: Iterable[Path],
-    prefer: dict[str, str] | None,
-) -> Project:
-    """Parse `file_paths` and create the project."""
-    paths = [_absolute(file_path) for file_path in file_paths]
-    if root is not None:
-        root = _absolute(Path(root))
-    elif paths:
-        root = Path(os.path.commonpath([path.parent for path in paths]))
-    else:
-        root = Path.cwd()
-    all_inc_dirs = [_absolute(inc_dir) for inc_dir in inc_dirs]
-    settings = settings.model_copy(update={"inc_dirs": tuple(_relative(inc_dir, root) for inc_dir in all_inc_dirs)})
-    macros = None
-    if settings.expand_macros and settings.defines:
-        macros = parse_defines_text(*(f"`define {name} {value}\n" for name, value in settings.defines.items()))
-    files = tuple(_parse_file(path, root, settings, all_inc_dirs, macros) for path in paths)
-    project = cls(schema_version=SCHEMA_VERSION, root=root, settings=settings, files=files, prefer=prefer or {})
-    return _link(project)
+class _Builder:
+    """Parse Files And Create The Project."""
+
+    def __init__(
+        self,
+        cls: type[Project],
+        root: Path | str | None,
+        settings: dm.Settings,
+        inc_dirs: Iterable[Path],
+        prefer: dict[str, str] | None,
+    ):
+        self.cls = cls
+        self.root = None if root is None else _absolute(Path(root))
+        self.settings = settings
+        self.inc_dirs = [_absolute(inc_dir) for inc_dir in inc_dirs]
+        self.prefer = prefer or {}
+        self.macros: Macros | None = None
+        if settings.expand_macros and settings.defines:
+            defines = (f"`define {name} {value}\n" for name, value in settings.defines.items())
+            self.macros = parse_defines_text(*defines)
+
+    def build(
+        self,
+        file_paths: Iterable[Path],
+        lib_files: Iterable[Path] = (),
+        lib_dirs: Iterable[Path] = (),
+        diagnostics: Iterable[dm.Diagnostic] = (),
+    ) -> Project:
+        """Create project from `file_paths` and the libraries `lib_files` and `lib_dirs`."""
+        paths = list(dict.fromkeys(_absolute(path) for path in file_paths))
+        lib_paths = [path for path in dict.fromkeys(_absolute(path) for path in lib_files) if path not in paths]
+        dirs = [_absolute(lib_dir) for lib_dir in lib_dirs]
+        if self.root is not None:
+            root = self.root
+        elif paths or lib_paths:
+            root = Path(os.path.commonpath([path.parent for path in (*paths, *lib_paths)]))
+        else:
+            root = Path.cwd()
+        settings = self.settings.model_copy(
+            update={
+                "inc_dirs": tuple(_relative(inc_dir, root) for inc_dir in self.inc_dirs),
+                "lib_dirs": tuple(_relative(lib_dir, root) for lib_dir in dirs),
+            }
+        )
+        fields: dict[str, Any] = {
+            "schema_version": SCHEMA_VERSION,
+            "root": root,
+            "settings": settings,
+            "prefer": self.prefer,
+            "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
+        }
+        files = [self._parse(path, root) for path in (*paths, *lib_paths)]
+        libraries = [_relative(path, root) for path in lib_paths]
+        while True:
+            project = self.cls(files=tuple(files), libraries=tuple(libraries), **fields)
+            # modules which are not defined are searched for in the library directories
+            found = self._search(project, dirs, {*paths, *lib_paths})
+            if not found:
+                return _link(project)
+            lib_paths += found
+            files += [self._parse(path, root) for path in found]
+            libraries += [_relative(path, root) for path in found]
+
+    def _search(self, project: Project, lib_dirs: list[Path], known: set[Path]) -> list[Path]:
+        """Files of the library directories, which define modules `project` does not."""
+        found: list[Path] = []
+        if not lib_dirs:
+            return found
+        names = dict.fromkeys(inst.module for file, inst in project._undefined)
+        for name in names:
+            candidates = (lib_dir / f"{name}{ext}" for lib_dir in lib_dirs for ext in project.settings.lib_exts)
+            path = next((path for path in candidates if path.is_file()), None)
+            if path and path not in known and path not in found:
+                found.append(path)
+        return found
+
+    def _parse(self, path: Path, root: Path) -> dm.File:
+        """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
+        settings = self.settings
+        rel = Path(_relative(path, root))
+        try:
+            file = parse_file(
+                path,
+                expand_macros=settings.expand_macros,
+                macros=self.macros,
+                inc_dirs=self.inc_dirs,
+                resolve_ifdefs=settings.resolve_ifdefs,
+            )
+        except FileNotFoundError:
+            return _failed(rel, "file-not-found", "file not found.")
+        except (OSError, UnicodeError) as exc:
+            return _failed(rel, "file-unreadable", f"cannot read file: {exc}")
+        except Exception as exc:
+            # never a crash: the other files are still of use
+            return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
+        return file.model_copy(update={"path": rel})
+
+
+def _relative_file(diagnostic: dm.Diagnostic, root: Path) -> dm.Diagnostic:
+    """`diagnostic` with its file relative to `root`."""
+    if not diagnostic.file:
+        return diagnostic
+    return diagnostic.model_copy(update={"file": _relative(_absolute(Path(diagnostic.file)), root)})
 
 
 def _absolute(path: Path) -> Path:
@@ -455,27 +570,6 @@ def _relative(path: Path, root: Path) -> str:
         return path.relative_to(root).as_posix()
     except ValueError:
         return path.as_posix()
-
-
-def _parse_file(path: Path, root: Path, settings: dm.Settings, inc_dirs: list[Path], macros: Macros | None) -> dm.File:
-    """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
-    rel = Path(_relative(path, root))
-    try:
-        file = parse_file(
-            path,
-            expand_macros=settings.expand_macros,
-            macros=macros,
-            inc_dirs=inc_dirs,
-            resolve_ifdefs=settings.resolve_ifdefs,
-        )
-    except FileNotFoundError:
-        return _failed(rel, "file-not-found", "file not found.")
-    except (OSError, UnicodeError) as exc:
-        return _failed(rel, "file-unreadable", f"cannot read file: {exc}")
-    except Exception as exc:
-        # never a crash: the other files are still of use
-        return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
-    return file.model_copy(update={"path": rel})
 
 
 def _failed(path: Path, code: str, message: str) -> dm.File:
@@ -505,11 +599,9 @@ def _link(project: Project) -> Project:
                 others = ", ".join(f"'{definition.file.file_id}'" for definition in definitions[1:])
                 message = f"{kind} '{used.unit.name}' is defined in {others} too. This one is used."
                 report(used.file, "duplicate-definition", message, used.unit)
-    for parent in project._all_modules:
-        for file, inst in parent.insts:
-            if project._resolve_inst(file, inst) is None:
-                message = f"module '{inst.module}' of instance '{inst.name}' is not defined in the project."
-                report(file, "undefined-module", message, inst)
+    for file, inst in project._undefined:
+        message = f"module '{inst.module}' of instance '{inst.name}' is not defined in the project."
+        report(file, "undefined-module", message, inst)
     if not found:
         return project
     files = tuple(_add_diagnostics(file, found.get(file.file_id)) for file in project.files)

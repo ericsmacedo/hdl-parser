@@ -91,13 +91,16 @@ class Diagnostic(_BaseModel):
     | `parse-failed`        | error    | File cannot be parsed. This is a bug of the parser.               |
     | `duplicate-definition`| warning  | Module, interface or package is defined more than once in the project. |
     | `undefined-module`    | warning  | Module of an instance is not defined in the project. `item` is the instance. |
+    | `filelist-not-found`  | error    | Filelist cannot be read.                                          |
+    | `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |
+    | `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
 
     Code the parser has no interest in (i.e. procedural code) is skipped without diagnostic.
-    The codes `file-*`, `parse-failed`, `duplicate-definition` and `undefined-module` are reported by a
-    [Project][hdl_parser.project.Project] only.
+    The codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported
+    by a [Project][hdl_parser.project.Project] only.
 
     Attributes:
         code: Kind of problem. See table above.
@@ -106,7 +109,7 @@ class Diagnostic(_BaseModel):
         loc: Source Location within the parsed file. A problem within an included file points to the
              `` `include `` statement.
         item: Identifier of the related item: the module the problem is located in, if not stated otherwise.
-        file: Included file the problem is located in. Empty, if located in the parsed file itself.
+        file: Included file or filelist the problem is located in. Empty, if located in the parsed file itself.
     """
 
     code: str
@@ -672,12 +675,16 @@ class Settings(_BaseModel):
         resolve_ifdefs: `` `ifdef `` conditions on macros which are known to be defined are resolved.
         defines: Macros defined for all files, by name. Used by `expand_macros` only.
         inc_dirs: Include directories, relative to the root of the project if located there.
+        lib_dirs: Library directories: a module which is not defined is searched for as `<lib_dir>/<module><lib_ext>`.
+        lib_exts: Extensions of the files within library directories.
     """
 
     expand_macros: bool = False
     resolve_ifdefs: bool = False
     defines: dict[str, str] = {}
     inc_dirs: tuple[str, ...] = ()
+    lib_dirs: tuple[str, ...] = ()
+    lib_exts: tuple[str, ...] = ()
 
 
 class HierarchyNode(_BaseModel):
