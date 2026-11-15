@@ -778,6 +778,223 @@
           }
         }
       ],
+      "functions": [
+        {
+          "id": "tlul_pkg.tl_a_user_chk",
+          "name": "tl_a_user_chk",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "tlul_pkg.tl_a_user_chk.user",
+              "direction": "input",
+              "ptype": "tl_a_user_t",
+              "name": "user",
+              "loc": {
+                "line": 139,
+                "col": 42,
+                "end_line": 139,
+                "end_col": 58
+              }
+            }
+          ],
+          "comment": [
+            "Check user for unsupported values"
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.extract_h2d_cmd_intg",
+          "name": "extract_h2d_cmd_intg",
+          "kind": "function",
+          "rtype": "tl_h2d_cmd_intg_t",
+          "args": [
+            {
+              "id": "tlul_pkg.extract_h2d_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 148,
+                "col": 61,
+                "end_line": 148,
+                "end_col": 72
+              }
+            }
+          ],
+          "comment": [
+            "tl_a_user_chk",
+            "extract variables used for command checking"
+          ],
+          "loc": {
+            "line": 148,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.extract_d2h_rsp_intg",
+          "name": "extract_d2h_rsp_intg",
+          "kind": "function",
+          "rtype": "tl_d2h_rsp_intg_t",
+          "args": [
+            {
+              "id": "tlul_pkg.extract_d2h_rsp_intg.tl",
+              "direction": "input",
+              "ptype": "tl_d2h_t",
+              "name": "tl",
+              "loc": {
+                "line": 160,
+                "col": 61,
+                "end_line": 160,
+                "end_col": 72
+              }
+            }
+          ],
+          "comment": [
+            "extract_h2d_payload",
+            "extract variables used for response checking"
+          ],
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 169,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_cmd_intg",
+          "name": "get_cmd_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 172,
+                "col": 63,
+                "end_line": 172,
+                "end_col": 74
+              }
+            }
+          ],
+          "comment": [
+            "extract_d2h_rsp_intg",
+            "calculate ecc for command checking"
+          ],
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_data_intg",
+          "name": "get_data_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[DataIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_data_intg.data",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "data",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 183,
+                "col": 62,
+                "end_line": 183,
+                "end_col": 93
+              }
+            }
+          ],
+          "comment": [
+            "get_cmd_intg",
+            "calculate ecc for data checking"
+          ],
+          "loc": {
+            "line": 183,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_bad_cmd_intg",
+          "name": "get_bad_cmd_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_bad_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 194,
+                "col": 67,
+                "end_line": 194,
+                "end_col": 78
+              }
+            }
+          ],
+          "comment": [
+            "get_data_intg",
+            "return inverted integrity for command payload"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_bad_data_intg",
+          "name": "get_bad_data_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_bad_data_intg.data",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "data",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 201,
+                "col": 68,
+                "end_line": 201,
+                "end_col": 99
+              }
+            }
+          ],
+          "comment": [
+            "get_bad_cmd_intg",
+            "return inverted integrity for data payload"
+          ],
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 205,
+            "end_col": 14
+          }
+        }
+      ],
       "loc": {
         "line": 6,
         "col": 1,

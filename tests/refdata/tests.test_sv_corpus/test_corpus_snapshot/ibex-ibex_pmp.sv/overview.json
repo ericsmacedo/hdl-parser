@@ -185,6 +185,306 @@
           }
         }
       ],
+      "functions": [
+        {
+          "id": "ibex_pmp.mml_perm_check",
+          "name": "mml_perm_check",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_pmp.mml_perm_check.region_csr_pmp_cfg",
+              "direction": "input",
+              "ptype": "ibex_pkg::pmp_cfg_t",
+              "name": "region_csr_pmp_cfg",
+              "loc": {
+                "line": 59,
+                "col": 43,
+                "end_line": 59,
+                "end_col": 82
+              }
+            },
+            {
+              "id": "ibex_pmp.mml_perm_check.pmp_req_type",
+              "direction": "input",
+              "ptype": "ibex_pkg::pmp_req_e",
+              "name": "pmp_req_type",
+              "loc": {
+                "line": 60,
+                "col": 43,
+                "end_line": 60,
+                "end_col": 76
+              }
+            },
+            {
+              "id": "ibex_pmp.mml_perm_check.priv_mode",
+              "direction": "input",
+              "ptype": "ibex_pkg::priv_lvl_e",
+              "name": "priv_mode",
+              "loc": {
+                "line": 61,
+                "col": 43,
+                "end_line": 61,
+                "end_col": 73
+              }
+            },
+            {
+              "id": "ibex_pmp.mml_perm_check.permission_check",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "permission_check",
+              "loc": {
+                "line": 62,
+                "col": 43,
+                "end_line": 62,
+                "end_col": 80
+              }
+            }
+          ],
+          "comment": [
+            "/////////////////////",
+            "Functions for PMP //",
+            "/////////////////////",
+            "Flow of the PMP checking operation follows as below",
+            "",
+            "basic_perm_check ---> perm_check_wrapper ---> mml_perm_check/orig_perm_check ---/",
+            "|",
+            "region_match_all --------------------------------> access_fault_check <----------",
+            "|",
+            "!debug_mode_allowed_access ------------------------------> &",
+            "\\--> pmp_req_err_o",
+            "Compute permissions checks that apply when MSECCFG.MML is set. Added for Smepmp support."
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pmp.orig_perm_check",
+          "name": "orig_perm_check",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_pmp.orig_perm_check.pmp_cfg_lock",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "pmp_cfg_lock",
+              "loc": {
+                "line": 101,
+                "col": 44,
+                "end_line": 101,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "ibex_pmp.orig_perm_check.priv_mode",
+              "direction": "input",
+              "ptype": "ibex_pkg::priv_lvl_e",
+              "name": "priv_mode",
+              "loc": {
+                "line": 102,
+                "col": 44,
+                "end_line": 102,
+                "end_col": 74
+              }
+            },
+            {
+              "id": "ibex_pmp.orig_perm_check.permission_check",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "permission_check",
+              "loc": {
+                "line": 103,
+                "col": 44,
+                "end_line": 103,
+                "end_col": 81
+              }
+            }
+          ],
+          "comment": [
+            "Compute permissions checks that apply when MSECCFG.MML is unset. This is the original PMP",
+            "behaviour before Smepmp was added."
+          ],
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pmp.perm_check_wrapper",
+          "name": "perm_check_wrapper",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_pmp.perm_check_wrapper.csr_pmp_mseccfg_mml",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "csr_pmp_mseccfg_mml",
+              "loc": {
+                "line": 113,
+                "col": 47,
+                "end_line": 113,
+                "end_col": 87
+              }
+            },
+            {
+              "id": "ibex_pmp.perm_check_wrapper.region_csr_pmp_cfg",
+              "direction": "input",
+              "ptype": "ibex_pkg::pmp_cfg_t",
+              "name": "region_csr_pmp_cfg",
+              "loc": {
+                "line": 114,
+                "col": 47,
+                "end_line": 114,
+                "end_col": 86
+              }
+            },
+            {
+              "id": "ibex_pmp.perm_check_wrapper.pmp_req_type",
+              "direction": "input",
+              "ptype": "ibex_pkg::pmp_req_e",
+              "name": "pmp_req_type",
+              "loc": {
+                "line": 115,
+                "col": 47,
+                "end_line": 115,
+                "end_col": 80
+              }
+            },
+            {
+              "id": "ibex_pmp.perm_check_wrapper.priv_mode",
+              "direction": "input",
+              "ptype": "ibex_pkg::priv_lvl_e",
+              "name": "priv_mode",
+              "loc": {
+                "line": 116,
+                "col": 47,
+                "end_line": 116,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "ibex_pmp.perm_check_wrapper.permission_check",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "permission_check",
+              "loc": {
+                "line": 117,
+                "col": 47,
+                "end_line": 117,
+                "end_col": 84
+              }
+            }
+          ],
+          "comment": [
+            "A wrapper function in which it is decided which form of permission check function gets called"
+          ],
+          "loc": {
+            "line": 113,
+            "col": 3,
+            "end_line": 125,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pmp.access_fault_check",
+          "name": "access_fault_check",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_pmp.access_fault_check.csr_pmp_mseccfg_mmwp",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "csr_pmp_mseccfg_mmwp",
+              "loc": {
+                "line": 128,
+                "col": 48,
+                "end_line": 128,
+                "end_col": 94
+              }
+            },
+            {
+              "id": "ibex_pmp.access_fault_check.csr_pmp_mseccfg_mml",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "csr_pmp_mseccfg_mml",
+              "loc": {
+                "line": 129,
+                "col": 48,
+                "end_line": 129,
+                "end_col": 93
+              }
+            },
+            {
+              "id": "ibex_pmp.access_fault_check.pmp_req_type",
+              "direction": "input",
+              "ptype": "ibex_pkg::pmp_req_e",
+              "name": "pmp_req_type",
+              "loc": {
+                "line": 130,
+                "col": 48,
+                "end_line": 130,
+                "end_col": 86
+              }
+            },
+            {
+              "id": "ibex_pmp.access_fault_check.match_all",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "match_all",
+              "dim": "[PMPNumRegions-1:0]",
+              "loc": {
+                "line": 131,
+                "col": 48,
+                "end_line": 131,
+                "end_col": 83
+              }
+            },
+            {
+              "id": "ibex_pmp.access_fault_check.priv_mode",
+              "direction": "input",
+              "ptype": "ibex_pkg::priv_lvl_e",
+              "name": "priv_mode",
+              "loc": {
+                "line": 132,
+                "col": 48,
+                "end_line": 132,
+                "end_col": 83
+              }
+            },
+            {
+              "id": "ibex_pmp.access_fault_check.final_perm_check",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "final_perm_check",
+              "dim": "[PMPNumRegions-1:0]",
+              "loc": {
+                "line": 133,
+                "col": 48,
+                "end_line": 133,
+                "end_col": 90
+              }
+            }
+          ],
+          "comment": [
+            "Access fault determination / prioritization"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 14
+          }
+        }
+      ],
       "loc": {
         "line": 7,
         "col": 1,

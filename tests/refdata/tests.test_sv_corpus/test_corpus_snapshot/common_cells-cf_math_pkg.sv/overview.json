@@ -5,6 +5,89 @@
     {
       "id": "cf_math_pkg",
       "name": "cf_math_pkg",
+      "functions": [
+        {
+          "id": "cf_math_pkg.ceil_div",
+          "name": "ceil_div",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "cf_math_pkg.ceil_div.dividend",
+              "direction": "input",
+              "ptype": "longint",
+              "name": "dividend",
+              "loc": {
+                "line": 23,
+                "col": 42,
+                "end_line": 23,
+                "end_col": 64
+              }
+            },
+            {
+              "id": "cf_math_pkg.ceil_div.divisor",
+              "direction": "input",
+              "ptype": "longint",
+              "name": "divisor",
+              "loc": {
+                "line": 23,
+                "col": 66,
+                "end_line": 23,
+                "end_col": 87
+              }
+            }
+          ],
+          "comment": [
+            "/ Ceiled Division of Two Natural Numbers",
+            "/",
+            "/ Returns the quotient of two natural numbers, rounded towards plus infinity."
+          ],
+          "loc": {
+            "line": 23,
+            "col": 5,
+            "end_line": 46,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "cf_math_pkg.idx_width",
+          "name": "idx_width",
+          "kind": "function",
+          "rtype": "integer unsigned",
+          "args": [
+            {
+              "id": "cf_math_pkg.idx_width.num_idx",
+              "direction": "input",
+              "ptype": "integer",
+              "dtype": "unsigned",
+              "name": "num_idx",
+              "loc": {
+                "line": 57,
+                "col": 52,
+                "end_line": 57,
+                "end_col": 82
+              }
+            }
+          ],
+          "comment": [
+            "/ Index width required to be able to represent up to `num_idx` indices as a binary",
+            "/ encoded signal.",
+            "/ Ensures that the minimum width if an index signal is `1`, regardless of parametrization.",
+            "/",
+            "/ Sample usage in type definition:",
+            "/ As parameter:",
+            "/   `parameter type idx_t = logic[cf_math_pkg::idx_width(NumIdx)-1:0]`",
+            "/ As typedef:",
+            "/   `typedef logic [cf_math_pkg::idx_width(NumIdx)-1:0] idx_t`"
+          ],
+          "loc": {
+            "line": 57,
+            "col": 5,
+            "end_line": 59,
+            "end_col": 16
+          }
+        }
+      ],
       "loc": {
         "line": 18,
         "col": 1,

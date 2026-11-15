@@ -391,6 +391,148 @@
           }
         }
       ],
+      "functions": [
+        {
+          "id": "prim_lfsr.lrotcol",
+          "name": "lrotcol",
+          "kind": "function",
+          "rtype": "matrix_col_t",
+          "args": [
+            {
+              "id": "prim_lfsr.lrotcol.col",
+              "direction": "input",
+              "ptype": "matrix_col_t",
+              "name": "col",
+              "loc": {
+                "line": 392,
+                "col": 45,
+                "end_line": 392,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "prim_lfsr.lrotcol.shift",
+              "direction": "input",
+              "ptype": "integer",
+              "name": "shift",
+              "loc": {
+                "line": 392,
+                "col": 63,
+                "end_line": 392,
+                "end_col": 76
+              }
+            }
+          ],
+          "comment": [
+            "left-rotates a matrix column by the shift amount"
+          ],
+          "loc": {
+            "line": 392,
+            "col": 5,
+            "end_line": 398,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "prim_lfsr.revcol",
+          "name": "revcol",
+          "kind": "function",
+          "rtype": "matrix_col_t",
+          "args": [
+            {
+              "id": "prim_lfsr.revcol.col",
+              "direction": "input",
+              "ptype": "matrix_col_t",
+              "name": "col",
+              "loc": {
+                "line": 401,
+                "col": 44,
+                "end_line": 401,
+                "end_col": 60
+              }
+            }
+          ],
+          "comment": [
+            "reverses a matrix column"
+          ],
+          "loc": {
+            "line": 401,
+            "col": 5,
+            "end_line": 403,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "prim_lfsr.compute_next_state",
+          "name": "compute_next_state",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[LfsrDw-1:0]",
+          "args": [
+            {
+              "id": "prim_lfsr.compute_next_state.lfsrcoeffs",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "lfsrcoeffs",
+              "dim": "[LfsrDw-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 504,
+                "col": 60,
+                "end_line": 504,
+                "end_col": 92
+              }
+            },
+            {
+              "id": "prim_lfsr.compute_next_state.entropy",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "entropy",
+              "dim": "[EntropyDw-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 505,
+                "col": 60,
+                "end_line": 505,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "prim_lfsr.compute_next_state.current_state",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "current_state",
+              "dim": "[LfsrDw-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 506,
+                "col": 60,
+                "end_line": 506,
+                "end_col": 95
+              }
+            }
+          ],
+          "comment": [
+            "the code below is not meant to be synthesized,",
+            "but it is intended to be used in simulation and FPV"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 504,
+            "col": 3,
+            "end_line": 537,
+            "end_col": 35
+          }
+        }
+      ],
       "loc": {
         "line": 29,
         "col": 1,

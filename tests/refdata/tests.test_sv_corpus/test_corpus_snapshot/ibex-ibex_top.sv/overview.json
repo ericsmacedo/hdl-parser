@@ -2292,6 +2292,122 @@
           }
         }
       ],
+      "functions": [
+        {
+          "id": "ibex_top.insn_write_sync_exc_seen",
+          "name": "insn_write_sync_exc_seen",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_top.insn_write_sync_exc_seen.insn_bits",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "insn_bits",
+              "dim": "[31:0]",
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1541,
+                "col": 55,
+                "end_line": 1541,
+                "end_col": 77
+              }
+            }
+          ],
+          "comment": [
+            "Tracking logic and predictor for double_fault_seen_o output, relies on RVFI so only include",
+            "it where RVFI is available.",
+            "Returns 1'b1 if the provided instruction decodes to one that would write the sync_exc_bit of",
+            "the CPUCTRLSTS CSR"
+          ],
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1541,
+            "col": 5,
+            "end_line": 1545,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_top.new_sync_exc_bit",
+          "name": "new_sync_exc_bit",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "ibex_top.new_sync_exc_bit.insn_bits",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "insn_bits",
+              "dim": "[31:0]",
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1550,
+                "col": 47,
+                "end_line": 1550,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "ibex_top.new_sync_exc_bit.rs1",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rs1",
+              "dim": "[31:0]",
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1550,
+                "col": 71,
+                "end_line": 1550,
+                "end_col": 87
+              }
+            },
+            {
+              "id": "ibex_top.new_sync_exc_bit.cur_bit",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "cur_bit",
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1551,
+                "col": 9,
+                "end_line": 1551,
+                "end_col": 22
+              }
+            }
+          ],
+          "comment": [
+            "Given an instruction that writes the sync_exc_bit of the CPUCTRLSTS CSR along with the value",
+            "of the rs1 register read for that instruction and the current predicted sync_exc_bit bit",
+            "return the new value of the sync_exc_bit after the instruction is executed."
+          ],
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1550,
+            "col": 5,
+            "end_line": 1562,
+            "end_col": 16
+          }
+        }
+      ],
       "insts": [
         {
           "id": "ibex_top.g_clock_en_secure.u_prim_core_busy_flop",

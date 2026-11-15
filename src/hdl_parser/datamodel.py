@@ -117,6 +117,7 @@ Item: TypeAlias = Union[
     "Param",
     "Port",
     "Modport",
+    "Function",
     "Typedef",
     "Member",
     "ModuleInstance",
@@ -138,6 +139,7 @@ class File(_BaseModel):
     | Modport, port of a modport               | `bus_if.master.req`  |
     | Parameter, local parameter, port         | `top.WIDTH`          |
     | Type                                     | `bus_pkg.req_t`      |
+    | Function or task, argument               | `bus_pkg.f.arg`      |
     | Enum member, struct or union field       | `bus_pkg.req_t.addr` |
     | Instance                                 | `top.u_sub`          |
     | Instance within labeled generate blocks  | `top.g_a.u_sub`      |
@@ -197,6 +199,9 @@ class File(_BaseModel):
             for typedef in package.typedefs:
                 yield typedef
                 yield from typedef.members
+            for function in package.functions:
+                yield function
+                yield from function.args
         for module in (*self.interfaces, *self.modules):
             yield module
             yield from module.params
@@ -205,6 +210,9 @@ class File(_BaseModel):
             for typedef in module.typedefs:
                 yield typedef
                 yield from typedef.members
+            for function in module.functions:
+                yield function
+                yield from function.args
             yield from module.unresolved_macros
             for modport in getattr(module, "modports", ()):
                 yield modport
@@ -233,6 +241,7 @@ class Module(_BaseModel):
         ports: Ports
         localparams: Local Parameters
         typedefs: Types declared within the module.
+        functions: Functions and tasks declared within the module.
         insts: Submodule Instances.
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
@@ -247,6 +256,7 @@ class Module(_BaseModel):
     ports: tuple["Port", ...] = ()
     localparams: tuple["Param", ...] = ()
     typedefs: tuple["Typedef", ...] = ()
+    functions: tuple["Function", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
@@ -292,6 +302,7 @@ class Package(_BaseModel):
         params: Parameters
         localparams: Local Parameters
         typedefs: Types
+        functions: Functions and tasks
         ifdefs: Conditions the package is defined at.
         loc: Source Location: from `package` to `endpackage`.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -302,6 +313,33 @@ class Package(_BaseModel):
     params: tuple["Param", ...] = ()
     localparams: tuple["Param", ...] = ()
     typedefs: tuple["Typedef", ...] = ()
+    functions: tuple["Function", ...] = ()
+    ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Function(_BaseModel):
+    """Represents the signature of a function or task (VHDL: procedure).
+
+    Attributes:
+        name: Name
+        kind: `function`, `task` or `procedure`.
+        rtype: Return type of a function: `logic`, `int unsigned`, `pkg::t`, `void`. Empty, if not given.
+        dim: Dimension (Packed) of the return type.
+        args: Arguments, as ports with direction (`input` by default), type, dimensions and default.
+        comment: tuple of associated comments
+        ifdefs: Conditions the function is defined at.
+        loc: Source Location: from `function` to `endfunction`.
+        id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
+    """
+
+    id: str = ""
+    name: str
+    kind: Literal["function", "task", "procedure"]
+    rtype: str = ""
+    dim: str = ""
+    args: tuple["Port", ...] = ()
+    comment: tuple[str, ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
@@ -401,6 +439,7 @@ class Port(_BaseModel):
         name: Name of the port
         dim: Dimension (Packed)
         dim_unpacked: Unpacked
+        default: Default value. Empty, if not given.
         comment: tuple of associated comments
         loc: Source Location of the declaration. Names declared together share it.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -414,6 +453,7 @@ class Port(_BaseModel):
     name: str
     dim: str = ""
     dim_unpacked: str = ""
+    default: str = ""
     ifdefs: tuple[str, ...] = ()
     comment: tuple[str, ...] = ()
     loc: Location | None = None

@@ -37,6 +37,7 @@ You receive a [hdl_parser.File][] object holding all information.
 from .datamodel import (
     Diagnostic,
     File,
+    Function,
     Generate,
     Interface,
     Location,
@@ -56,6 +57,7 @@ from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_
 __all__ = [
     "Diagnostic",
     "File",
+    "Function",
     "Generate",
     "Interface",
     "Location",

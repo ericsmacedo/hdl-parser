@@ -22,7 +22,7 @@
 
 """Packages And Types."""
 
-from hdl_parser import Location, Member, Package, Param, Typedef, parse_file, parse_text
+from hdl_parser import Function, Location, Member, Package, Param, Port, Typedef, parse_file, parse_text
 
 from .conftest import PRJ_PATH, plain
 
@@ -105,6 +105,9 @@ def test_package():
             Typedef(name="plain_e", kind="enum", members=(Member(name="A"), Member(name="B"))),
             # types within functions are local
             Typedef(name="resp_t", kind="alias", dtype="req_t"),
+        ),
+        functions=(
+            Function(name="f", kind="function", rtype="int", args=(Port(direction="input", ptype="int", name="a"),)),
         ),
     )
 

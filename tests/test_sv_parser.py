@@ -243,7 +243,7 @@ endmodule : top
     module = _parse("extern module ext (input a); module top (a, b); input a; output reg [1:0] b = 0, c; endmodule")
     assert plain(module.ports) == (
         Port(direction="input", name="a"),
-        Port(direction="output", ptype="reg", name="b", dim="[1:0]"),
+        Port(direction="output", ptype="reg", name="b", dim="[1:0]", default="0"),
         Port(direction="output", ptype="reg", name="c", dim="[1:0]"),
     )
 

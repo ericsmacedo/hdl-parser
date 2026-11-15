@@ -69,6 +69,14 @@ class _Assigner:
             result.append(typedef.model_copy(update=update))
         return tuple(result)
 
+    def functions(self, functions: tuple[dm.Function, ...], scope: _Scope) -> tuple[dm.Function, ...]:
+        result = []
+        for function in functions:
+            function_id = scope.id(self.name(function.name))
+            update = {"id": function_id, "args": self.named(function.args, _Scope(function_id))}
+            result.append(function.model_copy(update=update))
+        return tuple(result)
+
     def connections(self, cons: tuple[dm.Connection, ...], scope: _Scope, by_order: str) -> tuple[dm.Connection, ...]:
         position = 0
         result = []
@@ -102,6 +110,7 @@ class _Assigner:
             "params": self.named(pkg.params, scope),
             "localparams": self.named(pkg.localparams, scope),
             "typedefs": self.typedefs(pkg.typedefs, scope),
+            "functions": self.functions(pkg.functions, scope),
         }
         return pkg.model_copy(update=update)
 
@@ -115,6 +124,7 @@ class _Assigner:
             "localparams": self.named(mod.localparams, scope),
             "ports": self.named(mod.ports, scope),
             "typedefs": self.typedefs(mod.typedefs, scope),
+            "functions": self.functions(mod.functions, scope),
             "insts": tuple(self.instance(inst, scope) for inst in mod.insts),
             "unresolved_macros": tuple(
                 macro.model_copy(update={"id": scope.id(f"`{self.name(macro.name)}")})

@@ -79,8 +79,6 @@ _JOINS = frozenset(("join", "join_any", "join_none"))
 _LABELED = frozenset(("generate", "endgenerate"))
 # Blocks without anything to extract: start keyword -> end keyword
 _BLOCKS = {
-    "function": "endfunction",
-    "task": "endtask",
     "class": "endclass",
     "covergroup": "endgroup",
     "property": "endproperty",
@@ -216,6 +214,19 @@ class _Typedef(NamedTuple):
     comment: list[str]
 
 
+class _Function(NamedTuple):
+    """One Function Or Task. `first` and `last` span it from `function` to `endfunction`."""
+
+    first: Token
+    last: Token
+    name: Token
+    kind: str  # function or task
+    rtype: str
+    dim: str
+    args: list[_Decl]
+    comment: list[str]
+
+
 @dataclass
 class _Package:
     """One Package. `last` is known as soon as the package is parsed completely."""
@@ -225,6 +236,7 @@ class _Package:
     name: Token
     params: list[_Decl] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
+    functions: list[_Function] = field(default_factory=list)
     # there is an `endpackage`
     ended: bool = False
 
@@ -252,6 +264,7 @@ class _Module:
     params: list[_Decl] = field(default_factory=list)
     ports: list[_Decl] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
+    functions: list[_Function] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
@@ -570,6 +583,94 @@ def _parse_typedef(c: Cursor) -> _Typedef | None:
     c.accept(";")
     c.sink = None
     return typedef._replace(last=c.toks[c.pos - 1]) if typedef else None
+
+
+# --- functions and tasks ---
+
+
+def _parse_args(c: Cursor) -> list[_Decl]:
+    """Parse the parenthesized arguments of a function or task. The direction is `input` by default."""
+    args: list[_Decl] = []
+    opening = c.next()
+    direction = "input"
+    while True:
+        tok = c.peek()
+        if tok.text == ")":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        pos = c.pos
+        if tok.text == "const" and c.peek(1).text == "ref":
+            c.next()
+        if c.accept("ref"):
+            direction = "ref"
+        if c.peek().text != ",":
+            items = _parse_decl(c, direction)
+            if items:
+                # the direction is inherited by the following arguments
+                direction = items[-1].kind
+                args += items
+        if c.pos == pos:
+            # separator, or nothing we understand
+            if tok.text in OPEN:
+                c.skip_balanced()
+            else:
+                c.next()
+    return args
+
+
+def _parse_function_body(c: Cursor, end: str) -> list[_Decl]:
+    """Consume the body of a function or task up to `end`. Return the arguments declared within (`input a;`)."""
+    args: list[_Decl] = []
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            break
+        if tok.kind == KW and tok.text == end:
+            c.next()
+            _skip_label(c)
+            break
+        if tok.kind == KW and tok.text in _DIRECTIONS:
+            args += _parse_item_decl(c)
+        elif tok.text in OPEN:
+            c.skip_balanced()
+        else:
+            c.next()
+    return args
+
+
+def _parse_function(c: Cursor) -> _Function | None:
+    """Parse `function [type] name [(arguments)]; ... endfunction`. Likewise tasks.
+
+    Arguments are declared in the parenthesis, or within the body (`input a;`).
+    """
+    # the comments in front describe the function
+    leading = list(c.comments.get(c.pos, ()))
+    comment = c.start_comment()
+    comment += leading
+    first = c.next()
+    while c.peek().text in ("automatic", "static"):
+        c.next()
+    ptype, signing = _parse_type(c)
+    dim = _parse_dims(c)
+    # the name of a method defined outside of its class has a scope: cls::name
+    while c.peek().kind == ID and c.peek(1).text in ("::", ".") and c.peek(2).kind == ID:
+        c.next()
+        c.next()
+    name = c.peek()
+    args: list[_Decl] = []
+    if name.kind == ID:
+        c.next()
+        if c.peek().text == "(":
+            args = _parse_args(c)
+    c.sink = None
+    args += _parse_function_body(c, f"end{first.text}")
+    if name.kind != ID:
+        return None
+    rtype = f"{ptype} {signing}".strip()
+    return _Function(first, c.toks[c.pos - 1], name, first.text, rtype, dim, args, comment)
 
 
 # --- instances ---
@@ -907,6 +1008,13 @@ def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_label(c)
 
 
+@_handles("function", "task")
+def _handle_function(c: Cursor, mod: _Module) -> None:
+    function = _parse_function(c)
+    if function:
+        mod.functions.append(function)
+
+
 @_handles(*_BLOCKS)
 def _handle_block(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     c.skip_past(frozenset((_BLOCKS[c.peek().text],)))
@@ -1016,8 +1124,12 @@ def _parse_package_item(c: Cursor, pkg: _Package) -> None:
         typedef = _parse_typedef(c)
         if typedef:
             pkg.typedefs.append(typedef)
+    elif text in ("function", "task"):
+        function = _parse_function(c)
+        if function:
+            pkg.functions.append(function)
     elif text in _BLOCKS and tok.kind == KW:
-        # functions, tasks, classes, ...
+        # classes, ...
         c.skip_past(frozenset((_BLOCKS[text],)))
     else:
         # anything else: imports, variables, ...
@@ -1155,11 +1267,28 @@ def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
             dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
+            default=decl.default,
             comment=tuple(decl.comment),
             ifdefs=decl.name.ifdefs,
             loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
+    )
+
+
+def _create_functions(functions: list[_Function], smap: SourceMap) -> tuple[dm.Function, ...]:
+    return tuple(
+        dm.Function(
+            name=function.name.text,
+            kind=function.kind,  # type: ignore[arg-type]
+            rtype=function.rtype,
+            dim=function.dim,
+            args=_create_ports(function.args, smap),
+            comment=tuple(function.comment),
+            ifdefs=function.name.ifdefs,
+            loc=smap.span(function.first, function.last, function.name),
+        )
+        for function in functions
     )
 
 
@@ -1260,6 +1389,7 @@ def parse(  # noqa: PLR0913
             params=_create_params(pkg.params, "parameter", smap),
             localparams=_create_params(pkg.params, "localparam", smap),
             typedefs=_create_typedefs(pkg.typedefs, smap),
+            functions=_create_functions(pkg.functions, smap),
             ifdefs=pkg.first.ifdefs,
             loc=smap.span(pkg.first, pkg.last, pkg.name),
         )
@@ -1274,6 +1404,7 @@ def parse(  # noqa: PLR0913
             "localparams": _create_params(mod.params, "localparam", smap),
             "ports": _create_ports(mod.ports, smap),
             "typedefs": _create_typedefs(mod.typedefs, smap),
+            "functions": _create_functions(mod.functions, smap),
             "insts": _create_insts(mod.insts, smap),
             "ifdefs": mod.first.ifdefs,
             "unresolved_macros": _create_macros(mod, smap),

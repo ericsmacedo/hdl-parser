@@ -1297,6 +1297,1010 @@
           }
         }
       ],
+      "functions": [
+        {
+          "id": "axi_pkg.num_bytes",
+          "name": "num_bytes",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.num_bytes.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 116,
+                "col": 50,
+                "end_line": 116,
+                "end_col": 61
+              }
+            }
+          ],
+          "comment": [
+            "/ Maximum number of bytes per burst, as specified by `size` (see Table A3-2)."
+          ],
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.aligned_addr",
+          "name": "aligned_addr",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.aligned_addr.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 126,
+                "col": 50,
+                "end_line": 126,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "axi_pkg.aligned_addr.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 126,
+                "col": 71,
+                "end_line": 126,
+                "end_col": 82
+              }
+            }
+          ],
+          "comment": [
+            "/ Aligned address of burst (see A3-51)."
+          ],
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.wrap_boundary",
+          "name": "wrap_boundary",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.wrap_boundary.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 134,
+                "col": 52,
+                "end_line": 134,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.wrap_boundary.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 134,
+                "col": 73,
+                "end_line": 134,
+                "end_col": 84
+              }
+            },
+            {
+              "id": "axi_pkg.wrap_boundary.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 134,
+                "col": 86,
+                "end_line": 134,
+                "end_col": 95
+              }
+            }
+          ],
+          "comment": [
+            "/ Warp boundary of a `BURST_WRAP` transfer (see A3-51).",
+            "/ This is the lowest address accessed within a wrapping burst.",
+            "/ This address is aligned to the size and length of the burst.",
+            "/ The length of a `BURST_WRAP` has to be 2, 4, 8, or 16 transfers."
+          ],
+          "loc": {
+            "line": 134,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_addr",
+          "name": "beat_addr",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.beat_addr.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 167,
+                "col": 13,
+                "end_line": 167,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 167,
+                "col": 34,
+                "end_line": 167,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 167,
+                "col": 47,
+                "end_line": 167,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 167,
+                "col": 58,
+                "end_line": 167,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 167,
+                "col": 73,
+                "end_line": 167,
+                "end_col": 97
+              }
+            }
+          ],
+          "comment": [
+            "/ Address of beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_lower_byte",
+          "name": "beat_lower_byte",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.beat_lower_byte.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 200,
+                "col": 19,
+                "end_line": 200,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 200,
+                "col": 40,
+                "end_line": 200,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 200,
+                "col": 53,
+                "end_line": 200,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 200,
+                "col": 64,
+                "end_line": 200,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.strobe_width",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "strobe_width",
+              "loc": {
+                "line": 201,
+                "col": 7,
+                "end_line": 201,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 201,
+                "col": 39,
+                "end_line": 201,
+                "end_col": 63
+              }
+            }
+          ],
+          "comment": [
+            "/ Index of lowest byte in beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 199,
+            "col": 3,
+            "end_line": 204,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_upper_byte",
+          "name": "beat_upper_byte",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.beat_upper_byte.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 208,
+                "col": 19,
+                "end_line": 208,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 208,
+                "col": 40,
+                "end_line": 208,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 208,
+                "col": 53,
+                "end_line": 208,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 208,
+                "col": 64,
+                "end_line": 208,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.strobe_width",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "strobe_width",
+              "loc": {
+                "line": 209,
+                "col": 7,
+                "end_line": 209,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 209,
+                "col": 39,
+                "end_line": 209,
+                "end_col": 63
+              }
+            }
+          ],
+          "comment": [
+            "/ Index of highest byte in beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 207,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.bufferable",
+          "name": "bufferable",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "axi_pkg.bufferable.cache",
+              "direction": "input",
+              "ptype": "cache_t",
+              "name": "cache",
+              "loc": {
+                "line": 218,
+                "col": 39,
+                "end_line": 218,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "/ Is the bufferable bit set?"
+          ],
+          "loc": {
+            "line": 218,
+            "col": 3,
+            "end_line": 220,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.modifiable",
+          "name": "modifiable",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "axi_pkg.modifiable.cache",
+              "direction": "input",
+              "ptype": "cache_t",
+              "name": "cache",
+              "loc": {
+                "line": 223,
+                "col": 39,
+                "end_line": 223,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "/ Is the modifiable bit set?"
+          ],
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.get_arcache",
+          "name": "get_arcache",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[3:0]",
+          "args": [
+            {
+              "id": "axi_pkg.get_arcache.mtype",
+              "direction": "input",
+              "ptype": "mem_type_t",
+              "name": "mtype",
+              "loc": {
+                "line": 244,
+                "col": 46,
+                "end_line": 244,
+                "end_col": 62
+              }
+            }
+          ],
+          "comment": [
+            "/ Create an `AR_CACHE` field from a `mem_type_t` type."
+          ],
+          "loc": {
+            "line": 244,
+            "col": 3,
+            "end_line": 259,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.get_awcache",
+          "name": "get_awcache",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[3:0]",
+          "args": [
+            {
+              "id": "axi_pkg.get_awcache.mtype",
+              "direction": "input",
+              "ptype": "mem_type_t",
+              "name": "mtype",
+              "loc": {
+                "line": 262,
+                "col": 46,
+                "end_line": 262,
+                "end_col": 62
+              }
+            }
+          ],
+          "comment": [
+            "/ Create an `AW_CACHE` field from a `mem_type_t` type."
+          ],
+          "loc": {
+            "line": 262,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.resp_precedence",
+          "name": "resp_precedence",
+          "kind": "function",
+          "rtype": "resp_t",
+          "args": [
+            {
+              "id": "axi_pkg.resp_precedence.resp_a",
+              "direction": "input",
+              "ptype": "resp_t",
+              "name": "resp_a",
+              "loc": {
+                "line": 289,
+                "col": 45,
+                "end_line": 289,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axi_pkg.resp_precedence.resp_b",
+              "direction": "input",
+              "ptype": "resp_t",
+              "name": "resp_b",
+              "loc": {
+                "line": 289,
+                "col": 60,
+                "end_line": 289,
+                "end_col": 73
+              }
+            }
+          ],
+          "comment": [
+            "/ RESP precedence: DECERR > SLVERR > OKAY > EXOKAY.  This is not defined in the AXI standard but",
+            "/ depends on the implementation.  We consistently use the precedence above.  Rationale:",
+            "/ - EXOKAY means an exclusive access was successful, whereas OKAY means it was not.  Thus, if",
+            "/   OKAY and EXOKAY are to be merged, OKAY precedes because the exclusive access was not fully",
+            "/   successful.",
+            "/ - Both DECERR and SLVERR mean (part of) a transaction were unsuccessful, whereas OKAY means an",
+            "/   entire transaction was successful.  Thus both DECERR and SLVERR precede OKAY.",
+            "/ - DECERR means (part of) a transactions could not be routed to a slave component, whereas",
+            "/   SLVERR means the transaction reached a slave component but lead to an error condition there.",
+            "/   Thus DECERR precedes SLVERR because DECERR happens earlier in the handling of a transaction."
+          ],
+          "loc": {
+            "line": 289,
+            "col": 3,
+            "end_line": 316,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.aw_width",
+          "name": "aw_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.aw_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 319,
+                "col": 44,
+                "end_line": 319,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "axi_pkg.aw_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 319,
+                "col": 69,
+                "end_line": 319,
+                "end_col": 90
+              }
+            },
+            {
+              "id": "axi_pkg.aw_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 320,
+                "col": 44,
+                "end_line": 320,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "/ AW Width: Returns the width of the AW channel payload"
+          ],
+          "loc": {
+            "line": 319,
+            "col": 3,
+            "end_line": 324,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.w_width",
+          "name": "w_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.w_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 327,
+                "col": 43,
+                "end_line": 327,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.w_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 327,
+                "col": 68,
+                "end_line": 327,
+                "end_col": 91
+              }
+            }
+          ],
+          "comment": [
+            "/ W Width: Returns the width of the W channel payload"
+          ],
+          "loc": {
+            "line": 327,
+            "col": 3,
+            "end_line": 331,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.b_width",
+          "name": "b_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.b_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 334,
+                "col": 43,
+                "end_line": 334,
+                "end_col": 64
+              }
+            },
+            {
+              "id": "axi_pkg.b_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 334,
+                "col": 66,
+                "end_line": 334,
+                "end_col": 89
+              }
+            }
+          ],
+          "comment": [
+            "/ B Width: Returns the width of the B channel payload"
+          ],
+          "loc": {
+            "line": 334,
+            "col": 3,
+            "end_line": 337,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.ar_width",
+          "name": "ar_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.ar_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 340,
+                "col": 44,
+                "end_line": 340,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "axi_pkg.ar_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 340,
+                "col": 69,
+                "end_line": 340,
+                "end_col": 90
+              }
+            },
+            {
+              "id": "axi_pkg.ar_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 341,
+                "col": 44,
+                "end_line": 341,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "/ AR Width: Returns the width of the AR channel payload"
+          ],
+          "loc": {
+            "line": 340,
+            "col": 3,
+            "end_line": 345,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.r_width",
+          "name": "r_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.r_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 348,
+                "col": 43,
+                "end_line": 348,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.r_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 348,
+                "col": 68,
+                "end_line": 348,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "axi_pkg.r_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 349,
+                "col": 43,
+                "end_line": 349,
+                "end_col": 66
+              }
+            }
+          ],
+          "comment": [
+            "/ R Width: Returns the width of the R channel payload"
+          ],
+          "loc": {
+            "line": 348,
+            "col": 3,
+            "end_line": 353,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.req_width",
+          "name": "req_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.req_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 356,
+                "col": 45,
+                "end_line": 356,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 356,
+                "col": 73,
+                "end_line": 356,
+                "end_col": 96
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 357,
+                "col": 45,
+                "end_line": 357,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.aw_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "aw_user_width",
+              "loc": {
+                "line": 357,
+                "col": 73,
+                "end_line": 357,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.ar_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "ar_user_width",
+              "loc": {
+                "line": 358,
+                "col": 45,
+                "end_line": 358,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.w_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "w_user_width",
+              "loc": {
+                "line": 358,
+                "col": 73,
+                "end_line": 358,
+                "end_col": 98
+              }
+            }
+          ],
+          "comment": [
+            "/ Request Width: Returns the width of the request channel"
+          ],
+          "loc": {
+            "line": 356,
+            "col": 3,
+            "end_line": 365,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.rsp_width",
+          "name": "rsp_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.rsp_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 368,
+                "col": 45,
+                "end_line": 368,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 368,
+                "col": 72,
+                "end_line": 368,
+                "end_col": 93
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.r_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "r_user_width",
+              "loc": {
+                "line": 369,
+                "col": 45,
+                "end_line": 369,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.b_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "b_user_width",
+              "loc": {
+                "line": 369,
+                "col": 72,
+                "end_line": 369,
+                "end_col": 97
+              }
+            }
+          ],
+          "comment": [
+            "/ Response Width: Returns the width of the response channel"
+          ],
+          "loc": {
+            "line": 368,
+            "col": 3,
+            "end_line": 375,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.iomsb",
+          "name": "iomsb",
+          "kind": "function",
+          "rtype": "integer unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.iomsb.width",
+              "direction": "input",
+              "ptype": "integer",
+              "dtype": "unsigned",
+              "name": "width",
+              "loc": {
+                "line": 536,
+                "col": 46,
+                "end_line": 536,
+                "end_col": 74
+              }
+            }
+          ],
+          "comment": [
+            "Return either the argument minus 1 or 0 if 0; useful for IO vector width declaration"
+          ],
+          "loc": {
+            "line": 536,
+            "col": 3,
+            "end_line": 538,
+            "end_col": 14
+          }
+        }
+      ],
       "loc": {
         "line": 23,
         "col": 1,
