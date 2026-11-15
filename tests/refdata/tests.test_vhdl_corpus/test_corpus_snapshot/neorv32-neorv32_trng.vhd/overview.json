@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_trng.trng_fifo",
+          "dtype": "natural",
           "name": "TRNG_FIFO",
           "comment": [
             "-- FIFO depth, has to be a power of two, min 1"
@@ -20,6 +21,7 @@
         },
         {
           "id": "neorv32_trng.num_ro",
+          "dtype": "natural",
           "name": "NUM_RO",
           "comment": [
             "-- total number of ring-oscillators"
@@ -33,6 +35,7 @@
         },
         {
           "id": "neorv32_trng.num_inv",
+          "dtype": "natural",
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters in first ring-oscillator; has to be odd"
@@ -46,6 +49,7 @@
         },
         {
           "id": "neorv32_trng.num_rbit",
+          "dtype": "natural",
           "name": "NUM_RBIT",
           "comment": [
             "-- number of raw bits to process for one output byte; has to be power of 2"
@@ -132,6 +136,650 @@
             "col": 5,
             "end_line": 32,
             "end_col": 31
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "neorv32_trng.num_inv_start_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "num_inv_start_c",
+          "default": "sel_natural_f(boolean((NUM_INV mod 2) = 0), NUM_INV+1, NUM_INV)",
+          "comment": [
+            "-- is #INV odd?"
+          ],
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 105
+          }
+        },
+        {
+          "id": "neorv32_trng.num_raw_bits_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "num_raw_bits_c",
+          "default": "2**index_size_f(NUM_RBIT)",
+          "comment": [
+            "-- make sure #BITS is a power of 2"
+          ],
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "neorv32_trng.log2_rbit_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "log2_rbit_c",
+          "default": "index_size_f(num_raw_bits_c)",
+          "comment": [
+            "-- log2(#BITS)"
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "neorv32_trng.log2_fifo_size_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "log2_fifo_size_c",
+          "default": "index_size_f(TRNG_FIFO)",
+          "comment": [
+            "-- FIFO address width"
+          ],
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_en_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_en_c",
+          "default": "0",
+          "comment": [
+            "-- r/w: TRNG enable"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_fifo_clr_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_fifo_clr_c",
+          "default": "1",
+          "comment": [
+            "-- -/w: Clear data FIFO (auto clears)"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_sim_mode_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_sim_mode_c",
+          "default": "2",
+          "comment": [
+            "-- r/-: TRNG implemented in non-TRNG/pseudo-RNG simulation mode"
+          ],
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_avail_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_avail_c",
+          "default": "3",
+          "comment": [
+            "-- r/-: Random data available"
+          ],
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_fifo0_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_fifo0_c",
+          "default": "4",
+          "comment": [
+            "-- r/-: log2(FIFO size) bit 0, LSB"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_fifo3_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_fifo3_c",
+          "default": "7",
+          "comment": [
+            "-- r/-: log2(FIFO size) bit 3, MSB"
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_nbit0_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_nbit0_c",
+          "default": "8",
+          "comment": [
+            "-- r/-: log2(number raw bits) processed for one random byte, bit 0, LSB"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_nbit3_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_nbit3_c",
+          "default": "11",
+          "comment": [
+            "-- r/-: log2(number raw bits) processed for one random byte, bit 3, MSB"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_nro0_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_nro0_c",
+          "default": "12",
+          "comment": [
+            "-- r/-: number of ring-oscillators, bit 0, LSB"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_nro7_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_nro7_c",
+          "default": "19",
+          "comment": [
+            "-- r/-: number of ring-oscillators, bit 7, MSB"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_ninv0_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_ninv0_c",
+          "default": "20",
+          "comment": [
+            "-- r/-: number of inverters in first ring-oscillator, bit 0, LSB"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "neorv32_trng.ctrl_ninv11_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "ctrl_ninv11_c",
+          "default": "31",
+          "comment": [
+            "-- r/-: number of inverters in first ring-oscillator, bit 11, MSB"
+          ],
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 43
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_trng.bus_ack",
+          "dtype": "std_ulogic",
+          "name": "bus_ack",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "neorv32_trng.bus_rden",
+          "dtype": "std_ulogic",
+          "name": "bus_rden",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "neorv32_trng.bus_rdata",
+          "dtype": "std_ulogic_vector",
+          "name": "bus_rdata",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_trng.enable",
+          "dtype": "std_ulogic",
+          "name": "enable",
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "neorv32_trng.fifo_clr",
+          "dtype": "std_ulogic",
+          "name": "fifo_clr",
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "neorv32_trng.fifo",
+          "dtype": "fifo_t",
+          "name": "fifo",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 23
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_trng.fifo_t",
+          "name": "fifo_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "neorv32_trng.fifo_t.we",
+              "name": "we",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 84,
+                "col": 5,
+                "end_line": 84,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.re",
+              "name": "re",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 84,
+                "col": 5,
+                "end_line": 84,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.wdata",
+              "name": "wdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 85,
+                "col": 5,
+                "end_line": 85,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.rdata",
+              "name": "rdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 85,
+                "col": 5,
+                "end_line": 85,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.avail",
+              "name": "avail",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 86,
+                "col": 5,
+                "end_line": 86,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.free",
+              "name": "free",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 86,
+                "col": 5,
+                "end_line": 86,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neorv32_trng.fifo_t.clear",
+              "name": "clear",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 87,
+                "col": 5,
+                "end_line": 87,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "-- FIFO interface --"
+          ],
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 14
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_trng.bus_handshake",
+          "name": "bus_handshake",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Bus Access -----------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_trng.bus_write",
+          "name": "bus_write",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- write access --"
+          ],
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 116,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_trng.bus_read",
+          "name": "bus_read",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "bus_rden"
+            },
+            {
+              "signal": "bus_req_i.addr"
+            },
+            {
+              "signal": "enable"
+            },
+            {
+              "signal": "fifo"
+            }
+          ],
+          "comment": [
+            "-- read access (asynchronous) --"
+          ],
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_trng.irq_gen",
+          "name": "irq_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- interrupt generator --"
+          ],
+          "loc": {
+            "line": 189,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 15
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "neorv32_trng.neotrng",
+          "name": "neoTRNG",
+          "params": [
+            {
+              "id": "neorv32_trng.neotrng.num_cells",
+              "dtype": "natural",
+              "name": "NUM_CELLS",
+              "loc": {
+                "line": 61,
+                "col": 7,
+                "end_line": 61,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.num_inv_start",
+              "dtype": "natural",
+              "name": "NUM_INV_START",
+              "loc": {
+                "line": 62,
+                "col": 7,
+                "end_line": 62,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.num_raw_bits",
+              "dtype": "natural",
+              "name": "NUM_RAW_BITS",
+              "loc": {
+                "line": 63,
+                "col": 7,
+                "end_line": 63,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.sim_mode",
+              "dtype": "boolean",
+              "name": "SIM_MODE",
+              "loc": {
+                "line": 64,
+                "col": 7,
+                "end_line": 64,
+                "end_col": 30
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "neorv32_trng.neotrng.clk_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "clk_i",
+              "loc": {
+                "line": 67,
+                "col": 7,
+                "end_line": 67,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.rstn_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rstn_i",
+              "loc": {
+                "line": 68,
+                "col": 7,
+                "end_line": 68,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.enable_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "enable_i",
+              "loc": {
+                "line": 69,
+                "col": 7,
+                "end_line": 69,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.valid_o",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "valid_o",
+              "loc": {
+                "line": 70,
+                "col": 7,
+                "end_line": 70,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "neorv32_trng.neotrng.data_o",
+              "direction": "out",
+              "dtype": "std_ulogic_vector",
+              "name": "data_o",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 71,
+                "col": 7,
+                "end_line": 71,
+                "end_col": 51
+              }
+            }
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 73,
+            "end_col": 17
           }
         }
       ],
@@ -442,6 +1090,7 @@
       "params": [
         {
           "id": "neotrng.num_cells",
+          "dtype": "natural",
           "name": "NUM_CELLS",
           "comment": [
             "-- number of ring-oscillator cells, min 1"
@@ -455,6 +1104,7 @@
         },
         {
           "id": "neotrng.num_inv_start",
+          "dtype": "natural",
           "name": "NUM_INV_START",
           "comment": [
             "-- number of inverters in first ring-oscillator cell, has to be odd"
@@ -468,6 +1118,7 @@
         },
         {
           "id": "neotrng.num_raw_bits",
+          "dtype": "natural",
           "name": "NUM_RAW_BITS",
           "comment": [
             "-- number of raw bits per random sample byte (has to be a power of 2)"
@@ -481,6 +1132,7 @@
         },
         {
           "id": "neotrng.sim_mode",
+          "dtype": "boolean",
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
@@ -568,6 +1220,412 @@
             "col": 5,
             "end_line": 262,
             "end_col": 49
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "neotrng.poly_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "poly_c",
+          "dim": "[7:0]",
+          "default": "\"00000111\"",
+          "comment": [
+            "-- CRC-8: x^8 + x^2 + x^1 + x^0"
+          ],
+          "loc": {
+            "line": 312,
+            "col": 3,
+            "end_line": 312,
+            "end_col": 64
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neotrng.cell_en_in",
+          "dtype": "std_ulogic_vector",
+          "name": "cell_en_in",
+          "dim": "[NUM_CELLS-1:0]",
+          "comment": [
+            "-- enable-sreg input"
+          ],
+          "loc": {
+            "line": 295,
+            "col": 3,
+            "end_line": 295,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "neotrng.cell_en_out",
+          "dtype": "std_ulogic_vector",
+          "name": "cell_en_out",
+          "dim": "[NUM_CELLS-1:0]",
+          "comment": [
+            "-- enable-sreg output"
+          ],
+          "loc": {
+            "line": 296,
+            "col": 3,
+            "end_line": 296,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "neotrng.cell_rnd",
+          "dtype": "std_ulogic_vector",
+          "name": "cell_rnd",
+          "dim": "[NUM_CELLS-1:0]",
+          "comment": [
+            "-- cell random output"
+          ],
+          "loc": {
+            "line": 297,
+            "col": 3,
+            "end_line": 297,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "neotrng.cell_sum",
+          "dtype": "std_ulogic",
+          "name": "cell_sum",
+          "comment": [
+            "-- combined random data"
+          ],
+          "loc": {
+            "line": 298,
+            "col": 3,
+            "end_line": 298,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "neotrng.debias_sreg",
+          "dtype": "std_ulogic_vector",
+          "name": "debias_sreg",
+          "dim": "[1:0]",
+          "comment": [
+            "-- sample buffer"
+          ],
+          "loc": {
+            "line": 301,
+            "col": 3,
+            "end_line": 301,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neotrng.debias_state",
+          "dtype": "std_ulogic",
+          "name": "debias_state",
+          "comment": [
+            "-- process de-biasing every second cycle"
+          ],
+          "loc": {
+            "line": 302,
+            "col": 3,
+            "end_line": 302,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neotrng.debias_valid",
+          "dtype": "std_ulogic",
+          "name": "debias_valid",
+          "comment": [
+            "-- result bit valid"
+          ],
+          "loc": {
+            "line": 303,
+            "col": 3,
+            "end_line": 303,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neotrng.debias_data",
+          "dtype": "std_ulogic",
+          "name": "debias_data",
+          "comment": [
+            "-- result bit"
+          ],
+          "loc": {
+            "line": 304,
+            "col": 3,
+            "end_line": 304,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neotrng.sample_en",
+          "dtype": "std_ulogic",
+          "name": "sample_en",
+          "comment": [
+            "-- global enable"
+          ],
+          "loc": {
+            "line": 307,
+            "col": 3,
+            "end_line": 307,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "neotrng.sample_sreg",
+          "dtype": "std_ulogic_vector",
+          "name": "sample_sreg",
+          "dim": "[7:0]",
+          "comment": [
+            "-- shift-register / de-serializer"
+          ],
+          "loc": {
+            "line": 308,
+            "col": 3,
+            "end_line": 308,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "neotrng.sample_cnt",
+          "dtype": "std_ulogic_vector",
+          "name": "sample_cnt",
+          "dim": "[clog2_f(NUM_RAW_BITS):0]",
+          "comment": [
+            "-- bits-per-sample counter"
+          ],
+          "loc": {
+            "line": 309,
+            "col": 3,
+            "end_line": 309,
+            "end_col": 73
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "neotrng.clog2_f",
+          "name": "clog2_f",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "neotrng.clog2_f.x",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "x",
+              "loc": {
+                "line": 269,
+                "col": 20,
+                "end_line": 269,
+                "end_col": 31
+              }
+            }
+          ],
+          "comment": [
+            "-- round_up[log2(x)] --"
+          ],
+          "loc": {
+            "line": 269,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neotrng.combine",
+          "name": "combine",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "cell_rnd"
+            }
+          ],
+          "comment": [
+            "-- combine cell outputs --"
+          ],
+          "loc": {
+            "line": 354,
+            "col": 3,
+            "end_line": 362,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neotrng.debiasing",
+          "name": "debiasing",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- John von Neumann Randomness Extractor (De-Biasing) -------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 367,
+            "col": 3,
+            "end_line": 377,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neotrng.sampling_control",
+          "name": "sampling_control",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Sampling Control -----------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 386,
+            "col": 3,
+            "end_line": 407,
+            "end_col": 15
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "neotrng.neotrng_cell",
+          "name": "neoTRNG_cell",
+          "params": [
+            {
+              "id": "neotrng.neotrng_cell.num_inv",
+              "dtype": "natural",
+              "name": "NUM_INV",
+              "comment": [
+                "-- number of inverters, has to be odd, min 3"
+              ],
+              "loc": {
+                "line": 282,
+                "col": 7,
+                "end_line": 282,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell.sim_mode",
+              "dtype": "boolean",
+              "name": "SIM_MODE",
+              "comment": [
+                "-- enable simulation mode (no physical random if enabled!)"
+              ],
+              "loc": {
+                "line": 283,
+                "col": 7,
+                "end_line": 283,
+                "end_col": 25
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "neotrng.neotrng_cell.clk_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "clk_i",
+              "comment": [
+                "-- clock"
+              ],
+              "loc": {
+                "line": 286,
+                "col": 7,
+                "end_line": 286,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell.rstn_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rstn_i",
+              "comment": [
+                "-- reset, low-active, async, optional"
+              ],
+              "loc": {
+                "line": 287,
+                "col": 7,
+                "end_line": 287,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell.en_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "en_i",
+              "comment": [
+                "-- enable-chain input"
+              ],
+              "loc": {
+                "line": 288,
+                "col": 7,
+                "end_line": 288,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell.en_o",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "en_o",
+              "comment": [
+                "-- enable-chain output"
+              ],
+              "loc": {
+                "line": 289,
+                "col": 7,
+                "end_line": 289,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "neotrng.neotrng_cell.rnd_o",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "rnd_o",
+              "comment": [
+                "-- random data (sync)"
+              ],
+              "loc": {
+                "line": 290,
+                "col": 7,
+                "end_line": 290,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 280,
+            "col": 3,
+            "end_line": 292,
+            "end_col": 17
           }
         }
       ],
@@ -688,6 +1746,7 @@
       "params": [
         {
           "id": "neotrng_cell.num_inv",
+          "dtype": "natural",
           "name": "NUM_INV",
           "comment": [
             "-- number of inverters, has to be odd, min 3"
@@ -701,6 +1760,7 @@
         },
         {
           "id": "neotrng_cell.sim_mode",
+          "dtype": "boolean",
           "name": "SIM_MODE",
           "comment": [
             "-- enable simulation mode (no physical random if enabled!)"
@@ -787,6 +1847,179 @@
             "col": 5,
             "end_line": 435,
             "end_col": 28
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neotrng_cell.sreg",
+          "dtype": "std_ulogic_vector",
+          "name": "sreg",
+          "dim": "[NUM_INV-1:0]",
+          "comment": [
+            "-- enable-shift-register"
+          ],
+          "loc": {
+            "line": 441,
+            "col": 3,
+            "end_line": 441,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "neotrng_cell.latch",
+          "dtype": "std_ulogic_vector",
+          "name": "latch",
+          "dim": "[NUM_INV-1:0]",
+          "comment": [
+            "-- ring oscillator: latches"
+          ],
+          "loc": {
+            "line": 442,
+            "col": 3,
+            "end_line": 442,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "neotrng_cell.inv_in",
+          "dtype": "std_ulogic_vector",
+          "name": "inv_in",
+          "dim": "[NUM_INV-1:0]",
+          "comment": [
+            "-- ring oscillator: inverter inputs"
+          ],
+          "loc": {
+            "line": 443,
+            "col": 3,
+            "end_line": 443,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "neotrng_cell.inv_out",
+          "dtype": "std_ulogic_vector",
+          "name": "inv_out",
+          "dim": "[NUM_INV-1:0]",
+          "comment": [
+            "-- ring oscillator: inverter outputs"
+          ],
+          "loc": {
+            "line": 444,
+            "col": 3,
+            "end_line": 444,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "neotrng_cell.sync",
+          "dtype": "std_ulogic_vector",
+          "name": "sync",
+          "dim": "[1:0]",
+          "comment": [
+            "-- output synchronizer"
+          ],
+          "loc": {
+            "line": 445,
+            "col": 3,
+            "end_line": 445,
+            "end_col": 49
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neotrng_cell.en_shift_reg",
+          "name": "en_shift_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Enable Shift-Register ------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------",
+            "-- Using individual enable signals from a shift register for each inverter in order to prevent",
+            "-- the synthesis tool from removing all but one inverter (since they implement \"logical",
+            "-- identical functions\"). This makes the TRNG platform independent as we do not require tool-/",
+            "-- technology-specific primitives, attributes or other options."
+          ],
+          "loc": {
+            "line": 456,
+            "col": 3,
+            "end_line": 463,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neotrng_cell.ring_osc_gen.inverter_sim.inverter_sim_ff",
+          "name": "inverter_sim_ff",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "ring_osc_gen",
+              "cond": "i in 0 to NUM_INV-1"
+            },
+            {
+              "kind": "if",
+              "name": "inverter_sim",
+              "cond": "SIM_MODE"
+            }
+          ],
+          "loc": {
+            "line": 491,
+            "col": 7,
+            "end_line": 498,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "neotrng_cell.synchronizer",
+          "name": "synchronizer",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Output Synchronizer --------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------",
+            "-- Sample the actual entropy source (= phase noise) and move it to the system's clock domain."
+          ],
+          "loc": {
+            "line": 511,
+            "col": 3,
+            "end_line": 518,
+            "end_col": 15
           }
         }
       ],

@@ -1,0 +1,936 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/clk_rst_if.sv",
+  "modules": [],
+  "interfaces": [
+    {
+      "id": "clk_rst_if",
+      "name": "clk_rst_if",
+      "params": [
+        {
+          "id": "clk_rst_if.IfName",
+          "ptype": "string",
+          "name": "IfName",
+          "default": "\"main\"",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 35
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "clk_rst_if.clk",
+          "direction": "inout",
+          "name": "clk",
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "clk_rst_if.rst_n",
+          "direction": "inout",
+          "name": "rst_n",
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 14
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "clk_rst_if.drive_clk",
+          "ptype": "bit",
+          "name": "drive_clk",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "clk_rst_if.o_clk",
+          "ptype": "logic",
+          "name": "o_clk",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "clk_rst_if.drive_rst_n",
+          "ptype": "bit",
+          "name": "drive_rst_n",
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "clk_rst_if.o_rst_n",
+          "ptype": "logic",
+          "name": "o_rst_n",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "clk_rst_if.set_active_called",
+          "ptype": "event",
+          "name": "set_active_called",
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_gate",
+          "ptype": "bit",
+          "name": "clk_gate",
+          "default": "1'b0",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_period_ps",
+          "ptype": "int",
+          "name": "clk_period_ps",
+          "default": "20_000",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_freq_scaling_pc",
+          "ptype": "int",
+          "name": "clk_freq_scaling_pc",
+          "default": "0",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_freq_scaling_chance_pc",
+          "ptype": "int",
+          "name": "clk_freq_scaling_chance_pc",
+          "default": "50",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_freq_scale_up",
+          "ptype": "bit",
+          "name": "clk_freq_scale_up",
+          "default": "1'b0",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_freq_mhz",
+          "ptype": "real",
+          "name": "clk_freq_mhz",
+          "default": "50",
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "clk_rst_if.duty_cycle",
+          "ptype": "int",
+          "name": "duty_cycle",
+          "default": "50",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "clk_rst_if.max_plus_jitter_ps",
+          "ptype": "int",
+          "name": "max_plus_jitter_ps",
+          "default": "1000",
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "clk_rst_if.max_minus_jitter_ps",
+          "ptype": "int",
+          "name": "max_minus_jitter_ps",
+          "default": "1000",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "clk_rst_if.jitter_chance_pc",
+          "ptype": "int",
+          "name": "jitter_chance_pc",
+          "default": "0",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "clk_rst_if.recompute",
+          "ptype": "bit",
+          "name": "recompute",
+          "default": "1'b1",
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 92,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_hi_ps",
+          "ptype": "int",
+          "name": "clk_hi_ps",
+          "loc": {
+            "line": 96,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_lo_ps",
+          "ptype": "int",
+          "name": "clk_lo_ps",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_hi_modified_ps",
+          "ptype": "real",
+          "name": "clk_hi_modified_ps",
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "clk_rst_if.clk_lo_modified_ps",
+          "ptype": "real",
+          "name": "clk_lo_modified_ps",
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "clk_rst_if.sole_clock",
+          "ptype": "bit",
+          "name": "sole_clock",
+          "default": "1'b0",
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "clk_rst_if.msg_id",
+          "ptype": "string",
+          "name": "msg_id",
+          "default": "$sformatf(\"[%m(clk_rst_if):%s]\", IfName)",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 60
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "clk_rst_if.wait_clks",
+          "name": "wait_clks",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.wait_clks.num_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "num_clks",
+              "loc": {
+                "line": 114,
+                "col": 28,
+                "end_line": 114,
+                "end_col": 40
+              }
+            }
+          ],
+          "comment": [
+            "Wait for 'n' clocks based of postive clock edge"
+          ],
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 116,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.wait_n_clks",
+          "name": "wait_n_clks",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.wait_n_clks.num_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "num_clks",
+              "loc": {
+                "line": 119,
+                "col": 30,
+                "end_line": 119,
+                "end_col": 42
+              }
+            }
+          ],
+          "comment": [
+            "Wait for 'n' clocks based of negative clock edge"
+          ],
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 121,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.wait_clks_or_rst",
+          "name": "wait_clks_or_rst",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.wait_clks_or_rst.num_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "num_clks",
+              "loc": {
+                "line": 124,
+                "col": 35,
+                "end_line": 124,
+                "end_col": 47
+              }
+            }
+          ],
+          "comment": [
+            "Wait for 'num_clks' clocks based on the positive clock edge or reset, whichever comes first."
+          ],
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 129,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.wait_for_reset",
+          "name": "wait_for_reset",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.wait_for_reset.wait_negedge",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "wait_negedge",
+              "default": "1'b1",
+              "loc": {
+                "line": 132,
+                "col": 33,
+                "end_line": 132,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "clk_rst_if.wait_for_reset.wait_posedge",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "wait_posedge",
+              "default": "1'b1",
+              "loc": {
+                "line": 132,
+                "col": 58,
+                "end_line": 132,
+                "end_col": 81
+              }
+            }
+          ],
+          "comment": [
+            "wait for rst_n to assert and then deassert"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 3,
+            "end_line": 135,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.set_freq_khz",
+          "name": "set_freq_khz",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_freq_khz.freq_khz",
+              "direction": "input",
+              "ptype": "int",
+              "name": "freq_khz",
+              "loc": {
+                "line": 138,
+                "col": 40,
+                "end_line": 138,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "set the clk frequency in khz"
+          ],
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 143,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_freq_mhz",
+          "name": "set_freq_mhz",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_freq_mhz.freq_mhz",
+              "direction": "input",
+              "ptype": "int",
+              "name": "freq_mhz",
+              "loc": {
+                "line": 146,
+                "col": 40,
+                "end_line": 146,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "set the clk frequency in mhz"
+          ],
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_freq_scaling",
+          "name": "set_freq_scaling",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_freq_scaling.freq_scaling_pc",
+              "direction": "input",
+              "ptype": "int",
+              "name": "freq_scaling_pc",
+              "loc": {
+                "line": 158,
+                "col": 44,
+                "end_line": 158,
+                "end_col": 63
+              }
+            },
+            {
+              "id": "clk_rst_if.set_freq_scaling.freq_scaling_chance_pc",
+              "direction": "input",
+              "ptype": "int",
+              "name": "freq_scaling_chance_pc",
+              "default": "50",
+              "loc": {
+                "line": 158,
+                "col": 65,
+                "end_line": 158,
+                "end_col": 96
+              }
+            },
+            {
+              "id": "clk_rst_if.set_freq_scaling.freq_scale_up",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "freq_scale_up",
+              "default": "1'b0",
+              "loc": {
+                "line": 159,
+                "col": 44,
+                "end_line": 159,
+                "end_col": 68
+              }
+            }
+          ],
+          "comment": [
+            "Set the clk frequency scaling, chance in percentage and scaling up.",
+            "",
+            "freq_scaling_pc is a positive integer that determines by what amount (as percentage of the",
+            "nominal frequency) is the frequency scaled (jittered) down.",
+            "freq_scaling_chance_pc is a percentage number between 0 and 100 that determines how often is",
+            "the scaling randomly recomputed and applied.",
+            "freq_scale_up is a bit that enables the random scaling up of the frequency as well."
+          ],
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 165,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_active",
+          "name": "set_active",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_active.drive_clk_val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "drive_clk_val",
+              "default": "1'b1",
+              "loc": {
+                "line": 168,
+                "col": 38,
+                "end_line": 168,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "clk_rst_if.set_active.drive_rst_n_val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "drive_rst_n_val",
+              "default": "1'b1",
+              "loc": {
+                "line": 168,
+                "col": 64,
+                "end_line": 168,
+                "end_col": 90
+              }
+            }
+          ],
+          "comment": [
+            "Enables the clock and reset to be driven."
+          ],
+          "loc": {
+            "line": 168,
+            "col": 3,
+            "end_line": 172,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_period_ps",
+          "name": "set_period_ps",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_period_ps.period_ps",
+              "direction": "input",
+              "ptype": "int",
+              "name": "period_ps",
+              "loc": {
+                "line": 175,
+                "col": 41,
+                "end_line": 175,
+                "end_col": 54
+              }
+            }
+          ],
+          "comment": [
+            "set the clk period in ps"
+          ],
+          "loc": {
+            "line": 175,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_duty_cycle",
+          "name": "set_duty_cycle",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_duty_cycle.duty",
+              "direction": "input",
+              "ptype": "int",
+              "name": "duty",
+              "loc": {
+                "line": 182,
+                "col": 42,
+                "end_line": 182,
+                "end_col": 50
+              }
+            }
+          ],
+          "comment": [
+            "set the duty cycle (1-99)"
+          ],
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 186,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_max_jitter_ps",
+          "name": "set_max_jitter_ps",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_max_jitter_ps.plus_jitter_ps",
+              "direction": "input",
+              "ptype": "int",
+              "name": "plus_jitter_ps",
+              "loc": {
+                "line": 190,
+                "col": 45,
+                "end_line": 190,
+                "end_col": 63
+              }
+            },
+            {
+              "id": "clk_rst_if.set_max_jitter_ps.minus_jitter_ps",
+              "direction": "input",
+              "ptype": "int",
+              "name": "minus_jitter_ps",
+              "default": "plus_jitter_ps",
+              "loc": {
+                "line": 191,
+                "col": 45,
+                "end_line": 191,
+                "end_col": 81
+              }
+            }
+          ],
+          "comment": [
+            "set maximum jitter in ps, separating the plus jitter and the minus jitter.",
+            "In default the plus and minus jitters are the same."
+          ],
+          "loc": {
+            "line": 190,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_jitter_chance_pc",
+          "name": "set_jitter_chance_pc",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_jitter_chance_pc.jitter_chance",
+              "direction": "input",
+              "ptype": "int",
+              "name": "jitter_chance",
+              "loc": {
+                "line": 198,
+                "col": 48,
+                "end_line": 198,
+                "end_col": 65
+              }
+            }
+          ],
+          "comment": [
+            "set jitter chance in percentage (0 - 100)",
+            "0 - dont add any jitter; 100 - add jitter on every clock edge"
+          ],
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.set_sole_clock",
+          "name": "set_sole_clock",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "clk_rst_if.set_sole_clock.is_sole",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "is_sole",
+              "default": "1'b1",
+              "loc": {
+                "line": 206,
+                "col": 42,
+                "end_line": 206,
+                "end_col": 60
+              }
+            }
+          ],
+          "comment": [
+            "Set whether this is the only clock in the system. If true, various bits of timing randomisation",
+            "are disabled. If there's no other clock to (de)synchronise with, this should not weaken the",
+            "test at all."
+          ],
+          "loc": {
+            "line": 206,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.start_clk",
+          "name": "start_clk",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.start_clk.wait_for_posedge",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "wait_for_posedge",
+              "default": "1'b0",
+              "loc": {
+                "line": 211,
+                "col": 28,
+                "end_line": 211,
+                "end_col": 55
+              }
+            }
+          ],
+          "comment": [
+            "start / ungate the clk"
+          ],
+          "loc": {
+            "line": 211,
+            "col": 3,
+            "end_line": 214,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.stop_clk",
+          "name": "stop_clk",
+          "kind": "function",
+          "rtype": "void",
+          "comment": [
+            "stop / gate the clk"
+          ],
+          "loc": {
+            "line": 217,
+            "col": 3,
+            "end_line": 219,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.apply_freq_scaling",
+          "name": "apply_freq_scaling",
+          "kind": "function",
+          "rtype": "void",
+          "comment": [
+            "Scales the clock frequency up and down on every edge."
+          ],
+          "loc": {
+            "line": 222,
+            "col": 3,
+            "end_line": 232,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.apply_jitter",
+          "name": "apply_jitter",
+          "kind": "function",
+          "rtype": "void",
+          "comment": [
+            "Applies jitter to clk_hi and clk_lo half periods based on jitter_chance_pc."
+          ],
+          "loc": {
+            "line": 235,
+            "col": 3,
+            "end_line": 252,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "clk_rst_if.drive_rst_pin",
+          "name": "drive_rst_pin",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.drive_rst_pin.val",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "val",
+              "default": "1'b0",
+              "loc": {
+                "line": 255,
+                "col": 32,
+                "end_line": 255,
+                "end_col": 48
+              }
+            }
+          ],
+          "comment": [
+            "can be used to override clk/rst pins, e.g. at the beginning of the simulation"
+          ],
+          "loc": {
+            "line": 255,
+            "col": 3,
+            "end_line": 257,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "clk_rst_if.apply_reset",
+          "name": "apply_reset",
+          "kind": "task",
+          "args": [
+            {
+              "id": "clk_rst_if.apply_reset.pre_reset_dly_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "pre_reset_dly_clks",
+              "default": "0",
+              "loc": {
+                "line": 261,
+                "col": 30,
+                "end_line": 261,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "clk_rst_if.apply_reset.reset_width_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "reset_width_clks",
+              "default": "$urandom_range(50, 100)",
+              "loc": {
+                "line": 262,
+                "col": 30,
+                "end_line": 262,
+                "end_col": 76
+              }
+            },
+            {
+              "id": "clk_rst_if.apply_reset.post_reset_dly_clks",
+              "direction": "input",
+              "ptype": "int",
+              "name": "post_reset_dly_clks",
+              "default": "0",
+              "loc": {
+                "line": 263,
+                "col": 30,
+                "end_line": 263,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "clk_rst_if.apply_reset.rst_n_scheme",
+              "direction": "input",
+              "ptype": "rst_scheme_e",
+              "name": "rst_n_scheme",
+              "default": "RstAssertAsyncDeassertSync",
+              "loc": {
+                "line": 264,
+                "col": 30,
+                "end_line": 264,
+                "end_col": 85
+              }
+            }
+          ],
+          "comment": [
+            "apply reset with specified scheme",
+            "Note: for power on reset, please ensure pre_reset_dly_clks is set to 0"
+          ],
+          "loc": {
+            "line": 261,
+            "col": 3,
+            "end_line": 295,
+            "end_col": 10
+          }
+        }
+      ],
+      "loc": {
+        "line": 15,
+        "col": 1,
+        "end_line": 346,
+        "end_col": 13
+      }
+    }
+  ]
+}

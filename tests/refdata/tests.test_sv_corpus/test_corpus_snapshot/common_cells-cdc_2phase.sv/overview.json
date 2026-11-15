@@ -140,6 +140,41 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "cdc_2phase.async_req",
+          "ptype": "logic",
+          "name": "async_req",
+          "loc": {
+            "line": 60,
+            "col": 29,
+            "end_line": 60,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "cdc_2phase.async_ack",
+          "ptype": "logic",
+          "name": "async_ack",
+          "loc": {
+            "line": 61,
+            "col": 29,
+            "end_line": 61,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "cdc_2phase.async_data",
+          "ptype": "T",
+          "name": "async_data",
+          "loc": {
+            "line": 62,
+            "col": 29,
+            "end_line": 62,
+            "end_col": 42
+          }
+        }
+      ],
       "insts": [
         {
           "id": "cdc_2phase.i_src",
@@ -492,6 +527,108 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "cdc_2phase_src.req_src_q",
+          "ptype": "logic",
+          "name": "req_src_q",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "cdc_2phase_src.ack_src_q",
+          "ptype": "logic",
+          "name": "ack_src_q",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "cdc_2phase_src.ack_q",
+          "ptype": "logic",
+          "name": "ack_q",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "cdc_2phase_src.data_src_q",
+          "ptype": "T",
+          "name": "data_src_q",
+          "loc": {
+            "line": 108,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "cdc_2phase_src.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The req_src and data_src registers change when a new data item is accepted."
+          ],
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "cdc_2phase_src.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The ack_src and ack registers act as synchronization stages."
+          ],
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 130,
+            "end_col": 6
+          }
+        }
+      ],
       "loc": {
         "line": 92,
         "col": 1,
@@ -611,6 +748,147 @@
             "col": 3,
             "end_line": 152,
             "end_col": 28
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "cdc_2phase_dst.req_dst_q",
+          "ptype": "logic",
+          "name": "req_dst_q",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.req_q0",
+          "ptype": "logic",
+          "name": "req_q0",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.req_q1",
+          "ptype": "logic",
+          "name": "req_q1",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.ack_dst_q",
+          "ptype": "logic",
+          "name": "ack_dst_q",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.data_dst_q",
+          "ptype": "T",
+          "name": "data_dst_q",
+          "loc": {
+            "line": 159,
+            "col": 3,
+            "end_line": 159,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "cdc_2phase_dst.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The ack_dst register changes when a new data item is accepted."
+          ],
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 168,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The data_dst register changes when a new data item is presented. This is",
+            "indicated by the async_req line changing levels."
+          ],
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "cdc_2phase_dst.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "The req_dst and req registers act as synchronization stages."
+          ],
+          "loc": {
+            "line": 181,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 6
           }
         }
       ],

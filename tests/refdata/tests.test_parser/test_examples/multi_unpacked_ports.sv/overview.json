@@ -156,6 +156,74 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "multi_unpacked_ports.idx",
+          "ptype": "integer",
+          "name": "idx",
+          "dim_unpacked": "[0:3]",
+          "comment": [
+            "Two 4-element integer arrays"
+          ],
+          "loc": {
+            "line": 16,
+            "col": 5,
+            "end_line": 16,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "multi_unpacked_ports.idy",
+          "ptype": "integer",
+          "name": "idy",
+          "dim_unpacked": "[0:3]",
+          "comment": [
+            "Two 4-element integer arrays"
+          ],
+          "loc": {
+            "line": 16,
+            "col": 5,
+            "end_line": 16,
+            "end_col": 34
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "multi_unpacked_ports.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "Combinational logic (packed operation)"
+          ],
+          "loc": {
+            "line": 19,
+            "col": 5,
+            "end_line": 21,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "multi_unpacked_ports.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "Sequential logic (unpacked operations)"
+          ],
+          "loc": {
+            "line": 24,
+            "col": 5,
+            "end_line": 30,
+            "end_col": 8
+          }
+        }
+      ],
       "loc": {
         "line": 2,
         "col": 1,
@@ -166,6 +234,125 @@
     {
       "id": "tb",
       "name": "tb",
+      "signals": [
+        {
+          "id": "tb.data_in",
+          "ptype": "logic",
+          "name": "data_in",
+          "dim": "[7:0]",
+          "default": "8'hA5",
+          "loc": {
+            "line": 37,
+            "col": 5,
+            "end_line": 37,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "tb.data_out",
+          "ptype": "logic",
+          "name": "data_out",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 38,
+            "col": 5,
+            "end_line": 38,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "tb.mem_a",
+          "ptype": "wire",
+          "name": "mem_a",
+          "dim": "[15:0]",
+          "dim_unpacked": "[0:7]",
+          "default": "'{16'h1111, 16'h2222, 16'h3333, 16'h4444, \n                                      16'h5555, 16'h6666, 16'h7777, 16'h8888}",
+          "loc": {
+            "line": 39,
+            "col": 5,
+            "end_line": 40,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "tb.mem_b",
+          "ptype": "wire",
+          "name": "mem_b",
+          "dim": "[15:0]",
+          "dim_unpacked": "[0:7]",
+          "default": "'{16'h0001, 16'h0002, 16'h0003, 16'h0004, \n                                      16'h0005, 16'h0006, 16'h0007, 16'h0008}",
+          "loc": {
+            "line": 41,
+            "col": 5,
+            "end_line": 42,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "tb.result_x",
+          "ptype": "logic",
+          "name": "result_x",
+          "dim": "[31:0]",
+          "dim_unpacked": "[0:3]",
+          "loc": {
+            "line": 43,
+            "col": 5,
+            "end_line": 43,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "tb.result_y",
+          "ptype": "logic",
+          "name": "result_y",
+          "dim": "[31:0]",
+          "dim_unpacked": "[0:3]",
+          "loc": {
+            "line": 43,
+            "col": 5,
+            "end_line": 43,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "tb.packed_unpacked",
+          "ptype": "logic",
+          "name": "packed_unpacked",
+          "dim": "[1:0][3:0]",
+          "dim_unpacked": "[0:1]",
+          "default": "'{8'h12, 8'h34}",
+          "loc": {
+            "line": 44,
+            "col": 5,
+            "end_line": 44,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "tb.clk",
+          "ptype": "reg",
+          "name": "clk",
+          "default": "0",
+          "loc": {
+            "line": 47,
+            "col": 5,
+            "end_line": 47,
+            "end_col": 17
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "tb.#always1",
+          "kind": "always",
+          "loc": {
+            "line": 48,
+            "col": 5,
+            "end_line": 48,
+            "end_col": 26
+          }
+        }
+      ],
       "insts": [
         {
           "id": "tb.dut",

@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_bus_switch.round_robin_en",
+          "dtype": "boolean",
           "name": "ROUND_ROBIN_EN",
           "default": "false",
           "comment": [
@@ -21,6 +22,7 @@
         },
         {
           "id": "neorv32_bus_switch.a_read_only",
+          "dtype": "boolean",
           "name": "A_READ_ONLY",
           "default": "false",
           "comment": [
@@ -35,6 +37,7 @@
         },
         {
           "id": "neorv32_bus_switch.b_read_only",
+          "dtype": "boolean",
           "name": "B_READ_ONLY",
           "default": "false",
           "comment": [
@@ -170,6 +173,224 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "neorv32_bus_switch.state",
+          "dtype": "state_t",
+          "name": "state",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.state_nxt",
+          "dtype": "state_t",
+          "name": "state_nxt",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.a_req",
+          "dtype": "std_ulogic",
+          "name": "a_req",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.b_req",
+          "dtype": "std_ulogic",
+          "name": "b_req",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.sel",
+          "dtype": "std_ulogic",
+          "name": "sel",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.sel_q",
+          "dtype": "std_ulogic",
+          "name": "sel_q",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.stb",
+          "dtype": "std_ulogic",
+          "name": "stb",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.lock",
+          "dtype": "std_ulogic_vector",
+          "name": "lock",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.lock_nxt",
+          "dtype": "std_ulogic_vector",
+          "name": "lock_nxt",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 56
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_bus_switch.state_t",
+          "name": "state_t",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "neorv32_bus_switch.state_t.s_idle",
+              "name": "S_IDLE",
+              "loc": {
+                "line": 37,
+                "col": 20,
+                "end_line": 37,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "neorv32_bus_switch.state_t.s_busy_a",
+              "name": "S_BUSY_A",
+              "loc": {
+                "line": 37,
+                "col": 28,
+                "end_line": 37,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "neorv32_bus_switch.state_t.s_busy_b",
+              "name": "S_BUSY_B",
+              "loc": {
+                "line": 37,
+                "col": 38,
+                "end_line": 37,
+                "end_col": 46
+              }
+            }
+          ],
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 48
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_bus_switch.arbiter_sync",
+          "name": "arbiter_sync",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Access Arbiter Sync --------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 69,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_switch.arbiter_fsm",
+          "name": "arbiter_fsm",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "state"
+            },
+            {
+              "signal": "lock"
+            },
+            {
+              "signal": "sel_q"
+            },
+            {
+              "signal": "a_req"
+            },
+            {
+              "signal": "b_req"
+            },
+            {
+              "signal": "a_req_i"
+            },
+            {
+              "signal": "b_req_i"
+            },
+            {
+              "signal": "x_rsp_i"
+            }
+          ],
+          "comment": [
+            "-- Access Arbiter Comb --------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 73,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 15
+          }
+        }
+      ],
       "loc": {
         "line": 17,
         "col": 1,
@@ -273,6 +494,57 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "neorv32_bus_reg.request_reg",
+          "name": "request_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Request Register Stage -----------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 204,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_reg.response_reg",
+          "name": "response_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Response Register Stage ----------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 15
+          }
+        }
+      ],
       "loc": {
         "line": 172,
         "col": 1,
@@ -286,6 +558,7 @@
       "params": [
         {
           "id": "neorv32_bus_gateway.a_en",
+          "dtype": "boolean",
           "name": "A_EN",
           "comment": [
             "-- port enable"
@@ -299,6 +572,7 @@
         },
         {
           "id": "neorv32_bus_gateway.a_base",
+          "dtype": "std_ulogic_vector",
           "name": "A_BASE",
           "dim": "[31:0]",
           "comment": [
@@ -313,6 +587,7 @@
         },
         {
           "id": "neorv32_bus_gateway.a_size",
+          "dtype": "natural",
           "name": "A_SIZE",
           "comment": [
             "-- port address space size in bytes (power of two)"
@@ -326,6 +601,7 @@
         },
         {
           "id": "neorv32_bus_gateway.a_tmo",
+          "dtype": "natural",
           "name": "A_TMO",
           "comment": [
             "-- port access timeout (power of two, 0 = disabled)",
@@ -340,6 +616,7 @@
         },
         {
           "id": "neorv32_bus_gateway.b_en",
+          "dtype": "boolean",
           "name": "B_EN",
           "loc": {
             "line": 252,
@@ -350,6 +627,7 @@
         },
         {
           "id": "neorv32_bus_gateway.b_base",
+          "dtype": "std_ulogic_vector",
           "name": "B_BASE",
           "dim": "[31:0]",
           "loc": {
@@ -361,6 +639,7 @@
         },
         {
           "id": "neorv32_bus_gateway.b_size",
+          "dtype": "natural",
           "name": "B_SIZE",
           "loc": {
             "line": 254,
@@ -371,6 +650,7 @@
         },
         {
           "id": "neorv32_bus_gateway.b_tmo",
+          "dtype": "natural",
           "name": "B_TMO",
           "comment": [
             "-- device port C --"
@@ -384,6 +664,7 @@
         },
         {
           "id": "neorv32_bus_gateway.c_en",
+          "dtype": "boolean",
           "name": "C_EN",
           "loc": {
             "line": 257,
@@ -394,6 +675,7 @@
         },
         {
           "id": "neorv32_bus_gateway.c_base",
+          "dtype": "std_ulogic_vector",
           "name": "C_BASE",
           "dim": "[31:0]",
           "loc": {
@@ -405,6 +687,7 @@
         },
         {
           "id": "neorv32_bus_gateway.c_size",
+          "dtype": "natural",
           "name": "C_SIZE",
           "loc": {
             "line": 259,
@@ -415,6 +698,7 @@
         },
         {
           "id": "neorv32_bus_gateway.c_tmo",
+          "dtype": "natural",
           "name": "C_TMO",
           "comment": [
             "-- device port D --"
@@ -428,6 +712,7 @@
         },
         {
           "id": "neorv32_bus_gateway.d_en",
+          "dtype": "boolean",
           "name": "D_EN",
           "loc": {
             "line": 262,
@@ -438,6 +723,7 @@
         },
         {
           "id": "neorv32_bus_gateway.d_base",
+          "dtype": "std_ulogic_vector",
           "name": "D_BASE",
           "dim": "[31:0]",
           "loc": {
@@ -449,6 +735,7 @@
         },
         {
           "id": "neorv32_bus_gateway.d_size",
+          "dtype": "natural",
           "name": "D_SIZE",
           "loc": {
             "line": 264,
@@ -459,6 +746,7 @@
         },
         {
           "id": "neorv32_bus_gateway.d_tmo",
+          "dtype": "natural",
           "name": "D_TMO",
           "comment": [
             "-- device port X (the void) --"
@@ -472,6 +760,7 @@
         },
         {
           "id": "neorv32_bus_gateway.x_en",
+          "dtype": "boolean",
           "name": "X_EN",
           "loc": {
             "line": 267,
@@ -482,6 +771,7 @@
         },
         {
           "id": "neorv32_bus_gateway.x_tmo",
+          "dtype": "natural",
           "name": "X_TMO",
           "loc": {
             "line": 268,
@@ -690,6 +980,484 @@
           }
         }
       ],
+      "localparams": [
+        {
+          "id": "neorv32_bus_gateway.a_lo_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "a_lo_c",
+          "default": "index_size_f(A_SIZE)",
+          "loc": {
+            "line": 295,
+            "col": 3,
+            "end_line": 295,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.b_lo_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "b_lo_c",
+          "default": "index_size_f(B_SIZE)",
+          "loc": {
+            "line": 296,
+            "col": 3,
+            "end_line": 296,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.c_lo_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "c_lo_c",
+          "default": "index_size_f(C_SIZE)",
+          "loc": {
+            "line": 297,
+            "col": 3,
+            "end_line": 297,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.d_lo_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "d_lo_c",
+          "default": "index_size_f(D_SIZE)",
+          "loc": {
+            "line": 298,
+            "col": 3,
+            "end_line": 298,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_en_list_c",
+          "ptype": "constant",
+          "dtype": "port_bool_list_t",
+          "name": "port_en_list_c",
+          "default": "(\n    0 => A_EN,\n    1 => B_EN,\n    2 => C_EN,\n    3 => D_EN,\n    4 => X_EN\n  )",
+          "loc": {
+            "line": 303,
+            "col": 3,
+            "end_line": 309,
+            "end_col": 4
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_tmo_en_list_c",
+          "ptype": "constant",
+          "dtype": "port_tmo_en_list_t",
+          "name": "port_tmo_en_list_c",
+          "default": "(\n    0 => boolean(A_TMO > 0),\n    1 => boolean(B_TMO > 0),\n    2 => boolean(C_TMO > 0),\n    3 => boolean(D_TMO > 0),\n    4 => boolean(X_TMO > 0)\n  )",
+          "loc": {
+            "line": 313,
+            "col": 3,
+            "end_line": 319,
+            "end_col": 4
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_tmo_bit_list_c",
+          "ptype": "constant",
+          "dtype": "port_tmo_bit_list_t",
+          "name": "port_tmo_bit_list_c",
+          "default": "(\n    0 => index_size_f(A_TMO),\n    1 => index_size_f(B_TMO),\n    2 => index_size_f(C_TMO),\n    3 => index_size_f(D_TMO),\n    4 => index_size_f(X_TMO)\n  )",
+          "loc": {
+            "line": 323,
+            "col": 3,
+            "end_line": 329,
+            "end_col": 4
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.tmo_cnt_size_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "tmo_cnt_size_c",
+          "default": "max_tmo_bit_f(port_tmo_bit_list_c)",
+          "loc": {
+            "line": 345,
+            "col": 3,
+            "end_line": 345,
+            "end_col": 74
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_bus_gateway.port_sel",
+          "dtype": "std_ulogic_vector",
+          "name": "port_sel",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 299,
+            "col": 3,
+            "end_line": 299,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.tmo_bits",
+          "dtype": "std_ulogic_vector",
+          "name": "tmo_bits",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 330,
+            "col": 3,
+            "end_line": 330,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.tmo_fire",
+          "dtype": "std_ulogic",
+          "name": "tmo_fire",
+          "loc": {
+            "line": 331,
+            "col": 3,
+            "end_line": 331,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_req",
+          "dtype": "port_req_t",
+          "name": "port_req",
+          "loc": {
+            "line": 350,
+            "col": 3,
+            "end_line": 350,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_rsp",
+          "dtype": "port_rsp_t",
+          "name": "port_rsp",
+          "loc": {
+            "line": 351,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.int_rsp",
+          "dtype": "bus_rsp_t",
+          "name": "int_rsp",
+          "loc": {
+            "line": 354,
+            "col": 3,
+            "end_line": 354,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.keeper",
+          "dtype": "keeper_t",
+          "name": "keeper",
+          "loc": {
+            "line": 364,
+            "col": 3,
+            "end_line": 364,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.bus_err",
+          "dtype": "std_ulogic",
+          "name": "bus_err",
+          "loc": {
+            "line": 365,
+            "col": 3,
+            "end_line": 365,
+            "end_col": 30
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_bus_gateway.port_bool_list_t",
+          "name": "port_bool_list_t",
+          "kind": "alias",
+          "dtype": "array (4 downto 0) of boolean",
+          "comment": [
+            "-- port enable list --"
+          ],
+          "loc": {
+            "line": 302,
+            "col": 3,
+            "end_line": 302,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_tmo_en_list_t",
+          "name": "port_tmo_en_list_t",
+          "kind": "alias",
+          "dtype": "array (4 downto 0) of boolean",
+          "comment": [
+            "-- port timeout enable list --"
+          ],
+          "loc": {
+            "line": 312,
+            "col": 3,
+            "end_line": 312,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_tmo_bit_list_t",
+          "name": "port_tmo_bit_list_t",
+          "kind": "alias",
+          "dtype": "array (4 downto 0) of natural",
+          "comment": [
+            "-- port timeout counter bit list --"
+          ],
+          "loc": {
+            "line": 322,
+            "col": 3,
+            "end_line": 322,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_req_t",
+          "name": "port_req_t",
+          "kind": "alias",
+          "dtype": "array (4 downto 0) of bus_req_t",
+          "comment": [
+            "-- gateway ports combined as arrays --"
+          ],
+          "loc": {
+            "line": 348,
+            "col": 3,
+            "end_line": 348,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.port_rsp_t",
+          "name": "port_rsp_t",
+          "kind": "alias",
+          "dtype": "array (4 downto 0) of bus_rsp_t",
+          "loc": {
+            "line": 349,
+            "col": 3,
+            "end_line": 349,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.state_t",
+          "name": "state_t",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "neorv32_bus_gateway.state_t.s_idle",
+              "name": "S_IDLE",
+              "loc": {
+                "line": 357,
+                "col": 20,
+                "end_line": 357,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "neorv32_bus_gateway.state_t.s_busy",
+              "name": "S_BUSY",
+              "loc": {
+                "line": 357,
+                "col": 28,
+                "end_line": 357,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "neorv32_bus_gateway.state_t.s_error",
+              "name": "S_ERROR",
+              "loc": {
+                "line": 357,
+                "col": 36,
+                "end_line": 357,
+                "end_col": 43
+              }
+            }
+          ],
+          "comment": [
+            "-- bus monitor --"
+          ],
+          "loc": {
+            "line": 357,
+            "col": 3,
+            "end_line": 357,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.keeper_t",
+          "name": "keeper_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "neorv32_bus_gateway.keeper_t.state",
+              "name": "state",
+              "dtype": "state_t",
+              "loc": {
+                "line": 359,
+                "col": 5,
+                "end_line": 359,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "neorv32_bus_gateway.keeper_t.lock",
+              "name": "lock",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 360,
+                "col": 5,
+                "end_line": 360,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "neorv32_bus_gateway.keeper_t.sel",
+              "name": "sel",
+              "dtype": "std_ulogic_vector",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 361,
+                "col": 5,
+                "end_line": 361,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_bus_gateway.keeper_t.cnt",
+              "name": "cnt",
+              "dtype": "std_ulogic_vector",
+              "dim": "[tmo_cnt_size_c:0]",
+              "loc": {
+                "line": 362,
+                "col": 5,
+                "end_line": 362,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 358,
+            "col": 3,
+            "end_line": 363,
+            "end_col": 14
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "neorv32_bus_gateway.max_tmo_bit_f",
+          "name": "max_tmo_bit_f",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "neorv32_bus_gateway.max_tmo_bit_f.tmo_bit",
+              "direction": "in",
+              "dtype": "port_tmo_bit_list_t",
+              "name": "tmo_bit",
+              "loc": {
+                "line": 334,
+                "col": 26,
+                "end_line": 334,
+                "end_col": 55
+              }
+            }
+          ],
+          "comment": [
+            "-- find highest bit index in port_tmo_bit_list_c to determine counter width --"
+          ],
+          "loc": {
+            "line": 334,
+            "col": 3,
+            "end_line": 344,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_bus_gateway.request",
+          "name": "request",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "req_i"
+            },
+            {
+              "signal": "port_sel"
+            }
+          ],
+          "comment": [
+            "-- bus request --"
+          ],
+          "loc": {
+            "line": 386,
+            "col": 3,
+            "end_line": 395,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.response",
+          "name": "response",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "port_rsp"
+            }
+          ],
+          "comment": [
+            "-- bus response --"
+          ],
+          "loc": {
+            "line": 398,
+            "col": 3,
+            "end_line": 410,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_gateway.bus_monitor",
+          "name": "bus_monitor",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Bus Monitor (aka \"the KEEPER\") ---------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 419,
+            "col": 3,
+            "end_line": 465,
+            "end_col": 15
+          }
+        }
+      ],
       "loc": {
         "line": 244,
         "col": 1,
@@ -703,6 +1471,7 @@
       "params": [
         {
           "id": "neorv32_bus_io_switch.dev_size",
+          "dtype": "natural",
           "name": "DEV_SIZE",
           "comment": [
             "-- size of each IO device, has to be a power of two",
@@ -717,6 +1486,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_00_en",
+          "dtype": "boolean",
           "name": "DEV_00_EN",
           "default": "false",
           "loc": {
@@ -728,6 +1498,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_00_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_00_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -740,6 +1511,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_01_en",
+          "dtype": "boolean",
           "name": "DEV_01_EN",
           "default": "false",
           "loc": {
@@ -751,6 +1523,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_01_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_01_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -763,6 +1536,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_02_en",
+          "dtype": "boolean",
           "name": "DEV_02_EN",
           "default": "false",
           "loc": {
@@ -774,6 +1548,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_02_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_02_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -786,6 +1561,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_03_en",
+          "dtype": "boolean",
           "name": "DEV_03_EN",
           "default": "false",
           "loc": {
@@ -797,6 +1573,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_03_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_03_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -809,6 +1586,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_04_en",
+          "dtype": "boolean",
           "name": "DEV_04_EN",
           "default": "false",
           "loc": {
@@ -820,6 +1598,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_04_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_04_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -832,6 +1611,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_05_en",
+          "dtype": "boolean",
           "name": "DEV_05_EN",
           "default": "false",
           "loc": {
@@ -843,6 +1623,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_05_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_05_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -855,6 +1636,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_06_en",
+          "dtype": "boolean",
           "name": "DEV_06_EN",
           "default": "false",
           "loc": {
@@ -866,6 +1648,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_06_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_06_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -878,6 +1661,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_07_en",
+          "dtype": "boolean",
           "name": "DEV_07_EN",
           "default": "false",
           "loc": {
@@ -889,6 +1673,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_07_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_07_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -901,6 +1686,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_08_en",
+          "dtype": "boolean",
           "name": "DEV_08_EN",
           "default": "false",
           "loc": {
@@ -912,6 +1698,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_08_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_08_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -924,6 +1711,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_09_en",
+          "dtype": "boolean",
           "name": "DEV_09_EN",
           "default": "false",
           "loc": {
@@ -935,6 +1723,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_09_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_09_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -947,6 +1736,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_10_en",
+          "dtype": "boolean",
           "name": "DEV_10_EN",
           "default": "false",
           "loc": {
@@ -958,6 +1748,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_10_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_10_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -970,6 +1761,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_11_en",
+          "dtype": "boolean",
           "name": "DEV_11_EN",
           "default": "false",
           "loc": {
@@ -981,6 +1773,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_11_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_11_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -993,6 +1786,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_12_en",
+          "dtype": "boolean",
           "name": "DEV_12_EN",
           "default": "false",
           "loc": {
@@ -1004,6 +1798,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_12_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_12_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1016,6 +1811,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_13_en",
+          "dtype": "boolean",
           "name": "DEV_13_EN",
           "default": "false",
           "loc": {
@@ -1027,6 +1823,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_13_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_13_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1039,6 +1836,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_14_en",
+          "dtype": "boolean",
           "name": "DEV_14_EN",
           "default": "false",
           "loc": {
@@ -1050,6 +1848,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_14_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_14_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1062,6 +1861,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_15_en",
+          "dtype": "boolean",
           "name": "DEV_15_EN",
           "default": "false",
           "loc": {
@@ -1073,6 +1873,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_15_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_15_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1085,6 +1886,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_16_en",
+          "dtype": "boolean",
           "name": "DEV_16_EN",
           "default": "false",
           "loc": {
@@ -1096,6 +1898,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_16_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_16_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1108,6 +1911,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_17_en",
+          "dtype": "boolean",
           "name": "DEV_17_EN",
           "default": "false",
           "loc": {
@@ -1119,6 +1923,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_17_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_17_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1131,6 +1936,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_18_en",
+          "dtype": "boolean",
           "name": "DEV_18_EN",
           "default": "false",
           "loc": {
@@ -1142,6 +1948,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_18_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_18_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1154,6 +1961,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_19_en",
+          "dtype": "boolean",
           "name": "DEV_19_EN",
           "default": "false",
           "loc": {
@@ -1165,6 +1973,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_19_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_19_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1177,6 +1986,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_20_en",
+          "dtype": "boolean",
           "name": "DEV_20_EN",
           "default": "false",
           "loc": {
@@ -1188,6 +1998,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_20_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_20_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1200,6 +2011,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_21_en",
+          "dtype": "boolean",
           "name": "DEV_21_EN",
           "default": "false",
           "loc": {
@@ -1211,6 +2023,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_21_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_21_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1223,6 +2036,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_22_en",
+          "dtype": "boolean",
           "name": "DEV_22_EN",
           "default": "false",
           "loc": {
@@ -1234,6 +2048,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_22_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_22_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1246,6 +2061,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_23_en",
+          "dtype": "boolean",
           "name": "DEV_23_EN",
           "default": "false",
           "loc": {
@@ -1257,6 +2073,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_23_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_23_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1269,6 +2086,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_24_en",
+          "dtype": "boolean",
           "name": "DEV_24_EN",
           "default": "false",
           "loc": {
@@ -1280,6 +2098,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_24_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_24_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1292,6 +2111,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_25_en",
+          "dtype": "boolean",
           "name": "DEV_25_EN",
           "default": "false",
           "loc": {
@@ -1303,6 +2123,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_25_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_25_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1315,6 +2136,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_26_en",
+          "dtype": "boolean",
           "name": "DEV_26_EN",
           "default": "false",
           "loc": {
@@ -1326,6 +2148,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_26_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_26_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1338,6 +2161,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_27_en",
+          "dtype": "boolean",
           "name": "DEV_27_EN",
           "default": "false",
           "loc": {
@@ -1349,6 +2173,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_27_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_27_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1361,6 +2186,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_28_en",
+          "dtype": "boolean",
           "name": "DEV_28_EN",
           "default": "false",
           "loc": {
@@ -1372,6 +2198,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_28_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_28_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1384,6 +2211,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_29_en",
+          "dtype": "boolean",
           "name": "DEV_29_EN",
           "default": "false",
           "loc": {
@@ -1395,6 +2223,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_29_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_29_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1407,6 +2236,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_30_en",
+          "dtype": "boolean",
           "name": "DEV_30_EN",
           "default": "false",
           "loc": {
@@ -1418,6 +2248,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_30_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_30_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -1430,6 +2261,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_31_en",
+          "dtype": "boolean",
           "name": "DEV_31_EN",
           "default": "false",
           "loc": {
@@ -1441,6 +2273,7 @@
         },
         {
           "id": "neorv32_bus_io_switch.dev_31_base",
+          "dtype": "std_ulogic_vector",
           "name": "DEV_31_BASE",
           "dim": "[31:0]",
           "default": "(others => '0')",
@@ -2284,6 +3117,237 @@
           }
         }
       ],
+      "localparams": [
+        {
+          "id": "neorv32_bus_io_switch.num_devs_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "num_devs_c",
+          "default": "32",
+          "comment": [
+            "-- number of device ports"
+          ],
+          "loc": {
+            "line": 588,
+            "col": 3,
+            "end_line": 588,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.addr_lo_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "addr_lo_c",
+          "default": "index_size_f(DEV_SIZE)",
+          "comment": [
+            "-- low address boundary bit"
+          ],
+          "loc": {
+            "line": 591,
+            "col": 3,
+            "end_line": 591,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.addr_hi_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "addr_hi_c",
+          "default": "(index_size_f(DEV_SIZE) + index_size_f(num_devs_c)) - 1",
+          "comment": [
+            "-- high address boundary bit"
+          ],
+          "loc": {
+            "line": 592,
+            "col": 3,
+            "end_line": 592,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_en_list_c",
+          "ptype": "constant",
+          "dtype": "dev_en_list_t",
+          "name": "dev_en_list_c",
+          "default": "(\n    0  => DEV_00_EN, 1  => DEV_01_EN, 2  => DEV_02_EN, 3  => DEV_03_EN,\n    4  => DEV_04_EN, 5  => DEV_05_EN, 6  => DEV_06_EN, 7  => DEV_07_EN,\n    8  => DEV_08_EN, 9  => DEV_09_EN, 10 => DEV_10_EN, 11 => DEV_11_EN,\n    12 => DEV_12_EN, 13 => DEV_13_EN, 14 => DEV_14_EN, 15 => DEV_15_EN,\n    16 => DEV_16_EN, 17 => DEV_17_EN, 18 => DEV_18_EN, 19 => DEV_19_EN,\n    20 => DEV_20_EN, 21 => DEV_21_EN, 22 => DEV_22_EN, 23 => DEV_23_EN,\n    24 => DEV_24_EN, 25 => DEV_25_EN, 26 => DEV_26_EN, 27 => DEV_27_EN,\n    28 => DEV_28_EN, 29 => DEV_29_EN, 30 => DEV_30_EN, 31 => DEV_31_EN\n  )",
+          "loc": {
+            "line": 596,
+            "col": 3,
+            "end_line": 605,
+            "end_col": 4
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_base_list_c",
+          "ptype": "constant",
+          "dtype": "dev_base_list_t",
+          "name": "dev_base_list_c",
+          "default": "(\n    0  => DEV_00_BASE, 1  => DEV_01_BASE, 2  => DEV_02_BASE, 3  => DEV_03_BASE,\n    4  => DEV_04_BASE, 5  => DEV_05_BASE, 6  => DEV_06_BASE, 7  => DEV_07_BASE,\n    8  => DEV_08_BASE, 9  => DEV_09_BASE, 10 => DEV_10_BASE, 11 => DEV_11_BASE,\n    12 => DEV_12_BASE, 13 => DEV_13_BASE, 14 => DEV_14_BASE, 15 => DEV_15_BASE,\n    16 => DEV_16_BASE, 17 => DEV_17_BASE, 18 => DEV_18_BASE, 19 => DEV_19_BASE,\n    20 => DEV_20_BASE, 21 => DEV_21_BASE, 22 => DEV_22_BASE, 23 => DEV_23_BASE,\n    24 => DEV_24_BASE, 25 => DEV_25_BASE, 26 => DEV_26_BASE, 27 => DEV_27_BASE,\n    28 => DEV_28_BASE, 29 => DEV_29_BASE, 30 => DEV_30_BASE, 31 => DEV_31_BASE\n  )",
+          "loc": {
+            "line": 609,
+            "col": 3,
+            "end_line": 618,
+            "end_col": 4
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_bus_io_switch.dev_req",
+          "dtype": "dev_req_t",
+          "name": "dev_req",
+          "loc": {
+            "line": 623,
+            "col": 3,
+            "end_line": 623,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_rsp",
+          "dtype": "dev_rsp_t",
+          "name": "dev_rsp",
+          "loc": {
+            "line": 624,
+            "col": 3,
+            "end_line": 624,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.main_req",
+          "dtype": "bus_req_t",
+          "name": "main_req",
+          "loc": {
+            "line": 627,
+            "col": 3,
+            "end_line": 627,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.main_rsp",
+          "dtype": "bus_rsp_t",
+          "name": "main_rsp",
+          "loc": {
+            "line": 628,
+            "col": 3,
+            "end_line": 628,
+            "end_col": 30
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_bus_io_switch.dev_en_list_t",
+          "name": "dev_en_list_t",
+          "kind": "alias",
+          "dtype": "array (num_devs_c-1 downto 0) of boolean",
+          "comment": [
+            "-- list of enabled device ports --"
+          ],
+          "loc": {
+            "line": 595,
+            "col": 3,
+            "end_line": 595,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_base_list_t",
+          "name": "dev_base_list_t",
+          "kind": "alias",
+          "dtype": "array (num_devs_c-1 downto 0) of std_ulogic_vector(31 downto 0)",
+          "comment": [
+            "-- list of device base addresses --"
+          ],
+          "loc": {
+            "line": 608,
+            "col": 3,
+            "end_line": 608,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_req_t",
+          "name": "dev_req_t",
+          "kind": "alias",
+          "dtype": "array (num_devs_c-1 downto 0) of bus_req_t",
+          "comment": [
+            "-- device ports combined as arrays --"
+          ],
+          "loc": {
+            "line": 621,
+            "col": 3,
+            "end_line": 621,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.dev_rsp_t",
+          "name": "dev_rsp_t",
+          "kind": "alias",
+          "dtype": "array (num_devs_c-1 downto 0) of bus_rsp_t",
+          "loc": {
+            "line": 622,
+            "col": 3,
+            "end_line": 622,
+            "end_col": 64
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_bus_io_switch.bus_request_gen.bus_request_port_enabled.bus_request",
+          "name": "bus_request",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "main_req"
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "bus_request_gen",
+              "cond": "i in 0 to (num_devs_c-1)"
+            },
+            {
+              "kind": "if",
+              "name": "bus_request_port_enabled",
+              "cond": "dev_en_list_c(i)"
+            }
+          ],
+          "loc": {
+            "line": 688,
+            "col": 7,
+            "end_line": 696,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "neorv32_bus_io_switch.bus_response",
+          "name": "bus_response",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "dev_rsp"
+            }
+          ],
+          "comment": [
+            "-- Response -------------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 708,
+            "col": 3,
+            "end_line": 720,
+            "end_col": 15
+          }
+        }
+      ],
       "insts": [
         {
           "id": "neorv32_bus_io_switch.neorv32_bus_reg_inst",
@@ -2462,6 +3526,326 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "neorv32_bus_amo_rmw.arbiter",
+          "dtype": "arbiter_t",
+          "name": "arbiter",
+          "loc": {
+            "line": 768,
+            "col": 3,
+            "end_line": 768,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.arbiter_nxt",
+          "dtype": "arbiter_t",
+          "name": "arbiter_nxt",
+          "loc": {
+            "line": 768,
+            "col": 3,
+            "end_line": 768,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.alu_res",
+          "dtype": "std_ulogic_vector",
+          "name": "alu_res",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 771,
+            "col": 3,
+            "end_line": 771,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.cmp_res",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_res",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 771,
+            "col": 3,
+            "end_line": 771,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.cmp_opa",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_opa",
+          "dim": "[32:0]",
+          "loc": {
+            "line": 772,
+            "col": 3,
+            "end_line": 772,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.cmp_opb",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_opb",
+          "dim": "[32:0]",
+          "loc": {
+            "line": 772,
+            "col": 3,
+            "end_line": 772,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.cmp_less",
+          "dtype": "std_ulogic",
+          "name": "cmp_less",
+          "loc": {
+            "line": 773,
+            "col": 3,
+            "end_line": 773,
+            "end_col": 31
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_bus_amo_rmw.state_t",
+          "name": "state_t",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_idle",
+              "name": "S_IDLE",
+              "loc": {
+                "line": 761,
+                "col": 20,
+                "end_line": 761,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_read_wait",
+              "name": "S_READ_WAIT",
+              "loc": {
+                "line": 761,
+                "col": 28,
+                "end_line": 761,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_read_error",
+              "name": "S_READ_ERROR",
+              "loc": {
+                "line": 761,
+                "col": 41,
+                "end_line": 761,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_execute",
+              "name": "S_EXECUTE",
+              "loc": {
+                "line": 761,
+                "col": 55,
+                "end_line": 761,
+                "end_col": 64
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_write",
+              "name": "S_WRITE",
+              "loc": {
+                "line": 761,
+                "col": 66,
+                "end_line": 761,
+                "end_col": 73
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.state_t.s_write_wait",
+              "name": "S_WRITE_WAIT",
+              "loc": {
+                "line": 761,
+                "col": 75,
+                "end_line": 761,
+                "end_col": 87
+              }
+            }
+          ],
+          "comment": [
+            "-- arbiter --"
+          ],
+          "loc": {
+            "line": 761,
+            "col": 3,
+            "end_line": 761,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.arbiter_t",
+          "name": "arbiter_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "neorv32_bus_amo_rmw.arbiter_t.state",
+              "name": "state",
+              "dtype": "state_t",
+              "loc": {
+                "line": 763,
+                "col": 5,
+                "end_line": 763,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.arbiter_t.cmd",
+              "name": "cmd",
+              "dtype": "std_ulogic_vector",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 764,
+                "col": 5,
+                "end_line": 764,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.arbiter_t.rdata",
+              "name": "rdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 765,
+                "col": 5,
+                "end_line": 765,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rmw.arbiter_t.wdata",
+              "name": "wdata",
+              "dtype": "std_ulogic_vector",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 766,
+                "col": 5,
+                "end_line": 766,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 762,
+            "col": 3,
+            "end_line": 767,
+            "end_col": 14
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_bus_amo_rmw.arbiter_sync",
+          "name": "arbiter_sync",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Arbiter Sync ---------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 779,
+            "col": 3,
+            "end_line": 789,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.arbiter_comb",
+          "name": "arbiter_comb",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "arbiter"
+            },
+            {
+              "signal": "core_req_i"
+            },
+            {
+              "signal": "sys_rsp_i"
+            }
+          ],
+          "comment": [
+            "-- Arbiter Comb ---------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 793,
+            "col": 3,
+            "end_line": 836,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.rsp_switch",
+          "name": "rsp_switch",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "arbiter"
+            },
+            {
+              "signal": "sys_rsp_i"
+            }
+          ],
+          "comment": [
+            "-- response switch --"
+          ],
+          "loc": {
+            "line": 851,
+            "col": 3,
+            "end_line": 863,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rmw.amo_alu",
+          "name": "amo_alu",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Data ALU -------------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 868,
+            "col": 3,
+            "end_line": 880,
+            "end_col": 15
+          }
+        }
+      ],
       "loc": {
         "line": 744,
         "col": 1,
@@ -2553,6 +3937,241 @@
             "col": 5,
             "end_line": 921,
             "end_col": 31
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_bus_amo_rvs.rsv",
+          "dtype": "rsv_t",
+          "name": "rsv",
+          "loc": {
+            "line": 932,
+            "col": 3,
+            "end_line": 932,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.lr",
+          "dtype": "std_ulogic",
+          "name": "lr",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.sc",
+          "dtype": "std_ulogic",
+          "name": "sc",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.turn",
+          "dtype": "std_ulogic",
+          "name": "turn",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.lr_allow",
+          "dtype": "std_ulogic",
+          "name": "lr_allow",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.sc_valid",
+          "dtype": "std_ulogic",
+          "name": "sc_valid",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.sc_pend_pass",
+          "dtype": "std_ulogic",
+          "name": "sc_pend_pass",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.sc_pend_fail",
+          "dtype": "std_ulogic",
+          "name": "sc_pend_fail",
+          "loc": {
+            "line": 934,
+            "col": 3,
+            "end_line": 934,
+            "end_col": 83
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_bus_amo_rvs.rsv_t",
+          "name": "rsv_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "neorv32_bus_amo_rvs.rsv_t.set",
+              "name": "set",
+              "dtype": "std_ulogic",
+              "comment": [
+                "-- valid"
+              ],
+              "loc": {
+                "line": 928,
+                "col": 5,
+                "end_line": 928,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rvs.rsv_t.id",
+              "name": "id",
+              "dtype": "std_ulogic",
+              "comment": [
+                "-- core ID"
+              ],
+              "loc": {
+                "line": 929,
+                "col": 5,
+                "end_line": 929,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "neorv32_bus_amo_rvs.rsv_t.addr",
+              "name": "addr",
+              "dtype": "std_ulogic_vector",
+              "dim": "[31:6]",
+              "comment": [
+                "-- base address (64-byte granule)"
+              ],
+              "loc": {
+                "line": 930,
+                "col": 5,
+                "end_line": 930,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 927,
+            "col": 3,
+            "end_line": 931,
+            "end_col": 14
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_bus_amo_rvs.reservation_station",
+          "name": "reservation_station",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Reservation Station --------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 940,
+            "col": 3,
+            "end_line": 969,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.bus_request",
+          "name": "bus_request",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "core_req_i"
+            },
+            {
+              "signal": "sc"
+            },
+            {
+              "signal": "sc_valid"
+            },
+            {
+              "signal": "sc_pend_fail"
+            }
+          ],
+          "comment": [
+            "-- System Bus Interface -------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------",
+            "-- [NOTE] the SC decision has to stay stable for the entire bus transfer: the reservation is",
+            "-- updated with the request strobe, so sc_valid is only meaningful in the STB cycle; afterwards the",
+            "-- registered decision (sc_pend_fail) is used"
+          ],
+          "loc": {
+            "line": 989,
+            "col": 3,
+            "end_line": 996,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_bus_amo_rvs.sc_result",
+          "name": "sc_result",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- track pending SC operation --"
+          ],
+          "loc": {
+            "line": 999,
+            "col": 3,
+            "end_line": 1016,
+            "end_col": 15
           }
         }
       ],

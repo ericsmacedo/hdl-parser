@@ -8,6 +8,7 @@
         {
           "id": "ibex_csr.Width",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Width",
           "default": "32",
           "loc": {
@@ -116,6 +117,96 @@
             "col": 3,
             "end_line": 23,
             "end_col": 38
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_csr.rdata_q",
+          "ptype": "logic",
+          "name": "rdata_q",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_csr.gen_shadow.shadow_q",
+          "ptype": "logic",
+          "name": "shadow_q",
+          "dim": "[Width-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_shadow",
+              "cond": "ShadowCopy"
+            }
+          ],
+          "loc": {
+            "line": 39,
+            "col": 5,
+            "end_line": 39,
+            "end_col": 32
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_csr.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_csr.gen_shadow.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_shadow",
+              "cond": "ShadowCopy"
+            }
+          ],
+          "loc": {
+            "line": 41,
+            "col": 5,
+            "end_line": 47,
+            "end_col": 8
           }
         }
       ],

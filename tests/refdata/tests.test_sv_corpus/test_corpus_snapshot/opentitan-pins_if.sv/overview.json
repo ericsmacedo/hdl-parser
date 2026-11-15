@@ -1,0 +1,569 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/pins_if.sv",
+  "modules": [],
+  "interfaces": [
+    {
+      "id": "pins_if",
+      "name": "pins_if",
+      "params": [
+        {
+          "id": "pins_if.Width",
+          "ptype": "int",
+          "name": "Width",
+          "default": "1",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "pins_if.PullStrength",
+          "ptype": "bit",
+          "name": "PullStrength",
+          "dim": "[8*4-1:0]",
+          "default": "\"Pull\"",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 48
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "pins_if.pins",
+          "direction": "inout",
+          "name": "pins",
+          "dim": "[Width-1:0]",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 25
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pins_if.pins_o",
+          "ptype": "logic",
+          "name": "pins_o",
+          "dim": "[Width-1:0]",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "comment": [
+            "value to be driven out"
+          ],
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "pins_if.pins_oe",
+          "ptype": "bit",
+          "name": "pins_oe",
+          "dim": "[Width-1:0]",
+          "default": "'0",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "comment": [
+            "output enable"
+          ],
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "pins_if.pins_pd",
+          "ptype": "bit",
+          "name": "pins_pd",
+          "dim": "[Width-1:0]",
+          "default": "'0",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "comment": [
+            "pull down enable"
+          ],
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "pins_if.pins_pu",
+          "ptype": "bit",
+          "name": "pins_pu",
+          "dim": "[Width-1:0]",
+          "default": "'0",
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "comment": [
+            "pull up enable"
+          ],
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 34
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "pins_if.drive_en_pin",
+          "name": "drive_en_pin",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.drive_en_pin.idx",
+              "direction": "input",
+              "ptype": "int",
+              "name": "idx",
+              "default": "0",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 27,
+                "col": 40,
+                "end_line": 27,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "pins_if.drive_en_pin.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 27,
+                "col": 53,
+                "end_line": 27,
+                "end_col": 60
+              }
+            }
+          ],
+          "comment": [
+            "function to set pin output enable for specific pin (useful for single pin interface)"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.drive_en",
+          "name": "drive_en",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.drive_en.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "dim": "[Width-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 32,
+                "col": 36,
+                "end_line": 32,
+                "end_col": 55
+              }
+            }
+          ],
+          "comment": [
+            "function to set pin output enable for all pins"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.drive_pin",
+          "name": "drive_pin",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.drive_pin.idx",
+              "direction": "input",
+              "ptype": "int",
+              "name": "idx",
+              "default": "0",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 37,
+                "col": 37,
+                "end_line": 37,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "pins_if.drive_pin.val",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "val",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 37,
+                "col": 50,
+                "end_line": 37,
+                "end_col": 59
+              }
+            }
+          ],
+          "comment": [
+            "function to drive a specific pin with a value (useful for single pin interface)"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.drive",
+          "name": "drive",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.drive.val",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "val",
+              "dim": "[Width-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 43,
+                "col": 33,
+                "end_line": 43,
+                "end_col": 54
+              }
+            }
+          ],
+          "comment": [
+            "function to drive all pins"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.set_pulldown_en",
+          "name": "set_pulldown_en",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.set_pulldown_en.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "dim": "[Width-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 49,
+                "col": 43,
+                "end_line": 49,
+                "end_col": 62
+              }
+            }
+          ],
+          "comment": [
+            "function to drive all pull down values"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.set_pullup_en",
+          "name": "set_pullup_en",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.set_pullup_en.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "dim": "[Width-1:0]",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 54,
+                "col": 41,
+                "end_line": 54,
+                "end_col": 60
+              }
+            }
+          ],
+          "comment": [
+            "function to drive all pull up values"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.set_pulldown_en_pin",
+          "name": "set_pulldown_en_pin",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.set_pulldown_en_pin.idx",
+              "direction": "input",
+              "ptype": "int",
+              "name": "idx",
+              "default": "0",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 59,
+                "col": 47,
+                "end_line": 59,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "pins_if.set_pulldown_en_pin.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 59,
+                "col": 60,
+                "end_line": 59,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "function to drive the pull down value on a specific pin"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.set_pullup_en_pin",
+          "name": "set_pullup_en_pin",
+          "kind": "function",
+          "rtype": "void",
+          "args": [
+            {
+              "id": "pins_if.set_pullup_en_pin.idx",
+              "direction": "input",
+              "ptype": "int",
+              "name": "idx",
+              "default": "0",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 64,
+                "col": 45,
+                "end_line": 64,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "pins_if.set_pullup_en_pin.val",
+              "direction": "input",
+              "ptype": "bit",
+              "name": "val",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 64,
+                "col": 58,
+                "end_line": 64,
+                "end_col": 65
+              }
+            }
+          ],
+          "comment": [
+            "function to drive the pull up value on a specific pin"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.sample_pin",
+          "name": "sample_pin",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "pins_if.sample_pin.idx",
+              "direction": "input",
+              "ptype": "int",
+              "name": "idx",
+              "default": "0",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 69,
+                "col": 39,
+                "end_line": 69,
+                "end_col": 50
+              }
+            }
+          ],
+          "comment": [
+            "function to sample a specific pin (useful for single pin interface)"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 69,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.sample",
+          "name": "sample",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[Width-1:0]",
+          "comment": [
+            "function to sample all pins"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "pins_if.disconnect",
+          "name": "disconnect",
+          "kind": "function",
+          "rtype": "void",
+          "comment": [
+            "Fully disconnect this interface, including the pulls."
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 79,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 14
+          }
+        }
+      ],
+      "ifdefs": [
+        "!SYNTHESIS"
+      ],
+      "loc": {
+        "line": 10,
+        "col": 1,
+        "end_line": 115,
+        "end_col": 13
+      }
+    }
+  ]
+}

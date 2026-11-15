@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_soc_gpio.num_gpios",
+          "dtype": "natural",
           "name": "NUM_GPIOS",
           "default": "32",
           "loc": {
@@ -146,6 +147,76 @@
             "col": 3,
             "end_line": 39,
             "end_col": 29
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_soc_gpio.direction_register",
+          "dtype": "std_logic_vector",
+          "name": "direction_register",
+          "dim": "[NUM_GPIOS - 1:0]",
+          "loc": {
+            "line": 45,
+            "col": 2,
+            "end_line": 45,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_soc_gpio.output_register",
+          "dtype": "std_logic_vector",
+          "name": "output_register",
+          "dim": "[NUM_GPIOS - 1:0]",
+          "loc": {
+            "line": 46,
+            "col": 2,
+            "end_line": 46,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "pp_soc_gpio.input_register",
+          "dtype": "std_logic_vector",
+          "name": "input_register",
+          "dim": "[NUM_GPIOS - 1:0]",
+          "loc": {
+            "line": 47,
+            "col": 2,
+            "end_line": 47,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "pp_soc_gpio.ack",
+          "dtype": "std_logic",
+          "name": "ack",
+          "default": "'0'",
+          "loc": {
+            "line": 49,
+            "col": 2,
+            "end_line": 49,
+            "end_col": 31
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_soc_gpio.wishbone",
+          "name": "wishbone",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 64,
+            "col": 2,
+            "end_line": 100,
+            "end_col": 23
           }
         }
       ],

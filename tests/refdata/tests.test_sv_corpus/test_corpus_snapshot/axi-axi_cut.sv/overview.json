@@ -844,6 +844,7 @@
         {
           "id": "axi_cut_intf.ADDR_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "ADDR_WIDTH",
           "default": "0",
           "comment": [
@@ -859,6 +860,7 @@
         {
           "id": "axi_cut_intf.DATA_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DATA_WIDTH",
           "default": "0",
           "comment": [
@@ -874,6 +876,7 @@
         {
           "id": "axi_cut_intf.ID_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "ID_WIDTH",
           "default": "0",
           "comment": [
@@ -889,6 +892,7 @@
         {
           "id": "axi_cut_intf.USER_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "USER_WIDTH",
           "default": "0",
           "loc": {
@@ -944,6 +948,119 @@
             "col": 3,
             "end_line": 134,
             "end_col": 22
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "axi_cut_intf.slv_req",
+          "ptype": "axi_req_t",
+          "name": "slv_req",
+          "loc": {
+            "line": 151,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_cut_intf.mst_req",
+          "ptype": "axi_req_t",
+          "name": "mst_req",
+          "loc": {
+            "line": 151,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_cut_intf.slv_resp",
+          "ptype": "axi_resp_t",
+          "name": "slv_resp",
+          "loc": {
+            "line": 152,
+            "col": 3,
+            "end_line": 152,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "axi_cut_intf.mst_resp",
+          "ptype": "axi_resp_t",
+          "name": "mst_resp",
+          "loc": {
+            "line": 152,
+            "col": 3,
+            "end_line": 152,
+            "end_col": 33
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "axi_cut_intf.id_t",
+          "name": "id_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[ID_WIDTH-1:0]",
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axi_cut_intf.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_cut_intf.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_cut_intf.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[DATA_WIDTH/8-1:0]",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_cut_intf.user_t",
+          "name": "user_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[USER_WIDTH-1:0]",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 43
           }
         }
       ],
@@ -1147,6 +1264,7 @@
         {
           "id": "axi_lite_cut_intf.ADDR_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "ADDR_WIDTH",
           "default": "0",
           "comment": [
@@ -1162,6 +1280,7 @@
         {
           "id": "axi_lite_cut_intf.DATA_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DATA_WIDTH",
           "default": "0",
           "loc": {
@@ -1217,6 +1336,93 @@
             "col": 3,
             "end_line": 210,
             "end_col": 22
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "axi_lite_cut_intf.slv_req",
+          "ptype": "axi_req_t",
+          "name": "slv_req",
+          "loc": {
+            "line": 225,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "axi_lite_cut_intf.mst_req",
+          "ptype": "axi_req_t",
+          "name": "mst_req",
+          "loc": {
+            "line": 225,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "axi_lite_cut_intf.slv_resp",
+          "ptype": "axi_resp_t",
+          "name": "slv_resp",
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 226,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_lite_cut_intf.mst_resp",
+          "ptype": "axi_resp_t",
+          "name": "mst_resp",
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 226,
+            "end_col": 34
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "axi_lite_cut_intf.addr_t",
+          "name": "addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[ADDR_WIDTH-1:0]",
+          "loc": {
+            "line": 213,
+            "col": 3,
+            "end_line": 213,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_lite_cut_intf.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[DATA_WIDTH-1:0]",
+          "loc": {
+            "line": 214,
+            "col": 3,
+            "end_line": 214,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_lite_cut_intf.strb_t",
+          "name": "strb_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[DATA_WIDTH/8-1:0]",
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 43
           }
         }
       ],

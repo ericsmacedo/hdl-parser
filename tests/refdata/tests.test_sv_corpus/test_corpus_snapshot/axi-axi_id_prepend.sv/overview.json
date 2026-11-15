@@ -8,6 +8,7 @@
         {
           "id": "axi_id_prepend.NoBus",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NoBus",
           "default": "1",
           "comment": [
@@ -23,6 +24,7 @@
         {
           "id": "axi_id_prepend.AxiIdWidthSlvPort",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "AxiIdWidthSlvPort",
           "default": "4",
           "comment": [
@@ -38,6 +40,7 @@
         {
           "id": "axi_id_prepend.AxiIdWidthMstPort",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "AxiIdWidthMstPort",
           "default": "6",
           "comment": [
@@ -204,6 +207,7 @@
         {
           "id": "axi_id_prepend.PreIdWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PreIdWidth",
           "default": "AxiIdWidthMstPort - AxiIdWidthSlvPort",
           "loc": {
@@ -649,6 +653,29 @@
             "col": 3,
             "end_line": 77,
             "end_col": 51
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "axi_id_prepend.gen_id_prepend.gen_prepend.#always1",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_id_prepend",
+              "cond": "genvar i = 0; i < NoBus; i++"
+            },
+            {
+              "kind": "else",
+              "name": "gen_prepend"
+            }
+          ],
+          "loc": {
+            "line": 86,
+            "col": 7,
+            "end_line": 91,
+            "end_col": 10
           }
         }
       ],

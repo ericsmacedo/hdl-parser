@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "cache_ram.row_bits",
+          "dtype": "integer",
           "name": "ROW_BITS",
           "default": "16",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "cache_ram.width",
+          "dtype": "integer",
           "name": "WIDTH",
           "default": "64",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "cache_ram.bytewid",
+          "dtype": "integer",
           "name": "BYTEWID",
           "default": "8",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "cache_ram.trace",
+          "dtype": "boolean",
           "name": "TRACE",
           "default": "false",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "cache_ram.add_buf",
+          "dtype": "boolean",
           "name": "ADD_BUF",
           "default": "false",
           "loc": {
@@ -149,6 +154,103 @@
             "col": 9,
             "end_line": 22,
             "end_col": 59
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "cache_ram.size",
+          "ptype": "constant",
+          "dtype": "integer",
+          "name": "SIZE",
+          "default": "2**ROW_BITS",
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 43
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "cache_ram.ram",
+          "dtype": "ram_type",
+          "name": "ram",
+          "loc": {
+            "line": 31,
+            "col": 5,
+            "end_line": 31,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "cache_ram.rd_data0",
+          "dtype": "std_logic_vector",
+          "name": "rd_data0",
+          "dim": "[WIDTH - 1:0]",
+          "loc": {
+            "line": 35,
+            "col": 5,
+            "end_line": 35,
+            "end_col": 59
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "cache_ram.ram_type",
+          "name": "ram_type",
+          "kind": "alias",
+          "dtype": "array (0 to SIZE - 1) of std_logic_vector(WIDTH - 1 downto 0)",
+          "loc": {
+            "line": 30,
+            "col": 5,
+            "end_line": 30,
+            "end_col": 84
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "cache_ram.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 38,
+            "col": 5,
+            "end_line": 71,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "cache_ram.buf.#process2",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "buf",
+              "cond": "ADD_BUF"
+            }
+          ],
+          "loc": {
+            "line": 75,
+            "col": 9,
+            "end_line": 80,
+            "end_col": 21
           }
         }
       ],

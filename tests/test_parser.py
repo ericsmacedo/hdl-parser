@@ -140,7 +140,7 @@ def test_unknown_suffix(tmp_path):
     assert [module.name for module in parse_file(file_path).modules] == ["m"]
 
 
-@mark.parametrize("text", ["", "// comment", "package p;\n  typedef logic [3:0] t;\nendpackage\n", "module"])
+@mark.parametrize("text", ["", "// comment", "class c;\n  logic [3:0] t;\nendclass\n", "module"])
 def test_no_module(tmp_path, caplog, text):
     """Files Without Modules Are Fine."""
     assert plain(parse_text(text)) == File(path=None, modules=())

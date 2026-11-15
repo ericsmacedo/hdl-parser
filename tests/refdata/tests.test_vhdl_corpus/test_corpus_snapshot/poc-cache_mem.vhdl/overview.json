@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "cache_mem.replacement_policy",
+          "dtype": "string",
           "name": "REPLACEMENT_POLICY",
           "default": "\"LRU\"",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "cache_mem.cache_lines",
+          "dtype": "positive",
           "name": "CACHE_LINES",
           "loc": {
             "line": 138,
@@ -28,6 +30,7 @@
         },
         {
           "id": "cache_mem.associativity",
+          "dtype": "positive",
           "name": "ASSOCIATIVITY",
           "loc": {
             "line": 139,
@@ -38,6 +41,7 @@
         },
         {
           "id": "cache_mem.cpu_data_bits",
+          "dtype": "positive",
           "name": "CPU_DATA_BITS",
           "loc": {
             "line": 140,
@@ -48,6 +52,7 @@
         },
         {
           "id": "cache_mem.mem_addr_bits",
+          "dtype": "positive",
           "name": "MEM_ADDR_BITS",
           "loc": {
             "line": 141,
@@ -58,6 +63,7 @@
         },
         {
           "id": "cache_mem.mem_data_bits",
+          "dtype": "positive",
           "name": "MEM_DATA_BITS",
           "loc": {
             "line": 142,
@@ -68,6 +74,7 @@
         },
         {
           "id": "cache_mem.outstanding_req",
+          "dtype": "positive",
           "name": "OUTSTANDING_REQ",
           "default": "2",
           "loc": {
@@ -166,6 +173,7 @@
           "dtype": "std_logic_vector",
           "name": "cpu_wmask",
           "dim": "[CPU_DATA_BITS/8-1:0]",
+          "default": "(others => '0')",
           "loc": {
             "line": 154,
             "col": 3,
@@ -311,6 +319,494 @@
             "col": 3,
             "end_line": 167,
             "end_col": 61
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "cache_mem.cpu_addr_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "CPU_ADDR_BITS",
+          "default": "log2ceil(MEM_DATA_BITS/CPU_DATA_BITS)+MEM_ADDR_BITS",
+          "loc": {
+            "line": 172,
+            "col": 2,
+            "end_line": 172,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "cache_mem.d_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "D_BITS",
+          "default": "CPU_DATA_BITS/8+CPU_DATA_BITS+CPU_ADDR_BITS+1",
+          "loc": {
+            "line": 274,
+            "col": 3,
+            "end_line": 274,
+            "end_col": 78
+          }
+        },
+        {
+          "id": "cache_mem.d_bits~2",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "D_BITS",
+          "default": "CPU_DATA_BITS/8+CPU_DATA_BITS+CPU_ADDR_BITS+1",
+          "loc": {
+            "line": 310,
+            "col": 3,
+            "end_line": 310,
+            "end_col": 78
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "cache_mem.int_req",
+          "dtype": "std_logic",
+          "name": "int_req",
+          "loc": {
+            "line": 175,
+            "col": 2,
+            "end_line": 175,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "cache_mem.int_write",
+          "dtype": "std_logic",
+          "name": "int_write",
+          "loc": {
+            "line": 176,
+            "col": 2,
+            "end_line": 176,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "cache_mem.int_addr",
+          "dtype": "unsigned",
+          "name": "int_addr",
+          "dim": "[CPU_ADDR_BITS-1:0]",
+          "loc": {
+            "line": 177,
+            "col": 2,
+            "end_line": 177,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "cache_mem.int_wdata",
+          "dtype": "std_logic_vector",
+          "name": "int_wdata",
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "loc": {
+            "line": 178,
+            "col": 2,
+            "end_line": 178,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "cache_mem.int_wmask",
+          "dtype": "std_logic_vector",
+          "name": "int_wmask",
+          "dim": "[CPU_DATA_BITS/8-1:0]",
+          "loc": {
+            "line": 179,
+            "col": 2,
+            "end_line": 179,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "cache_mem.int_got",
+          "dtype": "std_logic",
+          "name": "int_got",
+          "loc": {
+            "line": 180,
+            "col": 2,
+            "end_line": 180,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "cache_mem.int_rdata",
+          "dtype": "std_logic_vector",
+          "name": "int_rdata",
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "loc": {
+            "line": 181,
+            "col": 2,
+            "end_line": 181,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_req_r",
+          "dtype": "std_logic",
+          "name": "cpu_req_r",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 219,
+            "col": 5,
+            "end_line": 219,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_write_r",
+          "dtype": "std_logic",
+          "name": "cpu_write_r",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 220,
+            "col": 5,
+            "end_line": 220,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_addr_r",
+          "dtype": "unsigned",
+          "name": "cpu_addr_r",
+          "dim": "[CPU_ADDR_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 221,
+            "col": 5,
+            "end_line": 221,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_wdata_r",
+          "dtype": "std_logic_vector",
+          "name": "cpu_wdata_r",
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 222,
+            "col": 5,
+            "end_line": 222,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_wmask_r",
+          "dtype": "std_logic_vector",
+          "name": "cpu_wmask_r",
+          "dim": "[CPU_DATA_BITS/8-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 223,
+            "col": 5,
+            "end_line": 223,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_rdy_r",
+          "dtype": "std_logic",
+          "name": "cpu_rdy_r",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 224,
+            "col": 5,
+            "end_line": 224,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_rstb_r",
+          "dtype": "std_logic",
+          "name": "cpu_rstb_r",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 225,
+            "col": 5,
+            "end_line": 225,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cache_mem.g1.cpu_rdata_r",
+          "dtype": "std_logic_vector",
+          "name": "cpu_rdata_r",
+          "dim": "[CPU_DATA_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "loc": {
+            "line": 226,
+            "col": 5,
+            "end_line": 226,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "cache_mem.g2.put",
+          "dtype": "std_logic",
+          "name": "put",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
+          "loc": {
+            "line": 276,
+            "col": 5,
+            "end_line": 276,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.g2.din",
+          "dtype": "std_logic_vector",
+          "name": "din",
+          "dim": "[D_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
+          "loc": {
+            "line": 277,
+            "col": 5,
+            "end_line": 277,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "cache_mem.g2.full",
+          "dtype": "std_logic",
+          "name": "full",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
+          "loc": {
+            "line": 278,
+            "col": 5,
+            "end_line": 278,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.g2.valid",
+          "dtype": "std_logic",
+          "name": "valid",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
+          "loc": {
+            "line": 279,
+            "col": 5,
+            "end_line": 279,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.g2.dout",
+          "dtype": "std_logic_vector",
+          "name": "dout",
+          "dim": "[D_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g2",
+              "cond": "OUTSTANDING_REQ = 2"
+            }
+          ],
+          "loc": {
+            "line": 280,
+            "col": 5,
+            "end_line": 280,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "cache_mem.gt2.put",
+          "dtype": "std_logic",
+          "name": "put",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
+            }
+          ],
+          "loc": {
+            "line": 312,
+            "col": 5,
+            "end_line": 312,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.gt2.din",
+          "dtype": "std_logic_vector",
+          "name": "din",
+          "dim": "[D_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
+            }
+          ],
+          "loc": {
+            "line": 313,
+            "col": 5,
+            "end_line": 313,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "cache_mem.gt2.full",
+          "dtype": "std_logic",
+          "name": "full",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
+            }
+          ],
+          "loc": {
+            "line": 314,
+            "col": 5,
+            "end_line": 314,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.gt2.valid",
+          "dtype": "std_logic",
+          "name": "valid",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
+            }
+          ],
+          "loc": {
+            "line": 315,
+            "col": 5,
+            "end_line": 315,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "cache_mem.gt2.dout",
+          "dtype": "std_logic_vector",
+          "name": "dout",
+          "dim": "[D_BITS-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gt2",
+              "cond": "OUTSTANDING_REQ > 2"
+            }
+          ],
+          "loc": {
+            "line": 316,
+            "col": 5,
+            "end_line": 316,
+            "end_col": 55
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "cache_mem.g1.#process1",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g1",
+              "cond": "OUTSTANDING_REQ = 1"
+            }
+          ],
+          "comment": [
+            "-- cpu_rdy should have a short clock-to-output delay, but int_got has a large",
+            "-- propagation delay. Thus, do not depend cpu_rdy and int_got.",
+            "-- This single entry FIFO stores a valid request if cpu_req_r = '1',",
+            "-- otherwise it is empty."
+          ],
+          "loc": {
+            "line": 232,
+            "col": 3,
+            "end_line": 260,
+            "end_col": 15
           }
         }
       ],
@@ -760,6 +1256,9 @@
               "id": "cache_mem.gt2.req_fifo.output_reg",
               "port": "OUTPUT_REG",
               "con": "true",
+              "comment": [
+                "-- extra register required for optimal synthesis on Altera FPGAs"
+              ],
               "loc": {
                 "line": 324,
                 "col": 9,

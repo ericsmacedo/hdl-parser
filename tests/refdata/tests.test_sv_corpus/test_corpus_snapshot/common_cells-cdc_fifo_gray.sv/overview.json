@@ -8,6 +8,7 @@
         {
           "id": "cdc_fifo_gray.WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "WIDTH",
           "default": "1",
           "comment": [
@@ -182,6 +183,44 @@
             "col": 3,
             "end_line": 122,
             "end_col": 27
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "cdc_fifo_gray.async_data",
+          "ptype": "T",
+          "name": "async_data",
+          "dim": "[2**LOG_DEPTH-1:0]",
+          "loc": {
+            "line": 125,
+            "col": 3,
+            "end_line": 125,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cdc_fifo_gray.async_wptr",
+          "ptype": "logic",
+          "name": "async_wptr",
+          "dim": "[LOG_DEPTH:0]",
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "cdc_fifo_gray.async_rptr",
+          "ptype": "logic",
+          "name": "async_rptr",
+          "dim": "[LOG_DEPTH:0]",
+          "loc": {
+            "line": 127,
+            "col": 3,
+            "end_line": 127,
+            "end_col": 35
           }
         }
       ],
@@ -613,6 +652,92 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "cdc_fifo_gray_src.data_q",
+          "ptype": "T",
+          "name": "data_q",
+          "dim": "[2**LOG_DEPTH-1:0]",
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.wptr_q",
+          "ptype": "logic",
+          "name": "wptr_q",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.wptr_d",
+          "ptype": "logic",
+          "name": "wptr_d",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.wptr_bin",
+          "ptype": "logic",
+          "name": "wptr_bin",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.wptr_next",
+          "ptype": "logic",
+          "name": "wptr_next",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.rptr",
+          "ptype": "logic",
+          "name": "rptr",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_src.rptr_bin",
+          "ptype": "logic",
+          "name": "rptr_bin",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 76
+          }
+        }
+      ],
       "insts": [
         {
           "id": "cdc_fifo_gray_src.gen_sync.i_sync",
@@ -1006,6 +1131,125 @@
             "col": 3,
             "end_line": 247,
             "end_col": 49
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "cdc_fifo_gray_dst.dst_data",
+          "ptype": "T",
+          "name": "dst_data",
+          "loc": {
+            "line": 249,
+            "col": 3,
+            "end_line": 249,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.rptr_q",
+          "ptype": "logic",
+          "name": "rptr_q",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.rptr_d",
+          "ptype": "logic",
+          "name": "rptr_d",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.rptr_bin",
+          "ptype": "logic",
+          "name": "rptr_bin",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.rptr_bin_d",
+          "ptype": "logic",
+          "name": "rptr_bin_d",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.rptr_next",
+          "ptype": "logic",
+          "name": "rptr_next",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.wptr",
+          "ptype": "logic",
+          "name": "wptr",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.wptr_bin",
+          "ptype": "logic",
+          "name": "wptr_bin",
+          "dim": "[PtrWidth-1:0]",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.dst_valid",
+          "ptype": "logic",
+          "name": "dst_valid",
+          "loc": {
+            "line": 251,
+            "col": 3,
+            "end_line": 251,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "cdc_fifo_gray_dst.dst_ready",
+          "ptype": "logic",
+          "name": "dst_ready",
+          "loc": {
+            "line": 251,
+            "col": 3,
+            "end_line": 251,
+            "end_col": 30
           }
         }
       ],

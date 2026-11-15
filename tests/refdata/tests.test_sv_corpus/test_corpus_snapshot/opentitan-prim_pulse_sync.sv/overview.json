@@ -81,6 +81,163 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_pulse_sync.src_level",
+          "ptype": "logic",
+          "name": "src_level",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "prim_pulse_sync.effective_rst_n",
+          "ptype": "logic",
+          "name": "effective_rst_n",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "prim_pulse_sync.src_active_flag_d",
+          "ptype": "logic",
+          "name": "src_active_flag_d",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "prim_pulse_sync.src_active_flag_q",
+          "ptype": "logic",
+          "name": "src_active_flag_q",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "prim_pulse_sync.dst_level",
+          "ptype": "logic",
+          "name": "dst_level",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "prim_pulse_sync.dst_level_q",
+          "ptype": "logic",
+          "name": "dst_level_q",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 21
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "prim_pulse_sync.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_src_ni"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "rst_src_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_pulse_sync.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_src_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "effective_rst_n"
+            }
+          ],
+          "clock": "clk_src_i",
+          "clock_edge": "posedge",
+          "reset": "effective_rst_n",
+          "reset_edge": "negedge",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_pulse_sync.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_dst_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_dst_ni"
+            }
+          ],
+          "clock": "clk_dst_i",
+          "clock_edge": "posedge",
+          "reset": "rst_dst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "delay dst_level by 1 cycle"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_pulse_sync.prim_flop_2sync",

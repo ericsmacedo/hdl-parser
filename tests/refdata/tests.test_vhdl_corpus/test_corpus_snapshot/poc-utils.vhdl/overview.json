@@ -1,0 +1,4335 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/utils.vhdl",
+  "modules": [],
+  "packages": [
+    {
+      "id": "utils",
+      "name": "utils",
+      "localparams": [
+        {
+          "id": "utils.simulation",
+          "ptype": "constant",
+          "dtype": "boolean",
+          "name": "SIMULATION",
+          "comment": [
+            "-- deferred constant declaration"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 2,
+            "end_line": 45,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "utils.c_bcd_minus",
+          "ptype": "constant",
+          "dtype": "t_bcd",
+          "name": "C_BCD_MINUS",
+          "default": "\"1010\"",
+          "loc": {
+            "line": 107,
+            "col": 2,
+            "end_line": 107,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "utils.c_bcd_off",
+          "ptype": "constant",
+          "dtype": "t_bcd",
+          "name": "C_BCD_OFF",
+          "default": "\"1011\"",
+          "loc": {
+            "line": 108,
+            "col": 2,
+            "end_line": 108,
+            "end_col": 40
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "utils.t_boolvec",
+          "name": "T_BOOLVEC",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of boolean",
+          "comment": [
+            "-- Type declarations",
+            "-- ==========================================================================",
+            "--+ Vectors of primitive standard types +++++++++++++++++++++++++++++++++++++"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 2,
+            "end_line": 51,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "utils.t_intvec",
+          "name": "T_INTVEC",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of integer",
+          "loc": {
+            "line": 52,
+            "col": 2,
+            "end_line": 52,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "utils.t_natvec",
+          "name": "T_NATVEC",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of natural",
+          "loc": {
+            "line": 53,
+            "col": 2,
+            "end_line": 53,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "utils.t_posvec",
+          "name": "T_POSVEC",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of positive",
+          "loc": {
+            "line": 54,
+            "col": 2,
+            "end_line": 54,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "utils.t_realvec",
+          "name": "T_REALVEC",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of REAL",
+          "loc": {
+            "line": 55,
+            "col": 2,
+            "end_line": 55,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "utils.t_int_8",
+          "name": "T_INT_8",
+          "kind": "alias",
+          "dtype": "integer range -128 to 127",
+          "comment": [
+            "--+ Integer subranges sometimes useful for speeding up simulation ++++++++++"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 2,
+            "end_line": 58,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.t_int_16",
+          "name": "T_INT_16",
+          "kind": "alias",
+          "dtype": "integer range -32768 to 32767",
+          "loc": {
+            "line": 59,
+            "col": 2,
+            "end_line": 59,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "utils.t_uint_8",
+          "name": "T_UINT_8",
+          "kind": "alias",
+          "dtype": "integer range 0 to 255",
+          "loc": {
+            "line": 60,
+            "col": 2,
+            "end_line": 60,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "utils.t_uint_16",
+          "name": "T_UINT_16",
+          "kind": "alias",
+          "dtype": "integer range 0 to 65535",
+          "loc": {
+            "line": 61,
+            "col": 2,
+            "end_line": 61,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.t_ipstyle",
+          "name": "T_IPSTYLE",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_ipstyle.ipstyle_unknown",
+              "name": "IPSTYLE_UNKNOWN",
+              "loc": {
+                "line": 65,
+                "col": 28,
+                "end_line": 65,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "utils.t_ipstyle.ipstyle_hard",
+              "name": "IPSTYLE_HARD",
+              "loc": {
+                "line": 65,
+                "col": 45,
+                "end_line": 65,
+                "end_col": 57
+              }
+            },
+            {
+              "id": "utils.t_ipstyle.ipstyle_soft",
+              "name": "IPSTYLE_SOFT",
+              "loc": {
+                "line": 65,
+                "col": 59,
+                "end_line": 65,
+                "end_col": 71
+              }
+            }
+          ],
+          "comment": [
+            "--+ Enums ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- Intellectual Property (IP) type"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 2,
+            "end_line": 65,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.t_bit_order",
+          "name": "T_BIT_ORDER",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_bit_order.lsb_first",
+              "name": "LSB_FIRST",
+              "loc": {
+                "line": 68,
+                "col": 28,
+                "end_line": 68,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "utils.t_bit_order.msb_first",
+              "name": "MSB_FIRST",
+              "loc": {
+                "line": 68,
+                "col": 39,
+                "end_line": 68,
+                "end_col": 48
+              }
+            }
+          ],
+          "comment": [
+            "-- Bit order"
+          ],
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 68,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "utils.t_byte_order",
+          "name": "T_BYTE_ORDER",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_byte_order.little_endian",
+              "name": "LITTLE_ENDIAN",
+              "loc": {
+                "line": 72,
+                "col": 28,
+                "end_line": 72,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "utils.t_byte_order.big_endian",
+              "name": "BIG_ENDIAN",
+              "loc": {
+                "line": 72,
+                "col": 43,
+                "end_line": 72,
+                "end_col": 53
+              }
+            }
+          ],
+          "comment": [
+            "-- Byte order (Endian)"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 2,
+            "end_line": 72,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "utils.t_polarity",
+          "name": "T_POLARITY",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_polarity.high_active",
+              "name": "HIGH_ACTIVE",
+              "loc": {
+                "line": 76,
+                "col": 29,
+                "end_line": 76,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "utils.t_polarity.low_active",
+              "name": "LOW_ACTIVE",
+              "loc": {
+                "line": 76,
+                "col": 42,
+                "end_line": 76,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "-- Active logic level"
+          ],
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "utils.t_clock_edge",
+          "name": "T_CLOCK_EDGE",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_clock_edge.rising_edge",
+              "name": "RISING_EDGE",
+              "loc": {
+                "line": 96,
+                "col": 28,
+                "end_line": 96,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "utils.t_clock_edge.falling_edge",
+              "name": "FALLING_EDGE",
+              "loc": {
+                "line": 96,
+                "col": 41,
+                "end_line": 96,
+                "end_col": 53
+              }
+            }
+          ],
+          "comment": [
+            "-- active clock edge"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 96,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "utils.t_rounding_style",
+          "name": "T_ROUNDING_STYLE",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "utils.t_rounding_style.round_to_nearest",
+              "name": "ROUND_TO_NEAREST",
+              "loc": {
+                "line": 100,
+                "col": 28,
+                "end_line": 100,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "utils.t_rounding_style.round_to_zero",
+              "name": "ROUND_TO_ZERO",
+              "loc": {
+                "line": 100,
+                "col": 46,
+                "end_line": 100,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "utils.t_rounding_style.round_to_inf",
+              "name": "ROUND_TO_INF",
+              "loc": {
+                "line": 100,
+                "col": 61,
+                "end_line": 100,
+                "end_col": 73
+              }
+            },
+            {
+              "id": "utils.t_rounding_style.round_up",
+              "name": "ROUND_UP",
+              "loc": {
+                "line": 100,
+                "col": 75,
+                "end_line": 100,
+                "end_col": 83
+              }
+            },
+            {
+              "id": "utils.t_rounding_style.round_down",
+              "name": "ROUND_DOWN",
+              "loc": {
+                "line": 100,
+                "col": 85,
+                "end_line": 100,
+                "end_col": 95
+              }
+            }
+          ],
+          "comment": [
+            "-- rounding style"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 2,
+            "end_line": 100,
+            "end_col": 97
+          }
+        },
+        {
+          "id": "utils.t_bcd",
+          "name": "T_BCD",
+          "kind": "alias",
+          "dtype": "array(3 downto 0) of std_logic",
+          "comment": [
+            "-- define a new unrelated type T_BCD for arithmetic",
+            "-- QUESTION: extract to an own BCD package?",
+            "--\t=> overloaded operators for +/-/=/... and conversion functions"
+          ],
+          "loc": {
+            "line": 105,
+            "col": 2,
+            "end_line": 105,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "utils.t_bcd_vector",
+          "name": "T_BCD_VECTOR",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of T_BCD",
+          "loc": {
+            "line": 106,
+            "col": 2,
+            "end_line": 106,
+            "end_col": 56
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "utils.\"not\"",
+          "name": "\"not\"",
+          "kind": "function",
+          "rtype": "t_bit_order",
+          "args": [
+            {
+              "id": "utils.\"not\".left",
+              "direction": "in",
+              "dtype": "t_bit_order",
+              "name": "left",
+              "loc": {
+                "line": 69,
+                "col": 17,
+                "end_line": 69,
+                "end_col": 35
+              }
+            }
+          ],
+          "loc": {
+            "line": 69,
+            "col": 2,
+            "end_line": 69,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "utils.\"not\"~2",
+          "name": "\"not\"",
+          "kind": "function",
+          "rtype": "t_byte_order",
+          "args": [
+            {
+              "id": "utils.\"not\"~2.left",
+              "direction": "in",
+              "dtype": "t_byte_order",
+              "name": "left",
+              "loc": {
+                "line": 73,
+                "col": 17,
+                "end_line": 73,
+                "end_col": 36
+              }
+            }
+          ],
+          "loc": {
+            "line": 73,
+            "col": 2,
+            "end_line": 73,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "utils.\"not\"~3",
+          "name": "\"not\"",
+          "kind": "function",
+          "rtype": "t_polarity",
+          "args": [
+            {
+              "id": "utils.\"not\"~3.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 77,
+                "col": 17,
+                "end_line": 77,
+                "end_col": 34
+              }
+            }
+          ],
+          "loc": {
+            "line": 77,
+            "col": 2,
+            "end_line": 77,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "utils.\"xor\"",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "bit",
+          "args": [
+            {
+              "id": "utils.\"xor\".left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 78,
+                "col": 17,
+                "end_line": 78,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xor\".right",
+              "direction": "in",
+              "dtype": "bit",
+              "name": "right",
+              "loc": {
+                "line": 78,
+                "col": 36,
+                "end_line": 78,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 78,
+            "col": 2,
+            "end_line": 78,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "utils.\"xor\"~2",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.\"xor\"~2.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 79,
+                "col": 17,
+                "end_line": 79,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xor\"~2.right",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "right",
+              "loc": {
+                "line": 79,
+                "col": 36,
+                "end_line": 79,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 79,
+            "col": 2,
+            "end_line": 79,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "utils.\"xor\"~3",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.\"xor\"~3.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 80,
+                "col": 17,
+                "end_line": 80,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xor\"~3.right",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "right",
+              "loc": {
+                "line": 80,
+                "col": 36,
+                "end_line": 80,
+                "end_col": 53
+              }
+            }
+          ],
+          "loc": {
+            "line": 80,
+            "col": 2,
+            "end_line": 80,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "utils.\"xor\"~4",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.\"xor\"~4.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 81,
+                "col": 17,
+                "end_line": 81,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xor\"~4.right",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "right",
+              "loc": {
+                "line": 81,
+                "col": 36,
+                "end_line": 81,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 81,
+            "col": 2,
+            "end_line": 81,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "utils.\"xor\"~5",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "bit",
+          "args": [
+            {
+              "id": "utils.\"xor\"~5.left",
+              "direction": "in",
+              "dtype": "bit",
+              "name": "left",
+              "loc": {
+                "line": 82,
+                "col": 17,
+                "end_line": 82,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "utils.\"xor\"~5.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 82,
+                "col": 29,
+                "end_line": 82,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 82,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "utils.\"xor\"~6",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.\"xor\"~6.left",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "left",
+              "loc": {
+                "line": 83,
+                "col": 17,
+                "end_line": 83,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xor\"~6.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 83,
+                "col": 36,
+                "end_line": 83,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 83,
+            "col": 2,
+            "end_line": 83,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "utils.\"xor\"~7",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.\"xor\"~7.left",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "left",
+              "loc": {
+                "line": 84,
+                "col": 17,
+                "end_line": 84,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "utils.\"xor\"~7.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 84,
+                "col": 35,
+                "end_line": 84,
+                "end_col": 53
+              }
+            }
+          ],
+          "loc": {
+            "line": 84,
+            "col": 2,
+            "end_line": 84,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "utils.\"xor\"~8",
+          "name": "\"xor\"",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.\"xor\"~8.left",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "left",
+              "loc": {
+                "line": 85,
+                "col": 17,
+                "end_line": 85,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "utils.\"xor\"~8.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 85,
+                "col": 42,
+                "end_line": 85,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 85,
+            "col": 2,
+            "end_line": 85,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "utils.\"xnor\"",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "bit",
+          "args": [
+            {
+              "id": "utils.\"xnor\".left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 86,
+                "col": 18,
+                "end_line": 86,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.\"xnor\".right",
+              "direction": "in",
+              "dtype": "bit",
+              "name": "right",
+              "loc": {
+                "line": 86,
+                "col": 37,
+                "end_line": 86,
+                "end_col": 48
+              }
+            }
+          ],
+          "loc": {
+            "line": 86,
+            "col": 2,
+            "end_line": 86,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~2",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~2.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 87,
+                "col": 18,
+                "end_line": 87,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~2.right",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "right",
+              "loc": {
+                "line": 87,
+                "col": 37,
+                "end_line": 87,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 87,
+            "col": 2,
+            "end_line": 87,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~3",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~3.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 88,
+                "col": 18,
+                "end_line": 88,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~3.right",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "right",
+              "loc": {
+                "line": 88,
+                "col": 37,
+                "end_line": 88,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 88,
+            "col": 2,
+            "end_line": 88,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~4",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~4.left",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "left",
+              "loc": {
+                "line": 89,
+                "col": 18,
+                "end_line": 89,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~4.right",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "right",
+              "loc": {
+                "line": 89,
+                "col": 37,
+                "end_line": 89,
+                "end_col": 61
+              }
+            }
+          ],
+          "loc": {
+            "line": 89,
+            "col": 2,
+            "end_line": 89,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~5",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "bit",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~5.left",
+              "direction": "in",
+              "dtype": "bit",
+              "name": "left",
+              "loc": {
+                "line": 90,
+                "col": 18,
+                "end_line": 90,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~5.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 90,
+                "col": 30,
+                "end_line": 90,
+                "end_col": 48
+              }
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 2,
+            "end_line": 90,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~6",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~6.left",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "left",
+              "loc": {
+                "line": 91,
+                "col": 18,
+                "end_line": 91,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~6.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 91,
+                "col": 37,
+                "end_line": 91,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 91,
+            "col": 2,
+            "end_line": 91,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~7",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~7.left",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "left",
+              "loc": {
+                "line": 92,
+                "col": 18,
+                "end_line": 92,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~7.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 92,
+                "col": 36,
+                "end_line": 92,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 2,
+            "end_line": 92,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.\"xnor\"~8",
+          "name": "\"xnor\"",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.\"xnor\"~8.left",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "left",
+              "loc": {
+                "line": 93,
+                "col": 18,
+                "end_line": 93,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "utils.\"xnor\"~8.right",
+              "direction": "in",
+              "dtype": "t_polarity",
+              "name": "right",
+              "loc": {
+                "line": 93,
+                "col": 43,
+                "end_line": 93,
+                "end_col": 61
+              }
+            }
+          ],
+          "loc": {
+            "line": 93,
+            "col": 2,
+            "end_line": 93,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "utils.\"not\"~4",
+          "name": "\"not\"",
+          "kind": "function",
+          "rtype": "t_clock_edge",
+          "args": [
+            {
+              "id": "utils.\"not\"~4.left",
+              "direction": "in",
+              "dtype": "t_clock_edge",
+              "name": "left",
+              "loc": {
+                "line": 97,
+                "col": 17,
+                "end_line": 97,
+                "end_col": 36
+              }
+            }
+          ],
+          "loc": {
+            "line": 97,
+            "col": 2,
+            "end_line": 97,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "utils.div_ceil",
+          "name": "div_ceil",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.div_ceil.a",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "a",
+              "loc": {
+                "line": 116,
+                "col": 20,
+                "end_line": 116,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "utils.div_ceil.b",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "b",
+              "loc": {
+                "line": 116,
+                "col": 33,
+                "end_line": 116,
+                "end_col": 45
+              }
+            }
+          ],
+          "comment": [
+            "-- Function declarations",
+            "-- ==========================================================================",
+            "--+ Division ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- Calculates: ceil(a / b)"
+          ],
+          "loc": {
+            "line": 116,
+            "col": 2,
+            "end_line": 116,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.is_pow2",
+          "name": "is_pow2",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "utils.is_pow2.int",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "int",
+              "loc": {
+                "line": 120,
+                "col": 19,
+                "end_line": 120,
+                "end_col": 32
+              }
+            }
+          ],
+          "comment": [
+            "--+ Power +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- is input a power of 2?"
+          ],
+          "loc": {
+            "line": 120,
+            "col": 2,
+            "end_line": 120,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "utils.ceil_pow2",
+          "name": "ceil_pow2",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "utils.ceil_pow2.int",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "int",
+              "loc": {
+                "line": 122,
+                "col": 21,
+                "end_line": 122,
+                "end_col": 34
+              }
+            }
+          ],
+          "comment": [
+            "-- round to next power of 2"
+          ],
+          "loc": {
+            "line": 122,
+            "col": 2,
+            "end_line": 122,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.floor_pow2",
+          "name": "floor_pow2",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.floor_pow2.int",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "int",
+              "loc": {
+                "line": 124,
+                "col": 22,
+                "end_line": 124,
+                "end_col": 35
+              }
+            }
+          ],
+          "comment": [
+            "-- round to previous power of 2"
+          ],
+          "loc": {
+            "line": 124,
+            "col": 2,
+            "end_line": 124,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "utils.log2ceil",
+          "name": "log2ceil",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.log2ceil.arg",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "arg",
+              "loc": {
+                "line": 128,
+                "col": 21,
+                "end_line": 128,
+                "end_col": 35
+              }
+            }
+          ],
+          "comment": [
+            "--+ Logarithm ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- Calculates: ceil(ld(arg))"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "utils.log2ceilnz",
+          "name": "log2ceilnz",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "utils.log2ceilnz.arg",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "arg",
+              "loc": {
+                "line": 130,
+                "col": 23,
+                "end_line": 130,
+                "end_col": 37
+              }
+            }
+          ],
+          "comment": [
+            "-- Calculates: max(1, ceil(ld(arg)))"
+          ],
+          "loc": {
+            "line": 130,
+            "col": 3,
+            "end_line": 130,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "utils.log10ceil",
+          "name": "log10ceil",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.log10ceil.arg",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "arg",
+              "loc": {
+                "line": 132,
+                "col": 21,
+                "end_line": 132,
+                "end_col": 36
+              }
+            }
+          ],
+          "comment": [
+            "-- Calculates: ceil(lg(arg))"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 2,
+            "end_line": 132,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.log10ceilnz",
+          "name": "log10ceilnz",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "utils.log10ceilnz.arg",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "arg",
+              "loc": {
+                "line": 134,
+                "col": 23,
+                "end_line": 134,
+                "end_col": 37
+              }
+            }
+          ],
+          "comment": [
+            "-- Calculates: max(1, ceil(lg(arg)))"
+          ],
+          "loc": {
+            "line": 134,
+            "col": 2,
+            "end_line": 134,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "utils.ite",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "utils.ite.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 137,
+                "col": 15,
+                "end_line": 137,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite.value1",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "value1",
+              "loc": {
+                "line": 137,
+                "col": 31,
+                "end_line": 137,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "utils.ite.value2",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "value2",
+              "loc": {
+                "line": 137,
+                "col": 49,
+                "end_line": 137,
+                "end_col": 65
+              }
+            }
+          ],
+          "comment": [
+            "--+ if-then-else (ite) +++++++++++++++++++++++++++++++++++++++++++++++++++++"
+          ],
+          "loc": {
+            "line": 137,
+            "col": 2,
+            "end_line": 137,
+            "end_col": 82
+          }
+        },
+        {
+          "id": "utils.ite~2",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.ite~2.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 138,
+                "col": 15,
+                "end_line": 138,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~2.value1",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "value1",
+              "loc": {
+                "line": 138,
+                "col": 31,
+                "end_line": 138,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "utils.ite~2.value2",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "value2",
+              "loc": {
+                "line": 138,
+                "col": 49,
+                "end_line": 138,
+                "end_col": 65
+              }
+            }
+          ],
+          "loc": {
+            "line": 138,
+            "col": 2,
+            "end_line": 138,
+            "end_col": 82
+          }
+        },
+        {
+          "id": "utils.ite~3",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "real",
+          "args": [
+            {
+              "id": "utils.ite~3.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 139,
+                "col": 15,
+                "end_line": 139,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~3.value1",
+              "direction": "in",
+              "dtype": "real",
+              "name": "value1",
+              "loc": {
+                "line": 139,
+                "col": 31,
+                "end_line": 139,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "utils.ite~3.value2",
+              "direction": "in",
+              "dtype": "real",
+              "name": "value2",
+              "loc": {
+                "line": 139,
+                "col": 46,
+                "end_line": 139,
+                "end_col": 59
+              }
+            }
+          ],
+          "loc": {
+            "line": 139,
+            "col": 2,
+            "end_line": 139,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.ite~4",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.ite~4.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 140,
+                "col": 15,
+                "end_line": 140,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~4.value1",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "value1",
+              "loc": {
+                "line": 140,
+                "col": 31,
+                "end_line": 140,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "utils.ite~4.value2",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "value2",
+              "loc": {
+                "line": 140,
+                "col": 51,
+                "end_line": 140,
+                "end_col": 69
+              }
+            }
+          ],
+          "loc": {
+            "line": 140,
+            "col": 2,
+            "end_line": 140,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "utils.ite~5",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.ite~5.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 141,
+                "col": 15,
+                "end_line": 141,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~5.value1",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value1",
+              "loc": {
+                "line": 141,
+                "col": 31,
+                "end_line": 141,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "utils.ite~5.value2",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value2",
+              "loc": {
+                "line": 141,
+                "col": 58,
+                "end_line": 141,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 141,
+            "col": 2,
+            "end_line": 141,
+            "end_col": 109
+          }
+        },
+        {
+          "id": "utils.ite~6",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.ite~6.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 142,
+                "col": 15,
+                "end_line": 142,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~6.value1",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "value1",
+              "loc": {
+                "line": 142,
+                "col": 31,
+                "end_line": 142,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "utils.ite~6.value2",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "value2",
+              "loc": {
+                "line": 142,
+                "col": 52,
+                "end_line": 142,
+                "end_col": 71
+              }
+            }
+          ],
+          "loc": {
+            "line": 142,
+            "col": 2,
+            "end_line": 142,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "utils.ite~7",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "unsigned",
+          "args": [
+            {
+              "id": "utils.ite~7.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 143,
+                "col": 15,
+                "end_line": 143,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~7.value1",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "value1",
+              "loc": {
+                "line": 143,
+                "col": 31,
+                "end_line": 143,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "utils.ite~7.value2",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "value2",
+              "loc": {
+                "line": 143,
+                "col": 50,
+                "end_line": 143,
+                "end_col": 67
+              }
+            }
+          ],
+          "loc": {
+            "line": 143,
+            "col": 2,
+            "end_line": 143,
+            "end_col": 85
+          }
+        },
+        {
+          "id": "utils.ite~8",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "signed",
+          "args": [
+            {
+              "id": "utils.ite~8.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 144,
+                "col": 15,
+                "end_line": 144,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~8.value1",
+              "direction": "in",
+              "dtype": "signed",
+              "name": "value1",
+              "loc": {
+                "line": 144,
+                "col": 31,
+                "end_line": 144,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "utils.ite~8.value2",
+              "direction": "in",
+              "dtype": "signed",
+              "name": "value2",
+              "loc": {
+                "line": 144,
+                "col": 48,
+                "end_line": 144,
+                "end_col": 63
+              }
+            }
+          ],
+          "loc": {
+            "line": 144,
+            "col": 2,
+            "end_line": 144,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "utils.ite~9",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "character",
+          "args": [
+            {
+              "id": "utils.ite~9.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 145,
+                "col": 15,
+                "end_line": 145,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~9.value1",
+              "direction": "in",
+              "dtype": "character",
+              "name": "value1",
+              "loc": {
+                "line": 145,
+                "col": 31,
+                "end_line": 145,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "utils.ite~9.value2",
+              "direction": "in",
+              "dtype": "character",
+              "name": "value2",
+              "loc": {
+                "line": 145,
+                "col": 51,
+                "end_line": 145,
+                "end_col": 69
+              }
+            }
+          ],
+          "loc": {
+            "line": 145,
+            "col": 2,
+            "end_line": 145,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "utils.ite~10",
+          "name": "ite",
+          "kind": "function",
+          "rtype": "string",
+          "args": [
+            {
+              "id": "utils.ite~10.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 146,
+                "col": 15,
+                "end_line": 146,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.ite~10.value1",
+              "direction": "in",
+              "dtype": "string",
+              "name": "value1",
+              "loc": {
+                "line": 146,
+                "col": 31,
+                "end_line": 146,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "utils.ite~10.value2",
+              "direction": "in",
+              "dtype": "string",
+              "name": "value2",
+              "loc": {
+                "line": 146,
+                "col": 48,
+                "end_line": 146,
+                "end_col": 63
+              }
+            }
+          ],
+          "loc": {
+            "line": 146,
+            "col": 2,
+            "end_line": 146,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "utils.inc_if",
+          "name": "inc_if",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.inc_if.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 149,
+                "col": 18,
+                "end_line": 149,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.inc_if.value",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "value",
+              "loc": {
+                "line": 149,
+                "col": 34,
+                "end_line": 149,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "utils.inc_if.increment",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "increment",
+              "default": "1",
+              "loc": {
+                "line": 149,
+                "col": 51,
+                "end_line": 149,
+                "end_col": 75
+              }
+            }
+          ],
+          "comment": [
+            "-- conditional increment / decrement"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 2,
+            "end_line": 149,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "utils.dec_if",
+          "name": "dec_if",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.dec_if.cond",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "cond",
+              "loc": {
+                "line": 150,
+                "col": 18,
+                "end_line": 150,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.dec_if.value",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "value",
+              "loc": {
+                "line": 150,
+                "col": 34,
+                "end_line": 150,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "utils.dec_if.decrement",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "decrement",
+              "default": "1",
+              "loc": {
+                "line": 150,
+                "col": 51,
+                "end_line": 150,
+                "end_col": 75
+              }
+            }
+          ],
+          "loc": {
+            "line": 150,
+            "col": 2,
+            "end_line": 150,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "utils.imin",
+          "name": "imin",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.imin.arg1",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "arg1",
+              "loc": {
+                "line": 153,
+                "col": 16,
+                "end_line": 153,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "utils.imin.arg2",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "arg2",
+              "loc": {
+                "line": 153,
+                "col": 32,
+                "end_line": 153,
+                "end_col": 46
+              }
+            }
+          ],
+          "comment": [
+            "--+ Max / Min / Sum ++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+          ],
+          "loc": {
+            "line": 153,
+            "col": 2,
+            "end_line": 153,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "utils.imin~2",
+          "name": "imin",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.imin~2.vec",
+              "direction": "in",
+              "dtype": "t_intvec",
+              "name": "vec",
+              "loc": {
+                "line": 157,
+                "col": 16,
+                "end_line": 157,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "-- function rmin(arg1 : real; arg2 : real) return real;\t\t\t\t\t\t-- Calculates: min(arg1, arg2) for reals"
+          ],
+          "loc": {
+            "line": 157,
+            "col": 2,
+            "end_line": 157,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.imin~3",
+          "name": "imin",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.imin~3.vec",
+              "direction": "in",
+              "dtype": "t_natvec",
+              "name": "vec",
+              "loc": {
+                "line": 158,
+                "col": 16,
+                "end_line": 158,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 158,
+            "col": 2,
+            "end_line": 158,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.imin~4",
+          "name": "imin",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "utils.imin~4.vec",
+              "direction": "in",
+              "dtype": "t_posvec",
+              "name": "vec",
+              "loc": {
+                "line": 159,
+                "col": 16,
+                "end_line": 159,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 159,
+            "col": 2,
+            "end_line": 159,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "utils.rmin",
+          "name": "rmin",
+          "kind": "function",
+          "rtype": "real",
+          "args": [
+            {
+              "id": "utils.rmin.vec",
+              "direction": "in",
+              "dtype": "t_realvec",
+              "name": "vec",
+              "loc": {
+                "line": 160,
+                "col": 16,
+                "end_line": 160,
+                "end_col": 31
+              }
+            }
+          ],
+          "loc": {
+            "line": 160,
+            "col": 2,
+            "end_line": 160,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "utils.imax",
+          "name": "imax",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.imax.arg1",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "arg1",
+              "loc": {
+                "line": 162,
+                "col": 16,
+                "end_line": 162,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "utils.imax.arg2",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "arg2",
+              "loc": {
+                "line": 162,
+                "col": 32,
+                "end_line": 162,
+                "end_col": 46
+              }
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 2,
+            "end_line": 162,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "utils.imax~2",
+          "name": "imax",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.imax~2.vec",
+              "direction": "in",
+              "dtype": "t_intvec",
+              "name": "vec",
+              "loc": {
+                "line": 166,
+                "col": 16,
+                "end_line": 166,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "-- function rmax(arg1 : real; arg2 : real) return real;\t\t\t\t\t\t-- Calculates: max(arg1, arg2) for reals"
+          ],
+          "loc": {
+            "line": 166,
+            "col": 2,
+            "end_line": 166,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.imax~3",
+          "name": "imax",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.imax~3.vec",
+              "direction": "in",
+              "dtype": "t_natvec",
+              "name": "vec",
+              "loc": {
+                "line": 167,
+                "col": 16,
+                "end_line": 167,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 2,
+            "end_line": 167,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.imax~4",
+          "name": "imax",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "utils.imax~4.vec",
+              "direction": "in",
+              "dtype": "t_posvec",
+              "name": "vec",
+              "loc": {
+                "line": 168,
+                "col": 16,
+                "end_line": 168,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 168,
+            "col": 2,
+            "end_line": 168,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "utils.rmax",
+          "name": "rmax",
+          "kind": "function",
+          "rtype": "real",
+          "args": [
+            {
+              "id": "utils.rmax.vec",
+              "direction": "in",
+              "dtype": "t_realvec",
+              "name": "vec",
+              "loc": {
+                "line": 169,
+                "col": 16,
+                "end_line": 169,
+                "end_col": 31
+              }
+            }
+          ],
+          "loc": {
+            "line": 169,
+            "col": 2,
+            "end_line": 169,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "utils.isum",
+          "name": "isum",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.isum.vec",
+              "direction": "in",
+              "dtype": "t_natvec",
+              "name": "vec",
+              "loc": {
+                "line": 171,
+                "col": 16,
+                "end_line": 171,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 171,
+            "col": 2,
+            "end_line": 171,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.isum~2",
+          "name": "isum",
+          "kind": "function",
+          "rtype": "natural",
+          "args": [
+            {
+              "id": "utils.isum~2.vec",
+              "direction": "in",
+              "dtype": "t_posvec",
+              "name": "vec",
+              "loc": {
+                "line": 172,
+                "col": 16,
+                "end_line": 172,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 172,
+            "col": 2,
+            "end_line": 172,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.isum~3",
+          "name": "isum",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.isum~3.vec",
+              "direction": "in",
+              "dtype": "t_intvec",
+              "name": "vec",
+              "loc": {
+                "line": 173,
+                "col": 16,
+                "end_line": 173,
+                "end_col": 30
+              }
+            }
+          ],
+          "loc": {
+            "line": 173,
+            "col": 2,
+            "end_line": 173,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.rsum",
+          "name": "rsum",
+          "kind": "function",
+          "rtype": "real",
+          "args": [
+            {
+              "id": "utils.rsum.vec",
+              "direction": "in",
+              "dtype": "t_realvec",
+              "name": "vec",
+              "loc": {
+                "line": 174,
+                "col": 16,
+                "end_line": 174,
+                "end_col": 31
+              }
+            }
+          ],
+          "loc": {
+            "line": 174,
+            "col": 2,
+            "end_line": 174,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "utils.to_int",
+          "name": "to_int",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.to_int.bool",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "bool",
+              "loc": {
+                "line": 179,
+                "col": 18,
+                "end_line": 179,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.to_int.zero",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "zero",
+              "default": "0",
+              "loc": {
+                "line": 179,
+                "col": 34,
+                "end_line": 179,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "utils.to_int.one",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "one",
+              "default": "1",
+              "loc": {
+                "line": 179,
+                "col": 55,
+                "end_line": 179,
+                "end_col": 73
+              }
+            }
+          ],
+          "comment": [
+            "--+ Conversions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- to integer: to_int"
+          ],
+          "loc": {
+            "line": 179,
+            "col": 2,
+            "end_line": 179,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "utils.to_int~2",
+          "name": "to_int",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.to_int~2.sl",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "sl",
+              "loc": {
+                "line": 180,
+                "col": 18,
+                "end_line": 180,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.to_int~2.zero",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "zero",
+              "default": "0",
+              "loc": {
+                "line": 180,
+                "col": 34,
+                "end_line": 180,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "utils.to_int~2.one",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "one",
+              "default": "1",
+              "loc": {
+                "line": 180,
+                "col": 55,
+                "end_line": 180,
+                "end_col": 73
+              }
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 2,
+            "end_line": 180,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "utils.to_sl",
+          "name": "to_sl",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.to_sl.value",
+              "direction": "in",
+              "dtype": "boolean",
+              "name": "Value",
+              "loc": {
+                "line": 183,
+                "col": 17,
+                "end_line": 183,
+                "end_col": 32
+              }
+            }
+          ],
+          "comment": [
+            "-- to std_logic: to_sl"
+          ],
+          "loc": {
+            "line": 183,
+            "col": 2,
+            "end_line": 183,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "utils.to_sl~2",
+          "name": "to_sl",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.to_sl~2.value",
+              "direction": "in",
+              "dtype": "character",
+              "name": "Value",
+              "loc": {
+                "line": 184,
+                "col": 17,
+                "end_line": 184,
+                "end_col": 34
+              }
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 2,
+            "end_line": 184,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.to_slv",
+          "name": "to_slv",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.to_slv.value",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "Value",
+              "loc": {
+                "line": 187,
+                "col": 18,
+                "end_line": 187,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "utils.to_slv.size",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "Size",
+              "loc": {
+                "line": 187,
+                "col": 35,
+                "end_line": 187,
+                "end_col": 50
+              }
+            }
+          ],
+          "comment": [
+            "-- to std_logic_vector: to_slv"
+          ],
+          "loc": {
+            "line": 187,
+            "col": 2,
+            "end_line": 187,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "utils.to_bcd",
+          "name": "to_BCD",
+          "kind": "function",
+          "rtype": "t_bcd",
+          "args": [
+            {
+              "id": "utils.to_bcd.digit",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Digit",
+              "loc": {
+                "line": 189,
+                "col": 18,
+                "end_line": 189,
+                "end_col": 33
+              }
+            }
+          ],
+          "loc": {
+            "line": 189,
+            "col": 2,
+            "end_line": 189,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "utils.to_bcd~2",
+          "name": "to_BCD",
+          "kind": "function",
+          "rtype": "t_bcd",
+          "args": [
+            {
+              "id": "utils.to_bcd~2.digit",
+              "direction": "in",
+              "dtype": "character",
+              "name": "Digit",
+              "loc": {
+                "line": 190,
+                "col": 18,
+                "end_line": 190,
+                "end_col": 35
+              }
+            }
+          ],
+          "loc": {
+            "line": 190,
+            "col": 2,
+            "end_line": 190,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "utils.to_bcd~3",
+          "name": "to_BCD",
+          "kind": "function",
+          "rtype": "t_bcd",
+          "args": [
+            {
+              "id": "utils.to_bcd~3.digit",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "Digit",
+              "loc": {
+                "line": 191,
+                "col": 18,
+                "end_line": 191,
+                "end_col": 34
+              }
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 2,
+            "end_line": 191,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "utils.to_bcd~4",
+          "name": "to_BCD",
+          "kind": "function",
+          "rtype": "t_bcd",
+          "args": [
+            {
+              "id": "utils.to_bcd~4.digit",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "Digit",
+              "loc": {
+                "line": 192,
+                "col": 18,
+                "end_line": 192,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 192,
+            "col": 2,
+            "end_line": 192,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "utils.to_bcd_vector",
+          "name": "to_BCD_Vector",
+          "kind": "function",
+          "rtype": "t_bcd_vector",
+          "args": [
+            {
+              "id": "utils.to_bcd_vector.value",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Value",
+              "loc": {
+                "line": 193,
+                "col": 25,
+                "end_line": 193,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "utils.to_bcd_vector.size",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "Size",
+              "default": "0",
+              "loc": {
+                "line": 193,
+                "col": 42,
+                "end_line": 193,
+                "end_col": 61
+              }
+            },
+            {
+              "id": "utils.to_bcd_vector.fill",
+              "direction": "in",
+              "dtype": "t_bcd",
+              "name": "Fill",
+              "default": "x\"0\"",
+              "loc": {
+                "line": 193,
+                "col": 63,
+                "end_line": 193,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 193,
+            "col": 2,
+            "end_line": 193,
+            "end_col": 105
+          }
+        },
+        {
+          "id": "utils.to_bcd_vector~2",
+          "name": "to_BCD_Vector",
+          "kind": "function",
+          "rtype": "t_bcd_vector",
+          "args": [
+            {
+              "id": "utils.to_bcd_vector~2.value",
+              "direction": "in",
+              "dtype": "string",
+              "name": "Value",
+              "loc": {
+                "line": 194,
+                "col": 25,
+                "end_line": 194,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "utils.to_bcd_vector~2.size",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "Size",
+              "default": "0",
+              "loc": {
+                "line": 194,
+                "col": 41,
+                "end_line": 194,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "utils.to_bcd_vector~2.fill",
+              "direction": "in",
+              "dtype": "t_bcd",
+              "name": "Fill",
+              "default": "x\"0\"",
+              "loc": {
+                "line": 194,
+                "col": 62,
+                "end_line": 194,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 194,
+            "col": 2,
+            "end_line": 194,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "utils.bound",
+          "name": "bound",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.bound.index",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "index",
+              "loc": {
+                "line": 197,
+                "col": 17,
+                "end_line": 197,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.bound.lowerbound",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "lowerBound",
+              "loc": {
+                "line": 197,
+                "col": 34,
+                "end_line": 197,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "utils.bound.upperbound",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "upperBound",
+              "loc": {
+                "line": 197,
+                "col": 56,
+                "end_line": 197,
+                "end_col": 76
+              }
+            }
+          ],
+          "comment": [
+            "-- TODO: comment"
+          ],
+          "loc": {
+            "line": 197,
+            "col": 2,
+            "end_line": 197,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "utils.to_index",
+          "name": "to_index",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.to_index.slv",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "slv",
+              "loc": {
+                "line": 198,
+                "col": 20,
+                "end_line": 198,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "utils.to_index.max",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "max",
+              "default": "0",
+              "loc": {
+                "line": 198,
+                "col": 36,
+                "end_line": 198,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 198,
+            "col": 2,
+            "end_line": 198,
+            "end_col": 71
+          }
+        },
+        {
+          "id": "utils.to_index~2",
+          "name": "to_index",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.to_index~2.slv",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "slv",
+              "loc": {
+                "line": 199,
+                "col": 20,
+                "end_line": 199,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "utils.to_index~2.max",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "max",
+              "default": "0",
+              "loc": {
+                "line": 199,
+                "col": 44,
+                "end_line": 199,
+                "end_col": 62
+              }
+            }
+          ],
+          "loc": {
+            "line": 199,
+            "col": 2,
+            "end_line": 199,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "utils.is_sl",
+          "name": "is_sl",
+          "kind": "function",
+          "rtype": "boolean",
+          "args": [
+            {
+              "id": "utils.is_sl.c",
+              "direction": "in",
+              "dtype": "character",
+              "name": "c",
+              "loc": {
+                "line": 202,
+                "col": 17,
+                "end_line": 202,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "-- is_*"
+          ],
+          "loc": {
+            "line": 202,
+            "col": 2,
+            "end_line": 202,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "utils.slv_or",
+          "name": "slv_or",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.slv_or.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 207,
+                "col": 21,
+                "end_line": 207,
+                "end_col": 43
+              }
+            }
+          ],
+          "comment": [
+            "--+ Basic Vector Utilities +++++++++++++++++++++++++++++++++++++++++++++++++",
+            "-- Aggregate functions"
+          ],
+          "loc": {
+            "line": 207,
+            "col": 3,
+            "end_line": 207,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.slv_nor",
+          "name": "slv_nor",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.slv_nor.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 208,
+                "col": 21,
+                "end_line": 208,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.slv_and",
+          "name": "slv_and",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.slv_and.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 209,
+                "col": 21,
+                "end_line": 209,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.slv_nand",
+          "name": "slv_nand",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.slv_nand.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 210,
+                "col": 21,
+                "end_line": 210,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 210,
+            "col": 3,
+            "end_line": 210,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.slv_xor",
+          "name": "slv_xor",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "utils.slv_xor.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 211,
+                "col": 21,
+                "end_line": 211,
+                "end_col": 43
+              }
+            }
+          ],
+          "loc": {
+            "line": 211,
+            "col": 3,
+            "end_line": 211,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "utils.reverse",
+          "name": "reverse",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.reverse.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 219,
+                "col": 19,
+                "end_line": 219,
+                "end_col": 41
+              }
+            }
+          ],
+          "comment": [
+            "-- NO slv_xnor! This operation would not be well-defined as",
+            "-- not xor(vec) /= vec_{n-1} xnor ... xnor vec_1 xnor vec_0 iff n is odd.",
+            "-- Reverses the elements of the passed Vector.",
+            "--",
+            "-- @synthesis supported",
+            "--"
+          ],
+          "loc": {
+            "line": 219,
+            "col": 2,
+            "end_line": 219,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "utils.reverse~2",
+          "name": "reverse",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.reverse~2.vec",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "vec",
+              "loc": {
+                "line": 220,
+                "col": 19,
+                "end_line": 220,
+                "end_col": 35
+              }
+            }
+          ],
+          "loc": {
+            "line": 220,
+            "col": 2,
+            "end_line": 220,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "utils.reverse~3",
+          "name": "reverse",
+          "kind": "function",
+          "rtype": "unsigned",
+          "args": [
+            {
+              "id": "utils.reverse~3.vec",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "vec",
+              "loc": {
+                "line": 221,
+                "col": 19,
+                "end_line": 221,
+                "end_col": 33
+              }
+            }
+          ],
+          "loc": {
+            "line": 221,
+            "col": 2,
+            "end_line": 221,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "utils.scale",
+          "name": "scale",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.scale.value",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Value",
+              "loc": {
+                "line": 224,
+                "col": 17,
+                "end_line": 224,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "utils.scale.minimum",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Minimum",
+              "loc": {
+                "line": 224,
+                "col": 34,
+                "end_line": 224,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "utils.scale.maximum",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Maximum",
+              "loc": {
+                "line": 224,
+                "col": 53,
+                "end_line": 224,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "utils.scale.roundingstyle",
+              "direction": "in",
+              "dtype": "t_rounding_style",
+              "name": "RoundingStyle",
+              "default": "ROUND_TO_NEAREST",
+              "loc": {
+                "line": 224,
+                "col": 72,
+                "end_line": 224,
+                "end_col": 124
+              }
+            }
+          ],
+          "comment": [
+            "-- scale a value into a range [Minimum, Maximum]"
+          ],
+          "loc": {
+            "line": 224,
+            "col": 2,
+            "end_line": 224,
+            "end_col": 141
+          }
+        },
+        {
+          "id": "utils.scale~2",
+          "name": "scale",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.scale~2.value",
+              "direction": "in",
+              "dtype": "real",
+              "name": "Value",
+              "loc": {
+                "line": 225,
+                "col": 17,
+                "end_line": 225,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.scale~2.minimum",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Minimum",
+              "loc": {
+                "line": 225,
+                "col": 32,
+                "end_line": 225,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "utils.scale~2.maximum",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "Maximum",
+              "loc": {
+                "line": 225,
+                "col": 51,
+                "end_line": 225,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "utils.scale~2.roundingstyle",
+              "direction": "in",
+              "dtype": "t_rounding_style",
+              "name": "RoundingStyle",
+              "default": "ROUND_TO_NEAREST",
+              "loc": {
+                "line": 225,
+                "col": 70,
+                "end_line": 225,
+                "end_col": 122
+              }
+            }
+          ],
+          "loc": {
+            "line": 225,
+            "col": 2,
+            "end_line": 225,
+            "end_col": 139
+          }
+        },
+        {
+          "id": "utils.scale~3",
+          "name": "scale",
+          "kind": "function",
+          "rtype": "real",
+          "args": [
+            {
+              "id": "utils.scale~3.value",
+              "direction": "in",
+              "dtype": "real",
+              "name": "Value",
+              "loc": {
+                "line": 226,
+                "col": 17,
+                "end_line": 226,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "utils.scale~3.minimum",
+              "direction": "in",
+              "dtype": "real",
+              "name": "Minimum",
+              "loc": {
+                "line": 226,
+                "col": 32,
+                "end_line": 226,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "utils.scale~3.maximum",
+              "direction": "in",
+              "dtype": "real",
+              "name": "Maximum",
+              "loc": {
+                "line": 226,
+                "col": 50,
+                "end_line": 226,
+                "end_col": 64
+              }
+            }
+          ],
+          "loc": {
+            "line": 226,
+            "col": 2,
+            "end_line": 226,
+            "end_col": 107
+          }
+        },
+        {
+          "id": "utils.resize",
+          "name": "resize",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.resize.vec",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "vec",
+              "loc": {
+                "line": 237,
+                "col": 19,
+                "end_line": 237,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "utils.resize.length",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "length",
+              "loc": {
+                "line": 237,
+                "col": 37,
+                "end_line": 237,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "utils.resize.fill",
+              "direction": "in",
+              "dtype": "bit",
+              "name": "fill",
+              "default": "'0'",
+              "loc": {
+                "line": 237,
+                "col": 55,
+                "end_line": 237,
+                "end_col": 72
+              }
+            }
+          ],
+          "comment": [
+            "-- Resizes the vector to the specified length. The adjustment is make on",
+            "-- on the 'high end of the vector. The 'low index remains as in the argument.",
+            "-- If the result vector is larger, the extension uses the provided fill value",
+            "-- (default: '0').",
+            "-- Use the resize functions of the numeric_std package for value-preserving",
+            "-- resizes of the signed and unsigned data types.",
+            "--",
+            "-- @synthesis supported",
+            "--"
+          ],
+          "loc": {
+            "line": 237,
+            "col": 3,
+            "end_line": 238,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "utils.resize~2",
+          "name": "resize",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.resize~2.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 239,
+                "col": 19,
+                "end_line": 239,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "utils.resize~2.length",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "length",
+              "loc": {
+                "line": 239,
+                "col": 43,
+                "end_line": 239,
+                "end_col": 59
+              }
+            },
+            {
+              "id": "utils.resize~2.fill",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "fill",
+              "default": "'0'",
+              "loc": {
+                "line": 239,
+                "col": 61,
+                "end_line": 239,
+                "end_col": 84
+              }
+            }
+          ],
+          "loc": {
+            "line": 239,
+            "col": 3,
+            "end_line": 240,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "utils.move",
+          "name": "move",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.move.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 243,
+                "col": 16,
+                "end_line": 243,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "utils.move.ofs",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "ofs",
+              "loc": {
+                "line": 243,
+                "col": 40,
+                "end_line": 243,
+                "end_col": 53
+              }
+            }
+          ],
+          "comment": [
+            "-- Shift the index range of a vector by the specified offset."
+          ],
+          "loc": {
+            "line": 243,
+            "col": 2,
+            "end_line": 243,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "utils.movez",
+          "name": "movez",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.movez.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 246,
+                "col": 17,
+                "end_line": 246,
+                "end_col": 39
+              }
+            }
+          ],
+          "comment": [
+            "-- Shift the index range of a vector making vec'low = 0."
+          ],
+          "loc": {
+            "line": 246,
+            "col": 2,
+            "end_line": 246,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "utils.ascend",
+          "name": "ascend",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.ascend.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 248,
+                "col": 19,
+                "end_line": 248,
+                "end_col": 41
+              }
+            }
+          ],
+          "loc": {
+            "line": 248,
+            "col": 3,
+            "end_line": 248,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "utils.descend",
+          "name": "descend",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.descend.vec",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "vec",
+              "loc": {
+                "line": 249,
+                "col": 20,
+                "end_line": 249,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 249,
+            "col": 3,
+            "end_line": 249,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "utils.lssb",
+          "name": "lssb",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.lssb.arg",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "arg",
+              "loc": {
+                "line": 257,
+                "col": 17,
+                "end_line": 257,
+                "end_col": 39
+              }
+            }
+          ],
+          "comment": [
+            "-- Least-Significant Set Bit (lssb):",
+            "-- Computes a vector of the same length as the argument with",
+            "-- at most one bit set at the rightmost '1' found in arg.",
+            "--",
+            "-- @synthesis supported",
+            "--"
+          ],
+          "loc": {
+            "line": 257,
+            "col": 3,
+            "end_line": 257,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "utils.lssb~2",
+          "name": "lssb",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.lssb~2.arg",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "arg",
+              "loc": {
+                "line": 258,
+                "col": 17,
+                "end_line": 258,
+                "end_col": 33
+              }
+            }
+          ],
+          "loc": {
+            "line": 258,
+            "col": 3,
+            "end_line": 258,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.lssb_idx",
+          "name": "lssb_idx",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.lssb_idx.arg",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "arg",
+              "loc": {
+                "line": 264,
+                "col": 21,
+                "end_line": 264,
+                "end_col": 43
+              }
+            }
+          ],
+          "comment": [
+            "-- Returns the index of the least-significant set bit.",
+            "--",
+            "-- @synthesis supported",
+            "--"
+          ],
+          "loc": {
+            "line": 264,
+            "col": 3,
+            "end_line": 264,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "utils.lssb_idx~2",
+          "name": "lssb_idx",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.lssb_idx~2.arg",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "arg",
+              "loc": {
+                "line": 265,
+                "col": 21,
+                "end_line": 265,
+                "end_col": 37
+              }
+            }
+          ],
+          "loc": {
+            "line": 265,
+            "col": 3,
+            "end_line": 265,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "utils.mssb",
+          "name": "mssb",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.mssb.arg",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "arg",
+              "loc": {
+                "line": 269,
+                "col": 16,
+                "end_line": 269,
+                "end_col": 38
+              }
+            }
+          ],
+          "comment": [
+            "-- Most-Significant Set Bit (mssb): computes a vector of the same length",
+            "-- with at most one bit set at the leftmost '1' found in arg."
+          ],
+          "loc": {
+            "line": 269,
+            "col": 2,
+            "end_line": 269,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "utils.mssb~2",
+          "name": "mssb",
+          "kind": "function",
+          "rtype": "bit_vector",
+          "args": [
+            {
+              "id": "utils.mssb~2.arg",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "arg",
+              "loc": {
+                "line": 270,
+                "col": 17,
+                "end_line": 270,
+                "end_col": 33
+              }
+            }
+          ],
+          "loc": {
+            "line": 270,
+            "col": 3,
+            "end_line": 270,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "utils.mssb_idx",
+          "name": "mssb_idx",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.mssb_idx.arg",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "arg",
+              "loc": {
+                "line": 271,
+                "col": 20,
+                "end_line": 271,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 271,
+            "col": 2,
+            "end_line": 271,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "utils.mssb_idx~2",
+          "name": "mssb_idx",
+          "kind": "function",
+          "rtype": "integer",
+          "args": [
+            {
+              "id": "utils.mssb_idx~2.arg",
+              "direction": "in",
+              "dtype": "bit_vector",
+              "name": "arg",
+              "loc": {
+                "line": 272,
+                "col": 21,
+                "end_line": 272,
+                "end_col": 37
+              }
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 3,
+            "end_line": 272,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "utils.swap",
+          "name": "swap",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.swap.slv",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "slv",
+              "loc": {
+                "line": 275,
+                "col": 16,
+                "end_line": 275,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "utils.swap.size",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "Size",
+              "loc": {
+                "line": 275,
+                "col": 40,
+                "end_line": 275,
+                "end_col": 55
+              }
+            }
+          ],
+          "comment": [
+            "-- Swap sub vectors in vector (endian reversal)"
+          ],
+          "loc": {
+            "line": 275,
+            "col": 2,
+            "end_line": 275,
+            "end_col": 81
+          }
+        },
+        {
+          "id": "utils.bit_swap",
+          "name": "bit_swap",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bit_swap.slv",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "slv",
+              "loc": {
+                "line": 278,
+                "col": 20,
+                "end_line": 278,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "utils.bit_swap.chunksize",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "Chunksize",
+              "loc": {
+                "line": 278,
+                "col": 44,
+                "end_line": 278,
+                "end_col": 64
+              }
+            }
+          ],
+          "comment": [
+            "-- Swap the bits in a chunk"
+          ],
+          "loc": {
+            "line": 278,
+            "col": 2,
+            "end_line": 278,
+            "end_col": 90
+          }
+        },
+        {
+          "id": "utils.genmask_high",
+          "name": "genmask_high",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.genmask_high.bits",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "Bits",
+              "loc": {
+                "line": 281,
+                "col": 24,
+                "end_line": 281,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "utils.genmask_high.masklength",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "MaskLength",
+              "loc": {
+                "line": 281,
+                "col": 40,
+                "end_line": 281,
+                "end_col": 61
+              }
+            }
+          ],
+          "comment": [
+            "-- generate bit masks"
+          ],
+          "loc": {
+            "line": 281,
+            "col": 2,
+            "end_line": 281,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "utils.genmask_low",
+          "name": "genmask_low",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.genmask_low.bits",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "Bits",
+              "loc": {
+                "line": 282,
+                "col": 23,
+                "end_line": 282,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "utils.genmask_low.masklength",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "MaskLength",
+              "loc": {
+                "line": 282,
+                "col": 39,
+                "end_line": 282,
+                "end_col": 60
+              }
+            }
+          ],
+          "loc": {
+            "line": 282,
+            "col": 2,
+            "end_line": 282,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "utils.genmask_alternate",
+          "name": "genmask_alternate",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.genmask_alternate.len",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "len",
+              "loc": {
+                "line": 283,
+                "col": 29,
+                "end_line": 283,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "utils.genmask_alternate.lsb",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "lsb",
+              "default": "'0'",
+              "loc": {
+                "line": 283,
+                "col": 45,
+                "end_line": 283,
+                "end_col": 67
+              }
+            }
+          ],
+          "loc": {
+            "line": 283,
+            "col": 2,
+            "end_line": 283,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "utils.onehot2bin",
+          "name": "onehot2bin",
+          "kind": "function",
+          "rtype": "unsigned",
+          "args": [
+            {
+              "id": "utils.onehot2bin.onehot",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "onehot",
+              "loc": {
+                "line": 293,
+                "col": 22,
+                "end_line": 293,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "utils.onehot2bin.empty_val",
+              "direction": "in",
+              "dtype": "integer",
+              "name": "empty_val",
+              "default": "-1",
+              "loc": {
+                "line": 293,
+                "col": 49,
+                "end_line": 293,
+                "end_col": 74
+              }
+            }
+          ],
+          "comment": [
+            "-- Encodings",
+            "-- ===========================================================================",
+            "-- One-Hot-Code to Binary-Code.",
+            "--  If a non-negative value empty_val is specified, its unsigned",
+            "--  representation will be returned upon an all-zero input. As a consequence",
+            "--  of specifying this value, no simulation warnings will be issued upon empty",
+            "--  inputs. Alleged 1-hot-encoded inputs with more than one bit asserted",
+            "--  will always raise a simulation warning."
+          ],
+          "loc": {
+            "line": 293,
+            "col": 2,
+            "end_line": 293,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "utils.gray2bin",
+          "name": "gray2bin",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.gray2bin.gray_val",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "gray_val",
+              "loc": {
+                "line": 299,
+                "col": 22,
+                "end_line": 299,
+                "end_col": 49
+              }
+            }
+          ],
+          "comment": [
+            "-- Converts Gray-Code into Binary-Code.",
+            "--",
+            "-- @synthesis supported",
+            "--"
+          ],
+          "loc": {
+            "line": 299,
+            "col": 3,
+            "end_line": 299,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "utils.gray2bin~2",
+          "name": "gray2bin",
+          "kind": "function",
+          "rtype": "unsigned",
+          "args": [
+            {
+              "id": "utils.gray2bin~2.gray_val",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "gray_val",
+              "loc": {
+                "line": 300,
+                "col": 22,
+                "end_line": 300,
+                "end_col": 49
+              }
+            }
+          ],
+          "loc": {
+            "line": 300,
+            "col": 3,
+            "end_line": 300,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "utils.bin2onehot",
+          "name": "bin2onehot",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2onehot.value",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value",
+              "loc": {
+                "line": 303,
+                "col": 22,
+                "end_line": 303,
+                "end_col": 46
+              }
+            }
+          ],
+          "comment": [
+            "-- Binary-Code to One-Hot-Code"
+          ],
+          "loc": {
+            "line": 303,
+            "col": 2,
+            "end_line": 303,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.bin2onehot~2",
+          "name": "bin2onehot",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2onehot~2.value",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "value",
+              "loc": {
+                "line": 304,
+                "col": 22,
+                "end_line": 304,
+                "end_col": 38
+              }
+            }
+          ],
+          "loc": {
+            "line": 304,
+            "col": 2,
+            "end_line": 304,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.bin2onecold",
+          "name": "bin2onecold",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2onecold.value",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value",
+              "loc": {
+                "line": 306,
+                "col": 23,
+                "end_line": 306,
+                "end_col": 47
+              }
+            }
+          ],
+          "comment": [
+            "-- Binary-Code to One-Cold-Code"
+          ],
+          "loc": {
+            "line": 306,
+            "col": 2,
+            "end_line": 306,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.bin2onecold~2",
+          "name": "bin2onecold",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2onecold~2.value",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "value",
+              "loc": {
+                "line": 307,
+                "col": 23,
+                "end_line": 307,
+                "end_col": 39
+              }
+            }
+          ],
+          "loc": {
+            "line": 307,
+            "col": 2,
+            "end_line": 307,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "utils.bin2gray",
+          "name": "bin2gray",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2gray.value",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value",
+              "loc": {
+                "line": 310,
+                "col": 20,
+                "end_line": 310,
+                "end_col": 44
+              }
+            }
+          ],
+          "comment": [
+            "-- Binary-Code to Gray-Code"
+          ],
+          "loc": {
+            "line": 310,
+            "col": 2,
+            "end_line": 310,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "utils.bin2gray~2",
+          "name": "bin2gray",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "utils.bin2gray~2.value",
+              "direction": "in",
+              "dtype": "unsigned",
+              "name": "value",
+              "loc": {
+                "line": 311,
+                "col": 20,
+                "end_line": 311,
+                "end_col": 36
+              }
+            }
+          ],
+          "loc": {
+            "line": 311,
+            "col": 2,
+            "end_line": 311,
+            "end_col": 70
+          }
+        }
+      ],
+      "loc": {
+        "line": 40,
+        "col": 1,
+        "end_line": 312,
+        "end_col": 13
+      }
+    }
+  ]
+}

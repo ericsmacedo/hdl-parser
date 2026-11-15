@@ -8,6 +8,7 @@
         {
           "id": "ibex_fetch_fifo.NUM_REQS",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NUM_REQS",
           "default": "2",
           "loc": {
@@ -236,6 +237,7 @@
         {
           "id": "ibex_fetch_fifo.DEPTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DEPTH",
           "default": "NUM_REQS+1",
           "loc": {
@@ -243,6 +245,519 @@
             "col": 3,
             "end_line": 44,
             "end_col": 46
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_fetch_fifo.rdata_d",
+          "ptype": "logic",
+          "name": "rdata_d",
+          "dim": "[DEPTH-1:0] [31:0]",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.rdata_q",
+          "ptype": "logic",
+          "name": "rdata_q",
+          "dim": "[DEPTH-1:0] [31:0]",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.err_d",
+          "ptype": "logic",
+          "name": "err_d",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.err_q",
+          "ptype": "logic",
+          "name": "err_q",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid_d",
+          "ptype": "logic",
+          "name": "valid_d",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid_q",
+          "ptype": "logic",
+          "name": "valid_q",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.lowest_free_entry",
+          "ptype": "logic",
+          "name": "lowest_free_entry",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid_pushed",
+          "ptype": "logic",
+          "name": "valid_pushed",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid_popped",
+          "ptype": "logic",
+          "name": "valid_popped",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.entry_en",
+          "ptype": "logic",
+          "name": "entry_en",
+          "dim": "[DEPTH-1:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.pop_fifo",
+          "ptype": "logic",
+          "name": "pop_fifo",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.rdata",
+          "ptype": "logic",
+          "name": "rdata",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.rdata_unaligned",
+          "ptype": "logic",
+          "name": "rdata_unaligned",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.err",
+          "ptype": "logic",
+          "name": "err",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.err_unaligned",
+          "ptype": "logic",
+          "name": "err_unaligned",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.err_plus2",
+          "ptype": "logic",
+          "name": "err_plus2",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid",
+          "ptype": "logic",
+          "name": "valid",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.valid_unaligned",
+          "ptype": "logic",
+          "name": "valid_unaligned",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.aligned_is_compressed",
+          "ptype": "logic",
+          "name": "aligned_is_compressed",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.unaligned_is_compressed",
+          "ptype": "logic",
+          "name": "unaligned_is_compressed",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.addr_incr_two",
+          "ptype": "logic",
+          "name": "addr_incr_two",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_addr_next",
+          "ptype": "logic",
+          "name": "instr_addr_next",
+          "dim": "[31:1]",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_addr_d",
+          "ptype": "logic",
+          "name": "instr_addr_d",
+          "dim": "[31:1]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_addr_q",
+          "ptype": "logic",
+          "name": "instr_addr_q",
+          "dim": "[31:1]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_addr_en",
+          "ptype": "logic",
+          "name": "instr_addr_en",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.unused_addr_in",
+          "ptype": "logic",
+          "name": "unused_addr_in",
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_rdata_dii",
+          "ptype": "logic",
+          "name": "instr_rdata_dii",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_pc",
+          "ptype": "logic",
+          "name": "instr_pc",
+          "dim": "[31:0]",
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 111,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.instr_ack",
+          "ptype": "logic",
+          "name": "instr_ack",
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 112,
+            "col": 3,
+            "end_line": 112,
+            "end_col": 26
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_fetch_fifo.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "//////////////////////////////////////",
+            "Instruction aligner (if unaligned) //",
+            "//////////////////////////////////////"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_instr_addr_ra.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_instr_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 5,
+            "end_line": 190,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_instr_addr_nr.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_instr_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 192,
+            "col": 5,
+            "end_line": 196,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "//////////////////",
+            "FIFO registers //",
+            "//////////////////"
+          ],
+          "loc": {
+            "line": 259,
+            "col": 3,
+            "end_line": 265,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_fifo_regs.g_rdata_ra.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_regs",
+              "cond": "genvar i = 0; i < DEPTH; i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_rdata_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 7,
+            "end_line": 277,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_fetch_fifo.g_fifo_regs.g_rdata_nr.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_regs",
+              "cond": "genvar i = 0; i < DEPTH; i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_rdata_nr"
+            }
+          ],
+          "loc": {
+            "line": 279,
+            "col": 7,
+            "end_line": 284,
+            "end_col": 10
           }
         }
       ],

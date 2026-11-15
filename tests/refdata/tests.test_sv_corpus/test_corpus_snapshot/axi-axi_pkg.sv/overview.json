@@ -1,0 +1,2323 @@
+{
+  "path": "$PRJ/tests/corpus/sv/axi/axi_pkg.sv",
+  "modules": [],
+  "packages": [
+    {
+      "id": "axi_pkg",
+      "name": "axi_pkg",
+      "params": [
+        {
+          "id": "axi_pkg.BurstWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "BurstWidth",
+          "default": "32'd2",
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.RespWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "RespWidth",
+          "default": "32'd2",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.CacheWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CacheWidth",
+          "default": "32'd4",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.ProtWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "ProtWidth",
+          "default": "32'd3",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.QosWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "QosWidth",
+          "default": "32'd4",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.RegionWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "RegionWidth",
+          "default": "32'd4",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.LenWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "LenWidth",
+          "default": "32'd8",
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.SizeWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "SizeWidth",
+          "default": "32'd3",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.LockWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "LockWidth",
+          "default": "32'd1",
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.AtopWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "AtopWidth",
+          "default": "32'd6",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "axi_pkg.NsaidWidth",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "NsaidWidth",
+          "default": "32'd4",
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 46
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "axi_pkg.BURST_FIXED",
+          "name": "BURST_FIXED",
+          "default": "2'b00",
+          "loc": {
+            "line": 75,
+            "col": 3,
+            "end_line": 75,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.BURST_INCR",
+          "name": "BURST_INCR",
+          "default": "2'b01",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.BURST_WRAP",
+          "name": "BURST_WRAP",
+          "default": "2'b10",
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.RESP_OKAY",
+          "name": "RESP_OKAY",
+          "default": "2'b00",
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 91,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.RESP_EXOKAY",
+          "name": "RESP_EXOKAY",
+          "default": "2'b01",
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.RESP_SLVERR",
+          "name": "RESP_SLVERR",
+          "default": "2'b10",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.RESP_DECERR",
+          "name": "RESP_DECERR",
+          "default": "2'b11",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.CACHE_BUFFERABLE",
+          "name": "CACHE_BUFFERABLE",
+          "default": "4'b0001",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axi_pkg.CACHE_MODIFIABLE",
+          "name": "CACHE_MODIFIABLE",
+          "default": "4'b0010",
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axi_pkg.CACHE_RD_ALLOC",
+          "name": "CACHE_RD_ALLOC",
+          "default": "4'b0100",
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axi_pkg.CACHE_WR_ALLOC",
+          "name": "CACHE_WR_ALLOC",
+          "default": "4'b1000",
+          "loc": {
+            "line": 113,
+            "col": 3,
+            "end_line": 113,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_ATOMICSWAP",
+          "name": "ATOP_ATOMICSWAP",
+          "default": "6'b110000",
+          "loc": {
+            "line": 384,
+            "col": 3,
+            "end_line": 384,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_ATOMICCMP",
+          "name": "ATOP_ATOMICCMP",
+          "default": "6'b110001",
+          "loc": {
+            "line": 394,
+            "col": 3,
+            "end_line": 394,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_NONE",
+          "name": "ATOP_NONE",
+          "default": "2'b00",
+          "loc": {
+            "line": 397,
+            "col": 3,
+            "end_line": 397,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_ATOMICSTORE",
+          "name": "ATOP_ATOMICSTORE",
+          "default": "2'b01",
+          "loc": {
+            "line": 404,
+            "col": 3,
+            "end_line": 404,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_ATOMICLOAD",
+          "name": "ATOP_ATOMICLOAD",
+          "default": "2'b10",
+          "loc": {
+            "line": 412,
+            "col": 3,
+            "end_line": 412,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_LITTLE_END",
+          "name": "ATOP_LITTLE_END",
+          "default": "1'b0",
+          "loc": {
+            "line": 418,
+            "col": 3,
+            "end_line": 418,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_BIG_END",
+          "name": "ATOP_BIG_END",
+          "default": "1'b1",
+          "loc": {
+            "line": 420,
+            "col": 3,
+            "end_line": 420,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_ADD",
+          "name": "ATOP_ADD",
+          "default": "3'b000",
+          "loc": {
+            "line": 423,
+            "col": 3,
+            "end_line": 423,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_CLR",
+          "name": "ATOP_CLR",
+          "default": "3'b001",
+          "loc": {
+            "line": 425,
+            "col": 3,
+            "end_line": 425,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_EOR",
+          "name": "ATOP_EOR",
+          "default": "3'b010",
+          "loc": {
+            "line": 427,
+            "col": 3,
+            "end_line": 427,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_SET",
+          "name": "ATOP_SET",
+          "default": "3'b011",
+          "loc": {
+            "line": 429,
+            "col": 3,
+            "end_line": 429,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_SMAX",
+          "name": "ATOP_SMAX",
+          "default": "3'b100",
+          "loc": {
+            "line": 432,
+            "col": 3,
+            "end_line": 432,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_SMIN",
+          "name": "ATOP_SMIN",
+          "default": "3'b101",
+          "loc": {
+            "line": 435,
+            "col": 3,
+            "end_line": 435,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_UMAX",
+          "name": "ATOP_UMAX",
+          "default": "3'b110",
+          "loc": {
+            "line": 438,
+            "col": 3,
+            "end_line": 438,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_UMIN",
+          "name": "ATOP_UMIN",
+          "default": "3'b111",
+          "loc": {
+            "line": 441,
+            "col": 3,
+            "end_line": 441,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.ATOP_R_RESP",
+          "name": "ATOP_R_RESP",
+          "default": "32'd5",
+          "loc": {
+            "line": 444,
+            "col": 3,
+            "end_line": 444,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "axi_pkg.DemuxAw",
+          "ptype": "bit",
+          "name": "DemuxAw",
+          "dim": "[9:0]",
+          "default": "(1 << 9)",
+          "loc": {
+            "line": 448,
+            "col": 3,
+            "end_line": 448,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.DemuxW",
+          "ptype": "bit",
+          "name": "DemuxW",
+          "dim": "[9:0]",
+          "default": "(1 << 8)",
+          "loc": {
+            "line": 450,
+            "col": 3,
+            "end_line": 450,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.DemuxB",
+          "ptype": "bit",
+          "name": "DemuxB",
+          "dim": "[9:0]",
+          "default": "(1 << 7)",
+          "loc": {
+            "line": 452,
+            "col": 3,
+            "end_line": 452,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.DemuxAr",
+          "ptype": "bit",
+          "name": "DemuxAr",
+          "dim": "[9:0]",
+          "default": "(1 << 6)",
+          "loc": {
+            "line": 454,
+            "col": 3,
+            "end_line": 454,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.DemuxR",
+          "ptype": "bit",
+          "name": "DemuxR",
+          "dim": "[9:0]",
+          "default": "(1 << 5)",
+          "loc": {
+            "line": 456,
+            "col": 3,
+            "end_line": 456,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.MuxAw",
+          "ptype": "bit",
+          "name": "MuxAw",
+          "dim": "[9:0]",
+          "default": "(1 << 4)",
+          "loc": {
+            "line": 458,
+            "col": 3,
+            "end_line": 458,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.MuxW",
+          "ptype": "bit",
+          "name": "MuxW",
+          "dim": "[9:0]",
+          "default": "(1 << 3)",
+          "loc": {
+            "line": 460,
+            "col": 3,
+            "end_line": 460,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.MuxB",
+          "ptype": "bit",
+          "name": "MuxB",
+          "dim": "[9:0]",
+          "default": "(1 << 2)",
+          "loc": {
+            "line": 462,
+            "col": 3,
+            "end_line": 462,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.MuxAr",
+          "ptype": "bit",
+          "name": "MuxAr",
+          "dim": "[9:0]",
+          "default": "(1 << 1)",
+          "loc": {
+            "line": 464,
+            "col": 3,
+            "end_line": 464,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "axi_pkg.MuxR",
+          "ptype": "bit",
+          "name": "MuxR",
+          "dim": "[9:0]",
+          "default": "(1 << 0)",
+          "loc": {
+            "line": 466,
+            "col": 3,
+            "end_line": 466,
+            "end_col": 43
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "axi_pkg.burst_t",
+          "name": "burst_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "comment": [
+            "/ AXI Transaction Burst Width."
+          ],
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.resp_t",
+          "name": "resp_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "comment": [
+            "/ AXI Transaction Response Type."
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.cache_t",
+          "name": "cache_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "comment": [
+            "/ AXI Transaction Cacheability Type."
+          ],
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.prot_t",
+          "name": "prot_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "comment": [
+            "/ AXI Transaction Protection Type."
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.qos_t",
+          "name": "qos_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "comment": [
+            "/ AXI Transaction Quality of Service Type."
+          ],
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.region_t",
+          "name": "region_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "comment": [
+            "/ AXI Transaction Region Type."
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.len_t",
+          "name": "len_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[7:0]",
+          "comment": [
+            "/ AXI Transaction Length Type."
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.size_t",
+          "name": "size_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "comment": [
+            "/ AXI Transaction Size Type."
+          ],
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.atop_t",
+          "name": "atop_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[5:0]",
+          "comment": [
+            "/ AXI5 Atomic Operation Type.",
+            "atomic operations"
+          ],
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.nsaid_t",
+          "name": "nsaid_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "comment": [
+            "/ AXI5 Non-Secure Address Identifier."
+          ],
+          "loc": {
+            "line": 66,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "axi_pkg.largest_addr_t",
+          "name": "largest_addr_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[127:0]",
+          "comment": [
+            "/ An overly long address type.",
+            "/ It lets us define functions that work generically for shorter addresses.  We rely on the",
+            "/ synthesizer to optimize the unused bits away."
+          ],
+          "loc": {
+            "line": 123,
+            "col": 3,
+            "end_line": 123,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "axi_pkg.mem_type_t",
+          "name": "mem_type_t",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "members": [
+            {
+              "id": "axi_pkg.mem_type_t.DEVICE_NONBUFFERABLE",
+              "name": "DEVICE_NONBUFFERABLE",
+              "loc": {
+                "line": 229,
+                "col": 5,
+                "end_line": 229,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.DEVICE_BUFFERABLE",
+              "name": "DEVICE_BUFFERABLE",
+              "loc": {
+                "line": 230,
+                "col": 5,
+                "end_line": 230,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.NORMAL_NONCACHEABLE_NONBUFFERABLE",
+              "name": "NORMAL_NONCACHEABLE_NONBUFFERABLE",
+              "loc": {
+                "line": 231,
+                "col": 5,
+                "end_line": 231,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.NORMAL_NONCACHEABLE_BUFFERABLE",
+              "name": "NORMAL_NONCACHEABLE_BUFFERABLE",
+              "loc": {
+                "line": 232,
+                "col": 5,
+                "end_line": 232,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WTHRU_NOALLOCATE",
+              "name": "WTHRU_NOALLOCATE",
+              "loc": {
+                "line": 233,
+                "col": 5,
+                "end_line": 233,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WTHRU_RALLOCATE",
+              "name": "WTHRU_RALLOCATE",
+              "loc": {
+                "line": 234,
+                "col": 5,
+                "end_line": 234,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WTHRU_WALLOCATE",
+              "name": "WTHRU_WALLOCATE",
+              "loc": {
+                "line": 235,
+                "col": 5,
+                "end_line": 235,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WTHRU_RWALLOCATE",
+              "name": "WTHRU_RWALLOCATE",
+              "loc": {
+                "line": 236,
+                "col": 5,
+                "end_line": 236,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WBACK_NOALLOCATE",
+              "name": "WBACK_NOALLOCATE",
+              "loc": {
+                "line": 237,
+                "col": 5,
+                "end_line": 237,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WBACK_RALLOCATE",
+              "name": "WBACK_RALLOCATE",
+              "loc": {
+                "line": 238,
+                "col": 5,
+                "end_line": 238,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WBACK_WALLOCATE",
+              "name": "WBACK_WALLOCATE",
+              "loc": {
+                "line": 239,
+                "col": 5,
+                "end_line": 239,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "axi_pkg.mem_type_t.WBACK_RWALLOCATE",
+              "name": "WBACK_RWALLOCATE",
+              "loc": {
+                "line": 240,
+                "col": 5,
+                "end_line": 240,
+                "end_col": 21
+              }
+            }
+          ],
+          "comment": [
+            "/ Memory Type."
+          ],
+          "loc": {
+            "line": 228,
+            "col": 3,
+            "end_line": 241,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "axi_pkg.xbar_latency_e",
+          "name": "xbar_latency_e",
+          "kind": "enum",
+          "dtype": "bit",
+          "dim": "[9:0]",
+          "members": [
+            {
+              "id": "axi_pkg.xbar_latency_e.NO_LATENCY",
+              "name": "NO_LATENCY",
+              "value": "10'b000_00_000_00",
+              "loc": {
+                "line": 469,
+                "col": 5,
+                "end_line": 469,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_SLV_AX",
+              "name": "CUT_SLV_AX",
+              "value": "DemuxAw | DemuxAr",
+              "loc": {
+                "line": 470,
+                "col": 5,
+                "end_line": 470,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_MST_AX",
+              "name": "CUT_MST_AX",
+              "value": "MuxAw | MuxAr",
+              "loc": {
+                "line": 471,
+                "col": 5,
+                "end_line": 471,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_ALL_AX",
+              "name": "CUT_ALL_AX",
+              "value": "DemuxAw | DemuxAr | MuxAw | MuxAr",
+              "loc": {
+                "line": 472,
+                "col": 5,
+                "end_line": 472,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_SLV_PORTS",
+              "name": "CUT_SLV_PORTS",
+              "value": "DemuxAw | DemuxW | DemuxB | DemuxAr | DemuxR",
+              "loc": {
+                "line": 473,
+                "col": 5,
+                "end_line": 473,
+                "end_col": 65
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_MST_PORTS",
+              "name": "CUT_MST_PORTS",
+              "value": "MuxAw | MuxW | MuxB | MuxAr | MuxR",
+              "loc": {
+                "line": 474,
+                "col": 5,
+                "end_line": 474,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_latency_e.CUT_ALL_PORTS",
+              "name": "CUT_ALL_PORTS",
+              "value": "10'b111_11_111_11",
+              "loc": {
+                "line": 475,
+                "col": 5,
+                "end_line": 475,
+                "end_col": 38
+              }
+            }
+          ],
+          "comment": [
+            "/ Latency configuration for `axi_xbar`."
+          ],
+          "loc": {
+            "line": 468,
+            "col": 3,
+            "end_line": 476,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "axi_pkg.xbar_cfg_t",
+          "name": "xbar_cfg_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "axi_pkg.xbar_cfg_t.NoSlvPorts",
+              "name": "NoSlvPorts",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ Number of master ports of the crossbar.",
+                "/ This many slave modules are connected to it."
+              ],
+              "loc": {
+                "line": 482,
+                "col": 5,
+                "end_line": 482,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.NoMstPorts",
+              "name": "NoMstPorts",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ Maximum number of open transactions each master connected to the crossbar can have in",
+                "/ flight at the same time."
+              ],
+              "loc": {
+                "line": 485,
+                "col": 5,
+                "end_line": 485,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.MaxMstTrans",
+              "name": "MaxMstTrans",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ Maximum number of open transactions each slave connected to the crossbar can have in",
+                "/ flight at the same time."
+              ],
+              "loc": {
+                "line": 488,
+                "col": 5,
+                "end_line": 488,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.MaxSlvTrans",
+              "name": "MaxSlvTrans",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ Determine if the internal FIFOs of the crossbar are instantiated in fallthrough mode.",
+                "/ 0: No fallthrough",
+                "/ 1: Fallthrough"
+              ],
+              "loc": {
+                "line": 491,
+                "col": 5,
+                "end_line": 491,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.FallThrough",
+              "name": "FallThrough",
+              "dtype": "bit",
+              "comment": [
+                "/ The Latency mode of the xbar. This determines if the channels on the ports have",
+                "/ a spill register instantiated.",
+                "/ Example configurations are provided with the enum `xbar_latency_e`."
+              ],
+              "loc": {
+                "line": 495,
+                "col": 5,
+                "end_line": 495,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.LatencyMode",
+              "name": "LatencyMode",
+              "dtype": "bit",
+              "dim": "[9:0]",
+              "comment": [
+                "/ This is the number of `axi_multicut` stages instantiated in the line cross of the channels.",
+                "/ Having multiple stages can potentially add a large number of FFs!"
+              ],
+              "loc": {
+                "line": 499,
+                "col": 5,
+                "end_line": 499,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.PipelineStages",
+              "name": "PipelineStages",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ AXI ID width of the salve ports. The ID width of the master ports is determined",
+                "/ Automatically. See `axi_mux` for details."
+              ],
+              "loc": {
+                "line": 502,
+                "col": 5,
+                "end_line": 502,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.AxiIdWidthSlvPorts",
+              "name": "AxiIdWidthSlvPorts",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ The used ID portion to determine if a different salve is used for the same ID.",
+                "/ See `axi_demux` for details."
+              ],
+              "loc": {
+                "line": 505,
+                "col": 5,
+                "end_line": 505,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.AxiIdUsedSlvPorts",
+              "name": "AxiIdUsedSlvPorts",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ Are IDs unique?"
+              ],
+              "loc": {
+                "line": 508,
+                "col": 5,
+                "end_line": 508,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.UniqueIds",
+              "name": "UniqueIds",
+              "dtype": "bit",
+              "comment": [
+                "/ AXI4+ATOP address field width."
+              ],
+              "loc": {
+                "line": 510,
+                "col": 5,
+                "end_line": 510,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.AxiAddrWidth",
+              "name": "AxiAddrWidth",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ AXI4+ATOP data field width."
+              ],
+              "loc": {
+                "line": 512,
+                "col": 5,
+                "end_line": 512,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.AxiDataWidth",
+              "name": "AxiDataWidth",
+              "dtype": "int unsigned",
+              "comment": [
+                "/ The number of address rules defined for routing of the transactions.",
+                "/ Each master port can have multiple rules, should have however at least one.",
+                "/ If a transaction can not be routed the xbar will answer with an `axi_pkg::RESP_DECERR`."
+              ],
+              "loc": {
+                "line": 514,
+                "col": 5,
+                "end_line": 514,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_cfg_t.NoAddrRules",
+              "name": "NoAddrRules",
+              "dtype": "int unsigned",
+              "loc": {
+                "line": 518,
+                "col": 5,
+                "end_line": 518,
+                "end_col": 31
+              }
+            }
+          ],
+          "comment": [
+            "/ Configuration for `axi_xbar`.",
+            "/ Number of slave ports of the crossbar.",
+            "/ This many master modules are connected to it."
+          ],
+          "loc": {
+            "line": 479,
+            "col": 3,
+            "end_line": 519,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "axi_pkg.xbar_rule_64_t",
+          "name": "xbar_rule_64_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "axi_pkg.xbar_rule_64_t.idx",
+              "name": "idx",
+              "dtype": "int unsigned",
+              "loc": {
+                "line": 523,
+                "col": 5,
+                "end_line": 523,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_rule_64_t.start_addr",
+              "name": "start_addr",
+              "dtype": "logic",
+              "dim": "[63:0]",
+              "loc": {
+                "line": 524,
+                "col": 5,
+                "end_line": 524,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_rule_64_t.end_addr",
+              "name": "end_addr",
+              "dtype": "logic",
+              "dim": "[63:0]",
+              "loc": {
+                "line": 525,
+                "col": 5,
+                "end_line": 525,
+                "end_col": 26
+              }
+            }
+          ],
+          "comment": [
+            "/ Commonly used rule types for `axi_xbar` (64-bit addresses)."
+          ],
+          "loc": {
+            "line": 522,
+            "col": 3,
+            "end_line": 526,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "axi_pkg.xbar_rule_32_t",
+          "name": "xbar_rule_32_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "axi_pkg.xbar_rule_32_t.idx",
+              "name": "idx",
+              "dtype": "int unsigned",
+              "loc": {
+                "line": 530,
+                "col": 5,
+                "end_line": 530,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_rule_32_t.start_addr",
+              "name": "start_addr",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 531,
+                "col": 5,
+                "end_line": 531,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "axi_pkg.xbar_rule_32_t.end_addr",
+              "name": "end_addr",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 532,
+                "col": 5,
+                "end_line": 532,
+                "end_col": 26
+              }
+            }
+          ],
+          "comment": [
+            "/ Commonly used rule types for `axi_xbar` (32-bit addresses)."
+          ],
+          "loc": {
+            "line": 529,
+            "col": 3,
+            "end_line": 533,
+            "end_col": 20
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "axi_pkg.num_bytes",
+          "name": "num_bytes",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.num_bytes.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 116,
+                "col": 50,
+                "end_line": 116,
+                "end_col": 61
+              }
+            }
+          ],
+          "comment": [
+            "/ Maximum number of bytes per burst, as specified by `size` (see Table A3-2)."
+          ],
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.aligned_addr",
+          "name": "aligned_addr",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.aligned_addr.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 126,
+                "col": 50,
+                "end_line": 126,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "axi_pkg.aligned_addr.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 126,
+                "col": 71,
+                "end_line": 126,
+                "end_col": 82
+              }
+            }
+          ],
+          "comment": [
+            "/ Aligned address of burst (see A3-51)."
+          ],
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.wrap_boundary",
+          "name": "wrap_boundary",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.wrap_boundary.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 134,
+                "col": 52,
+                "end_line": 134,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.wrap_boundary.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 134,
+                "col": 73,
+                "end_line": 134,
+                "end_col": 84
+              }
+            },
+            {
+              "id": "axi_pkg.wrap_boundary.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 134,
+                "col": 86,
+                "end_line": 134,
+                "end_col": 95
+              }
+            }
+          ],
+          "comment": [
+            "/ Warp boundary of a `BURST_WRAP` transfer (see A3-51).",
+            "/ This is the lowest address accessed within a wrapping burst.",
+            "/ This address is aligned to the size and length of the burst.",
+            "/ The length of a `BURST_WRAP` has to be 2, 4, 8, or 16 transfers."
+          ],
+          "loc": {
+            "line": 134,
+            "col": 3,
+            "end_line": 163,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_addr",
+          "name": "beat_addr",
+          "kind": "function",
+          "rtype": "largest_addr_t",
+          "args": [
+            {
+              "id": "axi_pkg.beat_addr.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 167,
+                "col": 13,
+                "end_line": 167,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 167,
+                "col": 34,
+                "end_line": 167,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 167,
+                "col": 47,
+                "end_line": 167,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 167,
+                "col": 58,
+                "end_line": 167,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.beat_addr.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 167,
+                "col": 73,
+                "end_line": 167,
+                "end_col": 97
+              }
+            }
+          ],
+          "comment": [
+            "/ Address of beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_lower_byte",
+          "name": "beat_lower_byte",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.beat_lower_byte.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 200,
+                "col": 19,
+                "end_line": 200,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 200,
+                "col": 40,
+                "end_line": 200,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 200,
+                "col": 53,
+                "end_line": 200,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 200,
+                "col": 64,
+                "end_line": 200,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.strobe_width",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "strobe_width",
+              "loc": {
+                "line": 201,
+                "col": 7,
+                "end_line": 201,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axi_pkg.beat_lower_byte.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 201,
+                "col": 39,
+                "end_line": 201,
+                "end_col": 63
+              }
+            }
+          ],
+          "comment": [
+            "/ Index of lowest byte in beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 199,
+            "col": 3,
+            "end_line": 204,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.beat_upper_byte",
+          "name": "beat_upper_byte",
+          "kind": "function",
+          "rtype": "shortint unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.beat_upper_byte.addr",
+              "direction": "input",
+              "ptype": "largest_addr_t",
+              "name": "addr",
+              "loc": {
+                "line": 208,
+                "col": 19,
+                "end_line": 208,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.size",
+              "direction": "input",
+              "ptype": "size_t",
+              "name": "size",
+              "loc": {
+                "line": 208,
+                "col": 40,
+                "end_line": 208,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.len",
+              "direction": "input",
+              "ptype": "len_t",
+              "name": "len",
+              "loc": {
+                "line": 208,
+                "col": 53,
+                "end_line": 208,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.burst",
+              "direction": "input",
+              "ptype": "burst_t",
+              "name": "burst",
+              "loc": {
+                "line": 208,
+                "col": 64,
+                "end_line": 208,
+                "end_col": 77
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.strobe_width",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "strobe_width",
+              "loc": {
+                "line": 209,
+                "col": 7,
+                "end_line": 209,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "axi_pkg.beat_upper_byte.i_beat",
+              "direction": "input",
+              "ptype": "shortint",
+              "dtype": "unsigned",
+              "name": "i_beat",
+              "loc": {
+                "line": 209,
+                "col": 39,
+                "end_line": 209,
+                "end_col": 63
+              }
+            }
+          ],
+          "comment": [
+            "/ Index of highest byte in beat (see A3-51)."
+          ],
+          "loc": {
+            "line": 207,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.bufferable",
+          "name": "bufferable",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "axi_pkg.bufferable.cache",
+              "direction": "input",
+              "ptype": "cache_t",
+              "name": "cache",
+              "loc": {
+                "line": 218,
+                "col": 39,
+                "end_line": 218,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "/ Is the bufferable bit set?"
+          ],
+          "loc": {
+            "line": 218,
+            "col": 3,
+            "end_line": 220,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.modifiable",
+          "name": "modifiable",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "axi_pkg.modifiable.cache",
+              "direction": "input",
+              "ptype": "cache_t",
+              "name": "cache",
+              "loc": {
+                "line": 223,
+                "col": 39,
+                "end_line": 223,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "/ Is the modifiable bit set?"
+          ],
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.get_arcache",
+          "name": "get_arcache",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[3:0]",
+          "args": [
+            {
+              "id": "axi_pkg.get_arcache.mtype",
+              "direction": "input",
+              "ptype": "mem_type_t",
+              "name": "mtype",
+              "loc": {
+                "line": 244,
+                "col": 46,
+                "end_line": 244,
+                "end_col": 62
+              }
+            }
+          ],
+          "comment": [
+            "/ Create an `AR_CACHE` field from a `mem_type_t` type."
+          ],
+          "loc": {
+            "line": 244,
+            "col": 3,
+            "end_line": 259,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.get_awcache",
+          "name": "get_awcache",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[3:0]",
+          "args": [
+            {
+              "id": "axi_pkg.get_awcache.mtype",
+              "direction": "input",
+              "ptype": "mem_type_t",
+              "name": "mtype",
+              "loc": {
+                "line": 262,
+                "col": 46,
+                "end_line": 262,
+                "end_col": 62
+              }
+            }
+          ],
+          "comment": [
+            "/ Create an `AW_CACHE` field from a `mem_type_t` type."
+          ],
+          "loc": {
+            "line": 262,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.resp_precedence",
+          "name": "resp_precedence",
+          "kind": "function",
+          "rtype": "resp_t",
+          "args": [
+            {
+              "id": "axi_pkg.resp_precedence.resp_a",
+              "direction": "input",
+              "ptype": "resp_t",
+              "name": "resp_a",
+              "loc": {
+                "line": 289,
+                "col": 45,
+                "end_line": 289,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "axi_pkg.resp_precedence.resp_b",
+              "direction": "input",
+              "ptype": "resp_t",
+              "name": "resp_b",
+              "loc": {
+                "line": 289,
+                "col": 60,
+                "end_line": 289,
+                "end_col": 73
+              }
+            }
+          ],
+          "comment": [
+            "/ RESP precedence: DECERR > SLVERR > OKAY > EXOKAY.  This is not defined in the AXI standard but",
+            "/ depends on the implementation.  We consistently use the precedence above.  Rationale:",
+            "/ - EXOKAY means an exclusive access was successful, whereas OKAY means it was not.  Thus, if",
+            "/   OKAY and EXOKAY are to be merged, OKAY precedes because the exclusive access was not fully",
+            "/   successful.",
+            "/ - Both DECERR and SLVERR mean (part of) a transaction were unsuccessful, whereas OKAY means an",
+            "/   entire transaction was successful.  Thus both DECERR and SLVERR precede OKAY.",
+            "/ - DECERR means (part of) a transactions could not be routed to a slave component, whereas",
+            "/   SLVERR means the transaction reached a slave component but lead to an error condition there.",
+            "/   Thus DECERR precedes SLVERR because DECERR happens earlier in the handling of a transaction."
+          ],
+          "loc": {
+            "line": 289,
+            "col": 3,
+            "end_line": 316,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.aw_width",
+          "name": "aw_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.aw_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 319,
+                "col": 44,
+                "end_line": 319,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "axi_pkg.aw_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 319,
+                "col": 69,
+                "end_line": 319,
+                "end_col": 90
+              }
+            },
+            {
+              "id": "axi_pkg.aw_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 320,
+                "col": 44,
+                "end_line": 320,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "/ AW Width: Returns the width of the AW channel payload"
+          ],
+          "loc": {
+            "line": 319,
+            "col": 3,
+            "end_line": 324,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.w_width",
+          "name": "w_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.w_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 327,
+                "col": 43,
+                "end_line": 327,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.w_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 327,
+                "col": 68,
+                "end_line": 327,
+                "end_col": 91
+              }
+            }
+          ],
+          "comment": [
+            "/ W Width: Returns the width of the W channel payload"
+          ],
+          "loc": {
+            "line": 327,
+            "col": 3,
+            "end_line": 331,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.b_width",
+          "name": "b_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.b_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 334,
+                "col": 43,
+                "end_line": 334,
+                "end_col": 64
+              }
+            },
+            {
+              "id": "axi_pkg.b_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 334,
+                "col": 66,
+                "end_line": 334,
+                "end_col": 89
+              }
+            }
+          ],
+          "comment": [
+            "/ B Width: Returns the width of the B channel payload"
+          ],
+          "loc": {
+            "line": 334,
+            "col": 3,
+            "end_line": 337,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.ar_width",
+          "name": "ar_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.ar_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 340,
+                "col": 44,
+                "end_line": 340,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "axi_pkg.ar_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 340,
+                "col": 69,
+                "end_line": 340,
+                "end_col": 90
+              }
+            },
+            {
+              "id": "axi_pkg.ar_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 341,
+                "col": 44,
+                "end_line": 341,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "/ AR Width: Returns the width of the AR channel payload"
+          ],
+          "loc": {
+            "line": 340,
+            "col": 3,
+            "end_line": 345,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.r_width",
+          "name": "r_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.r_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 348,
+                "col": 43,
+                "end_line": 348,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.r_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 348,
+                "col": 68,
+                "end_line": 348,
+                "end_col": 89
+              }
+            },
+            {
+              "id": "axi_pkg.r_width.user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "user_width",
+              "loc": {
+                "line": 349,
+                "col": 43,
+                "end_line": 349,
+                "end_col": 66
+              }
+            }
+          ],
+          "comment": [
+            "/ R Width: Returns the width of the R channel payload"
+          ],
+          "loc": {
+            "line": 348,
+            "col": 3,
+            "end_line": 353,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.req_width",
+          "name": "req_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.req_width.addr_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "addr_width",
+              "loc": {
+                "line": 356,
+                "col": 45,
+                "end_line": 356,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 356,
+                "col": 73,
+                "end_line": 356,
+                "end_col": 96
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 357,
+                "col": 45,
+                "end_line": 357,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.aw_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "aw_user_width",
+              "loc": {
+                "line": 357,
+                "col": 73,
+                "end_line": 357,
+                "end_col": 99
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.ar_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "ar_user_width",
+              "loc": {
+                "line": 358,
+                "col": 45,
+                "end_line": 358,
+                "end_col": 71
+              }
+            },
+            {
+              "id": "axi_pkg.req_width.w_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "w_user_width",
+              "loc": {
+                "line": 358,
+                "col": 73,
+                "end_line": 358,
+                "end_col": 98
+              }
+            }
+          ],
+          "comment": [
+            "/ Request Width: Returns the width of the request channel"
+          ],
+          "loc": {
+            "line": 356,
+            "col": 3,
+            "end_line": 365,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.rsp_width",
+          "name": "rsp_width",
+          "kind": "function",
+          "rtype": "int unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.rsp_width.data_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "data_width",
+              "loc": {
+                "line": 368,
+                "col": 45,
+                "end_line": 368,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.id_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "id_width",
+              "loc": {
+                "line": 368,
+                "col": 72,
+                "end_line": 368,
+                "end_col": 93
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.r_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "r_user_width",
+              "loc": {
+                "line": 369,
+                "col": 45,
+                "end_line": 369,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "axi_pkg.rsp_width.b_user_width",
+              "direction": "input",
+              "ptype": "int",
+              "dtype": "unsigned",
+              "name": "b_user_width",
+              "loc": {
+                "line": 369,
+                "col": 72,
+                "end_line": 369,
+                "end_col": 97
+              }
+            }
+          ],
+          "comment": [
+            "/ Response Width: Returns the width of the response channel"
+          ],
+          "loc": {
+            "line": 368,
+            "col": 3,
+            "end_line": 375,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "axi_pkg.iomsb",
+          "name": "iomsb",
+          "kind": "function",
+          "rtype": "integer unsigned",
+          "args": [
+            {
+              "id": "axi_pkg.iomsb.width",
+              "direction": "input",
+              "ptype": "integer",
+              "dtype": "unsigned",
+              "name": "width",
+              "loc": {
+                "line": 536,
+                "col": 46,
+                "end_line": 536,
+                "end_col": 74
+              }
+            }
+          ],
+          "comment": [
+            "Return either the argument minus 1 or 0 if 0; useful for IO vector width declaration"
+          ],
+          "loc": {
+            "line": 536,
+            "col": 3,
+            "end_line": 538,
+            "end_col": 14
+          }
+        }
+      ],
+      "loc": {
+        "line": 23,
+        "col": 1,
+        "end_line": 540,
+        "end_col": 11
+      }
+    }
+  ]
+}

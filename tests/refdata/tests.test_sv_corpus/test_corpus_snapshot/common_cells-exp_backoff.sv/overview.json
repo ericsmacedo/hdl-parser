@@ -8,6 +8,7 @@
         {
           "id": "exp_backoff.Seed",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Seed",
           "default": "'hffff",
           "comment": [
@@ -23,6 +24,7 @@
         {
           "id": "exp_backoff.MaxExp",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "MaxExp",
           "default": "16",
           "loc": {
@@ -108,6 +110,7 @@
         {
           "id": "exp_backoff.WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "WIDTH",
           "default": "16",
           "loc": {
@@ -115,6 +118,118 @@
             "col": 3,
             "end_line": 40,
             "end_col": 38
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "exp_backoff.lfsr_d",
+          "ptype": "logic",
+          "name": "lfsr_d",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.lfsr_q",
+          "ptype": "logic",
+          "name": "lfsr_q",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.cnt_d",
+          "ptype": "logic",
+          "name": "cnt_d",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.cnt_q",
+          "ptype": "logic",
+          "name": "cnt_q",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.mask_d",
+          "ptype": "logic",
+          "name": "mask_d",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.mask_q",
+          "ptype": "logic",
+          "name": "mask_q",
+          "dim": "[WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "exp_backoff.lfsr",
+          "ptype": "logic",
+          "name": "lfsr",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 14
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "exp_backoff.p_regs",
+          "name": "p_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 6
           }
         }
       ],

@@ -28,6 +28,12 @@ pre-commit hooks. Retrieval date for everything: 2026-11-14. The license text of
 | `neorv32/neorv32_trng.vhd` | 23330 | `rtl/core/neorv32_trng.vhd` |
 | `neorv32/xbus2axi4_bridge.vhd` | 11600 | `rtl/system_integration/xbus2axi4_bridge.vhd` |
 
+Files with packages, types, subprograms and component declarations, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `neorv32/neorv32_package.vhd` | 79209 | `rtl/core/neorv32_package.vhd` |
+
 ## microwatt
 
 - URL: <https://github.com/antonblanchard/microwatt>
@@ -47,6 +53,15 @@ pre-commit hooks. Retrieval date for everything: 2026-11-14. The license text of
 | `microwatt/xilinx-mult.vhdl` | 30924 | `xilinx-mult.vhdl` |
 | `microwatt/top-genesys2.vhdl` | 13949 | `fpga/top-genesys2.vhdl` |
 | `microwatt/sim_litedram.vhdl` | 7921 | `litedram/extras/sim_litedram.vhdl` |
+
+Files with packages, types, subprograms and component declarations, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `microwatt/common.vhdl` | 40139 | `common.vhdl` |
+| `microwatt/decode_types.vhdl` | 29485 | `decode_types.vhdl` |
+| `microwatt/helpers.vhdl` | 10274 | `helpers.vhdl` |
+| `microwatt/wishbone_types.vhdl` | 3166 | `wishbone_types.vhdl` |
 
 ## poc
 
@@ -68,6 +83,15 @@ pre-commit hooks. Retrieval date for everything: 2026-11-14. The license text of
 | `poc/udp_RX.vhdl` | 16195 | `src/net/udp/udp_RX.vhdl` |
 | `poc/xil_ChipScopeICON.vhdl` | 7927 | `src/xil/xil_ChipScopeICON.vhdl` |
 
+Files with packages, types, subprograms and component declarations, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `poc/arith.pkg.vhdl` | 6988 | `src/arith/arith.pkg.vhdl` |
+| `poc/components.vhdl` | 12848 | `src/common/components.vhdl` |
+| `poc/utils.vhdl` | 43086 | `src/common/utils.vhdl` |
+| `poc/xil.pkg.vhdl` | 4620 | `src/xil/xil.pkg.vhdl` |
+
 ## surf
 
 - URL: <https://github.com/slaclab/surf>
@@ -86,6 +110,12 @@ pre-commit hooks. Retrieval date for everything: 2026-11-14. The license text of
 | `surf/AxiLiteCrossbarIpIntegrator.vhd` | 7687 | `axi/axi-lite/ip_integrator/AxiLiteCrossbarIpIntegrator.vhd` |
 | `surf/XadcSimpleCore.vhd` | 19212 | `xilinx/7Series/xadc/rtl/XadcSimpleCore.vhd` |
 | `surf/ClockManager7.vhd` | 17219 | `xilinx/7Series/general/rtl/ClockManager7.vhd` |
+
+Files with packages, types, subprograms and component declarations, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `surf/AxiLitePkg.vhd` | 49474 | `axi/axi-lite/rtl/AxiLitePkg.vhd` |
 
 ## potato
 
@@ -108,3 +138,11 @@ pre-commit hooks. Retrieval date for everything: 2026-11-14. The license text of
 | `potato/pp_soc_intercon.vhd` | 5854 | `soc/pp_soc_intercon.vhd` |
 | `potato/pp_soc_gpio.vhd` | 3350 | `soc/pp_soc_gpio.vhd` |
 | `potato/toplevel.vhd` | 17660 | `example/toplevel.vhd` |
+
+Files with packages, types, subprograms and component declarations, retrieved on 2026-11-15 from the same ref:
+
+| File | Size (bytes) | Upstream path |
+|---|---|---|
+| `potato/pp_csr.vhd` | 4501 | `src/pp_csr.vhd` |
+| `potato/pp_types.vhd` | 3552 | `src/pp_types.vhd` |
+| `potato/pp_utilities.vhd` | 2180 | `src/pp_utilities.vhd` |

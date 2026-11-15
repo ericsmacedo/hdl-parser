@@ -189,6 +189,7 @@
         {
           "id": "ibex_dummy_instr.TIMEOUT_CNT_W",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "TIMEOUT_CNT_W",
           "default": "5",
           "loc": {
@@ -201,6 +202,7 @@
         {
           "id": "ibex_dummy_instr.OP_W",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "OP_W",
           "default": "5",
           "loc": {
@@ -213,6 +215,7 @@
         {
           "id": "ibex_dummy_instr.LFSR_OUT_W",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "LFSR_OUT_W",
           "default": "$bits(lfsr_data_t)",
           "loc": {
@@ -220,6 +223,381 @@
             "col": 3,
             "end_line": 51,
             "end_col": 59
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_dummy_instr.lfsr_data",
+          "ptype": "lfsr_data_t",
+          "name": "lfsr_data",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_cnt_incr",
+          "ptype": "logic",
+          "name": "dummy_cnt_incr",
+          "dim": "[TIMEOUT_CNT_W-1:0]",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_cnt_threshold",
+          "ptype": "logic",
+          "name": "dummy_cnt_threshold",
+          "dim": "[TIMEOUT_CNT_W-1:0]",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_cnt_d",
+          "ptype": "logic",
+          "name": "dummy_cnt_d",
+          "dim": "[TIMEOUT_CNT_W-1:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_cnt_q",
+          "ptype": "logic",
+          "name": "dummy_cnt_q",
+          "dim": "[TIMEOUT_CNT_W-1:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_cnt_en",
+          "ptype": "logic",
+          "name": "dummy_cnt_en",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.lfsr_en",
+          "ptype": "logic",
+          "name": "lfsr_en",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.lfsr_state",
+          "ptype": "logic",
+          "name": "lfsr_state",
+          "dim": "[LFSR_OUT_W-1:0]",
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.insert_dummy_instr",
+          "ptype": "logic",
+          "name": "insert_dummy_instr",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_set",
+          "ptype": "logic",
+          "name": "dummy_set",
+          "dim": "[6:0]",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_opcode",
+          "ptype": "logic",
+          "name": "dummy_opcode",
+          "dim": "[2:0]",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_instr",
+          "ptype": "logic",
+          "name": "dummy_instr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_op_a",
+          "ptype": "logic",
+          "name": "dummy_op_a",
+          "dim": "[OP_W-1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_op_b",
+          "ptype": "logic",
+          "name": "dummy_op_b",
+          "dim": "[OP_W-1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_instr_seed_q",
+          "ptype": "logic",
+          "name": "dummy_instr_seed_q",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.dummy_instr_seed_d",
+          "ptype": "logic",
+          "name": "dummy_instr_seed_d",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 68
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "ibex_dummy_instr.dummy_instr_e",
+          "name": "dummy_instr_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_dummy_instr.dummy_instr_e.DUMMY_ADD",
+              "name": "DUMMY_ADD",
+              "value": "2'b00",
+              "loc": {
+                "line": 39,
+                "col": 5,
+                "end_line": 39,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.dummy_instr_e.DUMMY_MUL",
+              "name": "DUMMY_MUL",
+              "value": "2'b01",
+              "loc": {
+                "line": 40,
+                "col": 5,
+                "end_line": 40,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.dummy_instr_e.DUMMY_DIV",
+              "name": "DUMMY_DIV",
+              "value": "2'b10",
+              "loc": {
+                "line": 41,
+                "col": 5,
+                "end_line": 41,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.dummy_instr_e.DUMMY_AND",
+              "name": "DUMMY_AND",
+              "value": "2'b11",
+              "loc": {
+                "line": 42,
+                "col": 5,
+                "end_line": 42,
+                "end_col": 22
+              }
+            }
+          ],
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.lfsr_data_t",
+          "name": "lfsr_data_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_dummy_instr.lfsr_data_t.instr_type",
+              "name": "instr_type",
+              "dtype": "dummy_instr_e",
+              "loc": {
+                "line": 46,
+                "col": 5,
+                "end_line": 46,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.lfsr_data_t.op_b",
+              "name": "op_b",
+              "dtype": "logic",
+              "dim": "[OP_W-1:0]",
+              "loc": {
+                "line": 47,
+                "col": 5,
+                "end_line": 47,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.lfsr_data_t.op_a",
+              "name": "op_a",
+              "dtype": "logic",
+              "dim": "[OP_W-1:0]",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_dummy_instr.lfsr_data_t.cnt",
+              "name": "cnt",
+              "dtype": "logic",
+              "dim": "[TIMEOUT_CNT_W-1:0]",
+              "loc": {
+                "line": 49,
+                "col": 5,
+                "end_line": 49,
+                "end_col": 34
+              }
+            }
+          ],
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 17
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_dummy_instr.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_dummy_instr.#always3",
+          "kind": "always_comb",
+          "comment": [
+            "Encode instruction"
+          ],
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 6
           }
         }
       ],

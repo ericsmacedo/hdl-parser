@@ -51,7 +51,12 @@ def test_tokenize():
         ("num", "4"),
         ("num", "'hF"),
     ]
-    assert result.comments == {6: ["text"]}
+    # the line comment is located behind the last token (index 5)
+    assert result.comments == {}
+    assert result.trailing == {5: ["text"]}
+    result = tokenize("a // behind a\n// in front of b\n/* in front of b */ b /* in front of EOF */")
+    assert result.trailing == {0: ["behind a"]}
+    assert result.comments == {1: ["in front of b", "in front of b"], 2: ["in front of EOF"]}
 
 
 def test_tokenize_ifdefs():
@@ -133,8 +138,8 @@ endmodule
     assert plain(module.params) == (
         Param(ptype="type", name="T", default="logic [7:0]"),
         Param(ptype="T", name="X", dim="[1:0]", default="'{1, 2}"),
-        Param(ptype="int", name="Y", default="f(1, 2)"),
-        Param(ptype="int", name="Z", default="cond ? 3 : 4"),
+        Param(ptype="int", dtype="unsigned", name="Y", default="f(1, 2)"),
+        Param(ptype="int", dtype="unsigned", name="Z", default="cond ? 3 : 4"),
         Param(ptype="my_pkg::enum_t", name="E", default="my_pkg::A"),
     )
     assert plain(module.localparams) == (
@@ -243,7 +248,7 @@ endmodule : top
     module = _parse("extern module ext (input a); module top (a, b); input a; output reg [1:0] b = 0, c; endmodule")
     assert plain(module.ports) == (
         Port(direction="input", name="a"),
-        Port(direction="output", ptype="reg", name="b", dim="[1:0]"),
+        Port(direction="output", ptype="reg", name="b", dim="[1:0]", default="0"),
         Port(direction="output", ptype="reg", name="c", dim="[1:0]"),
     )
 

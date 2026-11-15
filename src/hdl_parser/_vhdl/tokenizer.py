@@ -73,6 +73,7 @@ def tokenize(source: str) -> Tokens:
     """Tokenize VHDL `source`."""
     tokens: list[Token] = []
     comments: dict[int, list[str]] = {}
+    trailing: dict[int, list[str]] = {}
     gaps: list[tuple[int, int]] = []
     append = tokens.append
     match = _TOKEN.match
@@ -92,7 +93,12 @@ def tokenize(source: str) -> Tokens:
             else:
                 append(Token(ID, text, pos, end, ()))
         elif kind == "comment":
-            comments.setdefault(len(tokens), []).append(source[pos:end].replace("\n", " ").strip())
+            text = source[pos:end].replace("\n", " ").strip()
+            if text.startswith("--") and tokens and "\n" not in source[tokens[-1].end : pos]:
+                # behind a token on the same line
+                trailing.setdefault(len(tokens) - 1, []).append(text)
+            else:
+                comments.setdefault(len(tokens), []).append(text)
             gaps.append((pos, end))
         elif kind == "char":
             if tokens and (tokens[-1].kind == ID or tokens[-1].text in _NAME_ENDS):
@@ -104,4 +110,4 @@ def tokenize(source: str) -> Tokens:
             append(Token(kind, source[pos:end], pos, end, ()))  # type: ignore[arg-type]
         pos = end
     append(Token(EOF, "", length, length, ()))
-    return Tokens(source=source, tokens=tokens, comments=comments, gaps=gaps)
+    return Tokens(source=source, tokens=tokens, comments=comments, trailing=trailing, gaps=gaps)

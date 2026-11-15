@@ -155,12 +155,14 @@ class Tokens(NamedTuple):
         source: Source text.
         tokens: Tokens. The last token is always of kind `EOF`.
         comments: Comments, by the index of the token they are located in front of.
+        trailing: Line comments behind a token on the same line, by the index of that token: `a = 1; // comment`.
         gaps: Source ranges (comments, directives and attributes), which are not covered by tokens.
     """
 
     source: str
     tokens: list[Token]
     comments: dict[int, list[str]]
+    trailing: dict[int, list[str]]
     gaps: list[tuple[int, int]]
 
 
@@ -168,19 +170,32 @@ class Cursor:
     """Position Within The Token Stream.
 
     Comments are not part of the token stream. They are handed over to `sink` (if set), as soon as the token
-    behind them is consumed. A declaration sets `sink` to its own comment list, to receive all comments up to
-    the next declaration.
+    behind them is consumed. A line comment behind a token on the same line is handed over with that token.
+    A declaration sets `sink` to its own comment list, to receive all comments up to the next declaration.
 
     Nothing is ever skipped beyond the end of the token stream or a keyword of `hard_stops`.
     """
 
-    __slots__ = ("_gap_starts", "comments", "gaps", "hard_stops", "last", "pos", "sink", "source", "toks", "unclosed")
+    __slots__ = (
+        "_gap_starts",
+        "comments",
+        "gaps",
+        "hard_stops",
+        "last",
+        "pos",
+        "sink",
+        "source",
+        "toks",
+        "trailing",
+        "unclosed",
+    )
 
     def __init__(self, tokens: Tokens, hard_stops: frozenset[str] = frozenset()):
         self.hard_stops = hard_stops
         self.source = tokens.source
         self.toks = tokens.tokens
         self.comments = tokens.comments
+        self.trailing = tokens.trailing
         self.gaps = tokens.gaps
         self._gap_starts = [gap[0] for gap in tokens.gaps]
         self.last = len(self.toks) - 1
@@ -199,8 +214,11 @@ class Cursor:
         pos = self.pos
         tok = self.toks[pos]
         if pos < self.last:
-            if self.sink is not None and pos in self.comments:
-                self.sink += self.comments[pos]
+            if self.sink is not None:
+                if pos in self.comments:
+                    self.sink += self.comments[pos]
+                if pos in self.trailing:
+                    self.sink += self.trailing[pos]
             self.pos = pos + 1
         return tok
 

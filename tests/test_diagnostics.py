@@ -56,9 +56,10 @@ def test_clean():
 
 
 def test_no_module(caplog):
-    """A File Without Module Is An Information."""
+    """A File Without Module And Package Is An Information."""
+    assert parse_text("package p; endpackage").diagnostics == ()
     with caplog.at_level(logging.INFO):
-        file = parse_text("package p; endpackage", file_path="p.sv")
+        file = parse_text("`define P 1", file_path="p.sv")
     assert file.diagnostics == (Diagnostic(code="no-module", severity="info", message="no module found."),)
     assert "INFO" in caplog.text
     assert "p.sv: no module found." in caplog.text

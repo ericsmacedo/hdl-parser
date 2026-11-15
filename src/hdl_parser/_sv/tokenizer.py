@@ -118,6 +118,7 @@ def tokenize(source: str) -> Tokens:  # noqa: C901, PLR0912, PLR0915
     """Tokenize SystemVerilog `source`."""
     tokens: list[Token] = []
     comments: dict[int, list[str]] = {}
+    trailing: dict[int, list[str]] = {}
     gaps: list[tuple[int, int]] = []
     # `ifdef` nesting: active conditions, and number of conditions added per nesting level
     conds: list[str] = []
@@ -137,8 +138,16 @@ def tokenize(source: str) -> Tokens:  # noqa: C901, PLR0912, PLR0915
             text = source[pos:end]
             append(Token(KW if text in KEYWORDS else ID, text, pos, end, ifdefs))
         elif kind == "comment":
-            text = source[pos + 2 : end] if source[pos + 1] == "/" else source[pos + 2 : end - 2]
-            comments.setdefault(len(tokens), []).append(text.replace("\n", " ").strip())
+            if source[pos + 1] == "/":
+                text = source[pos + 2 : end].strip()
+                if tokens and "\n" not in source[tokens[-1].end : pos]:
+                    # behind a token on the same line
+                    trailing.setdefault(len(tokens) - 1, []).append(text)
+                else:
+                    comments.setdefault(len(tokens), []).append(text)
+            else:
+                text = source[pos + 2 : end - 2].replace("\n", " ").strip()
+                comments.setdefault(len(tokens), []).append(text)
             gaps.append((pos, end))
         elif kind == "directive":
             name = source[pos + 1 : end]
@@ -178,4 +187,4 @@ def tokenize(source: str) -> Tokens:  # noqa: C901, PLR0912, PLR0915
             append(Token(kind, source[pos:end], pos, end, ifdefs))  # type: ignore[arg-type]
         pos = end
     append(Token(EOF, "", length, length, ifdefs))
-    return Tokens(source=source, tokens=tokens, comments=comments, gaps=gaps)
+    return Tokens(source=source, tokens=tokens, comments=comments, trailing=trailing, gaps=gaps)

@@ -533,6 +533,674 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "ibex_wb_stage.rf_wdata_wb_mux",
+          "ptype": "logic",
+          "name": "rf_wdata_wb_mux",
+          "dim": "[31:0]",
+          "dim_unpacked": "[2]",
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_wb_stage.rf_wdata_wb_mux_we",
+          "ptype": "logic",
+          "name": "rf_wdata_wb_mux_we",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_wb_stage.rf_wcap_wb",
+          "ptype": "cap_t",
+          "name": "rf_wcap_wb",
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.rf_wdata_wb_q",
+          "ptype": "logic",
+          "name": "rf_wdata_wb_q",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 86,
+            "col": 5,
+            "end_line": 86,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.rf_we_wb_q",
+          "ptype": "logic",
+          "name": "rf_we_wb_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 87,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.rf_waddr_wb_q",
+          "ptype": "logic",
+          "name": "rf_waddr_wb_q",
+          "dim": "[4:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 88,
+            "col": 5,
+            "end_line": 88,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_done",
+          "ptype": "logic",
+          "name": "wb_done",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_valid_q",
+          "ptype": "logic",
+          "name": "wb_valid_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 5,
+            "end_line": 92,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_pc_q",
+          "ptype": "logic",
+          "name": "wb_pc_q",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 93,
+            "col": 5,
+            "end_line": 93,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_compressed_q",
+          "ptype": "logic",
+          "name": "wb_compressed_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 94,
+            "col": 5,
+            "end_line": 94,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_count_q",
+          "ptype": "logic",
+          "name": "wb_count_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 95,
+            "col": 5,
+            "end_line": 95,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_instr_type_q",
+          "ptype": "wb_instr_type_e",
+          "name": "wb_instr_type_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 96,
+            "col": 5,
+            "end_line": 96,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_valid_d",
+          "ptype": "logic",
+          "name": "wb_valid_d",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 98,
+            "col": 5,
+            "end_line": 98,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_is_cheriot_q",
+          "ptype": "logic",
+          "name": "wb_is_cheriot_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 5,
+            "end_line": 100,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_cheriot_load_q",
+          "ptype": "logic",
+          "name": "wb_cheriot_load_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 101,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.wb_cheriot_store_q",
+          "ptype": "logic",
+          "name": "wb_cheriot_store_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 101,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.cheriot_rf_we_q",
+          "ptype": "logic",
+          "name": "cheriot_rf_we_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 102,
+            "col": 5,
+            "end_line": 102,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.cheriot_rf_wdata_q",
+          "ptype": "logic",
+          "name": "cheriot_rf_wdata_q",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 103,
+            "col": 5,
+            "end_line": 103,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.cheriot_rf_wcap_q",
+          "ptype": "cap_t",
+          "name": "cheriot_rf_wcap_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 104,
+            "col": 5,
+            "end_line": 104,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_dummy_instr_wb.dummy_instr_wb_q",
+          "ptype": "logic",
+          "name": "dummy_instr_wb_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 227,
+            "col": 7,
+            "end_line": 227,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_no_dummy_instr_wb.unused_dummy_instr_id",
+          "ptype": "logic",
+          "name": "unused_dummy_instr_id",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "else",
+              "name": "g_no_dummy_instr_wb"
+            }
+          ],
+          "loc": {
+            "line": 247,
+            "col": 7,
+            "end_line": 247,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_clk",
+          "ptype": "logic",
+          "name": "unused_clk",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 280,
+            "col": 5,
+            "end_line": 280,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_rst",
+          "ptype": "logic",
+          "name": "unused_rst",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 281,
+            "col": 5,
+            "end_line": 281,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_instr_type_wb",
+          "ptype": "wb_instr_type_e",
+          "name": "unused_instr_type_wb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 282,
+            "col": 5,
+            "end_line": 282,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_pc_id",
+          "ptype": "logic",
+          "name": "unused_pc_id",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 283,
+            "col": 5,
+            "end_line": 283,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_dummy_instr_id",
+          "ptype": "logic",
+          "name": "unused_dummy_instr_id",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 284,
+            "col": 5,
+            "end_line": 284,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_cheriot_store",
+          "ptype": "logic",
+          "name": "unused_cheriot_store",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 285,
+            "col": 5,
+            "end_line": 285,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_bypass_wb.unused_cheriot_wb_err",
+          "ptype": "logic",
+          "name": "unused_cheriot_wb_err",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb"
+            }
+          ],
+          "loc": {
+            "line": 286,
+            "col": 5,
+            "end_line": 286,
+            "end_col": 43
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 119,
+            "col": 5,
+            "end_line": 125,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_wb_regs_ra.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_wb_regs_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 128,
+            "col": 7,
+            "end_line": 160,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_wb_regs_nr.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "else",
+              "name": "g_wb_regs_nr"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 7,
+            "end_line": 179,
+            "end_col": 10
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_dummy_instr_wb.g_dummy_instr_wb_regs_ra.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb_regs_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 230,
+            "col": 9,
+            "end_line": 236,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_wb_stage.g_writeback_stage.g_dummy_instr_wb.g_dummy_instr_wb_regs_nr.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            },
+            {
+              "kind": "else",
+              "name": "g_dummy_instr_wb_regs_nr"
+            }
+          ],
+          "loc": {
+            "line": 238,
+            "col": 9,
+            "end_line": 242,
+            "end_col": 12
+          }
+        }
+      ],
       "loc": {
         "line": 18,
         "col": 1,

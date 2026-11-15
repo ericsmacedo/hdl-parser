@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_fifo.depth",
+          "dtype": "natural",
           "name": "DEPTH",
           "default": "64",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "pp_fifo.width",
+          "dtype": "natural",
           "name": "WIDTH",
           "default": "32",
           "loc": {
@@ -131,6 +133,157 @@
             "col": 3,
             "end_line": 27,
             "end_col": 27
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_fifo.top",
+          "dtype": "index_type",
+          "name": "top",
+          "loc": {
+            "line": 37,
+            "col": 2,
+            "end_line": 37,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "pp_fifo.bottom",
+          "dtype": "index_type",
+          "name": "bottom",
+          "loc": {
+            "line": 37,
+            "col": 2,
+            "end_line": 37,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "pp_fifo.prev_op",
+          "dtype": "fifo_op",
+          "name": "prev_op",
+          "default": "FIFO_POP",
+          "loc": {
+            "line": 40,
+            "col": 2,
+            "end_line": 40,
+            "end_col": 38
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "pp_fifo.memory_array",
+          "name": "memory_array",
+          "kind": "alias",
+          "dtype": "array(0 to DEPTH - 1) of std_logic_vector(WIDTH - 1 downto 0)",
+          "loc": {
+            "line": 33,
+            "col": 2,
+            "end_line": 33,
+            "end_col": 85
+          }
+        },
+        {
+          "id": "pp_fifo.index_type",
+          "name": "index_type",
+          "kind": "alias",
+          "dtype": "integer range 0 to DEPTH - 1",
+          "loc": {
+            "line": 36,
+            "col": 2,
+            "end_line": 36,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "pp_fifo.fifo_op",
+          "name": "fifo_op",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "pp_fifo.fifo_op.fifo_pop",
+              "name": "FIFO_POP",
+              "loc": {
+                "line": 39,
+                "col": 19,
+                "end_line": 39,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "pp_fifo.fifo_op.fifo_push",
+              "name": "FIFO_PUSH",
+              "loc": {
+                "line": 39,
+                "col": 29,
+                "end_line": 39,
+                "end_col": 38
+              }
+            }
+          ],
+          "loc": {
+            "line": 39,
+            "col": 2,
+            "end_line": 39,
+            "end_col": 40
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_fifo.read",
+          "name": "read",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 47,
+            "col": 2,
+            "end_line": 59,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "pp_fifo.write",
+          "name": "write",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 61,
+            "col": 2,
+            "end_line": 73,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "pp_fifo.set_prev_op",
+          "name": "set_prev_op",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 75,
+            "col": 2,
+            "end_line": 90,
+            "end_col": 26
           }
         }
       ],

@@ -8,6 +8,7 @@
         {
           "id": "prim_edge_detector.Width",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Width",
           "default": "1",
           "loc": {
@@ -124,6 +125,58 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_edge_detector.q_sync_d",
+          "ptype": "logic",
+          "name": "q_sync_d",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "prim_edge_detector.q_sync_q",
+          "ptype": "logic",
+          "name": "q_sync_q",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 40
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "prim_edge_detector.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_edge_detector.g_sync.u_sync",
@@ -218,7 +271,7 @@
         "line": 7,
         "col": 1,
         "end_line": 55,
-        "end_col": 10
+        "end_col": 31
       }
     }
   ]

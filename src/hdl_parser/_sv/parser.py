@@ -40,7 +40,7 @@ import logging
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
 from .. import datamodel as dm  # noqa: TID252
 from .._diagnostics import Diagnostics, shorten  # noqa: TID252
@@ -52,9 +52,13 @@ LOGGER = logging.getLogger(__name__)
 
 # Parsing never continues beyond these keywords
 _MODULE_START = frozenset(("module", "macromodule"))
-_HARD_STOPS = frozenset((*_MODULE_START, "endmodule"))
+_MODULE_END = frozenset(("endmodule", "endinterface"))
+_UNIT_START = frozenset((*_MODULE_START, "package"))
+# `interface` is no hard stop: it is used within modules too (`virtual interface`, interface ports)
+_HARD_STOPS = frozenset((*_UNIT_START, "endmodule", "endpackage", "endinterface"))
 
 _DIRECTIONS = frozenset(("input", "output", "inout"))
+_MODPORT_DIRECTIONS = frozenset(("input", "output", "inout", "ref"))
 _PARAMS = frozenset(("parameter", "localparam"))
 _SIGNING = frozenset(("signed", "unsigned"))
 _STRUCT_QUALIFIERS = frozenset(("packed", "signed", "unsigned", "tagged", "soft"))
@@ -64,7 +68,9 @@ _LABEL_OR_SEMI = frozenset((";", ":"))
 # A parameter or port default ends here. Keywords are included to survive missing separators.
 _VALUE_STOPS = frozenset((",", ";", *_PARAMS, *_DIRECTIONS))
 
-_PROCEDURES = frozenset(("always", "always_comb", "always_ff", "always_latch", "initial", "final"))
+_ALWAYS = frozenset(("always", "always_comb", "always_ff", "always_latch"))
+_PROCEDURES = frozenset(("initial", "final"))
+_EDGES = frozenset(("posedge", "negedge", "edge"))
 _ASSERTIONS = frozenset(("assert", "assume", "cover", "restrict", "expect"))
 _CONDITIONALS = frozenset(("if", "for"))
 _CASE_GENERATES = frozenset(("case", "casex", "casez"))
@@ -75,8 +81,6 @@ _JOINS = frozenset(("join", "join_any", "join_none"))
 _LABELED = frozenset(("generate", "endgenerate"))
 # Blocks without anything to extract: start keyword -> end keyword
 _BLOCKS = {
-    "function": "endfunction",
-    "task": "endtask",
     "class": "endclass",
     "covergroup": "endgroup",
     "property": "endproperty",
@@ -90,7 +94,6 @@ _BLOCKS = {
 _DECLARATIONS = frozenset(
     (
         # fmt: off
-        *TYPE_KEYWORDS,
         "alias",
         "assign",
         "automatic",
@@ -98,7 +101,6 @@ _DECLARATIONS = frozenset(
         "deassign",
         "defparam",
         "disable",
-        "enum",
         "export",
         "extern",
         "force",
@@ -106,17 +108,13 @@ _DECLARATIONS = frozenset(
         "import",
         "interconnect",
         "let",
-        "modport",
         "nettype",
         "rand",
         "release",
         "specparam",
         "static",
-        "struct",
         "timeprecision",
         "timeunit",
-        "typedef",
-        "union",
         "virtual",
         # gates and switches
         "and",
@@ -200,15 +198,87 @@ class _Macro(NamedTuple):
     call: dm.MacroCall
 
 
+class _Typedef(NamedTuple):
+    """One Type. `first` and `last` span the whole `typedef`."""
+
+    first: Token
+    last: Token
+    name: Token
+    kind: str  # alias, enum, struct or union
+    dtype: str
+    dim: str
+    dim_unpacked: str
+    members: list[_Decl]
+    comment: list[str]
+
+
+class _Function(NamedTuple):
+    """One Function Or Task. `first` and `last` span it from `function` to `endfunction`."""
+
+    first: Token
+    last: Token
+    name: Token
+    kind: str  # function or task
+    rtype: str
+    dim: str
+    args: list[_Decl]
+    comment: list[str]
+
+
+class _Process(NamedTuple):
+    """One `always` Block. `first` and `last` span the whole block."""
+
+    first: Token
+    last: Token
+    name: str
+    events: list[dm.Event]
+    # identifiers within the condition of the leading `if`
+    checked: frozenset[str]
+    generates: tuple[dm.Generate, ...]
+    comment: list[str]
+
+
 @dataclass
-class _Module:
-    """One Module. `last` is known as soon as the module is parsed completely."""
+class _Package:
+    """One Package. `last` is known as soon as the package is parsed completely."""
 
     first: Token
     last: Token
     name: Token
     params: list[_Decl] = field(default_factory=list)
+    typedefs: list[_Typedef] = field(default_factory=list)
+    functions: list[_Function] = field(default_factory=list)
+    # there is an `endpackage`
+    ended: bool = False
+
+
+class _Modport(NamedTuple):
+    """One Modport. `first` and `last` span the whole `modport` statement."""
+
+    first: Token
+    last: Token
+    name: Token
+    ports: list[_Decl]
+    comment: list[str]
+
+
+@dataclass
+class _Module:
+    """One Module Or Interface. `last` is known as soon as the module is parsed completely."""
+
+    first: Token
+    last: Token
+    name: Token
+    modports: list[_Modport] = field(default_factory=list)
+    # there is an `endmodule`
+    ended: bool = False
+    params: list[_Decl] = field(default_factory=list)
     ports: list[_Decl] = field(default_factory=list)
+    # signals with the generate constructs around
+    signals: list[tuple[_Decl, tuple[dm.Generate, ...]]] = field(default_factory=list)
+    typedefs: list[_Typedef] = field(default_factory=list)
+    functions: list[_Function] = field(default_factory=list)
+    processes: list[_Process] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
@@ -278,6 +348,14 @@ def _parse_type(c: Cursor) -> tuple[str, str]:  # noqa: C901, PLR0912
                 ptype = text
                 if text == "type" and c.peek().text == "(":
                     c.skip_balanced()
+            elif text == "interface":
+                # generic interface port: interface[.modport] name
+                start = c.pos
+                c.next()
+                if c.peek().text == "." and c.peek(1).kind == ID:
+                    c.next()
+                    c.next()
+                ptype = c.text(start, c.pos)
             elif text in ("struct", "union", "enum"):
                 c.next()
                 ptype = text
@@ -331,7 +409,7 @@ def _parse_decl(c: Cursor, kind: str) -> list[_Decl]:
         ptype, dtype = _parse_type(c)
     else:
         ptype, dtype = _parse_type(c)
-        if "." in ptype:
+        if "." in ptype or ptype == "interface":
             # interface port: my_if.modport name
             kind = ""
     dim = _parse_dims(c)
@@ -429,6 +507,184 @@ def _parse_item_decl(c: Cursor) -> list[_Decl]:
     c.accept(";")
     c.sink = None
     return _set_last(c, decls)
+
+
+# --- types ---
+
+
+def _parse_enum_members(c: Cursor) -> list[_Decl]:
+    """Parse `{ name [range] [= value] {, name [range] [= value]} }`."""
+    members: list[_Decl] = []
+    opening = c.next()
+    while True:
+        tok = c.peek()
+        if tok.text == "}":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        if tok.kind != ID:
+            c.next()
+            continue
+        comment = c.start_comment()
+        name = c.next()
+        dim_unpacked = _parse_dims(c)
+        value = ""
+        if c.accept("="):
+            start = c.pos
+            c.skip_until(_COMMA)
+            value = c.text(start, c.pos).strip()
+        members.append(_Decl(name, c.toks[c.pos - 1], name, "", "", "", "", dim_unpacked, value, comment))
+    return members
+
+
+def _parse_struct_members(c: Cursor) -> list[_Decl]:
+    """Parse `{ type [dims] name [dims] {, name [dims]} [= default]; ... }`."""
+    members: list[_Decl] = []
+    opening = c.next()
+    while True:
+        tok = c.peek()
+        if tok.text == "}":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        pos = c.pos
+        if tok.text != ";":
+            members += _parse_decl(c, "")
+            c.skip_until(_SEMI)
+        if c.pos == pos:
+            c.next()
+    return members
+
+
+def _parse_typedef(c: Cursor) -> _Typedef | None:
+    """Parse `typedef type [dims] name [dims];`. The type may be an enumeration, struct or union.
+
+    Forward declarations (`typedef name;`, `typedef class name;`) are no types on their own.
+    """
+    # the comments in front describe the type
+    leading = list(c.comments.get(c.pos, ()))
+    comment = c.start_comment()
+    comment += leading
+    first = c.next()
+    kind = c.peek().text
+    members: list[_Decl] = []
+    if kind in ("enum", "struct", "union"):
+        c.next()
+        # base type of the enumeration, or qualifiers of the struct
+        start = c.pos
+        while c.peek().kind in (KW, ID) or c.peek().text == "::":
+            c.next()
+        dtype = c.text(start, c.pos)
+        dim = _parse_dims(c)
+        if c.peek().text == "{":
+            members = _parse_enum_members(c) if kind == "enum" else _parse_struct_members(c)
+            c.sink = comment
+    else:
+        kind = "alias"
+        ptype, signing = _parse_type(c)
+        dtype = f"{ptype} {signing}".strip()
+        dim = _parse_dims(c)
+    name = c.peek()
+    typedef = None
+    if name.kind == ID and (dtype or members):
+        c.next()
+        typedef = _Typedef(first, name, name, kind, dtype, dim, _parse_dims(c), members, comment)
+    c.skip_until(_SEMI)
+    c.accept(";")
+    c.sink = None
+    return typedef._replace(last=c.toks[c.pos - 1]) if typedef else None
+
+
+# --- functions and tasks ---
+
+
+def _parse_args(c: Cursor) -> list[_Decl]:
+    """Parse the parenthesized arguments of a function or task. The direction is `input` by default."""
+    args: list[_Decl] = []
+    opening = c.next()
+    direction = "input"
+    while True:
+        tok = c.peek()
+        if tok.text == ")":
+            c.next()
+            break
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        pos = c.pos
+        if tok.text == "const" and c.peek(1).text == "ref":
+            c.next()
+        if c.accept("ref"):
+            direction = "ref"
+        if c.peek().text != ",":
+            items = _parse_decl(c, direction)
+            if items:
+                # the direction is inherited by the following arguments
+                direction = items[-1].kind
+                args += items
+        if c.pos == pos:
+            # separator, or nothing we understand
+            if tok.text in OPEN:
+                c.skip_balanced()
+            else:
+                c.next()
+    return args
+
+
+def _parse_function_body(c: Cursor, end: str) -> list[_Decl]:
+    """Consume the body of a function or task up to `end`. Return the arguments declared within (`input a;`)."""
+    args: list[_Decl] = []
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF or (tok.text in _HARD_STOPS and tok.kind == KW):
+            break
+        if tok.kind == KW and tok.text == end:
+            c.next()
+            _skip_label(c)
+            break
+        if tok.kind == KW and tok.text in _DIRECTIONS:
+            args += _parse_item_decl(c)
+        elif tok.text in OPEN:
+            c.skip_balanced()
+        else:
+            c.next()
+    return args
+
+
+def _parse_function(c: Cursor) -> _Function | None:
+    """Parse `function [type] name [(arguments)]; ... endfunction`. Likewise tasks.
+
+    Arguments are declared in the parenthesis, or within the body (`input a;`).
+    """
+    # the comments in front describe the function
+    leading = list(c.comments.get(c.pos, ()))
+    comment = c.start_comment()
+    comment += leading
+    first = c.next()
+    while c.peek().text in ("automatic", "static"):
+        c.next()
+    ptype, signing = _parse_type(c)
+    dim = _parse_dims(c)
+    # the name of a method defined outside of its class has a scope: cls::name
+    while c.peek().kind == ID and c.peek(1).text in ("::", ".") and c.peek(2).kind == ID:
+        c.next()
+        c.next()
+    name = c.peek()
+    args: list[_Decl] = []
+    if name.kind == ID:
+        c.next()
+        if c.peek().text == "(":
+            args = _parse_args(c)
+    c.sink = None
+    args += _parse_function_body(c, f"end{first.text}")
+    if name.kind != ID:
+        return None
+    rtype = f"{ptype} {signing}".strip()
+    return _Function(first, c.toks[c.pos - 1], name, first.text, rtype, dim, args, comment)
 
 
 # --- instances ---
@@ -627,10 +883,123 @@ def _handle_param(c: Cursor, mod: _Module) -> None:
     mod.params.extend(_parse_item_decl(c))
 
 
+def _parse_modport_ports(c: Cursor) -> list[_Decl]:
+    """Parse `( direction name {, name} {, direction name ...} )` of a modport.
+
+    Imported and exported tasks and functions, and clocking blocks are skipped.
+    """
+    ports: list[_Decl] = []
+    opening = c.next()
+    direction = ""
+    while True:
+        tok = c.peek()
+        text = tok.text
+        if text == ")":
+            c.next()
+            break
+        if tok.kind == EOF or (text in _HARD_STOPS and tok.kind == KW):
+            c.unclosed.append(opening)
+            break
+        if text in OPEN:
+            # arguments of an imported task or function, or the expression of `.name(expression)`
+            c.skip_balanced()
+            continue
+        c.next()
+        if tok.kind == KW:
+            # input, output, inout or ref. Anything else (import, export, clocking) has no direction
+            direction = text if text in _MODPORT_DIRECTIONS else ""
+        elif tok.kind == ID and direction:
+            ports.append(_Decl(tok, tok, tok, direction, "", "", "", "", "", []))
+    return ports
+
+
+@_handles("modport")
+def _handle_modport(c: Cursor, mod: _Module) -> None:
+    """`modport name (...) {, name (...)};`."""
+    # the comments in front describe the (first) modport
+    leading = list(c.comments.get(c.pos, ()))
+    first = c.next()
+    modports: list[_Modport] = []
+    while c.peek().kind == ID:
+        comment = c.start_comment()
+        if not modports:
+            comment += leading
+        name = c.next()
+        ports = _parse_modport_ports(c) if c.peek().text == "(" else []
+        modports.append(_Modport(first, name, name, ports, comment))
+        if not c.accept(","):
+            break
+    c.skip_until(_SEMI)
+    c.accept(";")
+    c.sink = None
+    mod.modports += _set_last(c, modports)
+
+
+@_handles("typedef")
+def _handle_typedef(c: Cursor, mod: _Module) -> None:
+    typedef = _parse_typedef(c)
+    if typedef:
+        mod.typedefs.append(typedef)
+
+
 @_handles(*_PROCEDURES)
 def _handle_procedure(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     c.next()
     _skip_statement(c)
+
+
+def _parse_events(c: Cursor) -> list[dm.Event]:
+    """Parse the sensitivity list `@(posedge a or negedge b, c)`, `@*` or `@name` at the current position."""
+    c.next()
+    if c.peek().text != "(":
+        tok = c.next()
+        return [dm.Event(signal=tok.text)] if tok.kind == ID else []
+    events: list[dm.Event] = []
+    end = c.match(c.pos) - 1
+    c.next()
+    while c.pos < end:
+        edge = c.next().text if c.peek().text in _EDGES else ""
+        # the signal ends at `or`, `,` or the condition `iff`. Parenthesis around are of no interest: posedge (clk)
+        while c.peek().text == "(" and c.toks[c.match(c.pos)].text in ("or", ",", "iff", ")"):
+            c.next()
+        start = c.pos
+        while c.pos < end and c.peek().text not in ("or", ",", "iff", ")"):
+            if c.peek().text in OPEN:
+                c.skip_balanced()
+            else:
+                c.next()
+        signal = c.text(start, c.pos).strip()
+        if signal and signal != "*":
+            events.append(dm.Event(edge=edge, signal=signal))  # type: ignore[arg-type]
+        while c.pos < end and c.peek().text not in ("or", ","):
+            c.next()
+        if c.pos < end:
+            c.next()
+    c.skip_to(end + 1)
+    return events
+
+
+@_handles(*_ALWAYS)
+def _handle_always(c: Cursor, mod: _Module) -> None:
+    """`always[_ff|_comb|_latch] [@(events)] statement`."""
+    # the comments in front describe the block
+    comment = list(c.comments.get(c.pos, ()))
+    first = c.next()
+    events = _parse_events(c) if c.peek().text == "@" else []
+    # label and leading `if`, without consuming them: begin [: label] if (condition)
+    toks = c.toks
+    idx = c.pos
+    name = ""
+    if toks[idx].text == "begin":
+        idx += 1
+        if toks[idx].text == ":" and toks[idx + 1].kind == ID:
+            name = toks[idx + 1].text
+            idx += 2
+    checked: frozenset[str] = frozenset()
+    if toks[idx].text == "if" and toks[idx + 1].text == "(":
+        checked = frozenset(tok.text for tok in toks[idx + 2 : c.match(idx + 1)] if tok.kind == ID)
+    _skip_statement(c)
+    mod.processes.append(_Process(first, toks[c.pos - 1], name, events, checked, tuple(mod.generates), comment))
 
 
 @_handles(*_ASSERTIONS)
@@ -707,6 +1076,24 @@ def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_label(c)
 
 
+def _parse_signals(c: Cursor, mod: _Module) -> None:
+    """Parse the declaration of nets or variables: `type [dims] name [dims] [= value] {, ...};`."""
+    generates = tuple(mod.generates)
+    mod.signals += [(decl, generates) for decl in _parse_item_decl(c)]
+
+
+@_handles(*TYPE_KEYWORDS, "enum", "struct", "union")
+def _handle_signal(c: Cursor, mod: _Module) -> None:
+    _parse_signals(c, mod)
+
+
+@_handles("function", "task")
+def _handle_function(c: Cursor, mod: _Module) -> None:
+    function = _parse_function(c)
+    if function:
+        mod.functions.append(function)
+
+
 @_handles(*_BLOCKS)
 def _handle_block(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     c.skip_past(frozenset((_BLOCKS[c.peek().text],)))
@@ -736,14 +1123,17 @@ def _parse_identifier_item(c: Cursor, mod: _Module) -> None:
             mod.open_generate(dm.Generate(kind="begin", name=_skip_label(c) or name))
     elif _is_instance(c):
         mod.insts.extend(_parse_instances(c, tuple(mod.generates)))
+    elif _type_ref_end(c, c.pos):
+        # signal of a user-defined type: my_t name;
+        _parse_signals(c, mod)
     else:
-        # declaration or statement, or the expression of a case-generate item
+        # statement, or the expression of a case-generate item
         c.skip_until(_LABEL_OR_SEMI)
         c.next()
 
 
-def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
-    """Parse module items up to `endmodule`.
+def _parse_body(c: Cursor, mod: _Module) -> bool:  # noqa: C901
+    """Parse module items up to `endmodule`. Return whether there is an `endmodule`.
 
     Items starting with a keyword are parsed by the related function of `_BODY_HANDLERS`.
     """
@@ -758,12 +1148,13 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
         text = tok.text
         kind = tok.kind
         if kind == KW:
-            if text == "endmodule":
+            if text in _MODULE_END:
                 c.next()
-                return
-            if text in _MODULE_START:
+                _skip_label(c)
+                return True
+            if text in _UNIT_START:
                 # missing endmodule
-                return
+                return False
             handler = handlers.get(text)
             if handler:
                 handler(c, mod)
@@ -772,7 +1163,7 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
         elif kind == ID:
             _parse_identifier_item(c, mod)
         elif kind == EOF:
-            return
+            return False
         elif text in OPEN:
             c.skip_balanced()
         else:
@@ -782,7 +1173,7 @@ def _parse_body(c: Cursor, mod: _Module) -> None:  # noqa: C901
 
 
 def _parse_module(c: Cursor) -> _Module | None:
-    """Parse `module name [imports] [#(parameters)] [(ports)]; items endmodule`."""
+    """Parse `module name [imports] [#(parameters)] [(ports)]; items endmodule`. Likewise interfaces."""
     start = c.next()
     while c.peek().text in ("static", "automatic"):
         c.next()
@@ -800,22 +1191,78 @@ def _parse_module(c: Cursor) -> _Module | None:
         # names of a non-ANSI port list have neither direction nor type
         mod.ports.extend(decl for decl in _parse_decl_list(c, "", mod) if decl.kind or decl.ptype)
     c.accept(";")
-    _parse_body(c, mod)
+    mod.ended = _parse_body(c, mod)
     mod.last = c.toks[c.pos - 1]
     return mod
 
 
-def _parse_modules(c: Cursor) -> list[_Module]:
-    """Parse all modules."""
+def _parse_package_item(c: Cursor, pkg: _Package) -> None:
+    """Parse one item of a package."""
+    tok = c.peek()
+    text = tok.text
+    if text in _PARAMS:
+        pkg.params.extend(_parse_item_decl(c))
+    elif text == "typedef":
+        typedef = _parse_typedef(c)
+        if typedef:
+            pkg.typedefs.append(typedef)
+    elif text in ("function", "task"):
+        function = _parse_function(c)
+        if function:
+            pkg.functions.append(function)
+    elif text in _BLOCKS and tok.kind == KW:
+        # classes, ...
+        c.skip_past(frozenset((_BLOCKS[text],)))
+    else:
+        # anything else: imports, variables, ...
+        c.skip_until(_SEMI)
+        c.accept(";")
+
+
+def _parse_package(c: Cursor) -> _Package | None:
+    """Parse `package name; items endpackage`."""
+    start = c.next()
+    while c.peek().text in ("static", "automatic"):
+        c.next()
+    if c.peek().kind != ID:
+        return None
+    name = c.next()
+    pkg = _Package(start, name, name)
+    c.accept(";")
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF or (tok.text in _UNIT_START and tok.kind == KW):
+            # missing endpackage
+            break
+        if tok.text == "endpackage":
+            c.next()
+            _skip_label(c)
+            pkg.ended = True
+            break
+        pos = c.pos
+        _parse_package_item(c, pkg)
+        if c.pos == pos:
+            c.next()
+    pkg.last = c.toks[c.pos - 1]
+    return pkg
+
+
+def _parse_units(c: Cursor) -> tuple[list[_Module], list[_Package]]:
+    """Parse all modules and packages."""
     mods: list[_Module] = []
+    pkgs: list[_Package] = []
     while True:
         tok = c.peek()
         if tok.kind == EOF:
-            return mods
-        if tok.kind == KW and tok.text in _MODULE_START:
+            return mods, pkgs
+        if tok.kind == KW and (tok.text in _MODULE_START or (tok.text == "interface" and c.peek(1).text != "class")):
             mod = _parse_module(c)
             if mod:
                 mods.append(mod)
+        elif tok.kind == KW and tok.text == "package":
+            pkg = _parse_package(c)
+            if pkg:
+                pkgs.append(pkg)
         elif tok.text == "extern":
             c.skip_until(_SEMI)
             c.next()
@@ -831,6 +1278,7 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
         dm.Param(
             name=decl.name.text,
             ptype=decl.ptype,
+            dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
             default=decl.default,
@@ -843,6 +1291,56 @@ def _create_params(decls: list[_Decl], kind: str, smap: SourceMap) -> tuple[dm.P
     )
 
 
+def _create_modports(modports: list[_Modport], smap: SourceMap) -> tuple[dm.Modport, ...]:
+    return tuple(
+        dm.Modport(
+            name=modport.name.text,
+            ports=tuple(
+                dm.Port(
+                    name=port.name.text,
+                    direction=port.kind,
+                    ifdefs=port.name.ifdefs,
+                    loc=smap.span(port.name, port.name),
+                )
+                for port in modport.ports
+            ),
+            comment=tuple(modport.comment),
+            ifdefs=modport.name.ifdefs,
+            loc=smap.span(modport.first, modport.last, modport.name),
+        )
+        for modport in modports
+    )
+
+
+def _create_typedefs(typedefs: list[_Typedef], smap: SourceMap) -> tuple[dm.Typedef, ...]:
+    return tuple(
+        dm.Typedef(
+            name=typedef.name.text,
+            kind=typedef.kind,  # type: ignore[arg-type]
+            dtype=typedef.dtype,
+            dim=typedef.dim,
+            dim_unpacked=typedef.dim_unpacked,
+            members=tuple(
+                dm.Member(
+                    name=member.name.text,
+                    dtype=f"{member.ptype} {member.dtype}".strip(),
+                    dim=member.dim,
+                    dim_unpacked=member.dim_unpacked,
+                    value=member.default,
+                    comment=tuple(member.comment),
+                    ifdefs=member.name.ifdefs,
+                    loc=smap.span(member.first, member.last, member.name),
+                )
+                for member in typedef.members
+            ),
+            comment=tuple(typedef.comment),
+            ifdefs=typedef.name.ifdefs,
+            loc=smap.span(typedef.first, typedef.last, typedef.name),
+        )
+        for typedef in typedefs
+    )
+
+
 def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
     return tuple(
         dm.Port(
@@ -852,11 +1350,77 @@ def _create_ports(decls: list[_Decl], smap: SourceMap) -> tuple[dm.Port, ...]:
             dtype=decl.dtype,
             dim=decl.dim,
             dim_unpacked=decl.dim_unpacked,
+            default=decl.default,
             comment=tuple(decl.comment),
             ifdefs=decl.name.ifdefs,
             loc=smap.span(decl.first, decl.last, decl.name),
         )
         for decl in decls
+    )
+
+
+def _create_signals(mod: _Module, smap: SourceMap) -> tuple[dm.Signal, ...]:
+    # Verilog declares the type of a port on its own: `output q; reg q;`. This is no signal.
+    ports = {port.name.text for port in mod.ports}
+    return tuple(
+        dm.Signal(
+            name=decl.name.text,
+            ptype=decl.ptype,
+            dtype=decl.dtype,
+            dim=decl.dim,
+            dim_unpacked=decl.dim_unpacked,
+            default=decl.default,
+            generates=generates,
+            comment=tuple(decl.comment),
+            ifdefs=decl.name.ifdefs,
+            loc=smap.span(decl.first, decl.last, decl.name),
+        )
+        for decl, generates in mod.signals
+        if decl.name.text not in ports
+    )
+
+
+def _create_processes(processes: list[_Process], smap: SourceMap) -> tuple[dm.Process, ...]:
+    result = []
+    for process in processes:
+        # Clock and reset are never guessed: the reset is the edge checked by the leading `if`,
+        # the clock is the one other edge.
+        edges = [event for event in process.events if event.edge in ("posedge", "negedge")]
+        resets = [event for event in edges if event.signal in process.checked] if len(edges) > 1 else []
+        clocks = [event for event in edges if event not in resets[:1]]
+        clock = clocks[0] if len(clocks) == 1 else None
+        reset = resets[0] if resets and clock else None
+        result.append(
+            dm.Process(
+                name=process.name,
+                kind=process.first.text,  # type: ignore[arg-type]
+                events=tuple(process.events),
+                clock=clock.signal if clock else "",
+                clock_edge=clock.edge if clock else "",
+                reset=reset.signal if reset else "",
+                reset_edge=reset.edge if reset else "",
+                generates=process.generates,
+                comment=tuple(process.comment),
+                ifdefs=process.first.ifdefs,
+                loc=smap.span(process.first, process.last),
+            )
+        )
+    return tuple(result)
+
+
+def _create_functions(functions: list[_Function], smap: SourceMap) -> tuple[dm.Function, ...]:
+    return tuple(
+        dm.Function(
+            name=function.name.text,
+            kind=function.kind,  # type: ignore[arg-type]
+            rtype=function.rtype,
+            dim=function.dim,
+            args=_create_ports(function.args, smap),
+            comment=tuple(function.comment),
+            ifdefs=function.name.ifdefs,
+            loc=smap.span(function.first, function.last, function.name),
+        )
+        for function in functions
     )
 
 
@@ -893,19 +1457,26 @@ def _create_macros(mod: _Module, smap: SourceMap) -> tuple[dm.MacroCall, ...]:
     return tuple(macro.call.model_copy(update={"loc": smap.span(macro.first, macro.last)}) for macro in mod.macros)
 
 
-def _report(c: Cursor, mods: list[_Module], smap: SourceMap, diagnostics: Diagnostics) -> None:
+def _report(c: Cursor, mods: list[_Module], pkgs: list[_Package], smap: SourceMap, diagnostics: Diagnostics) -> None:
     """Report everything, which has not been parsed properly."""
+    for pkg in pkgs:
+        if not pkg.ended:
+            diagnostics.add(
+                "missing-end", f"package '{pkg.name.text}' has no 'endpackage'.", smap.span(pkg.first, pkg.name)
+            )
     for mod in mods:
+        # module or interface
+        kind = mod.first.text
         name = mod.name.text
         for start, end in mod.skipped:
             diagnostics.add(
                 "header-item-skipped",
-                f"module '{name}': '{shorten(c.text(start, end))}' in module header is not understood. "
+                f"{kind} '{name}': '{shorten(c.text(start, end))}' in {kind} header is not understood. "
                 "Ports or parameters may be missing.",
                 smap.span(c.toks[start], c.toks[end - 1]),
             )
-        if mod.last.text != "endmodule":
-            diagnostics.add("missing-end", f"module '{name}' has no 'endmodule'.", smap.span(mod.first, mod.name))
+        if not mod.ended:
+            diagnostics.add("missing-end", f"{kind} '{name}' has no 'end{kind}'.", smap.span(mod.first, mod.name))
     for tok in c.unclosed:
         diagnostics.add("unbalanced-bracket", f"'{tok.text}' is never closed.", smap.span(tok, tok))
 
@@ -918,8 +1489,10 @@ def parse(  # noqa: PLR0913
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
-) -> tuple[dm.Module, ...]:
-    """Parse SystemVerilog `text` and return its modules.
+) -> dm.File:
+    """Parse SystemVerilog `text` and return its modules, interfaces and packages.
+
+    The result has neither path, nor identifiers, nor diagnostics.
 
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
@@ -940,18 +1513,39 @@ def parse(  # noqa: PLR0913
     else:
         smap = SourceMap(text)
     c = Cursor(tokenize(text), _HARD_STOPS)
-    mods = _parse_modules(c)
-    _report(c, mods, smap, diagnostics)
-    return tuple(
-        dm.Module(
-            name=mod.name.text,
-            params=_create_params(mod.params, "parameter", smap),
-            localparams=_create_params(mod.params, "localparam", smap),
-            ports=_create_ports(mod.ports, smap),
-            insts=_create_insts(mod.insts, smap),
-            ifdefs=mod.first.ifdefs,
-            unresolved_macros=_create_macros(mod, smap),
-            loc=smap.span(mod.first, mod.last, mod.name),
+    mods, pkgs = _parse_units(c)
+    _report(c, mods, pkgs, smap, diagnostics)
+    packages = tuple(
+        dm.Package(
+            name=pkg.name.text,
+            params=_create_params(pkg.params, "parameter", smap),
+            localparams=_create_params(pkg.params, "localparam", smap),
+            typedefs=_create_typedefs(pkg.typedefs, smap),
+            functions=_create_functions(pkg.functions, smap),
+            ifdefs=pkg.first.ifdefs,
+            loc=smap.span(pkg.first, pkg.last, pkg.name),
         )
-        for mod in mods
+        for pkg in pkgs
     )
+    modules = []
+    interfaces = []
+    for mod in mods:
+        fields: dict[str, Any] = {
+            "name": mod.name.text,
+            "params": _create_params(mod.params, "parameter", smap),
+            "localparams": _create_params(mod.params, "localparam", smap),
+            "ports": _create_ports(mod.ports, smap),
+            "signals": _create_signals(mod, smap),
+            "typedefs": _create_typedefs(mod.typedefs, smap),
+            "functions": _create_functions(mod.functions, smap),
+            "processes": _create_processes(mod.processes, smap),
+            "insts": _create_insts(mod.insts, smap),
+            "ifdefs": mod.first.ifdefs,
+            "unresolved_macros": _create_macros(mod, smap),
+            "loc": smap.span(mod.first, mod.last, mod.name),
+        }
+        if mod.first.text == "interface":
+            interfaces.append(dm.Interface(modports=_create_modports(mod.modports, smap), **fields))
+        else:
+            modules.append(dm.Module(**fields))
+    return dm.File(path=None, modules=tuple(modules), interfaces=tuple(interfaces), packages=packages)

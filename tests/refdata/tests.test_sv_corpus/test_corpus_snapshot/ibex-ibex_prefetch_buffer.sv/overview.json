@@ -263,6 +263,7 @@
         {
           "id": "ibex_prefetch_buffer.NUM_REQS",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NUM_REQS",
           "default": "2",
           "loc": {
@@ -270,6 +271,450 @@
             "col": 3,
             "end_line": 44,
             "end_col": 41
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_prefetch_buffer.valid_new_req",
+          "ptype": "logic",
+          "name": "valid_new_req",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.valid_req",
+          "ptype": "logic",
+          "name": "valid_req",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.valid_req_d",
+          "ptype": "logic",
+          "name": "valid_req_d",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.valid_req_q",
+          "ptype": "logic",
+          "name": "valid_req_q",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.discard_req_d",
+          "ptype": "logic",
+          "name": "discard_req_d",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.discard_req_q",
+          "ptype": "logic",
+          "name": "discard_req_q",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.rdata_outstanding_n",
+          "ptype": "logic",
+          "name": "rdata_outstanding_n",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.rdata_outstanding_s",
+          "ptype": "logic",
+          "name": "rdata_outstanding_s",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.rdata_outstanding_q",
+          "ptype": "logic",
+          "name": "rdata_outstanding_q",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 86
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.branch_discard_n",
+          "ptype": "logic",
+          "name": "branch_discard_n",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.branch_discard_s",
+          "ptype": "logic",
+          "name": "branch_discard_s",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.branch_discard_q",
+          "ptype": "logic",
+          "name": "branch_discard_q",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.rdata_outstanding_rev",
+          "ptype": "logic",
+          "name": "rdata_outstanding_rev",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.stored_addr_d",
+          "ptype": "logic",
+          "name": "stored_addr_d",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.stored_addr_q",
+          "ptype": "logic",
+          "name": "stored_addr_q",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.stored_addr_en",
+          "ptype": "logic",
+          "name": "stored_addr_en",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fetch_addr_d",
+          "ptype": "logic",
+          "name": "fetch_addr_d",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fetch_addr_q",
+          "ptype": "logic",
+          "name": "fetch_addr_q",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fetch_addr_en",
+          "ptype": "logic",
+          "name": "fetch_addr_en",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.instr_addr",
+          "ptype": "logic",
+          "name": "instr_addr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.instr_addr_w_aligned",
+          "ptype": "logic",
+          "name": "instr_addr_w_aligned",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fifo_valid",
+          "ptype": "logic",
+          "name": "fifo_valid",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fifo_addr",
+          "ptype": "logic",
+          "name": "fifo_addr",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fifo_ready",
+          "ptype": "logic",
+          "name": "fifo_ready",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fifo_clear",
+          "ptype": "logic",
+          "name": "fifo_clear",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.fifo_busy",
+          "ptype": "logic",
+          "name": "fifo_busy",
+          "dim": "[NUM_REQS-1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 34
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_prefetch_buffer.g_stored_addr_ra.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_stored_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 154,
+            "col": 5,
+            "end_line": 160,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_stored_addr_nr.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_stored_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 5,
+            "end_line": 166,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_fetch_addr_ra.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_fetch_addr_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 178,
+            "col": 5,
+            "end_line": 184,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.g_fetch_addr_nr.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_fetch_addr_nr"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 5,
+            "end_line": 190,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_prefetch_buffer.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "/////////////",
+            "Registers //",
+            "/////////////"
+          ],
+          "loc": {
+            "line": 246,
+            "col": 3,
+            "end_line": 258,
+            "end_col": 6
           }
         }
       ],

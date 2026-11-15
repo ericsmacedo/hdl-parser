@@ -194,6 +194,57 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "prim_subreg.wr_en",
+          "ptype": "logic",
+          "name": "wr_en",
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "prim_subreg.wr_data",
+          "ptype": "logic",
+          "name": "wr_data",
+          "dim": "[DW-1:0]",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 26
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "prim_subreg.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 6
+          }
+        }
+      ],
       "insts": [
         {
           "id": "prim_subreg.wr_en_data_arb",

@@ -8,6 +8,7 @@
         {
           "id": "delta_counter.WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "WIDTH",
           "default": "4",
           "loc": {
@@ -164,6 +165,148 @@
             "col": 5,
             "end_line": 26,
             "end_col": 40
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "delta_counter.counter_q",
+          "ptype": "logic",
+          "name": "counter_q",
+          "dim": "[WIDTH:0]",
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "delta_counter.counter_d",
+          "ptype": "logic",
+          "name": "counter_d",
+          "dim": "[WIDTH:0]",
+          "loc": {
+            "line": 28,
+            "col": 5,
+            "end_line": 28,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "delta_counter.gen_sticky_overflow.overflow_d",
+          "ptype": "logic",
+          "name": "overflow_d",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 30,
+            "col": 9,
+            "end_line": 30,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "delta_counter.gen_sticky_overflow.overflow_q",
+          "ptype": "logic",
+          "name": "overflow_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 30,
+            "col": 9,
+            "end_line": 30,
+            "end_col": 38
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "delta_counter.gen_sticky_overflow.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 31,
+            "col": 9,
+            "end_line": 31,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "delta_counter.gen_sticky_overflow.#always2",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 32,
+            "col": 9,
+            "end_line": 43,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "delta_counter.#always3",
+          "kind": "always_comb",
+          "loc": {
+            "line": 51,
+            "col": 5,
+            "end_line": 65,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "delta_counter.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 8
           }
         }
       ],

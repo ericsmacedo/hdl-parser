@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_cpu_pmp.num_regions",
+          "dtype": "natural",
           "name": "NUM_REGIONS",
           "comment": [
             "-- number of regions"
@@ -20,6 +21,7 @@
         },
         {
           "id": "neorv32_cpu_pmp.granularity",
+          "dtype": "natural",
           "name": "GRANULARITY",
           "comment": [
             "-- minimal region granularity in bytes, has to be a power of 2, min 4 bytes"
@@ -33,6 +35,7 @@
         },
         {
           "id": "neorv32_cpu_pmp.tor_en",
+          "dtype": "boolean",
           "name": "TOR_EN",
           "comment": [
             "-- implement TOR mode"
@@ -46,6 +49,7 @@
         },
         {
           "id": "neorv32_cpu_pmp.nap_en",
+          "dtype": "boolean",
           "name": "NAP_EN",
           "comment": [
             "-- implement NAPOT/NA4 modes"
@@ -212,6 +216,761 @@
             "col": 5,
             "end_line": 42,
             "end_col": 30
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "neorv32_cpu_pmp.g_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "g_c",
+          "default": "sel_natural_f(boolean(GRANULARITY < 4), 4, 2**index_size_f(GRANULARITY))",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 108
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmp_lsb_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "pmp_lsb_c",
+          "default": "index_size_f(g_c)",
+          "comment": [
+            "-- lowest bit of the addr. comparison (= G+2 = log2(g_c)), min = 2"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmp_alsb_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "pmp_alsb_c",
+          "default": "pmp_lsb_c - sel_natural_f(boolean(pmp_lsb_c > 2), 3, pmp_lsb_c)",
+          "comment": [
+            "-- address LSB"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 99
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_r_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_r_c",
+          "default": "0",
+          "comment": [
+            "-- read permission"
+          ],
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_w_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_w_c",
+          "default": "1",
+          "comment": [
+            "-- write permission"
+          ],
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_x_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_x_c",
+          "default": "2",
+          "comment": [
+            "-- execute permission"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_al_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_al_c",
+          "default": "3",
+          "comment": [
+            "-- mode bit low"
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_ah_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_ah_c",
+          "default": "4",
+          "comment": [
+            "-- mode bit high"
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_l_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "cfg_l_c",
+          "default": "7",
+          "comment": [
+            "-- locked"
+          ],
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.mode_off_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "mode_off_c",
+          "dim": "[1:0]",
+          "default": "\"00\"",
+          "comment": [
+            "-- null region (disabled)"
+          ],
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.mode_tor_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "mode_tor_c",
+          "dim": "[1:0]",
+          "default": "\"01\"",
+          "comment": [
+            "-- top of range"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.mode_na4_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "mode_na4_c",
+          "dim": "[1:0]",
+          "default": "\"10\"",
+          "comment": [
+            "-- naturally aligned four-byte region"
+          ],
+          "loc": {
+            "line": 66,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.mode_napot_c",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "mode_napot_c",
+          "dim": "[1:0]",
+          "default": "\"11\"",
+          "comment": [
+            "-- naturally aligned power-of-two region (> 4 bytes)"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 64
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_cpu_pmp.pmpcfg",
+          "dtype": "pmpcfg_t",
+          "name": "pmpcfg",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmpcfg_we",
+          "dtype": "std_ulogic_vector",
+          "name": "pmpcfg_we",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmpaddr",
+          "dtype": "pmpaddr_t",
+          "name": "pmpaddr",
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmpaddr_we",
+          "dtype": "std_ulogic_vector",
+          "name": "pmpaddr_we",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_rd",
+          "dtype": "csr_cfg_rd_t",
+          "name": "cfg_rd",
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cfg_rd32",
+          "dtype": "csr_cfg_rd32_t",
+          "name": "cfg_rd32",
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.addr_rd",
+          "dtype": "csr_addr_rd_t",
+          "name": "addr_rd",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.addr_mask_napot",
+          "dtype": "addr_mask_t",
+          "name": "addr_mask_napot",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.addr_mask",
+          "dtype": "addr_mask_t",
+          "name": "addr_mask",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cmp_na",
+          "dtype": "cmp_t",
+          "name": "cmp_na",
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cmp_ge",
+          "dtype": "cmp_t",
+          "name": "cmp_ge",
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.match",
+          "dtype": "cmp_t",
+          "name": "match",
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cmp_lt",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_lt",
+          "dim": "[1:0]",
+          "comment": [
+            "-- 0 = instruction fetch, 1 = data access"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.allow_ex",
+          "dtype": "std_ulogic_vector",
+          "name": "allow_ex",
+          "dim": "[NUM_REGIONS-1:0]",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.allow_rw",
+          "dtype": "std_ulogic_vector",
+          "name": "allow_rw",
+          "dim": "[NUM_REGIONS-1:0]",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.fail_ex",
+          "dtype": "std_ulogic_vector",
+          "name": "fail_ex",
+          "dim": "[NUM_REGIONS:0]",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.fail_rw",
+          "dtype": "std_ulogic_vector",
+          "name": "fail_rw",
+          "dim": "[NUM_REGIONS:0]",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 68
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_cpu_pmp.pmpcfg_t",
+          "name": "pmpcfg_t",
+          "kind": "alias",
+          "dtype": "array (NUM_REGIONS-1 downto 0) of std_ulogic_vector(7 downto 0)",
+          "comment": [
+            "-- configuration CSRs --"
+          ],
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.pmpaddr_t",
+          "name": "pmpaddr_t",
+          "kind": "alias",
+          "dtype": "array (NUM_REGIONS-1 downto 0) of std_ulogic_vector(29 downto pmp_alsb_c)",
+          "comment": [
+            "-- address CSRs --"
+          ],
+          "loc": {
+            "line": 75,
+            "col": 3,
+            "end_line": 75,
+            "end_col": 95
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_cfg_rd_t",
+          "name": "csr_cfg_rd_t",
+          "kind": "alias",
+          "dtype": "array (15 downto 0) of std_ulogic_vector(7 downto 0)",
+          "comment": [
+            "-- CSR read-back --"
+          ],
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_cfg_rd32_t",
+          "name": "csr_cfg_rd32_t",
+          "kind": "alias",
+          "dtype": "array (03 downto 0) of std_ulogic_vector(31 downto 0)",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 80
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_addr_rd_t",
+          "name": "csr_addr_rd_t",
+          "kind": "alias",
+          "dtype": "array (15 downto 0) of std_ulogic_vector(31 downto 0)",
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 80
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.addr_mask_t",
+          "name": "addr_mask_t",
+          "kind": "alias",
+          "dtype": "array (NUM_REGIONS-1 downto 0) of std_ulogic_vector(31 downto pmp_lsb_c)",
+          "comment": [
+            "-- address mask (NA4/NAPOT) --"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 96
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.cmp_t",
+          "name": "cmp_t",
+          "kind": "alias",
+          "dtype": "array (NUM_REGIONS-1 downto 0) of std_ulogic_vector(1 downto 0)",
+          "comment": [
+            "-- address comparators, region-match and permission check --",
+            "-- 0 = instruction fetch, 1 = data access"
+          ],
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 92,
+            "end_col": 81
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_cpu_pmp.csr_we_cfg",
+          "name": "csr_we_cfg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "ctrl_i"
+            }
+          ],
+          "comment": [
+            "-- CSR Write Access: Configuration (PMPCFG) -----------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 112,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_pmpcfg_gen.csr_pmpcfg",
+          "name": "csr_pmpcfg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_pmpcfg_gen",
+              "cond": "i in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 117,
+            "col": 5,
+            "end_line": 150,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_we_addr",
+          "name": "csr_we_addr",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "ctrl_i"
+            }
+          ],
+          "comment": [
+            "-- CSR Write Access: Address (PMPADDR) ----------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 156,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_pmpaddr_gen.csr_pmpaddr",
+          "name": "csr_pmpaddr",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_pmpaddr_gen",
+              "cond": "i in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 5,
+            "end_line": 182,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_read_access",
+          "name": "csr_read_access",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "ctrl_i"
+            },
+            {
+              "signal": "cfg_rd32"
+            },
+            {
+              "signal": "addr_rd"
+            }
+          ],
+          "comment": [
+            "-- CSR Read Access ------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 199,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.csr_read_back_gen.address_read_back",
+          "name": "address_read_back",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "pmpaddr"
+            },
+            {
+              "signal": "pmpcfg"
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_read_back_gen",
+              "cond": "i in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 204,
+            "col": 5,
+            "end_line": 217,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.mask_gen.addr_masking",
+          "name": "addr_masking",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "mask_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "comment": [
+            "-- NAPOT address mask buffer --"
+          ],
+          "loc": {
+            "line": 257,
+            "col": 5,
+            "end_line": 270,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.region_gen.match_gen",
+          "name": "match_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "pmpcfg"
+            },
+            {
+              "signal": "cmp_ge"
+            },
+            {
+              "signal": "cmp_lt"
+            },
+            {
+              "signal": "cmp_na"
+            }
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "comment": [
+            "-- check region match according to configured mode --"
+          ],
+          "loc": {
+            "line": 297,
+            "col": 5,
+            "end_line": 310,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_cpu_pmp.fault_check",
+          "name": "fault_check",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- output buffer (ignore PMP rules when in debug-mode) --"
+          ],
+          "loc": {
+            "line": 342,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 15
           }
         }
       ],

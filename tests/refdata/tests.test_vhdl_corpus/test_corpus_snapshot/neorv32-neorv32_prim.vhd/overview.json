@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_prim_fifo.awidth",
+          "dtype": "natural",
           "name": "AWIDTH",
           "comment": [
             "-- address width (= log2(number of FIFO entries))"
@@ -20,6 +21,7 @@
         },
         {
           "id": "neorv32_prim_fifo.dwidth",
+          "dtype": "natural",
           "name": "DWIDTH",
           "comment": [
             "-- size of data elements in FIFO"
@@ -33,6 +35,7 @@
         },
         {
           "id": "neorv32_prim_fifo.outgate",
+          "dtype": "boolean",
           "name": "OUTGATE",
           "comment": [
             "-- true = output zero if no data available"
@@ -46,6 +49,7 @@
         },
         {
           "id": "neorv32_prim_fifo.asyncrd",
+          "dtype": "boolean",
           "name": "ASYNCRD",
           "comment": [
             "-- true = asynchronous read, false = synchronous read"
@@ -215,6 +219,360 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "neorv32_prim_fifo.rdata",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata",
+          "dim": "[DWIDTH-1:0]",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.we",
+          "dtype": "std_ulogic",
+          "name": "we",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.re",
+          "dtype": "std_ulogic",
+          "name": "re",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.match",
+          "dtype": "std_ulogic",
+          "name": "match",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.full",
+          "dtype": "std_ulogic",
+          "name": "full",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.empty",
+          "dtype": "std_ulogic",
+          "name": "empty",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.avail",
+          "dtype": "std_ulogic",
+          "name": "avail",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.w_pnt",
+          "dtype": "std_ulogic_vector",
+          "name": "w_pnt",
+          "dim": "[AWIDTH:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.w_nxt",
+          "dtype": "std_ulogic_vector",
+          "name": "w_nxt",
+          "dim": "[AWIDTH:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.r_pnt",
+          "dtype": "std_ulogic_vector",
+          "name": "r_pnt",
+          "dim": "[AWIDTH:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.r_nxt",
+          "dtype": "std_ulogic_vector",
+          "name": "r_nxt",
+          "dim": "[AWIDTH:0]",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_large.memory_large_sync_read.fifo",
+          "dtype": "ram_t",
+          "name": "fifo",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "memory_large_sync_read",
+              "cond": "not ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 131,
+            "col": 7,
+            "end_line": 131,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_large.memory_large_async_read.fifo",
+          "dtype": "ram_t",
+          "name": "fifo",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "memory_large_async_read",
+              "cond": "ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 147,
+            "col": 7,
+            "end_line": 147,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_small.fifo",
+          "dtype": "ram_t",
+          "name": "fifo",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 165,
+            "col": 5,
+            "end_line": 165,
+            "end_col": 24
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_prim_fifo.ram_t",
+          "name": "ram_t",
+          "kind": "alias",
+          "dtype": "array ((2**AWIDTH)-1 downto 0) of std_ulogic_vector(DWIDTH-1 downto 0)",
+          "comment": [
+            "-- memory core; the actual RAM signal is declared per generate-branch as a shared",
+            "-- architecture-scope signal would defeat RAM extraction on some synthesis tools --"
+          ],
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 88
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_prim_fifo.pointer_reg",
+          "name": "pointer_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- Pointers -------------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.status_large.status_large_sync_read.avail_reg",
+          "name": "avail_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "status_large_sync_read",
+              "cond": "not ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 7,
+            "end_line": 97,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_large.memory_large_sync_read.memory_core",
+          "name": "memory_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "memory_large_sync_read",
+              "cond": "not ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 133,
+            "col": 7,
+            "end_line": 141,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_large.memory_large_async_read.memory_core",
+          "name": "memory_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "memory_large_async_read",
+              "cond": "ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 149,
+            "col": 7,
+            "end_line": 156,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "neorv32_prim_fifo.memory_small.memory_core",
+          "name": "memory_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 5,
+            "end_line": 174,
+            "end_col": 17
+          }
+        }
+      ],
       "loc": {
         "line": 19,
         "col": 1,
@@ -228,6 +586,7 @@
       "params": [
         {
           "id": "neorv32_prim_spram.awidth",
+          "dtype": "natural",
           "name": "AWIDTH",
           "comment": [
             "-- address width (number of bits)"
@@ -241,6 +600,7 @@
         },
         {
           "id": "neorv32_prim_spram.dwidth",
+          "dtype": "natural",
           "name": "DWIDTH",
           "comment": [
             "-- data width (number of bits)"
@@ -254,6 +614,7 @@
         },
         {
           "id": "neorv32_prim_spram.outreg",
+          "dtype": "boolean",
           "name": "OUTREG",
           "comment": [
             "-- add output register stage when true"
@@ -362,6 +723,151 @@
           }
         }
       ],
+      "signals": [
+        {
+          "id": "neorv32_prim_spram.rdata",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata",
+          "dim": "[DWIDTH-1:0]",
+          "loc": {
+            "line": 224,
+            "col": 3,
+            "end_line": 224,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_prim_spram.memory_large.spram",
+          "dtype": "ram_t",
+          "name": "spram",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            }
+          ],
+          "loc": {
+            "line": 232,
+            "col": 5,
+            "end_line": 232,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "neorv32_prim_spram.memory_small.spram",
+          "dtype": "ram_t",
+          "name": "spram",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 250,
+            "col": 5,
+            "end_line": 250,
+            "end_col": 25
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_prim_spram.ram_t",
+          "name": "ram_t",
+          "kind": "alias",
+          "dtype": "array ((2**AWIDTH)-1 downto 0) of std_ulogic_vector(DWIDTH-1 downto 0)",
+          "comment": [
+            "-- memory core; the actual RAM signal is declared per generate-branch as a shared",
+            "-- architecture-scope signal would defeat RAM extraction on some synthesis tools --"
+          ],
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 223,
+            "end_col": 88
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_prim_spram.memory_large.memory_core",
+          "name": "memory_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            }
+          ],
+          "loc": {
+            "line": 234,
+            "col": 5,
+            "end_line": 244,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_spram.memory_small.memory_core",
+          "name": "memory_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 252,
+            "col": 5,
+            "end_line": 259,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_spram.output_register_enabled.read_outreg",
+          "name": "read_outreg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "output_register_enabled",
+              "cond": "OUTREG"
+            }
+          ],
+          "loc": {
+            "line": 267,
+            "col": 5,
+            "end_line": 272,
+            "end_col": 17
+          }
+        }
+      ],
       "loc": {
         "line": 201,
         "col": 1,
@@ -375,6 +881,7 @@
       "params": [
         {
           "id": "neorv32_prim_mul.dwidth",
+          "dtype": "natural",
           "name": "DWIDTH",
           "comment": [
             "-- operand width"
@@ -388,6 +895,7 @@
         },
         {
           "id": "neorv32_prim_mul.num_regs",
+          "dtype": "natural",
           "name": "NUM_REGS",
           "default": "1",
           "comment": [
@@ -512,6 +1020,405 @@
           }
         }
       ],
+      "localparams": [
+        {
+          "id": "neorv32_prim_mul.lo_width_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "lo_width_c",
+          "default": "DWIDTH / 2",
+          "loc": {
+            "line": 370,
+            "col": 5,
+            "end_line": 370,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.hi_width_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "hi_width_c",
+          "default": "(DWIDTH + 1) - lo_width_c",
+          "loc": {
+            "line": 371,
+            "col": 5,
+            "end_line": 371,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.pp_width_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "pp_width_c",
+          "default": "2 * hi_width_c",
+          "loc": {
+            "line": 372,
+            "col": 5,
+            "end_line": 372,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.pr_width_c",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "pr_width_c",
+          "default": "(2 * DWIDTH) + 2",
+          "loc": {
+            "line": 373,
+            "col": 5,
+            "end_line": 373,
+            "end_col": 54
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_prim_mul.opa",
+          "dtype": "signed",
+          "name": "opa",
+          "dim": "[DWIDTH:0]",
+          "loc": {
+            "line": 320,
+            "col": 3,
+            "end_line": 320,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.opb",
+          "dtype": "signed",
+          "name": "opb",
+          "dim": "[DWIDTH:0]",
+          "loc": {
+            "line": 320,
+            "col": 3,
+            "end_line": 320,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.res",
+          "dtype": "signed",
+          "name": "res",
+          "dim": "[(2*DWIDTH)+1:0]",
+          "loc": {
+            "line": 321,
+            "col": 3,
+            "end_line": 321,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.two_regs.mul_res",
+          "dtype": "signed",
+          "name": "mul_res",
+          "dim": "[(2*DWIDTH)+1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "two_regs",
+              "cond": "(NUM_REGS = 2)"
+            }
+          ],
+          "loc": {
+            "line": 351,
+            "col": 5,
+            "end_line": 351,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_ll",
+          "dtype": "signed",
+          "name": "q_ll",
+          "dim": "[pp_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 375,
+            "col": 5,
+            "end_line": 375,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_lh",
+          "dtype": "signed",
+          "name": "q_lh",
+          "dim": "[pp_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 375,
+            "col": 5,
+            "end_line": 375,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_hl",
+          "dtype": "signed",
+          "name": "q_hl",
+          "dim": "[pp_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 375,
+            "col": 5,
+            "end_line": 375,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_hh",
+          "dtype": "signed",
+          "name": "q_hh",
+          "dim": "[pp_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 375,
+            "col": 5,
+            "end_line": 375,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_sum_lo",
+          "dtype": "signed",
+          "name": "q_sum_lo",
+          "dim": "[pr_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 376,
+            "col": 5,
+            "end_line": 376,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.q_sum_hi",
+          "dtype": "signed",
+          "name": "q_sum_hi",
+          "dim": "[pr_width_c-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 376,
+            "col": 5,
+            "end_line": 376,
+            "end_col": 66
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_prim_mul.in_reg",
+          "name": "in_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Input Registers ------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 327,
+            "col": 3,
+            "end_line": 335,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.one_reg.mul_reg",
+          "name": "mul_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "one_reg",
+              "cond": "(NUM_REGS = 1)"
+            }
+          ],
+          "loc": {
+            "line": 341,
+            "col": 5,
+            "end_line": 346,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.two_regs.mul_reg",
+          "name": "mul_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "two_regs",
+              "cond": "(NUM_REGS = 2)"
+            }
+          ],
+          "loc": {
+            "line": 353,
+            "col": 5,
+            "end_line": 358,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.two_regs.result_reg",
+          "name": "result_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "two_regs",
+              "cond": "(NUM_REGS = 2)"
+            }
+          ],
+          "loc": {
+            "line": 360,
+            "col": 5,
+            "end_line": 365,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.partial_product_reg",
+          "name": "partial_product_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 378,
+            "col": 5,
+            "end_line": 390,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.partial_sum_reg",
+          "name": "partial_sum_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 392,
+            "col": 5,
+            "end_line": 399,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "neorv32_prim_mul.three_regs.result_reg",
+          "name": "result_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "three_regs",
+              "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "loc": {
+            "line": 401,
+            "col": 5,
+            "end_line": 406,
+            "end_col": 17
+          }
+        }
+      ],
       "loc": {
         "line": 300,
         "col": 1,
@@ -525,6 +1432,7 @@
       "params": [
         {
           "id": "neorv32_prim_cnt.cwidth",
+          "dtype": "natural",
           "name": "CWIDTH",
           "comment": [
             "-- actual counter width (0..64)"
@@ -645,6 +1553,96 @@
             "col": 5,
             "end_line": 446,
             "end_col": 48
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_prim_cnt.count",
+          "dtype": "std_ulogic_vector",
+          "name": "count",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 452,
+            "col": 3,
+            "end_line": 452,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "neorv32_prim_cnt.carry",
+          "dtype": "std_ulogic_vector",
+          "name": "carry",
+          "dim": "[0:0]",
+          "loc": {
+            "line": 453,
+            "col": 3,
+            "end_line": 453,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "neorv32_prim_cnt.inc",
+          "dtype": "std_ulogic_vector",
+          "name": "inc",
+          "dim": "[32:0]",
+          "loc": {
+            "line": 454,
+            "col": 3,
+            "end_line": 454,
+            "end_col": 48
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_prim_cnt.counter_core",
+          "name": "counter_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- 64-Bit Counter (split across two 32-bit registers) -------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 460,
+            "col": 3,
+            "end_line": 481,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_prim_cnt.trim",
+          "name": "trim",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "oe_i"
+            },
+            {
+              "signal": "count"
+            }
+          ],
+          "comment": [
+            "-- Output Gating and Trimming -------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 488,
+            "col": 3,
+            "end_line": 494,
+            "end_col": 15
           }
         }
       ],

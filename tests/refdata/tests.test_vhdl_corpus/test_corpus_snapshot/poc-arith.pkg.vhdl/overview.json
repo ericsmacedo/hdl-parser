@@ -1,0 +1,1553 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/arith.pkg.vhdl",
+  "modules": [],
+  "packages": [
+    {
+      "id": "arith",
+      "name": "arith",
+      "typedefs": [
+        {
+          "id": "arith.tarch",
+          "name": "tArch",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "arith.tarch.aam",
+              "name": "AAM",
+              "loc": {
+                "line": 161,
+                "col": 19,
+                "end_line": 161,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "arith.tarch.cai",
+              "name": "CAI",
+              "loc": {
+                "line": 161,
+                "col": 24,
+                "end_line": 161,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "arith.tarch.cca",
+              "name": "CCA",
+              "loc": {
+                "line": 161,
+                "col": 29,
+                "end_line": 161,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "arith.tarch.pai",
+              "name": "PAI",
+              "loc": {
+                "line": 161,
+                "col": 34,
+                "end_line": 161,
+                "end_col": 37
+              }
+            }
+          ],
+          "loc": {
+            "line": 161,
+            "col": 2,
+            "end_line": 161,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "arith.tblocking",
+          "name": "tBlocking",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "arith.tblocking.dflt",
+              "name": "DFLT",
+              "loc": {
+                "line": 162,
+                "col": 21,
+                "end_line": 162,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "arith.tblocking.fix",
+              "name": "FIX",
+              "loc": {
+                "line": 162,
+                "col": 27,
+                "end_line": 162,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "arith.tblocking.asc",
+              "name": "ASC",
+              "loc": {
+                "line": 162,
+                "col": 32,
+                "end_line": 162,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "arith.tblocking.desc",
+              "name": "DESC",
+              "loc": {
+                "line": 162,
+                "col": 37,
+                "end_line": 162,
+                "end_col": 41
+              }
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 2,
+            "end_line": 162,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "arith.tskipping",
+          "name": "tSkipping",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "arith.tskipping.plain",
+              "name": "PLAIN",
+              "loc": {
+                "line": 163,
+                "col": 21,
+                "end_line": 163,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "arith.tskipping.ccc",
+              "name": "CCC",
+              "loc": {
+                "line": 163,
+                "col": 28,
+                "end_line": 163,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "arith.tskipping.ppn_ks",
+              "name": "PPN_KS",
+              "loc": {
+                "line": 163,
+                "col": 33,
+                "end_line": 163,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "arith.tskipping.ppn_bk",
+              "name": "PPN_BK",
+              "loc": {
+                "line": 163,
+                "col": 41,
+                "end_line": 163,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 163,
+            "col": 2,
+            "end_line": 163,
+            "end_col": 49
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "arith.arith_div_latency",
+          "name": "arith_div_latency",
+          "kind": "function",
+          "rtype": "positive",
+          "args": [
+            {
+              "id": "arith.arith_div_latency.a_bits",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "a_bits",
+              "loc": {
+                "line": 85,
+                "col": 30,
+                "end_line": 85,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "arith.arith_div_latency.rapow",
+              "direction": "in",
+              "dtype": "positive",
+              "name": "rapow",
+              "loc": {
+                "line": 85,
+                "col": 30,
+                "end_line": 85,
+                "end_col": 54
+              }
+            }
+          ],
+          "comment": [
+            "-- This function computes the latency of the sequential divider, both for the",
+            "-- pipelined and the regular sequential implementation. The returned value",
+            "-- specifies the number of cycles it takes after asserting start for the",
+            "-- result to become ready."
+          ],
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 72
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "arith.arith_firstone",
+          "name": "arith_firstone",
+          "params": [
+            {
+              "id": "arith.arith_firstone.n",
+              "dtype": "positive",
+              "name": "N",
+              "comment": [
+                "-- Length of Token Chain"
+              ],
+              "loc": {
+                "line": 45,
+                "col": 4,
+                "end_line": 45,
+                "end_col": 18
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_firstone.tin",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "tin",
+              "default": "'1'",
+              "comment": [
+                "-- Enable:\t\tFed Token"
+              ],
+              "loc": {
+                "line": 48,
+                "col": 4,
+                "end_line": 48,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "arith.arith_firstone.rqst",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "rqst",
+              "dim": "[N-1:0]",
+              "comment": [
+                "-- Request:\t\tToken Requests"
+              ],
+              "loc": {
+                "line": 49,
+                "col": 4,
+                "end_line": 49,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "arith.arith_firstone.grnt",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "grnt",
+              "dim": "[N-1:0]",
+              "comment": [
+                "-- Grant:\t\t\tToken Output"
+              ],
+              "loc": {
+                "line": 50,
+                "col": 4,
+                "end_line": 50,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "arith.arith_firstone.tout",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "tout",
+              "comment": [
+                "-- Inactive:\tUnused Token"
+              ],
+              "loc": {
+                "line": 51,
+                "col": 4,
+                "end_line": 51,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_firstone.bin",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "bin",
+              "dim": "[log2ceil(N)-1:0]",
+              "comment": [
+                "-- Binary Grant Index"
+              ],
+              "loc": {
+                "line": 52,
+                "col": 4,
+                "end_line": 52,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 43,
+            "col": 2,
+            "end_line": 54,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_counter_bcd",
+          "name": "arith_counter_bcd",
+          "params": [
+            {
+              "id": "arith.arith_counter_bcd.digits",
+              "dtype": "positive",
+              "name": "DIGITS",
+              "loc": {
+                "line": 58,
+                "col": 4,
+                "end_line": 58,
+                "end_col": 21
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_counter_bcd.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 60,
+                "col": 4,
+                "end_line": 60,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_counter_bcd.rst",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "rst",
+              "loc": {
+                "line": 61,
+                "col": 4,
+                "end_line": 61,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_counter_bcd.inc",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "inc",
+              "loc": {
+                "line": 62,
+                "col": 4,
+                "end_line": 62,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_counter_bcd.val",
+              "direction": "out",
+              "dtype": "t_bcd_vector",
+              "name": "val",
+              "dim": "[DIGITS-1:0]",
+              "loc": {
+                "line": 63,
+                "col": 4,
+                "end_line": 63,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 56,
+            "col": 2,
+            "end_line": 64,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_counter_gray",
+          "name": "arith_counter_gray",
+          "params": [
+            {
+              "id": "arith.arith_counter_gray.bits",
+              "dtype": "positive",
+              "name": "BITS",
+              "comment": [
+                "-- Bit width of the counter"
+              ],
+              "loc": {
+                "line": 68,
+                "col": 4,
+                "end_line": 68,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.init",
+              "dtype": "natural",
+              "name": "INIT",
+              "default": "0",
+              "comment": [
+                "-- Initial/reset counter value"
+              ],
+              "loc": {
+                "line": 69,
+                "col": 4,
+                "end_line": 69,
+                "end_col": 27
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_counter_gray.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 72,
+                "col": 4,
+                "end_line": 72,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.rst",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "rst",
+              "comment": [
+                "-- Reset to INIT value"
+              ],
+              "loc": {
+                "line": 73,
+                "col": 4,
+                "end_line": 73,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.inc",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "inc",
+              "comment": [
+                "-- Increment"
+              ],
+              "loc": {
+                "line": 74,
+                "col": 4,
+                "end_line": 74,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.dec",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "dec",
+              "default": "'0'",
+              "comment": [
+                "-- Decrement"
+              ],
+              "loc": {
+                "line": 75,
+                "col": 4,
+                "end_line": 75,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.val",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "val",
+              "dim": "[BITS-1:0]",
+              "comment": [
+                "-- Value output"
+              ],
+              "loc": {
+                "line": 76,
+                "col": 4,
+                "end_line": 76,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "arith.arith_counter_gray.cry",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "cry",
+              "comment": [
+                "-- Carry output"
+              ],
+              "loc": {
+                "line": 77,
+                "col": 4,
+                "end_line": 77,
+                "end_col": 24
+              }
+            }
+          ],
+          "loc": {
+            "line": 66,
+            "col": 2,
+            "end_line": 79,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_div",
+          "name": "arith_div",
+          "params": [
+            {
+              "id": "arith.arith_div.a_bits",
+              "dtype": "positive",
+              "name": "A_BITS",
+              "comment": [
+                "-- Dividend Width"
+              ],
+              "loc": {
+                "line": 89,
+                "col": 4,
+                "end_line": 89,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "arith.arith_div.d_bits",
+              "dtype": "positive",
+              "name": "D_BITS",
+              "comment": [
+                "-- Divisor Width"
+              ],
+              "loc": {
+                "line": 90,
+                "col": 4,
+                "end_line": 90,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "arith.arith_div.rapow",
+              "dtype": "positive",
+              "name": "RAPOW",
+              "default": "1",
+              "comment": [
+                "-- Power of Compute Radix (2**RAPOW)"
+              ],
+              "loc": {
+                "line": 91,
+                "col": 4,
+                "end_line": 91,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "arith.arith_div.pipelined",
+              "dtype": "boolean",
+              "name": "PIPELINED",
+              "default": "false",
+              "comment": [
+                "-- Computation Pipeline"
+              ],
+              "loc": {
+                "line": 92,
+                "col": 4,
+                "end_line": 92,
+                "end_col": 42
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_div.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 96,
+                "col": 4,
+                "end_line": 96,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "arith.arith_div.rst",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "rst",
+              "comment": [
+                "-- Ready / Start"
+              ],
+              "loc": {
+                "line": 97,
+                "col": 4,
+                "end_line": 97,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "arith.arith_div.start",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "start",
+              "loc": {
+                "line": 100,
+                "col": 7,
+                "end_line": 100,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "arith.arith_div.ready",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "ready",
+              "comment": [
+                "-- Arguments / Result (2's complement)"
+              ],
+              "loc": {
+                "line": 101,
+                "col": 7,
+                "end_line": 101,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "arith.arith_div.a",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "A",
+              "dim": "[A_BITS-1:0]",
+              "comment": [
+                "-- Dividend"
+              ],
+              "loc": {
+                "line": 104,
+                "col": 4,
+                "end_line": 104,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "arith.arith_div.d",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "D",
+              "dim": "[D_BITS-1:0]",
+              "comment": [
+                "-- Divisor"
+              ],
+              "loc": {
+                "line": 105,
+                "col": 4,
+                "end_line": 105,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "arith.arith_div.q",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "Q",
+              "dim": "[A_BITS-1:0]",
+              "comment": [
+                "-- Quotient"
+              ],
+              "loc": {
+                "line": 106,
+                "col": 4,
+                "end_line": 106,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "arith.arith_div.r",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "R",
+              "dim": "[D_BITS-1:0]",
+              "comment": [
+                "-- Remainder"
+              ],
+              "loc": {
+                "line": 107,
+                "col": 4,
+                "end_line": 107,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "arith.arith_div.z",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "Z",
+              "comment": [
+                "-- Division by Zero"
+              ],
+              "loc": {
+                "line": 108,
+                "col": 4,
+                "end_line": 108,
+                "end_col": 21
+              }
+            }
+          ],
+          "loc": {
+            "line": 87,
+            "col": 2,
+            "end_line": 110,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_prng",
+          "name": "arith_prng",
+          "params": [
+            {
+              "id": "arith.arith_prng.bits",
+              "dtype": "positive",
+              "name": "BITS",
+              "loc": {
+                "line": 114,
+                "col": 4,
+                "end_line": 114,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "arith.arith_prng.seed",
+              "dtype": "std_logic_vector",
+              "name": "SEED",
+              "default": "\"0\"",
+              "loc": {
+                "line": 115,
+                "col": 4,
+                "end_line": 115,
+                "end_col": 35
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_prng.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 118,
+                "col": 4,
+                "end_line": 118,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_prng.rst",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "rst",
+              "loc": {
+                "line": 119,
+                "col": 4,
+                "end_line": 119,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_prng.got",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "got",
+              "loc": {
+                "line": 120,
+                "col": 4,
+                "end_line": 120,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_prng.val",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "val",
+              "dim": "[BITS-1:0]",
+              "loc": {
+                "line": 121,
+                "col": 4,
+                "end_line": 121,
+                "end_col": 48
+              }
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 2,
+            "end_line": 122,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_trng",
+          "name": "arith_trng",
+          "params": [
+            {
+              "id": "arith.arith_trng.bits",
+              "dtype": "positive",
+              "name": "BITS",
+              "comment": [
+                "-- Width: Number of Oscillators"
+              ],
+              "loc": {
+                "line": 126,
+                "col": 4,
+                "end_line": 126,
+                "end_col": 19
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_trng.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "comment": [
+                "-- Clock"
+              ],
+              "loc": {
+                "line": 129,
+                "col": 4,
+                "end_line": 129,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_trng.rnd",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "rnd",
+              "dim": "[BITS-1:0]",
+              "comment": [
+                "-- Random Oscillator Samples"
+              ],
+              "loc": {
+                "line": 130,
+                "col": 4,
+                "end_line": 130,
+                "end_col": 47
+              }
+            }
+          ],
+          "loc": {
+            "line": 124,
+            "col": 2,
+            "end_line": 132,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_muls_wide",
+          "name": "arith_muls_wide",
+          "params": [
+            {
+              "id": "arith.arith_muls_wide.na",
+              "dtype": "integer",
+              "name": "NA",
+              "loc": {
+                "line": 136,
+                "col": 4,
+                "end_line": 136,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "arith.arith_muls_wide.nb",
+              "dtype": "integer",
+              "name": "NB",
+              "loc": {
+                "line": 137,
+                "col": 4,
+                "end_line": 137,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "arith.arith_muls_wide.split",
+              "dtype": "positive",
+              "name": "SPLIT",
+              "loc": {
+                "line": 138,
+                "col": 4,
+                "end_line": 138,
+                "end_col": 20
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_muls_wide.a",
+              "direction": "in",
+              "dtype": "signed",
+              "name": "a",
+              "dim": "[NA-1:0]",
+              "loc": {
+                "line": 141,
+                "col": 4,
+                "end_line": 141,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "arith.arith_muls_wide.b",
+              "direction": "in",
+              "dtype": "signed",
+              "name": "b",
+              "dim": "[NB-1:0]",
+              "loc": {
+                "line": 142,
+                "col": 4,
+                "end_line": 142,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "arith.arith_muls_wide.p",
+              "direction": "out",
+              "dtype": "signed",
+              "name": "p",
+              "dim": "[NA+NB-1:0]",
+              "loc": {
+                "line": 143,
+                "col": 4,
+                "end_line": 143,
+                "end_col": 38
+              }
+            }
+          ],
+          "loc": {
+            "line": 134,
+            "col": 2,
+            "end_line": 145,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_sqrt",
+          "name": "arith_sqrt",
+          "params": [
+            {
+              "id": "arith.arith_sqrt.n",
+              "dtype": "positive",
+              "name": "N",
+              "loc": {
+                "line": 149,
+                "col": 4,
+                "end_line": 149,
+                "end_col": 17
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_sqrt.rst",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "rst",
+              "loc": {
+                "line": 152,
+                "col": 4,
+                "end_line": 152,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_sqrt.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 153,
+                "col": 4,
+                "end_line": 153,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "arith.arith_sqrt.arg",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "arg",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 154,
+                "col": 4,
+                "end_line": 154,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "arith.arith_sqrt.start",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "start",
+              "loc": {
+                "line": 155,
+                "col": 4,
+                "end_line": 155,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "arith.arith_sqrt.sqrt",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "sqrt",
+              "dim": "[(N-1)/2:0]",
+              "loc": {
+                "line": 156,
+                "col": 4,
+                "end_line": 156,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "arith.arith_sqrt.rdy",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "rdy",
+              "loc": {
+                "line": 157,
+                "col": 4,
+                "end_line": 157,
+                "end_col": 25
+              }
+            }
+          ],
+          "loc": {
+            "line": 147,
+            "col": 2,
+            "end_line": 159,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_addw",
+          "name": "arith_addw",
+          "params": [
+            {
+              "id": "arith.arith_addw.n",
+              "dtype": "positive",
+              "name": "N",
+              "comment": [
+                "-- Operand Width"
+              ],
+              "loc": {
+                "line": 167,
+                "col": 4,
+                "end_line": 167,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "arith.arith_addw.k",
+              "dtype": "positive",
+              "name": "K",
+              "comment": [
+                "-- Block Count"
+              ],
+              "loc": {
+                "line": 168,
+                "col": 4,
+                "end_line": 168,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "arith.arith_addw.arch",
+              "dtype": "tarch",
+              "name": "ARCH",
+              "default": "AAM",
+              "comment": [
+                "-- Architecture"
+              ],
+              "loc": {
+                "line": 170,
+                "col": 4,
+                "end_line": 170,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "arith.arith_addw.blocking",
+              "dtype": "tblocking",
+              "name": "BLOCKING",
+              "default": "DFLT",
+              "comment": [
+                "-- Blocking Scheme"
+              ],
+              "loc": {
+                "line": 171,
+                "col": 4,
+                "end_line": 171,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "arith.arith_addw.skipping",
+              "dtype": "tskipping",
+              "name": "SKIPPING",
+              "default": "CCC",
+              "comment": [
+                "-- Carry Skip Scheme"
+              ],
+              "loc": {
+                "line": 172,
+                "col": 4,
+                "end_line": 172,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "arith.arith_addw.p_inclusive",
+              "dtype": "boolean",
+              "name": "P_INCLUSIVE",
+              "default": "false",
+              "comment": [
+                "-- Use Inclusive Propagate, i.e. c^1"
+              ],
+              "loc": {
+                "line": 173,
+                "col": 4,
+                "end_line": 173,
+                "end_col": 35
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_addw.a",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "a",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 176,
+                "col": 4,
+                "end_line": 176,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "arith.arith_addw.b",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "b",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 176,
+                "col": 4,
+                "end_line": 176,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "arith.arith_addw.cin",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "cin",
+              "loc": {
+                "line": 177,
+                "col": 4,
+                "end_line": 177,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "arith.arith_addw.s",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "s",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 179,
+                "col": 4,
+                "end_line": 179,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "arith.arith_addw.cout",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "cout",
+              "loc": {
+                "line": 180,
+                "col": 4,
+                "end_line": 180,
+                "end_col": 24
+              }
+            }
+          ],
+          "loc": {
+            "line": 165,
+            "col": 2,
+            "end_line": 182,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_same",
+          "name": "arith_same",
+          "params": [
+            {
+              "id": "arith.arith_same.n",
+              "dtype": "positive",
+              "name": "N",
+              "comment": [
+                "-- Input width"
+              ],
+              "loc": {
+                "line": 186,
+                "col": 4,
+                "end_line": 186,
+                "end_col": 17
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_same.g",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "g",
+              "default": "'1'",
+              "comment": [
+                "-- Guard Input (!g => !y)"
+              ],
+              "loc": {
+                "line": 189,
+                "col": 4,
+                "end_line": 189,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "arith.arith_same.x",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "x",
+              "dim": "[N-1:0]",
+              "comment": [
+                "-- Input Vector"
+              ],
+              "loc": {
+                "line": 190,
+                "col": 4,
+                "end_line": 190,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "arith.arith_same.y",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "y",
+              "comment": [
+                "-- All-same Output"
+              ],
+              "loc": {
+                "line": 191,
+                "col": 4,
+                "end_line": 191,
+                "end_col": 22
+              }
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 2,
+            "end_line": 193,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_carrychain_inc_xilinx",
+          "name": "arith_carrychain_inc_xilinx",
+          "params": [
+            {
+              "id": "arith.arith_carrychain_inc_xilinx.bits",
+              "dtype": "positive",
+              "name": "BITS",
+              "loc": {
+                "line": 197,
+                "col": 4,
+                "end_line": 197,
+                "end_col": 21
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_carrychain_inc_xilinx.x",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "X",
+              "dim": "[BITS - 1:0]",
+              "loc": {
+                "line": 200,
+                "col": 4,
+                "end_line": 200,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "arith.arith_carrychain_inc_xilinx.cin",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "CIn",
+              "default": "'1'",
+              "loc": {
+                "line": 201,
+                "col": 4,
+                "end_line": 201,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "arith.arith_carrychain_inc_xilinx.y",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "Y",
+              "dim": "[BITS - 1:0]",
+              "loc": {
+                "line": 202,
+                "col": 4,
+                "end_line": 202,
+                "end_col": 48
+              }
+            }
+          ],
+          "loc": {
+            "line": 195,
+            "col": 2,
+            "end_line": 204,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_prefix_and_xilinx",
+          "name": "arith_prefix_and_xilinx",
+          "params": [
+            {
+              "id": "arith.arith_prefix_and_xilinx.n",
+              "dtype": "positive",
+              "name": "N",
+              "loc": {
+                "line": 208,
+                "col": 4,
+                "end_line": 208,
+                "end_col": 16
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_prefix_and_xilinx.x",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "x",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 211,
+                "col": 4,
+                "end_line": 211,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "arith.arith_prefix_and_xilinx.y",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "y",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 212,
+                "col": 4,
+                "end_line": 212,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 206,
+            "col": 2,
+            "end_line": 214,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_prefix_or_xilinx",
+          "name": "arith_prefix_or_xilinx",
+          "params": [
+            {
+              "id": "arith.arith_prefix_or_xilinx.n",
+              "dtype": "positive",
+              "name": "N",
+              "loc": {
+                "line": 218,
+                "col": 4,
+                "end_line": 218,
+                "end_col": 16
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_prefix_or_xilinx.x",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "x",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 221,
+                "col": 4,
+                "end_line": 221,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "arith.arith_prefix_or_xilinx.y",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "y",
+              "dim": "[N-1:0]",
+              "loc": {
+                "line": 222,
+                "col": 4,
+                "end_line": 222,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 216,
+            "col": 2,
+            "end_line": 224,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "arith.arith_inc_ovcy_xilinx",
+          "name": "arith_inc_ovcy_xilinx",
+          "params": [
+            {
+              "id": "arith.arith_inc_ovcy_xilinx.n",
+              "dtype": "positive",
+              "name": "N",
+              "comment": [
+                "-- Bit Width"
+              ],
+              "loc": {
+                "line": 228,
+                "col": 4,
+                "end_line": 228,
+                "end_col": 17
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "arith.arith_inc_ovcy_xilinx.p",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "p",
+              "dim": "[N-1:0]",
+              "comment": [
+                "-- Argument"
+              ],
+              "loc": {
+                "line": 231,
+                "col": 4,
+                "end_line": 231,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "arith.arith_inc_ovcy_xilinx.g",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "g",
+              "comment": [
+                "-- Increment Guard"
+              ],
+              "loc": {
+                "line": 232,
+                "col": 4,
+                "end_line": 232,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "arith.arith_inc_ovcy_xilinx.v",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "v",
+              "comment": [
+                "-- Overflow Output"
+              ],
+              "loc": {
+                "line": 233,
+                "col": 4,
+                "end_line": 233,
+                "end_col": 22
+              }
+            }
+          ],
+          "loc": {
+            "line": 226,
+            "col": 2,
+            "end_line": 235,
+            "end_col": 16
+          }
+        }
+      ],
+      "loc": {
+        "line": 42,
+        "col": 1,
+        "end_line": 236,
+        "end_col": 13
+      }
+    }
+  ]
+}

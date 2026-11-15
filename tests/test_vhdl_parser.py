@@ -64,7 +64,9 @@ def test_tokenize():
         (OP, ":="),
         (ID, "a"),
     ]
-    assert result.comments == {8: ["-- text", "/* block  */"]}
+    # the line comment is located behind the last token in front (index 7)
+    assert result.trailing == {7: ["-- text"]}
+    assert result.comments == {8: ["/* block  */"]}
 
 
 def test_tokenize_tick():
@@ -114,10 +116,10 @@ def test_ports():
     assert plain(ports) == (
         Port(direction="in", ptype="signal", dtype="std_logic", name="a", comment=("-- first", "-- second")),
         Port(direction="in", ptype="signal", dtype="std_logic", name="b", comment=("-- first", "-- second")),
-        Port(direction="out", dtype="std_logic_vector", name="c", dim="[W-1:0]"),
+        Port(direction="out", dtype="std_logic_vector", name="c", dim="[W-1:0]", default="(others => '0')"),
         Port(direction="inout", dtype="work.pkg.rec_t", name="d"),
         Port(direction="in", dtype="unsigned", name="e", dim="[f(3, 4) - 1:0]"),
-        Port(direction="buffer", dtype="integer", name="f"),
+        Port(direction="buffer", dtype="integer", name="f", default="3"),
         Port(direction="in", dtype="t_arr", name="g", dim="[0:3][7:0]"),
         Port(direction="out", name="h", comment=("-- last",)),
     )
@@ -136,11 +138,11 @@ def test_params():
         """
     )
     assert plain(params) == (
-        Param(name="A"),
-        Param(name="B", ptype="constant", default="2", comment=("-- two",)),
-        Param(name="C", ptype="constant", default="2", comment=("-- two",)),
-        Param(name="D", dim="[3:0]", default="\"00\" & (others => '1')"),
-        Param(name="E", default='";"'),
+        Param(name="A", dtype="integer"),
+        Param(name="B", ptype="constant", dtype="natural", default="2", comment=("-- two",)),
+        Param(name="C", ptype="constant", dtype="natural", default="2", comment=("-- two",)),
+        Param(name="D", dtype="std_logic_vector", dim="[3:0]", default="\"00\" & (others => '1')"),
+        Param(name="E", dtype="string", default='";"'),
     )
 
 
@@ -159,7 +161,7 @@ def test_entity():
     )
     assert plain(module) == Module(
         name="top",
-        params=(Param(name="W", default="8"),),
+        params=(Param(name="W", dtype="natural", default="8"),),
         ports=(Port(direction="in", dtype="std_logic", name="a"),),
     )
 
@@ -368,7 +370,7 @@ def test_units():
     ]
 
 
-@mark.parametrize("text", ["", "entity", "entity top", "library ieee; package p is end;"])
+@mark.parametrize("text", ["", "entity", "entity top", "library ieee; package body p is end;", "package p is new q;"])
 def test_no_module(text):
     """Nothing To Find."""
     assert plain(parse_text(text, lang="vhdl")) == File(path=None, modules=())
@@ -380,7 +382,7 @@ def test_no_module(text):
         "entity top is",
         "architecture rtl of top",
         "architecture rtl of top is ) ( ]",
-        "architecture rtl of top is function f return integer is begin",
+        "architecture rtl of top is function return integer is begin",
     ],
 )
 def test_empty(text):

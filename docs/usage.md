@@ -41,6 +41,70 @@ There are two major use-cases:
     --8<-- "examples/sv/adder.json"
     ```
 
+## Packages And Types
+
+SystemVerilog packages are listed in `packages` of the file, with their parameters and types.
+Enumerations list their members, structs and unions their fields:
+
+```python
+>>> import hdl_parser
+>>> file = hdl_parser.parse_text("""
+... package bus_pkg;
+...   localparam int AW = 32;
+...   typedef enum logic [1:0] {IDLE, BUSY = 2} state_t;
+...   typedef struct packed { logic [AW-1:0] addr; logic we; } req_t;
+... endpackage
+... """)
+>>> for typedef in file.packages[0].typedefs:
+...     print(typedef.id, typedef.kind, [(member.name, member.dtype, member.dim, member.value) for member in typedef.members])
+bus_pkg.state_t enum [('IDLE', '', '', ''), ('BUSY', '', '', '2')]
+bus_pkg.req_t struct [('addr', 'logic', '[AW-1:0]', ''), ('we', 'logic', '', '')]
+
+```
+
+Types declared within a module are listed in `typedefs` of the module.
+
+## What Is Extracted
+
+A file lists its `modules`, `interfaces` and `packages`. VHDL entities are modules, with the content of their
+architectures.
+
+| Attribute      | Of                           | Content                                                            |
+| -------------- | ---------------------------- | ------------------------------------------------------------------ |
+| `params`       | modules, interfaces, packages| Parameters (VHDL: generics)                                        |
+| `localparams`  | modules, interfaces, packages| Local parameters (VHDL: constants)                                 |
+| `ports`        | modules, interfaces          | Ports                                                              |
+| `signals`      | modules, interfaces          | Nets and variables (VHDL: signals)                                 |
+| `typedefs`     | modules, interfaces, packages| Types: enumerations, structs (VHDL: records) and aliases           |
+| `functions`    | modules, interfaces, packages| Signatures of functions and tasks (VHDL: procedures)               |
+| `processes`    | modules, interfaces          | `always` blocks (VHDL: processes) with their clock and reset       |
+| `insts`        | modules, interfaces          | Instances with parameter values, connections and generate blocks   |
+| `modports`     | interfaces                   | Modports with the direction of their signals                       |
+| `components`   | modules, packages            | Component declarations (VHDL)                                      |
+
+Every item has an `id` and a source location `loc`. `file.iter_items()` walks all of them, `file.find(id)`
+returns one:
+
+```python
+>>> file = hdl_parser.parse_text("""
+... module top (input logic clk_i, input logic rst_ni);
+...   logic [7:0] data_q;
+...   always_ff @(posedge clk_i or negedge rst_ni) begin : p_data
+...     if (!rst_ni) data_q <= '0;
+...     else data_q <= data_q + 1;
+...   end
+... endmodule
+... """)
+>>> [item.id for item in file.iter_items()]
+['top', 'top.clk_i', 'top.rst_ni', 'top.data_q', 'top.p_data']
+>>> process = file.find("top.p_data")
+>>> process.clock, process.clock_edge, process.reset, process.reset_edge
+('clk_i', 'posedge', 'rst_ni', 'negedge')
+
+```
+
+Clock and reset of a block are never guessed: they are empty, if the code does not tell them.
+
 ## Macros
 
 Macros are **not** expanded by default. On request (`--expand-macros`, `expand_macros=True`) macros are expanded,

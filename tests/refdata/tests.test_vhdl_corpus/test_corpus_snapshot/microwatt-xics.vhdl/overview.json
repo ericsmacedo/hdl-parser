@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "xics_icp.ncpus",
+          "dtype": "natural",
           "name": "NCPUS",
           "default": "1",
           "loc": {
@@ -92,6 +93,281 @@
           }
         }
       ],
+      "localparams": [
+        {
+          "id": "xics_icp.xics_presentation_t_init",
+          "ptype": "constant",
+          "dtype": "xics_presentation_t",
+          "name": "xics_presentation_t_init",
+          "default": "(mfrr => x\"ff\", \n         irq => '0',\n         others => (others => '0'))",
+          "comment": [
+            "-- mask everything on reset"
+          ],
+          "loc": {
+            "line": 50,
+            "col": 5,
+            "end_line": 53,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "xics_icp.reg_internal_init",
+          "ptype": "constant",
+          "dtype": "reg_internal_t",
+          "name": "reg_internal_init",
+          "default": "(wb_ack => '0',\n         wb_rd_data => (others => '0'),\n         icp => (others => xics_presentation_t_init))",
+          "loc": {
+            "line": 62,
+            "col": 5,
+            "end_line": 65,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "xics_icp.xirr_poll",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "XIRR_POLL",
+          "dim": "[3:0]",
+          "default": "x\"0\"",
+          "loc": {
+            "line": 70,
+            "col": 5,
+            "end_line": 70,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "xics_icp.xirr",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "XIRR",
+          "dim": "[3:0]",
+          "default": "x\"4\"",
+          "loc": {
+            "line": 71,
+            "col": 5,
+            "end_line": 71,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "xics_icp.resv0",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "RESV0",
+          "dim": "[3:0]",
+          "default": "x\"8\"",
+          "loc": {
+            "line": 72,
+            "col": 5,
+            "end_line": 72,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "xics_icp.mfrr",
+          "ptype": "constant",
+          "dtype": "std_ulogic_vector",
+          "name": "MFRR",
+          "dim": "[3:0]",
+          "default": "x\"c\"",
+          "loc": {
+            "line": 73,
+            "col": 5,
+            "end_line": 73,
+            "end_col": 63
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "xics_icp.r",
+          "dtype": "reg_internal_t",
+          "name": "r",
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 67,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "xics_icp.r_next",
+          "dtype": "reg_internal_t",
+          "name": "r_next",
+          "loc": {
+            "line": 67,
+            "col": 5,
+            "end_line": 67,
+            "end_col": 38
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "xics_icp.xics_presentation_t",
+          "name": "xics_presentation_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xics_icp.xics_presentation_t.xisr",
+              "name": "xisr",
+              "dtype": "std_ulogic_vector",
+              "dim": "[23:0]",
+              "loc": {
+                "line": 45,
+                "col": 9,
+                "end_line": 45,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "xics_icp.xics_presentation_t.cppr",
+              "name": "cppr",
+              "dtype": "std_ulogic_vector",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 46,
+                "col": 9,
+                "end_line": 46,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "xics_icp.xics_presentation_t.mfrr",
+              "name": "mfrr",
+              "dtype": "std_ulogic_vector",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 47,
+                "col": 9,
+                "end_line": 47,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "xics_icp.xics_presentation_t.irq",
+              "name": "irq",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 48,
+                "col": 9,
+                "end_line": 48,
+                "end_col": 32
+              }
+            }
+          ],
+          "loc": {
+            "line": 44,
+            "col": 5,
+            "end_line": 49,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "xics_icp.cpu_index_t",
+          "name": "cpu_index_t",
+          "kind": "alias",
+          "dtype": "natural range 0 to NCPUS-1",
+          "loc": {
+            "line": 54,
+            "col": 5,
+            "end_line": 54,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "xics_icp.xicp_array_t",
+          "name": "xicp_array_t",
+          "kind": "alias",
+          "dtype": "array(cpu_index_t) of xics_presentation_t",
+          "loc": {
+            "line": 55,
+            "col": 5,
+            "end_line": 55,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "xics_icp.reg_internal_t",
+          "name": "reg_internal_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xics_icp.reg_internal_t.icp",
+              "name": "icp",
+              "dtype": "xicp_array_t",
+              "loc": {
+                "line": 58,
+                "col": 9,
+                "end_line": 58,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "xics_icp.reg_internal_t.wb_rd_data",
+              "name": "wb_rd_data",
+              "dtype": "std_ulogic_vector",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 59,
+                "col": 9,
+                "end_line": 59,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "xics_icp.reg_internal_t.wb_ack",
+              "name": "wb_ack",
+              "dtype": "std_ulogic",
+              "loc": {
+                "line": 60,
+                "col": 9,
+                "end_line": 60,
+                "end_col": 32
+              }
+            }
+          ],
+          "loc": {
+            "line": 57,
+            "col": 5,
+            "end_line": 61,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "xics_icp.regs",
+          "name": "regs",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 77,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "xics_icp.comb",
+          "name": "comb",
+          "kind": "process",
+          "loc": {
+            "line": 93,
+            "col": 5,
+            "end_line": 222,
+            "end_col": 17
+          }
+        }
+      ],
       "loc": {
         "line": 27,
         "col": 1,
@@ -105,6 +381,7 @@
       "params": [
         {
           "id": "xics_ics.ncpus",
+          "dtype": "natural",
           "name": "NCPUS",
           "default": "1",
           "loc": {
@@ -116,6 +393,7 @@
         },
         {
           "id": "xics_ics.src_num",
+          "dtype": "integer",
           "name": "SRC_NUM",
           "default": "16",
           "loc": {
@@ -127,6 +405,7 @@
         },
         {
           "id": "xics_ics.prio_bits",
+          "dtype": "integer",
           "name": "PRIO_BITS",
           "default": "3",
           "loc": {
@@ -209,6 +488,514 @@
             "col": 9,
             "end_line": 250,
             "end_col": 40
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "xics_ics.src_num_bits",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "SRC_NUM_BITS",
+          "default": "log2(SRC_NUM)",
+          "loc": {
+            "line": 256,
+            "col": 5,
+            "end_line": 256,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "xics_ics.server_num_bits",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "SERVER_NUM_BITS",
+          "default": "2",
+          "loc": {
+            "line": 257,
+            "col": 5,
+            "end_line": 257,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "xics_ics.pri_masked",
+          "ptype": "constant",
+          "dtype": "pri_t",
+          "name": "pri_masked",
+          "default": "(others => '1')",
+          "loc": {
+            "line": 265,
+            "col": 5,
+            "end_line": 265,
+            "end_col": 51
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "xics_ics.xives",
+          "dtype": "xive_array_t",
+          "name": "xives",
+          "loc": {
+            "line": 270,
+            "col": 5,
+            "end_line": 270,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "xics_ics.wb_valid",
+          "dtype": "std_ulogic",
+          "name": "wb_valid",
+          "loc": {
+            "line": 272,
+            "col": 5,
+            "end_line": 272,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "xics_ics.reg_idx",
+          "dtype": "integer",
+          "name": "reg_idx",
+          "loc": {
+            "line": 273,
+            "col": 5,
+            "end_line": 273,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "xics_ics.icp_out_next",
+          "dtype": "ics_to_icp_t",
+          "name": "icp_out_next",
+          "loc": {
+            "line": 274,
+            "col": 5,
+            "end_line": 274,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "xics_ics.int_level_l",
+          "dtype": "std_ulogic_vector",
+          "name": "int_level_l",
+          "dim": "[SRC_NUM - 1:0]",
+          "loc": {
+            "line": 275,
+            "col": 5,
+            "end_line": 275,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "xics_ics.reg_is_xive",
+          "dtype": "std_ulogic",
+          "name": "reg_is_xive",
+          "loc": {
+            "line": 371,
+            "col": 5,
+            "end_line": 371,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "xics_ics.reg_is_config",
+          "dtype": "std_ulogic",
+          "name": "reg_is_config",
+          "loc": {
+            "line": 372,
+            "col": 5,
+            "end_line": 372,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "xics_ics.reg_is_debug",
+          "dtype": "std_ulogic",
+          "name": "reg_is_debug",
+          "loc": {
+            "line": 373,
+            "col": 5,
+            "end_line": 373,
+            "end_col": 38
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "xics_ics.pri_t",
+          "name": "pri_t",
+          "kind": "alias",
+          "dtype": "std_ulogic_vector(PRIO_BITS-1 downto 0)",
+          "loc": {
+            "line": 259,
+            "col": 5,
+            "end_line": 259,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "xics_ics.server_t",
+          "name": "server_t",
+          "kind": "alias",
+          "dtype": "unsigned(SERVER_NUM_BITS-1 downto 0)",
+          "loc": {
+            "line": 260,
+            "col": 5,
+            "end_line": 260,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "xics_ics.xive_t",
+          "name": "xive_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xics_ics.xive_t.pri",
+              "name": "pri",
+              "dtype": "pri_t",
+              "loc": {
+                "line": 262,
+                "col": 9,
+                "end_line": 262,
+                "end_col": 20
+              }
+            },
+            {
+              "id": "xics_ics.xive_t.server",
+              "name": "server",
+              "dtype": "server_t",
+              "loc": {
+                "line": 263,
+                "col": 9,
+                "end_line": 263,
+                "end_col": 26
+              }
+            }
+          ],
+          "loc": {
+            "line": 261,
+            "col": 5,
+            "end_line": 264,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "xics_ics.pri_vector_t",
+          "name": "pri_vector_t",
+          "kind": "alias",
+          "dtype": "std_ulogic_vector(2**PRIO_BITS - 1 downto 0)",
+          "loc": {
+            "line": 267,
+            "col": 5,
+            "end_line": 267,
+            "end_col": 74
+          }
+        },
+        {
+          "id": "xics_ics.xive_array_t",
+          "name": "xive_array_t",
+          "kind": "alias",
+          "dtype": "array(0 to SRC_NUM-1) of xive_t",
+          "loc": {
+            "line": 269,
+            "col": 5,
+            "end_line": 269,
+            "end_col": 58
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "xics_ics.bswap",
+          "name": "bswap",
+          "kind": "function",
+          "rtype": "std_ulogic_vector",
+          "args": [
+            {
+              "id": "xics_ics.bswap.v",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "v",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 277,
+                "col": 20,
+                "end_line": 277,
+                "end_col": 57
+              }
+            }
+          ],
+          "loc": {
+            "line": 277,
+            "col": 5,
+            "end_line": 285,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.get_config",
+          "name": "get_config",
+          "kind": "function",
+          "rtype": "std_ulogic_vector",
+          "loc": {
+            "line": 287,
+            "col": 5,
+            "end_line": 294,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.prio_pack",
+          "name": "prio_pack",
+          "kind": "function",
+          "rtype": "pri_t",
+          "args": [
+            {
+              "id": "xics_ics.prio_pack.pri8",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "pri8",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 296,
+                "col": 24,
+                "end_line": 296,
+                "end_col": 59
+              }
+            }
+          ],
+          "loc": {
+            "line": 296,
+            "col": 5,
+            "end_line": 306,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.prio_unpack",
+          "name": "prio_unpack",
+          "kind": "function",
+          "rtype": "std_ulogic_vector",
+          "args": [
+            {
+              "id": "xics_ics.prio_unpack.pri",
+              "direction": "in",
+              "dtype": "pri_t",
+              "name": "pri",
+              "loc": {
+                "line": 308,
+                "col": 26,
+                "end_line": 308,
+                "end_col": 36
+              }
+            }
+          ],
+          "loc": {
+            "line": 308,
+            "col": 5,
+            "end_line": 318,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.prio_decode",
+          "name": "prio_decode",
+          "kind": "function",
+          "rtype": "pri_vector_t",
+          "args": [
+            {
+              "id": "xics_ics.prio_decode.pri",
+              "direction": "in",
+              "dtype": "pri_t",
+              "name": "pri",
+              "loc": {
+                "line": 320,
+                "col": 26,
+                "end_line": 320,
+                "end_col": 36
+              }
+            }
+          ],
+          "loc": {
+            "line": 320,
+            "col": 5,
+            "end_line": 326,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.priority_encoder",
+          "name": "priority_encoder",
+          "kind": "function",
+          "rtype": "std_ulogic_vector",
+          "args": [
+            {
+              "id": "xics_ics.priority_encoder.v",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "v",
+              "loc": {
+                "line": 329,
+                "col": 31,
+                "end_line": 329,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "xics_ics.priority_encoder.nbits",
+              "direction": "in",
+              "dtype": "natural",
+              "name": "nbits",
+              "loc": {
+                "line": 329,
+                "col": 53,
+                "end_line": 329,
+                "end_col": 67
+              }
+            }
+          ],
+          "comment": [
+            "-- Assumes nbits <= 6; v is 2^nbits wide"
+          ],
+          "loc": {
+            "line": 329,
+            "col": 5,
+            "end_line": 338,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "xics_ics.server_check",
+          "name": "server_check",
+          "kind": "function",
+          "rtype": "unsigned",
+          "args": [
+            {
+              "id": "xics_ics.server_check.serv_in",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "serv_in",
+              "dim": "[7:0]",
+              "loc": {
+                "line": 340,
+                "col": 27,
+                "end_line": 340,
+                "end_col": 65
+              }
+            }
+          ],
+          "loc": {
+            "line": 340,
+            "col": 5,
+            "end_line": 348,
+            "end_col": 9
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "xics_ics.int_latch",
+          "name": "int_latch",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Latch interrupt inputs for timing"
+          ],
+          "loc": {
+            "line": 387,
+            "col": 5,
+            "end_line": 392,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "xics_ics.reg_read",
+          "name": "reg_read",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Big read mux. This could be replaced by a slower state",
+            "-- machine iterating registers instead if timing gets tight."
+          ],
+          "loc": {
+            "line": 401,
+            "col": 5,
+            "end_line": 420,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "xics_ics.reg_write",
+          "name": "reg_write",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Register write machine"
+          ],
+          "loc": {
+            "line": 423,
+            "col": 5,
+            "end_line": 446,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "xics_ics.irq_gen_sync",
+          "name": "irq_gen_sync",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- generate interrupt. This is a simple combinational process,",
+            "-- potentially wasteful in HW for large number of interrupts.",
+            "--",
+            "-- could be replaced with iterative state machines and a message",
+            "-- system between ICSs' (plural) and ICP  incl. reject etc...",
+            "--"
+          ],
+          "loc": {
+            "line": 454,
+            "col": 5,
+            "end_line": 459,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "xics_ics.irq_gen",
+          "name": "irq_gen",
+          "kind": "process",
+          "loc": {
+            "line": 461,
+            "col": 5,
+            "end_line": 497,
+            "end_col": 17
           }
         }
       ],

@@ -74,9 +74,9 @@ class Diagnostics:
             where = f"{where}: {file}"
         LOGGER.log(_LOGLEVELS[severity], "%s: %s", where, message)
 
-    def finish(self, modules: Iterable[dm.Module]) -> tuple[dm.Diagnostic, ...]:
-        """Return all diagnostics in the order of the file, related to the module they are located in."""
-        modules = tuple(modules)
+    def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
+        """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""
+        modules = tuple(units)
 
         def position(loc: dm.Location | None) -> tuple[int, int]:
             return (loc.line, loc.col) if loc else (0, 0)

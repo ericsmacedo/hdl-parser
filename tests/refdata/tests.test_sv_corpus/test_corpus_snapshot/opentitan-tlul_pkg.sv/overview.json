@@ -1,0 +1,1000 @@
+{
+  "path": "$PRJ/tests/corpus/sv/opentitan/tlul_pkg.sv",
+  "modules": [],
+  "packages": [
+    {
+      "id": "tlul_pkg",
+      "name": "tlul_pkg",
+      "params": [
+        {
+          "id": "tlul_pkg.ArbiterImpl",
+          "name": "ArbiterImpl",
+          "default": "\"PPC\"",
+          "loc": {
+            "line": 14,
+            "col": 3,
+            "end_line": 14,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "tlul_pkg.H2DCmdMaxWidth",
+          "ptype": "int",
+          "name": "H2DCmdMaxWidth",
+          "default": "57",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "tlul_pkg.H2DCmdIntgWidth",
+          "ptype": "int",
+          "name": "H2DCmdIntgWidth",
+          "default": "7",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "tlul_pkg.H2DCmdFullWidth",
+          "ptype": "int",
+          "name": "H2DCmdFullWidth",
+          "default": "H2DCmdMaxWidth + H2DCmdIntgWidth",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "tlul_pkg.D2HRspMaxWidth",
+          "ptype": "int",
+          "name": "D2HRspMaxWidth",
+          "default": "57",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "tlul_pkg.D2HRspIntgWidth",
+          "ptype": "int",
+          "name": "D2HRspIntgWidth",
+          "default": "7",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "tlul_pkg.D2HRspFullWidth",
+          "ptype": "int",
+          "name": "D2HRspFullWidth",
+          "default": "D2HRspMaxWidth + D2HRspIntgWidth",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "tlul_pkg.DataMaxWidth",
+          "ptype": "int",
+          "name": "DataMaxWidth",
+          "default": "32",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "tlul_pkg.DataIntgWidth",
+          "ptype": "int",
+          "name": "DataIntgWidth",
+          "default": "7",
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "tlul_pkg.DataFullWidth",
+          "ptype": "int",
+          "name": "DataFullWidth",
+          "default": "DataMaxWidth + DataIntgWidth",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "tlul_pkg.DataWhenInstrError",
+          "ptype": "logic",
+          "name": "DataWhenInstrError",
+          "dim": "[top_pkg::TL_DW-1:0]",
+          "default": "'0",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "tlul_pkg.DataWhenError",
+          "ptype": "logic",
+          "name": "DataWhenError",
+          "dim": "[top_pkg::TL_DW-1:0]",
+          "default": "{top_pkg::TL_DW{1'b1}}",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "tlul_pkg.TL_A_USER_DEFAULT",
+          "ptype": "tl_a_user_t",
+          "name": "TL_A_USER_DEFAULT",
+          "default": "'{\n    rsvd: '0,\n    instr_type: prim_mubi_pkg::MuBi4False,\n    cmd_intg:  {H2DCmdIntgWidth{1'b1}},\n    data_intg: {DataIntgWidth{1'b1}}\n  }",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "tlul_pkg.TL_D_USER_DEFAULT",
+          "ptype": "tl_d_user_t",
+          "name": "TL_D_USER_DEFAULT",
+          "default": "'{\n    rsp_intg: {D2HRspIntgWidth{1'b1}},\n    data_intg: {DataIntgWidth{1'b1}}\n  }",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 5
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "tlul_pkg.BlankedAData",
+          "ptype": "logic",
+          "name": "BlankedAData",
+          "dim": "[top_pkg::TL_DW-1:0]",
+          "default": "{top_pkg::TL_DW{1'b1}}",
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "tlul_pkg.TL_H2D_DEFAULT",
+          "ptype": "tl_h2d_t",
+          "name": "TL_H2D_DEFAULT",
+          "default": "'{\n    d_ready:  1'b1,\n    a_opcode: tl_a_op_e'('0),\n    a_user:   TL_A_USER_DEFAULT,\n    a_data:   BlankedAData,\n    default:  '0\n  }",
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "tlul_pkg.TL_D2H_DEFAULT",
+          "ptype": "tl_d2h_t",
+          "name": "TL_D2H_DEFAULT",
+          "default": "'{\n    a_ready:  1'b1,\n    d_opcode: tl_d_op_e'('0),\n    d_user:   TL_D_USER_DEFAULT,\n    default:  '0\n  }",
+          "loc": {
+            "line": 131,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 5
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "tlul_pkg.tl_a_op_e",
+          "name": "tl_a_op_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_a_op_e.PutFullData",
+              "name": "PutFullData",
+              "value": "3'h 0",
+              "loc": {
+                "line": 17,
+                "col": 5,
+                "end_line": 17,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_a_op_e.PutPartialData",
+              "name": "PutPartialData",
+              "value": "3'h 1",
+              "loc": {
+                "line": 18,
+                "col": 5,
+                "end_line": 18,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_a_op_e.Get",
+              "name": "Get",
+              "value": "3'h 4",
+              "loc": {
+                "line": 19,
+                "col": 5,
+                "end_line": 19,
+                "end_col": 27
+              }
+            }
+          ],
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_d_op_e",
+          "name": "tl_d_op_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_d_op_e.AccessAck",
+              "name": "AccessAck",
+              "value": "3'h 0",
+              "loc": {
+                "line": 23,
+                "col": 5,
+                "end_line": 23,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d_op_e.AccessAckData",
+              "name": "AccessAckData",
+              "value": "3'h 1",
+              "loc": {
+                "line": 24,
+                "col": 5,
+                "end_line": 24,
+                "end_col": 26
+              }
+            }
+          ],
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_a_user_t",
+          "name": "tl_a_user_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_a_user_t.rsvd",
+              "name": "rsvd",
+              "dtype": "logic",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 45,
+                "col": 5,
+                "end_line": 45,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_a_user_t.instr_type",
+              "name": "instr_type",
+              "dtype": "prim_mubi_pkg::mubi4_t",
+              "loc": {
+                "line": 46,
+                "col": 5,
+                "end_line": 46,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_a_user_t.cmd_intg",
+              "name": "cmd_intg",
+              "dtype": "logic",
+              "dim": "[H2DCmdIntgWidth-1:0]",
+              "loc": {
+                "line": 47,
+                "col": 5,
+                "end_line": 47,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_a_user_t.data_intg",
+              "name": "data_intg",
+              "dtype": "logic",
+              "dim": "[DataIntgWidth-1:0]",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_h2d_cmd_intg_t",
+          "name": "tl_h2d_cmd_intg_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_h2d_cmd_intg_t.instr_type",
+              "name": "instr_type",
+              "dtype": "prim_mubi_pkg::mubi4_t",
+              "loc": {
+                "line": 59,
+                "col": 5,
+                "end_line": 59,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_cmd_intg_t.addr",
+              "name": "addr",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_AW-1:0]",
+              "loc": {
+                "line": 60,
+                "col": 5,
+                "end_line": 60,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_cmd_intg_t.opcode",
+              "name": "opcode",
+              "dtype": "tl_a_op_e",
+              "loc": {
+                "line": 61,
+                "col": 5,
+                "end_line": 61,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_cmd_intg_t.mask",
+              "name": "mask",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_DBW-1:0]",
+              "loc": {
+                "line": 62,
+                "col": 5,
+                "end_line": 62,
+                "end_col": 39
+              }
+            }
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_h2d_t",
+          "name": "tl_h2d_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_valid",
+              "name": "a_valid",
+              "dtype": "logic",
+              "loc": {
+                "line": 66,
+                "col": 5,
+                "end_line": 66,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_opcode",
+              "name": "a_opcode",
+              "dtype": "tl_a_op_e",
+              "loc": {
+                "line": 67,
+                "col": 5,
+                "end_line": 67,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_param",
+              "name": "a_param",
+              "dtype": "logic",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 68,
+                "col": 5,
+                "end_line": 68,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_size",
+              "name": "a_size",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_SZW-1:0]",
+              "loc": {
+                "line": 69,
+                "col": 5,
+                "end_line": 69,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_source",
+              "name": "a_source",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_AIW-1:0]",
+              "loc": {
+                "line": 70,
+                "col": 5,
+                "end_line": 70,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_address",
+              "name": "a_address",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_AW-1:0]",
+              "loc": {
+                "line": 71,
+                "col": 5,
+                "end_line": 71,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_mask",
+              "name": "a_mask",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_DBW-1:0]",
+              "loc": {
+                "line": 72,
+                "col": 5,
+                "end_line": 72,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_data",
+              "name": "a_data",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 73,
+                "col": 5,
+                "end_line": 73,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.a_user",
+              "name": "a_user",
+              "dtype": "tl_a_user_t",
+              "loc": {
+                "line": 74,
+                "col": 5,
+                "end_line": 74,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_h2d_t.d_ready",
+              "name": "d_ready",
+              "dtype": "logic",
+              "loc": {
+                "line": 76,
+                "col": 5,
+                "end_line": 76,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_d_user_t",
+          "name": "tl_d_user_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_d_user_t.rsp_intg",
+              "name": "rsp_intg",
+              "dtype": "logic",
+              "dim": "[D2HRspIntgWidth-1:0]",
+              "loc": {
+                "line": 96,
+                "col": 5,
+                "end_line": 96,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d_user_t.data_intg",
+              "name": "data_intg",
+              "dtype": "logic",
+              "dim": "[DataIntgWidth-1:0]",
+              "loc": {
+                "line": 97,
+                "col": 5,
+                "end_line": 97,
+                "end_col": 45
+              }
+            }
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_d2h_t",
+          "name": "tl_d2h_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_valid",
+              "name": "d_valid",
+              "dtype": "logic",
+              "loc": {
+                "line": 106,
+                "col": 5,
+                "end_line": 106,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_opcode",
+              "name": "d_opcode",
+              "dtype": "tl_d_op_e",
+              "loc": {
+                "line": 107,
+                "col": 5,
+                "end_line": 107,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_param",
+              "name": "d_param",
+              "dtype": "logic",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 108,
+                "col": 5,
+                "end_line": 108,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_size",
+              "name": "d_size",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_SZW-1:0]",
+              "comment": [
+                "Bouncing back a_size"
+              ],
+              "loc": {
+                "line": 109,
+                "col": 5,
+                "end_line": 109,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_source",
+              "name": "d_source",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_AIW-1:0]",
+              "loc": {
+                "line": 110,
+                "col": 5,
+                "end_line": 110,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_sink",
+              "name": "d_sink",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_DIW-1:0]",
+              "loc": {
+                "line": 111,
+                "col": 5,
+                "end_line": 111,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_data",
+              "name": "d_data",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 112,
+                "col": 5,
+                "end_line": 112,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_user",
+              "name": "d_user",
+              "dtype": "tl_d_user_t",
+              "loc": {
+                "line": 113,
+                "col": 5,
+                "end_line": 113,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.d_error",
+              "name": "d_error",
+              "dtype": "logic",
+              "loc": {
+                "line": 114,
+                "col": 5,
+                "end_line": 114,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_t.a_ready",
+              "name": "a_ready",
+              "dtype": "logic",
+              "loc": {
+                "line": 116,
+                "col": 5,
+                "end_line": 116,
+                "end_col": 42
+              }
+            }
+          ],
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.tl_d2h_rsp_intg_t",
+          "name": "tl_d2h_rsp_intg_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "tlul_pkg.tl_d2h_rsp_intg_t.opcode",
+              "name": "opcode",
+              "dtype": "tl_d_op_e",
+              "loc": {
+                "line": 121,
+                "col": 5,
+                "end_line": 121,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_rsp_intg_t.size",
+              "name": "size",
+              "dtype": "logic",
+              "dim": "[top_pkg::TL_SZW-1:0]",
+              "comment": [
+                "Temporarily removed because source changes throughout the fabric",
+                "and thus cannot be used for end-to-end checking.",
+                "A different PR will propose a work-around (a hoaky one) to see if",
+                "it gets the job done.",
+                "logic  [top_pkg::TL_AIW-1:0]  source;"
+              ],
+              "loc": {
+                "line": 122,
+                "col": 5,
+                "end_line": 122,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "tlul_pkg.tl_d2h_rsp_intg_t.error",
+              "name": "error",
+              "dtype": "logic",
+              "loc": {
+                "line": 128,
+                "col": 5,
+                "end_line": 128,
+                "end_col": 40
+              }
+            }
+          ],
+          "loc": {
+            "line": 120,
+            "col": 3,
+            "end_line": 129,
+            "end_col": 23
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "tlul_pkg.tl_a_user_chk",
+          "name": "tl_a_user_chk",
+          "kind": "function",
+          "rtype": "logic",
+          "args": [
+            {
+              "id": "tlul_pkg.tl_a_user_chk.user",
+              "direction": "input",
+              "ptype": "tl_a_user_t",
+              "name": "user",
+              "loc": {
+                "line": 139,
+                "col": 42,
+                "end_line": 139,
+                "end_col": 58
+              }
+            }
+          ],
+          "comment": [
+            "Check user for unsupported values"
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.extract_h2d_cmd_intg",
+          "name": "extract_h2d_cmd_intg",
+          "kind": "function",
+          "rtype": "tl_h2d_cmd_intg_t",
+          "args": [
+            {
+              "id": "tlul_pkg.extract_h2d_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 148,
+                "col": 61,
+                "end_line": 148,
+                "end_col": 72
+              }
+            }
+          ],
+          "comment": [
+            "extract variables used for command checking"
+          ],
+          "loc": {
+            "line": 148,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.extract_d2h_rsp_intg",
+          "name": "extract_d2h_rsp_intg",
+          "kind": "function",
+          "rtype": "tl_d2h_rsp_intg_t",
+          "args": [
+            {
+              "id": "tlul_pkg.extract_d2h_rsp_intg.tl",
+              "direction": "input",
+              "ptype": "tl_d2h_t",
+              "name": "tl",
+              "loc": {
+                "line": 160,
+                "col": 61,
+                "end_line": 160,
+                "end_col": 72
+              }
+            }
+          ],
+          "comment": [
+            "extract variables used for response checking"
+          ],
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 169,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_cmd_intg",
+          "name": "get_cmd_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 172,
+                "col": 63,
+                "end_line": 172,
+                "end_col": 74
+              }
+            }
+          ],
+          "comment": [
+            "calculate ecc for command checking"
+          ],
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_data_intg",
+          "name": "get_data_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[DataIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_data_intg.data",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "data",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 183,
+                "col": 62,
+                "end_line": 183,
+                "end_col": 93
+              }
+            }
+          ],
+          "comment": [
+            "calculate ecc for data checking"
+          ],
+          "loc": {
+            "line": 183,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_bad_cmd_intg",
+          "name": "get_bad_cmd_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_bad_cmd_intg.tl",
+              "direction": "input",
+              "ptype": "tl_h2d_t",
+              "name": "tl",
+              "loc": {
+                "line": 194,
+                "col": 67,
+                "end_line": 194,
+                "end_col": 78
+              }
+            }
+          ],
+          "comment": [
+            "return inverted integrity for command payload"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "tlul_pkg.get_bad_data_intg",
+          "name": "get_bad_data_intg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[H2DCmdIntgWidth-1:0]",
+          "args": [
+            {
+              "id": "tlul_pkg.get_bad_data_intg.data",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "data",
+              "dim": "[top_pkg::TL_DW-1:0]",
+              "loc": {
+                "line": 201,
+                "col": 68,
+                "end_line": 201,
+                "end_col": 99
+              }
+            }
+          ],
+          "comment": [
+            "return inverted integrity for data payload"
+          ],
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 205,
+            "end_col": 14
+          }
+        }
+      ],
+      "loc": {
+        "line": 6,
+        "col": 1,
+        "end_line": 207,
+        "end_col": 11
+      }
+    }
+  ]
+}

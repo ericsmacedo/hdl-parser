@@ -1,0 +1,525 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/poc/xil.pkg.vhdl",
+  "modules": [],
+  "packages": [
+    {
+      "id": "xil",
+      "name": "xil",
+      "localparams": [
+        {
+          "id": "xil.c_xil_drp_bus_in_empty",
+          "ptype": "constant",
+          "dtype": "t_xil_drp_bus_in",
+          "name": "C_XIL_DRP_BUS_IN_EMPTY",
+          "default": "(\n\t\tClock\t\t\t=> '0',\n\t\tEnable\t\t=> '0',\n\t\tReadWrite => '0',\n\t\tAddress\t\t=> (others => '0'),\n\t\tData\t\t\t=> (others => '0'))",
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 73,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "xil.c_xil_drp_bus_out_empty",
+          "ptype": "constant",
+          "dtype": "t_xil_drp_bus_out",
+          "name": "C_XIL_DRP_BUS_OUT_EMPTY",
+          "default": "(\n\t\tAck\t\t\t\t=> '0',\n\t\tData\t\t\t=> (others => '0'))",
+          "loc": {
+            "line": 80,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "xil.c_xil_drp_max_config_count",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "C_XIL_DRP_MAX_CONFIG_COUNT",
+          "default": "8",
+          "loc": {
+            "line": 91,
+            "col": 2,
+            "end_line": 91,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "xil.c_xil_drp_config_empty",
+          "ptype": "constant",
+          "dtype": "t_xil_drp_config",
+          "name": "C_XIL_DRP_CONFIG_EMPTY",
+          "default": "(\n\t\tAddress =>\t(others => '0'),\n\t\tData =>\t\t\t(others => '0'),\n\t\tMask =>\t\t\t(others => '0')\n\t)",
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 107,
+            "end_col": 3
+          }
+        },
+        {
+          "id": "xil.c_xil_drp_config_set_empty",
+          "ptype": "constant",
+          "dtype": "t_xil_drp_config_set",
+          "name": "C_XIL_DRP_CONFIG_SET_EMPTY",
+          "default": "(\n\t\tConfigs\t\t=> (others => C_XIL_DRP_CONFIG_EMPTY),\n\t\tLastIndex\t=> 0\n\t)",
+          "loc": {
+            "line": 109,
+            "col": 2,
+            "end_line": 112,
+            "end_col": 3
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "xil.t_xil_chipscope_control",
+          "name": "T_XIL_CHIPSCOPE_CONTROL",
+          "kind": "alias",
+          "dtype": "std_logic_vector(35 downto 0)",
+          "comment": [
+            "-- ChipScope",
+            "-- =========================================================================="
+          ],
+          "loc": {
+            "line": 49,
+            "col": 2,
+            "end_line": 49,
+            "end_col": 71
+          }
+        },
+        {
+          "id": "xil.t_xil_chipscope_control_vector",
+          "name": "T_XIL_CHIPSCOPE_CONTROL_VECTOR",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of T_XIL_CHIPSCOPE_CONTROL",
+          "loc": {
+            "line": 50,
+            "col": 2,
+            "end_line": 50,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_address",
+          "name": "T_XIL_DRP_ADDRESS",
+          "kind": "alias",
+          "dtype": "T_SLV_16",
+          "comment": [
+            "-- Dynamic Reconfiguration Port (DRP)",
+            "-- =========================================================================="
+          ],
+          "loc": {
+            "line": 54,
+            "col": 2,
+            "end_line": 54,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_data",
+          "name": "T_XIL_DRP_DATA",
+          "kind": "alias",
+          "dtype": "T_SLV_16",
+          "loc": {
+            "line": 55,
+            "col": 2,
+            "end_line": 55,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_address_vector",
+          "name": "T_XIL_DRP_ADDRESS_VECTOR",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of T_XIL_DRP_ADDRESS",
+          "loc": {
+            "line": 57,
+            "col": 2,
+            "end_line": 57,
+            "end_col": 85
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_data_vector",
+          "name": "T_XIL_DRP_DATA_VECTOR",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of T_XIL_DRP_DATA",
+          "loc": {
+            "line": 58,
+            "col": 2,
+            "end_line": 58,
+            "end_col": 81
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_bus_in",
+          "name": "T_XIL_DRP_BUS_IN",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xil.t_xil_drp_bus_in.clock",
+              "name": "Clock",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 61,
+                "col": 3,
+                "end_line": 61,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_bus_in.enable",
+              "name": "Enable",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 62,
+                "col": 3,
+                "end_line": 62,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_bus_in.readwrite",
+              "name": "ReadWrite",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 63,
+                "col": 3,
+                "end_line": 63,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_bus_in.address",
+              "name": "Address",
+              "dtype": "t_xil_drp_address",
+              "loc": {
+                "line": 64,
+                "col": 3,
+                "end_line": 64,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_bus_in.data",
+              "name": "Data",
+              "dtype": "t_xil_drp_data",
+              "loc": {
+                "line": 65,
+                "col": 3,
+                "end_line": 65,
+                "end_col": 28
+              }
+            }
+          ],
+          "loc": {
+            "line": 60,
+            "col": 2,
+            "end_line": 66,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_bus_out",
+          "name": "T_XIL_DRP_BUS_OUT",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xil.t_xil_drp_bus_out.data",
+              "name": "Data",
+              "dtype": "t_xil_drp_data",
+              "loc": {
+                "line": 76,
+                "col": 3,
+                "end_line": 76,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_bus_out.ack",
+              "name": "Ack",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 77,
+                "col": 3,
+                "end_line": 77,
+                "end_col": 23
+              }
+            }
+          ],
+          "loc": {
+            "line": 75,
+            "col": 2,
+            "end_line": 78,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_config",
+          "name": "T_XIL_DRP_CONFIG",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xil.t_xil_drp_config.address",
+              "name": "Address",
+              "dtype": "t_xil_drp_address",
+              "loc": {
+                "line": 85,
+                "col": 3,
+                "end_line": 85,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_config.mask",
+              "name": "Mask",
+              "dtype": "t_xil_drp_data",
+              "loc": {
+                "line": 86,
+                "col": 3,
+                "end_line": 86,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_config.data",
+              "name": "Data",
+              "dtype": "t_xil_drp_data",
+              "loc": {
+                "line": 87,
+                "col": 3,
+                "end_line": 87,
+                "end_col": 38
+              }
+            }
+          ],
+          "loc": {
+            "line": 84,
+            "col": 2,
+            "end_line": 88,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_config_index",
+          "name": "T_XIL_DRP_CONFIG_INDEX",
+          "kind": "alias",
+          "dtype": "integer range 0 to C_XIL_DRP_MAX_CONFIG_COUNT - 1",
+          "loc": {
+            "line": 93,
+            "col": 2,
+            "end_line": 93,
+            "end_col": 88
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_config_vector",
+          "name": "T_XIL_DRP_CONFIG_VECTOR",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of T_XIL_DRP_CONFIG",
+          "loc": {
+            "line": 94,
+            "col": 2,
+            "end_line": 94,
+            "end_col": 82
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_config_set",
+          "name": "T_XIL_DRP_CONFIG_SET",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "xil.t_xil_drp_config_set.configs",
+              "name": "Configs",
+              "dtype": "t_xil_drp_config_vector",
+              "dim": "[T_XIL_DRP_CONFIG_INDEX]",
+              "loc": {
+                "line": 97,
+                "col": 3,
+                "end_line": 97,
+                "end_col": 73
+              }
+            },
+            {
+              "id": "xil.t_xil_drp_config_set.lastindex",
+              "name": "LastIndex",
+              "dtype": "t_xil_drp_config_index",
+              "loc": {
+                "line": 98,
+                "col": 3,
+                "end_line": 98,
+                "end_col": 49
+              }
+            }
+          ],
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 99,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "xil.t_xil_drp_config_rom",
+          "name": "T_XIL_DRP_CONFIG_ROM",
+          "kind": "alias",
+          "dtype": "array (natural range <>) of T_XIL_DRP_CONFIG_SET",
+          "loc": {
+            "line": 101,
+            "col": 2,
+            "end_line": 101,
+            "end_col": 85
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "xil.xil_chipscopeicon",
+          "name": "xil_ChipScopeICON",
+          "params": [
+            {
+              "id": "xil.xil_chipscopeicon.ports",
+              "dtype": "positive",
+              "name": "PORTS",
+              "loc": {
+                "line": 116,
+                "col": 4,
+                "end_line": 116,
+                "end_col": 23
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "xil.xil_chipscopeicon.controlbus",
+              "direction": "inout",
+              "dtype": "t_xil_chipscope_control_vector",
+              "name": "ControlBus",
+              "dim": "[PORTS - 1:0]",
+              "loc": {
+                "line": 119,
+                "col": 4,
+                "end_line": 119,
+                "end_col": 73
+              }
+            }
+          ],
+          "loc": {
+            "line": 114,
+            "col": 2,
+            "end_line": 121,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "xil.xil_systemmonitor",
+          "name": "xil_SystemMonitor",
+          "ports": [
+            {
+              "id": "xil.xil_systemmonitor.reset",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "Reset",
+              "comment": [
+                "-- Reset signal for the System Monitor control logic"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 4,
+                "end_line": 125,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "xil.xil_systemmonitor.alarm_usertemp",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "Alarm_UserTemp",
+              "comment": [
+                "-- Temperature-sensor alarm output"
+              ],
+              "loc": {
+                "line": 127,
+                "col": 4,
+                "end_line": 127,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "xil.xil_systemmonitor.alarm_overtemp",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "Alarm_OverTemp",
+              "comment": [
+                "-- Over-Temperature alarm output"
+              ],
+              "loc": {
+                "line": 128,
+                "col": 4,
+                "end_line": 128,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "xil.xil_systemmonitor.alarm",
+              "direction": "out",
+              "dtype": "std_logic",
+              "name": "Alarm",
+              "comment": [
+                "-- OR'ed output of all the alarms"
+              ],
+              "loc": {
+                "line": 129,
+                "col": 4,
+                "end_line": 129,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "xil.xil_systemmonitor.vp",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "VP",
+              "comment": [
+                "-- Dedicated analog input pair"
+              ],
+              "loc": {
+                "line": 130,
+                "col": 4,
+                "end_line": 130,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "xil.xil_systemmonitor.vn",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "VN",
+              "loc": {
+                "line": 131,
+                "col": 4,
+                "end_line": 131,
+                "end_col": 27
+              }
+            }
+          ],
+          "loc": {
+            "line": 123,
+            "col": 2,
+            "end_line": 133,
+            "end_col": 16
+          }
+        }
+      ],
+      "loc": {
+        "line": 46,
+        "col": 1,
+        "end_line": 134,
+        "end_col": 13
+      }
+    }
+  ]
+}

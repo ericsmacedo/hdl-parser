@@ -8,6 +8,7 @@
         {
           "id": "popcount.INPUT_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "INPUT_WIDTH",
           "default": "256",
           "loc": {
@@ -50,6 +51,7 @@
         {
           "id": "popcount.PopcountWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PopcountWidth",
           "default": "$clog2(INPUT_WIDTH) + 1",
           "loc": {
@@ -60,11 +62,23 @@
           }
         }
       ],
+      "processes": [
+        {
+          "id": "popcount.#always1",
+          "kind": "always_comb",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 6
+          }
+        }
+      ],
       "loc": {
         "line": 22,
         "col": 1,
         "end_line": 40,
-        "end_col": 10
+        "end_col": 21
       }
     }
   ]

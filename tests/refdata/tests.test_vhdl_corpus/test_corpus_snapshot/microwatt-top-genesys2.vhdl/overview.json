@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "toplevel.memory_size",
+          "dtype": "integer",
           "name": "MEMORY_SIZE",
           "default": "16384",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "toplevel.ram_init_file",
+          "dtype": "string",
           "name": "RAM_INIT_FILE",
           "default": "\"firmware.hex\"",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "toplevel.reset_low",
+          "dtype": "boolean",
           "name": "RESET_LOW",
           "default": "true",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "toplevel.clk_frequency",
+          "dtype": "positive",
           "name": "CLK_FREQUENCY",
           "default": "100000000",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "toplevel.use_litedram",
+          "dtype": "boolean",
           "name": "USE_LITEDRAM",
           "default": "false",
           "loc": {
@@ -62,6 +67,7 @@
         },
         {
           "id": "toplevel.no_bram",
+          "dtype": "boolean",
           "name": "NO_BRAM",
           "default": "false",
           "loc": {
@@ -73,6 +79,7 @@
         },
         {
           "id": "toplevel.disable_flatten_core",
+          "dtype": "boolean",
           "name": "DISABLE_FLATTEN_CORE",
           "default": "false",
           "loc": {
@@ -84,6 +91,7 @@
         },
         {
           "id": "toplevel.spi_flash_offset",
+          "dtype": "integer",
           "name": "SPI_FLASH_OFFSET",
           "default": "12582912",
           "loc": {
@@ -95,6 +103,7 @@
         },
         {
           "id": "toplevel.spi_flash_def_ckdv",
+          "dtype": "natural",
           "name": "SPI_FLASH_DEF_CKDV",
           "default": "1",
           "loc": {
@@ -106,6 +115,7 @@
         },
         {
           "id": "toplevel.spi_flash_def_quad",
+          "dtype": "boolean",
           "name": "SPI_FLASH_DEF_QUAD",
           "default": "true",
           "loc": {
@@ -117,6 +127,7 @@
         },
         {
           "id": "toplevel.log_length",
+          "dtype": "natural",
           "name": "LOG_LENGTH",
           "default": "2048",
           "loc": {
@@ -128,6 +139,7 @@
         },
         {
           "id": "toplevel.use_liteeth",
+          "dtype": "boolean",
           "name": "USE_LITEETH",
           "default": "true",
           "loc": {
@@ -139,6 +151,7 @@
         },
         {
           "id": "toplevel.uart_is_16550",
+          "dtype": "boolean",
           "name": "UART_IS_16550",
           "default": "true",
           "loc": {
@@ -639,6 +652,763 @@
             "col": 2,
             "end_line": 76,
             "end_col": 31
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "toplevel.bram_size",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "BRAM_SIZE",
+          "default": "get_bram_size",
+          "loc": {
+            "line": 140,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "toplevel.payload_size",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "PAYLOAD_SIZE",
+          "default": "get_payload_size",
+          "loc": {
+            "line": 141,
+            "col": 5,
+            "end_line": 141,
+            "end_col": 56
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "toplevel.ext_clk",
+          "dtype": "std_ulogic",
+          "name": "ext_clk",
+          "loc": {
+            "line": 83,
+            "col": 5,
+            "end_line": 83,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "toplevel.soc_rst",
+          "dtype": "std_ulogic",
+          "name": "soc_rst",
+          "loc": {
+            "line": 86,
+            "col": 5,
+            "end_line": 86,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "toplevel.pll_rst",
+          "dtype": "std_ulogic",
+          "name": "pll_rst",
+          "loc": {
+            "line": 87,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "toplevel.system_clk",
+          "dtype": "std_ulogic",
+          "name": "system_clk",
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "toplevel.system_clk_locked",
+          "dtype": "std_ulogic",
+          "name": "system_clk_locked",
+          "loc": {
+            "line": 91,
+            "col": 5,
+            "end_line": 91,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "toplevel.ext_irq_eth",
+          "dtype": "std_ulogic",
+          "name": "ext_irq_eth",
+          "loc": {
+            "line": 93,
+            "col": 5,
+            "end_line": 93,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "toplevel.wb_dram_in",
+          "dtype": "wishbone_master_out",
+          "name": "wb_dram_in",
+          "loc": {
+            "line": 96,
+            "col": 5,
+            "end_line": 96,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "toplevel.wb_dram_out",
+          "dtype": "wishbone_slave_out",
+          "name": "wb_dram_out",
+          "loc": {
+            "line": 97,
+            "col": 5,
+            "end_line": 97,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "toplevel.wb_ext_io_in",
+          "dtype": "wb_io_master_out",
+          "name": "wb_ext_io_in",
+          "loc": {
+            "line": 100,
+            "col": 5,
+            "end_line": 100,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "toplevel.wb_ext_io_out",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_ext_io_out",
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 101,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "toplevel.wb_ext_is_dram_csr",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_dram_csr",
+          "loc": {
+            "line": 102,
+            "col": 5,
+            "end_line": 102,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "toplevel.wb_ext_is_dram_init",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_dram_init",
+          "loc": {
+            "line": 103,
+            "col": 5,
+            "end_line": 103,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "toplevel.wb_eth_out",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_eth_out",
+          "default": "wb_io_slave_out_init",
+          "loc": {
+            "line": 106,
+            "col": 5,
+            "end_line": 106,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "toplevel.wb_dram_ctrl_out",
+          "dtype": "wb_io_slave_out",
+          "name": "wb_dram_ctrl_out",
+          "default": "wb_io_slave_out_init",
+          "loc": {
+            "line": 107,
+            "col": 5,
+            "end_line": 107,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "toplevel.wb_ext_is_eth",
+          "dtype": "std_ulogic",
+          "name": "wb_ext_is_eth",
+          "loc": {
+            "line": 108,
+            "col": 5,
+            "end_line": 108,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "toplevel.spi_sck",
+          "dtype": "std_ulogic",
+          "name": "spi_sck",
+          "loc": {
+            "line": 111,
+            "col": 5,
+            "end_line": 111,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "toplevel.spi_cs_n",
+          "dtype": "std_ulogic",
+          "name": "spi_cs_n",
+          "loc": {
+            "line": 112,
+            "col": 5,
+            "end_line": 112,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "toplevel.spi_sdat_o",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_sdat_o",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 113,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "toplevel.spi_sdat_oe",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_sdat_oe",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 114,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "toplevel.spi_sdat_i",
+          "dtype": "std_ulogic_vector",
+          "name": "spi_sdat_i",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 115,
+            "col": 5,
+            "end_line": 115,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "toplevel.ddram_clk_p_vec",
+          "dtype": "std_logic_vector",
+          "name": "ddram_clk_p_vec",
+          "dim": "[0:0]",
+          "loc": {
+            "line": 118,
+            "col": 5,
+            "end_line": 118,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "toplevel.ddram_clk_n_vec",
+          "dtype": "std_logic_vector",
+          "name": "ddram_clk_n_vec",
+          "dim": "[0:0]",
+          "loc": {
+            "line": 119,
+            "col": 5,
+            "end_line": 119,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "toplevel.nodram.ddram_clk_dummy",
+          "dtype": "std_ulogic",
+          "name": "ddram_clk_dummy",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 227,
+            "col": 9,
+            "end_line": 227,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "toplevel.has_dram.dram_init_done",
+          "dtype": "std_ulogic",
+          "name": "dram_init_done",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 273,
+            "col": 2,
+            "end_line": 273,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "toplevel.has_dram.dram_init_error",
+          "dtype": "std_ulogic",
+          "name": "dram_init_error",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 274,
+            "col": 2,
+            "end_line": 274,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "toplevel.has_dram.dram_sys_rst",
+          "dtype": "std_ulogic",
+          "name": "dram_sys_rst",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 275,
+            "col": 2,
+            "end_line": 275,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "toplevel.has_liteeth.wb_eth_cyc",
+          "dtype": "std_ulogic",
+          "name": "wb_eth_cyc",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 391,
+            "col": 9,
+            "end_line": 391,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "toplevel.has_liteeth.wb_eth_adr",
+          "dtype": "std_ulogic_vector",
+          "name": "wb_eth_adr",
+          "dim": "[29:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 392,
+            "col": 9,
+            "end_line": 392,
+            "end_col": 63
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "toplevel.get_bram_size",
+          "name": "get_bram_size",
+          "kind": "function",
+          "rtype": "natural",
+          "comment": [
+            "-- Fixup various memory sizes based on generics"
+          ],
+          "loc": {
+            "line": 122,
+            "col": 5,
+            "end_line": 129,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "toplevel.get_payload_size",
+          "name": "get_payload_size",
+          "kind": "function",
+          "rtype": "natural",
+          "loc": {
+            "line": 131,
+            "col": 5,
+            "end_line": 138,
+            "end_col": 18
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "toplevel.has_dram.soc_rst_gen",
+          "name": "soc_rst_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "system_clk"
+            }
+          ],
+          "clock": "system_clk",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "comment": [
+            "-- Generate SoC reset"
+          ],
+          "loc": {
+            "line": 301,
+            "col": 9,
+            "end_line": 308,
+            "end_col": 21
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "toplevel.liteeth_core",
+          "name": "liteeth_core",
+          "ports": [
+            {
+              "id": "toplevel.liteeth_core.sys_clock",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "sys_clock",
+              "loc": {
+                "line": 364,
+                "col": 13,
+                "end_line": 364,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.sys_reset",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "sys_reset",
+              "loc": {
+                "line": 365,
+                "col": 13,
+                "end_line": 365,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_clocks_tx",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "rgmii_clocks_tx",
+              "loc": {
+                "line": 366,
+                "col": 13,
+                "end_line": 366,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_clocks_rx",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rgmii_clocks_rx",
+              "loc": {
+                "line": 367,
+                "col": 13,
+                "end_line": 367,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_rst_n",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "rgmii_rst_n",
+              "loc": {
+                "line": 368,
+                "col": 13,
+                "end_line": 368,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_int_n",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rgmii_int_n",
+              "loc": {
+                "line": 369,
+                "col": 13,
+                "end_line": 369,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_mdio",
+              "direction": "inout",
+              "dtype": "std_ulogic",
+              "name": "rgmii_mdio",
+              "loc": {
+                "line": 370,
+                "col": 13,
+                "end_line": 370,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_mdc",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "rgmii_mdc",
+              "loc": {
+                "line": 371,
+                "col": 13,
+                "end_line": 371,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_rx_ctl",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rgmii_rx_ctl",
+              "loc": {
+                "line": 372,
+                "col": 13,
+                "end_line": 372,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_rx_data",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "rgmii_rx_data",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 373,
+                "col": 13,
+                "end_line": 373,
+                "end_col": 63
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_tx_ctl",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "rgmii_tx_ctl",
+              "loc": {
+                "line": 374,
+                "col": 13,
+                "end_line": 374,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.rgmii_tx_data",
+              "direction": "out",
+              "dtype": "std_ulogic_vector",
+              "name": "rgmii_tx_data",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 375,
+                "col": 13,
+                "end_line": 375,
+                "end_col": 64
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_adr",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_adr",
+              "dim": "[29:0]",
+              "loc": {
+                "line": 376,
+                "col": 13,
+                "end_line": 376,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_dat_w",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_dat_w",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 377,
+                "col": 13,
+                "end_line": 377,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_dat_r",
+              "direction": "out",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_dat_r",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 378,
+                "col": 13,
+                "end_line": 378,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_sel",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_sel",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 379,
+                "col": 13,
+                "end_line": 379,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_cyc",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "wishbone_cyc",
+              "loc": {
+                "line": 380,
+                "col": 13,
+                "end_line": 380,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_stb",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "wishbone_stb",
+              "loc": {
+                "line": 381,
+                "col": 13,
+                "end_line": 381,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_ack",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "wishbone_ack",
+              "loc": {
+                "line": 382,
+                "col": 13,
+                "end_line": 382,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_we",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "wishbone_we",
+              "loc": {
+                "line": 383,
+                "col": 13,
+                "end_line": 383,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_cti",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_cti",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 384,
+                "col": 13,
+                "end_line": 384,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_bte",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wishbone_bte",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 385,
+                "col": 13,
+                "end_line": 385,
+                "end_col": 67
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.wishbone_err",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "wishbone_err",
+              "loc": {
+                "line": 386,
+                "col": 13,
+                "end_line": 386,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "toplevel.liteeth_core.interrupt",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "interrupt",
+              "loc": {
+                "line": 387,
+                "col": 13,
+                "end_line": 387,
+                "end_col": 49
+              }
+            }
+          ],
+          "loc": {
+            "line": 363,
+            "col": 9,
+            "end_line": 389,
+            "end_col": 23
           }
         }
       ],

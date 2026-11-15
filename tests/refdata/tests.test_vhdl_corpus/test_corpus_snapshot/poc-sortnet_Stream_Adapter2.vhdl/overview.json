@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "sortnet_stream_adapter2.stream_data_bits",
+          "dtype": "positive",
           "name": "STREAM_DATA_BITS",
           "default": "32",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.stream_meta_bits",
+          "dtype": "positive",
           "name": "STREAM_META_BITS",
           "default": "2",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.data_columns",
+          "dtype": "positive",
           "name": "DATA_COLUMNS",
           "default": "2",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.sortnet_impl",
+          "dtype": "t_sortnet_impl",
           "name": "SORTNET_IMPL",
           "default": "SORT_SORTNET_IMPL_ODDEVEN_MERGESORT",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.sortnet_size",
+          "dtype": "positive",
           "name": "SORTNET_SIZE",
           "default": "32",
           "loc": {
@@ -62,6 +67,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.sortnet_key_bits",
+          "dtype": "positive",
           "name": "SORTNET_KEY_BITS",
           "default": "32",
           "loc": {
@@ -73,6 +79,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.sortnet_data_bits",
+          "dtype": "natural",
           "name": "SORTNET_DATA_BITS",
           "default": "32",
           "loc": {
@@ -84,6 +91,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.sortnet_reg_after",
+          "dtype": "natural",
           "name": "SORTNET_REG_AFTER",
           "default": "2",
           "loc": {
@@ -95,6 +103,7 @@
         },
         {
           "id": "sortnet_stream_adapter2.mergenet_stages",
+          "dtype": "positive",
           "name": "MERGENET_STAGES",
           "default": "2",
           "loc": {
@@ -135,6 +144,7 @@
           "direction": "in",
           "dtype": "std_logic",
           "name": "Inverse",
+          "default": "'0'",
           "loc": {
             "line": 58,
             "col": 3,
@@ -312,6 +322,697 @@
             "col": 3,
             "end_line": 74,
             "end_col": 27
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "sortnet_stream_adapter2.c_verbose",
+          "ptype": "constant",
+          "dtype": "boolean",
+          "name": "C_VERBOSE",
+          "default": "FALSE",
+          "loc": {
+            "line": 80,
+            "col": 2,
+            "end_line": 80,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearbox_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "GEARBOX_BITS",
+          "default": "SORTNET_SIZE * SORTNET_DATA_BITS",
+          "loc": {
+            "line": 82,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "TRANSFORM_BITS",
+          "default": "DATA_COLUMNS * SORTNET_DATA_BITS",
+          "loc": {
+            "line": 83,
+            "col": 2,
+            "end_line": 83,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "MERGE_BITS",
+          "default": "TRANSFORM_BITS",
+          "loc": {
+            "line": 84,
+            "col": 2,
+            "end_line": 84,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.meta_iskey_bit",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "META_ISKEY_BIT",
+          "default": "0",
+          "loc": {
+            "line": 86,
+            "col": 2,
+            "end_line": 86,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.meta_bits",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "META_BITS",
+          "default": "STREAM_META_BITS + 1",
+          "loc": {
+            "line": 87,
+            "col": 2,
+            "end_line": 87,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.fifo_depth",
+          "ptype": "constant",
+          "dtype": "positive",
+          "name": "FIFO_DEPTH",
+          "default": "2**i * SORTNET_SIZE",
+          "loc": {
+            "line": 318,
+            "col": 4,
+            "end_line": 318,
+            "end_col": 58
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "sortnet_stream_adapter2.synchronized_r",
+          "dtype": "std_logic",
+          "name": "Synchronized_r",
+          "default": "'0'",
+          "loc": {
+            "line": 89,
+            "col": 2,
+            "end_line": 89,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.syncin",
+          "dtype": "std_logic",
+          "name": "SyncIn",
+          "loc": {
+            "line": 91,
+            "col": 2,
+            "end_line": 91,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.metain",
+          "dtype": "std_logic_vector",
+          "name": "MetaIn",
+          "dim": "[META_BITS - 1:0]",
+          "loc": {
+            "line": 92,
+            "col": 2,
+            "end_line": 92,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_sync",
+          "dtype": "std_logic",
+          "name": "gearup_Sync",
+          "loc": {
+            "line": 94,
+            "col": 2,
+            "end_line": 94,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_valid",
+          "dtype": "std_logic",
+          "name": "gearup_Valid",
+          "loc": {
+            "line": 95,
+            "col": 2,
+            "end_line": 95,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_data",
+          "dtype": "std_logic_vector",
+          "name": "gearup_Data",
+          "dim": "[GEARBOX_BITS - 1:0]",
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 96,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_meta",
+          "dtype": "std_logic_vector",
+          "name": "gearup_Meta",
+          "dim": "[META_BITS - 1:0]",
+          "loc": {
+            "line": 97,
+            "col": 2,
+            "end_line": 97,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_first",
+          "dtype": "std_logic",
+          "name": "gearup_First",
+          "loc": {
+            "line": 98,
+            "col": 2,
+            "end_line": 98,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.gearup_last",
+          "dtype": "std_logic",
+          "name": "gearup_Last",
+          "loc": {
+            "line": 99,
+            "col": 2,
+            "end_line": 99,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.sort_valid",
+          "dtype": "std_logic",
+          "name": "sort_Valid",
+          "loc": {
+            "line": 101,
+            "col": 2,
+            "end_line": 101,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.sort_iskey",
+          "dtype": "std_logic",
+          "name": "sort_IsKey",
+          "loc": {
+            "line": 102,
+            "col": 2,
+            "end_line": 102,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.sort_data",
+          "dtype": "std_logic_vector",
+          "name": "sort_Data",
+          "dim": "[GEARBOX_BITS - 1:0]",
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 103,
+            "end_col": 71
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.sort_meta",
+          "dtype": "std_logic_vector",
+          "name": "sort_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]",
+          "loc": {
+            "line": 104,
+            "col": 2,
+            "end_line": 104,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_valid",
+          "dtype": "std_logic",
+          "name": "transform_Valid",
+          "loc": {
+            "line": 106,
+            "col": 2,
+            "end_line": 106,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_data",
+          "dtype": "std_logic_vector",
+          "name": "transform_Data",
+          "dim": "[TRANSFORM_BITS - 1:0]",
+          "loc": {
+            "line": 107,
+            "col": 2,
+            "end_line": 107,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_meta",
+          "dtype": "std_logic_vector",
+          "name": "transform_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]",
+          "loc": {
+            "line": 108,
+            "col": 2,
+            "end_line": 108,
+            "end_col": 78
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_sof",
+          "dtype": "std_logic",
+          "name": "transform_SOF",
+          "loc": {
+            "line": 109,
+            "col": 2,
+            "end_line": 109,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.transform_eof",
+          "dtype": "std_logic",
+          "name": "transform_EOF",
+          "loc": {
+            "line": 110,
+            "col": 2,
+            "end_line": 110,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_sync",
+          "dtype": "std_logic",
+          "name": "merge_Sync",
+          "loc": {
+            "line": 112,
+            "col": 2,
+            "end_line": 112,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_valid",
+          "dtype": "std_logic",
+          "name": "merge_Valid",
+          "loc": {
+            "line": 113,
+            "col": 2,
+            "end_line": 113,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_data",
+          "dtype": "std_logic_vector",
+          "name": "merge_Data",
+          "dim": "[MERGE_BITS - 1:0]",
+          "loc": {
+            "line": 114,
+            "col": 2,
+            "end_line": 114,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_meta",
+          "dtype": "std_logic_vector",
+          "name": "merge_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]",
+          "loc": {
+            "line": 115,
+            "col": 2,
+            "end_line": 115,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_sof",
+          "dtype": "std_logic",
+          "name": "merge_SOF",
+          "loc": {
+            "line": 116,
+            "col": 2,
+            "end_line": 116,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_eof",
+          "dtype": "std_logic",
+          "name": "merge_EOF",
+          "loc": {
+            "line": 117,
+            "col": 2,
+            "end_line": 117,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.merge_ack",
+          "dtype": "std_logic",
+          "name": "merge_Ack",
+          "loc": {
+            "line": 118,
+            "col": 2,
+            "end_line": 118,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.geardown_nxt",
+          "dtype": "std_logic",
+          "name": "geardown_nxt",
+          "loc": {
+            "line": 120,
+            "col": 2,
+            "end_line": 120,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.geardown_meta",
+          "dtype": "std_logic_vector",
+          "name": "geardown_Meta",
+          "dim": "[STREAM_META_BITS - 1:0]",
+          "loc": {
+            "line": 121,
+            "col": 2,
+            "end_line": 121,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.geardown_first",
+          "dtype": "std_logic",
+          "name": "geardown_First",
+          "loc": {
+            "line": 122,
+            "col": 2,
+            "end_line": 122,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.geardown_last",
+          "dtype": "std_logic",
+          "name": "geardown_Last",
+          "loc": {
+            "line": 123,
+            "col": 2,
+            "end_line": 123,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genoes.datainputmatrix",
+          "dtype": "t_slm",
+          "name": "DataInputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOES",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_SORT"
+            }
+          ],
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genoes.dataoutputmatrix",
+          "dtype": "t_slm",
+          "name": "DataOutputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOES",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_SORT"
+            }
+          ],
+          "loc": {
+            "line": 159,
+            "col": 3,
+            "end_line": 159,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genoems.datainputmatrix",
+          "dtype": "t_slm",
+          "name": "DataInputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOEMS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+            }
+          ],
+          "loc": {
+            "line": 197,
+            "col": 3,
+            "end_line": 197,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genoems.dataoutputmatrix",
+          "dtype": "t_slm",
+          "name": "DataOutputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOEMS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+            }
+          ],
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genbs.datainputmatrix",
+          "dtype": "t_slm",
+          "name": "DataInputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genBS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_BITONIC_SORT"
+            }
+          ],
+          "loc": {
+            "line": 234,
+            "col": 3,
+            "end_line": 234,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.genbs.dataoutputmatrix",
+          "dtype": "t_slm",
+          "name": "DataOutputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genBS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_BITONIC_SORT"
+            }
+          ],
+          "loc": {
+            "line": 235,
+            "col": 3,
+            "end_line": 235,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blktransform.datainputmatrix",
+          "dtype": "t_slm",
+          "name": "DataInputMatrix",
+          "dim": "[SORTNET_SIZE - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkTransform"
+            }
+          ],
+          "loc": {
+            "line": 270,
+            "col": 3,
+            "end_line": 270,
+            "end_col": 92
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blktransform.dataoutputmatrix",
+          "dtype": "t_slm",
+          "name": "DataOutputMatrix",
+          "dim": "[DATA_COLUMNS - 1:0, SORTNET_DATA_BITS - 1:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkTransform"
+            }
+          ],
+          "loc": {
+            "line": 271,
+            "col": 3,
+            "end_line": 271,
+            "end_col": 93
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blkmergesort.mergesortmatrix_valid",
+          "dtype": "std_logic_vector",
+          "name": "MergeSortMatrix_Valid",
+          "dim": "[MERGENET_STAGES:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 305,
+            "col": 3,
+            "end_line": 305,
+            "end_col": 80
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blkmergesort.mergesortmatrix_data",
+          "dtype": "t_merge_data_vector",
+          "name": "MergeSortMatrix_Data",
+          "dim": "[MERGENET_STAGES:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 306,
+            "col": 3,
+            "end_line": 306,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blkmergesort.mergesortmatrix_sof",
+          "dtype": "std_logic_vector",
+          "name": "MergeSortMatrix_SOF",
+          "dim": "[MERGENET_STAGES:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 307,
+            "col": 3,
+            "end_line": 307,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blkmergesort.mergesortmatrix_eof",
+          "dtype": "std_logic_vector",
+          "name": "MergeSortMatrix_EOF",
+          "dim": "[MERGENET_STAGES:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 308,
+            "col": 3,
+            "end_line": 308,
+            "end_col": 79
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.blkmergesort.mergesortmatrix_ack",
+          "dtype": "std_logic_vector",
+          "name": "MergeSortMatrix_Ack",
+          "dim": "[MERGENET_STAGES:0]",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 309,
+            "col": 3,
+            "end_line": 309,
+            "end_col": 79
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "sortnet_stream_adapter2.t_merge_data",
+          "name": "T_MERGE_DATA",
+          "kind": "alias",
+          "dtype": "std_logic_vector(TRANSFORM_BITS - 1 downto 0)",
+          "loc": {
+            "line": 302,
+            "col": 3,
+            "end_line": 302,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "sortnet_stream_adapter2.t_merge_data_vector",
+          "name": "T_MERGE_DATA_VECTOR",
+          "kind": "alias",
+          "dtype": "array(natural range <>) of T_MERGE_DATA",
+          "loc": {
+            "line": 303,
+            "col": 3,
+            "end_line": 303,
+            "end_col": 72
           }
         }
       ],

@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_clint.num_harts",
+          "dtype": "natural",
           "name": "NUM_HARTS",
           "comment": [
             "-- number of physical CPU cores"
@@ -126,6 +127,436 @@
             "col": 5,
             "end_line": 32,
             "end_col": 60
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "neorv32_clint.base_mswi_c",
+          "ptype": "constant",
+          "dtype": "unsigned",
+          "name": "base_mswi_c",
+          "dim": "[15:0]",
+          "default": "x\"0000\"",
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "neorv32_clint.base_mtimecmp_c",
+          "ptype": "constant",
+          "dtype": "unsigned",
+          "name": "base_mtimecmp_c",
+          "dim": "[15:0]",
+          "default": "x\"4000\"",
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "neorv32_clint.base_mtime_c",
+          "ptype": "constant",
+          "dtype": "unsigned",
+          "name": "base_mtime_c",
+          "dim": "[15:0]",
+          "default": "x\"bff8\"",
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 62
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_clint.bus_ack",
+          "dtype": "std_ulogic",
+          "name": "bus_ack",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "neorv32_clint.bus_rden",
+          "dtype": "std_ulogic",
+          "name": "bus_rden",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "neorv32_clint.mtime_en",
+          "dtype": "std_ulogic",
+          "name": "mtime_en",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "neorv32_clint.mtime_we",
+          "dtype": "std_ulogic_vector",
+          "name": "mtime_we",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_clint.mtimecmp_en",
+          "dtype": "std_ulogic_vector",
+          "name": "mtimecmp_en",
+          "dim": "[NUM_HARTS-1:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "neorv32_clint.mtimecmp_re",
+          "dtype": "std_ulogic_vector",
+          "name": "mtimecmp_re",
+          "dim": "[NUM_HARTS-1:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "neorv32_clint.mtimecmp_we",
+          "dtype": "std_ulogic_vector",
+          "name": "mtimecmp_we",
+          "dim": "[NUM_HARTS-1:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "neorv32_clint.mswi_en",
+          "dtype": "std_ulogic_vector",
+          "name": "mswi_en",
+          "dim": "[NUM_HARTS-1:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "neorv32_clint.mswi",
+          "dtype": "std_ulogic_vector",
+          "name": "mswi",
+          "dim": "[NUM_HARTS-1:0]",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 104
+          }
+        },
+        {
+          "id": "neorv32_clint.mtimecmp_rd",
+          "dtype": "rb32_t",
+          "name": "mtimecmp_rd",
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 68,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "neorv32_clint.mswi_rd",
+          "dtype": "rb32_t",
+          "name": "mswi_rd",
+          "loc": {
+            "line": 69,
+            "col": 3,
+            "end_line": 69,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "neorv32_clint.mtime",
+          "dtype": "std_ulogic_vector",
+          "name": "mtime",
+          "dim": "[63:0]",
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_clint.mtime_rd",
+          "dtype": "std_ulogic_vector",
+          "name": "mtime_rd",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "neorv32_clint.rdata",
+          "dtype": "std_ulogic_vector",
+          "name": "rdata",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 54
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_clint.rb32_t",
+          "name": "rb32_t",
+          "kind": "alias",
+          "dtype": "array (NUM_HARTS-1 downto 0) of std_ulogic_vector(31 downto 0)",
+          "comment": [
+            "-- read-back --"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 81
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_clint.neorv32_clint_swi_gen.mswi_reg",
+          "name": "mswi_reg",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_swi_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 134,
+            "col": 5,
+            "end_line": 143,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "neorv32_clint.bus_handshake",
+          "name": "bus_handshake",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Bus Response ---------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_clint.read_back",
+          "name": "read_back",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "mtime_rd"
+            },
+            {
+              "signal": "mtimecmp_rd"
+            },
+            {
+              "signal": "mswi_rd"
+            }
+          ],
+          "comment": [
+            "-- data read-back --"
+          ],
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 175,
+            "end_col": 15
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "neorv32_clint.neorv32_clint_mtimecmp",
+          "name": "neorv32_clint_mtimecmp",
+          "ports": [
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.clk_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "clk_i",
+              "loc": {
+                "line": 41,
+                "col": 5,
+                "end_line": 41,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.rstn_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "rstn_i",
+              "loc": {
+                "line": 42,
+                "col": 5,
+                "end_line": 42,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.mtime_i",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "mtime_i",
+              "dim": "[63:0]",
+              "loc": {
+                "line": 43,
+                "col": 5,
+                "end_line": 43,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.we_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "we_i",
+              "loc": {
+                "line": 44,
+                "col": 5,
+                "end_line": 44,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.re_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "re_i",
+              "loc": {
+                "line": 45,
+                "col": 5,
+                "end_line": 45,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.addr_i",
+              "direction": "in",
+              "dtype": "std_ulogic",
+              "name": "addr_i",
+              "loc": {
+                "line": 46,
+                "col": 5,
+                "end_line": 46,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.wdata_i",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "wdata_i",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 47,
+                "col": 5,
+                "end_line": 47,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.rdata_o",
+              "direction": "out",
+              "dtype": "std_ulogic_vector",
+              "name": "rdata_o",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "neorv32_clint.neorv32_clint_mtimecmp.mti_o",
+              "direction": "out",
+              "dtype": "std_ulogic",
+              "name": "mti_o",
+              "loc": {
+                "line": 49,
+                "col": 5,
+                "end_line": 49,
+                "end_col": 29
+              }
+            }
+          ],
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 17
           }
         }
       ],
@@ -506,6 +937,138 @@
             "col": 5,
             "end_line": 209,
             "end_col": 29
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_clint_mtimecmp.mtimecmp_lo",
+          "dtype": "std_ulogic_vector",
+          "name": "mtimecmp_lo",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.mtimecmp_hi",
+          "dtype": "std_ulogic_vector",
+          "name": "mtimecmp_hi",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.cmp_lo_eq",
+          "dtype": "std_ulogic",
+          "name": "cmp_lo_eq",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.cmp_lo_gt",
+          "dtype": "std_ulogic",
+          "name": "cmp_lo_gt",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.cmp_lo_ge",
+          "dtype": "std_ulogic",
+          "name": "cmp_lo_ge",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.cmp_hi_eq",
+          "dtype": "std_ulogic",
+          "name": "cmp_hi_eq",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.cmp_hi_gt",
+          "dtype": "std_ulogic",
+          "name": "cmp_hi_gt",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 76
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_clint_mtimecmp.write_access",
+          "name": "write_access",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "comment": [
+            "-- MTIMECMP Access ------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 222,
+            "col": 3,
+            "end_line": 236,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_clint_mtimecmp.irq_gen",
+          "name": "irq_gen",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Interrupt Generator --------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 243,
+            "col": 3,
+            "end_line": 249,
+            "end_col": 15
           }
         }
       ],

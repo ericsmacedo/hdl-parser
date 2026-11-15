@@ -1,11 +1,6014 @@
 {
   "path": "$PRJ/tests/corpus/sv/ibex/ibex_pkg.sv",
   "modules": [],
-  "diagnostics": [
+  "packages": [
     {
-      "code": "no-module",
-      "severity": "info",
-      "message": "no module found."
+      "id": "ibex_pkg",
+      "name": "ibex_pkg",
+      "params": [
+        {
+          "id": "ibex_pkg.ADDR_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "ADDR_W",
+          "default": "32",
+          "loc": {
+            "line": 368,
+            "col": 3,
+            "end_line": 368,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.BUS_SIZE",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "BUS_SIZE",
+          "default": "32",
+          "loc": {
+            "line": 369,
+            "col": 3,
+            "end_line": 369,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.BUS_BYTES",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "BUS_BYTES",
+          "default": "BUS_SIZE/8",
+          "loc": {
+            "line": 370,
+            "col": 3,
+            "end_line": 370,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_pkg.BUS_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "BUS_W",
+          "default": "$clog2(BUS_BYTES)",
+          "loc": {
+            "line": 371,
+            "col": 3,
+            "end_line": 371,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_SIZE_BYTES",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_SIZE_BYTES",
+          "default": "4096",
+          "loc": {
+            "line": 372,
+            "col": 3,
+            "end_line": 372,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_NUM_WAYS",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_NUM_WAYS",
+          "default": "2",
+          "loc": {
+            "line": 373,
+            "col": 3,
+            "end_line": 373,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_LINE_SIZE",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_LINE_SIZE",
+          "default": "64",
+          "loc": {
+            "line": 374,
+            "col": 3,
+            "end_line": 374,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_LINE_BYTES",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_LINE_BYTES",
+          "default": "IC_LINE_SIZE/8",
+          "loc": {
+            "line": 375,
+            "col": 3,
+            "end_line": 375,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_LINE_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_LINE_W",
+          "default": "$clog2(IC_LINE_BYTES)",
+          "loc": {
+            "line": 376,
+            "col": 3,
+            "end_line": 376,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_NUM_LINES",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_NUM_LINES",
+          "default": "IC_SIZE_BYTES / IC_NUM_WAYS / IC_LINE_BYTES",
+          "loc": {
+            "line": 377,
+            "col": 3,
+            "end_line": 377,
+            "end_col": 89
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_LINE_BEATS",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_LINE_BEATS",
+          "default": "IC_LINE_BYTES / BUS_BYTES",
+          "loc": {
+            "line": 378,
+            "col": 3,
+            "end_line": 378,
+            "end_col": 71
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_LINE_BEATS_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_LINE_BEATS_W",
+          "default": "$clog2(IC_LINE_BEATS)",
+          "loc": {
+            "line": 379,
+            "col": 3,
+            "end_line": 379,
+            "end_col": 67
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_INDEX_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_INDEX_W",
+          "default": "$clog2(IC_NUM_LINES)",
+          "loc": {
+            "line": 380,
+            "col": 3,
+            "end_line": 380,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_INDEX_HI",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_INDEX_HI",
+          "default": "IC_INDEX_W + IC_LINE_W - 1",
+          "loc": {
+            "line": 381,
+            "col": 3,
+            "end_line": 381,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_TAG_SIZE",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_TAG_SIZE",
+          "default": "ADDR_W - IC_INDEX_W - IC_LINE_W + 1",
+          "comment": [
+            "1 valid bit"
+          ],
+          "loc": {
+            "line": 382,
+            "col": 3,
+            "end_line": 382,
+            "end_col": 81
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_OUTPUT_BEATS",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_OUTPUT_BEATS",
+          "default": "(BUS_BYTES / 2)",
+          "comment": [
+            "number of halfwords"
+          ],
+          "loc": {
+            "line": 383,
+            "col": 3,
+            "end_line": 383,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_DATA_ECC_SIZE",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_DATA_ECC_SIZE",
+          "default": "7",
+          "loc": {
+            "line": 384,
+            "col": 3,
+            "end_line": 384,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_pkg.IC_TAG_ECC_SIZE",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "IC_TAG_ECC_SIZE",
+          "default": "6",
+          "loc": {
+            "line": 385,
+            "col": 3,
+            "end_line": 385,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_pkg.SCRAMBLE_KEY_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "SCRAMBLE_KEY_W",
+          "default": "128",
+          "loc": {
+            "line": 387,
+            "col": 3,
+            "end_line": 387,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_pkg.SCRAMBLE_NONCE_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "SCRAMBLE_NONCE_W",
+          "default": "64",
+          "loc": {
+            "line": 388,
+            "col": 3,
+            "end_line": 388,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_MAX_REGIONS",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_MAX_REGIONS",
+          "default": "16",
+          "loc": {
+            "line": 391,
+            "col": 3,
+            "end_line": 391,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_CFG_W",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_CFG_W",
+          "default": "8",
+          "loc": {
+            "line": 392,
+            "col": 3,
+            "end_line": 392,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_ADDR_MSB",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_ADDR_MSB",
+          "default": "33",
+          "loc": {
+            "line": 395,
+            "col": 3,
+            "end_line": 395,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_ADDR_LSB",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_ADDR_LSB",
+          "default": "2",
+          "loc": {
+            "line": 398,
+            "col": 3,
+            "end_line": 398,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_I",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_I",
+          "default": "0",
+          "loc": {
+            "line": 401,
+            "col": 3,
+            "end_line": 401,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_I2",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_I2",
+          "default": "1",
+          "loc": {
+            "line": 402,
+            "col": 3,
+            "end_line": 402,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_pkg.PMP_D",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "PMP_D",
+          "default": "2",
+          "loc": {
+            "line": 403,
+            "col": 3,
+            "end_line": 403,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_OFF_PMP_CFG",
+          "ptype": "logic",
+          "name": "CSR_OFF_PMP_CFG",
+          "dim": "[11:0]",
+          "default": "12'h3A0",
+          "comment": [
+            "pmp_cfg  @ 12'h3a0 - 12'h3a3"
+          ],
+          "loc": {
+            "line": 669,
+            "col": 3,
+            "end_line": 669,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_OFF_PMP_ADDR",
+          "ptype": "logic",
+          "name": "CSR_OFF_PMP_ADDR",
+          "dim": "[11:0]",
+          "default": "12'h3B0",
+          "comment": [
+            "pmp_addr @ 12'h3b0 - 12'h3bf"
+          ],
+          "loc": {
+            "line": 670,
+            "col": 3,
+            "end_line": 670,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_MIE_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_MIE_BIT",
+          "default": "3",
+          "loc": {
+            "line": 673,
+            "col": 3,
+            "end_line": 673,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_MPIE_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_MPIE_BIT",
+          "default": "7",
+          "loc": {
+            "line": 674,
+            "col": 3,
+            "end_line": 674,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_MPP_BIT_LOW",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_MPP_BIT_LOW",
+          "default": "11",
+          "loc": {
+            "line": 675,
+            "col": 3,
+            "end_line": 675,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_MPP_BIT_HIGH",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_MPP_BIT_HIGH",
+          "default": "12",
+          "loc": {
+            "line": 676,
+            "col": 3,
+            "end_line": 676,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_MPRV_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_MPRV_BIT",
+          "default": "17",
+          "loc": {
+            "line": 677,
+            "col": 3,
+            "end_line": 677,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSTATUS_TW_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSTATUS_TW_BIT",
+          "default": "21",
+          "loc": {
+            "line": 678,
+            "col": 3,
+            "end_line": 678,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MISA_MXL",
+          "ptype": "logic",
+          "name": "CSR_MISA_MXL",
+          "dim": "[1:0]",
+          "default": "2'd1",
+          "comment": [
+            "M-XLEN: XLEN in M-Mode for RV32"
+          ],
+          "loc": {
+            "line": 681,
+            "col": 3,
+            "end_line": 681,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSIX_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSIX_BIT",
+          "default": "3",
+          "loc": {
+            "line": 684,
+            "col": 3,
+            "end_line": 684,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MTIX_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MTIX_BIT",
+          "default": "7",
+          "loc": {
+            "line": 685,
+            "col": 3,
+            "end_line": 685,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MEIX_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MEIX_BIT",
+          "default": "11",
+          "loc": {
+            "line": 686,
+            "col": 3,
+            "end_line": 686,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MFIX_BIT_LOW",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MFIX_BIT_LOW",
+          "default": "16",
+          "loc": {
+            "line": 687,
+            "col": 3,
+            "end_line": 687,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MFIX_BIT_HIGH",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MFIX_BIT_HIGH",
+          "default": "30",
+          "loc": {
+            "line": 688,
+            "col": 3,
+            "end_line": 688,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSECCFG_MML_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSECCFG_MML_BIT",
+          "default": "0",
+          "loc": {
+            "line": 691,
+            "col": 3,
+            "end_line": 691,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSECCFG_MMWP_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSECCFG_MMWP_BIT",
+          "default": "1",
+          "loc": {
+            "line": 692,
+            "col": 3,
+            "end_line": 692,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MSECCFG_RLB_BIT",
+          "ptype": "int",
+          "dtype": "unsigned",
+          "name": "CSR_MSECCFG_RLB_BIT",
+          "default": "2",
+          "loc": {
+            "line": 693,
+            "col": 3,
+            "end_line": 693,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_pkg.LfsrWidth",
+          "ptype": "int",
+          "name": "LfsrWidth",
+          "default": "32",
+          "loc": {
+            "line": 710,
+            "col": 3,
+            "end_line": 710,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_pkg.RndCnstLfsrSeedDefault",
+          "ptype": "lfsr_seed_t",
+          "name": "RndCnstLfsrSeedDefault",
+          "default": "32'hac533bf4",
+          "loc": {
+            "line": 713,
+            "col": 3,
+            "end_line": 713,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "ibex_pkg.RndCnstLfsrPermDefault",
+          "ptype": "lfsr_perm_t",
+          "name": "RndCnstLfsrPermDefault",
+          "default": "{\n    160'h1e35ecba467fd1b12e958152c04fa43878a8daed\n  }",
+          "loc": {
+            "line": 714,
+            "col": 3,
+            "end_line": 716,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "ibex_pkg.RndCnstIbexKeyDefault",
+          "ptype": "logic",
+          "name": "RndCnstIbexKeyDefault",
+          "dim": "[SCRAMBLE_KEY_W-1:0]",
+          "default": "128'h14e8cecae3040d5e12286bb3cc113298",
+          "loc": {
+            "line": 717,
+            "col": 3,
+            "end_line": 718,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_pkg.RndCnstIbexNonceDefault",
+          "ptype": "logic",
+          "name": "RndCnstIbexNonceDefault",
+          "dim": "[SCRAMBLE_NONCE_W-1:0]",
+          "default": "64'hf79780bc735f3843",
+          "loc": {
+            "line": 719,
+            "col": 3,
+            "end_line": 720,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_pkg.IbexMuBiWidth",
+          "ptype": "int",
+          "name": "IbexMuBiWidth",
+          "default": "4",
+          "loc": {
+            "line": 724,
+            "col": 3,
+            "end_line": 724,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_pkg.IbexMuBiOn",
+          "ptype": "ibex_mubi_t",
+          "name": "IbexMuBiOn",
+          "default": "4'b0101",
+          "loc": {
+            "line": 731,
+            "col": 3,
+            "end_line": 731,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_pkg.IbexMuBiOff",
+          "ptype": "ibex_mubi_t",
+          "name": "IbexMuBiOff",
+          "default": "4'b1010",
+          "loc": {
+            "line": 732,
+            "col": 3,
+            "end_line": 732,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_pkg.PmpCfgRst",
+          "ptype": "pmp_cfg_t",
+          "name": "PmpCfgRst",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "'{\n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, \n    '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}  \n  }",
+          "comment": [
+            "region 0",
+            "region 1",
+            "region 2",
+            "region 3",
+            "region 4",
+            "region 5",
+            "region 6",
+            "region 7",
+            "region 8",
+            "region 9",
+            "region 10",
+            "region 11",
+            "region 12",
+            "region 13",
+            "region 14",
+            "region 15"
+          ],
+          "loc": {
+            "line": 741,
+            "col": 3,
+            "end_line": 758,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "ibex_pkg.PmpAddrRst",
+          "ptype": "logic",
+          "name": "PmpAddrRst",
+          "dim": "[PMP_ADDR_MSB:0]",
+          "dim_unpacked": "[PMP_MAX_REGIONS]",
+          "default": "'{\n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0, \n    34'h0  \n  }",
+          "comment": [
+            "region 0",
+            "region 1",
+            "region 2",
+            "region 3",
+            "region 4",
+            "region 5",
+            "region 6",
+            "region 7",
+            "region 8",
+            "region 9",
+            "region 10",
+            "region 11",
+            "region 12",
+            "region 13",
+            "region 14",
+            "region 15"
+          ],
+          "loc": {
+            "line": 763,
+            "col": 3,
+            "end_line": 780,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "ibex_pkg.PmpMseccfgRst",
+          "ptype": "pmp_mseccfg_t",
+          "name": "PmpMseccfgRst",
+          "default": "'{rlb : 1'b0, mmwp: 1'b0, mml: 1'b0}",
+          "loc": {
+            "line": 782,
+            "col": 3,
+            "end_line": 782,
+            "end_col": 80
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "ibex_pkg.ExcCauseIrqSoftwareM",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseIrqSoftwareM",
+          "default": "'{irq_ext: 1'b1, irq_int: 1'b0, lower_cause: 5'd03}",
+          "loc": {
+            "line": 321,
+            "col": 3,
+            "end_line": 322,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseIrqTimerM",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseIrqTimerM",
+          "default": "'{irq_ext: 1'b1, irq_int: 1'b0, lower_cause: 5'd07}",
+          "loc": {
+            "line": 323,
+            "col": 3,
+            "end_line": 324,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseIrqExternalM",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseIrqExternalM",
+          "default": "'{irq_ext: 1'b1, irq_int: 1'b0, lower_cause: 5'd11}",
+          "loc": {
+            "line": 325,
+            "col": 3,
+            "end_line": 326,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseIrqNm",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseIrqNm",
+          "default": "'{irq_ext: 1'b1, irq_int: 1'b0, lower_cause: 5'd31}",
+          "loc": {
+            "line": 327,
+            "col": 3,
+            "end_line": 328,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseInsnAddrMisa",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseInsnAddrMisa",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd00}",
+          "loc": {
+            "line": 330,
+            "col": 3,
+            "end_line": 331,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseInstrAccessFault",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseInstrAccessFault",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd01}",
+          "loc": {
+            "line": 332,
+            "col": 3,
+            "end_line": 333,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseIllegalInsn",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseIllegalInsn",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd02}",
+          "loc": {
+            "line": 334,
+            "col": 3,
+            "end_line": 335,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseBreakpoint",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseBreakpoint",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd03}",
+          "loc": {
+            "line": 336,
+            "col": 3,
+            "end_line": 337,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseLoadAddrMisaligned",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseLoadAddrMisaligned",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd04}",
+          "loc": {
+            "line": 338,
+            "col": 3,
+            "end_line": 339,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseLoadAccessFault",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseLoadAccessFault",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd05}",
+          "loc": {
+            "line": 340,
+            "col": 3,
+            "end_line": 341,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseStoreAddrMisaligned",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseStoreAddrMisaligned",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd06}",
+          "loc": {
+            "line": 342,
+            "col": 3,
+            "end_line": 343,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseStoreAccessFault",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseStoreAccessFault",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd07}",
+          "loc": {
+            "line": 344,
+            "col": 3,
+            "end_line": 345,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseEcallUMode",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseEcallUMode",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd08}",
+          "loc": {
+            "line": 346,
+            "col": 3,
+            "end_line": 347,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseEcallMMode",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseEcallMMode",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd11}",
+          "loc": {
+            "line": 348,
+            "col": 3,
+            "end_line": 349,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.ExcCauseCheriFault",
+          "ptype": "exc_cause_t",
+          "name": "ExcCauseCheriFault",
+          "default": "'{irq_ext: 1'b0, irq_int: 1'b0, lower_cause: 5'd28}",
+          "loc": {
+            "line": 350,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MARCHID_VALUE",
+          "ptype": "logic",
+          "name": "CSR_MARCHID_VALUE",
+          "dim": "[31:0]",
+          "default": "{1'b0, 31'd22}",
+          "loc": {
+            "line": 699,
+            "col": 3,
+            "end_line": 699,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MARCHID_CHERIOT_VALUE",
+          "ptype": "logic",
+          "name": "CSR_MARCHID_CHERIOT_VALUE",
+          "dim": "[31:0]",
+          "default": "32'hce1",
+          "loc": {
+            "line": 700,
+            "col": 3,
+            "end_line": 700,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "ibex_pkg.CSR_MCONFIGPTR_VALUE",
+          "ptype": "logic",
+          "name": "CSR_MCONFIGPTR_VALUE",
+          "dim": "[31:0]",
+          "default": "32'b0",
+          "loc": {
+            "line": 706,
+            "col": 3,
+            "end_line": 706,
+            "end_col": 56
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "ibex_pkg.crash_dump_t",
+          "name": "crash_dump_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.crash_dump_t.current_pc",
+              "name": "current_pc",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 17,
+                "col": 5,
+                "end_line": 17,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.crash_dump_t.next_pc",
+              "name": "next_pc",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 18,
+                "col": 5,
+                "end_line": 18,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.crash_dump_t.last_data_addr",
+              "name": "last_data_addr",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 19,
+                "col": 5,
+                "end_line": 19,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_pkg.crash_dump_t.exception_pc",
+              "name": "exception_pc",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 20,
+                "col": 5,
+                "end_line": 20,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_pkg.crash_dump_t.exception_addr",
+              "name": "exception_addr",
+              "dtype": "logic",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 21,
+                "col": 5,
+                "end_line": 21,
+                "end_col": 32
+              }
+            }
+          ],
+          "comment": [
+            "//////////////",
+            "IO Structs //",
+            "//////////////"
+          ],
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "ibex_pkg.core2rf_t",
+          "name": "core2rf_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.core2rf_t.dummy_instr_id",
+              "name": "dummy_instr_id",
+              "dtype": "logic",
+              "loc": {
+                "line": 25,
+                "col": 5,
+                "end_line": 25,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_pkg.core2rf_t.raddr_a",
+              "name": "raddr_a",
+              "dtype": "logic",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 26,
+                "col": 5,
+                "end_line": 26,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.core2rf_t.waddr_a",
+              "name": "waddr_a",
+              "dtype": "logic",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 27,
+                "col": 5,
+                "end_line": 27,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.core2rf_t.we_a",
+              "name": "we_a",
+              "dtype": "logic",
+              "loc": {
+                "line": 28,
+                "col": 5,
+                "end_line": 28,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_pkg.core2rf_t.raddr_b",
+              "name": "raddr_b",
+              "dtype": "logic",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 29,
+                "col": 5,
+                "end_line": 29,
+                "end_col": 25
+              }
+            }
+          ],
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_pkg.base_isa_e",
+          "name": "base_isa_e",
+          "kind": "enum",
+          "dtype": "integer",
+          "members": [
+            {
+              "id": "ibex_pkg.base_isa_e.BaseIsaRV32I",
+              "name": "BaseIsaRV32I",
+              "value": "0",
+              "comment": [
+                "only RV32I"
+              ],
+              "loc": {
+                "line": 37,
+                "col": 5,
+                "end_line": 37,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_pkg.base_isa_e.BaseIsaRV32IorCHERIoT",
+              "name": "BaseIsaRV32IorCHERIoT",
+              "value": "1",
+              "comment": [
+                "dual base ISA: RV32I/CHERIoT runtime switchable"
+              ],
+              "loc": {
+                "line": 38,
+                "col": 5,
+                "end_line": 38,
+                "end_col": 30
+              }
+            }
+          ],
+          "comment": [
+            "///////////////////",
+            "Parameter Enums //",
+            "///////////////////"
+          ],
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_pkg.regfile_e",
+          "name": "regfile_e",
+          "kind": "enum",
+          "dtype": "integer",
+          "members": [
+            {
+              "id": "ibex_pkg.regfile_e.RegFileFF",
+              "name": "RegFileFF",
+              "value": "0",
+              "loc": {
+                "line": 42,
+                "col": 5,
+                "end_line": 42,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "ibex_pkg.regfile_e.RegFileFPGA",
+              "name": "RegFileFPGA",
+              "value": "1",
+              "loc": {
+                "line": 43,
+                "col": 5,
+                "end_line": 43,
+                "end_col": 21
+              }
+            },
+            {
+              "id": "ibex_pkg.regfile_e.RegFileLatch",
+              "name": "RegFileLatch",
+              "value": "2",
+              "loc": {
+                "line": 44,
+                "col": 5,
+                "end_line": 44,
+                "end_col": 21
+              }
+            }
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_pkg.rv32m_e",
+          "name": "rv32m_e",
+          "kind": "enum",
+          "dtype": "integer",
+          "members": [
+            {
+              "id": "ibex_pkg.rv32m_e.RV32MNone",
+              "name": "RV32MNone",
+              "value": "0",
+              "loc": {
+                "line": 48,
+                "col": 5,
+                "end_line": 48,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32m_e.RV32MSlow",
+              "name": "RV32MSlow",
+              "value": "1",
+              "loc": {
+                "line": 49,
+                "col": 5,
+                "end_line": 49,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32m_e.RV32MFast",
+              "name": "RV32MFast",
+              "value": "2",
+              "loc": {
+                "line": 50,
+                "col": 5,
+                "end_line": 50,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32m_e.RV32MSingleCycle",
+              "name": "RV32MSingleCycle",
+              "value": "3",
+              "loc": {
+                "line": 51,
+                "col": 5,
+                "end_line": 51,
+                "end_col": 25
+              }
+            }
+          ],
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "ibex_pkg.rv32b_e",
+          "name": "rv32b_e",
+          "kind": "enum",
+          "dtype": "integer",
+          "members": [
+            {
+              "id": "ibex_pkg.rv32b_e.RV32BNone",
+              "name": "RV32BNone",
+              "value": "0",
+              "loc": {
+                "line": 55,
+                "col": 5,
+                "end_line": 55,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32b_e.RV32BBalanced",
+              "name": "RV32BBalanced",
+              "value": "1",
+              "loc": {
+                "line": 56,
+                "col": 5,
+                "end_line": 56,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32b_e.RV32BFull",
+              "name": "RV32BFull",
+              "value": "2",
+              "loc": {
+                "line": 57,
+                "col": 5,
+                "end_line": 57,
+                "end_col": 22
+              }
+            }
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "ibex_pkg.rv32zc_e",
+          "name": "rv32zc_e",
+          "kind": "enum",
+          "dtype": "integer",
+          "members": [
+            {
+              "id": "ibex_pkg.rv32zc_e.RV32Zca",
+              "name": "RV32Zca",
+              "value": "0",
+              "loc": {
+                "line": 61,
+                "col": 5,
+                "end_line": 61,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32zc_e.RV32ZcaZcb",
+              "name": "RV32ZcaZcb",
+              "value": "1",
+              "loc": {
+                "line": 62,
+                "col": 5,
+                "end_line": 62,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32zc_e.RV32ZcaZcmp",
+              "name": "RV32ZcaZcmp",
+              "value": "2",
+              "loc": {
+                "line": 63,
+                "col": 5,
+                "end_line": 63,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.rv32zc_e.RV32ZcaZcbZcmp",
+              "name": "RV32ZcaZcbZcmp",
+              "value": "3",
+              "loc": {
+                "line": 64,
+                "col": 5,
+                "end_line": 64,
+                "end_col": 23
+              }
+            }
+          ],
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.opcode_e",
+          "name": "opcode_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[6:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_LOAD",
+              "name": "OPCODE_LOAD",
+              "value": "7'h03",
+              "loc": {
+                "line": 72,
+                "col": 5,
+                "end_line": 72,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_MISC_MEM",
+              "name": "OPCODE_MISC_MEM",
+              "value": "7'h0f",
+              "loc": {
+                "line": 73,
+                "col": 5,
+                "end_line": 73,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_OP_IMM",
+              "name": "OPCODE_OP_IMM",
+              "value": "7'h13",
+              "loc": {
+                "line": 74,
+                "col": 5,
+                "end_line": 74,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_AUIPC",
+              "name": "OPCODE_AUIPC",
+              "value": "7'h17",
+              "loc": {
+                "line": 75,
+                "col": 5,
+                "end_line": 75,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_STORE",
+              "name": "OPCODE_STORE",
+              "value": "7'h23",
+              "loc": {
+                "line": 76,
+                "col": 5,
+                "end_line": 76,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_OP",
+              "name": "OPCODE_OP",
+              "value": "7'h33",
+              "loc": {
+                "line": 77,
+                "col": 5,
+                "end_line": 77,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_LUI",
+              "name": "OPCODE_LUI",
+              "value": "7'h37",
+              "loc": {
+                "line": 78,
+                "col": 5,
+                "end_line": 78,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_BRANCH",
+              "name": "OPCODE_BRANCH",
+              "value": "7'h63",
+              "loc": {
+                "line": 79,
+                "col": 5,
+                "end_line": 79,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_JALR",
+              "name": "OPCODE_JALR",
+              "value": "7'h67",
+              "loc": {
+                "line": 80,
+                "col": 5,
+                "end_line": 80,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_JAL",
+              "name": "OPCODE_JAL",
+              "value": "7'h6f",
+              "loc": {
+                "line": 81,
+                "col": 5,
+                "end_line": 81,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_SYSTEM",
+              "name": "OPCODE_SYSTEM",
+              "value": "7'h73",
+              "loc": {
+                "line": 82,
+                "col": 5,
+                "end_line": 82,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_CHERI",
+              "name": "OPCODE_CHERI",
+              "value": "7'h5b",
+              "loc": {
+                "line": 83,
+                "col": 5,
+                "end_line": 83,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.opcode_e.OPCODE_AUICGP",
+              "name": "OPCODE_AUICGP",
+              "value": "7'h7b",
+              "loc": {
+                "line": 84,
+                "col": 5,
+                "end_line": 84,
+                "end_col": 28
+              }
+            }
+          ],
+          "comment": [
+            "///////////",
+            "Opcodes //",
+            "///////////"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.alu_op_e",
+          "name": "alu_op_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[6:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ADD",
+              "name": "ALU_ADD",
+              "loc": {
+                "line": 94,
+                "col": 5,
+                "end_line": 94,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SUB",
+              "name": "ALU_SUB",
+              "comment": [
+                "Logics"
+              ],
+              "loc": {
+                "line": 95,
+                "col": 5,
+                "end_line": 95,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_XOR",
+              "name": "ALU_XOR",
+              "loc": {
+                "line": 98,
+                "col": 5,
+                "end_line": 98,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_OR",
+              "name": "ALU_OR",
+              "loc": {
+                "line": 99,
+                "col": 5,
+                "end_line": 99,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_AND",
+              "name": "ALU_AND",
+              "comment": [
+                "RV32B"
+              ],
+              "loc": {
+                "line": 100,
+                "col": 5,
+                "end_line": 100,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_XNOR",
+              "name": "ALU_XNOR",
+              "loc": {
+                "line": 102,
+                "col": 5,
+                "end_line": 102,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ORN",
+              "name": "ALU_ORN",
+              "loc": {
+                "line": 103,
+                "col": 5,
+                "end_line": 103,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ANDN",
+              "name": "ALU_ANDN",
+              "comment": [
+                "Shifts"
+              ],
+              "loc": {
+                "line": 104,
+                "col": 5,
+                "end_line": 104,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SRA",
+              "name": "ALU_SRA",
+              "loc": {
+                "line": 107,
+                "col": 5,
+                "end_line": 107,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SRL",
+              "name": "ALU_SRL",
+              "loc": {
+                "line": 108,
+                "col": 5,
+                "end_line": 108,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SLL",
+              "name": "ALU_SLL",
+              "comment": [
+                "RV32B"
+              ],
+              "loc": {
+                "line": 109,
+                "col": 5,
+                "end_line": 109,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ROR",
+              "name": "ALU_ROR",
+              "loc": {
+                "line": 111,
+                "col": 5,
+                "end_line": 111,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ROL",
+              "name": "ALU_ROL",
+              "loc": {
+                "line": 112,
+                "col": 5,
+                "end_line": 112,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_REV8",
+              "name": "ALU_REV8",
+              "loc": {
+                "line": 113,
+                "col": 5,
+                "end_line": 113,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_BREV8",
+              "name": "ALU_BREV8",
+              "loc": {
+                "line": 114,
+                "col": 5,
+                "end_line": 114,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ORCB",
+              "name": "ALU_ORCB",
+              "loc": {
+                "line": 115,
+                "col": 5,
+                "end_line": 115,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_ZIP",
+              "name": "ALU_ZIP",
+              "loc": {
+                "line": 116,
+                "col": 5,
+                "end_line": 116,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_UNZIP",
+              "name": "ALU_UNZIP",
+              "loc": {
+                "line": 117,
+                "col": 5,
+                "end_line": 117,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_XPERM4",
+              "name": "ALU_XPERM4",
+              "loc": {
+                "line": 118,
+                "col": 5,
+                "end_line": 118,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_XPERM8",
+              "name": "ALU_XPERM8",
+              "comment": [
+                "Address Calculations",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 119,
+                "col": 5,
+                "end_line": 119,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SH1ADD",
+              "name": "ALU_SH1ADD",
+              "loc": {
+                "line": 123,
+                "col": 5,
+                "end_line": 123,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SH2ADD",
+              "name": "ALU_SH2ADD",
+              "loc": {
+                "line": 124,
+                "col": 5,
+                "end_line": 124,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SH3ADD",
+              "name": "ALU_SH3ADD",
+              "comment": [
+                "Comparisons"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 5,
+                "end_line": 125,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_LT",
+              "name": "ALU_LT",
+              "loc": {
+                "line": 128,
+                "col": 5,
+                "end_line": 128,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_LTU",
+              "name": "ALU_LTU",
+              "loc": {
+                "line": 129,
+                "col": 5,
+                "end_line": 129,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_GE",
+              "name": "ALU_GE",
+              "loc": {
+                "line": 130,
+                "col": 5,
+                "end_line": 130,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_GEU",
+              "name": "ALU_GEU",
+              "loc": {
+                "line": 131,
+                "col": 5,
+                "end_line": 131,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_EQ",
+              "name": "ALU_EQ",
+              "loc": {
+                "line": 132,
+                "col": 5,
+                "end_line": 132,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_NE",
+              "name": "ALU_NE",
+              "comment": [
+                "RV32B"
+              ],
+              "loc": {
+                "line": 133,
+                "col": 5,
+                "end_line": 133,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_MIN",
+              "name": "ALU_MIN",
+              "loc": {
+                "line": 135,
+                "col": 5,
+                "end_line": 135,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_MINU",
+              "name": "ALU_MINU",
+              "loc": {
+                "line": 136,
+                "col": 5,
+                "end_line": 136,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_MAX",
+              "name": "ALU_MAX",
+              "loc": {
+                "line": 137,
+                "col": 5,
+                "end_line": 137,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_MAXU",
+              "name": "ALU_MAXU",
+              "comment": [
+                "Pack",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 138,
+                "col": 5,
+                "end_line": 138,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_PACK",
+              "name": "ALU_PACK",
+              "loc": {
+                "line": 142,
+                "col": 5,
+                "end_line": 142,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_PACKH",
+              "name": "ALU_PACKH",
+              "comment": [
+                "Sign-Extend",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 143,
+                "col": 5,
+                "end_line": 143,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SEXTB",
+              "name": "ALU_SEXTB",
+              "loc": {
+                "line": 147,
+                "col": 5,
+                "end_line": 147,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SEXTH",
+              "name": "ALU_SEXTH",
+              "comment": [
+                "Bitcounting",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 148,
+                "col": 5,
+                "end_line": 148,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CLZ",
+              "name": "ALU_CLZ",
+              "loc": {
+                "line": 152,
+                "col": 5,
+                "end_line": 152,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CTZ",
+              "name": "ALU_CTZ",
+              "loc": {
+                "line": 153,
+                "col": 5,
+                "end_line": 153,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CPOP",
+              "name": "ALU_CPOP",
+              "comment": [
+                "Set lower than"
+              ],
+              "loc": {
+                "line": 154,
+                "col": 5,
+                "end_line": 154,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SLT",
+              "name": "ALU_SLT",
+              "loc": {
+                "line": 157,
+                "col": 5,
+                "end_line": 157,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_SLTU",
+              "name": "ALU_SLTU",
+              "comment": [
+                "Single-Bit Operations",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 158,
+                "col": 5,
+                "end_line": 158,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_BSET",
+              "name": "ALU_BSET",
+              "loc": {
+                "line": 162,
+                "col": 5,
+                "end_line": 162,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_BCLR",
+              "name": "ALU_BCLR",
+              "loc": {
+                "line": 163,
+                "col": 5,
+                "end_line": 163,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_BINV",
+              "name": "ALU_BINV",
+              "loc": {
+                "line": 164,
+                "col": 5,
+                "end_line": 164,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_BEXT",
+              "name": "ALU_BEXT",
+              "comment": [
+                "Carry-less Multiply",
+                "RV32B"
+              ],
+              "loc": {
+                "line": 165,
+                "col": 5,
+                "end_line": 165,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CLMUL",
+              "name": "ALU_CLMUL",
+              "loc": {
+                "line": 169,
+                "col": 5,
+                "end_line": 169,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CLMULR",
+              "name": "ALU_CLMULR",
+              "loc": {
+                "line": 170,
+                "col": 5,
+                "end_line": 170,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.alu_op_e.ALU_CLMULH",
+              "name": "ALU_CLMULH",
+              "loc": {
+                "line": 171,
+                "col": 5,
+                "end_line": 171,
+                "end_col": 15
+              }
+            }
+          ],
+          "comment": [
+            "//////////////////",
+            "ALU operations //",
+            "//////////////////",
+            "Arithmetics"
+          ],
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 172,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.md_op_e",
+          "name": "md_op_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.md_op_e.MD_OP_MULL",
+              "name": "MD_OP_MULL",
+              "loc": {
+                "line": 176,
+                "col": 5,
+                "end_line": 176,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.md_op_e.MD_OP_MULH",
+              "name": "MD_OP_MULH",
+              "loc": {
+                "line": 177,
+                "col": 5,
+                "end_line": 177,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.md_op_e.MD_OP_DIV",
+              "name": "MD_OP_DIV",
+              "loc": {
+                "line": 178,
+                "col": 5,
+                "end_line": 178,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.md_op_e.MD_OP_REM",
+              "name": "MD_OP_REM",
+              "loc": {
+                "line": 179,
+                "col": 5,
+                "end_line": 179,
+                "end_col": 14
+              }
+            }
+          ],
+          "comment": [
+            "Multiplier/divider"
+          ],
+          "loc": {
+            "line": 174,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 13
+          }
+        },
+        {
+          "id": "ibex_pkg.csr_op_e",
+          "name": "csr_op_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.csr_op_e.CSR_OP_READ",
+              "name": "CSR_OP_READ",
+              "loc": {
+                "line": 189,
+                "col": 5,
+                "end_line": 189,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_op_e.CSR_OP_WRITE",
+              "name": "CSR_OP_WRITE",
+              "loc": {
+                "line": 190,
+                "col": 5,
+                "end_line": 190,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_op_e.CSR_OP_SET",
+              "name": "CSR_OP_SET",
+              "loc": {
+                "line": 191,
+                "col": 5,
+                "end_line": 191,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_op_e.CSR_OP_CLEAR",
+              "name": "CSR_OP_CLEAR",
+              "loc": {
+                "line": 192,
+                "col": 5,
+                "end_line": 192,
+                "end_col": 17
+              }
+            }
+          ],
+          "comment": [
+            "////////////////////////////////",
+            "Control and status registers //",
+            "////////////////////////////////",
+            "CSR operations"
+          ],
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 193,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.priv_lvl_e",
+          "name": "priv_lvl_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.priv_lvl_e.PRIV_LVL_M",
+              "name": "PRIV_LVL_M",
+              "value": "2'b11",
+              "loc": {
+                "line": 197,
+                "col": 5,
+                "end_line": 197,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.priv_lvl_e.PRIV_LVL_H",
+              "name": "PRIV_LVL_H",
+              "value": "2'b10",
+              "loc": {
+                "line": 198,
+                "col": 5,
+                "end_line": 198,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.priv_lvl_e.PRIV_LVL_S",
+              "name": "PRIV_LVL_S",
+              "value": "2'b01",
+              "loc": {
+                "line": 199,
+                "col": 5,
+                "end_line": 199,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.priv_lvl_e.PRIV_LVL_U",
+              "name": "PRIV_LVL_U",
+              "value": "2'b00",
+              "loc": {
+                "line": 200,
+                "col": 5,
+                "end_line": 200,
+                "end_col": 23
+              }
+            }
+          ],
+          "comment": [
+            "Privileged mode"
+          ],
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_pkg.x_debug_ver_e",
+          "name": "x_debug_ver_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.x_debug_ver_e.XDEBUGVER_NO",
+              "name": "XDEBUGVER_NO",
+              "value": "4'd0",
+              "comment": [
+                "no external debug support"
+              ],
+              "loc": {
+                "line": 205,
+                "col": 5,
+                "end_line": 205,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.x_debug_ver_e.XDEBUGVER_STD",
+              "name": "XDEBUGVER_STD",
+              "value": "4'd4",
+              "comment": [
+                "external debug according to RISC-V debug spec"
+              ],
+              "loc": {
+                "line": 206,
+                "col": 5,
+                "end_line": 206,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.x_debug_ver_e.XDEBUGVER_NONSTD",
+              "name": "XDEBUGVER_NONSTD",
+              "value": "4'd15",
+              "comment": [
+                "debug not conforming to RISC-V debug spec"
+              ],
+              "loc": {
+                "line": 207,
+                "col": 5,
+                "end_line": 207,
+                "end_col": 29
+              }
+            }
+          ],
+          "comment": [
+            "Constants for the dcsr.xdebugver fields"
+          ],
+          "loc": {
+            "line": 204,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_pkg.wb_instr_type_e",
+          "name": "wb_instr_type_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.wb_instr_type_e.WB_INSTR_LOAD",
+              "name": "WB_INSTR_LOAD",
+              "comment": [
+                "Instruction is awaiting load data"
+              ],
+              "loc": {
+                "line": 216,
+                "col": 5,
+                "end_line": 216,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "ibex_pkg.wb_instr_type_e.WB_INSTR_STORE",
+              "name": "WB_INSTR_STORE",
+              "comment": [
+                "Instruction is awaiting store response"
+              ],
+              "loc": {
+                "line": 217,
+                "col": 5,
+                "end_line": 217,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "ibex_pkg.wb_instr_type_e.WB_INSTR_OTHER",
+              "name": "WB_INSTR_OTHER",
+              "comment": [
+                "Instruction doesn't fit into above categories"
+              ],
+              "loc": {
+                "line": 218,
+                "col": 5,
+                "end_line": 218,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "////////////",
+            "WB stage //",
+            "////////////",
+            "Type of instruction present in writeback stage"
+          ],
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 219,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "ibex_pkg.op_a_sel_e",
+          "name": "op_a_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.op_a_sel_e.OP_A_REG_A",
+              "name": "OP_A_REG_A",
+              "loc": {
+                "line": 227,
+                "col": 5,
+                "end_line": 227,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.op_a_sel_e.OP_A_FWD",
+              "name": "OP_A_FWD",
+              "loc": {
+                "line": 228,
+                "col": 5,
+                "end_line": 228,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.op_a_sel_e.OP_A_CURRPC",
+              "name": "OP_A_CURRPC",
+              "loc": {
+                "line": 229,
+                "col": 5,
+                "end_line": 229,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "ibex_pkg.op_a_sel_e.OP_A_IMM",
+              "name": "OP_A_IMM",
+              "loc": {
+                "line": 230,
+                "col": 5,
+                "end_line": 230,
+                "end_col": 13
+              }
+            }
+          ],
+          "comment": [
+            "////////////",
+            "ID stage //",
+            "////////////",
+            "Operand a selection"
+          ],
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 231,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_pkg.imm_a_sel_e",
+          "name": "imm_a_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "members": [
+            {
+              "id": "ibex_pkg.imm_a_sel_e.IMM_A_Z",
+              "name": "IMM_A_Z",
+              "loc": {
+                "line": 235,
+                "col": 5,
+                "end_line": 235,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_a_sel_e.IMM_A_ZERO",
+              "name": "IMM_A_ZERO",
+              "loc": {
+                "line": 236,
+                "col": 5,
+                "end_line": 236,
+                "end_col": 15
+              }
+            }
+          ],
+          "comment": [
+            "Immediate a selection"
+          ],
+          "loc": {
+            "line": 234,
+            "col": 3,
+            "end_line": 237,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.op_b_sel_e",
+          "name": "op_b_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "members": [
+            {
+              "id": "ibex_pkg.op_b_sel_e.OP_B_REG_B",
+              "name": "OP_B_REG_B",
+              "loc": {
+                "line": 241,
+                "col": 5,
+                "end_line": 241,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.op_b_sel_e.OP_B_IMM",
+              "name": "OP_B_IMM",
+              "loc": {
+                "line": 242,
+                "col": 5,
+                "end_line": 242,
+                "end_col": 13
+              }
+            }
+          ],
+          "comment": [
+            "Operand b selection"
+          ],
+          "loc": {
+            "line": 240,
+            "col": 3,
+            "end_line": 243,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_pkg.imm_b_sel_e",
+          "name": "imm_b_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_I",
+              "name": "IMM_B_I",
+              "loc": {
+                "line": 247,
+                "col": 5,
+                "end_line": 247,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_S",
+              "name": "IMM_B_S",
+              "loc": {
+                "line": 248,
+                "col": 5,
+                "end_line": 248,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_B",
+              "name": "IMM_B_B",
+              "loc": {
+                "line": 249,
+                "col": 5,
+                "end_line": 249,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_U",
+              "name": "IMM_B_U",
+              "loc": {
+                "line": 250,
+                "col": 5,
+                "end_line": 250,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_J",
+              "name": "IMM_B_J",
+              "loc": {
+                "line": 251,
+                "col": 5,
+                "end_line": 251,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_INCR_PC",
+              "name": "IMM_B_INCR_PC",
+              "loc": {
+                "line": 252,
+                "col": 5,
+                "end_line": 252,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "ibex_pkg.imm_b_sel_e.IMM_B_INCR_ADDR",
+              "name": "IMM_B_INCR_ADDR",
+              "loc": {
+                "line": 253,
+                "col": 5,
+                "end_line": 253,
+                "end_col": 20
+              }
+            }
+          ],
+          "comment": [
+            "Immediate b selection"
+          ],
+          "loc": {
+            "line": 246,
+            "col": 3,
+            "end_line": 254,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.rf_wd_sel_e",
+          "name": "rf_wd_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "members": [
+            {
+              "id": "ibex_pkg.rf_wd_sel_e.RF_WD_EX",
+              "name": "RF_WD_EX",
+              "loc": {
+                "line": 258,
+                "col": 5,
+                "end_line": 258,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.rf_wd_sel_e.RF_WD_CSR",
+              "name": "RF_WD_CSR",
+              "loc": {
+                "line": 259,
+                "col": 5,
+                "end_line": 259,
+                "end_col": 14
+              }
+            }
+          ],
+          "comment": [
+            "Regfile write data selection"
+          ],
+          "loc": {
+            "line": 257,
+            "col": 3,
+            "end_line": 260,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.ctrl_fsm_e",
+          "name": "ctrl_fsm_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.RESET",
+              "name": "RESET",
+              "loc": {
+                "line": 264,
+                "col": 5,
+                "end_line": 264,
+                "end_col": 10
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.BOOT_SET",
+              "name": "BOOT_SET",
+              "loc": {
+                "line": 265,
+                "col": 5,
+                "end_line": 265,
+                "end_col": 13
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.WAIT_SLEEP",
+              "name": "WAIT_SLEEP",
+              "loc": {
+                "line": 266,
+                "col": 5,
+                "end_line": 266,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.SLEEP",
+              "name": "SLEEP",
+              "loc": {
+                "line": 267,
+                "col": 5,
+                "end_line": 267,
+                "end_col": 10
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.FIRST_FETCH",
+              "name": "FIRST_FETCH",
+              "loc": {
+                "line": 268,
+                "col": 5,
+                "end_line": 268,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.DECODE",
+              "name": "DECODE",
+              "loc": {
+                "line": 269,
+                "col": 5,
+                "end_line": 269,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.FLUSH",
+              "name": "FLUSH",
+              "loc": {
+                "line": 270,
+                "col": 5,
+                "end_line": 270,
+                "end_col": 10
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.IRQ_TAKEN",
+              "name": "IRQ_TAKEN",
+              "loc": {
+                "line": 271,
+                "col": 5,
+                "end_line": 271,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.DBG_TAKEN_IF",
+              "name": "DBG_TAKEN_IF",
+              "loc": {
+                "line": 272,
+                "col": 5,
+                "end_line": 272,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "ibex_pkg.ctrl_fsm_e.DBG_TAKEN_ID",
+              "name": "DBG_TAKEN_ID",
+              "loc": {
+                "line": 273,
+                "col": 5,
+                "end_line": 273,
+                "end_col": 17
+              }
+            }
+          ],
+          "comment": [
+            "Controller FSM state encoding"
+          ],
+          "loc": {
+            "line": 263,
+            "col": 3,
+            "end_line": 274,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "ibex_pkg.pc_sel_e",
+          "name": "pc_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_BOOT",
+              "name": "PC_BOOT",
+              "loc": {
+                "line": 282,
+                "col": 5,
+                "end_line": 282,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_JUMP",
+              "name": "PC_JUMP",
+              "loc": {
+                "line": 283,
+                "col": 5,
+                "end_line": 283,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_EXC",
+              "name": "PC_EXC",
+              "loc": {
+                "line": 284,
+                "col": 5,
+                "end_line": 284,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_ERET",
+              "name": "PC_ERET",
+              "loc": {
+                "line": 285,
+                "col": 5,
+                "end_line": 285,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_DRET",
+              "name": "PC_DRET",
+              "loc": {
+                "line": 286,
+                "col": 5,
+                "end_line": 286,
+                "end_col": 12
+              }
+            },
+            {
+              "id": "ibex_pkg.pc_sel_e.PC_BP",
+              "name": "PC_BP",
+              "loc": {
+                "line": 287,
+                "col": 5,
+                "end_line": 287,
+                "end_col": 10
+              }
+            }
+          ],
+          "comment": [
+            "////////////",
+            "IF stage //",
+            "////////////",
+            "PC mux selection"
+          ],
+          "loc": {
+            "line": 281,
+            "col": 3,
+            "end_line": 288,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.instr_exp_e",
+          "name": "instr_exp_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.instr_exp_e.INSTR_NOT_EXPANDED",
+              "name": "INSTR_NOT_EXPANDED",
+              "loc": {
+                "line": 292,
+                "col": 5,
+                "end_line": 292,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.instr_exp_e.INSTR_EXPANDED",
+              "name": "INSTR_EXPANDED",
+              "comment": [
+                "Executing micro-ops of an expanded instruction"
+              ],
+              "loc": {
+                "line": 293,
+                "col": 5,
+                "end_line": 293,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "ibex_pkg.instr_exp_e.INSTR_EXPANDED_COMMIT",
+              "name": "INSTR_EXPANDED_COMMIT",
+              "comment": [
+                "Micro-ops need to be committed atomically with successor micro-ops"
+              ],
+              "loc": {
+                "line": 294,
+                "col": 5,
+                "end_line": 294,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "ibex_pkg.instr_exp_e.INSTR_EXPANDED_LAST",
+              "name": "INSTR_EXPANDED_LAST",
+              "comment": [
+                "Last micro-op of an expanded instruction"
+              ],
+              "loc": {
+                "line": 295,
+                "col": 5,
+                "end_line": 295,
+                "end_col": 24
+              }
+            }
+          ],
+          "comment": [
+            "Compressed instruction expansion"
+          ],
+          "loc": {
+            "line": 291,
+            "col": 3,
+            "end_line": 296,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.exc_pc_sel_e",
+          "name": "exc_pc_sel_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.exc_pc_sel_e.EXC_PC_EXC",
+              "name": "EXC_PC_EXC",
+              "loc": {
+                "line": 300,
+                "col": 5,
+                "end_line": 300,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.exc_pc_sel_e.EXC_PC_IRQ",
+              "name": "EXC_PC_IRQ",
+              "loc": {
+                "line": 301,
+                "col": 5,
+                "end_line": 301,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.exc_pc_sel_e.EXC_PC_DBD",
+              "name": "EXC_PC_DBD",
+              "loc": {
+                "line": 302,
+                "col": 5,
+                "end_line": 302,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.exc_pc_sel_e.EXC_PC_DBG_EXC",
+              "name": "EXC_PC_DBG_EXC",
+              "comment": [
+                "Exception while in debug mode"
+              ],
+              "loc": {
+                "line": 303,
+                "col": 5,
+                "end_line": 303,
+                "end_col": 19
+              }
+            }
+          ],
+          "comment": [
+            "Exception PC mux selection"
+          ],
+          "loc": {
+            "line": 299,
+            "col": 3,
+            "end_line": 304,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "ibex_pkg.irqs_t",
+          "name": "irqs_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.irqs_t.irq_software",
+              "name": "irq_software",
+              "dtype": "logic",
+              "loc": {
+                "line": 308,
+                "col": 5,
+                "end_line": 308,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_pkg.irqs_t.irq_timer",
+              "name": "irq_timer",
+              "dtype": "logic",
+              "loc": {
+                "line": 309,
+                "col": 5,
+                "end_line": 309,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "ibex_pkg.irqs_t.irq_external",
+              "name": "irq_external",
+              "dtype": "logic",
+              "loc": {
+                "line": 310,
+                "col": 5,
+                "end_line": 310,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_pkg.irqs_t.irq_fast",
+              "name": "irq_fast",
+              "dtype": "logic",
+              "dim": "[14:0]",
+              "comment": [
+                "15 fast interrupts,",
+                "one interrupt is reserved for NMI (not visible through mip/mie)"
+              ],
+              "loc": {
+                "line": 311,
+                "col": 5,
+                "end_line": 311,
+                "end_col": 26
+              }
+            }
+          ],
+          "comment": [
+            "Interrupt requests"
+          ],
+          "loc": {
+            "line": 307,
+            "col": 3,
+            "end_line": 313,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "ibex_pkg.exc_cause_t",
+          "name": "exc_cause_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.exc_cause_t.irq_int",
+              "name": "irq_int",
+              "dtype": "logic",
+              "loc": {
+                "line": 316,
+                "col": 5,
+                "end_line": 316,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "ibex_pkg.exc_cause_t.irq_ext",
+              "name": "irq_ext",
+              "dtype": "logic",
+              "loc": {
+                "line": 317,
+                "col": 5,
+                "end_line": 317,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "ibex_pkg.exc_cause_t.lower_cause",
+              "name": "lower_cause",
+              "dtype": "logic",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 318,
+                "col": 5,
+                "end_line": 318,
+                "end_col": 28
+              }
+            }
+          ],
+          "loc": {
+            "line": 315,
+            "col": 3,
+            "end_line": 319,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.nmi_int_cause_e",
+          "name": "nmi_int_cause_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[4:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.nmi_int_cause_e.NMI_INT_CAUSE_ECC",
+              "name": "NMI_INT_CAUSE_ECC",
+              "value": "5'b0",
+              "loc": {
+                "line": 355,
+                "col": 5,
+                "end_line": 355,
+                "end_col": 29
+              }
+            }
+          ],
+          "comment": [
+            "Internal NMI cause"
+          ],
+          "loc": {
+            "line": 354,
+            "col": 3,
+            "end_line": 356,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "ibex_pkg.dbg_cause_e",
+          "name": "dbg_cause_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.dbg_cause_e.DBG_CAUSE_NONE",
+              "name": "DBG_CAUSE_NONE",
+              "value": "3'h0",
+              "loc": {
+                "line": 360,
+                "col": 5,
+                "end_line": 360,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.dbg_cause_e.DBG_CAUSE_EBREAK",
+              "name": "DBG_CAUSE_EBREAK",
+              "value": "3'h1",
+              "loc": {
+                "line": 361,
+                "col": 5,
+                "end_line": 361,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.dbg_cause_e.DBG_CAUSE_TRIGGER",
+              "name": "DBG_CAUSE_TRIGGER",
+              "value": "3'h2",
+              "loc": {
+                "line": 362,
+                "col": 5,
+                "end_line": 362,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.dbg_cause_e.DBG_CAUSE_HALTREQ",
+              "name": "DBG_CAUSE_HALTREQ",
+              "value": "3'h3",
+              "loc": {
+                "line": 363,
+                "col": 5,
+                "end_line": 363,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.dbg_cause_e.DBG_CAUSE_STEP",
+              "name": "DBG_CAUSE_STEP",
+              "value": "3'h4",
+              "loc": {
+                "line": 364,
+                "col": 5,
+                "end_line": 364,
+                "end_col": 29
+              }
+            }
+          ],
+          "comment": [
+            "Debug cause"
+          ],
+          "loc": {
+            "line": 359,
+            "col": 3,
+            "end_line": 365,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_pkg.pmp_req_e",
+          "name": "pmp_req_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.pmp_req_e.PMP_ACC_EXEC",
+              "name": "PMP_ACC_EXEC",
+              "value": "2'b00",
+              "loc": {
+                "line": 406,
+                "col": 5,
+                "end_line": 406,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_req_e.PMP_ACC_WRITE",
+              "name": "PMP_ACC_WRITE",
+              "value": "2'b01",
+              "loc": {
+                "line": 407,
+                "col": 5,
+                "end_line": 407,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_req_e.PMP_ACC_READ",
+              "name": "PMP_ACC_READ",
+              "value": "2'b10",
+              "loc": {
+                "line": 408,
+                "col": 5,
+                "end_line": 408,
+                "end_col": 28
+              }
+            }
+          ],
+          "loc": {
+            "line": 405,
+            "col": 3,
+            "end_line": 409,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_pkg.pmp_cfg_mode_e",
+          "name": "pmp_cfg_mode_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[1:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.pmp_cfg_mode_e.PMP_MODE_OFF",
+              "name": "PMP_MODE_OFF",
+              "value": "2'b00",
+              "loc": {
+                "line": 413,
+                "col": 5,
+                "end_line": 413,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_mode_e.PMP_MODE_TOR",
+              "name": "PMP_MODE_TOR",
+              "value": "2'b01",
+              "loc": {
+                "line": 414,
+                "col": 5,
+                "end_line": 414,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_mode_e.PMP_MODE_NA4",
+              "name": "PMP_MODE_NA4",
+              "value": "2'b10",
+              "loc": {
+                "line": 415,
+                "col": 5,
+                "end_line": 415,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_mode_e.PMP_MODE_NAPOT",
+              "name": "PMP_MODE_NAPOT",
+              "value": "2'b11",
+              "loc": {
+                "line": 416,
+                "col": 5,
+                "end_line": 416,
+                "end_col": 27
+              }
+            }
+          ],
+          "comment": [
+            "PMP cfg structures"
+          ],
+          "loc": {
+            "line": 412,
+            "col": 3,
+            "end_line": 417,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "ibex_pkg.pmp_cfg_t",
+          "name": "pmp_cfg_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.pmp_cfg_t.lock",
+              "name": "lock",
+              "dtype": "logic",
+              "loc": {
+                "line": 420,
+                "col": 5,
+                "end_line": 420,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_t.mode",
+              "name": "mode",
+              "dtype": "pmp_cfg_mode_e",
+              "loc": {
+                "line": 421,
+                "col": 5,
+                "end_line": 421,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_t.exec",
+              "name": "exec",
+              "dtype": "logic",
+              "loc": {
+                "line": 422,
+                "col": 5,
+                "end_line": 422,
+                "end_col": 24
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_t.write",
+              "name": "write",
+              "dtype": "logic",
+              "loc": {
+                "line": 423,
+                "col": 5,
+                "end_line": 423,
+                "end_col": 25
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_cfg_t.read",
+              "name": "read",
+              "dtype": "logic",
+              "loc": {
+                "line": 424,
+                "col": 5,
+                "end_line": 424,
+                "end_col": 24
+              }
+            }
+          ],
+          "loc": {
+            "line": 419,
+            "col": 3,
+            "end_line": 425,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_pkg.pmp_mseccfg_t",
+          "name": "pmp_mseccfg_t",
+          "kind": "struct",
+          "dtype": "packed",
+          "members": [
+            {
+              "id": "ibex_pkg.pmp_mseccfg_t.rlb",
+              "name": "rlb",
+              "dtype": "logic",
+              "comment": [
+                "Rule Locking Bypass"
+              ],
+              "loc": {
+                "line": 429,
+                "col": 5,
+                "end_line": 429,
+                "end_col": 14
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_mseccfg_t.mmwp",
+              "name": "mmwp",
+              "dtype": "logic",
+              "comment": [
+                "Machine Mode Whitelist Policy"
+              ],
+              "loc": {
+                "line": 430,
+                "col": 5,
+                "end_line": 430,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_pkg.pmp_mseccfg_t.mml",
+              "name": "mml",
+              "dtype": "logic",
+              "comment": [
+                "Machine Mode Lockdown"
+              ],
+              "loc": {
+                "line": 431,
+                "col": 5,
+                "end_line": 431,
+                "end_col": 14
+              }
+            }
+          ],
+          "comment": [
+            "Machine Security Configuration (ePMP)"
+          ],
+          "loc": {
+            "line": 428,
+            "col": 3,
+            "end_line": 432,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_pkg.csr_num_e",
+          "name": "csr_num_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[11:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MVENDORID",
+              "name": "CSR_MVENDORID",
+              "value": "12'hF11",
+              "loc": {
+                "line": 437,
+                "col": 5,
+                "end_line": 437,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MARCHID",
+              "name": "CSR_MARCHID",
+              "value": "12'hF12",
+              "loc": {
+                "line": 438,
+                "col": 5,
+                "end_line": 438,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MIMPID",
+              "name": "CSR_MIMPID",
+              "value": "12'hF13",
+              "loc": {
+                "line": 439,
+                "col": 5,
+                "end_line": 439,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHARTID",
+              "name": "CSR_MHARTID",
+              "value": "12'hF14",
+              "loc": {
+                "line": 440,
+                "col": 5,
+                "end_line": 440,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCONFIGPTR",
+              "name": "CSR_MCONFIGPTR",
+              "value": "12'hF15",
+              "comment": [
+                "Machine trap setup"
+              ],
+              "loc": {
+                "line": 441,
+                "col": 5,
+                "end_line": 441,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSTATUS",
+              "name": "CSR_MSTATUS",
+              "value": "12'h300",
+              "loc": {
+                "line": 444,
+                "col": 5,
+                "end_line": 444,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MISA",
+              "name": "CSR_MISA",
+              "value": "12'h301",
+              "loc": {
+                "line": 445,
+                "col": 5,
+                "end_line": 445,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MIE",
+              "name": "CSR_MIE",
+              "value": "12'h304",
+              "loc": {
+                "line": 446,
+                "col": 5,
+                "end_line": 446,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MTVEC",
+              "name": "CSR_MTVEC",
+              "value": "12'h305",
+              "loc": {
+                "line": 447,
+                "col": 5,
+                "end_line": 447,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCOUNTEREN",
+              "name": "CSR_MCOUNTEREN",
+              "value": "12'h306",
+              "loc": {
+                "line": 448,
+                "col": 5,
+                "end_line": 448,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSTATUSH",
+              "name": "CSR_MSTATUSH",
+              "value": "12'h310",
+              "loc": {
+                "line": 449,
+                "col": 5,
+                "end_line": 449,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MENVCFG",
+              "name": "CSR_MENVCFG",
+              "value": "12'h30A",
+              "loc": {
+                "line": 451,
+                "col": 5,
+                "end_line": 451,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MENVCFGH",
+              "name": "CSR_MENVCFGH",
+              "value": "12'h31A",
+              "comment": [
+                "Machine trap handling"
+              ],
+              "loc": {
+                "line": 452,
+                "col": 5,
+                "end_line": 452,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSCRATCH",
+              "name": "CSR_MSCRATCH",
+              "value": "12'h340",
+              "loc": {
+                "line": 455,
+                "col": 5,
+                "end_line": 455,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MEPC",
+              "name": "CSR_MEPC",
+              "value": "12'h341",
+              "loc": {
+                "line": 456,
+                "col": 5,
+                "end_line": 456,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCAUSE",
+              "name": "CSR_MCAUSE",
+              "value": "12'h342",
+              "loc": {
+                "line": 457,
+                "col": 5,
+                "end_line": 457,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MTVAL",
+              "name": "CSR_MTVAL",
+              "value": "12'h343",
+              "loc": {
+                "line": 458,
+                "col": 5,
+                "end_line": 458,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MIP",
+              "name": "CSR_MIP",
+              "value": "12'h344",
+              "comment": [
+                "Physical memory protection"
+              ],
+              "loc": {
+                "line": 459,
+                "col": 5,
+                "end_line": 459,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPCFG0",
+              "name": "CSR_PMPCFG0",
+              "value": "12'h3A0",
+              "loc": {
+                "line": 462,
+                "col": 5,
+                "end_line": 462,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPCFG1",
+              "name": "CSR_PMPCFG1",
+              "value": "12'h3A1",
+              "loc": {
+                "line": 463,
+                "col": 5,
+                "end_line": 463,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPCFG2",
+              "name": "CSR_PMPCFG2",
+              "value": "12'h3A2",
+              "loc": {
+                "line": 464,
+                "col": 5,
+                "end_line": 464,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPCFG3",
+              "name": "CSR_PMPCFG3",
+              "value": "12'h3A3",
+              "loc": {
+                "line": 465,
+                "col": 5,
+                "end_line": 465,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR0",
+              "name": "CSR_PMPADDR0",
+              "value": "12'h3B0",
+              "loc": {
+                "line": 466,
+                "col": 5,
+                "end_line": 466,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR1",
+              "name": "CSR_PMPADDR1",
+              "value": "12'h3B1",
+              "loc": {
+                "line": 467,
+                "col": 5,
+                "end_line": 467,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR2",
+              "name": "CSR_PMPADDR2",
+              "value": "12'h3B2",
+              "loc": {
+                "line": 468,
+                "col": 5,
+                "end_line": 468,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR3",
+              "name": "CSR_PMPADDR3",
+              "value": "12'h3B3",
+              "loc": {
+                "line": 469,
+                "col": 5,
+                "end_line": 469,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR4",
+              "name": "CSR_PMPADDR4",
+              "value": "12'h3B4",
+              "loc": {
+                "line": 470,
+                "col": 5,
+                "end_line": 470,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR5",
+              "name": "CSR_PMPADDR5",
+              "value": "12'h3B5",
+              "loc": {
+                "line": 471,
+                "col": 5,
+                "end_line": 471,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR6",
+              "name": "CSR_PMPADDR6",
+              "value": "12'h3B6",
+              "loc": {
+                "line": 472,
+                "col": 5,
+                "end_line": 472,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR7",
+              "name": "CSR_PMPADDR7",
+              "value": "12'h3B7",
+              "loc": {
+                "line": 473,
+                "col": 5,
+                "end_line": 473,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR8",
+              "name": "CSR_PMPADDR8",
+              "value": "12'h3B8",
+              "loc": {
+                "line": 474,
+                "col": 5,
+                "end_line": 474,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR9",
+              "name": "CSR_PMPADDR9",
+              "value": "12'h3B9",
+              "loc": {
+                "line": 475,
+                "col": 5,
+                "end_line": 475,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR10",
+              "name": "CSR_PMPADDR10",
+              "value": "12'h3BA",
+              "loc": {
+                "line": 476,
+                "col": 5,
+                "end_line": 476,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR11",
+              "name": "CSR_PMPADDR11",
+              "value": "12'h3BB",
+              "loc": {
+                "line": 477,
+                "col": 5,
+                "end_line": 477,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR12",
+              "name": "CSR_PMPADDR12",
+              "value": "12'h3BC",
+              "loc": {
+                "line": 478,
+                "col": 5,
+                "end_line": 478,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR13",
+              "name": "CSR_PMPADDR13",
+              "value": "12'h3BD",
+              "loc": {
+                "line": 479,
+                "col": 5,
+                "end_line": 479,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR14",
+              "name": "CSR_PMPADDR14",
+              "value": "12'h3BE",
+              "loc": {
+                "line": 480,
+                "col": 5,
+                "end_line": 480,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_PMPADDR15",
+              "name": "CSR_PMPADDR15",
+              "value": "12'h3BF",
+              "loc": {
+                "line": 481,
+                "col": 5,
+                "end_line": 481,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_SCONTEXT",
+              "name": "CSR_SCONTEXT",
+              "value": "12'h5A8",
+              "comment": [
+                "ePMP control"
+              ],
+              "loc": {
+                "line": 483,
+                "col": 5,
+                "end_line": 483,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSECCFG",
+              "name": "CSR_MSECCFG",
+              "value": "12'h747",
+              "loc": {
+                "line": 486,
+                "col": 5,
+                "end_line": 486,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSECCFGH",
+              "name": "CSR_MSECCFGH",
+              "value": "12'h757",
+              "comment": [
+                "Debug trigger"
+              ],
+              "loc": {
+                "line": 487,
+                "col": 5,
+                "end_line": 487,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_TSELECT",
+              "name": "CSR_TSELECT",
+              "value": "12'h7A0",
+              "loc": {
+                "line": 490,
+                "col": 5,
+                "end_line": 490,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_TDATA1",
+              "name": "CSR_TDATA1",
+              "value": "12'h7A1",
+              "loc": {
+                "line": 491,
+                "col": 5,
+                "end_line": 491,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_TDATA2",
+              "name": "CSR_TDATA2",
+              "value": "12'h7A2",
+              "loc": {
+                "line": 492,
+                "col": 5,
+                "end_line": 492,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_TDATA3",
+              "name": "CSR_TDATA3",
+              "value": "12'h7A3",
+              "loc": {
+                "line": 493,
+                "col": 5,
+                "end_line": 493,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCONTEXT",
+              "name": "CSR_MCONTEXT",
+              "value": "12'h7A8",
+              "loc": {
+                "line": 494,
+                "col": 5,
+                "end_line": 494,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSCONTEXT",
+              "name": "CSR_MSCONTEXT",
+              "value": "12'h7AA",
+              "comment": [
+                "Debug/trace"
+              ],
+              "loc": {
+                "line": 495,
+                "col": 5,
+                "end_line": 495,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_DCSR",
+              "name": "CSR_DCSR",
+              "value": "12'h7b0",
+              "loc": {
+                "line": 498,
+                "col": 5,
+                "end_line": 498,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_DPC",
+              "name": "CSR_DPC",
+              "value": "12'h7b1",
+              "comment": [
+                "Debug"
+              ],
+              "loc": {
+                "line": 499,
+                "col": 5,
+                "end_line": 499,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_DSCRATCH0",
+              "name": "CSR_DSCRATCH0",
+              "value": "12'h7b2",
+              "comment": [
+                "optional"
+              ],
+              "loc": {
+                "line": 502,
+                "col": 5,
+                "end_line": 502,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_DSCRATCH1",
+              "name": "CSR_DSCRATCH1",
+              "value": "12'h7b3",
+              "comment": [
+                "optional",
+                "Machine Counter/Timers"
+              ],
+              "loc": {
+                "line": 503,
+                "col": 5,
+                "end_line": 503,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCOUNTINHIBIT",
+              "name": "CSR_MCOUNTINHIBIT",
+              "value": "12'h320",
+              "loc": {
+                "line": 506,
+                "col": 5,
+                "end_line": 506,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT3",
+              "name": "CSR_MHPMEVENT3",
+              "value": "12'h323",
+              "loc": {
+                "line": 507,
+                "col": 5,
+                "end_line": 507,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT4",
+              "name": "CSR_MHPMEVENT4",
+              "value": "12'h324",
+              "loc": {
+                "line": 508,
+                "col": 5,
+                "end_line": 508,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT5",
+              "name": "CSR_MHPMEVENT5",
+              "value": "12'h325",
+              "loc": {
+                "line": 509,
+                "col": 5,
+                "end_line": 509,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT6",
+              "name": "CSR_MHPMEVENT6",
+              "value": "12'h326",
+              "loc": {
+                "line": 510,
+                "col": 5,
+                "end_line": 510,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT7",
+              "name": "CSR_MHPMEVENT7",
+              "value": "12'h327",
+              "loc": {
+                "line": 511,
+                "col": 5,
+                "end_line": 511,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT8",
+              "name": "CSR_MHPMEVENT8",
+              "value": "12'h328",
+              "loc": {
+                "line": 512,
+                "col": 5,
+                "end_line": 512,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT9",
+              "name": "CSR_MHPMEVENT9",
+              "value": "12'h329",
+              "loc": {
+                "line": 513,
+                "col": 5,
+                "end_line": 513,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT10",
+              "name": "CSR_MHPMEVENT10",
+              "value": "12'h32A",
+              "loc": {
+                "line": 514,
+                "col": 5,
+                "end_line": 514,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT11",
+              "name": "CSR_MHPMEVENT11",
+              "value": "12'h32B",
+              "loc": {
+                "line": 515,
+                "col": 5,
+                "end_line": 515,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT12",
+              "name": "CSR_MHPMEVENT12",
+              "value": "12'h32C",
+              "loc": {
+                "line": 516,
+                "col": 5,
+                "end_line": 516,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT13",
+              "name": "CSR_MHPMEVENT13",
+              "value": "12'h32D",
+              "loc": {
+                "line": 517,
+                "col": 5,
+                "end_line": 517,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT14",
+              "name": "CSR_MHPMEVENT14",
+              "value": "12'h32E",
+              "loc": {
+                "line": 518,
+                "col": 5,
+                "end_line": 518,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT15",
+              "name": "CSR_MHPMEVENT15",
+              "value": "12'h32F",
+              "loc": {
+                "line": 519,
+                "col": 5,
+                "end_line": 519,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT16",
+              "name": "CSR_MHPMEVENT16",
+              "value": "12'h330",
+              "loc": {
+                "line": 520,
+                "col": 5,
+                "end_line": 520,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT17",
+              "name": "CSR_MHPMEVENT17",
+              "value": "12'h331",
+              "loc": {
+                "line": 521,
+                "col": 5,
+                "end_line": 521,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT18",
+              "name": "CSR_MHPMEVENT18",
+              "value": "12'h332",
+              "loc": {
+                "line": 522,
+                "col": 5,
+                "end_line": 522,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT19",
+              "name": "CSR_MHPMEVENT19",
+              "value": "12'h333",
+              "loc": {
+                "line": 523,
+                "col": 5,
+                "end_line": 523,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT20",
+              "name": "CSR_MHPMEVENT20",
+              "value": "12'h334",
+              "loc": {
+                "line": 524,
+                "col": 5,
+                "end_line": 524,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT21",
+              "name": "CSR_MHPMEVENT21",
+              "value": "12'h335",
+              "loc": {
+                "line": 525,
+                "col": 5,
+                "end_line": 525,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT22",
+              "name": "CSR_MHPMEVENT22",
+              "value": "12'h336",
+              "loc": {
+                "line": 526,
+                "col": 5,
+                "end_line": 526,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT23",
+              "name": "CSR_MHPMEVENT23",
+              "value": "12'h337",
+              "loc": {
+                "line": 527,
+                "col": 5,
+                "end_line": 527,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT24",
+              "name": "CSR_MHPMEVENT24",
+              "value": "12'h338",
+              "loc": {
+                "line": 528,
+                "col": 5,
+                "end_line": 528,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT25",
+              "name": "CSR_MHPMEVENT25",
+              "value": "12'h339",
+              "loc": {
+                "line": 529,
+                "col": 5,
+                "end_line": 529,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT26",
+              "name": "CSR_MHPMEVENT26",
+              "value": "12'h33A",
+              "loc": {
+                "line": 530,
+                "col": 5,
+                "end_line": 530,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT27",
+              "name": "CSR_MHPMEVENT27",
+              "value": "12'h33B",
+              "loc": {
+                "line": 531,
+                "col": 5,
+                "end_line": 531,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT28",
+              "name": "CSR_MHPMEVENT28",
+              "value": "12'h33C",
+              "loc": {
+                "line": 532,
+                "col": 5,
+                "end_line": 532,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT29",
+              "name": "CSR_MHPMEVENT29",
+              "value": "12'h33D",
+              "loc": {
+                "line": 533,
+                "col": 5,
+                "end_line": 533,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT30",
+              "name": "CSR_MHPMEVENT30",
+              "value": "12'h33E",
+              "loc": {
+                "line": 534,
+                "col": 5,
+                "end_line": 534,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMEVENT31",
+              "name": "CSR_MHPMEVENT31",
+              "value": "12'h33F",
+              "loc": {
+                "line": 535,
+                "col": 5,
+                "end_line": 535,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCYCLE",
+              "name": "CSR_MCYCLE",
+              "value": "12'hB00",
+              "loc": {
+                "line": 536,
+                "col": 5,
+                "end_line": 536,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MINSTRET",
+              "name": "CSR_MINSTRET",
+              "value": "12'hB02",
+              "loc": {
+                "line": 537,
+                "col": 5,
+                "end_line": 537,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER3",
+              "name": "CSR_MHPMCOUNTER3",
+              "value": "12'hB03",
+              "loc": {
+                "line": 538,
+                "col": 5,
+                "end_line": 538,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER4",
+              "name": "CSR_MHPMCOUNTER4",
+              "value": "12'hB04",
+              "loc": {
+                "line": 539,
+                "col": 5,
+                "end_line": 539,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER5",
+              "name": "CSR_MHPMCOUNTER5",
+              "value": "12'hB05",
+              "loc": {
+                "line": 540,
+                "col": 5,
+                "end_line": 540,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER6",
+              "name": "CSR_MHPMCOUNTER6",
+              "value": "12'hB06",
+              "loc": {
+                "line": 541,
+                "col": 5,
+                "end_line": 541,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER7",
+              "name": "CSR_MHPMCOUNTER7",
+              "value": "12'hB07",
+              "loc": {
+                "line": 542,
+                "col": 5,
+                "end_line": 542,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER8",
+              "name": "CSR_MHPMCOUNTER8",
+              "value": "12'hB08",
+              "loc": {
+                "line": 543,
+                "col": 5,
+                "end_line": 543,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER9",
+              "name": "CSR_MHPMCOUNTER9",
+              "value": "12'hB09",
+              "loc": {
+                "line": 544,
+                "col": 5,
+                "end_line": 544,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER10",
+              "name": "CSR_MHPMCOUNTER10",
+              "value": "12'hB0A",
+              "loc": {
+                "line": 545,
+                "col": 5,
+                "end_line": 545,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER11",
+              "name": "CSR_MHPMCOUNTER11",
+              "value": "12'hB0B",
+              "loc": {
+                "line": 546,
+                "col": 5,
+                "end_line": 546,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER12",
+              "name": "CSR_MHPMCOUNTER12",
+              "value": "12'hB0C",
+              "loc": {
+                "line": 547,
+                "col": 5,
+                "end_line": 547,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER13",
+              "name": "CSR_MHPMCOUNTER13",
+              "value": "12'hB0D",
+              "loc": {
+                "line": 548,
+                "col": 5,
+                "end_line": 548,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER14",
+              "name": "CSR_MHPMCOUNTER14",
+              "value": "12'hB0E",
+              "loc": {
+                "line": 549,
+                "col": 5,
+                "end_line": 549,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER15",
+              "name": "CSR_MHPMCOUNTER15",
+              "value": "12'hB0F",
+              "loc": {
+                "line": 550,
+                "col": 5,
+                "end_line": 550,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER16",
+              "name": "CSR_MHPMCOUNTER16",
+              "value": "12'hB10",
+              "loc": {
+                "line": 551,
+                "col": 5,
+                "end_line": 551,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER17",
+              "name": "CSR_MHPMCOUNTER17",
+              "value": "12'hB11",
+              "loc": {
+                "line": 552,
+                "col": 5,
+                "end_line": 552,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER18",
+              "name": "CSR_MHPMCOUNTER18",
+              "value": "12'hB12",
+              "loc": {
+                "line": 553,
+                "col": 5,
+                "end_line": 553,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER19",
+              "name": "CSR_MHPMCOUNTER19",
+              "value": "12'hB13",
+              "loc": {
+                "line": 554,
+                "col": 5,
+                "end_line": 554,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER20",
+              "name": "CSR_MHPMCOUNTER20",
+              "value": "12'hB14",
+              "loc": {
+                "line": 555,
+                "col": 5,
+                "end_line": 555,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER21",
+              "name": "CSR_MHPMCOUNTER21",
+              "value": "12'hB15",
+              "loc": {
+                "line": 556,
+                "col": 5,
+                "end_line": 556,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER22",
+              "name": "CSR_MHPMCOUNTER22",
+              "value": "12'hB16",
+              "loc": {
+                "line": 557,
+                "col": 5,
+                "end_line": 557,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER23",
+              "name": "CSR_MHPMCOUNTER23",
+              "value": "12'hB17",
+              "loc": {
+                "line": 558,
+                "col": 5,
+                "end_line": 558,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER24",
+              "name": "CSR_MHPMCOUNTER24",
+              "value": "12'hB18",
+              "loc": {
+                "line": 559,
+                "col": 5,
+                "end_line": 559,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER25",
+              "name": "CSR_MHPMCOUNTER25",
+              "value": "12'hB19",
+              "loc": {
+                "line": 560,
+                "col": 5,
+                "end_line": 560,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER26",
+              "name": "CSR_MHPMCOUNTER26",
+              "value": "12'hB1A",
+              "loc": {
+                "line": 561,
+                "col": 5,
+                "end_line": 561,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER27",
+              "name": "CSR_MHPMCOUNTER27",
+              "value": "12'hB1B",
+              "loc": {
+                "line": 562,
+                "col": 5,
+                "end_line": 562,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER28",
+              "name": "CSR_MHPMCOUNTER28",
+              "value": "12'hB1C",
+              "loc": {
+                "line": 563,
+                "col": 5,
+                "end_line": 563,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER29",
+              "name": "CSR_MHPMCOUNTER29",
+              "value": "12'hB1D",
+              "loc": {
+                "line": 564,
+                "col": 5,
+                "end_line": 564,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER30",
+              "name": "CSR_MHPMCOUNTER30",
+              "value": "12'hB1E",
+              "loc": {
+                "line": 565,
+                "col": 5,
+                "end_line": 565,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER31",
+              "name": "CSR_MHPMCOUNTER31",
+              "value": "12'hB1F",
+              "loc": {
+                "line": 566,
+                "col": 5,
+                "end_line": 566,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MCYCLEH",
+              "name": "CSR_MCYCLEH",
+              "value": "12'hB80",
+              "loc": {
+                "line": 567,
+                "col": 5,
+                "end_line": 567,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MINSTRETH",
+              "name": "CSR_MINSTRETH",
+              "value": "12'hB82",
+              "loc": {
+                "line": 568,
+                "col": 5,
+                "end_line": 568,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER3H",
+              "name": "CSR_MHPMCOUNTER3H",
+              "value": "12'hB83",
+              "loc": {
+                "line": 569,
+                "col": 5,
+                "end_line": 569,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER4H",
+              "name": "CSR_MHPMCOUNTER4H",
+              "value": "12'hB84",
+              "loc": {
+                "line": 570,
+                "col": 5,
+                "end_line": 570,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER5H",
+              "name": "CSR_MHPMCOUNTER5H",
+              "value": "12'hB85",
+              "loc": {
+                "line": 571,
+                "col": 5,
+                "end_line": 571,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER6H",
+              "name": "CSR_MHPMCOUNTER6H",
+              "value": "12'hB86",
+              "loc": {
+                "line": 572,
+                "col": 5,
+                "end_line": 572,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER7H",
+              "name": "CSR_MHPMCOUNTER7H",
+              "value": "12'hB87",
+              "loc": {
+                "line": 573,
+                "col": 5,
+                "end_line": 573,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER8H",
+              "name": "CSR_MHPMCOUNTER8H",
+              "value": "12'hB88",
+              "loc": {
+                "line": 574,
+                "col": 5,
+                "end_line": 574,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER9H",
+              "name": "CSR_MHPMCOUNTER9H",
+              "value": "12'hB89",
+              "loc": {
+                "line": 575,
+                "col": 5,
+                "end_line": 575,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER10H",
+              "name": "CSR_MHPMCOUNTER10H",
+              "value": "12'hB8A",
+              "loc": {
+                "line": 576,
+                "col": 5,
+                "end_line": 576,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER11H",
+              "name": "CSR_MHPMCOUNTER11H",
+              "value": "12'hB8B",
+              "loc": {
+                "line": 577,
+                "col": 5,
+                "end_line": 577,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER12H",
+              "name": "CSR_MHPMCOUNTER12H",
+              "value": "12'hB8C",
+              "loc": {
+                "line": 578,
+                "col": 5,
+                "end_line": 578,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER13H",
+              "name": "CSR_MHPMCOUNTER13H",
+              "value": "12'hB8D",
+              "loc": {
+                "line": 579,
+                "col": 5,
+                "end_line": 579,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER14H",
+              "name": "CSR_MHPMCOUNTER14H",
+              "value": "12'hB8E",
+              "loc": {
+                "line": 580,
+                "col": 5,
+                "end_line": 580,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER15H",
+              "name": "CSR_MHPMCOUNTER15H",
+              "value": "12'hB8F",
+              "loc": {
+                "line": 581,
+                "col": 5,
+                "end_line": 581,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER16H",
+              "name": "CSR_MHPMCOUNTER16H",
+              "value": "12'hB90",
+              "loc": {
+                "line": 582,
+                "col": 5,
+                "end_line": 582,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER17H",
+              "name": "CSR_MHPMCOUNTER17H",
+              "value": "12'hB91",
+              "loc": {
+                "line": 583,
+                "col": 5,
+                "end_line": 583,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER18H",
+              "name": "CSR_MHPMCOUNTER18H",
+              "value": "12'hB92",
+              "loc": {
+                "line": 584,
+                "col": 5,
+                "end_line": 584,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER19H",
+              "name": "CSR_MHPMCOUNTER19H",
+              "value": "12'hB93",
+              "loc": {
+                "line": 585,
+                "col": 5,
+                "end_line": 585,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER20H",
+              "name": "CSR_MHPMCOUNTER20H",
+              "value": "12'hB94",
+              "loc": {
+                "line": 586,
+                "col": 5,
+                "end_line": 586,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER21H",
+              "name": "CSR_MHPMCOUNTER21H",
+              "value": "12'hB95",
+              "loc": {
+                "line": 587,
+                "col": 5,
+                "end_line": 587,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER22H",
+              "name": "CSR_MHPMCOUNTER22H",
+              "value": "12'hB96",
+              "loc": {
+                "line": 588,
+                "col": 5,
+                "end_line": 588,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER23H",
+              "name": "CSR_MHPMCOUNTER23H",
+              "value": "12'hB97",
+              "loc": {
+                "line": 589,
+                "col": 5,
+                "end_line": 589,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER24H",
+              "name": "CSR_MHPMCOUNTER24H",
+              "value": "12'hB98",
+              "loc": {
+                "line": 590,
+                "col": 5,
+                "end_line": 590,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER25H",
+              "name": "CSR_MHPMCOUNTER25H",
+              "value": "12'hB99",
+              "loc": {
+                "line": 591,
+                "col": 5,
+                "end_line": 591,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER26H",
+              "name": "CSR_MHPMCOUNTER26H",
+              "value": "12'hB9A",
+              "loc": {
+                "line": 592,
+                "col": 5,
+                "end_line": 592,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER27H",
+              "name": "CSR_MHPMCOUNTER27H",
+              "value": "12'hB9B",
+              "loc": {
+                "line": 593,
+                "col": 5,
+                "end_line": 593,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER28H",
+              "name": "CSR_MHPMCOUNTER28H",
+              "value": "12'hB9C",
+              "loc": {
+                "line": 594,
+                "col": 5,
+                "end_line": 594,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER29H",
+              "name": "CSR_MHPMCOUNTER29H",
+              "value": "12'hB9D",
+              "loc": {
+                "line": 595,
+                "col": 5,
+                "end_line": 595,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER30H",
+              "name": "CSR_MHPMCOUNTER30H",
+              "value": "12'hB9E",
+              "loc": {
+                "line": 596,
+                "col": 5,
+                "end_line": 596,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MHPMCOUNTER31H",
+              "name": "CSR_MHPMCOUNTER31H",
+              "value": "12'hB9F",
+              "loc": {
+                "line": 597,
+                "col": 5,
+                "end_line": 597,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSHWM",
+              "name": "CSR_MSHWM",
+              "value": "12'hBC1",
+              "loc": {
+                "line": 598,
+                "col": 5,
+                "end_line": 598,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_MSHWMB",
+              "name": "CSR_MSHWMB",
+              "value": "12'hBC2",
+              "loc": {
+                "line": 599,
+                "col": 5,
+                "end_line": 599,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_CDBG_CTRL",
+              "name": "CSR_CDBG_CTRL",
+              "value": "12'hBC4",
+              "comment": [
+                "Unprivileged Counter/Timers (readable from U-mode subject to mcounteren)"
+              ],
+              "loc": {
+                "line": 600,
+                "col": 5,
+                "end_line": 600,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_CYCLE",
+              "name": "CSR_CYCLE",
+              "value": "12'hC00",
+              "loc": {
+                "line": 602,
+                "col": 5,
+                "end_line": 602,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_INSTRET",
+              "name": "CSR_INSTRET",
+              "value": "12'hC02",
+              "loc": {
+                "line": 603,
+                "col": 5,
+                "end_line": 603,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER3",
+              "name": "CSR_HPMCOUNTER3",
+              "value": "12'hC03",
+              "loc": {
+                "line": 604,
+                "col": 5,
+                "end_line": 604,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER4",
+              "name": "CSR_HPMCOUNTER4",
+              "value": "12'hC04",
+              "loc": {
+                "line": 605,
+                "col": 5,
+                "end_line": 605,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER5",
+              "name": "CSR_HPMCOUNTER5",
+              "value": "12'hC05",
+              "loc": {
+                "line": 606,
+                "col": 5,
+                "end_line": 606,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER6",
+              "name": "CSR_HPMCOUNTER6",
+              "value": "12'hC06",
+              "loc": {
+                "line": 607,
+                "col": 5,
+                "end_line": 607,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER7",
+              "name": "CSR_HPMCOUNTER7",
+              "value": "12'hC07",
+              "loc": {
+                "line": 608,
+                "col": 5,
+                "end_line": 608,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER8",
+              "name": "CSR_HPMCOUNTER8",
+              "value": "12'hC08",
+              "loc": {
+                "line": 609,
+                "col": 5,
+                "end_line": 609,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER9",
+              "name": "CSR_HPMCOUNTER9",
+              "value": "12'hC09",
+              "loc": {
+                "line": 610,
+                "col": 5,
+                "end_line": 610,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER10",
+              "name": "CSR_HPMCOUNTER10",
+              "value": "12'hC0A",
+              "loc": {
+                "line": 611,
+                "col": 5,
+                "end_line": 611,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER11",
+              "name": "CSR_HPMCOUNTER11",
+              "value": "12'hC0B",
+              "loc": {
+                "line": 612,
+                "col": 5,
+                "end_line": 612,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER12",
+              "name": "CSR_HPMCOUNTER12",
+              "value": "12'hC0C",
+              "loc": {
+                "line": 613,
+                "col": 5,
+                "end_line": 613,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER13",
+              "name": "CSR_HPMCOUNTER13",
+              "value": "12'hC0D",
+              "loc": {
+                "line": 614,
+                "col": 5,
+                "end_line": 614,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER14",
+              "name": "CSR_HPMCOUNTER14",
+              "value": "12'hC0E",
+              "loc": {
+                "line": 615,
+                "col": 5,
+                "end_line": 615,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER15",
+              "name": "CSR_HPMCOUNTER15",
+              "value": "12'hC0F",
+              "loc": {
+                "line": 616,
+                "col": 5,
+                "end_line": 616,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER16",
+              "name": "CSR_HPMCOUNTER16",
+              "value": "12'hC10",
+              "loc": {
+                "line": 617,
+                "col": 5,
+                "end_line": 617,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER17",
+              "name": "CSR_HPMCOUNTER17",
+              "value": "12'hC11",
+              "loc": {
+                "line": 618,
+                "col": 5,
+                "end_line": 618,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER18",
+              "name": "CSR_HPMCOUNTER18",
+              "value": "12'hC12",
+              "loc": {
+                "line": 619,
+                "col": 5,
+                "end_line": 619,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER19",
+              "name": "CSR_HPMCOUNTER19",
+              "value": "12'hC13",
+              "loc": {
+                "line": 620,
+                "col": 5,
+                "end_line": 620,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER20",
+              "name": "CSR_HPMCOUNTER20",
+              "value": "12'hC14",
+              "loc": {
+                "line": 621,
+                "col": 5,
+                "end_line": 621,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER21",
+              "name": "CSR_HPMCOUNTER21",
+              "value": "12'hC15",
+              "loc": {
+                "line": 622,
+                "col": 5,
+                "end_line": 622,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER22",
+              "name": "CSR_HPMCOUNTER22",
+              "value": "12'hC16",
+              "loc": {
+                "line": 623,
+                "col": 5,
+                "end_line": 623,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER23",
+              "name": "CSR_HPMCOUNTER23",
+              "value": "12'hC17",
+              "loc": {
+                "line": 624,
+                "col": 5,
+                "end_line": 624,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER24",
+              "name": "CSR_HPMCOUNTER24",
+              "value": "12'hC18",
+              "loc": {
+                "line": 625,
+                "col": 5,
+                "end_line": 625,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER25",
+              "name": "CSR_HPMCOUNTER25",
+              "value": "12'hC19",
+              "loc": {
+                "line": 626,
+                "col": 5,
+                "end_line": 626,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER26",
+              "name": "CSR_HPMCOUNTER26",
+              "value": "12'hC1A",
+              "loc": {
+                "line": 627,
+                "col": 5,
+                "end_line": 627,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER27",
+              "name": "CSR_HPMCOUNTER27",
+              "value": "12'hC1B",
+              "loc": {
+                "line": 628,
+                "col": 5,
+                "end_line": 628,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER28",
+              "name": "CSR_HPMCOUNTER28",
+              "value": "12'hC1C",
+              "loc": {
+                "line": 629,
+                "col": 5,
+                "end_line": 629,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER29",
+              "name": "CSR_HPMCOUNTER29",
+              "value": "12'hC1D",
+              "loc": {
+                "line": 630,
+                "col": 5,
+                "end_line": 630,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER30",
+              "name": "CSR_HPMCOUNTER30",
+              "value": "12'hC1E",
+              "loc": {
+                "line": 631,
+                "col": 5,
+                "end_line": 631,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER31",
+              "name": "CSR_HPMCOUNTER31",
+              "value": "12'hC1F",
+              "loc": {
+                "line": 632,
+                "col": 5,
+                "end_line": 632,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_CYCLEH",
+              "name": "CSR_CYCLEH",
+              "value": "12'hC80",
+              "loc": {
+                "line": 633,
+                "col": 5,
+                "end_line": 633,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_INSTRETH",
+              "name": "CSR_INSTRETH",
+              "value": "12'hC82",
+              "loc": {
+                "line": 634,
+                "col": 5,
+                "end_line": 634,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER3H",
+              "name": "CSR_HPMCOUNTER3H",
+              "value": "12'hC83",
+              "loc": {
+                "line": 635,
+                "col": 5,
+                "end_line": 635,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER4H",
+              "name": "CSR_HPMCOUNTER4H",
+              "value": "12'hC84",
+              "loc": {
+                "line": 636,
+                "col": 5,
+                "end_line": 636,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER5H",
+              "name": "CSR_HPMCOUNTER5H",
+              "value": "12'hC85",
+              "loc": {
+                "line": 637,
+                "col": 5,
+                "end_line": 637,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER6H",
+              "name": "CSR_HPMCOUNTER6H",
+              "value": "12'hC86",
+              "loc": {
+                "line": 638,
+                "col": 5,
+                "end_line": 638,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER7H",
+              "name": "CSR_HPMCOUNTER7H",
+              "value": "12'hC87",
+              "loc": {
+                "line": 639,
+                "col": 5,
+                "end_line": 639,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER8H",
+              "name": "CSR_HPMCOUNTER8H",
+              "value": "12'hC88",
+              "loc": {
+                "line": 640,
+                "col": 5,
+                "end_line": 640,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER9H",
+              "name": "CSR_HPMCOUNTER9H",
+              "value": "12'hC89",
+              "loc": {
+                "line": 641,
+                "col": 5,
+                "end_line": 641,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER10H",
+              "name": "CSR_HPMCOUNTER10H",
+              "value": "12'hC8A",
+              "loc": {
+                "line": 642,
+                "col": 5,
+                "end_line": 642,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER11H",
+              "name": "CSR_HPMCOUNTER11H",
+              "value": "12'hC8B",
+              "loc": {
+                "line": 643,
+                "col": 5,
+                "end_line": 643,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER12H",
+              "name": "CSR_HPMCOUNTER12H",
+              "value": "12'hC8C",
+              "loc": {
+                "line": 644,
+                "col": 5,
+                "end_line": 644,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER13H",
+              "name": "CSR_HPMCOUNTER13H",
+              "value": "12'hC8D",
+              "loc": {
+                "line": 645,
+                "col": 5,
+                "end_line": 645,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER14H",
+              "name": "CSR_HPMCOUNTER14H",
+              "value": "12'hC8E",
+              "loc": {
+                "line": 646,
+                "col": 5,
+                "end_line": 646,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER15H",
+              "name": "CSR_HPMCOUNTER15H",
+              "value": "12'hC8F",
+              "loc": {
+                "line": 647,
+                "col": 5,
+                "end_line": 647,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER16H",
+              "name": "CSR_HPMCOUNTER16H",
+              "value": "12'hC90",
+              "loc": {
+                "line": 648,
+                "col": 5,
+                "end_line": 648,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER17H",
+              "name": "CSR_HPMCOUNTER17H",
+              "value": "12'hC91",
+              "loc": {
+                "line": 649,
+                "col": 5,
+                "end_line": 649,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER18H",
+              "name": "CSR_HPMCOUNTER18H",
+              "value": "12'hC92",
+              "loc": {
+                "line": 650,
+                "col": 5,
+                "end_line": 650,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER19H",
+              "name": "CSR_HPMCOUNTER19H",
+              "value": "12'hC93",
+              "loc": {
+                "line": 651,
+                "col": 5,
+                "end_line": 651,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER20H",
+              "name": "CSR_HPMCOUNTER20H",
+              "value": "12'hC94",
+              "loc": {
+                "line": 652,
+                "col": 5,
+                "end_line": 652,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER21H",
+              "name": "CSR_HPMCOUNTER21H",
+              "value": "12'hC95",
+              "loc": {
+                "line": 653,
+                "col": 5,
+                "end_line": 653,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER22H",
+              "name": "CSR_HPMCOUNTER22H",
+              "value": "12'hC96",
+              "loc": {
+                "line": 654,
+                "col": 5,
+                "end_line": 654,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER23H",
+              "name": "CSR_HPMCOUNTER23H",
+              "value": "12'hC97",
+              "loc": {
+                "line": 655,
+                "col": 5,
+                "end_line": 655,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER24H",
+              "name": "CSR_HPMCOUNTER24H",
+              "value": "12'hC98",
+              "loc": {
+                "line": 656,
+                "col": 5,
+                "end_line": 656,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER25H",
+              "name": "CSR_HPMCOUNTER25H",
+              "value": "12'hC99",
+              "loc": {
+                "line": 657,
+                "col": 5,
+                "end_line": 657,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER26H",
+              "name": "CSR_HPMCOUNTER26H",
+              "value": "12'hC9A",
+              "loc": {
+                "line": 658,
+                "col": 5,
+                "end_line": 658,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER27H",
+              "name": "CSR_HPMCOUNTER27H",
+              "value": "12'hC9B",
+              "loc": {
+                "line": 659,
+                "col": 5,
+                "end_line": 659,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER28H",
+              "name": "CSR_HPMCOUNTER28H",
+              "value": "12'hC9C",
+              "loc": {
+                "line": 660,
+                "col": 5,
+                "end_line": 660,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER29H",
+              "name": "CSR_HPMCOUNTER29H",
+              "value": "12'hC9D",
+              "loc": {
+                "line": 661,
+                "col": 5,
+                "end_line": 661,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER30H",
+              "name": "CSR_HPMCOUNTER30H",
+              "value": "12'hC9E",
+              "loc": {
+                "line": 662,
+                "col": 5,
+                "end_line": 662,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_HPMCOUNTER31H",
+              "name": "CSR_HPMCOUNTER31H",
+              "value": "12'hC9F",
+              "loc": {
+                "line": 663,
+                "col": 5,
+                "end_line": 663,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_CPUCTRLSTS",
+              "name": "CSR_CPUCTRLSTS",
+              "value": "12'h7C0",
+              "loc": {
+                "line": 664,
+                "col": 5,
+                "end_line": 664,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.csr_num_e.CSR_SECURESEED",
+              "name": "CSR_SECURESEED",
+              "value": "12'h7C1",
+              "loc": {
+                "line": 665,
+                "col": 5,
+                "end_line": 665,
+                "end_col": 33
+              }
+            }
+          ],
+          "comment": [
+            "CSRs",
+            "Machine information"
+          ],
+          "loc": {
+            "line": 435,
+            "col": 3,
+            "end_line": 666,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_pkg.lfsr_seed_t",
+          "name": "lfsr_seed_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[LfsrWidth-1:0]",
+          "loc": {
+            "line": 711,
+            "col": 3,
+            "end_line": 711,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_pkg.lfsr_perm_t",
+          "name": "lfsr_perm_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[LfsrWidth-1:0][$clog2(LfsrWidth)-1:0]",
+          "loc": {
+            "line": 712,
+            "col": 3,
+            "end_line": 712,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_pkg.ibex_mubi_t",
+          "name": "ibex_mubi_t",
+          "kind": "alias",
+          "dtype": "logic",
+          "dim": "[IbexMuBiWidth-1:0]",
+          "loc": {
+            "line": 725,
+            "col": 3,
+            "end_line": 725,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_pkg.ls_fsm_e",
+          "name": "ls_fsm_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[3:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.ls_fsm_e.IDLE",
+              "name": "IDLE",
+              "loc": {
+                "line": 789,
+                "col": 5,
+                "end_line": 789,
+                "end_col": 9
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.WAIT_GNT_MIS",
+              "name": "WAIT_GNT_MIS",
+              "loc": {
+                "line": 789,
+                "col": 11,
+                "end_line": 789,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.WAIT_RVALID_MIS",
+              "name": "WAIT_RVALID_MIS",
+              "loc": {
+                "line": 789,
+                "col": 25,
+                "end_line": 789,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.WAIT_GNT",
+              "name": "WAIT_GNT",
+              "loc": {
+                "line": 789,
+                "col": 42,
+                "end_line": 789,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.WAIT_RVALID_MIS_GNTS_DONE",
+              "name": "WAIT_RVALID_MIS_GNTS_DONE",
+              "loc": {
+                "line": 790,
+                "col": 5,
+                "end_line": 790,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.CTX_WAIT_GNT1",
+              "name": "CTX_WAIT_GNT1",
+              "loc": {
+                "line": 791,
+                "col": 5,
+                "end_line": 791,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.CTX_WAIT_GNT2",
+              "name": "CTX_WAIT_GNT2",
+              "loc": {
+                "line": 791,
+                "col": 20,
+                "end_line": 791,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_pkg.ls_fsm_e.CTX_WAIT_RESP",
+              "name": "CTX_WAIT_RESP",
+              "loc": {
+                "line": 791,
+                "col": 35,
+                "end_line": 791,
+                "end_col": 48
+              }
+            }
+          ],
+          "comment": [
+            "////////////",
+            "LSU      //",
+            "////////////"
+          ],
+          "loc": {
+            "line": 788,
+            "col": 3,
+            "end_line": 792,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_pkg.cap_rx_fsm_t",
+          "name": "cap_rx_fsm_t",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "ibex_pkg.cap_rx_fsm_t.CRX_IDLE",
+              "name": "CRX_IDLE",
+              "loc": {
+                "line": 794,
+                "col": 29,
+                "end_line": 794,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_pkg.cap_rx_fsm_t.CRX_WAIT_RESP1",
+              "name": "CRX_WAIT_RESP1",
+              "loc": {
+                "line": 794,
+                "col": 39,
+                "end_line": 794,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "ibex_pkg.cap_rx_fsm_t.CRX_WAIT_RESP2",
+              "name": "CRX_WAIT_RESP2",
+              "loc": {
+                "line": 794,
+                "col": 55,
+                "end_line": 794,
+                "end_col": 69
+              }
+            }
+          ],
+          "loc": {
+            "line": 794,
+            "col": 3,
+            "end_line": 794,
+            "end_col": 84
+          }
+        }
+      ],
+      "loc": {
+        "line": 10,
+        "col": 1,
+        "end_line": 796,
+        "end_col": 11
+      }
     }
   ]
 }

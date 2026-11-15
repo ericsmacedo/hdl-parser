@@ -23,6 +23,7 @@
         {
           "id": "fifo_v3.DATA_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DATA_WIDTH",
           "default": "32",
           "comment": [
@@ -38,6 +39,7 @@
         {
           "id": "fifo_v3.DEPTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DEPTH",
           "default": "8",
           "comment": [
@@ -68,6 +70,7 @@
         {
           "id": "fifo_v3.ADDR_DEPTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "ADDR_DEPTH",
           "default": "(DEPTH > 1) ? $clog2(DEPTH) : 1",
           "loc": {
@@ -253,6 +256,7 @@
         {
           "id": "fifo_v3.FifoDepth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "FifoDepth",
           "default": "(DEPTH > 0) ? DEPTH : 1",
           "loc": {
@@ -260,6 +264,183 @@
             "col": 5,
             "end_line": 38,
             "end_col": 65
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "fifo_v3.gate_clock",
+          "ptype": "logic",
+          "name": "gate_clock",
+          "loc": {
+            "line": 40,
+            "col": 5,
+            "end_line": 40,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "fifo_v3.read_pointer_n",
+          "ptype": "logic",
+          "name": "read_pointer_n",
+          "dim": "[ADDR_DEPTH - 1:0]",
+          "loc": {
+            "line": 42,
+            "col": 5,
+            "end_line": 42,
+            "end_col": 95
+          }
+        },
+        {
+          "id": "fifo_v3.read_pointer_q",
+          "ptype": "logic",
+          "name": "read_pointer_q",
+          "dim": "[ADDR_DEPTH - 1:0]",
+          "loc": {
+            "line": 42,
+            "col": 5,
+            "end_line": 42,
+            "end_col": 95
+          }
+        },
+        {
+          "id": "fifo_v3.write_pointer_n",
+          "ptype": "logic",
+          "name": "write_pointer_n",
+          "dim": "[ADDR_DEPTH - 1:0]",
+          "loc": {
+            "line": 42,
+            "col": 5,
+            "end_line": 42,
+            "end_col": 95
+          }
+        },
+        {
+          "id": "fifo_v3.write_pointer_q",
+          "ptype": "logic",
+          "name": "write_pointer_q",
+          "dim": "[ADDR_DEPTH - 1:0]",
+          "loc": {
+            "line": 42,
+            "col": 5,
+            "end_line": 42,
+            "end_col": 95
+          }
+        },
+        {
+          "id": "fifo_v3.status_cnt_n",
+          "ptype": "logic",
+          "name": "status_cnt_n",
+          "dim": "[ADDR_DEPTH:0]",
+          "loc": {
+            "line": 45,
+            "col": 5,
+            "end_line": 45,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "fifo_v3.status_cnt_q",
+          "ptype": "logic",
+          "name": "status_cnt_q",
+          "dim": "[ADDR_DEPTH:0]",
+          "loc": {
+            "line": 45,
+            "col": 5,
+            "end_line": 45,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "fifo_v3.mem_n",
+          "ptype": "dtype",
+          "name": "mem_n",
+          "dim": "[FifoDepth - 1:0]",
+          "loc": {
+            "line": 47,
+            "col": 5,
+            "end_line": 47,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "fifo_v3.mem_q",
+          "ptype": "dtype",
+          "name": "mem_q",
+          "dim": "[FifoDepth - 1:0]",
+          "loc": {
+            "line": 47,
+            "col": 5,
+            "end_line": 47,
+            "end_col": 42
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "fifo_v3.read_write_comb",
+          "name": "read_write_comb",
+          "kind": "always_comb",
+          "comment": [
+            "status flags",
+            "read and write queue logic"
+          ],
+          "loc": {
+            "line": 61,
+            "col": 5,
+            "end_line": 111,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "fifo_v3.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "sequential process"
+          ],
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 130,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "fifo_v3.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 132,
+            "col": 5,
+            "end_line": 138,
+            "end_col": 8
           }
         }
       ],

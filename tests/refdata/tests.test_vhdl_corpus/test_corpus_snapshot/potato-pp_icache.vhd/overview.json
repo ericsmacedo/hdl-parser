@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "pp_icache.line_size",
+          "dtype": "natural",
           "name": "LINE_SIZE",
           "default": "4",
           "comment": [
@@ -21,6 +22,7 @@
         },
         {
           "id": "pp_icache.num_lines",
+          "dtype": "natural",
           "name": "NUM_LINES",
           "default": "128",
           "comment": [
@@ -137,6 +139,436 @@
             "col": 3,
             "end_line": 30,
             "end_col": 43
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "pp_icache.cache_memory",
+          "dtype": "cache_line_array",
+          "name": "cache_memory",
+          "loc": {
+            "line": 50,
+            "col": 2,
+            "end_line": 50,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "pp_icache.tag_memory",
+          "dtype": "cache_tag_array",
+          "name": "tag_memory",
+          "loc": {
+            "line": 51,
+            "col": 2,
+            "end_line": 51,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "pp_icache.valid",
+          "dtype": "std_logic_vector",
+          "name": "valid",
+          "dim": "[NUM_LINES - 1:0]",
+          "default": "(others => '0')",
+          "loc": {
+            "line": 52,
+            "col": 2,
+            "end_line": 52,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "pp_icache.state",
+          "dtype": "state_type",
+          "name": "state",
+          "default": "IDLE",
+          "loc": {
+            "line": 60,
+            "col": 2,
+            "end_line": 60,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "pp_icache.input_address_line",
+          "dtype": "std_logic_vector",
+          "name": "input_address_line",
+          "dim": "[log2(NUM_LINES) - 1:0]",
+          "loc": {
+            "line": 63,
+            "col": 2,
+            "end_line": 63,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "pp_icache.input_address_word",
+          "dtype": "std_logic_vector",
+          "name": "input_address_word",
+          "dim": "[log2(LINE_SIZE) - 1:0]",
+          "loc": {
+            "line": 64,
+            "col": 2,
+            "end_line": 64,
+            "end_col": 76
+          }
+        },
+        {
+          "id": "pp_icache.input_address_tag",
+          "dtype": "cache_tag_type",
+          "name": "input_address_tag",
+          "loc": {
+            "line": 65,
+            "col": 2,
+            "end_line": 65,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "pp_icache.current_cache_line",
+          "dtype": "cache_line_type",
+          "name": "current_cache_line",
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 68,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "pp_icache.cache_lookup",
+          "dtype": "cache_line_type",
+          "name": "cache_lookup",
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 68,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "pp_icache.current_cache_line_words",
+          "dtype": "cache_line_word_array",
+          "name": "current_cache_line_words",
+          "loc": {
+            "line": 69,
+            "col": 2,
+            "end_line": 69,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "pp_icache.cl_load_address",
+          "dtype": "std_logic_vector",
+          "name": "cl_load_address",
+          "dim": "[31:log2(LINE_SIZE * 4)]",
+          "loc": {
+            "line": 72,
+            "col": 2,
+            "end_line": 72,
+            "end_col": 75
+          }
+        },
+        {
+          "id": "pp_icache.cl_current_line",
+          "dtype": "line_counter_type",
+          "name": "cl_current_line",
+          "loc": {
+            "line": 74,
+            "col": 2,
+            "end_line": 74,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "pp_icache.cl_current_word",
+          "dtype": "word_counter_type",
+          "name": "cl_current_word",
+          "loc": {
+            "line": 76,
+            "col": 2,
+            "end_line": 76,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "pp_icache.load_buffer",
+          "dtype": "cache_line_type",
+          "name": "load_buffer",
+          "loc": {
+            "line": 79,
+            "col": 2,
+            "end_line": 79,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "pp_icache.load_buffer_tag",
+          "dtype": "cache_tag_type",
+          "name": "load_buffer_tag",
+          "loc": {
+            "line": 80,
+            "col": 2,
+            "end_line": 80,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "pp_icache.store_cache_line",
+          "dtype": "std_logic",
+          "name": "store_cache_line",
+          "loc": {
+            "line": 83,
+            "col": 2,
+            "end_line": 83,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "pp_icache.cache_hit",
+          "dtype": "std_logic",
+          "name": "cache_hit",
+          "loc": {
+            "line": 86,
+            "col": 2,
+            "end_line": 86,
+            "end_col": 30
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "pp_icache.line_counter_type",
+          "name": "line_counter_type",
+          "kind": "alias",
+          "dtype": "natural range 0 to NUM_LINES",
+          "comment": [
+            "-- Counter types:"
+          ],
+          "loc": {
+            "line": 37,
+            "col": 2,
+            "end_line": 37,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "pp_icache.word_counter_type",
+          "name": "word_counter_type",
+          "kind": "alias",
+          "dtype": "natural range 0 to LINE_SIZE",
+          "loc": {
+            "line": 38,
+            "col": 2,
+            "end_line": 38,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "pp_icache.cache_line_type",
+          "name": "cache_line_type",
+          "kind": "alias",
+          "dtype": "std_logic_vector((LINE_SIZE * 32) - 1 downto 0)",
+          "comment": [
+            "-- Cache line types:"
+          ],
+          "loc": {
+            "line": 41,
+            "col": 2,
+            "end_line": 41,
+            "end_col": 77
+          }
+        },
+        {
+          "id": "pp_icache.cache_line_word_array",
+          "name": "cache_line_word_array",
+          "kind": "alias",
+          "dtype": "array(0 to LINE_SIZE - 1) of std_logic_vector(31 downto 0)",
+          "loc": {
+            "line": 42,
+            "col": 2,
+            "end_line": 42,
+            "end_col": 91
+          }
+        },
+        {
+          "id": "pp_icache.cache_line_array",
+          "name": "cache_line_array",
+          "kind": "alias",
+          "dtype": "array(0 to NUM_LINES - 1) of cache_line_type",
+          "loc": {
+            "line": 43,
+            "col": 2,
+            "end_line": 43,
+            "end_col": 72
+          }
+        },
+        {
+          "id": "pp_icache.cache_tag_type",
+          "name": "cache_tag_type",
+          "kind": "alias",
+          "dtype": "std_logic_vector(31 - log2(LINE_SIZE * 4) - log2(NUM_LINES) downto 0)",
+          "comment": [
+            "-- Cache tag type:"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 2,
+            "end_line": 46,
+            "end_col": 98
+          }
+        },
+        {
+          "id": "pp_icache.cache_tag_array",
+          "name": "cache_tag_array",
+          "kind": "alias",
+          "dtype": "array(0 to NUM_LINES - 1) of cache_tag_type",
+          "loc": {
+            "line": 47,
+            "col": 2,
+            "end_line": 47,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_icache.state_type",
+          "name": "state_type",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "pp_icache.state_type.idle",
+              "name": "IDLE",
+              "loc": {
+                "line": 58,
+                "col": 22,
+                "end_line": 58,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "pp_icache.state_type.cache_read_stall",
+              "name": "CACHE_READ_STALL",
+              "loc": {
+                "line": 58,
+                "col": 28,
+                "end_line": 58,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "pp_icache.state_type.load_cacheline_start",
+              "name": "LOAD_CACHELINE_START",
+              "loc": {
+                "line": 59,
+                "col": 3,
+                "end_line": 59,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "pp_icache.state_type.load_cacheline_wait_ack",
+              "name": "LOAD_CACHELINE_WAIT_ACK",
+              "loc": {
+                "line": 59,
+                "col": 25,
+                "end_line": 59,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "pp_icache.state_type.load_cacheline_finish",
+              "name": "LOAD_CACHELINE_FINISH",
+              "loc": {
+                "line": 59,
+                "col": 50,
+                "end_line": 59,
+                "end_col": 71
+              }
+            }
+          ],
+          "comment": [
+            "-- Cache controller signals:"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 2,
+            "end_line": 59,
+            "end_col": 73
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "pp_icache.find_indices",
+          "name": "find_indices",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 108,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "pp_icache.cacheline_lookup",
+          "name": "cacheline_lookup",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 110,
+            "col": 2,
+            "end_line": 119,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "pp_icache.tag_lookup",
+          "name": "tag_lookup",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 121,
+            "col": 2,
+            "end_line": 131,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "pp_icache.controller",
+          "name": "controller",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "loc": {
+            "line": 133,
+            "col": 2,
+            "end_line": 183,
+            "end_col": 25
           }
         }
       ],

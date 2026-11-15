@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "rstsync.tpd_g",
+          "dtype": "time",
           "name": "TPD_G",
           "default": "1 ns",
           "comment": [
@@ -21,6 +22,7 @@
         },
         {
           "id": "rstsync.in_polarity_g",
+          "dtype": "std_logic",
           "name": "IN_POLARITY_G",
           "default": "'1'",
           "comment": [
@@ -35,6 +37,7 @@
         },
         {
           "id": "rstsync.out_polarity_g",
+          "dtype": "std_logic",
           "name": "OUT_POLARITY_G",
           "default": "'1'",
           "loc": {
@@ -46,6 +49,7 @@
         },
         {
           "id": "rstsync.bypass_sync_g",
+          "dtype": "boolean",
           "name": "BYPASS_SYNC_G",
           "default": "false",
           "comment": [
@@ -60,6 +64,7 @@
         },
         {
           "id": "rstsync.release_delay_g",
+          "dtype": "integer",
           "name": "RELEASE_DELAY_G",
           "default": "3",
           "comment": [
@@ -74,6 +79,7 @@
         },
         {
           "id": "rstsync.out_reg_rst_g",
+          "dtype": "boolean",
           "name": "OUT_REG_RST_G",
           "default": "true",
           "loc": {
@@ -118,6 +124,48 @@
             "line": 36,
             "col": 7,
             "end_line": 36,
+            "end_col": 24
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "rstsync.syncint",
+          "dtype": "sl",
+          "name": "syncInt",
+          "default": "OUT_POLARITY_G",
+          "loc": {
+            "line": 41,
+            "col": 4,
+            "end_line": 41,
+            "end_col": 41
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "rstsync.out_reg",
+          "name": "OUT_REG",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "asyncRst"
+            },
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "reset": "asyncRst",
+          "reset_edge": "posedge",
+          "comment": [
+            "-- Final stage does not have async constraints applied, can be duplicated to ease timing"
+          ],
+          "loc": {
+            "line": 63,
+            "col": 4,
+            "end_line": 70,
             "end_col": 24
           }
         }

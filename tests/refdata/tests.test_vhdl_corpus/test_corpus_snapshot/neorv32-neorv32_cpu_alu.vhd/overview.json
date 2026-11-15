@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "neorv32_cpu_alu.riscv_isa_m",
+          "dtype": "boolean",
           "name": "RISCV_ISA_M",
           "comment": [
             "-- mul/div extension"
@@ -20,6 +21,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zba",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zba",
           "comment": [
             "-- address-generation instruction"
@@ -33,6 +35,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbb",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbb",
           "comment": [
             "-- basic bit-manipulation instruction"
@@ -46,6 +49,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbc",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbc",
           "comment": [
             "-- carry-less multiplication instructions"
@@ -59,6 +63,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbkb",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbkb",
           "comment": [
             "-- bit-manipulation instructions for cryptography"
@@ -72,6 +77,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbkc",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbkc",
           "comment": [
             "-- carry-less multiplication instructions"
@@ -85,6 +91,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbkx",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbkx",
           "comment": [
             "-- cryptography crossbar permutation extension"
@@ -98,6 +105,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zbs",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zbs",
           "comment": [
             "-- single-bit instructions"
@@ -111,6 +119,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zfinx",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zfinx",
           "comment": [
             "-- 32-bit floating-point extension"
@@ -124,6 +133,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zibi",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zibi",
           "comment": [
             "-- branch with immediate"
@@ -137,6 +147,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zicond",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zicond",
           "comment": [
             "-- integer conditional operations"
@@ -150,6 +161,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zknd",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zknd",
           "comment": [
             "-- cryptography NIST AES decryption extension"
@@ -163,6 +175,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zkne",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zkne",
           "comment": [
             "-- cryptography NIST AES encryption extension"
@@ -176,6 +189,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zknh",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zknh",
           "comment": [
             "-- cryptography NIST hash extension"
@@ -189,6 +203,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zksed",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zksed",
           "comment": [
             "-- ShangMi block cipher extension"
@@ -202,6 +217,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zksh",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zksh",
           "comment": [
             "-- ShangMi hash extension"
@@ -215,6 +231,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_zmmul",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Zmmul",
           "comment": [
             "-- multiply-only M sub-extension"
@@ -228,6 +245,7 @@
         },
         {
           "id": "neorv32_cpu_alu.riscv_isa_xcfu",
+          "dtype": "boolean",
           "name": "RISCV_ISA_Xcfu",
           "comment": [
             "-- custom (instr.) functions unit",
@@ -242,6 +260,7 @@
         },
         {
           "id": "neorv32_cpu_alu.fast_mul_en",
+          "dtype": "boolean",
           "name": "FAST_MUL_EN",
           "comment": [
             "-- use DSPs for M extension's multiplier"
@@ -255,6 +274,7 @@
         },
         {
           "id": "neorv32_cpu_alu.fast_mul_regs",
+          "dtype": "natural",
           "name": "FAST_MUL_REGS",
           "comment": [
             "-- number of fast multiplier register stages"
@@ -268,6 +288,7 @@
         },
         {
           "id": "neorv32_cpu_alu.fast_shift_en",
+          "dtype": "boolean",
           "name": "FAST_SHIFT_EN",
           "comment": [
             "-- use barrel shifter for shift operations"
@@ -438,6 +459,360 @@
             "col": 5,
             "end_line": 58,
             "end_col": 28
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "neorv32_cpu_alu.cmp_rs1",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_rs1",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cmp_rs2",
+          "dtype": "std_ulogic_vector",
+          "name": "cmp_rs2",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.opa",
+          "dtype": "std_ulogic_vector",
+          "name": "opa",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.opb",
+          "dtype": "std_ulogic_vector",
+          "name": "opb",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.slt_opb",
+          "dtype": "std_ulogic_vector",
+          "name": "slt_opb",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.addsub",
+          "dtype": "std_ulogic_vector",
+          "name": "addsub",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cp_res",
+          "dtype": "std_ulogic_vector",
+          "name": "cp_res",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 94
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cmp_eq",
+          "dtype": "std_ulogic",
+          "name": "cmp_eq",
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cmp_lt",
+          "dtype": "std_ulogic",
+          "name": "cmp_lt",
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.slt",
+          "dtype": "std_ulogic",
+          "name": "slt",
+          "loc": {
+            "line": 82,
+            "col": 3,
+            "end_line": 82,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cp_result",
+          "dtype": "cp_data_t",
+          "name": "cp_result",
+          "loc": {
+            "line": 86,
+            "col": 3,
+            "end_line": 86,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cp_valid",
+          "dtype": "std_ulogic_vector",
+          "name": "cp_valid",
+          "dim": "[6:0]",
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cfu_inst",
+          "dtype": "std_ulogic_vector",
+          "name": "cfu_inst",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.fpu_csr_en",
+          "dtype": "std_ulogic",
+          "name": "fpu_csr_en",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.fpu_csr_we",
+          "dtype": "std_ulogic",
+          "name": "fpu_csr_we",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cfu_done",
+          "dtype": "std_ulogic",
+          "name": "cfu_done",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cfu_busy",
+          "dtype": "std_ulogic",
+          "name": "cfu_busy",
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 65
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.fpu_csr_rd",
+          "dtype": "std_ulogic_vector",
+          "name": "fpu_csr_rd",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 90,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cfu_res",
+          "dtype": "std_ulogic_vector",
+          "name": "cfu_res",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 90,
+            "col": 3,
+            "end_line": 90,
+            "end_col": 62
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "neorv32_cpu_alu.cp_data_t",
+          "name": "cp_data_t",
+          "kind": "alias",
+          "dtype": "array (6 downto 0) of std_ulogic_vector(31 downto 0)",
+          "comment": [
+            "-- co-processor interface --"
+          ],
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 75
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "neorv32_cpu_alu.zibi_cmp_f",
+          "name": "zibi_cmp_f",
+          "kind": "function",
+          "rtype": "std_ulogic",
+          "args": [
+            {
+              "id": "neorv32_cpu_alu.zibi_cmp_f.sel",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "sel",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 65,
+                "col": 23,
+                "end_line": 65,
+                "end_col": 58
+              }
+            },
+            {
+              "id": "neorv32_cpu_alu.zibi_cmp_f.cmp",
+              "direction": "in",
+              "dtype": "std_ulogic_vector",
+              "name": "cmp",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 65,
+                "col": 60,
+                "end_line": 65,
+                "end_col": 96
+              }
+            }
+          ],
+          "comment": [
+            "-- Zibi ISA extension: compare with immediate --"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "neorv32_cpu_alu.alu_core",
+          "name": "alu_core",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "ctrl_i"
+            },
+            {
+              "signal": "addsub"
+            },
+            {
+              "signal": "cp_res"
+            },
+            {
+              "signal": "slt"
+            },
+            {
+              "signal": "opb"
+            },
+            {
+              "signal": "rs1_i"
+            }
+          ],
+          "comment": [
+            "-- ALU Core -------------------------------------------------------------------------------",
+            "-- -------------------------------------------------------------------------------------------"
+          ],
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "neorv32_cpu_alu.cpu_alu_cfu_enabled.cfu_proxy",
+          "name": "cfu_proxy",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "rstn_i"
+            },
+            {
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rstn_i",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cpu_alu_cfu_enabled",
+              "cond": "RISCV_ISA_Xcfu"
+            }
+          ],
+          "comment": [
+            "-- response proxy --"
+          ],
+          "loc": {
+            "line": 306,
+            "col": 5,
+            "end_line": 323,
+            "end_col": 17
           }
         }
       ],

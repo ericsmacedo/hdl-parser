@@ -8,6 +8,7 @@
         {
           "id": "rstgen_bypass.NumRegs",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NumRegs",
           "default": "4",
           "loc": {
@@ -89,6 +90,57 @@
             "col": 5,
             "end_line": 23,
             "end_col": 25
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "rstgen_bypass.rst_n",
+          "ptype": "logic",
+          "name": "rst_n",
+          "loc": {
+            "line": 27,
+            "col": 5,
+            "end_line": 27,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "rstgen_bypass.synch_regs_q",
+          "ptype": "logic",
+          "name": "synch_regs_q",
+          "dim": "[NumRegs-1:0]",
+          "loc": {
+            "line": 29,
+            "col": 5,
+            "end_line": 29,
+            "end_col": 38
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "rstgen_bypass.#always1",
+          "kind": "always",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_n"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_n",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 53,
+            "col": 5,
+            "end_line": 59,
+            "end_col": 8
           }
         }
       ],

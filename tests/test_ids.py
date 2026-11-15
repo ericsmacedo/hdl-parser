@@ -142,7 +142,7 @@ def test_stable():
     before = set(_ids(parse_text(TEXT)))
     after = set(_ids(parse_text(edited)))
     assert before <= after
-    assert after - before == {"top.b", "top.u_new"}
+    assert after - before == {"top.b", "top.unused", "top.u_new"}
 
 
 def test_find_and_full_id(tmp_path, monkeypatch):

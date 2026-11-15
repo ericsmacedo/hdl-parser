@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "instances.stages",
+          "dtype": "positive",
           "name": "STAGES",
           "default": "4",
           "loc": {
@@ -66,6 +67,227 @@
             "col": 5,
             "end_line": 12,
             "end_col": 44
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "instances.data",
+          "dtype": "data_t",
+          "name": "data",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "instances.status",
+          "dtype": "status_t",
+          "name": "status",
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "instances.par",
+          "dtype": "std_logic",
+          "name": "par",
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "instances.b_sync.synced",
+          "dtype": "std_logic",
+          "name": "synced",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "b_sync"
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 5,
+            "end_line": 101,
+            "end_col": 30
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "instances.data_t",
+          "name": "data_t",
+          "kind": "alias",
+          "dtype": "array (0 to STAGES) of std_logic_vector(7 downto 0)",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "instances.status_t",
+          "name": "status_t",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "instances.status_t.valid",
+              "name": "valid",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 33,
+                "col": 5,
+                "end_line": 33,
+                "end_col": 22
+              }
+            },
+            {
+              "id": "instances.status_t.error",
+              "name": "error",
+              "dtype": "std_logic",
+              "loc": {
+                "line": 34,
+                "col": 5,
+                "end_line": 34,
+                "end_col": 22
+              }
+            }
+          ],
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 23
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "instances.parity",
+          "name": "parity",
+          "kind": "function",
+          "rtype": "std_logic",
+          "args": [
+            {
+              "id": "instances.parity.value",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "value",
+              "loc": {
+                "line": 38,
+                "col": 20,
+                "end_line": 38,
+                "end_col": 44
+              }
+            }
+          ],
+          "comment": [
+            "-- Subprograms are skipped"
+          ],
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 23
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "instances.p_out",
+          "name": "p_out",
+          "kind": "process",
+          "events": [
+            {
+              "signal": "clk"
+            }
+          ],
+          "clock": "clk",
+          "clock_edge": "posedge",
+          "comment": [
+            "-- Processes are skipped"
+          ],
+          "loc": {
+            "line": 112,
+            "col": 3,
+            "end_line": 121,
+            "end_col": 21
+          }
+        }
+      ],
+      "components": [
+        {
+          "id": "instances.stage",
+          "name": "stage",
+          "params": [
+            {
+              "id": "instances.stage.width",
+              "dtype": "positive",
+              "name": "WIDTH",
+              "default": "8",
+              "loc": {
+                "line": 21,
+                "col": 7,
+                "end_line": 21,
+                "end_col": 28
+              }
+            }
+          ],
+          "ports": [
+            {
+              "id": "instances.stage.clk",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "clk",
+              "loc": {
+                "line": 24,
+                "col": 7,
+                "end_line": 24,
+                "end_col": 27
+              }
+            },
+            {
+              "id": "instances.stage.din",
+              "direction": "in",
+              "dtype": "std_logic_vector",
+              "name": "din",
+              "dim": "[WIDTH - 1:0]",
+              "loc": {
+                "line": 25,
+                "col": 7,
+                "end_line": 25,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "instances.stage.dout",
+              "direction": "out",
+              "dtype": "std_logic_vector",
+              "name": "dout",
+              "dim": "[WIDTH - 1:0]",
+              "loc": {
+                "line": 26,
+                "col": 7,
+                "end_line": 26,
+                "end_col": 54
+              }
+            }
+          ],
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 23
           }
         }
       ],

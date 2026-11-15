@@ -8,6 +8,7 @@
         {
           "id": "prim_fifo_async.Width",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Width",
           "default": "16",
           "loc": {
@@ -20,6 +21,7 @@
         {
           "id": "prim_fifo_async.Depth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Depth",
           "default": "4",
           "loc": {
@@ -217,6 +219,7 @@
         {
           "id": "prim_fifo_async.DepthW",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DepthW",
           "default": "$clog2(Depth+1)",
           "comment": [
@@ -232,6 +235,7 @@
         {
           "id": "prim_fifo_async.PTRV_W",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PTRV_W",
           "default": "(Depth == 1) ? 1 : $clog2(Depth)",
           "loc": {
@@ -244,6 +248,7 @@
         {
           "id": "prim_fifo_async.PTR_WIDTH",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "PTR_WIDTH",
           "default": "(Depth == 1) ? 1 : PTRV_W+1",
           "loc": {
@@ -251,6 +256,643 @@
             "col": 3,
             "end_line": 37,
             "end_col": 67
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "prim_fifo_async.fifo_wptr_q",
+          "ptype": "logic",
+          "name": "fifo_wptr_q",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_wptr_d",
+          "ptype": "logic",
+          "name": "fifo_wptr_d",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_q",
+          "ptype": "logic",
+          "name": "fifo_rptr_q",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_d",
+          "ptype": "logic",
+          "name": "fifo_rptr_d",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_wptr_sync_combi",
+          "ptype": "logic",
+          "name": "fifo_wptr_sync_combi",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_sync_combi",
+          "ptype": "logic",
+          "name": "fifo_rptr_sync_combi",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_wptr_gray_sync",
+          "ptype": "logic",
+          "name": "fifo_wptr_gray_sync",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_gray_sync",
+          "ptype": "logic",
+          "name": "fifo_rptr_gray_sync",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_sync_q",
+          "ptype": "logic",
+          "name": "fifo_rptr_sync_q",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 84
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_wptr_gray_q",
+          "ptype": "logic",
+          "name": "fifo_wptr_gray_q",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_wptr_gray_d",
+          "ptype": "logic",
+          "name": "fifo_wptr_gray_d",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_gray_q",
+          "ptype": "logic",
+          "name": "fifo_rptr_gray_q",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_rptr_gray_d",
+          "ptype": "logic",
+          "name": "fifo_rptr_gray_d",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_incr_wptr",
+          "ptype": "logic",
+          "name": "fifo_incr_wptr",
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "prim_fifo_async.fifo_incr_rptr",
+          "ptype": "logic",
+          "name": "fifo_incr_rptr",
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "prim_fifo_async.full_wclk",
+          "ptype": "logic",
+          "name": "full_wclk",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "prim_fifo_async.full_rclk",
+          "ptype": "logic",
+          "name": "full_rclk",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "prim_fifo_async.empty_rclk",
+          "ptype": "logic",
+          "name": "empty_rclk",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "prim_fifo_async.storage",
+          "ptype": "logic",
+          "name": "storage",
+          "dim": "[Width-1:0]",
+          "dim_unpacked": "[Depth]",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "prim_fifo_async.xor_mask",
+          "ptype": "logic",
+          "name": "xor_mask",
+          "dim": "[PTR_WIDTH-1:0]",
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.wptr_msb",
+          "ptype": "logic",
+          "name": "wptr_msb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 137,
+            "col": 5,
+            "end_line": 137,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.rptr_sync_msb",
+          "ptype": "logic",
+          "name": "rptr_sync_msb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 138,
+            "col": 5,
+            "end_line": 138,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.wptr_value",
+          "ptype": "logic",
+          "name": "wptr_value",
+          "dim": "[PTRV_W-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 139,
+            "col": 5,
+            "end_line": 139,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.rptr_sync_value",
+          "ptype": "logic",
+          "name": "rptr_sync_value",
+          "dim": "[PTRV_W-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 140,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.rptr_msb",
+          "ptype": "logic",
+          "name": "rptr_msb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 151,
+            "col": 5,
+            "end_line": 151,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.wptr_sync_msb",
+          "ptype": "logic",
+          "name": "wptr_sync_msb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 152,
+            "col": 5,
+            "end_line": 152,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.rptr_value",
+          "ptype": "logic",
+          "name": "rptr_value",
+          "dim": "[PTRV_W-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 153,
+            "col": 5,
+            "end_line": 153,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_depth_calc.wptr_sync_value",
+          "ptype": "logic",
+          "name": "wptr_sync_value",
+          "dim": "[PTRV_W-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 154,
+            "col": 5,
+            "end_line": 154,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "prim_fifo_async.rdata_int",
+          "ptype": "logic",
+          "name": "rdata_int",
+          "dim": "[Width-1:0]",
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 31
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "prim_fifo_async.dec2gray",
+          "name": "dec2gray",
+          "kind": "function",
+          "dim": "[PTR_WIDTH-1:0]",
+          "args": [
+            {
+              "id": "prim_fifo_async.dec2gray.decval",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "decval",
+              "dim": "[PTR_WIDTH-1:0]",
+              "loc": {
+                "line": 225,
+                "col": 49,
+                "end_line": 225,
+                "end_col": 83
+              }
+            }
+          ],
+          "loc": {
+            "line": 225,
+            "col": 5,
+            "end_line": 244,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "prim_fifo_async.gray2dec",
+          "name": "gray2dec",
+          "kind": "function",
+          "dim": "[PTR_WIDTH-1:0]",
+          "args": [
+            {
+              "id": "prim_fifo_async.gray2dec.grayval",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "grayval",
+              "dim": "[PTR_WIDTH-1:0]",
+              "loc": {
+                "line": 247,
+                "col": 49,
+                "end_line": 247,
+                "end_col": 84
+              }
+            }
+          ],
+          "comment": [
+            "Algorithm walks up from 0..N-1 then flips the upper bit and walks down from N-1 to 0."
+          ],
+          "loc": {
+            "line": 247,
+            "col": 5,
+            "end_line": 264,
+            "end_col": 16
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "prim_fifo_async.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "gray-coded version"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 73,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_rd_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_rd_ni"
+            }
+          ],
+          "clock": "clk_rd_i",
+          "clock_edge": "posedge",
+          "reset": "rst_rd_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_rd_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_rd_ni"
+            }
+          ],
+          "clock": "clk_rd_i",
+          "clock_edge": "posedge",
+          "reset": "rst_rd_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "gray-coded version"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_wr_ni"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "reset": "rst_wr_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "Registered version of synced read pointer"
+          ],
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 122,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_storage_mux.#always6",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_storage_mux",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 181,
+            "col": 5,
+            "end_line": 185,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "prim_fifo_async.g_storage_simple.#always7",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_wr_i"
+            }
+          ],
+          "clock": "clk_wr_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_storage_simple"
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 5,
+            "end_line": 195,
+            "end_col": 8
           }
         }
       ],

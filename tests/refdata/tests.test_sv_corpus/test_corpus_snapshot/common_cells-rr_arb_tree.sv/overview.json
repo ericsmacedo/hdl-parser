@@ -8,6 +8,7 @@
         {
           "id": "rr_arb_tree.NumIn",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NumIn",
           "default": "64",
           "comment": [
@@ -23,6 +24,7 @@
         {
           "id": "rr_arb_tree.DataWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "DataWidth",
           "default": "32",
           "comment": [
@@ -131,6 +133,7 @@
         {
           "id": "rr_arb_tree.IdxWidth",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "IdxWidth",
           "default": "(NumIn > 32'd1) ? unsigned'($clog2(NumIn)) : 32'd1",
           "comment": [
@@ -330,6 +333,7 @@
         {
           "id": "rr_arb_tree.NumLevels",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "NumLevels",
           "default": "unsigned'($clog2(NumIn))",
           "loc": {
@@ -342,8 +346,12 @@
         {
           "id": "rr_arb_tree.Idx0",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Idx0",
           "default": "2**level-1+l",
+          "comment": [
+            "current node"
+          ],
           "loc": {
             "line": 263,
             "col": 9,
@@ -354,6 +362,7 @@
         {
           "id": "rr_arb_tree.Idx1",
           "ptype": "int",
+          "dtype": "unsigned",
           "name": "Idx1",
           "default": "2**(level+1)-1+l*2",
           "loc": {
@@ -361,6 +370,589 @@
             "col": 9,
             "end_line": 264,
             "end_col": 59
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "rr_arb_tree.gen_arbiter.index_nodes",
+          "ptype": "idx_t",
+          "name": "index_nodes",
+          "dim": "[2**NumLevels-2:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "comment": [
+            "used to propagate the indices"
+          ],
+          "loc": {
+            "line": 134,
+            "col": 5,
+            "end_line": 134,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.data_nodes",
+          "ptype": "DataType",
+          "name": "data_nodes",
+          "dim": "[2**NumLevels-2:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "comment": [
+            "used to propagate the data"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 5,
+            "end_line": 135,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gnt_nodes",
+          "ptype": "logic",
+          "name": "gnt_nodes",
+          "dim": "[2**NumLevels-2:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "comment": [
+            "used to propagate the grant to masters"
+          ],
+          "loc": {
+            "line": 136,
+            "col": 5,
+            "end_line": 136,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.req_nodes",
+          "ptype": "logic",
+          "name": "req_nodes",
+          "dim": "[2**NumLevels-2:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "comment": [
+            "used to propagate the requests to slave"
+          ],
+          "loc": {
+            "line": 137,
+            "col": 5,
+            "end_line": 137,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.rr_q",
+          "ptype": "idx_t",
+          "name": "rr_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "loc": {
+            "line": 139,
+            "col": 5,
+            "end_line": 139,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.req_d",
+          "ptype": "logic",
+          "name": "req_d",
+          "dim": "[NumIn-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            }
+          ],
+          "loc": {
+            "line": 140,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.rr_d",
+          "ptype": "idx_t",
+          "name": "rr_d",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            }
+          ],
+          "loc": {
+            "line": 151,
+            "col": 7,
+            "end_line": 151,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.lock_d",
+          "ptype": "logic",
+          "name": "lock_d",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 155,
+            "col": 9,
+            "end_line": 155,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.lock_q",
+          "ptype": "logic",
+          "name": "lock_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 155,
+            "col": 9,
+            "end_line": 155,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.req_q",
+          "ptype": "logic",
+          "name": "req_q",
+          "dim": "[NumIn-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 156,
+            "col": 9,
+            "end_line": 156,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.req_tmp",
+          "ptype": "logic",
+          "name": "req_tmp",
+          "dim": "[NumIn-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "!COMMON_CELLS_ASSERTS_OFF"
+          ],
+          "loc": {
+            "line": 181,
+            "col": 11,
+            "end_line": 181,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.upper_mask",
+          "ptype": "logic",
+          "name": "upper_mask",
+          "dim": "[NumIn-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 207,
+            "col": 9,
+            "end_line": 207,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.lower_mask",
+          "ptype": "logic",
+          "name": "lower_mask",
+          "dim": "[NumIn-1:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 207,
+            "col": 9,
+            "end_line": 207,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.upper_idx",
+          "ptype": "idx_t",
+          "name": "upper_idx",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 9,
+            "end_line": 208,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.lower_idx",
+          "ptype": "idx_t",
+          "name": "lower_idx",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 9,
+            "end_line": 208,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.next_idx",
+          "ptype": "idx_t",
+          "name": "next_idx",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 9,
+            "end_line": 208,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.upper_empty",
+          "ptype": "logic",
+          "name": "upper_empty",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 209,
+            "col": 9,
+            "end_line": 209,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_fair_arb.lower_empty",
+          "ptype": "logic",
+          "name": "lower_empty",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_fair_arb",
+              "cond": "FairArb"
+            }
+          ],
+          "loc": {
+            "line": 209,
+            "col": 9,
+            "end_line": 209,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_levels.gen_level.sel",
+          "ptype": "logic",
+          "name": "sel",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "for",
+              "name": "gen_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "for",
+              "name": "gen_level",
+              "cond": "genvar l = 0; l < 2**level; l++"
+            }
+          ],
+          "loc": {
+            "line": 261,
+            "col": 9,
+            "end_line": 261,
+            "end_col": 19
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.p_lock_reg",
+          "name": "p_lock_reg",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 161,
+            "col": 9,
+            "end_line": 171,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.gen_lock.p_req_regs",
+          "name": "p_req_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            },
+            {
+              "kind": "if",
+              "name": "gen_lock",
+              "cond": "LockIn"
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 9,
+            "end_line": 201,
+            "end_col": 12
+          }
+        },
+        {
+          "id": "rr_arb_tree.gen_arbiter.gen_int_rr.p_rr_regs",
+          "name": "p_rr_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_arbiter"
+            },
+            {
+              "kind": "else",
+              "name": "gen_int_rr"
+            }
+          ],
+          "comment": [
+            "this holds the highest priority"
+          ],
+          "loc": {
+            "line": 242,
+            "col": 7,
+            "end_line": 252,
+            "end_col": 10
           }
         }
       ],
@@ -542,7 +1134,7 @@
         "line": 47,
         "col": 1,
         "end_line": 351,
-        "end_col": 10
+        "end_col": 24
       }
     }
   ]

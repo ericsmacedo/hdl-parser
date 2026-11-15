@@ -1,0 +1,806 @@
+{
+  "path": "$PRJ/tests/corpus/vhdl/potato/pp_csr.vhd",
+  "modules": [],
+  "packages": [
+    {
+      "id": "pp_csr",
+      "name": "pp_csr",
+      "localparams": [
+        {
+          "id": "pp_csr.csr_cause_instr_misalign",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_INSTR_MISALIGN",
+          "default": "b\"000000\"",
+          "loc": {
+            "line": 26,
+            "col": 2,
+            "end_line": 26,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_instr_fetch",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_INSTR_FETCH",
+          "default": "b\"000001\"",
+          "loc": {
+            "line": 27,
+            "col": 2,
+            "end_line": 27,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_invalid_instr",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_INVALID_INSTR",
+          "default": "b\"000010\"",
+          "loc": {
+            "line": 28,
+            "col": 2,
+            "end_line": 28,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_breakpoint",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_BREAKPOINT",
+          "default": "b\"000011\"",
+          "loc": {
+            "line": 29,
+            "col": 2,
+            "end_line": 29,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_load_misalign",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_LOAD_MISALIGN",
+          "default": "b\"000100\"",
+          "loc": {
+            "line": 30,
+            "col": 2,
+            "end_line": 30,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_load_error",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_LOAD_ERROR",
+          "default": "b\"000101\"",
+          "loc": {
+            "line": 31,
+            "col": 2,
+            "end_line": 31,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_store_misalign",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_STORE_MISALIGN",
+          "default": "b\"000110\"",
+          "loc": {
+            "line": 32,
+            "col": 2,
+            "end_line": 32,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_store_error",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_STORE_ERROR",
+          "default": "b\"000111\"",
+          "loc": {
+            "line": 33,
+            "col": 2,
+            "end_line": 33,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_ecall",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_ECALL",
+          "default": "b\"001011\"",
+          "loc": {
+            "line": 34,
+            "col": 2,
+            "end_line": 34,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_none",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_NONE",
+          "default": "b\"011111\"",
+          "loc": {
+            "line": 35,
+            "col": 2,
+            "end_line": 35,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_software_int",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_SOFTWARE_INT",
+          "default": "b\"100000\"",
+          "loc": {
+            "line": 37,
+            "col": 2,
+            "end_line": 37,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_timer_int",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_TIMER_INT",
+          "default": "b\"100001\"",
+          "loc": {
+            "line": 38,
+            "col": 2,
+            "end_line": 38,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cause_irq_base",
+          "ptype": "constant",
+          "dtype": "csr_exception_cause",
+          "name": "CSR_CAUSE_IRQ_BASE",
+          "default": "b\"110000\"",
+          "loc": {
+            "line": 39,
+            "col": 2,
+            "end_line": 39,
+            "end_col": 70
+          }
+        },
+        {
+          "id": "pp_csr.csr_cycle",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_CYCLE",
+          "default": "x\"c00\"",
+          "loc": {
+            "line": 42,
+            "col": 2,
+            "end_line": 42,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_cycleh",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_CYCLEH",
+          "default": "x\"c80\"",
+          "loc": {
+            "line": 43,
+            "col": 2,
+            "end_line": 43,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_time",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_TIME",
+          "default": "x\"c01\"",
+          "loc": {
+            "line": 44,
+            "col": 2,
+            "end_line": 44,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_timeh",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_TIMEH",
+          "default": "x\"c81\"",
+          "loc": {
+            "line": 45,
+            "col": 2,
+            "end_line": 45,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_instret",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_INSTRET",
+          "default": "x\"c02\"",
+          "loc": {
+            "line": 46,
+            "col": 2,
+            "end_line": 46,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_instreth",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_INSTRETH",
+          "default": "x\"c82\"",
+          "loc": {
+            "line": 47,
+            "col": 2,
+            "end_line": 47,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mvendorid",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MVENDORID",
+          "default": "x\"f11\"",
+          "loc": {
+            "line": 49,
+            "col": 2,
+            "end_line": 49,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "pp_csr.csr_marchid",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MARCHID",
+          "default": "x\"f12\"",
+          "loc": {
+            "line": 50,
+            "col": 2,
+            "end_line": 50,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "pp_csr.csr_mimpid",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MIMPID",
+          "default": "x\"f13\"",
+          "loc": {
+            "line": 51,
+            "col": 2,
+            "end_line": 51,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "pp_csr.csr_mhartid",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MHARTID",
+          "default": "x\"f14\"",
+          "loc": {
+            "line": 52,
+            "col": 2,
+            "end_line": 52,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "pp_csr.csr_mstatus",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MSTATUS",
+          "default": "x\"300\"",
+          "loc": {
+            "line": 54,
+            "col": 2,
+            "end_line": 54,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_misa",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MISA",
+          "default": "x\"301\"",
+          "loc": {
+            "line": 55,
+            "col": 2,
+            "end_line": 55,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mtvec",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MTVEC",
+          "default": "x\"305\"",
+          "loc": {
+            "line": 56,
+            "col": 2,
+            "end_line": 56,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mtdeleg",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MTDELEG",
+          "default": "x\"302\"",
+          "loc": {
+            "line": 57,
+            "col": 2,
+            "end_line": 57,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mie",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MIE",
+          "default": "x\"304\"",
+          "loc": {
+            "line": 58,
+            "col": 2,
+            "end_line": 58,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mtimecmp",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MTIMECMP",
+          "default": "x\"321\"",
+          "loc": {
+            "line": 60,
+            "col": 2,
+            "end_line": 60,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mtime",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MTIME",
+          "default": "x\"701\"",
+          "loc": {
+            "line": 61,
+            "col": 2,
+            "end_line": 61,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mscratch",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MSCRATCH",
+          "default": "x\"340\"",
+          "loc": {
+            "line": 63,
+            "col": 2,
+            "end_line": 63,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mepc",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MEPC",
+          "default": "x\"341\"",
+          "loc": {
+            "line": 64,
+            "col": 2,
+            "end_line": 64,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mcause",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MCAUSE",
+          "default": "x\"342\"",
+          "loc": {
+            "line": 65,
+            "col": 2,
+            "end_line": 65,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mbadaddr",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MBADADDR",
+          "default": "x\"343\"",
+          "loc": {
+            "line": 66,
+            "col": 2,
+            "end_line": 66,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_mip",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_MIP",
+          "default": "x\"344\"",
+          "loc": {
+            "line": 67,
+            "col": 2,
+            "end_line": 67,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "pp_csr.csr_test",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_TEST",
+          "default": "x\"bf0\"",
+          "loc": {
+            "line": 69,
+            "col": 2,
+            "end_line": 69,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "pp_csr.csr_epc_mret",
+          "ptype": "constant",
+          "dtype": "csr_address",
+          "name": "CSR_EPC_MRET",
+          "default": "x\"302\"",
+          "loc": {
+            "line": 72,
+            "col": 2,
+            "end_line": 72,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "pp_csr.csr_sr_mie_index",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_SR_MIE_INDEX",
+          "default": "3",
+          "loc": {
+            "line": 75,
+            "col": 2,
+            "end_line": 75,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "pp_csr.csr_sr_mpie_index",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_SR_MPIE_INDEX",
+          "default": "7",
+          "loc": {
+            "line": 76,
+            "col": 2,
+            "end_line": 76,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "pp_csr.csr_mie_msie",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_MIE_MSIE",
+          "default": "3",
+          "loc": {
+            "line": 79,
+            "col": 2,
+            "end_line": 79,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "pp_csr.csr_mie_mtie",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_MIE_MTIE",
+          "default": "7",
+          "loc": {
+            "line": 80,
+            "col": 2,
+            "end_line": 80,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "pp_csr.csr_mip_msip",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_MIP_MSIP",
+          "default": "CSR_MIE_MSIE",
+          "loc": {
+            "line": 81,
+            "col": 2,
+            "end_line": 81,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "pp_csr.csr_mip_mtip",
+          "ptype": "constant",
+          "dtype": "natural",
+          "name": "CSR_MIP_MTIP",
+          "default": "CSR_MIE_MTIE",
+          "loc": {
+            "line": 82,
+            "col": 2,
+            "end_line": 82,
+            "end_col": 49
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "pp_csr.csr_address",
+          "name": "csr_address",
+          "kind": "alias",
+          "dtype": "std_logic_vector(11 downto 0)",
+          "comment": [
+            "--! Type used for specifying control and status register addresses."
+          ],
+          "loc": {
+            "line": 12,
+            "col": 2,
+            "end_line": 12,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "pp_csr.csr_exception_cause",
+          "name": "csr_exception_cause",
+          "kind": "alias",
+          "dtype": "std_logic_vector(5 downto 0)",
+          "comment": [
+            "--! Type used for exception cause values.",
+            "-- Upper bit is the interrupt bit"
+          ],
+          "loc": {
+            "line": 15,
+            "col": 2,
+            "end_line": 15,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "pp_csr.csr_write_mode",
+          "name": "csr_write_mode",
+          "kind": "enum",
+          "members": [
+            {
+              "id": "pp_csr.csr_write_mode.csr_write_none",
+              "name": "CSR_WRITE_NONE",
+              "loc": {
+                "line": 22,
+                "col": 4,
+                "end_line": 22,
+                "end_col": 18
+              }
+            },
+            {
+              "id": "pp_csr.csr_write_mode.csr_write_set",
+              "name": "CSR_WRITE_SET",
+              "loc": {
+                "line": 22,
+                "col": 20,
+                "end_line": 22,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "pp_csr.csr_write_mode.csr_write_clear",
+              "name": "CSR_WRITE_CLEAR",
+              "loc": {
+                "line": 22,
+                "col": 35,
+                "end_line": 22,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "pp_csr.csr_write_mode.csr_write_replace",
+              "name": "CSR_WRITE_REPLACE",
+              "loc": {
+                "line": 22,
+                "col": 52,
+                "end_line": 22,
+                "end_col": 69
+              }
+            }
+          ],
+          "comment": [
+            "--! Control/status register write mode:"
+          ],
+          "loc": {
+            "line": 21,
+            "col": 2,
+            "end_line": 23,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "pp_csr.csr_exception_context",
+          "name": "csr_exception_context",
+          "kind": "struct",
+          "members": [
+            {
+              "id": "pp_csr.csr_exception_context.ie",
+              "name": "ie",
+              "dtype": "std_logic",
+              "comment": [
+                "-- Enable Interrupt bits"
+              ],
+              "loc": {
+                "line": 88,
+                "col": 4,
+                "end_line": 88,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "pp_csr.csr_exception_context.ie1",
+              "name": "ie1",
+              "dtype": "std_logic",
+              "comment": [
+                "-- Enable Interrupt bits"
+              ],
+              "loc": {
+                "line": 88,
+                "col": 4,
+                "end_line": 88,
+                "end_col": 23
+              }
+            },
+            {
+              "id": "pp_csr.csr_exception_context.cause",
+              "name": "cause",
+              "dtype": "csr_exception_cause",
+              "loc": {
+                "line": 89,
+                "col": 4,
+                "end_line": 89,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "pp_csr.csr_exception_context.badaddr",
+              "name": "badaddr",
+              "dtype": "std_logic_vector",
+              "dim": "[31:0]",
+              "loc": {
+                "line": 90,
+                "col": 4,
+                "end_line": 90,
+                "end_col": 43
+              }
+            }
+          ],
+          "comment": [
+            "-- Exception context; this record contains all state that can be manipulated",
+            "-- when an exception is taken."
+          ],
+          "loc": {
+            "line": 86,
+            "col": 2,
+            "end_line": 91,
+            "end_col": 14
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "pp_csr.to_std_logic_vector",
+          "name": "to_std_logic_vector",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "pp_csr.to_std_logic_vector.input",
+              "direction": "in",
+              "dtype": "csr_exception_cause",
+              "name": "input",
+              "loc": {
+                "line": 18,
+                "col": 31,
+                "end_line": 18,
+                "end_col": 61
+              }
+            }
+          ],
+          "comment": [
+            "--! Converts an exception cause to a std_logic_vector."
+          ],
+          "loc": {
+            "line": 18,
+            "col": 2,
+            "end_line": 18,
+            "end_col": 87
+          }
+        },
+        {
+          "id": "pp_csr.csr_make_mstatus",
+          "name": "csr_make_mstatus",
+          "kind": "function",
+          "rtype": "std_logic_vector",
+          "args": [
+            {
+              "id": "pp_csr.csr_make_mstatus.mie",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "mie",
+              "loc": {
+                "line": 94,
+                "col": 28,
+                "end_line": 94,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "pp_csr.csr_make_mstatus.mpie",
+              "direction": "in",
+              "dtype": "std_logic",
+              "name": "mpie",
+              "loc": {
+                "line": 94,
+                "col": 28,
+                "end_line": 94,
+                "end_col": 52
+              }
+            }
+          ],
+          "comment": [
+            "--! Creates the value of the mstatus registe from the EI and EI1 bits."
+          ],
+          "loc": {
+            "line": 94,
+            "col": 2,
+            "end_line": 94,
+            "end_col": 78
+          }
+        }
+      ],
+      "loc": {
+        "line": 9,
+        "col": 1,
+        "end_line": 96,
+        "end_col": 20
+      }
+    }
+  ]
+}

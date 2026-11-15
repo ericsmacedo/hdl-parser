@@ -7,6 +7,7 @@
       "params": [
         {
           "id": "axiads42lb69pll.tpd_g",
+          "dtype": "time",
           "name": "TPD_G",
           "default": "1 ns",
           "loc": {
@@ -18,6 +19,7 @@
         },
         {
           "id": "axiads42lb69pll.use_pll_g",
+          "dtype": "boolean",
           "name": "USE_PLL_G",
           "default": "true",
           "loc": {
@@ -29,6 +31,7 @@
         },
         {
           "id": "axiads42lb69pll.use_fbclk_g",
+          "dtype": "boolean",
           "name": "USE_FBCLK_G",
           "default": "true",
           "loc": {
@@ -40,6 +43,7 @@
         },
         {
           "id": "axiads42lb69pll.adc_clk_freq_g",
+          "dtype": "real",
           "name": "ADC_CLK_FREQ_G",
           "default": "250.0E+6",
           "loc": {
@@ -51,6 +55,7 @@
         },
         {
           "id": "axiads42lb69pll.xil_device_g",
+          "dtype": "string",
           "name": "XIL_DEVICE_G",
           "default": "\"7SERIES\"",
           "loc": {
@@ -183,6 +188,89 @@
             "col": 7,
             "end_line": 44,
             "end_col": 25
+          }
+        }
+      ],
+      "localparams": [
+        {
+          "id": "axiads42lb69pll.adc_clk_period_ns_c",
+          "ptype": "constant",
+          "dtype": "real",
+          "name": "ADC_CLK_PERIOD_NS_C",
+          "default": "1.0E+9 / ADC_CLK_FREQ_G",
+          "loc": {
+            "line": 49,
+            "col": 4,
+            "end_line": 49,
+            "end_col": 66
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "axiads42lb69pll.clkfeedback",
+          "dtype": "sl",
+          "name": "clkFeedBack",
+          "loc": {
+            "line": 51,
+            "col": 4,
+            "end_line": 51,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "axiads42lb69pll.clkfeedbackin",
+          "dtype": "sl",
+          "name": "clkFeedBackIn",
+          "loc": {
+            "line": 52,
+            "col": 4,
+            "end_line": 52,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "axiads42lb69pll.clkfeedbackout",
+          "dtype": "sl",
+          "name": "clkFeedBackOut",
+          "loc": {
+            "line": 53,
+            "col": 4,
+            "end_line": 53,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "axiads42lb69pll.sync",
+          "dtype": "sl",
+          "name": "sync",
+          "loc": {
+            "line": 55,
+            "col": 4,
+            "end_line": 55,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "axiads42lb69pll.syncout",
+          "dtype": "sl",
+          "name": "syncOut",
+          "loc": {
+            "line": 56,
+            "col": 4,
+            "end_line": 56,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "axiads42lb69pll.adcinclk",
+          "dtype": "sl",
+          "name": "adcInClk",
+          "loc": {
+            "line": 57,
+            "col": 4,
+            "end_line": 57,
+            "end_col": 24
           }
         }
       ],
@@ -959,6 +1047,9 @@
               "id": "axiads42lb69pll.gen_pll.oddr_0.srtype",
               "port": "SRTYPE",
               "con": "\"SYNC\"",
+              "comment": [
+                "-- Reset Type (\"ASYNC\" or \"SYNC\")"
+              ],
               "loc": {
                 "line": 146,
                 "col": 13,
@@ -1309,6 +1400,9 @@
               "id": "axiads42lb69pll.gen_no_pll.oddr_1.srtype",
               "port": "SRTYPE",
               "con": "\"SYNC\"",
+              "comment": [
+                "-- Reset Type (\"ASYNC\" or \"SYNC\")"
+              ],
               "loc": {
                 "line": 188,
                 "col": 13,
