@@ -264,6 +264,7 @@ class Module(_BaseModel):
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
                            Ports or parameters defined by these macros are missing.
+        imports: Imported names of packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.
         partial: VHDL: the entity is not part of this file. This is just the content of an architecture.
         loc: Source Location: from `module` to `endmodule`. VHDL: the entity.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -282,6 +283,7 @@ class Module(_BaseModel):
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
+    imports: tuple[str, ...] = ()
     partial: bool = False
     loc: Location | None = None
 
@@ -329,6 +331,7 @@ class Package(_BaseModel):
         typedefs: Types
         functions: Functions and tasks (VHDL: procedures)
         components: Component declarations (VHDL): modules with name, parameters and ports.
+        imports: Imported names of other packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.
         ifdefs: Conditions the package is defined at.
         loc: Source Location: from `package` to `endpackage`.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
@@ -341,6 +344,7 @@ class Package(_BaseModel):
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
     components: tuple["Module", ...] = ()
+    imports: tuple[str, ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
@@ -690,6 +694,23 @@ class Settings(_BaseModel):
     lib_exts: tuple[str, ...] = ()
 
 
+class Value(_BaseModel):
+    """Value Of An Expression, Within One Instance.
+
+    Nothing is ever guessed: an expression which cannot be evaluated for sure has no `value`, and `unknown`
+    tells the reason.
+
+    Attributes:
+        expr: The expression, as written: `$clog2(DEPTH) + 1`. For a port: its type and dimensions.
+        value: The value. For a port: its number of bits. `None`, if it is not known.
+        unknown: Why the value is not known: `'DEPTH' is not known`, `function 'f' is not evaluated`.
+    """
+
+    expr: str = ""
+    value: int | float | str | bool | None = None
+    unknown: str = ""
+
+
 class HierarchyNode(_BaseModel):
     """One Instance Within The Hierarchy Of A Project, Or Its Top.
 
@@ -701,6 +722,10 @@ class HierarchyNode(_BaseModel):
         multiple: The instance is created multiple times: it is an array, or located in a `for` generate.
         children: The instances within the module.
         truncated: The instances within are left out: the depth limit is reached, or the module contains itself.
+        params: Values of the parameters and local parameters of this instance, by name. Just set by
+                [Project.elaborate][hdl_parser.project.Project.elaborate].
+        ports: Number of bits of the ports of this instance, by name. Just set by
+               [Project.elaborate][hdl_parser.project.Project.elaborate].
     """
 
     name: str
@@ -710,6 +735,8 @@ class HierarchyNode(_BaseModel):
     multiple: bool = False
     children: tuple["HierarchyNode", ...] = ()
     truncated: bool = False
+    params: dict[str, Value] = {}
+    ports: dict[str, Value] = {}
 
 
 class Use(_BaseModel):

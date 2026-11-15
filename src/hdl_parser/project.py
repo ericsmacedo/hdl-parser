@@ -52,6 +52,7 @@ from typing import Any, NamedTuple
 
 from . import datamodel as dm
 from ._diagnostics import Diagnostics
+from ._elab import Elaboration
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
 from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
@@ -430,6 +431,50 @@ class Project(dm._BaseModel):
             children=children,
             truncated=truncated,
         )
+
+    def elaborate(
+        self, top: str, params: Mapping[str, int | float | str | bool] | None = None, depth: int | None = None
+    ) -> dm.HierarchyNode | None:
+        """Instance tree below the module `top`, with the values of all parameters and the size of all ports.
+
+        Like [hierarchy][hdl_parser.project.Project.hierarchy], but every node has
+
+        * `params`: the values of its parameters and local parameters, with the values given by its instance
+          (`#(.WIDTH(8))`, `generic map (WIDTH => 8)`) applied down the hierarchy,
+        * `ports`: the number of bits of its ports.
+
+        Names are resolved across files: parameters, local parameters, members of enumerations, and the
+        packages which are imported or named (`pkg::WIDTH`).
+
+        Nothing is ever guessed. What cannot be evaluated for sure has no value, but the reason: a function call,
+        a name without known value, a package which is not part of the project, ...
+
+        Args:
+            top: Name or full identifier of the module.
+
+        Keyword Args:
+            params: Values of the parameters of the top, by name. Its defaults are used otherwise.
+            depth: Number of instance levels below the top. Everything by default.
+        """
+        definition = self.resolve(top) or self.resolve(top, casefold=True)
+        if definition is None:
+            return None
+        elaboration = Elaboration(self)
+        scope = elaboration.scope(definition, elaboration.top_overrides(params))
+        return elaboration.node(scope, definition.unit.name, "", False, depth, (definition.id,))
+
+    def evaluate(self, expr: str, scope: str, params: Mapping[str, int | float | str | bool] | None = None) -> dm.Value:
+        """Value of the expression `expr` within the module, interface or package `scope` (a name or full identifier).
+
+        `params`: Values of the parameters of `scope`, by name. Its defaults are used otherwise.
+        An expression which cannot be evaluated for sure has no value, but the reason.
+        """
+        definition = self.resolve(scope) or self.resolve(scope, casefold=True) or self.resolve_package(scope)
+        definition = definition or self.resolve_package(scope, casefold=True)
+        if definition is None:
+            return dm.Value(expr=expr, unknown=f"'{scope}' is not defined in the project")
+        elaboration = Elaboration(self)
+        return elaboration.scope(definition, elaboration.top_overrides(params)).value_of(expr)
 
     def _children(
         self, parent: Definition, depth: int | None, path: tuple[str, ...]

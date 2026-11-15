@@ -139,6 +139,35 @@ and answers questions about the design instead of single files:
   A file is parsed again only if it changed, a file it includes changed, or it is parsed in another way.
 * `project.overview` is one JSON document for all files, with a `schema_version`.
 
+### Values Of Parameters
+
+`elaborate` is the hierarchy with the values of all parameters and the number of bits of all ports, per instance.
+The values given by an instance (`#(.WIDTH(8))`, `generic map (WIDTH => 8)`) are applied down the hierarchy.
+Names are resolved across files: parameters, local parameters, enumerations and packages.
+
+```python
+>>> project = Project.from_dir("tests/corpus/sv/ibex")
+>>> tree = project.elaborate("ibex_cs_registers", params={"PMPNumRegions": 8}, depth=1)
+>>> tree.params["PMPNumRegions"].value, tree.params["PMPAddrWidth"]
+(8, Value(expr='(PMPGranularity > 0) ? PMP_ADDR_MSB - PMPGranularity : 32', value=32, unknown=''))
+>>> tree.ports["csr_addr_i"]
+Value(expr='ibex_pkg::csr_num_e', value=12, unknown='')
+>>> counter = next(node for node in tree.children if node.name == "minstret_counter_i")
+>>> counter.inst, counter.params["CounterWidth"].value, counter.ports["counter_val_o"].value
+('ibex_cs_registers.sv:ibex_cs_registers.minstret_counter_i', 64, 64)
+>>> project.evaluate("$bits(alu_op_e) + PMP_MAX_REGIONS", "ibex_pkg").value
+23
+
+```
+
+Nothing is ever guessed. What cannot be evaluated for sure has no value, but the reason:
+
+```python
+>>> tree.params["PMPRstCfg"]
+Value(expr='ibex_pkg::PmpCfgRst', value=None, unknown="'ibex_pkg::PmpCfgRst' is not known: assignment pattern '{...}")
+
+```
+
 See [Project][hdl_parser.project.Project] for a full reference.
 
 ## Macros

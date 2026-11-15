@@ -56,6 +56,7 @@ from .datamodel import (
     Signal,
     Typedef,
     Use,
+    Value,
 )
 from .filelistparser import parse_filelist
 from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_text
@@ -86,6 +87,7 @@ __all__ = [
     "Signal",
     "Typedef",
     "Use",
+    "Value",
     "parse_defines",
     "parse_defines_text",
     "parse_file",
