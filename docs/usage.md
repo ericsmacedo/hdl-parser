@@ -64,6 +64,47 @@ bus_pkg.req_t struct [('addr', 'logic', '[AW-1:0]', ''), ('we', 'logic', '', '')
 
 Types declared within a module are listed in `typedefs` of the module.
 
+## What Is Extracted
+
+A file lists its `modules`, `interfaces` and `packages`. VHDL entities are modules, with the content of their
+architectures.
+
+| Attribute      | Of                           | Content                                                            |
+| -------------- | ---------------------------- | ------------------------------------------------------------------ |
+| `params`       | modules, interfaces, packages| Parameters (VHDL: generics)                                        |
+| `localparams`  | modules, interfaces, packages| Local parameters (VHDL: constants)                                 |
+| `ports`        | modules, interfaces          | Ports                                                              |
+| `signals`      | modules, interfaces          | Nets and variables (VHDL: signals)                                 |
+| `typedefs`     | modules, interfaces, packages| Types: enumerations, structs (VHDL: records) and aliases           |
+| `functions`    | modules, interfaces, packages| Signatures of functions and tasks (VHDL: procedures)               |
+| `processes`    | modules, interfaces          | `always` blocks (VHDL: processes) with their clock and reset       |
+| `insts`        | modules, interfaces          | Instances with parameter values, connections and generate blocks   |
+| `modports`     | interfaces                   | Modports with the direction of their signals                       |
+| `components`   | modules, packages            | Component declarations (VHDL)                                      |
+
+Every item has an `id` and a source location `loc`. `file.iter_items()` walks all of them, `file.find(id)`
+returns one:
+
+```python
+>>> file = hdl_parser.parse_text("""
+... module top (input logic clk_i, input logic rst_ni);
+...   logic [7:0] data_q;
+...   always_ff @(posedge clk_i or negedge rst_ni) begin : p_data
+...     if (!rst_ni) data_q <= '0;
+...     else data_q <= data_q + 1;
+...   end
+... endmodule
+... """)
+>>> [item.id for item in file.iter_items()]
+['top', 'top.clk_i', 'top.rst_ni', 'top.data_q', 'top.p_data']
+>>> process = file.find("top.p_data")
+>>> process.clock, process.clock_edge, process.reset, process.reset_edge
+('clk_i', 'posedge', 'rst_ni', 'negedge')
+
+```
+
+Clock and reset of a block are never guessed: they are empty, if the code does not tell them.
+
 ## Macros
 
 Macros are **not** expanded by default. On request (`--expand-macros`, `expand_macros=True`) macros are expanded,
