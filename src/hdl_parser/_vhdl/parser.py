@@ -518,7 +518,8 @@ def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens]]:
     for start, end in zip(starts, [*starts[1:], last], strict=False):
         eof = Token(EOF, "", toks[end].start, toks[end].start, ())
         comments = {idx - start: tokens.comments[idx] for idx in range(start, end + 1) if idx in tokens.comments}
-        yield toks[start], Tokens(tokens.source, [*toks[start:end], eof], comments, tokens.gaps)
+        trailing = {idx - start: tokens.trailing[idx] for idx in range(start, end) if idx in tokens.trailing}
+        yield toks[start], Tokens(tokens.source, [*toks[start:end], eof], comments, trailing, tokens.gaps)
 
 
 def _skip_end(c: Cursor) -> bool:

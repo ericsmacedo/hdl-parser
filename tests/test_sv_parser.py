@@ -51,7 +51,12 @@ def test_tokenize():
         ("num", "4"),
         ("num", "'hF"),
     ]
-    assert result.comments == {6: ["text"]}
+    # the line comment is located behind the last token (index 5)
+    assert result.comments == {}
+    assert result.trailing == {5: ["text"]}
+    result = tokenize("a // behind a\n// in front of b\n/* in front of b */ b /* in front of EOF */")
+    assert result.trailing == {0: ["behind a"]}
+    assert result.comments == {1: ["in front of b", "in front of b"], 2: ["in front of EOF"]}
 
 
 def test_tokenize_ifdefs():

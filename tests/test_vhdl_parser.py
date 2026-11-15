@@ -64,7 +64,9 @@ def test_tokenize():
         (OP, ":="),
         (ID, "a"),
     ]
-    assert result.comments == {8: ["-- text", "/* block  */"]}
+    # the line comment is located behind the last token in front (index 7)
+    assert result.trailing == {7: ["-- text"]}
+    assert result.comments == {8: ["/* block  */"]}
 
 
 def test_tokenize_tick():
