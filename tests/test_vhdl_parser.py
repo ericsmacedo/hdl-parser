@@ -373,7 +373,7 @@ def test_units():
 @mark.parametrize("text", ["", "entity", "entity top", "library ieee; package body p is end;", "package p is new q;"])
 def test_no_module(text):
     """Nothing To Find."""
-    assert plain(parse_text(text, lang="vhdl")) == File(path=None, modules=())
+    assert plain(parse_text(text, lang="vhdl")) == File(path=None, lang="vhdl")
 
 
 @mark.parametrize(
@@ -387,4 +387,5 @@ def test_no_module(text):
 )
 def test_empty(text):
     """Empty Units."""
-    assert plain(_parse(text)) == Module(name="top")
+    # an architecture without its entity is a partial module
+    assert plain(_parse(text)) == Module(name="top", partial=text.startswith("architecture"))

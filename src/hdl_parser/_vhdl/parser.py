@@ -893,6 +893,7 @@ def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
                 processes=tuple(unit.processes),
                 components=tuple(unit.components),
                 insts=tuple(unit.insts),
+                partial=unit.loc is None,
                 loc=unit.loc or unit.arch_loc,
             )
             for unit in units

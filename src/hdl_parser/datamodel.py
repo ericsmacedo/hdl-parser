@@ -86,11 +86,18 @@ class Diagnostic(_BaseModel):
     | `missing-end`         | warning  | Module, entity or architecture without end.                       |
     | `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |
     | `no-module`           | info     | File without module, interface or package, i.e. an included file. |
+    | `file-not-found`      | error    | File does not exist.                                              |
+    | `file-unreadable`     | error    | File cannot be read.                                              |
+    | `parse-failed`        | error    | File cannot be parsed. This is a bug of the parser.               |
+    | `duplicate-definition`| warning  | Module, interface or package is defined more than once in the project. |
+    | `undefined-module`    | warning  | Module of an instance is not defined in the project. `item` is the instance. |
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
 
     Code the parser has no interest in (i.e. procedural code) is skipped without diagnostic.
+    The codes `file-*`, `parse-failed`, `duplicate-definition` and `undefined-module` are reported by a
+    [Project][hdl_parser.project.Project] only.
 
     Attributes:
         code: Kind of problem. See table above.
@@ -160,7 +167,8 @@ class File(_BaseModel):
     The full identifier adds the file: `rtl/top.sv:top.u_sub` (see [full_id][hdl_parser.datamodel.File.full_id]).
 
     Attributes:
-        path: Related File.
+        path: Related File. Within a project, the path is relative to the root of the project.
+        lang: Language: `sv` (SystemVerilog) or `vhdl`.
         modules: Modules Within That File.
         interfaces: Interfaces Within That File.
         packages: Packages Within That File.
@@ -168,7 +176,8 @@ class File(_BaseModel):
     """
 
     path: Path | None
-    modules: tuple["Module", ...]
+    lang: Literal["sv", "vhdl"] = "sv"
+    modules: tuple["Module", ...] = ()
     interfaces: tuple["Interface", ...] = ()
     packages: tuple["Package", ...] = ()
     diagnostics: tuple[Diagnostic, ...] = ()
@@ -249,6 +258,7 @@ class Module(_BaseModel):
         ifdefs: Conditions the module is defined at.
         unresolved_macros: Macros used in the module header, which could not be expanded.
                            Ports or parameters defined by these macros are missing.
+        partial: VHDL: the entity is not part of this file. This is just the content of an architecture.
         loc: Source Location: from `module` to `endmodule`. VHDL: the entity.
         id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].
     """
@@ -266,6 +276,7 @@ class Module(_BaseModel):
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
     unresolved_macros: tuple["MacroCall", ...] = ()
+    partial: bool = False
     loc: Location | None = None
 
 
@@ -650,4 +661,56 @@ class MacroCall(_BaseModel):
     name: str
     args: tuple[str, ...] | None = None
     ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Settings(_BaseModel):
+    """How The Files Of A Project Are Parsed.
+
+    Attributes:
+        expand_macros: Macros with known definition are expanded.
+        resolve_ifdefs: `` `ifdef `` conditions on macros which are known to be defined are resolved.
+        defines: Macros defined for all files, by name. Used by `expand_macros` only.
+        inc_dirs: Include directories, relative to the root of the project if located there.
+    """
+
+    expand_macros: bool = False
+    resolve_ifdefs: bool = False
+    defines: dict[str, str] = {}
+    inc_dirs: tuple[str, ...] = ()
+
+
+class HierarchyNode(_BaseModel):
+    """One Instance Within The Hierarchy Of A Project, Or Its Top.
+
+    Attributes:
+        name: Name of the instance. Name of the module for the top.
+        module: Name of the module.
+        inst: Full identifier of the instance (`rtl/top.sv:top.u_sub`). Empty for the top.
+        definition: Full identifier of the module (`rtl/sub.sv:sub`). Empty, if it is not defined in the project.
+        multiple: The instance is created multiple times: it is an array, or located in a `for` generate.
+        children: The instances within the module.
+        truncated: The instances within are left out: the depth limit is reached, or the module contains itself.
+    """
+
+    name: str
+    module: str
+    inst: str = ""
+    definition: str = ""
+    multiple: bool = False
+    children: tuple["HierarchyNode", ...] = ()
+    truncated: bool = False
+
+
+class Use(_BaseModel):
+    """One Place A Module Is Instantiated At.
+
+    Attributes:
+        inst: Full identifier of the instance (`rtl/top.sv:top.u_sub`).
+        module: Full identifier of the module the instance is located in (`rtl/top.sv:top`).
+        loc: Source Location of the instance within its file.
+    """
+
+    inst: str
+    module: str
     loc: Location | None = None
