@@ -1,0 +1,10 @@
+--- original
++++ expanded
+@@ -374,2 +374 @@
+-  `ASSERT_IF(IbexExceptionPrioOnehot,
+-             $onehot({instr_fetch_err_prio,
++  `ASSERT(IbexExceptionPrioOnehot, ((ctrl_fsm_cs == FLUSH) & csr_save_cause_o) |-> ($onehot({instr_fetch_err_prio,
+@@ -383,2 +382 @@
+-                      cheriot_asr_err_prio}),
+-             (ctrl_fsm_cs == FLUSH) & csr_save_cause_o)
++                      cheriot_asr_err_prio})), clk_i, !rst_ni)

@@ -1,0 +1,50 @@
+--- original
++++ expanded
+@@ -1238 +1238,4 @@
+-  `ASSERT_KNOWN_IF(IbexAluOpMuxSelKnown, alu_op_a_mux_sel, instr_valid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexAluOpMuxSelKnownKnownEnable, instr_valid_i, clk_i, !rst_ni)
++  `ASSERT(IbexAluOpMuxSelKnown, (instr_valid_i) |-> (!$isunknown(alu_op_a_mux_sel)), clk_i, !rst_ni)
++`endif
+@@ -1244 +1247,4 @@
+-  `ASSERT_KNOWN_IF(IbexBTAluAOpMuxSelKnown, bt_a_mux_sel, instr_valid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexBTAluAOpMuxSelKnownKnownEnable, instr_valid_i, clk_i, !rst_ni)
++  `ASSERT(IbexBTAluAOpMuxSelKnown, (instr_valid_i) |-> (!$isunknown(bt_a_mux_sel)), clk_i, !rst_ni)
++`endif
+@@ -1248 +1254,4 @@
+-  `ASSERT_KNOWN_IF(IbexBTAluBOpMuxSelKnown, bt_b_mux_sel, instr_valid_i)
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexBTAluBOpMuxSelKnownKnownEnable, instr_valid_i, clk_i, !rst_ni)
++  `ASSERT(IbexBTAluBOpMuxSelKnown, (instr_valid_i) |-> (!$isunknown(bt_b_mux_sel)), clk_i, !rst_ni)
++`endif
+@@ -1260,2 +1269,4 @@
+-  `ASSERT_KNOWN_IF(IbexBranchDecisionValid, branch_decision_i,
+-      instr_valid_i && !(illegal_csr_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexBranchDecisionValidKnownEnable, instr_valid_i && !(illegal_csr_insn_i || instr_fetch_err_i), clk_i, !rst_ni)
++  `ASSERT(IbexBranchDecisionValid, (instr_valid_i && !(illegal_csr_insn_i || instr_fetch_err_i)) |-> (!$isunknown(branch_decision_i)), clk_i, !rst_ni)
++`endif
+@@ -1264,2 +1275,4 @@
+-  `ASSERT_KNOWN_IF(IbexIdInstrKnown, instr_rdata_i,
+-      instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexIdInstrKnownKnownEnable, instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i), clk_i, !rst_ni)
++  `ASSERT(IbexIdInstrKnown, (instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i)) |-> (!$isunknown(instr_rdata_i)), clk_i, !rst_ni)
++`endif
+@@ -1268,2 +1281,4 @@
+-  `ASSERT_KNOWN_IF(IbexIdInstrALUKnown, instr_rdata_alu_i,
+-      instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++  `ASSERT_KNOWN(IbexIdInstrALUKnownKnownEnable, instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i), clk_i, !rst_ni)
++  `ASSERT(IbexIdInstrALUKnown, (instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i)) |-> (!$isunknown(instr_rdata_alu_i)), clk_i, !rst_ni)
++`endif
+@@ -1290,4 +1305,4 @@
+-  `ASSERT_IF(IbexCheriotLoadDisabled,  !cheriot_load_o,         cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexCheriotStoreDisabled, !cheriot_store_o,        cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexInstrNotCheriot,      !instr_is_cheriot_id_o,  cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexCheriotExecDisabled,  !cheriot_exec_id_o,      cheriot_enable_i != IbexMuBiOn)
++  `ASSERT(IbexCheriotLoadDisabled, (cheriot_enable_i != IbexMuBiOn) |-> (!cheriot_load_o), clk_i, !rst_ni)
++  `ASSERT(IbexCheriotStoreDisabled, (cheriot_enable_i != IbexMuBiOn) |-> (!cheriot_store_o), clk_i, !rst_ni)
++  `ASSERT(IbexInstrNotCheriot, (cheriot_enable_i != IbexMuBiOn) |-> (!instr_is_cheriot_id_o), clk_i, !rst_ni)
++  `ASSERT(IbexCheriotExecDisabled, (cheriot_enable_i != IbexMuBiOn) |-> (!cheriot_exec_id_o), clk_i, !rst_ni)

@@ -1,0 +1,7 @@
+--- original
++++ expanded
+@@ -870,2 +870,2 @@
+-  `ASSERT_IF(IbexLsuIsCapDisabled,    !lsu_is_cap_i,       cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexLsuCheriotErrDisabled, !lsu_cheriot_err_i, cheriot_enable_i != IbexMuBiOn)
++  `ASSERT(IbexLsuIsCapDisabled, (cheriot_enable_i != IbexMuBiOn) |-> (!lsu_is_cap_i), clk_i, !rst_ni)
++  `ASSERT(IbexLsuCheriotErrDisabled, (cheriot_enable_i != IbexMuBiOn) |-> (!lsu_cheriot_err_i), clk_i, !rst_ni)

@@ -1,0 +1,129 @@
+--- original
++++ expanded
+@@ -297 +297 @@
+-  `ASSERT(NoMispredBranch, nt_branch_mispredict_i |-> ~branch_req)
++
+@@ -400,15 +400 @@
+-`ifndef SYNTHESIS
+-    // If we don't instantiate an icache and this is a simulation then we have a problem because the
+-    // simulator might discard the icache module entirely, including some DPI exports that it
+-    // implies. This then causes problems for linking against C++ testbench code that expected them.
+-    // As a slightly ugly hack, let's define the DPI functions here (the real versions are defined
+-    // in prim_util_get_scramble_params.svh)
+-    export "DPI-C" function simutil_get_scramble_key;
+-    export "DPI-C" function simutil_get_scramble_nonce;
+-    function automatic int simutil_get_scramble_key(output bit [127:0] val);
+-      return 0;
+-    endfunction
+-    function automatic int simutil_get_scramble_nonce(output bit [319:0] nonce);
+-      return 0;
+-    endfunction
+-`endif
++
+@@ -506,8 +492,2 @@
+-  `ASSERT(NoDebugEntryInZcmpSequence,
+-          pc_set_i && (pc_mux_i == PC_EXC) && (exc_pc_mux_i == EXC_PC_DBD)
+-          |-> compressed_decoder_i.cm_state_q == compressed_decoder_i.CmIdle)
+-  `ASSERT(NoIrqInZcmpCommit,
+-          pc_set_i && (pc_mux_i == PC_EXC) && (exc_pc_mux_i == EXC_PC_IRQ)
+-          |-> !(compressed_decoder_i.cm_state_q inside {compressed_decoder_i.CmPopZeroA0,
+-                                                        compressed_decoder_i.CmPopRetRa,
+-                                                        compressed_decoder_i.CmMvSecondReg}))
++
++
+@@ -557,5 +537,3 @@
+-    `ASSERT(NoDummyInZcmpSequence,
+-            insert_dummy_instr |-> (instr_gets_expanded == INSTR_NOT_EXPANDED) &&
+-                                   (compressed_decoder_i.cm_state_q == compressed_decoder_i.CmIdle))
+-
+-`ifdef INC_ASSERT
++
++
++
+@@ -569,9 +547,9 @@
+-    `COVER(DummyHeldCmIdle_C,         dummy_held && cm_state == compressed_decoder_i.CmIdle)
+-    `COVER(DummyHeldCmPushStoreReg_C, dummy_held && cm_state == compressed_decoder_i.CmPushStoreReg)
+-    `COVER(DummyHeldCmPushDecrSp_C,   dummy_held && cm_state == compressed_decoder_i.CmPushDecrSp)
+-    `COVER(DummyHeldCmPopLoadReg_C,   dummy_held && cm_state == compressed_decoder_i.CmPopLoadReg)
+-    `COVER(DummyHeldCmPopIncrSp_C,    dummy_held && cm_state == compressed_decoder_i.CmPopIncrSp)
+-    `COVER(DummyHeldCmPopZeroA0_C,    dummy_held && cm_state == compressed_decoder_i.CmPopZeroA0)
+-    `COVER(DummyHeldCmPopRetRa_C,     dummy_held && cm_state == compressed_decoder_i.CmPopRetRa)
+-    `COVER(DummyHeldCmMvSecondReg_C,  dummy_held && cm_state == compressed_decoder_i.CmMvSecondReg)
+-`endif
++
++
++
++
++
++
++
++
++
+@@ -685,2 +663 @@
+-  `ASSERT(ExpandedTagClearedOnFlush,
+-          flush_expanded |=> instr_gets_expanded_id_o == INSTR_NOT_EXPANDED)
++
+@@ -851,2 +828,2 @@
+-    `ASSERT(NoPredictSkid, instr_skid_valid_q |-> ~predict_branch_taken)
+-    `ASSERT(NoPredictIllegal, predict_branch_taken |-> ~illegal_c_insn)
++
++
+@@ -870,7 +847 @@
+-`ifndef SYNTHESIS
+-  // fcov signals for V2S
+-  `DV_FCOV_SIGNAL_GEN_IF(logic [1:0], dummy_instr_type,
+-    gen_dummy_instr.dummy_instr_i.lfsr_data.instr_type, DummyInstructions)
+-  `DV_FCOV_SIGNAL_GEN_IF(logic, insert_dummy_instr,
+-    gen_dummy_instr.insert_dummy_instr, DummyInstructions)
+-`endif
++
+@@ -883 +854 @@
+-  `ASSERT_KNOWN(IbexExcPcMuxKnown, exc_pc_mux_i)
++
+@@ -886,10 +857,3 @@
+-    `ASSERT_IF(IbexPcMuxValid, pc_mux_internal inside {
+-        PC_BOOT,
+-        PC_JUMP,
+-        PC_EXC,
+-        PC_ERET,
+-        PC_DRET,
+-        PC_BP},
+-      pc_set_i)
+-
+-`ifdef INC_ASSERT
++
++
++
+@@ -960,2 +924 @@
+-    `ASSERT(MispredictOnlyImmediatelyAfterPredictedBranch,
+-      nt_branch_mispredict_i |-> predicted_branch_live_q)
++
+@@ -964,3 +927 @@
+-    `ASSERT(CorrectPCOnMispredict,
+-      predicted_branch_live_q & mispredicted_d & fetch_valid |->
+-      fetch_addr == predicted_branch_nt_pc_q)
++
+@@ -971,3 +932,2 @@
+-    `ASSERT(MispredictSingleCycle,
+-      nt_branch_mispredict_i & ~(fetch_valid & fetch_ready) |=> ~nt_branch_mispredict_i)
+-`endif
++
++
+@@ -976,7 +936 @@
+-    `ASSERT_IF(IbexPcMuxValid, pc_mux_internal inside {
+-        PC_BOOT,
+-        PC_JUMP,
+-        PC_EXC,
+-        PC_ERET,
+-        PC_DRET},
+-      pc_set_i)
++
+@@ -986 +940 @@
+-  `ASSERT(IbexBootAddrUnaligned, boot_addr_i[7:0] == 8'h00)
++
+@@ -989 +943 @@
+-  `ASSERT(IbexInstrAddrUnknown, instr_req_o |-> !$isunknown(instr_addr_o))
++
+@@ -992 +946 @@
+-  `ASSERT(IbexInstrAddrUnaligned, instr_req_o |-> (instr_addr_o[1:0] == 2'b00))
++

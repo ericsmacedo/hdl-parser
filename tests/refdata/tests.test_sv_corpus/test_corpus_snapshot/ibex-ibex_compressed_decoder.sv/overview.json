@@ -1,0 +1,990 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_compressed_decoder.sv",
+  "modules": [
+    {
+      "id": "ibex_compressed_decoder",
+      "name": "ibex_compressed_decoder",
+      "params": [
+        {
+          "id": "ibex_compressed_decoder.RV32ZC",
+          "ptype": "ibex_pkg::rv32zc_e",
+          "name": "RV32ZC",
+          "default": "ibex_pkg::RV32ZcaZcbZcmp",
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.ResetAll",
+          "ptype": "bit",
+          "name": "ResetAll",
+          "default": "1'b0",
+          "loc": {
+            "line": 19,
+            "col": 3,
+            "end_line": 19,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.BaseIsa",
+          "ptype": "ibex_pkg::base_isa_e",
+          "name": "BaseIsa",
+          "default": "ibex_pkg::BaseIsaRV32IorCHERIoT",
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 76
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "ibex_compressed_decoder.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.rst_ni",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "valid_i",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.id_in_ready_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "id_in_ready_i",
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.instr_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cheriot_enable_i",
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "cheriot_enable_i",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.instr_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.is_compressed_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "is_compressed_o",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.gets_expanded_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::instr_exp_e",
+          "name": "gets_expanded_o",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.flush_expanded_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "flush_expanded_i",
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.illegal_instr_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "illegal_instr_o",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 47
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_compressed_decoder.gen_unused_valid.unused_valid",
+          "ptype": "logic",
+          "name": "unused_valid",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_unused_valid",
+              "cond": "!(RV32ZC == RV32ZcaZcbZcmp || RV32ZC == RV32ZcaZcmp)"
+            }
+          ],
+          "loc": {
+            "line": 38,
+            "col": 5,
+            "end_line": 38,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.gen_unused_valid.unused_id_in_ready",
+          "ptype": "logic",
+          "name": "unused_id_in_ready",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_unused_valid",
+              "cond": "!(RV32ZC == RV32ZcaZcbZcmp || RV32ZC == RV32ZcaZcmp)"
+            }
+          ],
+          "loc": {
+            "line": 39,
+            "col": 5,
+            "end_line": 39,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_rlist_d",
+          "ptype": "logic",
+          "name": "cm_rlist_d",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_rlist_q",
+          "ptype": "logic",
+          "name": "cm_rlist_q",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_sp_offset_d",
+          "ptype": "logic",
+          "name": "cm_sp_offset_d",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_sp_offset_q",
+          "ptype": "logic",
+          "name": "cm_sp_offset_q",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_state_d",
+          "ptype": "cm_state_e",
+          "name": "cm_state_d",
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_state_q",
+          "ptype": "cm_state_e",
+          "name": "cm_state_q",
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.gets_expanded",
+          "ptype": "ibex_pkg::instr_exp_e",
+          "name": "gets_expanded",
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.gen_no_cheriot_cdec.unused_cheriot_enable",
+          "ptype": "logic",
+          "name": "unused_cheriot_enable",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_no_cheriot_cdec",
+              "cond": "BaseIsa != BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 920,
+            "col": 5,
+            "end_line": 920,
+            "end_col": 33
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "ibex_compressed_decoder.cm_state_e",
+          "name": "cm_state_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "dim": "[2:0]",
+          "members": [
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmIdle",
+              "name": "CmIdle",
+              "comment": [
+                "cm.push"
+              ],
+              "loc": {
+                "line": 182,
+                "col": 5,
+                "end_line": 182,
+                "end_col": 11
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPushStoreReg",
+              "name": "CmPushStoreReg",
+              "loc": {
+                "line": 184,
+                "col": 5,
+                "end_line": 184,
+                "end_col": 19
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPushDecrSp",
+              "name": "CmPushDecrSp",
+              "comment": [
+                "cm.pop, cm.popret, cm.popretz"
+              ],
+              "loc": {
+                "line": 185,
+                "col": 5,
+                "end_line": 185,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPopLoadReg",
+              "name": "CmPopLoadReg",
+              "loc": {
+                "line": 187,
+                "col": 5,
+                "end_line": 187,
+                "end_col": 17
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPopIncrSp",
+              "name": "CmPopIncrSp",
+              "loc": {
+                "line": 188,
+                "col": 5,
+                "end_line": 188,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPopZeroA0",
+              "name": "CmPopZeroA0",
+              "loc": {
+                "line": 189,
+                "col": 5,
+                "end_line": 189,
+                "end_col": 16
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmPopRetRa",
+              "name": "CmPopRetRa",
+              "comment": [
+                "cm.mvsa01, cm.mva01s"
+              ],
+              "loc": {
+                "line": 190,
+                "col": 5,
+                "end_line": 190,
+                "end_col": 15
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_state_e.CmMvSecondReg",
+              "name": "CmMvSecondReg",
+              "loc": {
+                "line": 192,
+                "col": 5,
+                "end_line": 192,
+                "end_col": 18
+              }
+            }
+          ],
+          "comment": [
+            "Combined FSM state register for Zcmp operations.",
+            "This single 3-bit enum represents 3 independent FSMs that share the CmIdle state and the",
+            "resources."
+          ],
+          "loc": {
+            "line": 181,
+            "col": 3,
+            "end_line": 193,
+            "end_col": 16
+          }
+        }
+      ],
+      "functions": [
+        {
+          "id": "ibex_compressed_decoder.cm_stack_adj_base",
+          "name": "cm_stack_adj_base",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[6:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_stack_adj_base.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 44,
+                "col": 52,
+                "end_line": 44,
+                "end_col": 75
+              }
+            }
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_stack_adj",
+          "name": "cm_stack_adj",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[6:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_stack_adj.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 55,
+                "col": 47,
+                "end_line": 55,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_stack_adj.spimm",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "spimm",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 55,
+                "col": 72,
+                "end_line": 55,
+                "end_col": 95
+              }
+            }
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_stack_adj_word",
+          "name": "cm_stack_adj_word",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[4:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_stack_adj_word.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 59,
+                "col": 52,
+                "end_line": 59,
+                "end_col": 75
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_stack_adj_word.spimm",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "spimm",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 60,
+                "col": 52,
+                "end_line": 60,
+                "end_col": 75
+              }
+            }
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_rlist_top_reg",
+          "name": "cm_rlist_top_reg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[4:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_rlist_top_reg.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 68,
+                "col": 51,
+                "end_line": 68,
+                "end_col": 74
+              }
+            }
+          ],
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 79,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_push_store_reg",
+          "name": "cm_push_store_reg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_push_store_reg.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 81,
+                "col": 53,
+                "end_line": 81,
+                "end_col": 76
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_push_store_reg.sp_offset",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "sp_offset",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 82,
+                "col": 53,
+                "end_line": 82,
+                "end_col": 80
+              }
+            }
+          ],
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_pop_load_reg",
+          "name": "cm_pop_load_reg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_pop_load_reg.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 99,
+                "col": 51,
+                "end_line": 99,
+                "end_col": 74
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_pop_load_reg.sp_offset",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "sp_offset",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 100,
+                "col": 51,
+                "end_line": 100,
+                "end_col": 78
+              }
+            }
+          ],
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_sp_addi",
+          "name": "cm_sp_addi",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_sp_addi.rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rlist",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 110,
+                "col": 46,
+                "end_line": 110,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_sp_addi.spimm",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "spimm",
+              "dim": "[1:0]",
+              "loc": {
+                "line": 111,
+                "col": 46,
+                "end_line": 111,
+                "end_col": 69
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_sp_addi.decr",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "decr",
+              "default": "1'b0",
+              "loc": {
+                "line": 112,
+                "col": 46,
+                "end_line": 112,
+                "end_col": 69
+              }
+            }
+          ],
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 127,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_mv_reg",
+          "name": "cm_mv_reg",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_mv_reg.src",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "src",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 129,
+                "col": 45,
+                "end_line": 129,
+                "end_col": 66
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_mv_reg.dst",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "dst",
+              "dim": "[4:0]",
+              "loc": {
+                "line": 129,
+                "col": 68,
+                "end_line": 129,
+                "end_col": 89
+              }
+            }
+          ],
+          "loc": {
+            "line": 129,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_zero_a0",
+          "name": "cm_zero_a0",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_ret_ra",
+          "name": "cm_ret_ra",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 143,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_mvsa01",
+          "name": "cm_mvsa01",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_mvsa01.a01",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "a01",
+              "loc": {
+                "line": 153,
+                "col": 45,
+                "end_line": 153,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_mvsa01.rs",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rs",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 153,
+                "col": 62,
+                "end_line": 153,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 153,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_mva01s",
+          "name": "cm_mva01s",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[31:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_mva01s.rs",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "rs",
+              "dim": "[2:0]",
+              "loc": {
+                "line": 160,
+                "col": 45,
+                "end_line": 160,
+                "end_col": 65
+              }
+            },
+            {
+              "id": "ibex_compressed_decoder.cm_mva01s.a01",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "a01",
+              "loc": {
+                "line": 160,
+                "col": 67,
+                "end_line": 160,
+                "end_col": 82
+              }
+            }
+          ],
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 165,
+            "end_col": 14
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.cm_rlist_init",
+          "name": "cm_rlist_init",
+          "kind": "function",
+          "rtype": "logic",
+          "dim": "[4:0]",
+          "args": [
+            {
+              "id": "ibex_compressed_decoder.cm_rlist_init.instr_rlist",
+              "direction": "input",
+              "ptype": "logic",
+              "name": "instr_rlist",
+              "dim": "[3:0]",
+              "loc": {
+                "line": 167,
+                "col": 48,
+                "end_line": 167,
+                "end_col": 77
+              }
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 176,
+            "end_col": 14
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_compressed_decoder.#always1",
+          "kind": "always_comb",
+          "comment": [
+            "//////////////////////",
+            "Compressed decoder //",
+            "//////////////////////"
+          ],
+          "loc": {
+            "line": 213,
+            "col": 3,
+            "end_line": 889,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.#always2",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 893,
+            "col": 3,
+            "end_line": 899,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.g_cm_meta_ra.#always3",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cm_meta_ra",
+              "cond": "ResetAll"
+            }
+          ],
+          "loc": {
+            "line": 902,
+            "col": 5,
+            "end_line": 910,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_compressed_decoder.g_cm_meta_nr.#always4",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_cm_meta_nr"
+            }
+          ],
+          "comment": [
+            "The following regs don't need to be reset as they get assigned before first usage:"
+          ],
+          "loc": {
+            "line": 913,
+            "col": 5,
+            "end_line": 916,
+            "end_col": 8
+          }
+        }
+      ],
+      "imports": [
+        "ibex_pkg::*"
+      ],
+      "loc": {
+        "line": 17,
+        "col": 1,
+        "end_line": 950,
+        "end_col": 10
+      }
+    }
+  ]
+}

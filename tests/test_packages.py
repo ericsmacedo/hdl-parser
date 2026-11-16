@@ -109,6 +109,7 @@ def test_package():
         functions=(
             Function(name="f", kind="function", rtype="int", args=(Port(direction="input", ptype="int", name="a"),)),
         ),
+        imports=("other_pkg::*",),
     )
 
 

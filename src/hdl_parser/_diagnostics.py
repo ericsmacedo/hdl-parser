@@ -46,6 +46,14 @@ SEVERITIES: dict[str, dm.Severity] = {
     "missing-end": "warning",
     "unbalanced-bracket": "warning",
     "no-module": "info",
+    "file-not-found": "error",
+    "file-unreadable": "error",
+    "parse-failed": "error",
+    "duplicate-definition": "warning",
+    "undefined-module": "warning",
+    "filelist-not-found": "error",
+    "filelist-unknown": "warning",
+    "filelist-variable": "warning",
 }
 """Severity of all diagnostic codes. Documented at [Diagnostic][hdl_parser.datamodel.Diagnostic]."""
 

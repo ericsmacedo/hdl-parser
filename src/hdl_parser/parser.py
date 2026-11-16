@@ -224,4 +224,5 @@ def parse_text(  # noqa: PLR0913
                 item=macro.id,
             )
 
-    return file.model_copy(update={"path": file_path, "diagnostics": diagnostics.finish(units)})
+    update = {"path": file_path, "lang": "vhdl" if lang == "vhdl" else "sv", "diagnostics": diagnostics.finish(units)}
+    return file.model_copy(update=update)

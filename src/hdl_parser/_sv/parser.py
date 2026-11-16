@@ -105,7 +105,6 @@ _DECLARATIONS = frozenset(
         "extern",
         "force",
         "genvar",
-        "import",
         "interconnect",
         "let",
         "nettype",
@@ -248,6 +247,7 @@ class _Package:
     params: list[_Decl] = field(default_factory=list)
     typedefs: list[_Typedef] = field(default_factory=list)
     functions: list[_Function] = field(default_factory=list)
+    imports: list[str] = field(default_factory=list)
     # there is an `endpackage`
     ended: bool = False
 
@@ -270,6 +270,7 @@ class _Module:
     last: Token
     name: Token
     modports: list[_Modport] = field(default_factory=list)
+    imports: list[str] = field(default_factory=list)
     # there is an `endmodule`
     ended: bool = False
     params: list[_Decl] = field(default_factory=list)
@@ -597,6 +598,24 @@ def _parse_typedef(c: Cursor) -> _Typedef | None:
     c.accept(";")
     c.sink = None
     return typedef._replace(last=c.toks[c.pos - 1]) if typedef else None
+
+
+# --- imports ---
+
+
+def _parse_imports(c: Cursor) -> list[str]:
+    """Parse `import pkg::name {, pkg::name};`. The name may be `*`. The import of a DPI function is none."""
+    imports: list[str] = []
+    c.next()
+    while c.peek().kind == ID and c.peek(1).text == "::":
+        package = c.next().text
+        c.next()
+        imports.append(f"{package}::{c.next().text}")
+        if not c.accept(","):
+            break
+    c.skip_until(_SEMI)
+    c.accept(";")
+    return imports
 
 
 # --- functions and tasks ---
@@ -935,6 +954,11 @@ def _handle_modport(c: Cursor, mod: _Module) -> None:
     mod.modports += _set_last(c, modports)
 
 
+@_handles("import")
+def _handle_import(c: Cursor, mod: _Module) -> None:
+    mod.imports += _parse_imports(c)
+
+
 @_handles("typedef")
 def _handle_typedef(c: Cursor, mod: _Module) -> None:
     typedef = _parse_typedef(c)
@@ -1182,8 +1206,7 @@ def _parse_module(c: Cursor) -> _Module | None:
     name = c.next()
     mod = _Module(start, name, name)
     while c.peek().text == "import":
-        c.skip_until(_SEMI)
-        c.accept(";")
+        mod.imports += _parse_imports(c)
     if c.peek().text == "#" and c.peek(1).text == "(":
         c.next()
         mod.params.extend(_parse_decl_list(c, "parameter", mod))
@@ -1202,6 +1225,8 @@ def _parse_package_item(c: Cursor, pkg: _Package) -> None:
     text = tok.text
     if text in _PARAMS:
         pkg.params.extend(_parse_item_decl(c))
+    elif text == "import":
+        pkg.imports += _parse_imports(c)
     elif text == "typedef":
         typedef = _parse_typedef(c)
         if typedef:
@@ -1501,6 +1526,7 @@ def parse(  # noqa: PLR0913
     """
     if diagnostics is None:
         diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
+    includes: list[Path] = []
     if expand_macros:
         text, smap = expand_mapped(
             text,
@@ -1509,6 +1535,7 @@ def parse(  # noqa: PLR0913
             inc_dirs=inc_dirs,
             resolve_ifdefs=resolve_ifdefs,
             diagnostics=diagnostics,
+            includes=includes,
         )
     else:
         smap = SourceMap(text)
@@ -1522,6 +1549,7 @@ def parse(  # noqa: PLR0913
             localparams=_create_params(pkg.params, "localparam", smap),
             typedefs=_create_typedefs(pkg.typedefs, smap),
             functions=_create_functions(pkg.functions, smap),
+            imports=tuple(dict.fromkeys(pkg.imports)),
             ifdefs=pkg.first.ifdefs,
             loc=smap.span(pkg.first, pkg.last, pkg.name),
         )
@@ -1542,10 +1570,17 @@ def parse(  # noqa: PLR0913
             "insts": _create_insts(mod.insts, smap),
             "ifdefs": mod.first.ifdefs,
             "unresolved_macros": _create_macros(mod, smap),
+            "imports": tuple(dict.fromkeys(mod.imports)),
             "loc": smap.span(mod.first, mod.last, mod.name),
         }
         if mod.first.text == "interface":
             interfaces.append(dm.Interface(modports=_create_modports(mod.modports, smap), **fields))
         else:
             modules.append(dm.Module(**fields))
-    return dm.File(path=None, modules=tuple(modules), interfaces=tuple(interfaces), packages=packages)
+    return dm.File(
+        path=None,
+        includes=tuple(path.as_posix() for path in includes),
+        modules=tuple(modules),
+        interfaces=tuple(interfaces),
+        packages=packages,
+    )

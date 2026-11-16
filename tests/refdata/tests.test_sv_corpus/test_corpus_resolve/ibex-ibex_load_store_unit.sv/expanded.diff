@@ -1,0 +1,84 @@
+--- original
++++ expanded
+@@ -799,44 +799,8 @@
+-`ifndef DV_FCOV_DISABLE
+-  // Set when awaiting the response for the second half of a misaligned access
+-  logic fcov_mis_2_en_d, fcov_mis_2_en_q;
+-
+-  // fcov_mis_rvalid_1: Set when the response is received to the first half of a misaligned access,
+-  // fcov_mis_rvalid_2: Set when response is received for the second half
+-  logic fcov_mis_rvalid_1, fcov_mis_rvalid_2;
+-
+-  // Set when the first half of a misaligned access saw a bus error
+-  logic fcov_mis_bus_err_1_d, fcov_mis_bus_err_1_q;
+-
+-  assign fcov_mis_rvalid_1 = ls_fsm_cs inside {WAIT_RVALID_MIS, WAIT_RVALID_MIS_GNTS_DONE} &&
+-                                data_rvalid_i;
+-
+-  assign fcov_mis_rvalid_2 = ls_fsm_cs inside {IDLE} && fcov_mis_2_en_q && data_rvalid_i;
+-
+-  assign fcov_mis_2_en_d = fcov_mis_rvalid_2 ? 1'b0            :  // clr
+-                           fcov_mis_rvalid_1 ? 1'b1            :  // set
+-                                               fcov_mis_2_en_q ;
+-
+-  assign fcov_mis_bus_err_1_d = fcov_mis_rvalid_2                   ? 1'b0                 : // clr
+-                                fcov_mis_rvalid_1 && data_bus_err_i ? 1'b1                 : // set
+-                                                                      fcov_mis_bus_err_1_q ;
+-
+-  always_ff @(posedge clk_i or negedge rst_ni) begin
+-    if (!rst_ni) begin
+-      fcov_mis_2_en_q <= 1'b0;
+-      fcov_mis_bus_err_1_q <= 1'b0;
+-    end else begin
+-      fcov_mis_2_en_q <= fcov_mis_2_en_d;
+-      fcov_mis_bus_err_1_q <= fcov_mis_bus_err_1_d;
+-    end
+-  end
+-`endif
+-
+-  `DV_FCOV_SIGNAL(logic, ls_error_exception, (load_err_o | store_err_o) & ~pmp_err_q)
+-  `DV_FCOV_SIGNAL(logic, ls_pmp_exception, (load_err_o | store_err_o) & pmp_err_q)
+-  `DV_FCOV_SIGNAL(logic, ls_first_req, lsu_req_i & (ls_fsm_cs == IDLE))
+-  `DV_FCOV_SIGNAL(logic, ls_second_req,
+-    (ls_fsm_cs inside {WAIT_RVALID_MIS}) & data_req_o & addr_incr_req_o)
+-  `DV_FCOV_SIGNAL(logic, ls_mis_pmp_err_1,
+-    (ls_fsm_cs inside {WAIT_RVALID_MIS, WAIT_GNT_MIS}) && pmp_err_q)
+-  `DV_FCOV_SIGNAL(logic, ls_mis_pmp_err_2,
+-    (ls_fsm_cs inside {WAIT_RVALID_MIS, WAIT_RVALID_MIS_GNTS_DONE}) && data_pmp_err_i)
++
++
++
++
++
++
++
++
+@@ -849,8 +813,5 @@
+-  `ASSERT(IbexDataTypeKnown, (lsu_req_i | busy_o) |-> !$isunknown(lsu_type_i))
+-  `ASSERT(IbexDataOffsetKnown, (lsu_req_i | busy_o) |-> !$isunknown(data_offset))
+-  `ASSERT_KNOWN(IbexRDataOffsetQKnown, rdata_offset_q)
+-  `ASSERT_KNOWN(IbexDataTypeQKnown, data_type_q)
+-  `ASSERT(IbexLsuStateValid, ls_fsm_cs inside {
+-      IDLE, WAIT_GNT_MIS, WAIT_RVALID_MIS, WAIT_GNT,
+-      WAIT_RVALID_MIS_GNTS_DONE,
+-      CTX_WAIT_GNT1, CTX_WAIT_GNT2, CTX_WAIT_RESP})
++
++
++
++
++
+@@ -860,2 +821 @@
+-  `ASSERT(IbexCapFirstRespState, data_rvalid_i && (cheriot_enable_i == IbexMuBiOn) |->
+-      (cap_rx_fsm_q == CRX_WAIT_RESP1) == (ls_fsm_cs inside {CTX_WAIT_GNT2, CTX_WAIT_RESP}))
++
+@@ -864 +824 @@
+-  `ASSERT(IbexDataAddrUnknown, data_req_o |-> !$isunknown(data_addr_o))
++
+@@ -867 +827 @@
+-  `ASSERT(IbexDataAddrUnaligned, data_req_o |-> (data_addr_o[1:0] == 2'b00))
++
+@@ -870,2 +830,2 @@
+-  `ASSERT_IF(IbexLsuIsCapDisabled,    !lsu_is_cap_i,       cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexLsuCheriotErrDisabled, !lsu_cheriot_err_i, cheriot_enable_i != IbexMuBiOn)
++
++

@@ -1,0 +1,147 @@
+--- original
++++ expanded
+@@ -400,6 +400 @@
+-    `ASSERT(IbexImmBMuxSelValid, instr_valid_i |-> imm_b_mux_sel inside {
+-        IMM_B_I,
+-        IMM_B_S,
+-        IMM_B_U,
+-        IMM_B_INCR_PC,
+-        IMM_B_INCR_ADDR})
++
+@@ -428,8 +423 @@
+-    `ASSERT(IbexImmBMuxSelValid, instr_valid_i |-> imm_b_mux_sel inside {
+-        IMM_B_I,
+-        IMM_B_S,
+-        IMM_B_B,
+-        IMM_B_U,
+-        IMM_B_J,
+-        IMM_B_INCR_PC,
+-        IMM_B_INCR_ADDR})
++
+@@ -841,2 +829,2 @@
+-  `ASSERT(NeverDoubleBranch, branch_set & ~instr_bp_taken_i |=> ~branch_set)
+-  `ASSERT(NeverDoubleJump, jump_set & ~instr_bp_taken_i |=> ~jump_set)
++
++
+@@ -969 +957 @@
+-  `ASSERT(StallIDIfMulticycle, (id_fsm_q == FIRST_CYCLE) & (id_fsm_d == MULTI_CYCLE) |-> stall_id)
++
+@@ -979,2 +967 @@
+-  `ASSERT(IllegalInsnStallMustBeMemStall, illegal_insn_o & stall_id |-> stall_mem &
+-    ~(stall_ld_hz | stall_multdiv | stall_jump | stall_branch))
++
+@@ -1069,7 +1056,5 @@
+-    `ASSERT(IbexExecutingSpecIfExecuting, instr_executing |-> instr_executing_spec)
+-
+-    `ASSERT(IbexStallIfValidInstrNotExecuting,
+-      instr_valid_i & ~instr_kill & ~instr_executing |-> stall_id)
+-
+-    `ASSERT(IbexCannotRetireWithPendingExceptions,
+-      instr_done |-> ~(wb_exception | outstanding_memory_access))
++
++
++
++
++
+@@ -1091,2 +1076 @@
+-    `ASSERT(IbexStallMemNoRequest,
+-      instr_valid_i & (lsu_req_dec | cheriot_lsu_req_dec) & ~instr_done |-> ~lsu_req_done_i)
++
+@@ -1153,2 +1137 @@
+-    `ASSERT(IbexStallIfValidInstrNotExecuting,
+-      instr_valid_i & ~instr_fetch_err_i & ~instr_executing & controller_run |-> stall_id)
++
+@@ -1224,6 +1207,3 @@
+-  `DV_FCOV_SIGNAL_GEN_IF(logic, rf_rd_wb_hz,
+-    (gen_stall_mem.rf_rd_a_hz | gen_stall_mem.rf_rd_b_hz) & instr_valid_i, WritebackStage)
+-  `DV_FCOV_SIGNAL(logic, branch_taken,
+-    instr_executing & (id_fsm_q == FIRST_CYCLE) & branch_decision_i)
+-  `DV_FCOV_SIGNAL(logic, branch_not_taken,
+-    instr_executing & (id_fsm_q == FIRST_CYCLE) & ~branch_decision_i)
++
++
++
+@@ -1236,22 +1216,18 @@
+-  `ASSERT(IbexRegImmAluOpKnown, (opcode_e'(instr_rdata_i[6:0]) == OPCODE_OP_IMM) |->
+-      !$isunknown(instr_rdata_i[14:12]))
+-  `ASSERT_KNOWN_IF(IbexAluOpMuxSelKnown, alu_op_a_mux_sel, instr_valid_i)
+-  `ASSERT(IbexAluAOpMuxSelValid, instr_valid_i |-> alu_op_a_mux_sel inside {
+-      OP_A_REG_A,
+-      OP_A_FWD,
+-      OP_A_CURRPC,
+-      OP_A_IMM})
+-  `ASSERT_KNOWN_IF(IbexBTAluAOpMuxSelKnown, bt_a_mux_sel, instr_valid_i)
+-  `ASSERT(IbexBTAluAOpMuxSelValid, instr_valid_i |-> bt_a_mux_sel inside {
+-      OP_A_REG_A,
+-      OP_A_CURRPC})
+-  `ASSERT_KNOWN_IF(IbexBTAluBOpMuxSelKnown, bt_b_mux_sel, instr_valid_i)
+-  `ASSERT(IbexBTAluBOpMuxSelValid, instr_valid_i |-> bt_b_mux_sel inside {
+-      IMM_B_I,
+-      IMM_B_B,
+-      IMM_B_J,
+-      IMM_B_INCR_PC})
+-  `ASSERT(IbexRegfileWdataSelValid, instr_valid_i |-> rf_wdata_sel inside {
+-      RF_WD_EX,
+-      RF_WD_CSR})
+-  `ASSERT_KNOWN(IbexWbStateKnown, id_fsm_q)
++
++  `ifndef FPV_ON
++
++
++`endif
++
++  `ifndef FPV_ON
++
++
++`endif
++
++  `ifndef FPV_ON
++
++
++`endif
++
++
++
+@@ -1260,2 +1236,4 @@
+-  `ASSERT_KNOWN_IF(IbexBranchDecisionValid, branch_decision_i,
+-      instr_valid_i && !(illegal_csr_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1264,2 +1242,4 @@
+-  `ASSERT_KNOWN_IF(IbexIdInstrKnown, instr_rdata_i,
+-      instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1268,2 +1248,4 @@
+-  `ASSERT_KNOWN_IF(IbexIdInstrALUKnown, instr_rdata_alu_i,
+-      instr_valid_i && !(illegal_c_insn_i || instr_fetch_err_i))
++  `ifndef FPV_ON
++
++
++`endif
+@@ -1272,2 +1254 @@
+-  `ASSERT(IbexMulticycleEnableUnique,
+-      $onehot0({lsu_req_dec, cheriot_lsu_req_dec, multdiv_en_dec, branch_in_dec, jump_in_dec}))
++
+@@ -1278 +1259 @@
+-  `ASSERT(IbexDuplicateInstrMatch, instr_valid_i |-> instr_rdata_i === instr_rdata_alu_i)
++
+@@ -1282 +1263 @@
+-  `ASSERT(IbexMoveToFirstCycleWhenIdReady, id_in_ready_o |=> id_fsm_q == FIRST_CYCLE)
++
+@@ -1285 +1266 @@
+-  `ASSERT(IbexMisalignedMemoryAccess, !lsu_addr_incr_req_i)
++
+@@ -1290,4 +1271,4 @@
+-  `ASSERT_IF(IbexCheriotLoadDisabled,  !cheriot_load_o,         cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexCheriotStoreDisabled, !cheriot_store_o,        cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexInstrNotCheriot,      !instr_is_cheriot_id_o,  cheriot_enable_i != IbexMuBiOn)
+-  `ASSERT_IF(IbexCheriotExecDisabled,  !cheriot_exec_id_o,      cheriot_enable_i != IbexMuBiOn)
++
++
++
++

@@ -101,6 +101,8 @@ class _Unit:
         self.components: list[dm.Module] = []
         self.processes: list[dm.Process] = []
         self.insts: list[dm.ModuleInstance] = []
+        # names made visible by the `use` clauses in front
+        self.imports: list[str] = []
         # generate and block statements around the current position
         self.generates: list[dm.Generate] = []
         # label in front of the current item, with the comments in front of it
@@ -773,7 +775,26 @@ def _parse_architecture(c: Cursor, unit: _Unit) -> bool:
 # --- design units ---
 
 
-def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens]]:
+def _context_uses(toks: list[Token], start: int) -> list[str]:
+    """Names of the `use` clauses in front of the design unit starting at token `start`: `work.pkg.all`."""
+    uses: list[str] = []
+    end = start - 1
+    while end >= 0 and toks[end].text == ";":
+        # the clause in front: [library|use|context] ... ;
+        begin = end - 1
+        while begin >= 0 and toks[begin].text != ";":
+            begin -= 1
+        first = toks[begin + 1]
+        if first.kind != KW or first.text not in ("library", "use", "context"):
+            break
+        if first.text == "use":
+            names = "".join(tok.text.lower() for tok in toks[begin + 2 : end])
+            uses[:0] = names.split(",")
+        end = begin
+    return uses
+
+
+def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens, list[str]]]:
     """Split into entities, architectures and packages. Parsing never continues beyond the end of one of them.
 
     A package body adds nothing to its package. A package instance (`package p is new ...`) is no package.
@@ -795,7 +816,8 @@ def _split(tokens: Tokens) -> Iterator[tuple[Token, Tokens]]:
         eof = Token(EOF, "", toks[end].start, toks[end].start, ())
         comments = {idx - start: tokens.comments[idx] for idx in range(start, end + 1) if idx in tokens.comments}
         trailing = {idx - start: tokens.trailing[idx] for idx in range(start, end) if idx in tokens.trailing}
-        yield toks[start], Tokens(tokens.source, [*toks[start:end], eof], comments, trailing, tokens.gaps)
+        unit_tokens = Tokens(tokens.source, [*toks[start:end], eof], comments, trailing, tokens.gaps)
+        yield toks[start], unit_tokens, _context_uses(toks, start)
 
 
 def _skip_end(c: Cursor) -> bool:
@@ -819,7 +841,7 @@ def _parse_units(tokens: Tokens, diagnostics: Diagnostics) -> tuple[list[_Unit],
     smap = SourceMap(tokens.source)
     units: dict[str, _Unit] = {}
     packages: list[_Unit] = []
-    for tok, unit_tokens in _split(tokens):
+    for tok, unit_tokens, uses in _split(tokens):
         c = Cursor(unit_tokens)
         c.next()
         name_tok = c.next()
@@ -847,6 +869,7 @@ def _parse_units(tokens: Tokens, diagnostics: Diagnostics) -> tuple[list[_Unit],
                 _skip_statement(c)
                 if unit.arch_loc is None:
                     unit.arch_loc = smap.span(tok, _last(c), name_tok)
+        unit.imports += [use for use in uses if use not in unit.imports]
         if not ended:
             diagnostics.add("missing-end", f"{tok.text} '{name}' has no 'end'.", smap.span(tok, name_tok))
         for opening in c.unclosed:
@@ -893,6 +916,8 @@ def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
                 processes=tuple(unit.processes),
                 components=tuple(unit.components),
                 insts=tuple(unit.insts),
+                imports=tuple(unit.imports),
+                partial=unit.loc is None,
                 loc=unit.loc or unit.arch_loc,
             )
             for unit in units
@@ -904,6 +929,7 @@ def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
                 typedefs=tuple(unit.typedefs),
                 functions=tuple(unit.functions),
                 components=tuple(unit.components),
+                imports=tuple(unit.imports),
                 loc=unit.loc,
             )
             for unit in packages

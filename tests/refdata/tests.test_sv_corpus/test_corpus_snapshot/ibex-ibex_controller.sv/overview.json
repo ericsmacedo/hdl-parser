@@ -1,0 +1,2421 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_controller.sv",
+  "modules": [
+    {
+      "id": "ibex_controller",
+      "name": "ibex_controller",
+      "params": [
+        {
+          "id": "ibex_controller.BaseIsa",
+          "ptype": "base_isa_e",
+          "name": "BaseIsa",
+          "default": "BaseIsaRV32I",
+          "loc": {
+            "line": 15,
+            "col": 3,
+            "end_line": 15,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_controller.WritebackStage",
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "1'b0",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.BranchPredictor",
+          "ptype": "bit",
+          "name": "BranchPredictor",
+          "default": "1'b0",
+          "loc": {
+            "line": 17,
+            "col": 3,
+            "end_line": 17,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.MemECC",
+          "ptype": "bit",
+          "name": "MemECC",
+          "default": "1'b0",
+          "loc": {
+            "line": 18,
+            "col": 3,
+            "end_line": 18,
+            "end_col": 39
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "ibex_controller.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_controller.rst_ni",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_enable_i",
+          "direction": "input",
+          "ptype": "ibex_mubi_t",
+          "name": "cheriot_enable_i",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.ctrl_busy_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ctrl_busy_o",
+          "comment": [
+            "core is busy processing instrs",
+            "decoder related signals"
+          ],
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.illegal_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "illegal_insn_i",
+          "comment": [
+            "decoder has an invalid instr"
+          ],
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_controller.ecall_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ecall_insn_i",
+          "comment": [
+            "decoder has ECALL instr"
+          ],
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.mret_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mret_insn_i",
+          "comment": [
+            "decoder has MRET instr"
+          ],
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.dret_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dret_insn_i",
+          "comment": [
+            "decoder has DRET instr"
+          ],
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.wfi_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "wfi_insn_i",
+          "comment": [
+            "decoder has WFI instr"
+          ],
+          "loc": {
+            "line": 31,
+            "col": 3,
+            "end_line": 31,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.ebrk_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ebrk_insn_i",
+          "comment": [
+            "decoder has EBREAK instr"
+          ],
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.csr_pipe_flush_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_pipe_flush_i",
+          "comment": [
+            "do CSR-related pipeline flush"
+          ],
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.csr_access_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_access_i",
+          "comment": [
+            "decoder has CSR access instr"
+          ],
+          "loc": {
+            "line": 34,
+            "col": 3,
+            "end_line": 34,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.csr_cheriot_always_ok_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_cheriot_always_ok_i",
+          "comment": [
+            "cheriot safe-listed CSR registers",
+            "instr from IF-ID pipeline stage"
+          ],
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_controller.instr_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_valid_i",
+          "comment": [
+            "instr is valid"
+          ],
+          "loc": {
+            "line": 38,
+            "col": 3,
+            "end_line": 38,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.dummy_instr_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_id_i",
+          "comment": [
+            "instr in ID is a dummy"
+          ],
+          "loc": {
+            "line": 39,
+            "col": 3,
+            "end_line": 39,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.instr_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_i",
+          "dim": "[31:0]",
+          "comment": [
+            "uncompressed instr data for mtval"
+          ],
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_controller.instr_compressed_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_compressed_i",
+          "dim": "[15:0]",
+          "comment": [
+            "instr compressed data for mtval"
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_controller.instr_is_compressed_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_is_compressed_i",
+          "comment": [
+            "instr is compressed"
+          ],
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.instr_gets_expanded_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::instr_exp_e",
+          "name": "instr_gets_expanded_i",
+          "comment": [
+            "instr expansion state"
+          ],
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.instr_bp_taken_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_bp_taken_i",
+          "comment": [
+            "instr was predicted taken branch"
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_err_i",
+          "comment": [
+            "instr has error"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_err_plus2_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_err_plus2_i",
+          "comment": [
+            "instr error is x32"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_cheriot_acc_vio_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_cheriot_acc_vio_i",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_cheriot_bound_vio_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_cheriot_bound_vio_i",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 64
+          }
+        },
+        {
+          "id": "ibex_controller.pc_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pc_id_i",
+          "dim": "[31:0]",
+          "comment": [
+            "instr address",
+            "to IF-ID pipeline stage"
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_controller.instr_valid_clear_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_valid_clear_o",
+          "comment": [
+            "kill instr in IF-ID reg"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_controller.id_in_ready_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "id_in_ready_o",
+          "comment": [
+            "ID stage is ready for new instr"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 3,
+            "end_line": 54,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.controller_run_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "controller_run_o",
+          "comment": [
+            "Controller is in standard instruction",
+            "run mode"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.instr_exec_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_exec_i",
+          "comment": [
+            "Execution control, when clear ID/EX",
+            "stage stops accepting instructions from",
+            "IF",
+            "to prefetch"
+          ],
+          "loc": {
+            "line": 57,
+            "col": 3,
+            "end_line": 57,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.instr_req_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o",
+          "comment": [
+            "start fetching instructions"
+          ],
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.pc_set_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "pc_set_o",
+          "comment": [
+            "jump to address set by pc_mux"
+          ],
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_controller.pc_mux_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::pc_sel_e",
+          "name": "pc_mux_o",
+          "comment": [
+            "IF stage fetch address selector",
+            "(boot, normal, exception...)"
+          ],
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_controller.nt_branch_mispredict_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "nt_branch_mispredict_o",
+          "comment": [
+            "Not-taken branch in ID/EX was",
+            "mispredicted (predicted taken)"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 3,
+            "end_line": 65,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_controller.exc_pc_mux_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::exc_pc_sel_e",
+          "name": "exc_pc_mux_o",
+          "comment": [
+            "IF stage selector for exception PC"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.exc_cause_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::exc_cause_t",
+          "name": "exc_cause_o",
+          "comment": [
+            "for IF stage, CSRs",
+            "LSU"
+          ],
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 68,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.lsu_addr_last_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_addr_last_i",
+          "dim": "[31:0]",
+          "comment": [
+            "for mtval"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_controller.load_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "load_err_i",
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.store_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "store_err_i",
+          "loc": {
+            "line": 73,
+            "col": 3,
+            "end_line": 73,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.mem_resp_intg_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_i",
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_controller.lsu_err_is_cheriot_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_err_is_cheriot_i",
+          "loc": {
+            "line": 75,
+            "col": 3,
+            "end_line": 75,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_controller.wb_exception_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "wb_exception_o",
+          "comment": [
+            "Instruction in WB taking an exception"
+          ],
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_controller.id_exception_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "id_exception_o",
+          "comment": [
+            "Instruction in ID taking an exception"
+          ],
+          "loc": {
+            "line": 77,
+            "col": 3,
+            "end_line": 77,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_controller.id_exception_nc_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "id_exception_nc_o",
+          "comment": [
+            "no-cheriot",
+            "jump/branch signals"
+          ],
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_controller.branch_set_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "branch_set_i",
+          "comment": [
+            "branch set signal (branch definitely",
+            "taken)"
+          ],
+          "loc": {
+            "line": 81,
+            "col": 3,
+            "end_line": 81,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.branch_not_set_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "branch_not_set_i",
+          "comment": [
+            "branch is definitely not taken"
+          ],
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.jump_set_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "jump_set_i",
+          "comment": [
+            "jump taken set signal",
+            "interrupt signals"
+          ],
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.csr_mstatus_mie_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_mstatus_mie_i",
+          "comment": [
+            "M-mode interrupt enable bit"
+          ],
+          "loc": {
+            "line": 87,
+            "col": 3,
+            "end_line": 87,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_controller.irq_pending_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_pending_i",
+          "comment": [
+            "interrupt request pending"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.irqs_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::irqs_t",
+          "name": "irqs_i",
+          "comment": [
+            "interrupt requests qualified with",
+            "mie CSR"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.irq_nm_ext_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_nm_ext_i",
+          "comment": [
+            "non-maskable interrupt"
+          ],
+          "loc": {
+            "line": 91,
+            "col": 3,
+            "end_line": 91,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.nmi_mode_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "nmi_mode_o",
+          "comment": [
+            "core executing NMI handler",
+            "debug signals"
+          ],
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 92,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.debug_req_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_req_i",
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.debug_cause_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::dbg_cause_e",
+          "name": "debug_cause_o",
+          "loc": {
+            "line": 96,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.debug_csr_save_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_csr_save_o",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.debug_mode_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_mode_o",
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_controller.debug_mode_entering_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_mode_entering_o",
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.debug_single_step_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_single_step_i",
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_controller.debug_ebreakm_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_ebreakm_i",
+          "loc": {
+            "line": 101,
+            "col": 3,
+            "end_line": 101,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_controller.debug_ebreaku_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_ebreaku_i",
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_controller.trigger_match_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trigger_match_i",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_controller.csr_save_if_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_if_o",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.csr_save_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_id_o",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.csr_save_wb_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_wb_o",
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.csr_restore_mret_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_restore_mret_id_o",
+          "loc": {
+            "line": 108,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.csr_restore_dret_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_restore_dret_id_o",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 109,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.csr_save_cause_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_cause_o",
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.csr_mepcc_clrtag_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_mepcc_clrtag_o",
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 111,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_controller.csr_mtval_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_mtval_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 113,
+            "col": 3,
+            "end_line": 113,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.priv_mode_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::priv_lvl_e",
+          "name": "priv_mode_i",
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.csr_pcc_perm_sr_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_pcc_perm_sr_i",
+          "comment": [
+            "stall & flush signals"
+          ],
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_controller.stall_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "stall_id_i",
+          "loc": {
+            "line": 118,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.stall_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "stall_wb_i",
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.flush_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "flush_id_o",
+          "loc": {
+            "line": 120,
+            "col": 3,
+            "end_line": 120,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.ready_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ready_wb_i",
+          "comment": [
+            "performance monitors"
+          ],
+          "loc": {
+            "line": 121,
+            "col": 3,
+            "end_line": 121,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_controller.perf_jump_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_jump_o",
+          "comment": [
+            "we are executing a jump",
+            "instruction (j, jr, jal, jalr)"
+          ],
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.perf_tbranch_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_tbranch_o",
+          "comment": [
+            "we are executing a taken branch",
+            "instruction"
+          ],
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_controller.instr_is_cheriot_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_is_cheriot_i",
+          "comment": [
+            "from decoder"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_valid_i",
+          "comment": [
+            "from cheriot EX"
+          ],
+          "loc": {
+            "line": 129,
+            "col": 3,
+            "end_line": 129,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_i",
+          "loc": {
+            "line": 130,
+            "col": 3,
+            "end_line": 130,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_wb_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_i",
+          "loc": {
+            "line": 131,
+            "col": 3,
+            "end_line": 131,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err_info_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_info_i",
+          "dim": "[11:0]",
+          "loc": {
+            "line": 132,
+            "col": 3,
+            "end_line": 132,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_wb_err_info_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_info_i",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 133,
+            "col": 3,
+            "end_line": 133,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_branch_req_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_branch_req_i",
+          "loc": {
+            "line": 134,
+            "col": 3,
+            "end_line": 134,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_branch_target_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_branch_target_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 135,
+            "end_col": 56
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_controller.ctrl_fsm_cs",
+          "ptype": "ctrl_fsm_e",
+          "name": "ctrl_fsm_cs",
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.ctrl_fsm_ns",
+          "ptype": "ctrl_fsm_e",
+          "name": "ctrl_fsm_ns",
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_controller.nmi_mode_q",
+          "ptype": "logic",
+          "name": "nmi_mode_q",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.nmi_mode_d",
+          "ptype": "logic",
+          "name": "nmi_mode_d",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.debug_mode_q",
+          "ptype": "logic",
+          "name": "debug_mode_q",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_controller.debug_mode_d",
+          "ptype": "logic",
+          "name": "debug_mode_d",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_controller.debug_cause_d",
+          "ptype": "dbg_cause_e",
+          "name": "debug_cause_d",
+          "loc": {
+            "line": 142,
+            "col": 3,
+            "end_line": 142,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.debug_cause_q",
+          "ptype": "dbg_cause_e",
+          "name": "debug_cause_q",
+          "loc": {
+            "line": 142,
+            "col": 3,
+            "end_line": 142,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.load_err_q",
+          "ptype": "logic",
+          "name": "load_err_q",
+          "loc": {
+            "line": 143,
+            "col": 3,
+            "end_line": 143,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.load_err_d",
+          "ptype": "logic",
+          "name": "load_err_d",
+          "loc": {
+            "line": 143,
+            "col": 3,
+            "end_line": 143,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.store_err_q",
+          "ptype": "logic",
+          "name": "store_err_q",
+          "loc": {
+            "line": 144,
+            "col": 3,
+            "end_line": 144,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_controller.store_err_d",
+          "ptype": "logic",
+          "name": "store_err_d",
+          "loc": {
+            "line": 144,
+            "col": 3,
+            "end_line": 144,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_controller.lsu_err_is_cheriot_q",
+          "ptype": "logic",
+          "name": "lsu_err_is_cheriot_q",
+          "loc": {
+            "line": 145,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_controller.exc_req_q",
+          "ptype": "logic",
+          "name": "exc_req_q",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.exc_req_d",
+          "ptype": "logic",
+          "name": "exc_req_d",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.exc_req_nc",
+          "ptype": "logic",
+          "name": "exc_req_nc",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.exc_req_wb",
+          "ptype": "logic",
+          "name": "exc_req_wb",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_controller.illegal_insn_q",
+          "ptype": "logic",
+          "name": "illegal_insn_q",
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_controller.illegal_insn_d",
+          "ptype": "logic",
+          "name": "illegal_insn_d",
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err_q",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_q",
+          "loc": {
+            "line": 148,
+            "col": 3,
+            "end_line": 148,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err_d",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_d",
+          "loc": {
+            "line": 148,
+            "col": 3,
+            "end_line": 148,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_wb_err_q",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_q",
+          "loc": {
+            "line": 149,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_asr_err_q",
+          "ptype": "logic",
+          "name": "cheriot_asr_err_q",
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_asr_err_d",
+          "ptype": "logic",
+          "name": "cheriot_asr_err_d",
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_err_prio",
+          "ptype": "logic",
+          "name": "instr_fetch_err_prio",
+          "loc": {
+            "line": 154,
+            "col": 3,
+            "end_line": 154,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_controller.illegal_insn_prio",
+          "ptype": "logic",
+          "name": "illegal_insn_prio",
+          "loc": {
+            "line": 155,
+            "col": 3,
+            "end_line": 155,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_controller.ecall_insn_prio",
+          "ptype": "logic",
+          "name": "ecall_insn_prio",
+          "loc": {
+            "line": 156,
+            "col": 3,
+            "end_line": 156,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_controller.ebrk_insn_prio",
+          "ptype": "logic",
+          "name": "ebrk_insn_prio",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_controller.store_err_prio",
+          "ptype": "logic",
+          "name": "store_err_prio",
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_controller.load_err_prio",
+          "ptype": "logic",
+          "name": "load_err_prio",
+          "loc": {
+            "line": 159,
+            "col": 3,
+            "end_line": 159,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err_prio",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_prio",
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 160,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_wb_err_prio",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_prio",
+          "loc": {
+            "line": 161,
+            "col": 3,
+            "end_line": 161,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_asr_err_prio",
+          "ptype": "logic",
+          "name": "cheriot_asr_err_prio",
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_controller.stall",
+          "ptype": "logic",
+          "name": "stall",
+          "loc": {
+            "line": 164,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 15
+          }
+        },
+        {
+          "id": "ibex_controller.halt_if",
+          "ptype": "logic",
+          "name": "halt_if",
+          "loc": {
+            "line": 165,
+            "col": 3,
+            "end_line": 165,
+            "end_col": 17
+          }
+        },
+        {
+          "id": "ibex_controller.retain_id",
+          "ptype": "logic",
+          "name": "retain_id",
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 166,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_controller.flush_id",
+          "ptype": "logic",
+          "name": "flush_id",
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 167,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "ibex_controller.exc_req_lsu",
+          "ptype": "logic",
+          "name": "exc_req_lsu",
+          "loc": {
+            "line": 168,
+            "col": 3,
+            "end_line": 168,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "ibex_controller.special_req",
+          "ptype": "logic",
+          "name": "special_req",
+          "loc": {
+            "line": 169,
+            "col": 3,
+            "end_line": 169,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "ibex_controller.special_req_pc_change",
+          "ptype": "logic",
+          "name": "special_req_pc_change",
+          "loc": {
+            "line": 170,
+            "col": 3,
+            "end_line": 170,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_controller.special_req_flush_only",
+          "ptype": "logic",
+          "name": "special_req_flush_only",
+          "loc": {
+            "line": 171,
+            "col": 3,
+            "end_line": 171,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.do_single_step_d",
+          "ptype": "logic",
+          "name": "do_single_step_d",
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 172,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_controller.do_single_step_q",
+          "ptype": "logic",
+          "name": "do_single_step_q",
+          "loc": {
+            "line": 173,
+            "col": 3,
+            "end_line": 173,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_controller.enter_debug_mode_prio_d",
+          "ptype": "logic",
+          "name": "enter_debug_mode_prio_d",
+          "loc": {
+            "line": 174,
+            "col": 3,
+            "end_line": 174,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_controller.enter_debug_mode_prio_q",
+          "ptype": "logic",
+          "name": "enter_debug_mode_prio_q",
+          "loc": {
+            "line": 175,
+            "col": 3,
+            "end_line": 175,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_controller.enter_debug_mode",
+          "ptype": "logic",
+          "name": "enter_debug_mode",
+          "loc": {
+            "line": 176,
+            "col": 3,
+            "end_line": 176,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_controller.ebreak_into_debug",
+          "ptype": "logic",
+          "name": "ebreak_into_debug",
+          "loc": {
+            "line": 177,
+            "col": 3,
+            "end_line": 177,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_controller.irq_enabled",
+          "ptype": "logic",
+          "name": "irq_enabled",
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 21
+          }
+        },
+        {
+          "id": "ibex_controller.handle_irq",
+          "ptype": "logic",
+          "name": "handle_irq",
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "ibex_controller.id_wb_pending",
+          "ptype": "logic",
+          "name": "id_wb_pending",
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_controller.irq_nm",
+          "ptype": "logic",
+          "name": "irq_nm",
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_controller.irq_nm_int",
+          "ptype": "logic",
+          "name": "irq_nm_int",
+          "loc": {
+            "line": 183,
+            "col": 3,
+            "end_line": 183,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_controller.irq_nm_int_mtval",
+          "ptype": "logic",
+          "name": "irq_nm_int_mtval",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 184,
+            "col": 3,
+            "end_line": 184,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.irq_nm_int_cause",
+          "ptype": "ibex_pkg::nmi_int_cause_e",
+          "name": "irq_nm_int_cause",
+          "loc": {
+            "line": 185,
+            "col": 3,
+            "end_line": 185,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_controller.mfip_id",
+          "ptype": "logic",
+          "name": "mfip_id",
+          "dim": "[3:0]",
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 188,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_controller.unused_irq_timer",
+          "ptype": "logic",
+          "name": "unused_irq_timer",
+          "loc": {
+            "line": 189,
+            "col": 3,
+            "end_line": 189,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_controller.ecall_insn",
+          "ptype": "logic",
+          "name": "ecall_insn",
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 20
+          }
+        },
+        {
+          "id": "ibex_controller.mret_insn",
+          "ptype": "logic",
+          "name": "mret_insn",
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_controller.dret_insn",
+          "ptype": "logic",
+          "name": "dret_insn",
+          "loc": {
+            "line": 193,
+            "col": 3,
+            "end_line": 193,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_controller.wfi_insn",
+          "ptype": "logic",
+          "name": "wfi_insn",
+          "loc": {
+            "line": 194,
+            "col": 3,
+            "end_line": 194,
+            "end_col": 18
+          }
+        },
+        {
+          "id": "ibex_controller.ebrk_insn",
+          "ptype": "logic",
+          "name": "ebrk_insn",
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 19
+          }
+        },
+        {
+          "id": "ibex_controller.csr_pipe_flush",
+          "ptype": "logic",
+          "name": "csr_pipe_flush",
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_controller.instr_fetch_err",
+          "ptype": "logic",
+          "name": "instr_fetch_err",
+          "loc": {
+            "line": 197,
+            "col": 3,
+            "end_line": 197,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_controller.cheriot_ex_err",
+          "ptype": "logic",
+          "name": "cheriot_ex_err",
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 24
+          }
+        },
+        {
+          "id": "ibex_controller.mret_cheriot_asr_err",
+          "ptype": "logic",
+          "name": "mret_cheriot_asr_err",
+          "loc": {
+            "line": 199,
+            "col": 3,
+            "end_line": 199,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_controller.csr_cheriot_asr_err",
+          "ptype": "logic",
+          "name": "csr_cheriot_asr_err",
+          "loc": {
+            "line": 200,
+            "col": 3,
+            "end_line": 200,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_controller.g_no_cheriot_asr_err.unused_cheriot_asr_inputs",
+          "ptype": "logic",
+          "name": "unused_cheriot_asr_inputs",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_cheriot_asr_err"
+            }
+          ],
+          "loc": {
+            "line": 245,
+            "col": 5,
+            "end_line": 245,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_irq_pending_q",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_irq_pending_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 395,
+            "col": 5,
+            "end_line": 395,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_irq_pending_d",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_irq_pending_d",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 395,
+            "col": 5,
+            "end_line": 395,
+            "end_col": 83
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_addr_q",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_addr_q",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 396,
+            "col": 5,
+            "end_line": 396,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_addr_d",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_addr_d",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 396,
+            "col": 5,
+            "end_line": 396,
+            "end_col": 69
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_irq_set",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_irq_set",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 397,
+            "col": 5,
+            "end_line": 397,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.mem_resp_intg_err_irq_clear",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err_irq_clear",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 397,
+            "col": 5,
+            "end_line": 397,
+            "end_col": 73
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.entering_nmi",
+          "ptype": "logic",
+          "name": "entering_nmi",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 398,
+            "col": 5,
+            "end_line": 398,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_controller.g_no_intg_irq_int.unused_mem_resp_intg_err_i",
+          "ptype": "logic",
+          "name": "unused_mem_resp_intg_err_i",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_intg_irq_int"
+            }
+          ],
+          "loc": {
+            "line": 441,
+            "col": 5,
+            "end_line": 441,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_controller.gen_cheriot_tieoff.unused_cheriot",
+          "ptype": "logic",
+          "name": "unused_cheriot",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff"
+            }
+          ],
+          "loc": {
+            "line": 1074,
+            "col": 5,
+            "end_line": 1074,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_controller.dbg_entry_with_trigger_match",
+          "ptype": "logic",
+          "name": "dbg_entry_with_trigger_match",
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1124,
+            "col": 3,
+            "end_line": 1124,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_controller.rvfi_flush_next",
+          "ptype": "logic",
+          "name": "rvfi_flush_next",
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1141,
+            "col": 5,
+            "end_line": 1141,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_controller.unused_cheriot_ctrl_inputs",
+          "ptype": "logic",
+          "name": "unused_cheriot_ctrl_inputs",
+          "loc": {
+            "line": 1146,
+            "col": 3,
+            "end_line": 1146,
+            "end_col": 36
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_controller.#always1",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "negedge",
+              "signal": "clk_i"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "negedge",
+          "comment": [
+            "synopsys translate_off",
+            "make sure we are called later so that we do not generate messages for",
+            "glitches"
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "!DII_SIM"
+          ],
+          "loc": {
+            "line": 207,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_controller.g_wb_exceptions.#always2",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_wb_exceptions",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 301,
+            "col": 5,
+            "end_line": 334,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_controller.g_no_wb_exceptions.#always3",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_wb_exceptions"
+            }
+          ],
+          "loc": {
+            "line": 340,
+            "col": 5,
+            "end_line": 370,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.#always4",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "comment": [
+            "Load integrity error internal interrupt"
+          ],
+          "loc": {
+            "line": 403,
+            "col": 5,
+            "end_line": 420,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_controller.g_intg_irq_int.#always5",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 425,
+            "col": 5,
+            "end_line": 433,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_controller.gen_mfip_id",
+          "name": "gen_mfip_id",
+          "kind": "always_comb",
+          "comment": [
+            "generate ID of fast interrupts, highest priority to lowest ID"
+          ],
+          "loc": {
+            "line": 506,
+            "col": 3,
+            "end_line": 514,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_controller.#always7",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 530,
+            "col": 3,
+            "end_line": 536,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_controller.#always8",
+          "kind": "always_comb",
+          "comment": [
+            "///////////////////",
+            "Core controller //",
+            "///////////////////"
+          ],
+          "loc": {
+            "line": 544,
+            "col": 3,
+            "end_line": 1005,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_controller.update_regs",
+          "name": "update_regs",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "comment": [
+            "update registers"
+          ],
+          "loc": {
+            "line": 1035,
+            "col": 3,
+            "end_line": 1057,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_controller.gen_update_regs_cheriot.update_regs_cheriot",
+          "name": "update_regs_cheriot",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_update_regs_cheriot",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 1060,
+            "col": 5,
+            "end_line": 1072,
+            "end_col": 8
+          }
+        }
+      ],
+      "imports": [
+        "ibex_pkg::*"
+      ],
+      "loc": {
+        "line": 14,
+        "col": 1,
+        "end_line": 1154,
+        "end_col": 10
+      }
+    }
+  ]
+}

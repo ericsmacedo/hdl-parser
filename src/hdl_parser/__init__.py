@@ -40,6 +40,7 @@ from .datamodel import (
     File,
     Function,
     Generate,
+    HierarchyNode,
     Interface,
     Location,
     MacroCall,
@@ -51,18 +52,24 @@ from .datamodel import (
     Param,
     Port,
     Process,
+    Settings,
     Signal,
     Typedef,
+    Use,
+    Value,
 )
 from .filelistparser import parse_filelist
 from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_text
+from .project import Definition, Project
 
 __all__ = [
+    "Definition",
     "Diagnostic",
     "Event",
     "File",
     "Function",
     "Generate",
+    "HierarchyNode",
     "Interface",
     "Location",
     "Macro",
@@ -75,8 +82,12 @@ __all__ = [
     "Param",
     "Port",
     "Process",
+    "Project",
+    "Settings",
     "Signal",
     "Typedef",
+    "Use",
+    "Value",
     "parse_defines",
     "parse_defines_text",
     "parse_file",

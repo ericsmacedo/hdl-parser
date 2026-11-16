@@ -1,0 +1,5544 @@
+{
+  "path": "$PRJ/tests/corpus/sv/ibex/ibex_id_stage.sv",
+  "modules": [
+    {
+      "id": "ibex_id_stage",
+      "name": "ibex_id_stage",
+      "params": [
+        {
+          "id": "ibex_id_stage.RV32E",
+          "ptype": "bit",
+          "name": "RV32E",
+          "default": "0",
+          "loc": {
+            "line": 22,
+            "col": 3,
+            "end_line": 22,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.RV32M",
+          "ptype": "ibex_pkg::rv32m_e",
+          "name": "RV32M",
+          "default": "ibex_pkg::RV32MFast",
+          "loc": {
+            "line": 23,
+            "col": 3,
+            "end_line": 23,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_id_stage.RV32B",
+          "ptype": "ibex_pkg::rv32b_e",
+          "name": "RV32B",
+          "default": "ibex_pkg::RV32BNone",
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 24,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_id_stage.DataIndTiming",
+          "ptype": "bit",
+          "name": "DataIndTiming",
+          "default": "1'b0",
+          "loc": {
+            "line": 25,
+            "col": 3,
+            "end_line": 25,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.BranchTargetALU",
+          "ptype": "bit",
+          "name": "BranchTargetALU",
+          "default": "0",
+          "loc": {
+            "line": 26,
+            "col": 3,
+            "end_line": 26,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.WritebackStage",
+          "ptype": "bit",
+          "name": "WritebackStage",
+          "default": "0",
+          "loc": {
+            "line": 27,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.BranchPredictor",
+          "ptype": "bit",
+          "name": "BranchPredictor",
+          "default": "0",
+          "loc": {
+            "line": 28,
+            "col": 3,
+            "end_line": 28,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.MemECC",
+          "ptype": "bit",
+          "name": "MemECC",
+          "default": "1'b0",
+          "loc": {
+            "line": 29,
+            "col": 3,
+            "end_line": 29,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.BaseIsa",
+          "ptype": "ibex_pkg::base_isa_e",
+          "name": "BaseIsa",
+          "default": "ibex_pkg::BaseIsaRV32IorCHERIoT",
+          "loc": {
+            "line": 30,
+            "col": 3,
+            "end_line": 30,
+            "end_col": 80
+          }
+        }
+      ],
+      "ports": [
+        {
+          "id": "ibex_id_stage.clk_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "clk_i",
+          "loc": {
+            "line": 32,
+            "col": 3,
+            "end_line": 32,
+            "end_col": 42
+          }
+        },
+        {
+          "id": "ibex_id_stage.rst_ni",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rst_ni",
+          "loc": {
+            "line": 33,
+            "col": 3,
+            "end_line": 33,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_enable_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::ibex_mubi_t",
+          "name": "cheriot_enable_i",
+          "loc": {
+            "line": 35,
+            "col": 3,
+            "end_line": 35,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.ctrl_busy_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "ctrl_busy_o",
+          "loc": {
+            "line": 36,
+            "col": 3,
+            "end_line": 36,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.illegal_insn_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "illegal_insn_o",
+          "comment": [
+            "Interface to IF stage"
+          ],
+          "loc": {
+            "line": 37,
+            "col": 3,
+            "end_line": 37,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_valid_i",
+          "loc": {
+            "line": 40,
+            "col": 3,
+            "end_line": 40,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.dummy_instr_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "dummy_instr_id_i",
+          "comment": [
+            "instr in ID is a dummy"
+          ],
+          "loc": {
+            "line": 41,
+            "col": 3,
+            "end_line": 41,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_rdata_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "from IF-ID pipeline registers"
+          ],
+          "loc": {
+            "line": 42,
+            "col": 3,
+            "end_line": 42,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_rdata_alu_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_alu_i",
+          "dim": "[31:0]",
+          "comment": [
+            "from IF-ID pipeline registers"
+          ],
+          "loc": {
+            "line": 43,
+            "col": 3,
+            "end_line": 43,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_rdata_c_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_rdata_c_i",
+          "dim": "[15:0]",
+          "comment": [
+            "from IF-ID pipeline registers"
+          ],
+          "loc": {
+            "line": 44,
+            "col": 3,
+            "end_line": 44,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_is_compressed_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_is_compressed_i",
+          "loc": {
+            "line": 45,
+            "col": 3,
+            "end_line": 45,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_gets_expanded_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::instr_exp_e",
+          "name": "instr_gets_expanded_i",
+          "loc": {
+            "line": 46,
+            "col": 3,
+            "end_line": 46,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_bp_taken_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_bp_taken_i",
+          "loc": {
+            "line": 47,
+            "col": 3,
+            "end_line": 47,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_req_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_req_o",
+          "loc": {
+            "line": 48,
+            "col": 3,
+            "end_line": 48,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_first_cycle_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_first_cycle_id_o",
+          "loc": {
+            "line": 49,
+            "col": 3,
+            "end_line": 49,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_valid_clear_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_valid_clear_o",
+          "comment": [
+            "kill instr in IF-ID reg"
+          ],
+          "loc": {
+            "line": 50,
+            "col": 3,
+            "end_line": 50,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_id_stage.id_in_ready_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "id_in_ready_o",
+          "comment": [
+            "ID stage is ready for next instr"
+          ],
+          "loc": {
+            "line": 51,
+            "col": 3,
+            "end_line": 51,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_exec_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_exec_i",
+          "loc": {
+            "line": 52,
+            "col": 3,
+            "end_line": 52,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.icache_inval_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "icache_inval_o",
+          "comment": [
+            "Jumps and branches"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 3,
+            "end_line": 53,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_decision_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "branch_decision_i",
+          "comment": [
+            "IF and ID stage signals"
+          ],
+          "loc": {
+            "line": 56,
+            "col": 3,
+            "end_line": 56,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.pc_set_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "pc_set_o",
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_id_stage.pc_mux_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::pc_sel_e",
+          "name": "pc_mux_o",
+          "loc": {
+            "line": 60,
+            "col": 3,
+            "end_line": 60,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_id_stage.nt_branch_mispredict_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "nt_branch_mispredict_o",
+          "loc": {
+            "line": 61,
+            "col": 3,
+            "end_line": 61,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.nt_branch_addr_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "nt_branch_addr_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 62,
+            "col": 3,
+            "end_line": 62,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.exc_pc_mux_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::exc_pc_sel_e",
+          "name": "exc_pc_mux_o",
+          "loc": {
+            "line": 63,
+            "col": 3,
+            "end_line": 63,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.exc_cause_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::exc_cause_t",
+          "name": "exc_cause_o",
+          "loc": {
+            "line": 64,
+            "col": 3,
+            "end_line": 64,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.illegal_c_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "illegal_c_insn_i",
+          "loc": {
+            "line": 66,
+            "col": 3,
+            "end_line": 66,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_fetch_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_err_i",
+          "loc": {
+            "line": 67,
+            "col": 3,
+            "end_line": 67,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_fetch_err_plus2_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_err_plus2_i",
+          "loc": {
+            "line": 68,
+            "col": 3,
+            "end_line": 68,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_fetch_cheriot_acc_vio_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_cheriot_acc_vio_i",
+          "loc": {
+            "line": 69,
+            "col": 3,
+            "end_line": 69,
+            "end_col": 66
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_fetch_cheriot_bound_vio_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "instr_fetch_cheriot_bound_vio_i",
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 68
+          }
+        },
+        {
+          "id": "ibex_id_stage.pc_id_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "pc_id_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Stalls"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 3,
+            "end_line": 72,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_id_stage.ex_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ex_valid_i",
+          "comment": [
+            "EX stage has valid output"
+          ],
+          "loc": {
+            "line": 75,
+            "col": 3,
+            "end_line": 75,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_resp_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_resp_valid_i",
+          "comment": [
+            "LSU has valid output, or is done",
+            "ALU"
+          ],
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operator_ex_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::alu_op_e",
+          "name": "alu_operator_ex_o",
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operand_a_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alu_operand_a_ex_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 79,
+            "col": 3,
+            "end_line": 79,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operand_b_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "alu_operand_b_ex_o",
+          "dim": "[31:0]",
+          "comment": [
+            "Multicycle Operation Stage Register"
+          ],
+          "loc": {
+            "line": 80,
+            "col": 3,
+            "end_line": 80,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.imd_val_we_ex_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "imd_val_we_ex_i",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 83,
+            "col": 3,
+            "end_line": 83,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.imd_val_d_ex_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "imd_val_d_ex_i",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "loc": {
+            "line": 84,
+            "col": 3,
+            "end_line": 84,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.imd_val_q_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "imd_val_q_ex_o",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "comment": [
+            "Branch target ALU"
+          ],
+          "loc": {
+            "line": 85,
+            "col": 3,
+            "end_line": 85,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.bt_a_operand_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "bt_a_operand_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 88,
+            "col": 3,
+            "end_line": 88,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.bt_b_operand_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "bt_b_operand_o",
+          "dim": "[31:0]",
+          "comment": [
+            "MUL, DIV"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 3,
+            "end_line": 89,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.mult_en_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mult_en_ex_o",
+          "loc": {
+            "line": 92,
+            "col": 3,
+            "end_line": 92,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.div_en_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "div_en_ex_o",
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.mult_sel_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "mult_sel_ex_o",
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.div_sel_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "div_sel_ex_o",
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_operator_ex_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::md_op_e",
+          "name": "multdiv_operator_ex_o",
+          "loc": {
+            "line": 96,
+            "col": 3,
+            "end_line": 96,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_signed_mode_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_signed_mode_ex_o",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 97,
+            "col": 3,
+            "end_line": 97,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_operand_a_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_operand_a_ex_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 98,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_operand_b_ex_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_operand_b_ex_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 99,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_ready_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "multdiv_ready_id_o",
+          "comment": [
+            "CSR"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_access_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_access_o",
+          "loc": {
+            "line": 103,
+            "col": 3,
+            "end_line": 103,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_op_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::csr_op_e",
+          "name": "csr_op_o",
+          "loc": {
+            "line": 104,
+            "col": 3,
+            "end_line": 104,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_addr_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::csr_num_e",
+          "name": "csr_addr_o",
+          "loc": {
+            "line": 105,
+            "col": 3,
+            "end_line": 105,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_op_en_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_op_en_o",
+          "loc": {
+            "line": 106,
+            "col": 3,
+            "end_line": 106,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_save_if_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_if_o",
+          "loc": {
+            "line": 107,
+            "col": 3,
+            "end_line": 107,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_save_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_id_o",
+          "loc": {
+            "line": 108,
+            "col": 3,
+            "end_line": 108,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_save_wb_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_wb_o",
+          "loc": {
+            "line": 109,
+            "col": 3,
+            "end_line": 109,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_restore_mret_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_restore_mret_id_o",
+          "loc": {
+            "line": 110,
+            "col": 3,
+            "end_line": 110,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_restore_dret_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_restore_dret_id_o",
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 111,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_save_cause_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_save_cause_o",
+          "loc": {
+            "line": 112,
+            "col": 3,
+            "end_line": 112,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_mepcc_clrtag_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_mepcc_clrtag_o",
+          "loc": {
+            "line": 113,
+            "col": 3,
+            "end_line": 113,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_mtval_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "csr_mtval_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.priv_mode_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::priv_lvl_e",
+          "name": "priv_mode_i",
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_mstatus_tw_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_mstatus_tw_i",
+          "loc": {
+            "line": 116,
+            "col": 3,
+            "end_line": 116,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.illegal_csr_insn_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "illegal_csr_insn_i",
+          "loc": {
+            "line": 117,
+            "col": 3,
+            "end_line": 117,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.data_ind_timing_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "data_ind_timing_i",
+          "loc": {
+            "line": 118,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_pcc_perm_sr_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_pcc_perm_sr_i",
+          "comment": [
+            "Interface to load store unit"
+          ],
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_req_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "lsu_req_o",
+          "loc": {
+            "line": 122,
+            "col": 3,
+            "end_line": 122,
+            "end_col": 46
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_we_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "lsu_we_o",
+          "loc": {
+            "line": 123,
+            "col": 3,
+            "end_line": 123,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_type_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "lsu_type_o",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_sign_ext_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "lsu_sign_ext_o",
+          "loc": {
+            "line": 125,
+            "col": 3,
+            "end_line": 125,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_wdata_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "lsu_wdata_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 126,
+            "col": 3,
+            "end_line": 126,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_req_done_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_req_done_i",
+          "comment": [
+            "Data req to LSU is complete and",
+            "instruction can move to writeback",
+            "(only relevant where writeback stage is",
+            "present)"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 3,
+            "end_line": 128,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_addr_incr_req_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_addr_incr_req_i",
+          "loc": {
+            "line": 133,
+            "col": 3,
+            "end_line": 133,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_addr_last_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_addr_last_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Interrupt signals"
+          ],
+          "loc": {
+            "line": 134,
+            "col": 3,
+            "end_line": 134,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_mstatus_mie_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_mstatus_mie_i",
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.irq_pending_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_pending_i",
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.irqs_i",
+          "direction": "input",
+          "ptype": "ibex_pkg::irqs_t",
+          "name": "irqs_i",
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_id_stage.irq_nm_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "irq_nm_i",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 45
+          }
+        },
+        {
+          "id": "ibex_id_stage.nmi_mode_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "nmi_mode_o",
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_load_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_load_err_i",
+          "loc": {
+            "line": 143,
+            "col": 3,
+            "end_line": 143,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_load_resp_intg_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_load_resp_intg_err_i",
+          "loc": {
+            "line": 144,
+            "col": 3,
+            "end_line": 144,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_store_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_store_err_i",
+          "loc": {
+            "line": 145,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_store_resp_intg_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_store_resp_intg_err_i",
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 62
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_err_is_cheriot_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "lsu_err_is_cheriot_i",
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_id_stage.expecting_load_resp_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "expecting_load_resp_o",
+          "loc": {
+            "line": 149,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.expecting_store_resp_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "expecting_store_resp_o",
+          "comment": [
+            "Debug Signal"
+          ],
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_mode_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_mode_o",
+          "loc": {
+            "line": 153,
+            "col": 3,
+            "end_line": 153,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_mode_entering_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_mode_entering_o",
+          "loc": {
+            "line": 154,
+            "col": 3,
+            "end_line": 154,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_cause_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::dbg_cause_e",
+          "name": "debug_cause_o",
+          "loc": {
+            "line": 155,
+            "col": 3,
+            "end_line": 155,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_csr_save_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "debug_csr_save_o",
+          "loc": {
+            "line": 156,
+            "col": 3,
+            "end_line": 156,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_req_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_req_i",
+          "loc": {
+            "line": 157,
+            "col": 3,
+            "end_line": 157,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_single_step_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_single_step_i",
+          "loc": {
+            "line": 158,
+            "col": 3,
+            "end_line": 158,
+            "end_col": 56
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_ebreakm_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_ebreakm_i",
+          "loc": {
+            "line": 159,
+            "col": 3,
+            "end_line": 159,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.debug_ebreaku_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "debug_ebreaku_i",
+          "loc": {
+            "line": 160,
+            "col": 3,
+            "end_line": 160,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.trigger_match_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "trigger_match_i",
+          "comment": [
+            "Write back signal"
+          ],
+          "loc": {
+            "line": 161,
+            "col": 3,
+            "end_line": 161,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.result_ex_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "result_ex_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 164,
+            "col": 3,
+            "end_line": 164,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_rdata_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "csr_rdata_i",
+          "dim": "[31:0]",
+          "comment": [
+            "Register file read"
+          ],
+          "loc": {
+            "line": 165,
+            "col": 3,
+            "end_line": 165,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_raddr_a_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_a_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 168,
+            "col": 3,
+            "end_line": 168,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rdata_a_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rdata_a_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 169,
+            "col": 3,
+            "end_line": 169,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_raddr_b_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_raddr_b_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 170,
+            "col": 3,
+            "end_line": 170,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rdata_b_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_rdata_b_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 171,
+            "col": 3,
+            "end_line": 171,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_a_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_ren_a_o",
+          "loc": {
+            "line": 172,
+            "col": 3,
+            "end_line": 172,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_b_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_ren_b_o",
+          "comment": [
+            "Register file write (via writeback)"
+          ],
+          "loc": {
+            "line": 173,
+            "col": 3,
+            "end_line": 173,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_waddr_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_waddr_id_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 176,
+            "col": 3,
+            "end_line": 176,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_wdata_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_wdata_id_o",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 177,
+            "col": 3,
+            "end_line": 177,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_we_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_we_id_o",
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rd_a_wb_match_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_rd_a_wb_match_o",
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rd_b_wb_match_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "rf_rd_b_wb_match_o",
+          "comment": [
+            "Register write information from writeback (for resolving data hazards)"
+          ],
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_waddr_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_waddr_wb_i",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 183,
+            "col": 3,
+            "end_line": 183,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_wdata_fwd_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_wdata_fwd_wb_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 184,
+            "col": 3,
+            "end_line": 184,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_write_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "rf_write_wb_i",
+          "loc": {
+            "line": 185,
+            "col": 3,
+            "end_line": 185,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.en_wb_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "en_wb_o",
+          "loc": {
+            "line": 187,
+            "col": 3,
+            "end_line": 187,
+            "end_col": 44
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_type_wb_o",
+          "direction": "output",
+          "ptype": "ibex_pkg::wb_instr_type_e",
+          "name": "instr_type_wb_o",
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 188,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_perf_count_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_perf_count_id_o",
+          "loc": {
+            "line": 189,
+            "col": 3,
+            "end_line": 189,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.ready_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "ready_wb_i",
+          "loc": {
+            "line": 190,
+            "col": 3,
+            "end_line": 190,
+            "end_col": 47
+          }
+        },
+        {
+          "id": "ibex_id_stage.outstanding_load_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "outstanding_load_wb_i",
+          "loc": {
+            "line": 191,
+            "col": 3,
+            "end_line": 191,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.outstanding_store_wb_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "outstanding_store_wb_i",
+          "comment": [
+            "Performance Counters"
+          ],
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 59
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_jump_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_jump_o",
+          "comment": [
+            "executing a jump instr"
+          ],
+          "loc": {
+            "line": 195,
+            "col": 3,
+            "end_line": 195,
+            "end_col": 48
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_branch_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_branch_o",
+          "comment": [
+            "executing a branch instr"
+          ],
+          "loc": {
+            "line": 196,
+            "col": 3,
+            "end_line": 196,
+            "end_col": 50
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_tbranch_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_tbranch_o",
+          "comment": [
+            "executing a taken branch instr"
+          ],
+          "loc": {
+            "line": 197,
+            "col": 3,
+            "end_line": 197,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_dside_wait_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_dside_wait_o",
+          "comment": [
+            "instruction in ID/EX is awaiting memory",
+            "access to finish before proceeding"
+          ],
+          "loc": {
+            "line": 198,
+            "col": 3,
+            "end_line": 198,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_mul_wait_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_mul_wait_o",
+          "loc": {
+            "line": 200,
+            "col": 3,
+            "end_line": 200,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.perf_div_wait_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "perf_div_wait_o",
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_id_done_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_id_done_o",
+          "comment": [
+            "cheriot signals"
+          ],
+          "loc": {
+            "line": 202,
+            "col": 3,
+            "end_line": 202,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_exec_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_exec_id_o",
+          "loc": {
+            "line": 205,
+            "col": 3,
+            "end_line": 205,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_is_cheriot_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_is_cheriot_id_o",
+          "loc": {
+            "line": 206,
+            "col": 3,
+            "end_line": 206,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_is_rv32lsu_id_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "instr_is_rv32lsu_id_o",
+          "loc": {
+            "line": 207,
+            "col": 3,
+            "end_line": 207,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_imm12_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm12_o",
+          "dim": "[11:0]",
+          "loc": {
+            "line": 208,
+            "col": 3,
+            "end_line": 208,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_imm20_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm20_o",
+          "dim": "[19:0]",
+          "loc": {
+            "line": 209,
+            "col": 3,
+            "end_line": 209,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_imm21_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_imm21_o",
+          "dim": "[20:0]",
+          "loc": {
+            "line": 210,
+            "col": 3,
+            "end_line": 210,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_operator_o",
+          "direction": "output",
+          "ptype": "cheriot_op_t",
+          "name": "cheriot_operator_o",
+          "loc": {
+            "line": 211,
+            "col": 3,
+            "end_line": 211,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_cs2_dec_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_cs2_dec_o",
+          "dim": "[4:0]",
+          "loc": {
+            "line": 212,
+            "col": 3,
+            "end_line": 212,
+            "end_col": 54
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_cap_field_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_cap_field_e",
+          "name": "cheriot_cap_field_sel_o",
+          "loc": {
+            "line": 213,
+            "col": 3,
+            "end_line": 213,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_adder_a_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_adder_a_sel_e",
+          "name": "cheriot_adder_a_sel_o",
+          "loc": {
+            "line": 214,
+            "col": 3,
+            "end_line": 214,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_adder_b_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_adder_b_sel_e",
+          "name": "cheriot_adder_b_sel_o",
+          "loc": {
+            "line": 215,
+            "col": 3,
+            "end_line": 215,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_setaddr_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_setaddr_sel_e",
+          "name": "cheriot_setaddr_sel_o",
+          "loc": {
+            "line": 216,
+            "col": 3,
+            "end_line": 216,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_setbounds_sel_o",
+          "direction": "output",
+          "ptype": "cheriot_setbounds_sel_e",
+          "name": "cheriot_setbounds_sel_o",
+          "loc": {
+            "line": 217,
+            "col": 3,
+            "end_line": 217,
+            "end_col": 60
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_load_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_load_o",
+          "loc": {
+            "line": 218,
+            "col": 3,
+            "end_line": 218,
+            "end_col": 51
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_store_o",
+          "direction": "output",
+          "ptype": "logic",
+          "name": "cheriot_store_o",
+          "loc": {
+            "line": 219,
+            "col": 3,
+            "end_line": 219,
+            "end_col": 52
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_ex_valid_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_valid_i",
+          "loc": {
+            "line": 221,
+            "col": 3,
+            "end_line": 221,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_ex_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_i",
+          "loc": {
+            "line": 222,
+            "col": 3,
+            "end_line": 222,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_ex_err_info_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_ex_err_info_i",
+          "dim": "[11:0]",
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 223,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_wb_err_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_i",
+          "loc": {
+            "line": 224,
+            "col": 3,
+            "end_line": 224,
+            "end_col": 53
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_wb_err_info_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_wb_err_info_i",
+          "dim": "[15:0]",
+          "loc": {
+            "line": 225,
+            "col": 3,
+            "end_line": 225,
+            "end_col": 58
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_branch_req_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_branch_req_i",
+          "comment": [
+            "from cheriot EX"
+          ],
+          "loc": {
+            "line": 226,
+            "col": 3,
+            "end_line": 226,
+            "end_col": 57
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_branch_target_i",
+          "direction": "input",
+          "ptype": "logic",
+          "name": "cheriot_branch_target_i",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 227,
+            "col": 3,
+            "end_line": 227,
+            "end_col": 60
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "ibex_id_stage.illegal_insn_dec",
+          "ptype": "logic",
+          "name": "illegal_insn_dec",
+          "loc": {
+            "line": 233,
+            "col": 3,
+            "end_line": 233,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_id_stage.illegal_dret_insn",
+          "ptype": "logic",
+          "name": "illegal_dret_insn",
+          "loc": {
+            "line": 234,
+            "col": 3,
+            "end_line": 234,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.illegal_umode_insn",
+          "ptype": "logic",
+          "name": "illegal_umode_insn",
+          "loc": {
+            "line": 235,
+            "col": 3,
+            "end_line": 235,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_id_stage.ebrk_insn",
+          "ptype": "logic",
+          "name": "ebrk_insn",
+          "loc": {
+            "line": 236,
+            "col": 3,
+            "end_line": 236,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_id_stage.mret_insn_dec",
+          "ptype": "logic",
+          "name": "mret_insn_dec",
+          "loc": {
+            "line": 237,
+            "col": 3,
+            "end_line": 237,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.dret_insn_dec",
+          "ptype": "logic",
+          "name": "dret_insn_dec",
+          "loc": {
+            "line": 238,
+            "col": 3,
+            "end_line": 238,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.ecall_insn_dec",
+          "ptype": "logic",
+          "name": "ecall_insn_dec",
+          "loc": {
+            "line": 239,
+            "col": 3,
+            "end_line": 239,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.wfi_insn_dec",
+          "ptype": "logic",
+          "name": "wfi_insn_dec",
+          "loc": {
+            "line": 240,
+            "col": 3,
+            "end_line": 240,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.wb_exception",
+          "ptype": "logic",
+          "name": "wb_exception",
+          "loc": {
+            "line": 242,
+            "col": 3,
+            "end_line": 242,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.unused_id_exception",
+          "ptype": "logic",
+          "name": "unused_id_exception",
+          "loc": {
+            "line": 243,
+            "col": 3,
+            "end_line": 243,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_id_stage.id_exception_nc",
+          "ptype": "logic",
+          "name": "id_exception_nc",
+          "loc": {
+            "line": 244,
+            "col": 3,
+            "end_line": 244,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_in_dec",
+          "ptype": "logic",
+          "name": "branch_in_dec",
+          "loc": {
+            "line": 246,
+            "col": 3,
+            "end_line": 246,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_set",
+          "ptype": "logic",
+          "name": "branch_set",
+          "loc": {
+            "line": 247,
+            "col": 3,
+            "end_line": 247,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_set_raw",
+          "ptype": "logic",
+          "name": "branch_set_raw",
+          "loc": {
+            "line": 247,
+            "col": 3,
+            "end_line": 247,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_set_raw_d",
+          "ptype": "logic",
+          "name": "branch_set_raw_d",
+          "loc": {
+            "line": 247,
+            "col": 3,
+            "end_line": 247,
+            "end_col": 61
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_jump_set_done_q",
+          "ptype": "logic",
+          "name": "branch_jump_set_done_q",
+          "loc": {
+            "line": 248,
+            "col": 3,
+            "end_line": 248,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_jump_set_done_d",
+          "ptype": "logic",
+          "name": "branch_jump_set_done_d",
+          "loc": {
+            "line": 248,
+            "col": 3,
+            "end_line": 248,
+            "end_col": 63
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_not_set",
+          "ptype": "logic",
+          "name": "branch_not_set",
+          "loc": {
+            "line": 249,
+            "col": 3,
+            "end_line": 249,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.branch_taken",
+          "ptype": "logic",
+          "name": "branch_taken",
+          "loc": {
+            "line": 250,
+            "col": 3,
+            "end_line": 250,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.jump_in_dec",
+          "ptype": "logic",
+          "name": "jump_in_dec",
+          "loc": {
+            "line": 251,
+            "col": 3,
+            "end_line": 251,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_id_stage.jump_set_dec",
+          "ptype": "logic",
+          "name": "jump_set_dec",
+          "loc": {
+            "line": 252,
+            "col": 3,
+            "end_line": 252,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.jump_set",
+          "ptype": "logic",
+          "name": "jump_set",
+          "loc": {
+            "line": 253,
+            "col": 3,
+            "end_line": 253,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_id_stage.jump_set_raw",
+          "ptype": "logic",
+          "name": "jump_set_raw",
+          "loc": {
+            "line": 253,
+            "col": 3,
+            "end_line": 253,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_first_cycle",
+          "ptype": "logic",
+          "name": "instr_first_cycle",
+          "loc": {
+            "line": 255,
+            "col": 3,
+            "end_line": 255,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_executing_spec",
+          "ptype": "logic",
+          "name": "instr_executing_spec",
+          "loc": {
+            "line": 256,
+            "col": 3,
+            "end_line": 256,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_executing",
+          "ptype": "logic",
+          "name": "instr_executing",
+          "loc": {
+            "line": 257,
+            "col": 3,
+            "end_line": 257,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_done",
+          "ptype": "logic",
+          "name": "instr_done",
+          "loc": {
+            "line": 258,
+            "col": 3,
+            "end_line": 258,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.controller_run",
+          "ptype": "logic",
+          "name": "controller_run",
+          "loc": {
+            "line": 259,
+            "col": 3,
+            "end_line": 259,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_ld_hz",
+          "ptype": "logic",
+          "name": "stall_ld_hz",
+          "loc": {
+            "line": 260,
+            "col": 3,
+            "end_line": 260,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_mem",
+          "ptype": "logic",
+          "name": "stall_mem",
+          "loc": {
+            "line": 261,
+            "col": 3,
+            "end_line": 261,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_multdiv",
+          "ptype": "logic",
+          "name": "stall_multdiv",
+          "loc": {
+            "line": 262,
+            "col": 3,
+            "end_line": 262,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_branch",
+          "ptype": "logic",
+          "name": "stall_branch",
+          "loc": {
+            "line": 263,
+            "col": 3,
+            "end_line": 263,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_jump",
+          "ptype": "logic",
+          "name": "stall_jump",
+          "loc": {
+            "line": 264,
+            "col": 3,
+            "end_line": 264,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_id",
+          "ptype": "logic",
+          "name": "stall_id",
+          "loc": {
+            "line": 265,
+            "col": 3,
+            "end_line": 265,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_id_stage.stall_wb",
+          "ptype": "logic",
+          "name": "stall_wb",
+          "loc": {
+            "line": 266,
+            "col": 3,
+            "end_line": 266,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_id_stage.flush_id",
+          "ptype": "logic",
+          "name": "flush_id",
+          "loc": {
+            "line": 267,
+            "col": 3,
+            "end_line": 267,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_id_stage.multicycle_done",
+          "ptype": "logic",
+          "name": "multicycle_done",
+          "loc": {
+            "line": 268,
+            "col": 3,
+            "end_line": 268,
+            "end_col": 32
+          }
+        },
+        {
+          "id": "ibex_id_stage.mem_resp_intg_err",
+          "ptype": "logic",
+          "name": "mem_resp_intg_err",
+          "loc": {
+            "line": 270,
+            "col": 3,
+            "end_line": 270,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_i_type",
+          "ptype": "logic",
+          "name": "imm_i_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 273,
+            "col": 3,
+            "end_line": 273,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_s_type",
+          "ptype": "logic",
+          "name": "imm_s_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 274,
+            "col": 3,
+            "end_line": 274,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_b_type",
+          "ptype": "logic",
+          "name": "imm_b_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 275,
+            "col": 3,
+            "end_line": 275,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_u_type",
+          "ptype": "logic",
+          "name": "imm_u_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 276,
+            "col": 3,
+            "end_line": 276,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_j_type",
+          "ptype": "logic",
+          "name": "imm_j_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 277,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 27
+          }
+        },
+        {
+          "id": "ibex_id_stage.zimm_rs1_type",
+          "ptype": "logic",
+          "name": "zimm_rs1_type",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 278,
+            "col": 3,
+            "end_line": 278,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_a",
+          "ptype": "logic",
+          "name": "imm_a",
+          "dim": "[31:0]",
+          "comment": [
+            "contains the immediate for operand b"
+          ],
+          "loc": {
+            "line": 280,
+            "col": 3,
+            "end_line": 280,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_b",
+          "ptype": "logic",
+          "name": "imm_b",
+          "dim": "[31:0]",
+          "comment": [
+            "contains the immediate for operand b"
+          ],
+          "loc": {
+            "line": 281,
+            "col": 3,
+            "end_line": 281,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_wdata_sel",
+          "ptype": "rf_wd_sel_e",
+          "name": "rf_wdata_sel",
+          "loc": {
+            "line": 285,
+            "col": 3,
+            "end_line": 285,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_we_dec",
+          "ptype": "logic",
+          "name": "rf_we_dec",
+          "loc": {
+            "line": 286,
+            "col": 3,
+            "end_line": 286,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_we_raw",
+          "ptype": "logic",
+          "name": "rf_we_raw",
+          "loc": {
+            "line": 286,
+            "col": 3,
+            "end_line": 286,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_a",
+          "ptype": "logic",
+          "name": "rf_ren_a",
+          "loc": {
+            "line": 287,
+            "col": 3,
+            "end_line": 287,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_b",
+          "ptype": "logic",
+          "name": "rf_ren_b",
+          "loc": {
+            "line": 287,
+            "col": 3,
+            "end_line": 287,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_a_dec",
+          "ptype": "logic",
+          "name": "rf_ren_a_dec",
+          "loc": {
+            "line": 288,
+            "col": 3,
+            "end_line": 288,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_ren_b_dec",
+          "ptype": "logic",
+          "name": "rf_ren_b_dec",
+          "loc": {
+            "line": 288,
+            "col": 3,
+            "end_line": 288,
+            "end_col": 43
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_we_or_load",
+          "ptype": "logic",
+          "name": "rf_we_or_load",
+          "loc": {
+            "line": 289,
+            "col": 3,
+            "end_line": 289,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rdata_a_fwd",
+          "ptype": "logic",
+          "name": "rf_rdata_a_fwd",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 298,
+            "col": 3,
+            "end_line": 298,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_rdata_b_fwd",
+          "ptype": "logic",
+          "name": "rf_rdata_b_fwd",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 299,
+            "col": 3,
+            "end_line": 299,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.cheriot_lsu_req_dec",
+          "ptype": "logic",
+          "name": "cheriot_lsu_req_dec",
+          "loc": {
+            "line": 301,
+            "col": 3,
+            "end_line": 301,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_id_stage.ex_valid_all",
+          "ptype": "logic",
+          "name": "ex_valid_all",
+          "loc": {
+            "line": 302,
+            "col": 3,
+            "end_line": 302,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operator",
+          "ptype": "alu_op_e",
+          "name": "alu_operator",
+          "loc": {
+            "line": 305,
+            "col": 3,
+            "end_line": 305,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_op_a_mux_sel",
+          "ptype": "op_a_sel_e",
+          "name": "alu_op_a_mux_sel",
+          "loc": {
+            "line": 306,
+            "col": 3,
+            "end_line": 306,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_op_a_mux_sel_dec",
+          "ptype": "op_a_sel_e",
+          "name": "alu_op_a_mux_sel_dec",
+          "loc": {
+            "line": 306,
+            "col": 3,
+            "end_line": 306,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_op_b_mux_sel",
+          "ptype": "op_b_sel_e",
+          "name": "alu_op_b_mux_sel",
+          "loc": {
+            "line": 307,
+            "col": 3,
+            "end_line": 307,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_op_b_mux_sel_dec",
+          "ptype": "op_b_sel_e",
+          "name": "alu_op_b_mux_sel_dec",
+          "loc": {
+            "line": 307,
+            "col": 3,
+            "end_line": 307,
+            "end_col": 55
+          }
+        },
+        {
+          "id": "ibex_id_stage.imd_val_q",
+          "ptype": "logic",
+          "name": "imd_val_q",
+          "dim": "[33:0]",
+          "dim_unpacked": "[2]",
+          "loc": {
+            "line": 309,
+            "col": 3,
+            "end_line": 309,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.bt_a_mux_sel",
+          "ptype": "op_a_sel_e",
+          "name": "bt_a_mux_sel",
+          "loc": {
+            "line": 311,
+            "col": 3,
+            "end_line": 311,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.bt_b_mux_sel",
+          "ptype": "imm_b_sel_e",
+          "name": "bt_b_mux_sel",
+          "loc": {
+            "line": 312,
+            "col": 3,
+            "end_line": 312,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_a_mux_sel",
+          "ptype": "imm_a_sel_e",
+          "name": "imm_a_mux_sel",
+          "loc": {
+            "line": 314,
+            "col": 3,
+            "end_line": 314,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_b_mux_sel",
+          "ptype": "imm_b_sel_e",
+          "name": "imm_b_mux_sel",
+          "loc": {
+            "line": 315,
+            "col": 3,
+            "end_line": 315,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.imm_b_mux_sel_dec",
+          "ptype": "imm_b_sel_e",
+          "name": "imm_b_mux_sel_dec",
+          "loc": {
+            "line": 315,
+            "col": 3,
+            "end_line": 315,
+            "end_col": 49
+          }
+        },
+        {
+          "id": "ibex_id_stage.mult_en_id",
+          "ptype": "logic",
+          "name": "mult_en_id",
+          "comment": [
+            "use integer multiplier"
+          ],
+          "loc": {
+            "line": 318,
+            "col": 3,
+            "end_line": 318,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_id_stage.mult_en_dec",
+          "ptype": "logic",
+          "name": "mult_en_dec",
+          "comment": [
+            "use integer multiplier"
+          ],
+          "loc": {
+            "line": 318,
+            "col": 3,
+            "end_line": 318,
+            "end_col": 40
+          }
+        },
+        {
+          "id": "ibex_id_stage.div_en_id",
+          "ptype": "logic",
+          "name": "div_en_id",
+          "comment": [
+            "use integer division or reminder"
+          ],
+          "loc": {
+            "line": 319,
+            "col": 3,
+            "end_line": 319,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_id_stage.div_en_dec",
+          "ptype": "logic",
+          "name": "div_en_dec",
+          "comment": [
+            "use integer division or reminder"
+          ],
+          "loc": {
+            "line": 319,
+            "col": 3,
+            "end_line": 319,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_en_dec",
+          "ptype": "logic",
+          "name": "multdiv_en_dec",
+          "loc": {
+            "line": 320,
+            "col": 3,
+            "end_line": 320,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_operator",
+          "ptype": "md_op_e",
+          "name": "multdiv_operator",
+          "loc": {
+            "line": 321,
+            "col": 3,
+            "end_line": 321,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_id_stage.multdiv_signed_mode",
+          "ptype": "logic",
+          "name": "multdiv_signed_mode",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 322,
+            "col": 3,
+            "end_line": 322,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_we",
+          "ptype": "logic",
+          "name": "lsu_we",
+          "loc": {
+            "line": 325,
+            "col": 3,
+            "end_line": 325,
+            "end_col": 23
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_type",
+          "ptype": "logic",
+          "name": "lsu_type",
+          "dim": "[1:0]",
+          "loc": {
+            "line": 326,
+            "col": 3,
+            "end_line": 326,
+            "end_col": 25
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_sign_ext",
+          "ptype": "logic",
+          "name": "lsu_sign_ext",
+          "loc": {
+            "line": 327,
+            "col": 3,
+            "end_line": 327,
+            "end_col": 29
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_req",
+          "ptype": "logic",
+          "name": "lsu_req",
+          "loc": {
+            "line": 328,
+            "col": 3,
+            "end_line": 328,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.lsu_req_dec",
+          "ptype": "logic",
+          "name": "lsu_req_dec",
+          "loc": {
+            "line": 328,
+            "col": 3,
+            "end_line": 328,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.data_req_allowed",
+          "ptype": "logic",
+          "name": "data_req_allowed",
+          "loc": {
+            "line": 329,
+            "col": 3,
+            "end_line": 329,
+            "end_col": 33
+          }
+        },
+        {
+          "id": "ibex_id_stage.no_flush_csr_addr",
+          "ptype": "logic",
+          "name": "no_flush_csr_addr",
+          "loc": {
+            "line": 332,
+            "col": 3,
+            "end_line": 332,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_pipe_flush",
+          "ptype": "logic",
+          "name": "csr_pipe_flush",
+          "loc": {
+            "line": 333,
+            "col": 3,
+            "end_line": 333,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.csr_cheriot_always_ok",
+          "ptype": "logic",
+          "name": "csr_cheriot_always_ok",
+          "loc": {
+            "line": 334,
+            "col": 3,
+            "end_line": 334,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operand_a",
+          "ptype": "logic",
+          "name": "alu_operand_a",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 336,
+            "col": 3,
+            "end_line": 336,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.alu_operand_b",
+          "ptype": "logic",
+          "name": "alu_operand_b",
+          "dim": "[31:0]",
+          "loc": {
+            "line": 337,
+            "col": 3,
+            "end_line": 337,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.instr_is_legal_cheriot",
+          "ptype": "logic",
+          "name": "instr_is_legal_cheriot",
+          "loc": {
+            "line": 339,
+            "col": 3,
+            "end_line": 339,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_nobtalu.unused_a_mux_sel",
+          "ptype": "op_a_sel_e",
+          "name": "unused_a_mux_sel",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu"
+            }
+          ],
+          "loc": {
+            "line": 407,
+            "col": 5,
+            "end_line": 407,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_nobtalu.unused_b_mux_sel",
+          "ptype": "imm_b_sel_e",
+          "name": "unused_b_mux_sel",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu"
+            }
+          ],
+          "loc": {
+            "line": 408,
+            "col": 5,
+            "end_line": 408,
+            "end_col": 34
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_branch_set_flop.branch_set_raw_q",
+          "ptype": "logic",
+          "name": "branch_set_raw_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_branch_set_flop"
+            }
+          ],
+          "loc": {
+            "line": 772,
+            "col": 5,
+            "end_line": 772,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_sec_branch_taken.branch_taken_q",
+          "ptype": "logic",
+          "name": "branch_taken_q",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_sec_branch_taken",
+              "cond": "DataIndTiming"
+            }
+          ],
+          "loc": {
+            "line": 818,
+            "col": 5,
+            "end_line": 818,
+            "end_col": 26
+          }
+        },
+        {
+          "id": "ibex_id_stage.id_fsm_q",
+          "ptype": "id_fsm_e",
+          "name": "id_fsm_q",
+          "loc": {
+            "line": 859,
+            "col": 3,
+            "end_line": 859,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.id_fsm_d",
+          "ptype": "id_fsm_e",
+          "name": "id_fsm_d",
+          "loc": {
+            "line": 859,
+            "col": 3,
+            "end_line": 859,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.rf_rd_a_wb_match",
+          "ptype": "logic",
+          "name": "rf_rd_a_wb_match",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 993,
+            "col": 5,
+            "end_line": 993,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.rf_rd_b_wb_match",
+          "ptype": "logic",
+          "name": "rf_rd_b_wb_match",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 994,
+            "col": 5,
+            "end_line": 994,
+            "end_col": 28
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.rf_rd_a_hz",
+          "ptype": "logic",
+          "name": "rf_rd_a_hz",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 996,
+            "col": 5,
+            "end_line": 996,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.rf_rd_b_hz",
+          "ptype": "logic",
+          "name": "rf_rd_b_hz",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 997,
+            "col": 5,
+            "end_line": 997,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.outstanding_memory_access",
+          "ptype": "logic",
+          "name": "outstanding_memory_access",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 999,
+            "col": 5,
+            "end_line": 999,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.instr_kill",
+          "ptype": "logic",
+          "name": "instr_kill",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1001,
+            "col": 5,
+            "end_line": 1001,
+            "end_col": 22
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_stall_mem.unused_rf_we_or_load_valid",
+          "ptype": "logic",
+          "name": "unused_rf_we_or_load_valid",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1113,
+            "col": 5,
+            "end_line": 1113,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_data_req_done_ex",
+          "ptype": "logic",
+          "name": "unused_data_req_done_ex",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1174,
+            "col": 5,
+            "end_line": 1174,
+            "end_col": 35
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_rf_waddr_wb",
+          "ptype": "logic",
+          "name": "unused_rf_waddr_wb",
+          "dim": "[4:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1175,
+            "col": 5,
+            "end_line": 1175,
+            "end_col": 36
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_rf_write_wb",
+          "ptype": "logic",
+          "name": "unused_rf_write_wb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1176,
+            "col": 5,
+            "end_line": 1176,
+            "end_col": 30
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_outstanding_load_wb",
+          "ptype": "logic",
+          "name": "unused_outstanding_load_wb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1177,
+            "col": 5,
+            "end_line": 1177,
+            "end_col": 38
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_outstanding_store_wb",
+          "ptype": "logic",
+          "name": "unused_outstanding_store_wb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1178,
+            "col": 5,
+            "end_line": 1178,
+            "end_col": 39
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_wb_exception",
+          "ptype": "logic",
+          "name": "unused_wb_exception",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1179,
+            "col": 5,
+            "end_line": 1179,
+            "end_col": 31
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_rf_wdata_fwd_wb",
+          "ptype": "logic",
+          "name": "unused_rf_wdata_fwd_wb",
+          "dim": "[31:0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1180,
+            "col": 5,
+            "end_line": 1180,
+            "end_col": 41
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_no_stall_mem.unused_cheriot_wb_signals",
+          "ptype": "logic",
+          "name": "unused_cheriot_wb_signals",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem"
+            }
+          ],
+          "loc": {
+            "line": 1190,
+            "col": 5,
+            "end_line": 1190,
+            "end_col": 37
+          }
+        },
+        {
+          "id": "ibex_id_stage.minstret_write",
+          "ptype": "logic",
+          "name": "minstret_write",
+          "loc": {
+            "line": 1204,
+            "col": 3,
+            "end_line": 1204,
+            "end_col": 24
+          }
+        }
+      ],
+      "typedefs": [
+        {
+          "id": "ibex_id_stage.id_fsm_e",
+          "name": "id_fsm_e",
+          "kind": "enum",
+          "dtype": "logic",
+          "members": [
+            {
+              "id": "ibex_id_stage.id_fsm_e.FIRST_CYCLE",
+              "name": "FIRST_CYCLE",
+              "loc": {
+                "line": 858,
+                "col": 24,
+                "end_line": 858,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.id_fsm_e.MULTI_CYCLE",
+              "name": "MULTI_CYCLE",
+              "loc": {
+                "line": 858,
+                "col": 37,
+                "end_line": 858,
+                "end_col": 48
+              }
+            }
+          ],
+          "comment": [
+            "/////////////",
+            "ID-EX FSM //",
+            "/////////////"
+          ],
+          "loc": {
+            "line": 858,
+            "col": 3,
+            "end_line": 858,
+            "end_col": 60
+          }
+        }
+      ],
+      "processes": [
+        {
+          "id": "ibex_id_stage.alu_operand_a_mux",
+          "name": "alu_operand_a_mux",
+          "kind": "always_comb",
+          "comment": [
+            "Main ALU MUX for Operand A"
+          ],
+          "loc": {
+            "line": 358,
+            "col": 3,
+            "end_line": 366,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_btalu_muxes.bt_operand_a_mux",
+          "name": "bt_operand_a_mux",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_btalu_muxes",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "comment": [
+            "Branch target ALU operand A mux"
+          ],
+          "loc": {
+            "line": 370,
+            "col": 5,
+            "end_line": 376,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_btalu_muxes.bt_immediate_b_mux",
+          "name": "bt_immediate_b_mux",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_btalu_muxes",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "comment": [
+            "Branch target ALU operand B mux"
+          ],
+          "loc": {
+            "line": 379,
+            "col": 5,
+            "end_line": 387,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_btalu_muxes.immediate_b_mux",
+          "name": "immediate_b_mux",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_btalu_muxes",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "comment": [
+            "Reduced main ALU immediate MUX for Operand B"
+          ],
+          "loc": {
+            "line": 390,
+            "col": 5,
+            "end_line": 399,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_nobtalu.immediate_b_mux",
+          "name": "immediate_b_mux",
+          "kind": "always_comb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu"
+            }
+          ],
+          "comment": [
+            "Full main ALU immediate MUX for Operand B"
+          ],
+          "loc": {
+            "line": 416,
+            "col": 5,
+            "end_line": 427,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.gen_intermediate_val_reg.intermediate_val_reg",
+          "name": "intermediate_val_reg",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_intermediate_val_reg",
+              "cond": "genvar i = 0; i < 2; i++"
+            }
+          ],
+          "loc": {
+            "line": 446,
+            "col": 5,
+            "end_line": 452,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.rf_wdata_id_mux",
+          "name": "rf_wdata_id_mux",
+          "kind": "always_comb",
+          "comment": [
+            "Register file write data mux"
+          ],
+          "loc": {
+            "line": 465,
+            "col": 3,
+            "end_line": 471,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_branch_set_flop.#always8",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_branch_set_flop"
+            }
+          ],
+          "loc": {
+            "line": 774,
+            "col": 5,
+            "end_line": 782,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.#always9",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 796,
+            "col": 3,
+            "end_line": 802,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_id_stage.g_sec_branch_taken.#always10",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_sec_branch_taken",
+              "cond": "DataIndTiming"
+            }
+          ],
+          "loc": {
+            "line": 820,
+            "col": 5,
+            "end_line": 826,
+            "end_col": 8
+          }
+        },
+        {
+          "id": "ibex_id_stage.id_pipeline_reg",
+          "name": "id_pipeline_reg",
+          "kind": "always_ff",
+          "events": [
+            {
+              "edge": "posedge",
+              "signal": "clk_i"
+            },
+            {
+              "edge": "negedge",
+              "signal": "rst_ni"
+            }
+          ],
+          "clock": "clk_i",
+          "clock_edge": "posedge",
+          "reset": "rst_ni",
+          "reset_edge": "negedge",
+          "loc": {
+            "line": 861,
+            "col": 3,
+            "end_line": 867,
+            "end_col": 6
+          }
+        },
+        {
+          "id": "ibex_id_stage.#always12",
+          "kind": "always_comb",
+          "comment": [
+            "ID/EX stage can be in two states, FIRST_CYCLE and MULTI_CYCLE. An instruction enters",
+            "MULTI_CYCLE if it requires multiple cycles to complete regardless of stalls and other",
+            "considerations. An instruction may be held in FIRST_CYCLE if it's unable to begin executing",
+            "(this is controlled by instr_executing)."
+          ],
+          "loc": {
+            "line": 874,
+            "col": 3,
+            "end_line": 964,
+            "end_col": 6
+          }
+        }
+      ],
+      "insts": [
+        {
+          "id": "ibex_id_stage.decoder_i",
+          "name": "decoder_i",
+          "module": "ibex_decoder",
+          "params": [
+            {
+              "id": "ibex_id_stage.decoder_i.RV32E",
+              "port": "RV32E",
+              "con": "RV32E",
+              "loc": {
+                "line": 478,
+                "col": 5,
+                "end_line": 478,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.RV32M",
+              "port": "RV32M",
+              "con": "RV32M",
+              "loc": {
+                "line": 479,
+                "col": 5,
+                "end_line": 479,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.RV32B",
+              "port": "RV32B",
+              "con": "RV32B",
+              "loc": {
+                "line": 480,
+                "col": 5,
+                "end_line": 480,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.BranchTargetALU",
+              "port": "BranchTargetALU",
+              "con": "BranchTargetALU",
+              "loc": {
+                "line": 481,
+                "col": 5,
+                "end_line": 481,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.BaseIsa",
+              "port": "BaseIsa",
+              "con": "BaseIsa",
+              "loc": {
+                "line": 482,
+                "col": 5,
+                "end_line": 482,
+                "end_col": 30
+              }
+            }
+          ],
+          "connections": [
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_enable_i",
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i",
+              "comment": [
+                "controller"
+              ],
+              "loc": {
+                "line": 484,
+                "col": 5,
+                "end_line": 484,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.illegal_insn_o",
+              "port": "illegal_insn_o",
+              "con": "illegal_insn_dec",
+              "loc": {
+                "line": 487,
+                "col": 5,
+                "end_line": 487,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.ebrk_insn_o",
+              "port": "ebrk_insn_o",
+              "con": "ebrk_insn",
+              "loc": {
+                "line": 488,
+                "col": 5,
+                "end_line": 488,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.mret_insn_o",
+              "port": "mret_insn_o",
+              "con": "mret_insn_dec",
+              "loc": {
+                "line": 489,
+                "col": 5,
+                "end_line": 489,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.dret_insn_o",
+              "port": "dret_insn_o",
+              "con": "dret_insn_dec",
+              "loc": {
+                "line": 490,
+                "col": 5,
+                "end_line": 490,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.ecall_insn_o",
+              "port": "ecall_insn_o",
+              "con": "ecall_insn_dec",
+              "loc": {
+                "line": 491,
+                "col": 5,
+                "end_line": 491,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.wfi_insn_o",
+              "port": "wfi_insn_o",
+              "con": "wfi_insn_dec",
+              "loc": {
+                "line": 492,
+                "col": 5,
+                "end_line": 492,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.jump_set_o",
+              "port": "jump_set_o",
+              "con": "jump_set_dec",
+              "loc": {
+                "line": 493,
+                "col": 5,
+                "end_line": 493,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.branch_taken_i",
+              "port": "branch_taken_i",
+              "con": "branch_taken",
+              "loc": {
+                "line": 494,
+                "col": 5,
+                "end_line": 494,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.icache_inval_o",
+              "port": "icache_inval_o",
+              "con": "icache_inval_o",
+              "comment": [
+                "from IF-ID pipeline register"
+              ],
+              "loc": {
+                "line": 495,
+                "col": 5,
+                "end_line": 495,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.instr_first_cycle_i",
+              "port": "instr_first_cycle_i",
+              "con": "instr_first_cycle",
+              "loc": {
+                "line": 498,
+                "col": 5,
+                "end_line": 498,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.instr_rdata_i",
+              "port": "instr_rdata_i",
+              "con": "instr_rdata_i",
+              "loc": {
+                "line": 499,
+                "col": 5,
+                "end_line": 499,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.instr_rdata_alu_i",
+              "port": "instr_rdata_alu_i",
+              "con": "instr_rdata_alu_i",
+              "loc": {
+                "line": 500,
+                "col": 5,
+                "end_line": 500,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.illegal_c_insn_i",
+              "port": "illegal_c_insn_i",
+              "con": "illegal_c_insn_i",
+              "comment": [
+                "immediates"
+              ],
+              "loc": {
+                "line": 501,
+                "col": 5,
+                "end_line": 501,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_a_mux_sel_o",
+              "port": "imm_a_mux_sel_o",
+              "con": "imm_a_mux_sel",
+              "loc": {
+                "line": 504,
+                "col": 5,
+                "end_line": 504,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_b_mux_sel_o",
+              "port": "imm_b_mux_sel_o",
+              "con": "imm_b_mux_sel_dec",
+              "loc": {
+                "line": 505,
+                "col": 5,
+                "end_line": 505,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.bt_a_mux_sel_o",
+              "port": "bt_a_mux_sel_o",
+              "con": "bt_a_mux_sel",
+              "loc": {
+                "line": 506,
+                "col": 5,
+                "end_line": 506,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.bt_b_mux_sel_o",
+              "port": "bt_b_mux_sel_o",
+              "con": "bt_b_mux_sel",
+              "loc": {
+                "line": 507,
+                "col": 5,
+                "end_line": 507,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_i_type_o",
+              "port": "imm_i_type_o",
+              "con": "imm_i_type",
+              "loc": {
+                "line": 509,
+                "col": 5,
+                "end_line": 509,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_s_type_o",
+              "port": "imm_s_type_o",
+              "con": "imm_s_type",
+              "loc": {
+                "line": 510,
+                "col": 5,
+                "end_line": 510,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_b_type_o",
+              "port": "imm_b_type_o",
+              "con": "imm_b_type",
+              "loc": {
+                "line": 511,
+                "col": 5,
+                "end_line": 511,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_u_type_o",
+              "port": "imm_u_type_o",
+              "con": "imm_u_type",
+              "loc": {
+                "line": 512,
+                "col": 5,
+                "end_line": 512,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.imm_j_type_o",
+              "port": "imm_j_type_o",
+              "con": "imm_j_type",
+              "loc": {
+                "line": 513,
+                "col": 5,
+                "end_line": 513,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.zimm_rs1_type_o",
+              "port": "zimm_rs1_type_o",
+              "con": "zimm_rs1_type",
+              "comment": [
+                "register file"
+              ],
+              "loc": {
+                "line": 514,
+                "col": 5,
+                "end_line": 514,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_wdata_sel_o",
+              "port": "rf_wdata_sel_o",
+              "con": "rf_wdata_sel",
+              "loc": {
+                "line": 517,
+                "col": 5,
+                "end_line": 517,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_we_o",
+              "port": "rf_we_o",
+              "con": "rf_we_dec",
+              "loc": {
+                "line": 518,
+                "col": 5,
+                "end_line": 518,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_we_or_load_o",
+              "port": "rf_we_or_load_o",
+              "con": "rf_we_or_load",
+              "loc": {
+                "line": 519,
+                "col": 5,
+                "end_line": 519,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_raddr_a_o",
+              "port": "rf_raddr_a_o",
+              "con": "rf_raddr_a_o",
+              "loc": {
+                "line": 521,
+                "col": 5,
+                "end_line": 521,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_raddr_b_o",
+              "port": "rf_raddr_b_o",
+              "con": "rf_raddr_b_o",
+              "loc": {
+                "line": 522,
+                "col": 5,
+                "end_line": 522,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_waddr_o",
+              "port": "rf_waddr_o",
+              "con": "rf_waddr_id_o",
+              "loc": {
+                "line": 523,
+                "col": 5,
+                "end_line": 523,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_ren_a_o",
+              "port": "rf_ren_a_o",
+              "con": "rf_ren_a_dec",
+              "loc": {
+                "line": 524,
+                "col": 5,
+                "end_line": 524,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.rf_ren_b_o",
+              "port": "rf_ren_b_o",
+              "con": "rf_ren_b_dec",
+              "comment": [
+                "ALU"
+              ],
+              "loc": {
+                "line": 525,
+                "col": 5,
+                "end_line": 525,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.alu_operator_o",
+              "port": "alu_operator_o",
+              "con": "alu_operator",
+              "loc": {
+                "line": 528,
+                "col": 5,
+                "end_line": 528,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.alu_op_a_mux_sel_o",
+              "port": "alu_op_a_mux_sel_o",
+              "con": "alu_op_a_mux_sel_dec",
+              "loc": {
+                "line": 529,
+                "col": 5,
+                "end_line": 529,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.alu_op_b_mux_sel_o",
+              "port": "alu_op_b_mux_sel_o",
+              "con": "alu_op_b_mux_sel_dec",
+              "comment": [
+                "MULT & DIV"
+              ],
+              "loc": {
+                "line": 530,
+                "col": 5,
+                "end_line": 530,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.mult_en_o",
+              "port": "mult_en_o",
+              "con": "mult_en_dec",
+              "loc": {
+                "line": 533,
+                "col": 5,
+                "end_line": 533,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.div_en_o",
+              "port": "div_en_o",
+              "con": "div_en_dec",
+              "loc": {
+                "line": 534,
+                "col": 5,
+                "end_line": 534,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.mult_sel_o",
+              "port": "mult_sel_o",
+              "con": "mult_sel_ex_o",
+              "loc": {
+                "line": 535,
+                "col": 5,
+                "end_line": 535,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.div_sel_o",
+              "port": "div_sel_o",
+              "con": "div_sel_ex_o",
+              "loc": {
+                "line": 536,
+                "col": 5,
+                "end_line": 536,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.multdiv_operator_o",
+              "port": "multdiv_operator_o",
+              "con": "multdiv_operator",
+              "loc": {
+                "line": 537,
+                "col": 5,
+                "end_line": 537,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.multdiv_signed_mode_o",
+              "port": "multdiv_signed_mode_o",
+              "con": "multdiv_signed_mode",
+              "comment": [
+                "CSRs"
+              ],
+              "loc": {
+                "line": 538,
+                "col": 5,
+                "end_line": 538,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.csr_access_o",
+              "port": "csr_access_o",
+              "con": "csr_access_o",
+              "loc": {
+                "line": 541,
+                "col": 5,
+                "end_line": 541,
+                "end_col": 32
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.csr_op_o",
+              "port": "csr_op_o",
+              "con": "csr_op_o",
+              "loc": {
+                "line": 542,
+                "col": 5,
+                "end_line": 542,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.csr_addr_o",
+              "port": "csr_addr_o",
+              "con": "csr_addr_o",
+              "loc": {
+                "line": 543,
+                "col": 5,
+                "end_line": 543,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.csr_cheriot_always_ok_o",
+              "port": "csr_cheriot_always_ok_o",
+              "con": "csr_cheriot_always_ok",
+              "comment": [
+                "LSU"
+              ],
+              "loc": {
+                "line": 544,
+                "col": 5,
+                "end_line": 544,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.data_req_o",
+              "port": "data_req_o",
+              "con": "lsu_req_dec",
+              "loc": {
+                "line": 547,
+                "col": 5,
+                "end_line": 547,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_data_req_o",
+              "port": "cheriot_data_req_o",
+              "con": "cheriot_lsu_req_dec",
+              "loc": {
+                "line": 548,
+                "col": 5,
+                "end_line": 548,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.data_we_o",
+              "port": "data_we_o",
+              "con": "lsu_we",
+              "loc": {
+                "line": 549,
+                "col": 5,
+                "end_line": 549,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.data_type_o",
+              "port": "data_type_o",
+              "con": "lsu_type",
+              "loc": {
+                "line": 550,
+                "col": 5,
+                "end_line": 550,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.data_sign_extension_o",
+              "port": "data_sign_extension_o",
+              "con": "lsu_sign_ext",
+              "comment": [
+                "jump/branches"
+              ],
+              "loc": {
+                "line": 551,
+                "col": 5,
+                "end_line": 551,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.jump_in_dec_o",
+              "port": "jump_in_dec_o",
+              "con": "jump_in_dec",
+              "loc": {
+                "line": 554,
+                "col": 5,
+                "end_line": 554,
+                "end_col": 34
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.branch_in_dec_o",
+              "port": "branch_in_dec_o",
+              "con": "branch_in_dec",
+              "comment": [
+                "cheriot signals"
+              ],
+              "loc": {
+                "line": 555,
+                "col": 5,
+                "end_line": 555,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.instr_is_cheriot_o",
+              "port": "instr_is_cheriot_o",
+              "con": "instr_is_cheriot_id_o",
+              "loc": {
+                "line": 558,
+                "col": 5,
+                "end_line": 558,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.instr_is_legal_cheriot_o",
+              "port": "instr_is_legal_cheriot_o",
+              "con": "instr_is_legal_cheriot",
+              "loc": {
+                "line": 559,
+                "col": 5,
+                "end_line": 559,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_imm12_o",
+              "port": "cheriot_imm12_o",
+              "con": "cheriot_imm12_o",
+              "loc": {
+                "line": 560,
+                "col": 5,
+                "end_line": 560,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_imm20_o",
+              "port": "cheriot_imm20_o",
+              "con": "cheriot_imm20_o",
+              "loc": {
+                "line": 561,
+                "col": 5,
+                "end_line": 561,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_imm21_o",
+              "port": "cheriot_imm21_o",
+              "con": "cheriot_imm21_o",
+              "loc": {
+                "line": 562,
+                "col": 5,
+                "end_line": 562,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_operator_o",
+              "port": "cheriot_operator_o",
+              "con": "cheriot_operator_o",
+              "loc": {
+                "line": 563,
+                "col": 5,
+                "end_line": 563,
+                "end_col": 51
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_cs2_dec_o",
+              "port": "cheriot_cs2_dec_o",
+              "con": "cheriot_cs2_dec_o",
+              "loc": {
+                "line": 564,
+                "col": 5,
+                "end_line": 564,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_cap_field_sel_o",
+              "port": "cheriot_cap_field_sel_o",
+              "con": "cheriot_cap_field_sel_o",
+              "loc": {
+                "line": 565,
+                "col": 5,
+                "end_line": 565,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_adder_a_sel_o",
+              "port": "cheriot_adder_a_sel_o",
+              "con": "cheriot_adder_a_sel_o",
+              "loc": {
+                "line": 566,
+                "col": 5,
+                "end_line": 566,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_adder_b_sel_o",
+              "port": "cheriot_adder_b_sel_o",
+              "con": "cheriot_adder_b_sel_o",
+              "loc": {
+                "line": 567,
+                "col": 5,
+                "end_line": 567,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_setaddr_sel_o",
+              "port": "cheriot_setaddr_sel_o",
+              "con": "cheriot_setaddr_sel_o",
+              "loc": {
+                "line": 568,
+                "col": 5,
+                "end_line": 568,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "ibex_id_stage.decoder_i.cheriot_setbounds_sel_o",
+              "port": "cheriot_setbounds_sel_o",
+              "con": "cheriot_setbounds_sel_o",
+              "loc": {
+                "line": 569,
+                "col": 5,
+                "end_line": 569,
+                "end_col": 56
+              }
+            }
+          ],
+          "loc": {
+            "line": 477,
+            "col": 3,
+            "end_line": 570,
+            "end_col": 5
+          }
+        },
+        {
+          "id": "ibex_id_stage.controller_i",
+          "name": "controller_i",
+          "module": "ibex_controller",
+          "params": [
+            {
+              "id": "ibex_id_stage.controller_i.BaseIsa",
+              "port": "BaseIsa",
+              "con": "BaseIsa",
+              "loc": {
+                "line": 612,
+                "col": 5,
+                "end_line": 612,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.WritebackStage",
+              "port": "WritebackStage",
+              "con": "WritebackStage",
+              "loc": {
+                "line": 613,
+                "col": 5,
+                "end_line": 613,
+                "end_col": 37
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.BranchPredictor",
+              "port": "BranchPredictor",
+              "con": "BranchPredictor",
+              "loc": {
+                "line": 614,
+                "col": 5,
+                "end_line": 614,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.MemECC",
+              "port": "MemECC",
+              "con": "MemECC",
+              "loc": {
+                "line": 615,
+                "col": 5,
+                "end_line": 615,
+                "end_col": 20
+              }
+            }
+          ],
+          "connections": [
+            {
+              "id": "ibex_id_stage.controller_i.clk_i",
+              "port": "clk_i",
+              "con": "clk_i",
+              "loc": {
+                "line": 617,
+                "col": 5,
+                "end_line": 617,
+                "end_col": 29
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.rst_ni",
+              "port": "rst_ni",
+              "con": "rst_ni",
+              "loc": {
+                "line": 618,
+                "col": 5,
+                "end_line": 618,
+                "end_col": 30
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_enable_i",
+              "port": "cheriot_enable_i",
+              "con": "cheriot_enable_i",
+              "loc": {
+                "line": 619,
+                "col": 5,
+                "end_line": 619,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.ctrl_busy_o",
+              "port": "ctrl_busy_o",
+              "con": "ctrl_busy_o",
+              "comment": [
+                "decoder related signals"
+              ],
+              "loc": {
+                "line": 620,
+                "col": 5,
+                "end_line": 620,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.illegal_insn_i",
+              "port": "illegal_insn_i",
+              "con": "illegal_insn_o",
+              "loc": {
+                "line": 623,
+                "col": 5,
+                "end_line": 623,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.ecall_insn_i",
+              "port": "ecall_insn_i",
+              "con": "ecall_insn_dec",
+              "loc": {
+                "line": 624,
+                "col": 5,
+                "end_line": 624,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.mret_insn_i",
+              "port": "mret_insn_i",
+              "con": "mret_insn_dec",
+              "loc": {
+                "line": 625,
+                "col": 5,
+                "end_line": 625,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.dret_insn_i",
+              "port": "dret_insn_i",
+              "con": "dret_insn_dec",
+              "loc": {
+                "line": 626,
+                "col": 5,
+                "end_line": 626,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.wfi_insn_i",
+              "port": "wfi_insn_i",
+              "con": "wfi_insn_dec",
+              "loc": {
+                "line": 627,
+                "col": 5,
+                "end_line": 627,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.ebrk_insn_i",
+              "port": "ebrk_insn_i",
+              "con": "ebrk_insn",
+              "loc": {
+                "line": 628,
+                "col": 5,
+                "end_line": 628,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_pipe_flush_i",
+              "port": "csr_pipe_flush_i",
+              "con": "csr_pipe_flush",
+              "loc": {
+                "line": 629,
+                "col": 5,
+                "end_line": 629,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_access_i",
+              "port": "csr_access_i",
+              "con": "csr_access_o",
+              "loc": {
+                "line": 630,
+                "col": 5,
+                "end_line": 630,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_cheriot_always_ok_i",
+              "port": "csr_cheriot_always_ok_i",
+              "con": "csr_cheriot_always_ok",
+              "comment": [
+                "from IF-ID pipeline"
+              ],
+              "loc": {
+                "line": 631,
+                "col": 5,
+                "end_line": 631,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_valid_i",
+              "port": "instr_valid_i",
+              "con": "instr_valid_i",
+              "loc": {
+                "line": 634,
+                "col": 5,
+                "end_line": 634,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.dummy_instr_id_i",
+              "port": "dummy_instr_id_i",
+              "con": "dummy_instr_id_i",
+              "loc": {
+                "line": 635,
+                "col": 5,
+                "end_line": 635,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_i",
+              "port": "instr_i",
+              "con": "instr_rdata_i",
+              "loc": {
+                "line": 636,
+                "col": 5,
+                "end_line": 636,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_compressed_i",
+              "port": "instr_compressed_i",
+              "con": "instr_rdata_c_i",
+              "loc": {
+                "line": 637,
+                "col": 5,
+                "end_line": 637,
+                "end_col": 54
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_is_compressed_i",
+              "port": "instr_is_compressed_i",
+              "con": "instr_is_compressed_i",
+              "loc": {
+                "line": 638,
+                "col": 5,
+                "end_line": 638,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_gets_expanded_i",
+              "port": "instr_gets_expanded_i",
+              "con": "instr_gets_expanded_i",
+              "loc": {
+                "line": 639,
+                "col": 5,
+                "end_line": 639,
+                "end_col": 60
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_bp_taken_i",
+              "port": "instr_bp_taken_i",
+              "con": "instr_bp_taken_i",
+              "loc": {
+                "line": 640,
+                "col": 5,
+                "end_line": 640,
+                "end_col": 55
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_fetch_err_i",
+              "port": "instr_fetch_err_i",
+              "con": "instr_fetch_err_i",
+              "loc": {
+                "line": 641,
+                "col": 5,
+                "end_line": 641,
+                "end_col": 56
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_fetch_err_plus2_i",
+              "port": "instr_fetch_err_plus2_i",
+              "con": "instr_fetch_err_plus2_i",
+              "loc": {
+                "line": 642,
+                "col": 5,
+                "end_line": 642,
+                "end_col": 62
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_fetch_cheriot_acc_vio_i",
+              "port": "instr_fetch_cheriot_acc_vio_i",
+              "con": "instr_fetch_cheriot_acc_vio_i",
+              "loc": {
+                "line": 643,
+                "col": 5,
+                "end_line": 643,
+                "end_col": 68
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_fetch_cheriot_bound_vio_i",
+              "port": "instr_fetch_cheriot_bound_vio_i",
+              "con": "instr_fetch_cheriot_bound_vio_i",
+              "loc": {
+                "line": 644,
+                "col": 5,
+                "end_line": 644,
+                "end_col": 70
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.pc_id_i",
+              "port": "pc_id_i",
+              "con": "pc_id_i",
+              "comment": [
+                "to IF-ID pipeline"
+              ],
+              "loc": {
+                "line": 646,
+                "col": 5,
+                "end_line": 646,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_valid_clear_o",
+              "port": "instr_valid_clear_o",
+              "con": "instr_valid_clear_o",
+              "loc": {
+                "line": 649,
+                "col": 5,
+                "end_line": 649,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.id_in_ready_o",
+              "port": "id_in_ready_o",
+              "con": "id_in_ready_o",
+              "loc": {
+                "line": 650,
+                "col": 5,
+                "end_line": 650,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.controller_run_o",
+              "port": "controller_run_o",
+              "con": "controller_run",
+              "loc": {
+                "line": 651,
+                "col": 5,
+                "end_line": 651,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_exec_i",
+              "port": "instr_exec_i",
+              "con": "instr_exec_i",
+              "comment": [
+                "to prefetch"
+              ],
+              "loc": {
+                "line": 652,
+                "col": 5,
+                "end_line": 652,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_req_o",
+              "port": "instr_req_o",
+              "con": "instr_req_o",
+              "loc": {
+                "line": 655,
+                "col": 5,
+                "end_line": 655,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.pc_set_o",
+              "port": "pc_set_o",
+              "con": "pc_set_o",
+              "loc": {
+                "line": 656,
+                "col": 5,
+                "end_line": 656,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.pc_mux_o",
+              "port": "pc_mux_o",
+              "con": "pc_mux_o",
+              "loc": {
+                "line": 657,
+                "col": 5,
+                "end_line": 657,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.nt_branch_mispredict_o",
+              "port": "nt_branch_mispredict_o",
+              "con": "nt_branch_mispredict_o",
+              "loc": {
+                "line": 658,
+                "col": 5,
+                "end_line": 658,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.exc_pc_mux_o",
+              "port": "exc_pc_mux_o",
+              "con": "exc_pc_mux_o",
+              "loc": {
+                "line": 659,
+                "col": 5,
+                "end_line": 659,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.exc_cause_o",
+              "port": "exc_cause_o",
+              "con": "exc_cause_o",
+              "comment": [
+                "LSU"
+              ],
+              "loc": {
+                "line": 660,
+                "col": 5,
+                "end_line": 660,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.lsu_addr_last_i",
+              "port": "lsu_addr_last_i",
+              "con": "lsu_addr_last_i",
+              "loc": {
+                "line": 663,
+                "col": 5,
+                "end_line": 663,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.load_err_i",
+              "port": "load_err_i",
+              "con": "lsu_load_err_i",
+              "loc": {
+                "line": 664,
+                "col": 5,
+                "end_line": 664,
+                "end_col": 43
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.lsu_err_is_cheriot_i",
+              "port": "lsu_err_is_cheriot_i",
+              "con": "lsu_err_is_cheriot_i",
+              "loc": {
+                "line": 665,
+                "col": 5,
+                "end_line": 665,
+                "end_col": 49
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.mem_resp_intg_err_i",
+              "port": "mem_resp_intg_err_i",
+              "con": "mem_resp_intg_err",
+              "loc": {
+                "line": 666,
+                "col": 5,
+                "end_line": 666,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.store_err_i",
+              "port": "store_err_i",
+              "con": "lsu_store_err_i",
+              "loc": {
+                "line": 667,
+                "col": 5,
+                "end_line": 667,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.wb_exception_o",
+              "port": "wb_exception_o",
+              "con": "wb_exception",
+              "loc": {
+                "line": 668,
+                "col": 5,
+                "end_line": 668,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.id_exception_o",
+              "port": "id_exception_o",
+              "con": "unused_id_exception",
+              "loc": {
+                "line": 669,
+                "col": 5,
+                "end_line": 669,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.id_exception_nc_o",
+              "port": "id_exception_nc_o",
+              "con": "id_exception_nc",
+              "comment": [
+                "jump/branch control"
+              ],
+              "loc": {
+                "line": 670,
+                "col": 5,
+                "end_line": 670,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.branch_set_i",
+              "port": "branch_set_i",
+              "con": "branch_set",
+              "loc": {
+                "line": 673,
+                "col": 5,
+                "end_line": 673,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.branch_not_set_i",
+              "port": "branch_not_set_i",
+              "con": "branch_not_set",
+              "loc": {
+                "line": 674,
+                "col": 5,
+                "end_line": 674,
+                "end_col": 39
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.jump_set_i",
+              "port": "jump_set_i",
+              "con": "jump_set",
+              "comment": [
+                "interrupt signals"
+              ],
+              "loc": {
+                "line": 675,
+                "col": 5,
+                "end_line": 675,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_mstatus_mie_i",
+              "port": "csr_mstatus_mie_i",
+              "con": "csr_mstatus_mie_i",
+              "loc": {
+                "line": 678,
+                "col": 5,
+                "end_line": 678,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.irq_pending_i",
+              "port": "irq_pending_i",
+              "con": "irq_pending_i",
+              "loc": {
+                "line": 679,
+                "col": 5,
+                "end_line": 679,
+                "end_col": 38
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.irqs_i",
+              "port": "irqs_i",
+              "con": "irqs_i",
+              "loc": {
+                "line": 680,
+                "col": 5,
+                "end_line": 680,
+                "end_col": 31
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.irq_nm_ext_i",
+              "port": "irq_nm_ext_i",
+              "con": "irq_nm_i",
+              "loc": {
+                "line": 681,
+                "col": 5,
+                "end_line": 681,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.nmi_mode_o",
+              "port": "nmi_mode_o",
+              "con": "nmi_mode_o",
+              "comment": [
+                "CSR Controller Signals"
+              ],
+              "loc": {
+                "line": 682,
+                "col": 5,
+                "end_line": 682,
+                "end_col": 35
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_save_if_o",
+              "port": "csr_save_if_o",
+              "con": "csr_save_if_o",
+              "loc": {
+                "line": 685,
+                "col": 5,
+                "end_line": 685,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_save_id_o",
+              "port": "csr_save_id_o",
+              "con": "csr_save_id_o",
+              "loc": {
+                "line": 686,
+                "col": 5,
+                "end_line": 686,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_save_wb_o",
+              "port": "csr_save_wb_o",
+              "con": "csr_save_wb_o",
+              "loc": {
+                "line": 687,
+                "col": 5,
+                "end_line": 687,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_restore_mret_id_o",
+              "port": "csr_restore_mret_id_o",
+              "con": "csr_restore_mret_id_o",
+              "loc": {
+                "line": 688,
+                "col": 5,
+                "end_line": 688,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_restore_dret_id_o",
+              "port": "csr_restore_dret_id_o",
+              "con": "csr_restore_dret_id_o",
+              "loc": {
+                "line": 689,
+                "col": 5,
+                "end_line": 689,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_save_cause_o",
+              "port": "csr_save_cause_o",
+              "con": "csr_save_cause_o",
+              "loc": {
+                "line": 690,
+                "col": 5,
+                "end_line": 690,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_mepcc_clrtag_o",
+              "port": "csr_mepcc_clrtag_o",
+              "con": "csr_mepcc_clrtag_o",
+              "loc": {
+                "line": 691,
+                "col": 5,
+                "end_line": 691,
+                "end_col": 47
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_mtval_o",
+              "port": "csr_mtval_o",
+              "con": "csr_mtval_o",
+              "loc": {
+                "line": 692,
+                "col": 5,
+                "end_line": 692,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.priv_mode_i",
+              "port": "priv_mode_i",
+              "con": "priv_mode_i",
+              "loc": {
+                "line": 693,
+                "col": 5,
+                "end_line": 693,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.csr_pcc_perm_sr_i",
+              "port": "csr_pcc_perm_sr_i",
+              "con": "csr_pcc_perm_sr_i",
+              "comment": [
+                "Debug Signal"
+              ],
+              "loc": {
+                "line": 694,
+                "col": 5,
+                "end_line": 694,
+                "end_col": 46
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_mode_o",
+              "port": "debug_mode_o",
+              "con": "debug_mode_o",
+              "loc": {
+                "line": 697,
+                "col": 5,
+                "end_line": 697,
+                "end_col": 41
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_mode_entering_o",
+              "port": "debug_mode_entering_o",
+              "con": "debug_mode_entering_o",
+              "loc": {
+                "line": 698,
+                "col": 5,
+                "end_line": 698,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_cause_o",
+              "port": "debug_cause_o",
+              "con": "debug_cause_o",
+              "loc": {
+                "line": 699,
+                "col": 5,
+                "end_line": 699,
+                "end_col": 42
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_csr_save_o",
+              "port": "debug_csr_save_o",
+              "con": "debug_csr_save_o",
+              "loc": {
+                "line": 700,
+                "col": 5,
+                "end_line": 700,
+                "end_col": 45
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_req_i",
+              "port": "debug_req_i",
+              "con": "debug_req_i",
+              "loc": {
+                "line": 701,
+                "col": 5,
+                "end_line": 701,
+                "end_col": 40
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_single_step_i",
+              "port": "debug_single_step_i",
+              "con": "debug_single_step_i",
+              "loc": {
+                "line": 702,
+                "col": 5,
+                "end_line": 702,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_ebreakm_i",
+              "port": "debug_ebreakm_i",
+              "con": "debug_ebreakm_i",
+              "loc": {
+                "line": 703,
+                "col": 5,
+                "end_line": 703,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.debug_ebreaku_i",
+              "port": "debug_ebreaku_i",
+              "con": "debug_ebreaku_i",
+              "loc": {
+                "line": 704,
+                "col": 5,
+                "end_line": 704,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.trigger_match_i",
+              "port": "trigger_match_i",
+              "con": "trigger_match_i",
+              "loc": {
+                "line": 705,
+                "col": 5,
+                "end_line": 705,
+                "end_col": 44
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.stall_id_i",
+              "port": "stall_id_i",
+              "con": "stall_id",
+              "loc": {
+                "line": 707,
+                "col": 5,
+                "end_line": 707,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.stall_wb_i",
+              "port": "stall_wb_i",
+              "con": "stall_wb",
+              "loc": {
+                "line": 708,
+                "col": 5,
+                "end_line": 708,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.flush_id_o",
+              "port": "flush_id_o",
+              "con": "flush_id",
+              "loc": {
+                "line": 709,
+                "col": 5,
+                "end_line": 709,
+                "end_col": 26
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.ready_wb_i",
+              "port": "ready_wb_i",
+              "con": "ready_wb_i",
+              "comment": [
+                "Performance Counters"
+              ],
+              "loc": {
+                "line": 710,
+                "col": 5,
+                "end_line": 710,
+                "end_col": 28
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.perf_jump_o",
+              "port": "perf_jump_o",
+              "con": "perf_jump_o",
+              "loc": {
+                "line": 713,
+                "col": 5,
+                "end_line": 713,
+                "end_col": 33
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.perf_tbranch_o",
+              "port": "perf_tbranch_o",
+              "con": "perf_tbranch_o",
+              "loc": {
+                "line": 714,
+                "col": 5,
+                "end_line": 714,
+                "end_col": 36
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.instr_is_cheriot_i",
+              "port": "instr_is_cheriot_i",
+              "con": "instr_is_cheriot_id_o",
+              "loc": {
+                "line": 716,
+                "col": 5,
+                "end_line": 716,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_ex_valid_i",
+              "port": "cheriot_ex_valid_i",
+              "con": "cheriot_ex_valid_i",
+              "loc": {
+                "line": 717,
+                "col": 5,
+                "end_line": 717,
+                "end_col": 50
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_ex_err_i",
+              "port": "cheriot_ex_err_i",
+              "con": "cheriot_ex_err_i",
+              "loc": {
+                "line": 718,
+                "col": 5,
+                "end_line": 718,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_ex_err_info_i",
+              "port": "cheriot_ex_err_info_i",
+              "con": "cheriot_ex_err_info_i",
+              "loc": {
+                "line": 719,
+                "col": 5,
+                "end_line": 719,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_wb_err_i",
+              "port": "cheriot_wb_err_i",
+              "con": "cheriot_wb_err_i",
+              "loc": {
+                "line": 720,
+                "col": 5,
+                "end_line": 720,
+                "end_col": 48
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_wb_err_info_i",
+              "port": "cheriot_wb_err_info_i",
+              "con": "cheriot_wb_err_info_i",
+              "loc": {
+                "line": 721,
+                "col": 5,
+                "end_line": 721,
+                "end_col": 53
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_branch_req_i",
+              "port": "cheriot_branch_req_i",
+              "con": "cheriot_branch_req_i",
+              "loc": {
+                "line": 722,
+                "col": 5,
+                "end_line": 722,
+                "end_col": 52
+              }
+            },
+            {
+              "id": "ibex_id_stage.controller_i.cheriot_branch_target_i",
+              "port": "cheriot_branch_target_i",
+              "con": "cheriot_branch_target_i",
+              "loc": {
+                "line": 723,
+                "col": 5,
+                "end_line": 723,
+                "end_col": 55
+              }
+            }
+          ],
+          "loc": {
+            "line": 611,
+            "col": 3,
+            "end_line": 724,
+            "end_col": 5
+          }
+        }
+      ],
+      "imports": [
+        "ibex_cheriot_pkg::*",
+        "ibex_pkg::*"
+      ],
+      "loc": {
+        "line": 21,
+        "col": 1,
+        "end_line": 1295,
+        "end_col": 10
+      }
+    }
+  ]
+}
