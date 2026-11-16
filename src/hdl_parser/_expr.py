@@ -162,8 +162,11 @@ def _mask(value: int, width: int) -> int:
 def _math(func: Callable[[float], float], value: float) -> float:
     try:
         return func(value)
-    except (ValueError, OverflowError) as exc:
-        raise Unknown(str(exc)) from None
+    except ValueError:
+        # The text of the message depends on the version of Python.
+        raise Unknown("math domain error") from None
+    except OverflowError:
+        raise Unknown("math range error") from None
 
 
 class _Parser:
