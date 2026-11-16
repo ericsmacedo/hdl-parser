@@ -296,6 +296,8 @@ class Cursor:
         toks = self.toks
         hard_stops = self.hard_stops
         depth = 0
+        if toks[self.pos].kind == EOF:
+            return
         idx = self.pos + 1
         while True:
             tok = toks[idx]

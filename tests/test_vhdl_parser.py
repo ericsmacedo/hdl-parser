@@ -389,3 +389,16 @@ def test_empty(text):
     """Empty Units."""
     # an architecture without its entity is a partial module
     assert plain(_parse(text)) == Module(name="top", partial=text.startswith("architecture"))
+
+
+@mark.parametrize(
+    "text",
+    [
+        "architecture rtl of top is begin p: process",
+        "architecture rtl of top is begin p: process (clk)",
+        "architecture rtl of top is component",
+    ],
+)
+def test_truncated(text):
+    """Text Ending Within A Unit Is No Crash."""
+    assert _parse(text).name == "top"
