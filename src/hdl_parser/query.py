@@ -45,13 +45,15 @@ Answers are sized for a context window:
 * `summary` gives names and counts only.
 
 Every item has its full identifier (`rtl/top.sv:top.u_sub`), whose file part is the path of its file relative
-to the root of the project, and its source location (`loc`). An identifier can be handed over to `find`,
+to the root of the project, and its source location (`loc`). The command line and the MCP server hand the
+answers to agents compact: see [render][hdl_parser.query.render]. An identifier can be handed over to `find`,
 `module`, `hierarchy` and `where_used`.
 
 A name which is not found raises [QueryError][hdl_parser.query.QueryError], with similar names as suggestions.
 """
 
 import difflib
+import json
 import re
 from collections.abc import Iterable
 from fnmatch import fnmatchcase
@@ -127,7 +129,8 @@ def module(
 
     Keyword Args:
         fields: Fields of the module to be returned (`ports`, `params`, `insts`, ...). All by default.
-                `id`, `kind` and `name` are always returned.
+                `id`, `kind` and `name` are always returned. `ports.direction` selects a field of the items of a
+                list: their `id` and `name` are always returned.
         limit: Number of entries of every list (ports, instances, ...). The ones left out are counted
                in `omitted`, by field.
         summary: Lists are replaced by their number of entries (`counts`).
@@ -140,7 +143,9 @@ def module(
     unit = _unit_dict(used)
     if used.bodies:
         unit["bodies"] = [file.full_id(body) for file, body in used.bodies]
-    unit = _select(unit, fields, _unit_fields(used.unit))
+    names = tuple(fields)
+    unit = _select(unit, [name.partition(".")[0] for name in names], _unit_fields(used.unit))
+    unit = _select_items(unit, names)
     answer: dict[str, Any] = {"query": "module"}
     if summary:
         result = {key: value for key, value in unit.items() if not isinstance(value, list)}
@@ -774,6 +779,60 @@ def _dump(model: dm.Link | dm.Hop) -> dict[str, Any]:
     return model.model_dump(mode="json", exclude_defaults=True)
 
 
+# --- rendering ---
+
+
+DETAILS = ("compact", "full")
+"""Detail of the rendered answers: see [render][hdl_parser.query.render]."""
+
+
+def render(answer: dict[str, Any], detail: str = "compact") -> dict[str, Any]:
+    """The answer of a query, as returned to an agent: `compact` by default, `full` as is.
+
+    `compact` gives the same information with fewer tokens:
+
+    * A source location is its first line: `"line": 12` instead of `"loc": {...}`.
+    * The identifier of an item within another one is left out, if it is the one of the item around followed by
+      its name (`top.sv:top.clk` within `top.sv:top`), and relative otherwise (`#always1`).
+    * A list of objects is a table, if that is smaller: `{"columns": [...], "rows": [[...], ...]}`. A field which
+      an item has not, is `null`.
+    """
+    if detail not in DETAILS:
+        raise QueryError("bad-argument", f"detail must be one of: {', '.join(DETAILS)}.")
+    if detail == "full":
+        return answer
+    return _compact(answer, "")
+
+
+def _compact(data: Any, parent: str) -> Any:
+    if isinstance(data, list):
+        items = [_compact(value, parent) for value in data]
+        return _table(items) if len(items) > 1 and all(isinstance(item, dict) for item in items) else items
+    if not isinstance(data, dict):
+        return data
+    result: dict[str, Any] = {}
+    full_id = data.get("id") if isinstance(data.get("id"), str) else None
+    for key, value in data.items():
+        if key == "id" and full_id is not None and parent and full_id.startswith(f"{parent}."):
+            relative = full_id[len(parent) + 1 :]
+            if relative != data.get("name"):
+                result["id"] = relative
+        elif key == "loc" and isinstance(value, dict) and "line" not in data:
+            result["line"] = value.get("line")
+        else:
+            result[key] = _compact(value, full_id or parent)
+    return result
+
+
+def _table(items: list[dict[str, Any]]) -> Any:
+    """`items` as table, if that is smaller."""
+    keys = dict.fromkeys(key for item in items for key in item)
+    columns = [key for key in ("id", "name") if key in keys] + [key for key in keys if key not in ("id", "name")]
+    table = {"columns": columns, "rows": [[item.get(column) for column in columns] for item in items]}
+    size = len(json.dumps(table, separators=(",", ":")))
+    return table if size < len(json.dumps(items, separators=(",", ":"))) else items
+
+
 # --- helpers ---
 
 
@@ -818,6 +877,24 @@ def _select(data: dict[str, Any], fields: Iterable[str], valid: tuple[str, ...] 
         if unknown:
             raise QueryError("bad-argument", f"unknown fields: {', '.join(unknown)}.", valid)
     return {key: value for key, value in data.items() if key in names or key in _ALWAYS}
+
+
+def _select_items(data: dict[str, Any], fields: tuple[str, ...]) -> dict[str, Any]:
+    """`data` with the fields `list.field` of the items of its lists only."""
+    by_list: dict[str, set[str]] = {}
+    for name in fields:
+        key, _, field = name.partition(".")
+        if field:
+            by_list.setdefault(key, set()).add(field)
+    for key, keep in by_list.items():
+        if not isinstance(data.get(key), list):
+            raise QueryError("bad-argument", f"'{key}' is no list: '{key}.<field>' cannot be selected.")
+        if any(name == key for name in fields):
+            # the whole items are asked for, too
+            continue
+        wanted = keep | {"id", "name"}
+        data[key] = [{field: value for field, value in item.items() if field in wanted} for item in data[key]]
+    return data
 
 
 def _resolve_limit(limit: int | None) -> int | None:

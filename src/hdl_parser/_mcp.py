@@ -255,8 +255,12 @@ TOOLS: tuple[dict[str, Any], ...] = (
     },
 )
 
+_DETAIL = {"type": "string", "enum": list(query.DETAILS), "description": "Default compact. See instructions."}
+
 for _tool in TOOLS:
     _tool["annotations"] = {"readOnlyHint": True, "destructiveHint": False, "openWorldHint": False}
+    if _tool["name"] != "reload":
+        _tool["inputSchema"]["properties"]["detail"] = _DETAIL
 
 _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "module": query.module,
@@ -339,7 +343,8 @@ class Server:
             arguments = {**arguments, "blackboxes": (*self.blackboxes, *arguments.get("blackboxes", ()))}
         try:
             _check(tool["inputSchema"]["properties"], arguments)
-            answer = func(self.project, **arguments)
+            detail = arguments.pop("detail", "compact")
+            answer = query.render(func(self.project, **arguments), detail)
         except query.QueryError as exc:
             return _result(id_, _content(exc.to_dict(), True))
         except Exception as exc:
@@ -351,7 +356,9 @@ class Server:
 
 INSTRUCTIONS = """\
 Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
-'<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source location 'loc' (lines and columns start at 1). \
+'<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source 'line'. Answers are compact: the identifier of an item \
+within another one is left out, if it is the one around plus its name, and relative otherwise; a list of objects \
+may be a table {columns, rows}. detail='full' gives every identifier and 'loc' with columns. \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \

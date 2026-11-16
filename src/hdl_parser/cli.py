@@ -287,6 +287,10 @@ def opt_project(func):
     return func
 
 
+def _set_full(ctx: click.Context, _param: click.Parameter, value: bool) -> None:
+    ctx.meta["full"] = value
+
+
 def opt_answer(func):
     """Options which size the answer of a query."""
     options = (
@@ -298,6 +302,13 @@ def opt_answer(func):
             "Left out entries are counted in 'omitted'.",
         ),
         click.option("--compact", "-c", is_flag=True, help="JSON on a single line."),
+        click.option(
+            "--full",
+            is_flag=True,
+            expose_value=False,
+            callback=_set_full,
+            help="Full answers: all identifiers, locations with columns, lists of objects instead of tables.",
+        ),
     )
     for option in reversed(options):
         func = option(func)
@@ -388,15 +399,28 @@ def _fields(fields: tuple[str, ...]) -> tuple[str, ...]:
     return tuple(name.strip() for item in fields for name in item.split(",") if name.strip())
 
 
+def _pretty(data: Any, indent: str = "") -> str:
+    """`data` as indented JSON. A list of plain values (i.e. a row of a table) is kept on one line."""
+    inner = indent + "  "
+    if isinstance(data, dict) and data:
+        items = [f"{inner}{json_.dumps(key)}: {_pretty(value, inner)}" for key, value in data.items()]
+        return "{\n" + ",\n".join(items) + f"\n{indent}}}"
+    if isinstance(data, list) and any(isinstance(value, dict | list) and value for value in data):
+        return "[\n" + ",\n".join(f"{inner}{_pretty(value, inner)}" for value in data) + f"\n{indent}]"
+    return json_.dumps(data)
+
+
 def _answer(func, compact: bool = False) -> None:
     """Print the answer of the query `func`. A failed query is an error object and exit code."""
     try:
-        answer = func()
+        context = click.get_current_context(silent=True)
+        full = bool(context and context.meta.get("full"))
+        answer = query.render(func(), "full" if full else "compact")
         code = EXIT_OK
     except query.QueryError as exc:
         answer = exc.to_dict()
         code = EXIT_NOT_FOUND if exc.code == "not-found" else EXIT_USAGE
-    print(json_.dumps(answer, indent=None if compact else 2))
+    print(json_.dumps(answer) if compact else _pretty(answer))
     if code:
         raise click.exceptions.Exit(code)
 
