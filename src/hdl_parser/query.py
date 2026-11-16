@@ -217,11 +217,10 @@ def hierarchy(  # noqa: PLR0913
         raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
     names = ("name", "module") if summary else tuple(fields)
     budget = [_resolve_limit(limit)]
-    omitted = [0]
-    result = _node(project, node, names, budget, omitted)
-    answer: dict[str, Any] = {"query": "hierarchy", "result": result}
-    if omitted[0]:
-        answer["omitted"] = omitted[0]
+    left_out = [0]
+    answer: dict[str, Any] = {"query": "hierarchy", "result": _node(project, node, names, budget, left_out)}
+    if left_out[0]:
+        answer["omitted"] = left_out[0]
     return answer
 
 
@@ -233,8 +232,9 @@ def _node(
 ) -> dict[str, Any]:
     data: dict[str, Any] = node.model_dump(mode="json", exclude_defaults=True, exclude={"children", "params", "ports"})
     item = project.find(node.inst) if node.inst else project.find(node.definition)
-    if item is not None and getattr(item, "loc", None) is not None:
-        data["loc"] = item.loc.model_dump(mode="json", exclude_defaults=True)
+    loc: dm.Location | None = getattr(item, "loc", None)
+    if loc is not None:
+        data["loc"] = loc.model_dump(mode="json", exclude_defaults=True)
     if names:
         unknown = sorted(set(names) - set(_NODE_FIELDS))
         if unknown:
@@ -456,14 +456,19 @@ def _similar(name: str, names: Iterable[str]) -> list[str]:
     return found[:5]
 
 
+def _units(project: Project) -> Iterable[tuple[dm.File, dm.Module | dm.Package]]:
+    for file in project.files:
+        units: tuple[dm.Module | dm.Package, ...] = (*file.modules, *file.interfaces, *file.packages)
+        for unit in units:
+            yield file, unit
+
+
 def _similar_units(project: Project, name: str) -> list[str]:
-    names = (unit.name for file in project.files for unit in (*file.modules, *file.interfaces, *file.packages))
-    return _similar(name.rsplit(":", 1)[-1], names)
+    return _similar(name.rsplit(":", 1)[-1], (unit.name for _, unit in _units(project)))
 
 
 def _similar_ids(project: Project, full_id: str) -> list[str]:
-    ids = (file.full_id(unit) for file in project.files for unit in (*file.modules, *file.interfaces, *file.packages))
-    return _similar(full_id, ids)
+    return _similar(full_id, (file.full_id(unit) for file, unit in _units(project)))
 
 
 def _similar_files(project: Project, path: str) -> list[str]:

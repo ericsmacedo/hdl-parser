@@ -26,6 +26,7 @@ import logging
 import sys
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import click
 from pydantic import BaseModel, ConfigDict
@@ -327,7 +328,7 @@ def load_project(  # noqa: PLR0913
         raise click.UsageError("Give either one directory or files.")
     if exclude and not dirs:
         raise click.UsageError("'--exclude' requires a directory.")
-    kwargs = {
+    kwargs: dict[str, Any] = {
         "root": root,
         "expand_macros": expand_macros,
         "resolve_ifdefs": resolve_ifdefs,
