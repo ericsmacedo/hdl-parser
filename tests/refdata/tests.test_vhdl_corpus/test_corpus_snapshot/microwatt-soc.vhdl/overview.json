@@ -1968,6 +1968,182 @@
           ],
           "clock": "system_clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "rst_core",
+              "select": "(i)",
+              "reads": [
+                "soc_reset",
+                "do_core_reset",
+                "i"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 351,
+                "col": 17,
+                "end_line": 351,
+                "end_col": 62
+              }
+            },
+            {
+              "target": "rst_uart",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 353,
+                "col": 13,
+                "end_line": 353,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_spi",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 354,
+                "col": 13,
+                "end_line": 354,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_xics",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 355,
+                "col": 13,
+                "end_line": 355,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_gpio",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 356,
+                "col": 13,
+                "end_line": 356,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_bram",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 357,
+                "col": 13,
+                "end_line": 357,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_dtm",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 358,
+                "col": 13,
+                "end_line": 358,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_wbar",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 359,
+                "col": 13,
+                "end_line": 359,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rst_wbdb",
+              "reads": [
+                "soc_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 360,
+                "col": 13,
+                "end_line": 360,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "alt_reset_d",
+              "reads": [
+                "alt_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 361,
+                "col": 13,
+                "end_line": 361,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 347,
             "col": 5,
@@ -1985,6 +2161,48 @@
               "cond": "i in 0 to NCPUS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "m",
+              "loc": {
+                "line": 413,
+                "col": 13,
+                "end_line": 413,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "m",
+              "reads": [
+                "m",
+                "msgs",
+                "j",
+                "i"
+              ],
+              "conds": [
+                "j"
+              ],
+              "loc": {
+                "line": 415,
+                "col": 17,
+                "end_line": 415,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "msgin",
+              "reads": [
+                "m"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 417,
+                "col": 13,
+                "end_line": 417,
+                "end_col": 24
+              }
+            }
+          ],
           "loc": {
             "line": 410,
             "col": 9,
@@ -1995,6 +2213,35 @@
         {
           "id": "soc.#process3",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "wb_snoop",
+              "reads": [
+                "wb_master_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 449,
+                "col": 9,
+                "end_line": 449,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "wb_snoop",
+              "select": ".stb",
+              "conds": [
+                "wb_master_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 451,
+                "col": 13,
+                "end_line": 451,
+                "end_col": 33
+              }
+            }
+          ],
           "comment": [
             "-- Snoop bus going to caches.",
             "-- Gate stb with stall so the caches don't see the stalled strobes.",
@@ -2029,6 +2276,354 @@
               "signal": "dram_at_0"
             }
           ],
+          "assigns": [
+            {
+              "target": "top_decode",
+              "reads": [
+                "wb_master_out",
+                "dram_at_0"
+              ],
+              "loc": {
+                "line": 473,
+                "col": 9,
+                "end_line": 473,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_BRAM"
+              ],
+              "loc": {
+                "line": 474,
+                "col": 9,
+                "end_line": 474,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_BRAM"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 476,
+                "col": 6,
+                "end_line": 476,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_DRAM"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 478,
+                "col": 6,
+                "end_line": 478,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_DRAM"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 480,
+                "col": 13,
+                "end_line": 480,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_DRAM"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 482,
+                "col": 6,
+                "end_line": 482,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_BRAM"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 484,
+                "col": 6,
+                "end_line": 484,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "slave_top",
+              "reads": [
+                "SLAVE_TOP_IO"
+              ],
+              "conds": [
+                "std_match",
+                "top_decode"
+              ],
+              "loc": {
+                "line": 486,
+                "col": 6,
+                "end_line": 486,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "wb_bram_in",
+              "reads": [
+                "wb_master_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 490,
+                "col": 2,
+                "end_line": 490,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "wb_bram_in",
+              "select": ".cyc",
+              "blocking": false,
+              "loc": {
+                "line": 491,
+                "col": 2,
+                "end_line": 491,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "wb_dram_in",
+              "reads": [
+                "wb_master_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 492,
+                "col": 2,
+                "end_line": 492,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "wb_dram_in",
+              "select": ".cyc",
+              "blocking": false,
+              "loc": {
+                "line": 493,
+                "col": 2,
+                "end_line": 493,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "wb_io_in",
+              "reads": [
+                "wb_master_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 494,
+                "col": 2,
+                "end_line": 494,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "wb_io_in",
+              "select": ".cyc",
+              "blocking": false,
+              "loc": {
+                "line": 495,
+                "col": 2,
+                "end_line": 495,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "wb_bram_in",
+              "select": ".cyc",
+              "reads": [
+                "wb_master_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_BRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 498,
+                "col": 6,
+                "end_line": 498,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "reads": [
+                "wb_bram_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_BRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 499,
+                "col": 6,
+                "end_line": 499,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "wb_dram_in",
+              "select": ".cyc",
+              "reads": [
+                "wb_master_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_DRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 502,
+                "col": 17,
+                "end_line": 502,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "reads": [
+                "wb_dram_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_DRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 503,
+                "col": 17,
+                "end_line": 503,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "select": ".ack",
+              "reads": [
+                "wb_master_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_DRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 505,
+                "col": 17,
+                "end_line": 505,
+                "end_col": 77
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "select": ".dat",
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_DRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 506,
+                "col": 17,
+                "end_line": 506,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "select": ".stall",
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_DRAM"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 507,
+                "col": 17,
+                "end_line": 507,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_io_in",
+              "select": ".cyc",
+              "reads": [
+                "wb_master_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_IO"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 510,
+                "col": 6,
+                "end_line": 510,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_master_in",
+              "reads": [
+                "wb_io_out"
+              ],
+              "conds": [
+                "slave_top",
+                "SLAVE_TOP_IO"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 511,
+                "col": 6,
+                "end_line": 511,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "-- Top level Wishbone slaves address decoder & mux",
             "--",
@@ -2059,6 +2654,1790 @@
           ],
           "clock": "system_clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "do_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "loc": {
+                "line": 541,
+                "col": 13,
+                "end_line": 541,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "end_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "loc": {
+                "line": 542,
+                "col": 13,
+                "end_line": 542,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "IDLE"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 544,
+                "col": 17,
+                "end_line": 544,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".ack",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 545,
+                "col": 17,
+                "end_line": 545,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".stall",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 546,
+                "col": 17,
+                "end_line": 546,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 547,
+                "col": 17,
+                "end_line": 547,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "end_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 548,
+                "col": 17,
+                "end_line": 548,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "has_top",
+              "reads": [
+                "false"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 549,
+                "col": 17,
+                "end_line": 549,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "has_bot",
+              "reads": [
+                "false"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 550,
+                "col": 17,
+                "end_line": 550,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "dat_latch",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 551,
+                "col": 17,
+                "end_line": 551,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "sel_latch",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset"
+              ],
+              "loc": {
+                "line": 552,
+                "col": 17,
+                "end_line": 552,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".ack",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 557,
+                "col": 21,
+                "end_line": 557,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".stall",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 567,
+                "col": 25,
+                "end_line": 567,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "do_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "loc": {
+                "line": 570,
+                "col": 25,
+                "end_line": 570,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 571,
+                "col": 25,
+                "end_line": 571,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".we",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 574,
+                "col": 25,
+                "end_line": 574,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".adr",
+              "reads": [
+                "wb_io_in",
+                "wb_sio_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 575,
+                "col": 25,
+                "end_line": 575,
+                "end_col": 96
+              }
+            },
+            {
+              "target": "has_top",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "loc": {
+                "line": 578,
+                "col": 25,
+                "end_line": 578,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "has_bot",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "loc": {
+                "line": 579,
+                "col": 25,
+                "end_line": 579,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "dat_latch",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "loc": {
+                "line": 582,
+                "col": 25,
+                "end_line": 582,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "sel_latch",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in"
+              ],
+              "loc": {
+                "line": 583,
+                "col": 25,
+                "end_line": 583,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".dat",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 590,
+                "col": 29,
+                "end_line": 590,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".sel",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 591,
+                "col": 29,
+                "end_line": 591,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "WAIT_ACK_BOT"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "loc": {
+                "line": 594,
+                "col": 29,
+                "end_line": 594,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".dat",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 596,
+                "col": 29,
+                "end_line": 596,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".sel",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 597,
+                "col": 29,
+                "end_line": 597,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".adr(0)",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 600,
+                "col": 29,
+                "end_line": 600,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "WAIT_ACK_TOP"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "IDLE",
+                "wb_io_in",
+                "has_bot"
+              ],
+              "loc": {
+                "line": 603,
+                "col": 29,
+                "end_line": 603,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 609,
+                "col": 25,
+                "end_line": 609,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".dat(31 downto 0)",
+              "reads": [
+                "wb_sio_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 616,
+                "col": 25,
+                "end_line": 616,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".dat",
+              "reads": [
+                "dat_latch"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 620,
+                "col": 29,
+                "end_line": 620,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".sel",
+              "reads": [
+                "sel_latch"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 621,
+                "col": 29,
+                "end_line": 621,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".adr(0)",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 624,
+                "col": 29,
+                "end_line": 624,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 625,
+                "col": 29,
+                "end_line": 625,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "WAIT_ACK_TOP"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "loc": {
+                "line": 628,
+                "col": 29,
+                "end_line": 628,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "end_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "loc": {
+                "line": 631,
+                "col": 29,
+                "end_line": 631,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".ack",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 634,
+                "col": 29,
+                "end_line": 634,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".stall",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 635,
+                "col": 29,
+                "end_line": 635,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "IDLE"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_BOT",
+                "wb_sio_in",
+                "has_top"
+              ],
+              "loc": {
+                "line": 638,
+                "col": 29,
+                "end_line": 638,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 644,
+                "col": 25,
+                "end_line": 644,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".dat(63 downto 32)",
+              "reads": [
+                "wb_sio_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 651,
+                "col": 25,
+                "end_line": 651,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "end_cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "loc": {
+                "line": 654,
+                "col": 25,
+                "end_line": 654,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".ack",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 657,
+                "col": 25,
+                "end_line": 657,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_io_out",
+              "select": ".stall",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 658,
+                "col": 25,
+                "end_line": 658,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "IDLE"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "soc_reset",
+                "state",
+                "WAIT_ACK_TOP",
+                "wb_sio_in"
+              ],
+              "loc": {
+                "line": 661,
+                "col": 25,
+                "end_line": 661,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "io_cycle_none",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 676,
+                "col": 17,
+                "end_line": 676,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_syscon",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 677,
+                "col": 17,
+                "end_line": 677,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_uart",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 678,
+                "col": 17,
+                "end_line": 678,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_uart1",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 679,
+                "col": 17,
+                "end_line": 679,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_icp",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 680,
+                "col": 17,
+                "end_line": 680,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_ics",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 681,
+                "col": 17,
+                "end_line": 681,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_spi_flash",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 682,
+                "col": 17,
+                "end_line": 682,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_gpio",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 683,
+                "col": 17,
+                "end_line": 683,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 684,
+                "col": 17,
+                "end_line": 684,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 685,
+                "col": 17,
+                "end_line": 685,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_ext_is_dram_init",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 686,
+                "col": 17,
+                "end_line": 686,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "wb_spiflash_is_map",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 687,
+                "col": 17,
+                "end_line": 687,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_spiflash_is_reg",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 688,
+                "col": 17,
+                "end_line": 688,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_ext_is_dram_csr",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 689,
+                "col": 17,
+                "end_line": 689,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_ext_is_eth",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 690,
+                "col": 17,
+                "end_line": 690,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_ext_is_sdcard",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 691,
+                "col": 17,
+                "end_line": 691,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_ext_is_lcd",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "end_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 692,
+                "col": 17,
+                "end_line": 692,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "match",
+              "reads": [
+                "wb_io_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc"
+              ],
+              "loc": {
+                "line": 697,
+                "col": 17,
+                "end_line": 697,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc"
+              ],
+              "loc": {
+                "line": 698,
+                "col": 17,
+                "end_line": 698,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 700,
+                "col": 21,
+                "end_line": 700,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 701,
+                "col": 21,
+                "end_line": 701,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_ext_is_dram_init",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 702,
+                "col": 21,
+                "end_line": 702,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 704,
+                "col": 21,
+                "end_line": 704,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "io_cycle_spi_flash",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 705,
+                "col": 21,
+                "end_line": 705,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_spiflash_is_map",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 706,
+                "col": 21,
+                "end_line": 706,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 710,
+                "col": 25,
+                "end_line": 710,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 711,
+                "col": 25,
+                "end_line": 711,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_ext_is_dram_csr",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 712,
+                "col": 25,
+                "end_line": 712,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 715,
+                "col": 25,
+                "end_line": 715,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 716,
+                "col": 25,
+                "end_line": 716,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_ext_is_eth",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 717,
+                "col": 25,
+                "end_line": 717,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 719,
+                "col": 25,
+                "end_line": 719,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 720,
+                "col": 25,
+                "end_line": 720,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_ext_is_sdcard",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 721,
+                "col": 25,
+                "end_line": 721,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 723,
+                "col": 25,
+                "end_line": 723,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "io_cycle_external",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 724,
+                "col": 25,
+                "end_line": 724,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_ext_is_lcd",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 725,
+                "col": 25,
+                "end_line": 725,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "io_cycle_none",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 727,
+                "col": 25,
+                "end_line": 727,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 730,
+                "col": 21,
+                "end_line": 730,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "io_cycle_syscon",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 731,
+                "col": 21,
+                "end_line": 731,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 733,
+                "col": 21,
+                "end_line": 733,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "io_cycle_uart",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 734,
+                "col": 21,
+                "end_line": 734,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 736,
+                "col": 21,
+                "end_line": 736,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "io_cycle_uart1",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 737,
+                "col": 21,
+                "end_line": 737,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 739,
+                "col": 21,
+                "end_line": 739,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "io_cycle_icp",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 740,
+                "col": 21,
+                "end_line": 740,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 742,
+                "col": 21,
+                "end_line": 742,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "io_cycle_ics",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 743,
+                "col": 21,
+                "end_line": 743,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 745,
+                "col": 21,
+                "end_line": 745,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "io_cycle_spi_flash",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 746,
+                "col": 21,
+                "end_line": 746,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_spiflash_is_reg",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 747,
+                "col": 21,
+                "end_line": 747,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "slave_io",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "loc": {
+                "line": 749,
+                "col": 21,
+                "end_line": 749,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "io_cycle_gpio",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 750,
+                "col": 21,
+                "end_line": 750,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "io_cycle_none",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc",
+                "std_match",
+                "match"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 752,
+                "col": 21,
+                "end_line": 752,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "current_io_decode",
+              "reads": [
+                "slave_io"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 754,
+                "col": 17,
+                "end_line": 754,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "wb_sio_out",
+              "select": ".cyc",
+              "conds": [
+                "rising_edge",
+                "system_clk",
+                "do_cyc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 755,
+                "col": 17,
+                "end_line": 755,
+                "end_col": 39
+              }
+            }
+          ],
           "comment": [
             "-- IO wishbone slave 64->32 bits converter",
             "--",
@@ -2081,6 +4460,458 @@
           "id": "soc.slave_io_intercon",
           "name": "slave_io_intercon",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "wb_uart0_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 764,
+                "col": 2,
+                "end_line": 764,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "wb_uart0_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_uart"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 765,
+                "col": 2,
+                "end_line": 765,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "wb_uart1_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 766,
+                "col": 2,
+                "end_line": 766,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "wb_uart1_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_uart1"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 767,
+                "col": 2,
+                "end_line": 767,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "wb_spiflash_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 769,
+                "col": 2,
+                "end_line": 769,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "wb_spiflash_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_spi_flash"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 770,
+                "col": 2,
+                "end_line": 770,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "wb_spiflash_in",
+              "select": ".adr(27 downto 26)",
+              "blocking": false,
+              "loc": {
+                "line": 773,
+                "col": 9,
+                "end_line": 773,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_gpio_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 775,
+                "col": 9,
+                "end_line": 775,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "wb_gpio_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_gpio"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 776,
+                "col": 9,
+                "end_line": 776,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "wb_xics_icp_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 779,
+                "col": 2,
+                "end_line": 779,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "wb_xics_icp_in",
+              "select": ".adr",
+              "blocking": false,
+              "loc": {
+                "line": 780,
+                "col": 2,
+                "end_line": 780,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_xics_icp_in",
+              "select": ".adr(5 downto 0)",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 781,
+                "col": 2,
+                "end_line": 781,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "wb_xics_icp_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_icp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 782,
+                "col": 2,
+                "end_line": 782,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_xics_ics_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 783,
+                "col": 2,
+                "end_line": 783,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "wb_xics_ics_in",
+              "select": ".adr",
+              "blocking": false,
+              "loc": {
+                "line": 784,
+                "col": 2,
+                "end_line": 784,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_xics_ics_in",
+              "select": ".adr(9 downto 0)",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 785,
+                "col": 2,
+                "end_line": 785,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "wb_xics_ics_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_ics"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 786,
+                "col": 2,
+                "end_line": 786,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_ext_io_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 788,
+                "col": 2,
+                "end_line": 788,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "wb_ext_io_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_external"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 789,
+                "col": 2,
+                "end_line": 789,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_syscon_in",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 791,
+                "col": 2,
+                "end_line": 791,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "wb_syscon_in",
+              "select": ".cyc",
+              "reads": [
+                "io_cycle_syscon"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 792,
+                "col": 2,
+                "end_line": 792,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_ext_io_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 796,
+                "col": 13,
+                "end_line": 796,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_syscon_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 798,
+                "col": 6,
+                "end_line": 798,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_uart0_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 800,
+                "col": 6,
+                "end_line": 800,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_xics_icp_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 802,
+                "col": 6,
+                "end_line": 802,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_xics_ics_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 804,
+                "col": 6,
+                "end_line": 804,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_uart1_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 806,
+                "col": 6,
+                "end_line": 806,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_spiflash_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 808,
+                "col": 6,
+                "end_line": 808,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "reads": [
+                "wb_gpio_out"
+              ],
+              "conds": [
+                "current_io_decode"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 810,
+                "col": 13,
+                "end_line": 810,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "select": ".dat",
+              "conds": [
+                "io_cycle_none"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 815,
+                "col": 13,
+                "end_line": 815,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "select": ".ack",
+              "reads": [
+                "wb_sio_out"
+              ],
+              "conds": [
+                "io_cycle_none"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 816,
+                "col": 13,
+                "end_line": 816,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "wb_sio_in",
+              "select": ".stall",
+              "conds": [
+                "io_cycle_none"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 817,
+                "col": 13,
+                "end_line": 817,
+                "end_col": 36
+              }
+            }
+          ],
           "comment": [
             "-- IO wishbone slave interconnect.",
             "--"
@@ -2108,6 +4939,25 @@
               "kind": "if",
               "name": "uart0_16550",
               "cond": "UART0_IS_16550"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "uart0_irq",
+              "reads": [
+                "irq_l"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 908,
+                "col": 17,
+                "end_line": 908,
+                "end_col": 36
+              }
             }
           ],
           "comment": [
@@ -2138,6 +4988,25 @@
               "cond": "HAS_UART1"
             }
           ],
+          "assigns": [
+            {
+              "target": "uart1_irq",
+              "reads": [
+                "irq_l"
+              ],
+              "conds": [
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 949,
+                "col": 17,
+                "end_line": 949,
+                "end_col": 36
+              }
+            }
+          ],
           "comment": [
             "-- Add a register on the irq out, helps timing"
           ],
@@ -2152,6 +5021,102 @@
           "id": "soc.interrupts",
           "name": "interrupts",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "int_level_in",
+              "blocking": false,
+              "loc": {
+                "line": 1040,
+                "col": 9,
+                "end_line": 1040,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(0)",
+              "reads": [
+                "uart0_irq"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1041,
+                "col": 9,
+                "end_line": 1041,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(1)",
+              "reads": [
+                "ext_irq_eth"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1042,
+                "col": 9,
+                "end_line": 1042,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(2)",
+              "reads": [
+                "uart1_irq"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1043,
+                "col": 9,
+                "end_line": 1043,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(3)",
+              "reads": [
+                "ext_irq_sdcard"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1044,
+                "col": 9,
+                "end_line": 1044,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(4)",
+              "reads": [
+                "gpio_intr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1045,
+                "col": 9,
+                "end_line": 1045,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "int_level_in",
+              "select": "(5)",
+              "reads": [
+                "ext_irq_sdcard2"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1046,
+                "col": 9,
+                "end_line": 1046,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "-- Assign external interrupts"
           ],
@@ -2166,6 +5131,219 @@
           "id": "soc.dmi_intercon",
           "name": "dmi_intercon",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "slave",
+              "reads": [
+                "SLAVE_NONE"
+              ],
+              "loc": {
+                "line": 1104,
+                "col": 2,
+                "end_line": 1104,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "slave",
+              "reads": [
+                "SLAVE_WB"
+              ],
+              "conds": [
+                "std_match",
+                "dmi_addr"
+              ],
+              "loc": {
+                "line": 1106,
+                "col": 6,
+                "end_line": 1106,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "slave",
+              "reads": [
+                "SLAVE_CORE"
+              ],
+              "conds": [
+                "std_match",
+                "dmi_addr",
+                "is_X",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 1108,
+                "col": 6,
+                "end_line": 1108,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "dmi_wb_req",
+              "blocking": false,
+              "loc": {
+                "line": 1112,
+                "col": 2,
+                "end_line": 1112,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "dmi_core_req",
+              "blocking": false,
+              "loc": {
+                "line": 1113,
+                "col": 9,
+                "end_line": 1113,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "dmi_din",
+              "blocking": false,
+              "loc": {
+                "line": 1114,
+                "col": 9,
+                "end_line": 1114,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "dmi_ack",
+              "reads": [
+                "dmi_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1115,
+                "col": 9,
+                "end_line": 1115,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "dmi_wb_req",
+              "reads": [
+                "dmi_req"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_WB"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1118,
+                "col": 6,
+                "end_line": 1118,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "dmi_ack",
+              "reads": [
+                "dmi_wb_ack"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_WB"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1119,
+                "col": 6,
+                "end_line": 1119,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "dmi_din",
+              "reads": [
+                "dmi_wb_dout"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_WB"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1120,
+                "col": 6,
+                "end_line": 1120,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "dmi_core_req",
+              "select": "(i)",
+              "reads": [
+                "dmi_req",
+                "i"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_CORE",
+                "i",
+                "is_X",
+                "dmi_addr",
+                "to_integer",
+                "unsigned"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1124,
+                "col": 21,
+                "end_line": 1124,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "dmi_ack",
+              "reads": [
+                "dmi_core_ack",
+                "i"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_CORE",
+                "i",
+                "is_X",
+                "dmi_addr",
+                "to_integer",
+                "unsigned"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1125,
+                "col": 21,
+                "end_line": 1125,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "dmi_din",
+              "reads": [
+                "dmi_core_dout",
+                "i"
+              ],
+              "conds": [
+                "slave",
+                "SLAVE_CORE",
+                "i",
+                "is_X",
+                "dmi_addr",
+                "to_integer",
+                "unsigned"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1126,
+                "col": 21,
+                "end_line": 1126,
+                "end_col": 49
+              }
+            }
+          ],
           "comment": [
             "-- DMI interconnect"
           ],
@@ -2195,6 +5373,361 @@
             "col": 5,
             "end_line": 1189,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "soc_reset",
+          "reads": [
+            "rst",
+            "sw_soc_reset"
+          ],
+          "loc": {
+            "line": 344,
+            "col": 5,
+            "end_line": 344,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "tb_ctrl",
+          "select": ".reset",
+          "reads": [
+            "soc_reset"
+          ],
+          "loc": {
+            "line": 345,
+            "col": 5,
+            "end_line": 345,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "run_out",
+          "reads": [
+            "core_run_out"
+          ],
+          "loc": {
+            "line": 422,
+            "col": 5,
+            "end_line": 422,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "run_outs",
+          "reads": [
+            "core_run_out",
+            "do_core_reset"
+          ],
+          "loc": {
+            "line": 423,
+            "col": 5,
+            "end_line": 423,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "wb_masters_out",
+          "select": "(2*NCPUS)",
+          "reads": [
+            "wishbone_dma_out"
+          ],
+          "loc": {
+            "line": 426,
+            "col": 5,
+            "end_line": 426,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "wb_masters_out",
+          "select": "(2*NCPUS+1)",
+          "reads": [
+            "wishbone_debug_out"
+          ],
+          "loc": {
+            "line": 427,
+            "col": 5,
+            "end_line": 427,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "wishbone_dma_in",
+          "reads": [
+            "wb_masters_in",
+            "wishbone_dma_out"
+          ],
+          "loc": {
+            "line": 428,
+            "col": 5,
+            "end_line": 428,
+            "end_col": 93
+          }
+        },
+        {
+          "target": "wishbone_debug_in",
+          "reads": [
+            "wb_masters_in"
+          ],
+          "loc": {
+            "line": 429,
+            "col": 5,
+            "end_line": 429,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "wb_uart0_out",
+          "select": ".dat",
+          "reads": [
+            "uart0_dat8"
+          ],
+          "loc": {
+            "line": 913,
+            "col": 5,
+            "end_line": 913,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "wb_uart0_out",
+          "select": ".stall",
+          "reads": [
+            "wb_uart0_out"
+          ],
+          "loc": {
+            "line": 914,
+            "col": 5,
+            "end_line": 914,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "wb_uart1_out",
+          "select": ".dat",
+          "reads": [
+            "uart1_dat8"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "uart1_16550",
+              "cond": "HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 952,
+            "col": 2,
+            "end_line": 952,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "wb_uart1_out",
+          "select": ".stall",
+          "reads": [
+            "wb_uart1_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "uart1_16550",
+              "cond": "HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 953,
+            "col": 2,
+            "end_line": 953,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "wb_uart1_out",
+          "select": ".dat",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_uart1",
+              "cond": "not HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 957,
+            "col": 2,
+            "end_line": 957,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "wb_uart1_out",
+          "select": ".ack",
+          "reads": [
+            "wb_uart1_in"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_uart1",
+              "cond": "not HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 958,
+            "col": 2,
+            "end_line": 958,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "wb_uart1_out",
+          "select": ".stall",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_uart1",
+              "cond": "not HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 959,
+            "col": 2,
+            "end_line": 959,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "uart1_irq",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_uart1",
+              "cond": "not HAS_UART1"
+            }
+          ],
+          "loc": {
+            "line": 960,
+            "col": 9,
+            "end_line": 960,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "wb_spiflash_out",
+          "select": ".dat",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_spi0_gen",
+              "cond": "not HAS_SPI_FLASH"
+            }
+          ],
+          "loc": {
+            "line": 987,
+            "col": 9,
+            "end_line": 987,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "wb_spiflash_out",
+          "select": ".ack",
+          "reads": [
+            "wb_spiflash_in"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_spi0_gen",
+              "cond": "not HAS_SPI_FLASH"
+            }
+          ],
+          "loc": {
+            "line": 988,
+            "col": 9,
+            "end_line": 988,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "wb_spiflash_out",
+          "select": ".stall",
+          "reads": [
+            "wb_spiflash_in",
+            "wb_spiflash_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_spi0_gen",
+              "cond": "not HAS_SPI_FLASH"
+            }
+          ],
+          "loc": {
+            "line": 989,
+            "col": 9,
+            "end_line": 989,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "wb_bram_out",
+          "select": ".ack",
+          "reads": [
+            "wb_bram_in"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_bram",
+              "cond": "MEMORY_SIZE = 0"
+            }
+          ],
+          "loc": {
+            "line": 1065,
+            "col": 9,
+            "end_line": 1065,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "wb_bram_out",
+          "select": ".dat",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_bram",
+              "cond": "MEMORY_SIZE = 0"
+            }
+          ],
+          "loc": {
+            "line": 1066,
+            "col": 9,
+            "end_line": 1066,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "wb_bram_out",
+          "select": ".stall",
+          "reads": [
+            "wb_bram_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_bram",
+              "cond": "MEMORY_SIZE = 0"
+            }
+          ],
+          "loc": {
+            "line": 1067,
+            "col": 9,
+            "end_line": 1067,
+            "end_col": 50
           }
         }
       ],
@@ -4665,6 +8198,19 @@
         "col": 1,
         "end_line": 155,
         "end_col": 16
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "statement-skipped",
+      "severity": "info",
+      "message": "entity 'soc': 'stop;' in process is not understood. What it drives is not known.",
+      "loc": {
+        "line": 1134,
+        "col": 6,
+        "end_line": 1134,
+        "end_col": 11
       }
     }
   ]

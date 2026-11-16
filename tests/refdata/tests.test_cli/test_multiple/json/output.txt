@@ -171,6 +171,66 @@
           "clock_edge": "posedge",
           "reset": "rst_n",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "data_out",
+              "conds": [
+                "rst_n"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 51,
+                "col": 13,
+                "end_line": 51,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "internal_reg",
+              "conds": [
+                "rst_n"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 52,
+                "col": 13,
+                "end_line": 52,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "data_out",
+              "reads": [
+                "internal_wire"
+              ],
+              "conds": [
+                "rst_n"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 55,
+                "col": 13,
+                "end_line": 55,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "internal_reg",
+              "reads": [
+                "data_in"
+              ],
+              "conds": [
+                "rst_n"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 56,
+                "col": 13,
+                "end_line": 56,
+                "end_col": 37
+              }
+            }
+          ],
           "loc": {
             "line": 49,
             "col": 5,
@@ -678,6 +738,30 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "X",
+          "reads": [
+            "A",
+            "B"
+          ],
+          "loc": {
+            "line": 18,
+            "col": 10,
+            "end_line": 18,
+            "end_col": 19
+          }
+        },
+        {
+          "target": "a_port",
+          "loc": {
+            "line": 22,
+            "col": 10,
+            "end_line": 22,
+            "end_col": 22
+          }
+        }
+      ],
       "insts": [
         {
           "id": "adder.u_test_module",
@@ -823,6 +907,91 @@
             },
             {
               "signal": "cin"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "temp",
+              "reads": [
+                "a",
+                "b",
+                "cin"
+              ],
+              "loc": {
+                "line": 12,
+                "col": 9,
+                "end_line": 12,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "temp",
+              "reads": [
+                "temp"
+              ],
+              "conds": [
+                "temp"
+              ],
+              "loc": {
+                "line": 14,
+                "col": 13,
+                "end_line": 14,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "cout",
+              "conds": [
+                "temp"
+              ],
+              "loc": {
+                "line": 15,
+                "col": 13,
+                "end_line": 15,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "sum",
+              "reads": [
+                "temp"
+              ],
+              "conds": [
+                "temp"
+              ],
+              "loc": {
+                "line": 16,
+                "col": 13,
+                "end_line": 16,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "cout",
+              "conds": [
+                "temp"
+              ],
+              "loc": {
+                "line": 19,
+                "col": 13,
+                "end_line": 19,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "sum",
+              "reads": [
+                "temp"
+              ],
+              "conds": [
+                "temp"
+              ],
+              "loc": {
+                "line": 20,
+                "col": 13,
+                "end_line": 20,
+                "end_col": 29
+              }
             }
           ],
           "loc": {

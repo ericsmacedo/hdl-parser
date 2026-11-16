@@ -905,6 +905,596 @@
               "signal": "sysRefPeriodmin"
             }
           ],
+          "assigns": [
+            {
+              "target": "v",
+              "reads": [
+                "r"
+              ],
+              "loc": {
+                "line": 193,
+                "col": 7,
+                "end_line": 193,
+                "end_col": 14
+              }
+            },
+            {
+              "target": "axilWriteResp",
+              "reads": [
+                "ite",
+                "axilWriteMaster",
+                "AXI_RESP_OK_C",
+                "AXI_RESP_DECERR_C"
+              ],
+              "conds": [
+                "axilStatus"
+              ],
+              "loc": {
+                "line": 201,
+                "col": 10,
+                "end_line": 201,
+                "end_col": 108
+              }
+            },
+            {
+              "target": "v",
+              "select": ".enableRx",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 204,
+                "col": 16,
+                "end_line": 204,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "v",
+              "select": ".sysrefDlyRx",
+              "reads": [
+                "axilWriteMaster",
+                "SYSRF_DLY_WIDTH_C"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 206,
+                "col": 16,
+                "end_line": 206,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "v",
+              "select": ".rxPolarity",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 208,
+                "col": 16,
+                "end_line": 208,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "v",
+              "select": ".commonCtrl",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 210,
+                "col": 16,
+                "end_line": 210,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "v",
+              "select": ".linkErrMask",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 212,
+                "col": 16,
+                "end_line": 212,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "v",
+              "select": ".invertData",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 214,
+                "col": 16,
+                "end_line": 214,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "v",
+              "select": ".rxPowerDown",
+              "reads": [
+                "axilWriteMaster"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 216,
+                "col": 16,
+                "end_line": 216,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "v",
+              "select": ".testTXItf(i)",
+              "reads": [
+                "axilWriteMaster",
+                "i"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr",
+                "i",
+                "axilWriteMaster"
+              ],
+              "loc": {
+                "line": 220,
+                "col": 22,
+                "end_line": 220,
+                "end_col": 75
+              }
+            },
+            {
+              "target": "v",
+              "select": ".testSigThr(i)",
+              "reads": [
+                "axilWriteMaster",
+                "i"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr",
+                "i",
+                "axilWriteMaster"
+              ],
+              "loc": {
+                "line": 226,
+                "col": 22,
+                "end_line": 226,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "axilWriteResp",
+              "reads": [
+                "AXI_RESP_DECERR_C"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_WrAddr"
+              ],
+              "loc": {
+                "line": 230,
+                "col": 16,
+                "end_line": 230,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "axilReadResp",
+              "reads": [
+                "ite",
+                "axilReadMaster",
+                "AXI_RESP_OK_C",
+                "AXI_RESP_DECERR_C"
+              ],
+              "conds": [
+                "axilStatus"
+              ],
+              "loc": {
+                "line": 236,
+                "col": 10,
+                "end_line": 236,
+                "end_col": 115
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata",
+              "conds": [
+                "axilStatus"
+              ],
+              "loc": {
+                "line": 237,
+                "col": 10,
+                "end_line": 237,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(L_G-1 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 240,
+                "col": 16,
+                "end_line": 240,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(SYSRF_DLY_WIDTH_C-1 downto 0)",
+              "reads": [
+                "r",
+                "SYSRF_DLY_WIDTH_C"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 242,
+                "col": 16,
+                "end_line": 242,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(L_G-1 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 244,
+                "col": 16,
+                "end_line": 244,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(5 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 246,
+                "col": 16,
+                "end_line": 246,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(5 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 248,
+                "col": 16,
+                "end_line": 248,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(L_G-1 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 250,
+                "col": 16,
+                "end_line": 250,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(L_G-1 downto 0)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 252,
+                "col": 16,
+                "end_line": 252,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(15 downto 0)",
+              "reads": [
+                "sysRefPeriodmin"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 254,
+                "col": 16,
+                "end_line": 254,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(31 downto 16)",
+              "reads": [
+                "sysRefPeriodmax"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 255,
+                "col": 16,
+                "end_line": 255,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(RX_STAT_WIDTH_C-1 downto 0)",
+              "reads": [
+                "s_statusRxArr",
+                "i",
+                "RX_STAT_WIDTH_C"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr",
+                "i",
+                "axilReadMaster"
+              ],
+              "loc": {
+                "line": 259,
+                "col": 22,
+                "end_line": 259,
+                "end_col": 92
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(15 downto 0)",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr",
+                "i",
+                "axilReadMaster"
+              ],
+              "loc": {
+                "line": 265,
+                "col": 22,
+                "end_line": 265,
+                "end_col": 75
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(31 downto 0)",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr",
+                "i",
+                "axilReadMaster"
+              ],
+              "loc": {
+                "line": 271,
+                "col": 22,
+                "end_line": 271,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata(J)",
+              "reads": [
+                "s_statusCnt",
+                "i",
+                "j",
+                "J"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr",
+                "i",
+                "axilReadMaster",
+                "j"
+              ],
+              "loc": {
+                "line": 278,
+                "col": 25,
+                "end_line": 278,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "v",
+              "select": ".axilReadSlave.rdata",
+              "reads": [
+                "s_rawData",
+                "i"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr",
+                "i",
+                "axilReadMaster"
+              ],
+              "loc": {
+                "line": 285,
+                "col": 22,
+                "end_line": 285,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "axilReadResp",
+              "reads": [
+                "AXI_RESP_DECERR_C"
+              ],
+              "conds": [
+                "axilStatus",
+                "s_RdAddr"
+              ],
+              "loc": {
+                "line": 289,
+                "col": 16,
+                "end_line": 289,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "v",
+              "conds": [
+                "axiRst_i"
+              ],
+              "loc": {
+                "line": 296,
+                "col": 10,
+                "end_line": 296,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "rin",
+              "reads": [
+                "v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 300,
+                "col": 7,
+                "end_line": 300,
+                "end_col": 16
+              }
+            },
+            {
+              "target": "axilReadSlave",
+              "reads": [
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 303,
+                "col": 7,
+                "end_line": 303,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "axilWriteSlave",
+              "reads": [
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 304,
+                "col": 7,
+                "end_line": 304,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "rxPowerDown",
+              "reads": [
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 305,
+                "col": 7,
+                "end_line": 305,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "rxPolarity",
+              "reads": [
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 306,
+                "col": 7,
+                "end_line": 306,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 184,
             "col": 4,
@@ -923,11 +1513,79 @@
           ],
           "clock": "axiClk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "r",
+              "reads": [
+                "rin"
+              ],
+              "conds": [
+                "rising_edge",
+                "axiClk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 313,
+                "col": 10,
+                "end_line": 313,
+                "end_col": 31
+              }
+            }
+          ],
           "loc": {
             "line": 310,
             "col": 4,
             "end_line": 315,
             "end_col": 20
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "s_adcValids",
+          "select": "(i)",
+          "reads": [
+            "statusRxArr_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_LANES",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 157,
+            "col": 7,
+            "end_line": 157,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "s_RdAddr",
+          "reads": [
+            "slvToInt",
+            "axilReadMaster"
+          ],
+          "loc": {
+            "line": 181,
+            "col": 4,
+            "end_line": 181,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "s_WrAddr",
+          "reads": [
+            "slvToInt",
+            "axilWriteMaster"
+          ],
+          "loc": {
+            "line": 182,
+            "col": 4,
+            "end_line": 182,
+            "end_col": 78
           }
         }
       ],
@@ -3235,6 +3893,41 @@
         "col": 1,
         "end_line": 72,
         "end_col": 15
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "code": "statement-skipped",
+      "severity": "info",
+      "message": "entity 'JesdRxReg': 'axiSlaveWaitTxn(axilWriteMaster, axil...' in process is not understood. What it drives is not known.",
+      "loc": {
+        "line": 198,
+        "col": 7,
+        "end_line": 198,
+        "end_col": 103
+      }
+    },
+    {
+      "code": "statement-skipped",
+      "severity": "info",
+      "message": "entity 'JesdRxReg': 'axiSlaveWriteResponse(v.axilWriteSlav...' in process is not understood. What it drives is not known.",
+      "loc": {
+        "line": 232,
+        "col": 10,
+        "end_line": 232,
+        "end_col": 65
+      }
+    },
+    {
+      "code": "statement-skipped",
+      "severity": "info",
+      "message": "entity 'JesdRxReg': 'axiSlaveReadResponse(v.axilReadSlave,...' in process is not understood. What it drives is not known.",
+      "loc": {
+        "line": 291,
+        "col": 10,
+        "end_line": 291,
+        "end_col": 62
       }
     }
   ]

@@ -35,13 +35,16 @@ You receive a [hdl_parser.File][] object holding all information.
 """
 
 from .datamodel import (
+    Assignment,
     Diagnostic,
     Event,
     File,
     Function,
     Generate,
     HierarchyNode,
+    Hop,
     Interface,
+    Link,
     Location,
     MacroCall,
     Member,
@@ -63,6 +66,7 @@ from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_
 from .project import Definition, Project
 
 __all__ = [
+    "Assignment",
     "Definition",
     "Diagnostic",
     "Event",
@@ -70,7 +74,9 @@ __all__ = [
     "Function",
     "Generate",
     "HierarchyNode",
+    "Hop",
     "Interface",
+    "Link",
     "Location",
     "Macro",
     "MacroCall",

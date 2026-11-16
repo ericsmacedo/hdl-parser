@@ -5,13 +5,18 @@ the source. It is meant to be called by AI agents and scripts: on the command li
 
 ## Rules Of The Answers
 
-* Every item has a **full identifier** `<file>:<id>` (`rtl/top.sv:top.u_sub`) and a **source location** `loc`.
+* Every item has a **full identifier** `<file>:<id>` (`rtl/top.sv:top.u_sub`) and a **source line** `line`.
   The file is relative to the root of the project. An identifier can be handed to every query instead of a name.
+* Answers are **compact**: the identifier of an item within another one is left out, if it is the one around
+  followed by its name, and relative otherwise (`#always1`). A list of objects may be a **table**:
+  `{"columns": [...], "rows": [[...]]}`, `null` for a field an item has not. `--full` (MCP: `detail: "full"`)
+  gives every identifier, the location with columns (`loc`) and lists of objects.
 * Every list is **limited** to 100 entries (`--limit`, `0` for no limit). What is left out is counted in
   `omitted`, the full number is `total`. Nothing is dropped silently.
-* `--fields` selects fields, `--summary` gives names and counts only. Start small, then ask for more.
+* `--fields` selects fields, also of the items of a list (`ports.direction`), `--summary` gives names and counts
+  only. Start small, then ask for more.
 * **Problems are data**, not failures: see `diagnostics`. Warnings are logged on standard error with `-v` only.
-* Code created by a macro points at the macro call, and its `loc` names the `macro`.
+* Code created by a macro points at the macro call: its `loc` names the `macro` (`--full`).
 * Nothing is guessed: what cannot be known is left out or reported.
 
 ## Exit Codes
@@ -61,12 +66,7 @@ hdl-parser hierarchy
       "kind": "module",
       "file": "ibex_top.sv",
       "name": "ibex_top",
-      "loc": {
-        "line": 15,
-        "col": 1,
-        "end_line": 1667,
-        "end_col": 10
-      },
+      "line": 15,
       "insts": 85
     }
   ],
@@ -90,18 +90,14 @@ hdl-parser module ibex_alu --summary
     "kind": "module",
     "name": "ibex_alu",
     "file": "ibex_alu.sv",
-    "loc": {
-      "line": 9,
-      "col": 1,
-      "end_line": 884,
-      "end_col": 10
-    },
+    "line": 9,
     "counts": {
       "params": 1,
       "ports": 11,
       "localparams": 4,
       "signals": 74,
       "processes": 21,
+      "assigns": 60,
       "imports": 1
     }
   }
@@ -110,7 +106,8 @@ hdl-parser module ibex_alu --summary
 
 ### Which ports does it have?
 
-Two ports are returned, the other nine are counted in `omitted`. `loc` points into the file: lines and columns start at 1, `end_col` is behind the last character.
+Two ports are returned as table, the other nine are counted in `omitted`. Lines start at 1. `--fields
+ports.name,ports.direction` would return these columns only.
 
 ```bash
 hdl-parser module ibex_alu --fields ports --limit 2
@@ -123,33 +120,13 @@ hdl-parser module ibex_alu --fields ports --limit 2
     "id": "ibex_alu.sv:ibex_alu",
     "kind": "module",
     "name": "ibex_alu",
-    "ports": [
-      {
-        "id": "ibex_alu.sv:ibex_alu.operator_i",
-        "direction": "input",
-        "ptype": "ibex_pkg::alu_op_e",
-        "name": "operator_i",
-        "loc": {
-          "line": 12,
-          "col": 3,
-          "end_line": 12,
-          "end_col": 39
-        }
-      },
-      {
-        "id": "ibex_alu.sv:ibex_alu.operand_a_i",
-        "direction": "input",
-        "ptype": "logic",
-        "name": "operand_a_i",
-        "dim": "[31:0]",
-        "loc": {
-          "line": 13,
-          "col": 3,
-          "end_line": 13,
-          "end_col": 40
-        }
-      }
-    ]
+    "ports": {
+      "columns": ["name", "direction", "ptype", "line", "dim"],
+      "rows": [
+        ["operator_i", "input", "ibex_pkg::alu_op_e", 12, null],
+        ["operand_a_i", "input", "logic", 13, "[31:0]"]
+      ]
+    }
   },
   "omitted": {
     "ports": 9
@@ -171,44 +148,15 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
   "result": {
     "name": "ibex_ex_block",
     "module": "ibex_ex_block",
-    "loc": {
-      "line": 11,
-      "col": 1,
-      "end_line": 206,
-      "end_col": 10
-    },
-    "children": [
-      {
-        "name": "alu_i",
-        "module": "ibex_alu",
-        "loc": {
-          "line": 110,
-          "col": 3,
-          "end_line": 124,
-          "end_col": 5
-        }
-      },
-      {
-        "name": "multdiv_i",
-        "module": "ibex_multdiv_slow",
-        "loc": {
-          "line": 131,
-          "col": 5,
-          "end_line": 154,
-          "end_col": 7
-        }
-      },
-      {
-        "name": "multdiv_i",
-        "module": "ibex_multdiv_fast",
-        "loc": {
-          "line": 156,
-          "col": 5,
-          "end_line": 181,
-          "end_col": 7
-        }
-      }
-    ]
+    "line": 11,
+    "children": {
+      "columns": ["name", "module", "line"],
+      "rows": [
+        ["alu_i", "ibex_alu", 110],
+        ["multdiv_i", "ibex_multdiv_slow", 131],
+        ["multdiv_i", "ibex_multdiv_fast", 156]
+      ]
+    }
   }
 }
 ```
@@ -229,12 +177,7 @@ hdl-parser where-used ibex_alu
       "inst": "ibex_ex_block.sv:ibex_ex_block.alu_i",
       "module": "ibex_ex_block.sv:ibex_ex_block",
       "file": "ibex_ex_block.sv",
-      "loc": {
-        "line": 110,
-        "col": 3,
-        "end_line": 124,
-        "end_col": 5
-      }
+      "line": 110
     }
   ],
   "total": 1,
@@ -253,38 +196,98 @@ hdl-parser find operator --kind port --limit 2
 ```json
 {
   "query": "find",
-  "result": [
-    {
-      "id": "ibex_alu.sv:ibex_alu.operator_i",
-      "kind": "port",
-      "file": "ibex_alu.sv",
-      "direction": "input",
-      "ptype": "ibex_pkg::alu_op_e",
-      "name": "operator_i",
-      "loc": {
-        "line": 12,
-        "col": 3,
-        "end_line": 12,
-        "end_col": 39
-      }
-    },
-    {
-      "id": "ibex_decoder.sv:ibex_decoder.alu_operator_o",
-      "kind": "port",
-      "file": "ibex_decoder.sv",
-      "direction": "output",
-      "ptype": "ibex_pkg::alu_op_e",
-      "name": "alu_operator_o",
-      "loc": {
-        "line": 64,
-        "col": 3,
-        "end_line": 64,
-        "end_col": 46
-      }
-    }
-  ],
+  "result": {
+    "columns": ["id", "name", "kind", "file", "direction", "ptype", "line"],
+    "rows": [
+      ["ibex_alu.sv:ibex_alu.operator_i", "operator_i", "port", "ibex_alu.sv", "input", "ibex_pkg::alu_op_e", 12],
+      ["ibex_decoder.sv:ibex_decoder.alu_operator_o", "alu_operator_o", "port", "ibex_decoder.sv", "output", "ibex_pkg::alu_op_e", 64]
+    ]
+  },
   "total": 11,
   "omitted": 9
+}
+```
+
+### What drives this signal?
+
+A signal is addressed by its instance path: the top, the instance names (with the labels of the generate blocks
+around) and the signal. The index of a `for` generate block selects one iteration (`top.g_st[1].data`), it is
+checked against the range of the loop. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
+`port`, `passthrough`, `unknown`), the signals it reads (`nets`) and the ones its conditions read (`conds`). Ask for their drivers to
+go further. `loads` is the other direction: what the signal drives.
+
+```bash
+hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
+```
+
+```json
+{
+  "query": "drivers",
+  "net": {
+    "path": "ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o",
+    "kind": "port",
+    "direction": "output",
+    "id": "ibex_if_stage.sv:ibex_if_stage.instr_rdata_id_o",
+    "file": "ibex_if_stage.sv",
+    "line": 72
+  },
+  "result": [
+    {
+      "kind": "ff",
+      "nets": ["ibex_top.u_ibex_core.if_stage_i.instr_out"],
+      "conds": ["ibex_top.u_ibex_core.if_stage_i.if_id_pipe_reg_we"],
+      "clock": "ibex_top.u_ibex_core.if_stage_i.clk_i",
+      "item": "ibex_if_stage.sv:ibex_if_stage.g_instr_rdata_nr.#always6",
+      "file": "ibex_if_stage.sv",
+      "line": 659
+    }
+  ],
+  "total": 1
+}
+```
+
+### How does this signal get there?
+
+`trace` gives the shortest connection between two signals, hop by hop, data before conditions (`if`, `case`
+and the select of `?:` are conditions). `counts` tells the hops, and how many of them are flip-flops or
+conditions: judge the path by them. It stops behind flip-flops, unless `--through-regs` is given, and at
+modules which are not defined (`stopped_at` names them). Wrappers of technology cells (one input, one output,
+driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`.
+
+```bash
+hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs --limit 3
+```
+
+```json
+{
+  "query": "trace",
+  "result": [
+    {
+      "net": "ibex_top.rst_ni"
+    },
+    {
+      "net": "ibex_top.u_ibex_core.rst_ni",
+      "kind": "inst",
+      "item": "ibex_top.sv:ibex_top.u_ibex_core",
+      "file": "ibex_top.sv",
+      "line": 412
+    },
+    {
+      "net": "ibex_top.u_ibex_core.id_stage_i.rst_ni",
+      "kind": "inst",
+      "item": "ibex_core.sv:ibex_core.id_stage_i",
+      "file": "ibex_core.sv",
+      "line": 672
+    }
+  ],
+  "total": 5,
+  "omitted": 2,
+  "found": true,
+  "counts": {
+    "hops": 4,
+    "ff": 1,
+    "control": 1
+  }
 }
 ```
 
@@ -305,12 +308,7 @@ hdl-parser diagnostics --severity warning --limit 1
       "code": "undefined-module",
       "severity": "warning",
       "message": "module 'prim_buf' of instance 'u_fetch_enable_buf' is not defined in the project.",
-      "loc": {
-        "line": 500,
-        "col": 5,
-        "end_line": 505,
-        "end_col": 7
-      },
+      "line": 500,
       "item": "ibex_core.sv:ibex_core.g_core_busy_secure.u_fetch_enable_buf"
     }
   ],
@@ -337,9 +335,7 @@ hdl-parser module ibex_alux
   "error": {
     "code": "not-found",
     "message": "'ibex_alux' is not defined in the project.",
-    "suggestions": [
-      "ibex_alu"
-    ]
+    "suggestions": ["ibex_alu"]
   }
 }
 ```
@@ -347,7 +343,8 @@ hdl-parser module ibex_alux
 ## MCP Server
 
 `hdl-parser mcp` serves the same queries as tools on standard input and output: `module`, `hierarchy`,
-`where_used`, `find`, `diagnostics`, `elaborate`, `evaluate` and `reload`. It takes the same options to create the project.
+`where_used`, `find`, `diagnostics`, `elaborate`, `evaluate`, `drivers`, `loads`, `trace` and `reload`. It takes the
+same options to create the project.
 Files which changed are read again on the next call, `reload` reads the project again (i.e. after files
 were added). Answers are the same JSON, in `structuredContent` and as text. A failed query has `isError`.
 All tools are read-only (`readOnlyHint`).
@@ -359,6 +356,11 @@ All tools are read-only (`readOnlyHint`).
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then.
+* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `params` of the top
+  and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
+  constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for
+  all of them (`multiple`). The granularity is the whole signal: the select (`[3:0]`) is given as text.
+  Procedural statements which are not understood (task calls) are reported as `statement-skipped`.
 * `--cache-dir DIR` keeps the cache outside the root, i.e. outside a shared work area.
 
 ```json

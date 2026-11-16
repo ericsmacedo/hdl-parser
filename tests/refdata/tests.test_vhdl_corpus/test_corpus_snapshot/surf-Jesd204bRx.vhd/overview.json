@@ -755,6 +755,25 @@
               "cond": "(GEN_ASYNC_G = false)"
             }
           ],
+          "assigns": [
+            {
+              "target": "s_sysrefSync",
+              "reads": [
+                "sysref_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "devClk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 275,
+                "col": 13,
+                "end_line": 275,
+                "end_col": 50
+              }
+            }
+          ],
           "loc": {
             "line": 272,
             "col": 7,
@@ -772,6 +791,46 @@
             },
             {
               "signal": "s_nSyncAny"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "v",
+              "select": ".nSyncAnyD1",
+              "reads": [
+                "s_nSyncAny"
+              ],
+              "loc": {
+                "line": 368,
+                "col": 7,
+                "end_line": 368,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "v",
+              "conds": [
+                "devRst_i"
+              ],
+              "loc": {
+                "line": 371,
+                "col": 10,
+                "end_line": 371,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "rin",
+              "reads": [
+                "v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 374,
+                "col": 7,
+                "end_line": 374,
+                "end_col": 16
+              }
             }
           ],
           "comment": [
@@ -795,11 +854,188 @@
           ],
           "clock": "devClk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "r",
+              "reads": [
+                "rin"
+              ],
+              "conds": [
+                "rising_edge",
+                "devClk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 380,
+                "col": 10,
+                "end_line": 380,
+                "end_col": 31
+              }
+            }
+          ],
           "loc": {
             "line": 377,
             "col": 4,
             "end_line": 382,
             "end_col": 20
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "s_rawData",
+          "select": "(i)",
+          "reads": [
+            "s_jesdGtRxArr",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "GEN_rawData",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 176,
+            "col": 7,
+            "end_line": 176,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "s_jesdGtRxArr",
+          "reads": [
+            "r_jesdGtRxArr"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GT_OPER_GEN",
+              "cond": "TEST_G = false"
+            }
+          ],
+          "loc": {
+            "line": 245,
+            "col": 7,
+            "end_line": 245,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "s_nSyncVecEn",
+          "select": "(i)",
+          "reads": [
+            "s_nSyncVec",
+            "i",
+            "s_enableRx"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "syncVectEn",
+              "cond": "i in L_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 358,
+            "col": 7,
+            "end_line": 358,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "s_nSyncAny",
+          "reads": [
+            "uAnd",
+            "s_nSyncVecEn"
+          ],
+          "conds": [
+            "allBits",
+            "s_enableRx"
+          ],
+          "loc": {
+            "line": 362,
+            "col": 4,
+            "end_line": 362,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "nSync_o",
+          "reads": [
+            "r"
+          ],
+          "conds": [
+            "s_invertSync"
+          ],
+          "loc": {
+            "line": 387,
+            "col": 4,
+            "end_line": 387,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "gtRxReset_o",
+          "reads": [
+            "s_gtReset"
+          ],
+          "loc": {
+            "line": 388,
+            "col": 4,
+            "end_line": 388,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "leds_o",
+          "reads": [
+            "uOr",
+            "s_dataValidVec",
+            "s_nSyncAny"
+          ],
+          "loc": {
+            "line": 389,
+            "col": 4,
+            "end_line": 389,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "sysRefDbg_o",
+          "reads": [
+            "s_sysrefD"
+          ],
+          "loc": {
+            "line": 390,
+            "col": 4,
+            "end_line": 390,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "sampleDataArr_o",
+          "reads": [
+            "s_sampleDataArr"
+          ],
+          "loc": {
+            "line": 391,
+            "col": 4,
+            "end_line": 391,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "dataValidVec_o",
+          "reads": [
+            "s_dataValidVec"
+          ],
+          "loc": {
+            "line": 392,
+            "col": 4,
+            "end_line": 392,
+            "end_col": 38
           }
         }
       ],

@@ -232,6 +232,80 @@
         {
           "id": "ibex_branch_predict.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "branch_imm",
+              "reads": [
+                "imm_b_type"
+              ],
+              "loc": {
+                "line": 80,
+                "col": 5,
+                "end_line": 80,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "branch_imm",
+              "reads": [
+                "imm_j_type"
+              ],
+              "conds": [
+                "instr_j"
+              ],
+              "loc": {
+                "line": 83,
+                "col": 18,
+                "end_line": 83,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "branch_imm",
+              "reads": [
+                "imm_b_type"
+              ],
+              "conds": [
+                "instr_b"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 18,
+                "end_line": 84,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "branch_imm",
+              "reads": [
+                "imm_cj_type"
+              ],
+              "conds": [
+                "instr_cj"
+              ],
+              "loc": {
+                "line": 85,
+                "col": 18,
+                "end_line": 85,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "branch_imm",
+              "reads": [
+                "imm_cb_type"
+              ],
+              "conds": [
+                "instr_cb"
+              ],
+              "loc": {
+                "line": 86,
+                "col": 18,
+                "end_line": 86,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "Select out the branch offset for target calculation based upon the instruction type"
           ],
@@ -240,6 +314,161 @@
             "col": 3,
             "end_line": 89,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "instr",
+          "reads": [
+            "fetch_rdata_i"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 10,
+            "end_line": 52,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "imm_j_type",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 10,
+            "end_line": 58,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "imm_b_type",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 59,
+            "col": 10,
+            "end_line": 59,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "imm_cj_type",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 62,
+            "col": 10,
+            "end_line": 63,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "imm_cb_type",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 10,
+            "end_line": 66,
+            "end_col": 22
+          }
+        },
+        {
+          "target": "instr_b",
+          "reads": [
+            "instr",
+            "OPCODE_BRANCH"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 10,
+            "end_line": 71,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "instr_j",
+          "reads": [
+            "instr",
+            "OPCODE_JAL"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 10,
+            "end_line": 72,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "instr_cb",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 75,
+            "col": 10,
+            "end_line": 75,
+            "end_col": 98
+          }
+        },
+        {
+          "target": "instr_cj",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 76,
+            "col": 10,
+            "end_line": 76,
+            "end_col": 98
+          }
+        },
+        {
+          "target": "instr_b_taken",
+          "reads": [
+            "instr_b",
+            "imm_b_type",
+            "instr_cb",
+            "imm_cb_type"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 10,
+            "end_line": 94,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "predict_branch_taken_o",
+          "reads": [
+            "fetch_valid_i",
+            "instr_j",
+            "instr_cj",
+            "instr_b_taken"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 10,
+            "end_line": 97,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "predict_branch_pc_o",
+          "reads": [
+            "fetch_pc_i",
+            "branch_imm"
+          ],
+          "loc": {
+            "line": 99,
+            "col": 10,
+            "end_line": 99,
+            "end_col": 58
           }
         }
       ],

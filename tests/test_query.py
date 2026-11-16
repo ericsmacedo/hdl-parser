@@ -274,7 +274,7 @@ def test_guide(runner):
     """The Worked Examples Of The Guide For Agents Are Up To Date."""
     text = (PRJ_PATH / "docs" / "agents.md").read_text()
     examples = list(_EXAMPLE.finditer(text))
-    assert len(examples) == 8
+    assert len(examples) == 10
     with chdir(IBEX):
         for example in examples:
             result = runner.invoke(cli, shlex.split(example["cmd"]))
@@ -349,3 +349,62 @@ def test_elaborate(tmp_path):
     assert query.evaluate(project, "N + 1", "sub", params={"N": 3})["result"]["value"] == 4
     with raises(query.QueryError):
         query.evaluate(project, "1", "nope")
+
+
+def test_render():
+    """Compact Answers: Relative Identifiers, Lines, Tables If Smaller."""
+    answer = {
+        "query": "module",
+        "result": {
+            "id": "a.sv:top",
+            "name": "top",
+            "loc": {"line": 1, "col": 1},
+            "ports": [
+                {"id": "a.sv:top.clk", "name": "clk", "direction": "input", "loc": {"line": 2, "col": 3}},
+                {"id": "a.sv:top.d", "name": "d", "direction": "input", "loc": {"line": 3, "col": 3}},
+                {"id": "a.sv:top.q", "name": "q", "direction": "output", "comment": ["data"]},
+            ],
+            "processes": [{"id": "a.sv:top.#always1", "kind": "always_ff"}],
+        },
+    }
+    assert query.render(answer, "full") is answer
+    assert query.render(answer) == {
+        "query": "module",
+        "result": {
+            "id": "a.sv:top",
+            "name": "top",
+            "line": 1,
+            "ports": {
+                "columns": ["name", "direction", "line", "comment"],
+                "rows": [["clk", "input", 2, None], ["d", "input", 3, None], ["q", "output", None, ["data"]]],
+            },
+            "processes": [{"id": "#always1", "kind": "always_ff"}],
+        },
+    }
+    # a table is no smaller: kept as list
+    assert query.render({"result": [{"a": 1}, {"b": 2}]}) == {"result": [{"a": 1}, {"b": 2}]}
+    with raises(query.QueryError):
+        query.render(answer, "short")
+
+
+def test_item_fields(ibex):
+    """Fields Of The Items Of A List."""
+    result = query.module(ibex, "ibex_alu", fields=["ports.direction"], limit=1)["result"]
+    assert result["ports"] == [{"id": "ibex_alu.sv:ibex_alu.operator_i", "name": "operator_i", "direction": "input"}]
+    assert set(query.module(ibex, "ibex_alu", fields=["ports", "ports.dim"], limit=1)["result"]["ports"][0]) > {"loc"}
+    with raises(query.QueryError, match="is no list"):
+        query.module(ibex, "ibex_alu", fields=["name.x"])
+    with raises(query.QueryError, match="unknown fields"):
+        query.module(ibex, "ibex_alu", fields=["prots.name"])
+
+
+def test_cli_full(runner):
+    """`--full` Gives The Answer As Is."""
+    with chdir(IBEX):
+        full = json.loads(runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1", "--full"]).stdout)
+        compact = runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1"]).stdout
+    assert full["result"]["ports"][0]["loc"]["col"] == 3
+    assert '"rows": [\n' not in compact
+    assert json.loads(compact)["result"]["ports"] == [
+        {"name": "operator_i", "direction": "input", "ptype": "ibex_pkg::alu_op_e", "line": 12}
+    ]

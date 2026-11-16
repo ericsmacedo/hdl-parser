@@ -339,6 +339,193 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "state",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 49,
+                "col": 7,
+                "end_line": 49,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "sel_q",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 50,
+                "col": 7,
+                "end_line": 50,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "lock",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 51,
+                "col": 7,
+                "end_line": 51,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "a_req",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 52,
+                "col": 7,
+                "end_line": 52,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "b_req",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 53,
+                "col": 7,
+                "end_line": 53,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "state",
+              "reads": [
+                "state_nxt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 55,
+                "col": 7,
+                "end_line": 55,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "sel_q",
+              "reads": [
+                "sel"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 56,
+                "col": 7,
+                "end_line": 56,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "lock",
+              "reads": [
+                "lock_nxt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 57,
+                "col": 7,
+                "end_line": 57,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "a_req",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 59,
+                "col": 9,
+                "end_line": 59,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "a_req",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "state",
+                "a_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 61,
+                "col": 9,
+                "end_line": 61,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "b_req",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 64,
+                "col": 9,
+                "end_line": 64,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "b_req",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "state",
+                "b_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 66,
+                "col": 9,
+                "end_line": 66,
+                "end_col": 22
+              }
+            }
+          ],
           "comment": [
             "-- Access Arbiter Sync --------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -380,6 +567,365 @@
               "signal": "x_rsp_i"
             }
           ],
+          "assigns": [
+            {
+              "target": "state_nxt",
+              "reads": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 76,
+                "col": 5,
+                "end_line": 76,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "lock_nxt",
+              "reads": [
+                "lock"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 77,
+                "col": 5,
+                "end_line": 77,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "sel",
+              "blocking": false,
+              "loc": {
+                "line": 78,
+                "col": 5,
+                "end_line": 78,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "stb",
+              "blocking": false,
+              "loc": {
+                "line": 79,
+                "col": 5,
+                "end_line": 79,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 86,
+                "col": 9,
+                "end_line": 86,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "stb",
+              "reads": [
+                "a_req_i"
+              ],
+              "conds": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 87,
+                "col": 9,
+                "end_line": 87,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "lock",
+                "a_req_i",
+                "x_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 89,
+                "col": 11,
+                "end_line": 89,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 94,
+                "col": 9,
+                "end_line": 94,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "stb",
+              "reads": [
+                "b_req_i"
+              ],
+              "conds": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 95,
+                "col": 9,
+                "end_line": 95,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "lock",
+                "b_req_i",
+                "x_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 97,
+                "col": 11,
+                "end_line": 97,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "lock_nxt",
+              "reads": [
+                "b_req_i",
+                "a_req_i"
+              ],
+              "conds": [
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 102,
+                "col": 9,
+                "end_line": 102,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 105,
+                "col": 13,
+                "end_line": 105,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "stb",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 106,
+                "col": 13,
+                "end_line": 106,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 13,
+                "end_line": 107,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 109,
+                "col": 13,
+                "end_line": 109,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "stb",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 110,
+                "col": 13,
+                "end_line": 110,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "sel_q",
+                "a_req_i",
+                "a_req",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 111,
+                "col": 13,
+                "end_line": 111,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 115,
+                "col": 13,
+                "end_line": 115,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "stb",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 116,
+                "col": 13,
+                "end_line": 116,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 117,
+                "col": 13,
+                "end_line": 117,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "sel",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 119,
+                "col": 13,
+                "end_line": 119,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "stb",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 120,
+                "col": 13,
+                "end_line": 120,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "state_nxt",
+              "conds": [
+                "state",
+                "sel_q",
+                "b_req_i",
+                "b_req",
+                "a_req_i",
+                "a_req"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 121,
+                "col": 13,
+                "end_line": 121,
+                "end_col": 35
+              }
+            }
+          ],
           "comment": [
             "-- Access Arbiter Comb --------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -389,6 +935,264 @@
             "col": 3,
             "end_line": 126,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "x_req_o",
+          "select": ".meta",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 130,
+            "col": 3,
+            "end_line": 130,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".addr",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 131,
+            "col": 3,
+            "end_line": 131,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".data",
+          "reads": [
+            "b_req_i",
+            "a_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 3,
+            "end_line": 134,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".ben",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 3,
+            "end_line": 135,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".rw",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 136,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".amo",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".amoop",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 138,
+            "col": 3,
+            "end_line": 138,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".burst",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".lock",
+          "reads": [
+            "a_req_i",
+            "b_req_i"
+          ],
+          "conds": [
+            "sel"
+          ],
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "x_req_o",
+          "select": ".stb",
+          "reads": [
+            "stb"
+          ],
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 24
+          }
+        },
+        {
+          "target": "a_rsp_o",
+          "select": ".ack",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "conds": [
+            "sel_q"
+          ],
+          "loc": {
+            "line": 145,
+            "col": 3,
+            "end_line": 145,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "a_rsp_o",
+          "select": ".err",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "conds": [
+            "sel_q"
+          ],
+          "loc": {
+            "line": 146,
+            "col": 3,
+            "end_line": 146,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "a_rsp_o",
+          "select": ".data",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "loc": {
+            "line": 147,
+            "col": 3,
+            "end_line": 147,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "b_rsp_o",
+          "select": ".ack",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "conds": [
+            "sel_q"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "b_rsp_o",
+          "select": ".err",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "conds": [
+            "sel_q"
+          ],
+          "loc": {
+            "line": 150,
+            "col": 3,
+            "end_line": 150,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "b_rsp_o",
+          "select": ".data",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "loc": {
+            "line": 151,
+            "col": 3,
+            "end_line": 151,
+            "end_col": 32
           }
         }
       ],
@@ -516,6 +1320,100 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "device_req_o",
+              "reads": [
+                "req_terminate_c"
+              ],
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 194,
+                "col": 7,
+                "end_line": 194,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "device_req_o",
+              "reads": [
+                "host_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "host_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 197,
+                "col": 9,
+                "end_line": 197,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "device_req_o",
+              "select": ".stb",
+              "reads": [
+                "host_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 200,
+                "col": 7,
+                "end_line": 200,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "device_req_o",
+              "select": ".burst",
+              "reads": [
+                "host_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 201,
+                "col": 7,
+                "end_line": 201,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "device_req_o",
+              "select": ".lock",
+              "reads": [
+                "host_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 202,
+                "col": 7,
+                "end_line": 202,
+                "end_col": 45
+              }
+            }
+          ],
           "comment": [
             "-- Request Register Stage -----------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -538,6 +1436,62 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "host_rsp_o",
+              "select": ".ack",
+              "reads": [
+                "device_rsp_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 211,
+                "col": 7,
+                "end_line": 211,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "host_rsp_o",
+              "select": ".err",
+              "reads": [
+                "device_rsp_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 212,
+                "col": 7,
+                "end_line": 212,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "host_rsp_o",
+              "select": ".data",
+              "reads": [
+                "device_rsp_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 213,
+                "col": 7,
+                "end_line": 213,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "-- Response Register Stage ----------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1410,6 +2364,63 @@
               "signal": "port_sel"
             }
           ],
+          "assigns": [
+            {
+              "target": "port_req",
+              "select": "(i)",
+              "reads": [
+                "req_terminate_c",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 389,
+                "col": 7,
+                "end_line": 389,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "port_req",
+              "select": "(i)",
+              "reads": [
+                "req_i",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 391,
+                "col": 9,
+                "end_line": 391,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "port_req",
+              "select": "(i).stb",
+              "reads": [
+                "req_i",
+                "port_sel",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 392,
+                "col": 9,
+                "end_line": 392,
+                "end_col": 54
+              }
+            }
+          ],
           "comment": [
             "-- bus request --"
           ],
@@ -1427,6 +2438,87 @@
           "events": [
             {
               "signal": "port_rsp"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "tmp_v",
+              "reads": [
+                "rsp_terminate_c"
+              ],
+              "loc": {
+                "line": 401,
+                "col": 5,
+                "end_line": 401,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".data",
+              "reads": [
+                "tmp_v",
+                "port_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 404,
+                "col": 9,
+                "end_line": 404,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".ack",
+              "reads": [
+                "tmp_v",
+                "port_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 405,
+                "col": 9,
+                "end_line": 405,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".err",
+              "reads": [
+                "tmp_v",
+                "port_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 406,
+                "col": 9,
+                "end_line": 406,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "int_rsp",
+              "reads": [
+                "tmp_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 409,
+                "col": 5,
+                "end_line": 409,
+                "end_col": 22
+              }
             }
           ],
           "comment": [
@@ -1455,6 +2547,254 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 422,
+                "col": 7,
+                "end_line": 422,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".lock",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 423,
+                "col": 7,
+                "end_line": 423,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".sel",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 424,
+                "col": 7,
+                "end_line": 424,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".cnt",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 425,
+                "col": 7,
+                "end_line": 425,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".lock",
+              "reads": [
+                "req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 431,
+                "col": 11,
+                "end_line": 431,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".sel",
+              "reads": [
+                "port_sel"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 432,
+                "col": 11,
+                "end_line": 432,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".cnt",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 433,
+                "col": 11,
+                "end_line": 433,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 435,
+                "col": 13,
+                "end_line": 435,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".cnt",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "int_rsp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 442,
+                "col": 13,
+                "end_line": 442,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".cnt",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "keeper"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "int_rsp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 444,
+                "col": 13,
+                "end_line": 444,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "tmo_fire"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 448,
+                "col": 13,
+                "end_line": 448,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "tmo_fire",
+                "req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 451,
+                "col": 15,
+                "end_line": 451,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "tmo_fire",
+                "int_rsp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 454,
+                "col": 13,
+                "end_line": 454,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "keeper",
+              "select": ".state",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "keeper",
+                "req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 460,
+                "col": 13,
+                "end_line": 460,
+                "end_col": 36
+              }
+            }
+          ],
           "comment": [
             "-- Bus Monitor (aka \"the KEEPER\") ---------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1464,6 +2804,307 @@
             "col": 3,
             "end_line": 465,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "port_sel",
+          "select": "(0)",
+          "conds": [
+            "req_i"
+          ],
+          "loc": {
+            "line": 371,
+            "col": 3,
+            "end_line": 371,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "port_sel",
+          "select": "(1)",
+          "conds": [
+            "req_i"
+          ],
+          "loc": {
+            "line": 372,
+            "col": 3,
+            "end_line": 372,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "port_sel",
+          "select": "(2)",
+          "conds": [
+            "req_i"
+          ],
+          "loc": {
+            "line": 373,
+            "col": 3,
+            "end_line": 373,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "port_sel",
+          "select": "(3)",
+          "conds": [
+            "req_i"
+          ],
+          "loc": {
+            "line": 374,
+            "col": 3,
+            "end_line": 374,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "port_sel",
+          "select": "(4)",
+          "conds": [
+            "port_sel"
+          ],
+          "loc": {
+            "line": 375,
+            "col": 3,
+            "end_line": 375,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "a_req_o",
+          "reads": [
+            "port_req"
+          ],
+          "loc": {
+            "line": 379,
+            "col": 3,
+            "end_line": 379,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "port_rsp",
+          "select": "(0)",
+          "reads": [
+            "a_rsp_i"
+          ],
+          "loc": {
+            "line": 379,
+            "col": 27,
+            "end_line": 379,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "b_req_o",
+          "reads": [
+            "port_req"
+          ],
+          "loc": {
+            "line": 380,
+            "col": 3,
+            "end_line": 380,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "port_rsp",
+          "select": "(1)",
+          "reads": [
+            "b_rsp_i"
+          ],
+          "loc": {
+            "line": 380,
+            "col": 27,
+            "end_line": 380,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "c_req_o",
+          "reads": [
+            "port_req"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 3,
+            "end_line": 381,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "port_rsp",
+          "select": "(2)",
+          "reads": [
+            "c_rsp_i"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 27,
+            "end_line": 381,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "d_req_o",
+          "reads": [
+            "port_req"
+          ],
+          "loc": {
+            "line": 382,
+            "col": 3,
+            "end_line": 382,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "port_rsp",
+          "select": "(3)",
+          "reads": [
+            "d_rsp_i"
+          ],
+          "loc": {
+            "line": 382,
+            "col": 27,
+            "end_line": 382,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "x_req_o",
+          "reads": [
+            "port_req"
+          ],
+          "loc": {
+            "line": 383,
+            "col": 3,
+            "end_line": 383,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "port_rsp",
+          "select": "(4)",
+          "reads": [
+            "x_rsp_i"
+          ],
+          "loc": {
+            "line": 383,
+            "col": 27,
+            "end_line": 383,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "rsp_o",
+          "select": ".data",
+          "reads": [
+            "int_rsp"
+          ],
+          "loc": {
+            "line": 413,
+            "col": 3,
+            "end_line": 413,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "rsp_o",
+          "select": ".ack",
+          "reads": [
+            "int_rsp",
+            "bus_err"
+          ],
+          "conds": [
+            "keeper"
+          ],
+          "loc": {
+            "line": 414,
+            "col": 3,
+            "end_line": 414,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "rsp_o",
+          "select": ".err",
+          "reads": [
+            "int_rsp",
+            "bus_err"
+          ],
+          "conds": [
+            "keeper"
+          ],
+          "loc": {
+            "line": 415,
+            "col": 3,
+            "end_line": 415,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "tmo_bits",
+          "select": "(i)",
+          "reads": [
+            "keeper",
+            "i"
+          ],
+          "conds": [
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "tmo_bit_gen",
+              "cond": "i in 0 to 4"
+            }
+          ],
+          "loc": {
+            "line": 470,
+            "col": 5,
+            "end_line": 470,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "tmo_fire",
+          "reads": [
+            "or_reduce_f",
+            "tmo_bits",
+            "keeper"
+          ],
+          "loc": {
+            "line": 472,
+            "col": 3,
+            "end_line": 472,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "bus_err",
+          "conds": [
+            "keeper"
+          ],
+          "loc": {
+            "line": 475,
+            "col": 3,
+            "end_line": 475,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "term_o",
+          "conds": [
+            "keeper"
+          ],
+          "loc": {
+            "line": 476,
+            "col": 3,
+            "end_line": 476,
+            "end_col": 57
           }
         }
       ],
@@ -3334,6 +4975,60 @@
               "cond": "dev_en_list_c(i)"
             }
           ],
+          "assigns": [
+            {
+              "target": "dev_req",
+              "select": "(i)",
+              "reads": [
+                "main_req",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 690,
+                "col": 9,
+                "end_line": 690,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dev_req",
+              "select": "(i).stb",
+              "reads": [
+                "main_req",
+                "i"
+              ],
+              "conds": [
+                "main_req",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 692,
+                "col": 11,
+                "end_line": 692,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "dev_req",
+              "select": "(i).stb",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "main_req",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 694,
+                "col": 11,
+                "end_line": 694,
+                "end_col": 33
+              }
+            }
+          ],
           "loc": {
             "line": 688,
             "col": 7,
@@ -3350,6 +5045,87 @@
               "signal": "dev_rsp"
             }
           ],
+          "assigns": [
+            {
+              "target": "tmp_v",
+              "reads": [
+                "rsp_terminate_c"
+              ],
+              "loc": {
+                "line": 711,
+                "col": 5,
+                "end_line": 711,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".data",
+              "reads": [
+                "tmp_v",
+                "dev_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 714,
+                "col": 9,
+                "end_line": 714,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".ack",
+              "reads": [
+                "tmp_v",
+                "dev_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 715,
+                "col": 9,
+                "end_line": 715,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "tmp_v",
+              "select": ".err",
+              "reads": [
+                "tmp_v",
+                "dev_rsp",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 716,
+                "col": 9,
+                "end_line": 716,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "main_rsp",
+              "reads": [
+                "tmp_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 719,
+                "col": 5,
+                "end_line": 719,
+                "end_col": 23
+              }
+            }
+          ],
           "comment": [
             "-- Response -------------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -3359,6 +5135,834 @@
             "col": 3,
             "end_line": 720,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "dev_00_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 648,
+            "col": 3,
+            "end_line": 648,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(0)",
+          "reads": [
+            "dev_00_rsp_i"
+          ],
+          "loc": {
+            "line": 648,
+            "col": 32,
+            "end_line": 648,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_01_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 649,
+            "col": 3,
+            "end_line": 649,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(1)",
+          "reads": [
+            "dev_01_rsp_i"
+          ],
+          "loc": {
+            "line": 649,
+            "col": 32,
+            "end_line": 649,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_02_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 650,
+            "col": 3,
+            "end_line": 650,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(2)",
+          "reads": [
+            "dev_02_rsp_i"
+          ],
+          "loc": {
+            "line": 650,
+            "col": 32,
+            "end_line": 650,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_03_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 651,
+            "col": 3,
+            "end_line": 651,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(3)",
+          "reads": [
+            "dev_03_rsp_i"
+          ],
+          "loc": {
+            "line": 651,
+            "col": 32,
+            "end_line": 651,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_04_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 652,
+            "col": 3,
+            "end_line": 652,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(4)",
+          "reads": [
+            "dev_04_rsp_i"
+          ],
+          "loc": {
+            "line": 652,
+            "col": 32,
+            "end_line": 652,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_05_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 653,
+            "col": 3,
+            "end_line": 653,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(5)",
+          "reads": [
+            "dev_05_rsp_i"
+          ],
+          "loc": {
+            "line": 653,
+            "col": 32,
+            "end_line": 653,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_06_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 654,
+            "col": 3,
+            "end_line": 654,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(6)",
+          "reads": [
+            "dev_06_rsp_i"
+          ],
+          "loc": {
+            "line": 654,
+            "col": 32,
+            "end_line": 654,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_07_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 655,
+            "col": 3,
+            "end_line": 655,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(7)",
+          "reads": [
+            "dev_07_rsp_i"
+          ],
+          "loc": {
+            "line": 655,
+            "col": 32,
+            "end_line": 655,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_08_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 656,
+            "col": 3,
+            "end_line": 656,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(8)",
+          "reads": [
+            "dev_08_rsp_i"
+          ],
+          "loc": {
+            "line": 656,
+            "col": 32,
+            "end_line": 656,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_09_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 657,
+            "col": 3,
+            "end_line": 657,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(9)",
+          "reads": [
+            "dev_09_rsp_i"
+          ],
+          "loc": {
+            "line": 657,
+            "col": 32,
+            "end_line": 657,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_10_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 658,
+            "col": 3,
+            "end_line": 658,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(10)",
+          "reads": [
+            "dev_10_rsp_i"
+          ],
+          "loc": {
+            "line": 658,
+            "col": 32,
+            "end_line": 658,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_11_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 659,
+            "col": 3,
+            "end_line": 659,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(11)",
+          "reads": [
+            "dev_11_rsp_i"
+          ],
+          "loc": {
+            "line": 659,
+            "col": 32,
+            "end_line": 659,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_12_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 660,
+            "col": 3,
+            "end_line": 660,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(12)",
+          "reads": [
+            "dev_12_rsp_i"
+          ],
+          "loc": {
+            "line": 660,
+            "col": 32,
+            "end_line": 660,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_13_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 661,
+            "col": 3,
+            "end_line": 661,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(13)",
+          "reads": [
+            "dev_13_rsp_i"
+          ],
+          "loc": {
+            "line": 661,
+            "col": 32,
+            "end_line": 661,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_14_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 662,
+            "col": 3,
+            "end_line": 662,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(14)",
+          "reads": [
+            "dev_14_rsp_i"
+          ],
+          "loc": {
+            "line": 662,
+            "col": 32,
+            "end_line": 662,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_15_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 663,
+            "col": 3,
+            "end_line": 663,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(15)",
+          "reads": [
+            "dev_15_rsp_i"
+          ],
+          "loc": {
+            "line": 663,
+            "col": 32,
+            "end_line": 663,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_16_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 664,
+            "col": 3,
+            "end_line": 664,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(16)",
+          "reads": [
+            "dev_16_rsp_i"
+          ],
+          "loc": {
+            "line": 664,
+            "col": 32,
+            "end_line": 664,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_17_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 665,
+            "col": 3,
+            "end_line": 665,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(17)",
+          "reads": [
+            "dev_17_rsp_i"
+          ],
+          "loc": {
+            "line": 665,
+            "col": 32,
+            "end_line": 665,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_18_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 666,
+            "col": 3,
+            "end_line": 666,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(18)",
+          "reads": [
+            "dev_18_rsp_i"
+          ],
+          "loc": {
+            "line": 666,
+            "col": 32,
+            "end_line": 666,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_19_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 667,
+            "col": 3,
+            "end_line": 667,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(19)",
+          "reads": [
+            "dev_19_rsp_i"
+          ],
+          "loc": {
+            "line": 667,
+            "col": 32,
+            "end_line": 667,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_20_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 668,
+            "col": 3,
+            "end_line": 668,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(20)",
+          "reads": [
+            "dev_20_rsp_i"
+          ],
+          "loc": {
+            "line": 668,
+            "col": 32,
+            "end_line": 668,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_21_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 669,
+            "col": 3,
+            "end_line": 669,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(21)",
+          "reads": [
+            "dev_21_rsp_i"
+          ],
+          "loc": {
+            "line": 669,
+            "col": 32,
+            "end_line": 669,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_22_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 670,
+            "col": 3,
+            "end_line": 670,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(22)",
+          "reads": [
+            "dev_22_rsp_i"
+          ],
+          "loc": {
+            "line": 670,
+            "col": 32,
+            "end_line": 670,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_23_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 671,
+            "col": 3,
+            "end_line": 671,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(23)",
+          "reads": [
+            "dev_23_rsp_i"
+          ],
+          "loc": {
+            "line": 671,
+            "col": 32,
+            "end_line": 671,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_24_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 672,
+            "col": 3,
+            "end_line": 672,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(24)",
+          "reads": [
+            "dev_24_rsp_i"
+          ],
+          "loc": {
+            "line": 672,
+            "col": 32,
+            "end_line": 672,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_25_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 673,
+            "col": 3,
+            "end_line": 673,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(25)",
+          "reads": [
+            "dev_25_rsp_i"
+          ],
+          "loc": {
+            "line": 673,
+            "col": 32,
+            "end_line": 673,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_26_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 674,
+            "col": 3,
+            "end_line": 674,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(26)",
+          "reads": [
+            "dev_26_rsp_i"
+          ],
+          "loc": {
+            "line": 674,
+            "col": 32,
+            "end_line": 674,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_27_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 675,
+            "col": 3,
+            "end_line": 675,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(27)",
+          "reads": [
+            "dev_27_rsp_i"
+          ],
+          "loc": {
+            "line": 675,
+            "col": 32,
+            "end_line": 675,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_28_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 676,
+            "col": 3,
+            "end_line": 676,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(28)",
+          "reads": [
+            "dev_28_rsp_i"
+          ],
+          "loc": {
+            "line": 676,
+            "col": 32,
+            "end_line": 676,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_29_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 677,
+            "col": 3,
+            "end_line": 677,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(29)",
+          "reads": [
+            "dev_29_rsp_i"
+          ],
+          "loc": {
+            "line": 677,
+            "col": 32,
+            "end_line": 677,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_30_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 678,
+            "col": 3,
+            "end_line": 678,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(30)",
+          "reads": [
+            "dev_30_rsp_i"
+          ],
+          "loc": {
+            "line": 678,
+            "col": 32,
+            "end_line": 678,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_31_req_o",
+          "reads": [
+            "dev_req"
+          ],
+          "loc": {
+            "line": 679,
+            "col": 3,
+            "end_line": 679,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dev_rsp",
+          "select": "(31)",
+          "reads": [
+            "dev_31_rsp_i"
+          ],
+          "loc": {
+            "line": 679,
+            "col": 32,
+            "end_line": 679,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "dev_req",
+          "select": "(i)",
+          "reads": [
+            "req_terminate_c",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "bus_request_gen",
+              "cond": "i in 0 to (num_devs_c-1)"
+            },
+            {
+              "kind": "if",
+              "name": "bus_request_port_disabled",
+              "cond": "not dev_en_list_c(i)"
+            }
+          ],
+          "loc": {
+            "line": 701,
+            "col": 7,
+            "end_line": 701,
+            "end_col": 37
           }
         }
       ],
@@ -3782,6 +6386,82 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "arbiter",
+              "select": ".state",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 782,
+                "col": 7,
+                "end_line": 782,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "arbiter",
+              "select": ".cmd",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 783,
+                "col": 7,
+                "end_line": 783,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "arbiter",
+              "select": ".rdata",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 784,
+                "col": 7,
+                "end_line": 784,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "arbiter",
+              "select": ".wdata",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 785,
+                "col": 7,
+                "end_line": 785,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "arbiter",
+              "reads": [
+                "arbiter_nxt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 787,
+                "col": 7,
+                "end_line": 787,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "-- Arbiter Sync ---------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -3808,6 +6488,176 @@
               "signal": "sys_rsp_i"
             }
           ],
+          "assigns": [
+            {
+              "target": "arbiter_nxt",
+              "reads": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 795,
+                "col": 5,
+                "end_line": 795,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".cmd",
+              "reads": [
+                "core_req_i"
+              ],
+              "conds": [
+                "arbiter",
+                "core_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 801,
+                "col": 11,
+                "end_line": 801,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".wdata",
+              "reads": [
+                "core_req_i"
+              ],
+              "conds": [
+                "arbiter",
+                "core_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 802,
+                "col": 11,
+                "end_line": 802,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter",
+                "core_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 803,
+                "col": 11,
+                "end_line": 803,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".rdata",
+              "reads": [
+                "sys_rsp_i"
+              ],
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 808,
+                "col": 9,
+                "end_line": 808,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter",
+                "sys_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 811,
+                "col": 13,
+                "end_line": 811,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter",
+                "sys_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 813,
+                "col": 13,
+                "end_line": 813,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 819,
+                "col": 9,
+                "end_line": 819,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 823,
+                "col": 9,
+                "end_line": 823,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 827,
+                "col": 9,
+                "end_line": 827,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "arbiter_nxt",
+              "select": ".state",
+              "conds": [
+                "arbiter",
+                "sys_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 832,
+                "col": 11,
+                "end_line": 832,
+                "end_col": 39
+              }
+            }
+          ],
           "comment": [
             "-- Arbiter Comb ---------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -3831,6 +6681,98 @@
               "signal": "sys_rsp_i"
             }
           ],
+          "assigns": [
+            {
+              "target": "core_rsp_o",
+              "select": ".err",
+              "reads": [
+                "sys_rsp_i"
+              ],
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 854,
+                "col": 7,
+                "end_line": 854,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "core_rsp_o",
+              "select": ".ack",
+              "reads": [
+                "sys_rsp_i"
+              ],
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 855,
+                "col": 7,
+                "end_line": 855,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "core_rsp_o",
+              "select": ".err",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 857,
+                "col": 7,
+                "end_line": 857,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "core_rsp_o",
+              "select": ".ack",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 858,
+                "col": 7,
+                "end_line": 858,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "core_rsp_o",
+              "select": ".err",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 860,
+                "col": 7,
+                "end_line": 860,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "core_rsp_o",
+              "select": ".ack",
+              "conds": [
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 861,
+                "col": 7,
+                "end_line": 861,
+                "end_col": 29
+              }
+            }
+          ],
           "comment": [
             "-- response switch --"
           ],
@@ -3852,6 +6794,118 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "alu_res",
+              "reads": [
+                "arbiter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 872,
+                "col": 24,
+                "end_line": 872,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "alu_res",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "arbiter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 873,
+                "col": 24,
+                "end_line": 873,
+                "end_col": 104
+              }
+            },
+            {
+              "target": "alu_res",
+              "reads": [
+                "arbiter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 874,
+                "col": 24,
+                "end_line": 874,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "alu_res",
+              "reads": [
+                "arbiter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 875,
+                "col": 24,
+                "end_line": 875,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "alu_res",
+              "reads": [
+                "arbiter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 876,
+                "col": 24,
+                "end_line": 876,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "alu_res",
+              "reads": [
+                "cmp_res"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "arbiter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 877,
+                "col": 24,
+                "end_line": 877,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "-- Data ALU -------------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -3861,6 +6915,220 @@
             "col": 3,
             "end_line": 880,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "sys_req_o",
+          "select": ".meta",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 839,
+            "col": 3,
+            "end_line": 839,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".addr",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 840,
+            "col": 3,
+            "end_line": 840,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".data",
+          "reads": [
+            "alu_res",
+            "core_req_i"
+          ],
+          "conds": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 841,
+            "col": 3,
+            "end_line": 841,
+            "end_col": 116
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".ben",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 842,
+            "col": 3,
+            "end_line": 842,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".stb",
+          "reads": [
+            "core_req_i"
+          ],
+          "conds": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 843,
+            "col": 3,
+            "end_line": 843,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".rw",
+          "reads": [
+            "core_req_i"
+          ],
+          "conds": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 844,
+            "col": 3,
+            "end_line": 844,
+            "end_col": 110
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".amo",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 845,
+            "col": 3,
+            "end_line": 845,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".amoop",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 846,
+            "col": 3,
+            "end_line": 846,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".burst",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 847,
+            "col": 3,
+            "end_line": 847,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "sys_req_o",
+          "select": ".lock",
+          "reads": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 848,
+            "col": 3,
+            "end_line": 848,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "core_rsp_o",
+          "select": ".data",
+          "reads": [
+            "sys_rsp_i",
+            "arbiter"
+          ],
+          "conds": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 864,
+            "col": 3,
+            "end_line": 864,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "cmp_opa",
+          "reads": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 883,
+            "col": 3,
+            "end_line": 883,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "cmp_opb",
+          "reads": [
+            "arbiter"
+          ],
+          "loc": {
+            "line": 884,
+            "col": 3,
+            "end_line": 884,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "cmp_less",
+          "conds": [
+            "signed",
+            "cmp_opa",
+            "cmp_opb"
+          ],
+          "loc": {
+            "line": 885,
+            "col": 3,
+            "end_line": 885,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "cmp_res",
+          "reads": [
+            "cmp_opa",
+            "cmp_opb"
+          ],
+          "conds": [
+            "cmp_less",
+            "arbiter"
+          ],
+          "loc": {
+            "line": 886,
+            "col": 3,
+            "end_line": 886,
+            "end_col": 105
           }
         }
       ],
@@ -4128,6 +7396,209 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "rsv",
+              "select": ".set",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 943,
+                "col": 7,
+                "end_line": 943,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".id",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 944,
+                "col": 7,
+                "end_line": 944,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".addr",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 945,
+                "col": 7,
+                "end_line": 945,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "turn",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 946,
+                "col": 7,
+                "end_line": 946,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".set",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "lr_allow"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 951,
+                "col": 13,
+                "end_line": 951,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".id",
+              "reads": [
+                "core_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "lr_allow"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 952,
+                "col": 13,
+                "end_line": 952,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".addr",
+              "reads": [
+                "core_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "lr_allow"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 953,
+                "col": 13,
+                "end_line": 953,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".set",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "sc",
+                "sc_valid"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 957,
+                "col": 13,
+                "end_line": 957,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "turn",
+              "reads": [
+                "turn"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "sc",
+                "sc_valid"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 958,
+                "col": 13,
+                "end_line": 958,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".set",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "sc",
+                "sc_valid",
+                "rsv"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 960,
+                "col": 13,
+                "end_line": 960,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "rsv",
+              "select": ".set",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "lr",
+                "sc",
+                "rsv"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 964,
+                "col": 13,
+                "end_line": 964,
+                "end_col": 28
+              }
+            }
+          ],
           "comment": [
             "-- Reservation Station --------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -4155,6 +7626,55 @@
             },
             {
               "signal": "sc_pend_fail"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "sys_req_o",
+              "reads": [
+                "core_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 991,
+                "col": 5,
+                "end_line": 991,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "sys_req_o",
+              "select": ".rw",
+              "conds": [
+                "sc",
+                "core_req_i",
+                "sc_valid",
+                "sc_pend_fail"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 993,
+                "col": 7,
+                "end_line": 993,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "sys_req_o",
+              "select": ".amo",
+              "conds": [
+                "sc",
+                "core_req_i",
+                "sc_valid",
+                "sc_pend_fail"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 994,
+                "col": 7,
+                "end_line": 994,
+                "end_col": 28
+              }
             }
           ],
           "comment": [
@@ -4187,6 +7707,106 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "sc_pend_pass",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1002,
+                "col": 7,
+                "end_line": 1002,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "sc_pend_fail",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1003,
+                "col": 7,
+                "end_line": 1003,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "sc_pend_pass",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "sc",
+                "sc_valid"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1007,
+                "col": 11,
+                "end_line": 1007,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "sc_pend_fail",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "sc",
+                "sc_valid"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1009,
+                "col": 11,
+                "end_line": 1009,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "sc_pend_pass",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "sc",
+                "sys_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1012,
+                "col": 9,
+                "end_line": 1012,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "sc_pend_fail",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "core_req_i",
+                "sc",
+                "sys_rsp_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1013,
+                "col": 9,
+                "end_line": 1013,
+                "end_col": 29
+              }
+            }
+          ],
           "comment": [
             "-- track pending SC operation --"
           ],
@@ -4195,6 +7815,105 @@
             "col": 3,
             "end_line": 1016,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "lr",
+          "conds": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 972,
+            "col": 3,
+            "end_line": 972,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "sc",
+          "conds": [
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 973,
+            "col": 3,
+            "end_line": 973,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "lr_allow",
+          "conds": [
+            "rsv",
+            "core_req_i",
+            "turn"
+          ],
+          "loc": {
+            "line": 976,
+            "col": 3,
+            "end_line": 979,
+            "end_col": 19
+          }
+        },
+        {
+          "target": "sc_valid",
+          "reads": [
+            "rsv"
+          ],
+          "conds": [
+            "rsv",
+            "core_req_i"
+          ],
+          "loc": {
+            "line": 982,
+            "col": 3,
+            "end_line": 982,
+            "end_col": 113
+          }
+        },
+        {
+          "target": "core_rsp_o",
+          "select": ".err",
+          "reads": [
+            "sys_rsp_i"
+          ],
+          "loc": {
+            "line": 1022,
+            "col": 3,
+            "end_line": 1022,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "core_rsp_o",
+          "select": ".ack",
+          "reads": [
+            "sys_rsp_i"
+          ],
+          "loc": {
+            "line": 1023,
+            "col": 3,
+            "end_line": 1023,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "core_rsp_o",
+          "select": ".data",
+          "reads": [
+            "sys_rsp_i"
+          ],
+          "conds": [
+            "sc_pend_fail",
+            "sc_pend_pass"
+          ],
+          "loc": {
+            "line": 1024,
+            "col": 3,
+            "end_line": 1026,
+            "end_col": 37
           }
         }
       ],

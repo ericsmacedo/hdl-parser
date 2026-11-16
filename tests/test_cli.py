@@ -141,6 +141,9 @@ def test_empty(tmp_path, runner):
         "where-used",
         "find",
         "diagnostics",
+        "drivers",
+        "loads",
+        "trace",
         "mcp",
     ),
 )

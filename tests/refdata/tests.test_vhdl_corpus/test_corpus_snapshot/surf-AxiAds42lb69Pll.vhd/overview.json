@@ -275,6 +275,75 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "adcClock",
+          "reads": [
+            "adcClk"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_PLL",
+              "cond": "(USE_PLL_G = true and XIL_DEVICE_G = \"7SERIES\")"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 7,
+            "end_line": 162,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "adcClock",
+          "reads": [
+            "adcClk"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_NO_PLL",
+              "cond": "(USE_PLL_G = false and XIL_DEVICE_G = \"7SERIES\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_NO_FBCLK",
+              "cond": "(USE_FBCLK_G = false)"
+            }
+          ],
+          "loc": {
+            "line": 226,
+            "col": 10,
+            "end_line": 226,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "adcClock",
+          "reads": [
+            "adcClk"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "GEN_ULTRASCALE_NO_PLL",
+              "cond": "(XIL_DEVICE_G = \"ULTRASCALE\")"
+            },
+            {
+              "kind": "if",
+              "name": "GEN_NO_FBCLK",
+              "cond": "(USE_FBCLK_G = false)"
+            }
+          ],
+          "loc": {
+            "line": 286,
+            "col": 10,
+            "end_line": 286,
+            "end_col": 29
+          }
+        }
+      ],
       "insts": [
         {
           "id": "axiads42lb69pll.gen_pll.ibufgds_0",

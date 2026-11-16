@@ -897,7 +897,10 @@
             },
             {
               "kind": "else",
-              "name": "g_no_dummy_instr_wb"
+              "name": "g_no_dummy_instr_wb",
+              "others": [
+                "DummyInstructions"
+              ]
             }
           ],
           "loc": {
@@ -914,7 +917,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -931,7 +937,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -948,7 +957,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -966,7 +978,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -983,7 +998,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -1000,7 +1018,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -1017,7 +1038,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_bypass_wb"
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -1051,6 +1075,37 @@
               "kind": "if",
               "name": "g_writeback_stage",
               "cond": "WritebackStage"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "wb_valid_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 121,
+                "col": 9,
+                "end_line": 121,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "wb_valid_q",
+              "reads": [
+                "wb_valid_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 123,
+                "col": 9,
+                "end_line": 123,
+                "end_col": 34
+              }
             }
           ],
           "loc": {
@@ -1089,6 +1144,401 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "rf_we_wb_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 130,
+                "col": 11,
+                "end_line": 130,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_waddr_wb_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 131,
+                "col": 11,
+                "end_line": 131,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_wdata_wb_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 132,
+                "col": 11,
+                "end_line": 132,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "wb_instr_type_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 133,
+                "col": 11,
+                "end_line": 133,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "wb_pc_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 134,
+                "col": 11,
+                "end_line": 134,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "wb_compressed_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 135,
+                "col": 11,
+                "end_line": 135,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "wb_count_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 136,
+                "col": 11,
+                "end_line": 136,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "wb_is_cheriot_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 138,
+                "col": 11,
+                "end_line": 138,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_cheriot_load_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 139,
+                "col": 11,
+                "end_line": 139,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_cheriot_store_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 140,
+                "col": 11,
+                "end_line": 140,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cheriot_rf_we_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 141,
+                "col": 11,
+                "end_line": 141,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cheriot_rf_wdata_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 142,
+                "col": 11,
+                "end_line": 142,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cheriot_rf_wcap_q",
+              "reads": [
+                "NULL_CAP"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 143,
+                "col": 11,
+                "end_line": 143,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "rf_we_wb_q",
+              "reads": [
+                "rf_we_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 145,
+                "col": 11,
+                "end_line": 145,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "rf_waddr_wb_q",
+              "reads": [
+                "rf_waddr_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 146,
+                "col": 11,
+                "end_line": 146,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "rf_wdata_wb_q",
+              "reads": [
+                "rf_wdata_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 147,
+                "col": 11,
+                "end_line": 147,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "wb_instr_type_q",
+              "reads": [
+                "instr_type_wb_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 148,
+                "col": 11,
+                "end_line": 148,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_pc_q",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 149,
+                "col": 11,
+                "end_line": 149,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_compressed_q",
+              "reads": [
+                "instr_is_compressed_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 150,
+                "col": 11,
+                "end_line": 150,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "wb_count_q",
+              "reads": [
+                "instr_perf_count_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 151,
+                "col": 11,
+                "end_line": 151,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "wb_is_cheriot_q",
+              "reads": [
+                "instr_is_cheriot_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 153,
+                "col": 11,
+                "end_line": 153,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "wb_cheriot_load_q",
+              "reads": [
+                "cheriot_load_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 154,
+                "col": 11,
+                "end_line": 154,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "wb_cheriot_store_q",
+              "reads": [
+                "cheriot_store_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 155,
+                "col": 11,
+                "end_line": 155,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "cheriot_rf_we_q",
+              "reads": [
+                "cheriot_rf_we_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 156,
+                "col": 11,
+                "end_line": 156,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "cheriot_rf_wdata_q",
+              "reads": [
+                "cheriot_rf_wdata_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 157,
+                "col": 11,
+                "end_line": 157,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "cheriot_rf_wcap_q",
+              "reads": [
+                "cheriot_rf_wcap_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 158,
+                "col": 11,
+                "end_line": 158,
+                "end_col": 51
+              }
+            }
+          ],
           "loc": {
             "line": 128,
             "col": 7,
@@ -1115,7 +1565,220 @@
             },
             {
               "kind": "else",
-              "name": "g_wb_regs_nr"
+              "name": "g_wb_regs_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rf_we_wb_q",
+              "reads": [
+                "rf_we_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 164,
+                "col": 11,
+                "end_line": 164,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "rf_waddr_wb_q",
+              "reads": [
+                "rf_waddr_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 165,
+                "col": 11,
+                "end_line": 165,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "rf_wdata_wb_q",
+              "reads": [
+                "rf_wdata_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 166,
+                "col": 11,
+                "end_line": 166,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "wb_instr_type_q",
+              "reads": [
+                "instr_type_wb_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 167,
+                "col": 11,
+                "end_line": 167,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "wb_pc_q",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 168,
+                "col": 11,
+                "end_line": 168,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "wb_compressed_q",
+              "reads": [
+                "instr_is_compressed_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 169,
+                "col": 11,
+                "end_line": 169,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "wb_count_q",
+              "reads": [
+                "instr_perf_count_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 170,
+                "col": 11,
+                "end_line": 170,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "wb_is_cheriot_q",
+              "reads": [
+                "instr_is_cheriot_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 172,
+                "col": 11,
+                "end_line": 172,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "wb_cheriot_load_q",
+              "reads": [
+                "cheriot_load_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 173,
+                "col": 11,
+                "end_line": 173,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "wb_cheriot_store_q",
+              "reads": [
+                "cheriot_store_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 174,
+                "col": 11,
+                "end_line": 174,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "cheriot_rf_we_q",
+              "reads": [
+                "cheriot_rf_we_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 175,
+                "col": 11,
+                "end_line": 175,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "cheriot_rf_wdata_q",
+              "reads": [
+                "cheriot_rf_wdata_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 176,
+                "col": 11,
+                "end_line": 176,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "cheriot_rf_wcap_q",
+              "reads": [
+                "cheriot_rf_wcap_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 177,
+                "col": 11,
+                "end_line": 177,
+                "end_col": 51
+              }
             }
           ],
           "loc": {
@@ -1159,6 +1822,38 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "dummy_instr_wb_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 232,
+                "col": 13,
+                "end_line": 232,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "dummy_instr_wb_q",
+              "reads": [
+                "dummy_instr_id_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 234,
+                "col": 13,
+                "end_line": 234,
+                "end_col": 50
+              }
+            }
+          ],
           "loc": {
             "line": 230,
             "col": 9,
@@ -1190,7 +1885,28 @@
             },
             {
               "kind": "else",
-              "name": "g_dummy_instr_wb_regs_nr"
+              "name": "g_dummy_instr_wb_regs_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "dummy_instr_wb_q",
+              "reads": [
+                "dummy_instr_id_i"
+              ],
+              "conds": [
+                "en_wb_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 240,
+                "col": 13,
+                "end_line": 240,
+                "end_col": 50
+              }
             }
           ],
           "loc": {
@@ -1198,6 +1914,1072 @@
             "col": 9,
             "end_line": 242,
             "end_col": 12
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "wb_valid_d",
+          "reads": [
+            "en_wb_i",
+            "ready_wb_o",
+            "wb_valid_q",
+            "wb_done"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 108,
+            "col": 12,
+            "end_line": 108,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "wb_done",
+          "reads": [
+            "wb_instr_type_q",
+            "WB_INSTR_OTHER",
+            "wb_is_cheriot_q",
+            "wb_cheriot_load_q",
+            "wb_cheriot_store_q",
+            "lsu_resp_valid_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 116,
+            "col": 12,
+            "end_line": 117,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "rf_waddr_wb_o",
+          "reads": [
+            "rf_waddr_wb_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 182,
+            "col": 12,
+            "end_line": 182,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux",
+          "select": "[0]",
+          "reads": [
+            "cheriot_rf_wdata_q",
+            "rf_wdata_wb_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 183,
+            "col": 12,
+            "end_line": 183,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux_we",
+          "select": "[0]",
+          "reads": [
+            "cheriot_rf_we_q",
+            "rf_we_wb_q",
+            "wb_valid_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 12,
+            "end_line": 184,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "ready_wb_o",
+          "reads": [
+            "wb_valid_q",
+            "wb_done"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 12,
+            "end_line": 186,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "rf_write_wb_o",
+          "reads": [
+            "wb_valid_q",
+            "rf_we_wb_q",
+            "wb_is_cheriot_q",
+            "cheriot_rf_we_q",
+            "wb_instr_type_q",
+            "WB_INSTR_LOAD",
+            "wb_cheriot_load_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 191,
+            "col": 12,
+            "end_line": 192,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "outstanding_load_wb_o",
+          "reads": [
+            "wb_valid_q",
+            "wb_instr_type_q",
+            "WB_INSTR_LOAD",
+            "wb_cheriot_load_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 194,
+            "col": 12,
+            "end_line": 195,
+            "end_col": 94
+          }
+        },
+        {
+          "target": "outstanding_store_wb_o",
+          "reads": [
+            "wb_valid_q",
+            "wb_instr_type_q",
+            "WB_INSTR_STORE",
+            "wb_cheriot_store_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 196,
+            "col": 12,
+            "end_line": 197,
+            "end_col": 95
+          }
+        },
+        {
+          "target": "pc_wb_o",
+          "reads": [
+            "wb_pc_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 199,
+            "col": 12,
+            "end_line": 199,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "instr_done_wb_o",
+          "reads": [
+            "wb_valid_q",
+            "wb_done"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 201,
+            "col": 12,
+            "end_line": 201,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "perf_instr_ret_wb_spec_o",
+          "reads": [
+            "wb_count_q",
+            "wb_valid_q",
+            "dummy_instr_wb_o"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 209,
+            "col": 12,
+            "end_line": 209,
+            "end_col": 93
+          }
+        },
+        {
+          "target": "perf_instr_ret_compressed_wb_spec_o",
+          "reads": [
+            "perf_instr_ret_wb_spec_o",
+            "wb_compressed_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 210,
+            "col": 12,
+            "end_line": 210,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "perf_instr_ret_wb_o",
+          "reads": [
+            "instr_done_wb_o",
+            "wb_count_q",
+            "dummy_instr_wb_o",
+            "cheriot_wb_err_i",
+            "lsu_resp_valid_i",
+            "lsu_resp_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 211,
+            "col": 12,
+            "end_line": 213,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "perf_instr_ret_compressed_wb_o",
+          "reads": [
+            "perf_instr_ret_wb_o",
+            "wb_compressed_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 214,
+            "col": 12,
+            "end_line": 214,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "rf_wdata_fwd_wb_o",
+          "reads": [
+            "cheriot_rf_wdata_q",
+            "rf_wdata_wb_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 219,
+            "col": 12,
+            "end_line": 219,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "rf_wcap_fwd_wb_o",
+          "reads": [
+            "cheriot_rf_wcap_q",
+            "NULL_CAP"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 220,
+            "col": 12,
+            "end_line": 220,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "rf_wcap_wb",
+          "reads": [
+            "cheriot_rf_wcap_q",
+            "NULL_CAP"
+          ],
+          "conds": [
+            "wb_is_cheriot_q",
+            "wb_cheriot_load_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 221,
+            "col": 12,
+            "end_line": 222,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux_we",
+          "select": "[1]",
+          "reads": [
+            "rf_we_lsu_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 224,
+            "col": 12,
+            "end_line": 224,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "dummy_instr_wb_o",
+          "reads": [
+            "dummy_instr_wb_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_instr_wb",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 245,
+            "col": 14,
+            "end_line": 245,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "unused_dummy_instr_id",
+          "reads": [
+            "dummy_instr_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "else",
+              "name": "g_no_dummy_instr_wb",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 248,
+            "col": 14,
+            "end_line": 248,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "dummy_instr_wb_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_writeback_stage",
+              "cond": "WritebackStage"
+            },
+            {
+              "kind": "else",
+              "name": "g_no_dummy_instr_wb",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 250,
+            "col": 14,
+            "end_line": 250,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "rf_waddr_wb_o",
+          "reads": [
+            "rf_waddr_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 254,
+            "col": 12,
+            "end_line": 254,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux",
+          "select": "[0]",
+          "reads": [
+            "cheriot_rf_wdata_i",
+            "rf_wdata_id_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 255,
+            "col": 12,
+            "end_line": 255,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux_we",
+          "select": "[0]",
+          "reads": [
+            "cheriot_rf_we_i",
+            "rf_we_id_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 256,
+            "col": 12,
+            "end_line": 256,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux_we",
+          "select": "[1]",
+          "reads": [
+            "rf_we_lsu_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 257,
+            "col": 12,
+            "end_line": 257,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "rf_wcap_wb",
+          "reads": [
+            "cheriot_rf_wcap_i",
+            "NULL_CAP"
+          ],
+          "conds": [
+            "instr_is_cheriot_i",
+            "cheriot_load_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 258,
+            "col": 12,
+            "end_line": 259,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "dummy_instr_wb_o",
+          "reads": [
+            "dummy_instr_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 261,
+            "col": 12,
+            "end_line": 261,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "perf_instr_ret_wb_spec_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 266,
+            "col": 12,
+            "end_line": 266,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "perf_instr_ret_compressed_wb_spec_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 267,
+            "col": 12,
+            "end_line": 267,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "perf_instr_ret_wb_o",
+          "reads": [
+            "instr_perf_count_id_i",
+            "en_wb_i",
+            "dummy_instr_wb_o",
+            "lsu_resp_valid_i",
+            "lsu_resp_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 12,
+            "end_line": 271,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "perf_instr_ret_compressed_wb_o",
+          "reads": [
+            "perf_instr_ret_wb_o",
+            "instr_is_compressed_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 12,
+            "end_line": 272,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "ready_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 275,
+            "col": 12,
+            "end_line": 275,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "unused_clk",
+          "reads": [
+            "clk_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 288,
+            "col": 12,
+            "end_line": 288,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "unused_rst",
+          "reads": [
+            "rst_ni"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 289,
+            "col": 12,
+            "end_line": 289,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "unused_instr_type_wb",
+          "reads": [
+            "instr_type_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 290,
+            "col": 12,
+            "end_line": 290,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "unused_pc_id",
+          "reads": [
+            "pc_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 291,
+            "col": 12,
+            "end_line": 291,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "unused_dummy_instr_id",
+          "reads": [
+            "dummy_instr_id_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 292,
+            "col": 12,
+            "end_line": 292,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "unused_cheriot_store",
+          "reads": [
+            "cheriot_store_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 293,
+            "col": 12,
+            "end_line": 293,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "unused_cheriot_wb_err",
+          "reads": [
+            "cheriot_wb_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 294,
+            "col": 12,
+            "end_line": 294,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "outstanding_load_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 296,
+            "col": 12,
+            "end_line": 296,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "outstanding_store_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 297,
+            "col": 12,
+            "end_line": 297,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "pc_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 298,
+            "col": 12,
+            "end_line": 298,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "rf_write_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 299,
+            "col": 12,
+            "end_line": 299,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "rf_wdata_fwd_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 300,
+            "col": 12,
+            "end_line": 300,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "rf_wcap_fwd_wb_o",
+          "reads": [
+            "NULL_CAP"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 301,
+            "col": 12,
+            "end_line": 301,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "instr_done_wb_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_bypass_wb",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 302,
+            "col": 12,
+            "end_line": 302,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "rf_wdata_wb_mux",
+          "select": "[1]",
+          "reads": [
+            "rf_wdata_lsu_i"
+          ],
+          "loc": {
+            "line": 305,
+            "col": 10,
+            "end_line": 305,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "rf_wdata_wb_o",
+          "reads": [
+            "rf_wdata_wb_mux_we",
+            "rf_wdata_wb_mux"
+          ],
+          "loc": {
+            "line": 309,
+            "col": 10,
+            "end_line": 310,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "rf_we_wb_o",
+          "reads": [
+            "rf_wdata_wb_mux_we"
+          ],
+          "loc": {
+            "line": 311,
+            "col": 10,
+            "end_line": 311,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "rf_wcap_wb_o",
+          "reads": [
+            "rf_wcap_wb",
+            "rf_wcap_lsu_i",
+            "NULL_CAP"
+          ],
+          "conds": [
+            "rf_wdata_wb_mux_we"
+          ],
+          "loc": {
+            "line": 313,
+            "col": 10,
+            "end_line": 314,
+            "end_col": 76
           }
         }
       ],

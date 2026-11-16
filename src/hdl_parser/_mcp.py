@@ -44,6 +44,22 @@ _LIMIT = {"type": "integer", "minimum": 0, "description": "Number of entries of 
 _FIELDS = {"type": "array", "items": {"type": "string"}, "description": "Fields to be returned. All by default."}
 _SUMMARY = {"type": "boolean", "description": "Names and counts only."}
 _NAME = {"type": "string", "description": "Name or full identifier ('rtl/top.sv:top')."}
+_PATH = {
+    "type": "string",
+    "description": "Instance path of a signal: top module, instance names (with generate labels), signal: "
+    "'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'.",
+}
+_PASSTHROUGH = {
+    "type": "array",
+    "items": {"type": "string"},
+    "description": "Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: "
+    "'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'.",
+}
+_TOP_PARAMS = {
+    "type": "object",
+    "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
+    "description": "Values of the parameters of the top, by name. Defaults otherwise.",
+}
 
 TOOLS: tuple[dict[str, Any], ...] = (
     {
@@ -189,6 +205,49 @@ TOOLS: tuple[dict[str, Any], ...] = (
         },
     },
     {
+        "name": "drivers",
+        "description": "What drives a signal: assignments (with the signals they read and their conditions), "
+        "output ports of instances, the connection of an input port within the parent. Ask for the drivers of "
+        "the signals read ('nets') to go further.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "loads",
+        "description": "What a signal drives: assignments reading it (also by a condition: 'control'), input ports "
+        "of instances, the connection of an output port within the parent.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "trace",
+        "description": "Shortest connection from one signal to another one below the same top, hop by hop with "
+        "kind and location, with 'counts' of hops, flip-flops and conditions. Stops behind flip-flops unless "
+        "through_regs=true, and at undefined modules ('stopped_at').",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "src": {**_PATH, "description": "Instance path of the signal to start at."},
+                "dst": {**_PATH, "description": "Instance path of the signal to reach."},
+                "params": _TOP_PARAMS,
+                "through_regs": {"type": "boolean", "description": "Continue behind flip-flops."},
+                "control": {
+                    "type": "boolean",
+                    "description": "Follow conditions, resets and clocks too. Default true.",
+                },
+                "limit": {**_LIMIT, "description": "Number of hops. Default 100. 0: no limit."},
+                "passthrough": _PASSTHROUGH,
+            },
+            "required": ["src", "dst"],
+        },
+    },
+    {
         "name": "reload",
         "description": "Read the project again, i.e. after files were added. Changed files are read again "
         "automatically.",
@@ -196,8 +255,12 @@ TOOLS: tuple[dict[str, Any], ...] = (
     },
 )
 
+_DETAIL = {"type": "string", "enum": list(query.DETAILS), "description": "Default compact. See instructions."}
+
 for _tool in TOOLS:
     _tool["annotations"] = {"readOnlyHint": True, "destructiveHint": False, "openWorldHint": False}
+    if _tool["name"] != "reload":
+        _tool["inputSchema"]["properties"]["detail"] = _DETAIL
 
 _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "module": query.module,
@@ -207,6 +270,9 @@ _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "diagnostics": query.diagnostics,
     "elaborate": query.elaborate,
     "evaluate": query.evaluate,
+    "drivers": query.drivers,
+    "loads": query.loads,
+    "trace": query.trace,
 }
 
 
@@ -277,7 +343,8 @@ class Server:
             arguments = {**arguments, "blackboxes": (*self.blackboxes, *arguments.get("blackboxes", ()))}
         try:
             _check(tool["inputSchema"]["properties"], arguments)
-            answer = func(self.project, **arguments)
+            detail = arguments.pop("detail", "compact")
+            answer = query.render(func(self.project, **arguments), detail)
         except query.QueryError as exc:
             return _result(id_, _content(exc.to_dict(), True))
         except Exception as exc:
@@ -289,12 +356,15 @@ class Server:
 
 INSTRUCTIONS = """\
 Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
-'<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source location 'loc' (lines and columns start at 1). \
+'<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source 'line'. Answers are compact: the identifier of an item \
+within another one is left out, if it is the one around plus its name, and relative otherwise; a list of objects \
+may be a table {columns, rows}. detail='full' gives every identifier and 'loc' with columns. \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
 'elaborate' gives the values of the parameters and the widths of the ports of an instance \
-('path' below 'top'), 'evaluate' the value of an expression."""
+('path' below 'top'), 'evaluate' the value of an expression. 'drivers' and 'loads' tell what drives a signal \
+and what it drives, by instance path ('top.u_core.result_o'), 'trace' the connection between two signals."""
 
 
 def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:

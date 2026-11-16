@@ -334,7 +334,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -351,7 +354,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -368,7 +374,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -385,7 +394,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -402,7 +414,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -419,7 +434,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -436,7 +454,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -453,7 +474,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -470,7 +494,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -487,7 +514,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -504,7 +534,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -521,7 +554,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -696,6 +732,93 @@
               "cond": "EnRzHs"
             }
           ],
+          "assigns": [
+            {
+              "target": "src_fsm_d",
+              "reads": [
+                "src_fsm_q"
+              ],
+              "loc": {
+                "line": 75,
+                "col": 7,
+                "end_line": 75,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "src_ack_o",
+              "loc": {
+                "line": 76,
+                "col": 7,
+                "end_line": 76,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "src_req",
+              "loc": {
+                "line": 77,
+                "col": 7,
+                "end_line": 77,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "src_fsm_d",
+              "conds": [
+                "src_fsm_q",
+                "src_ack",
+                "src_req_i"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 13,
+                "end_line": 84,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "src_req",
+              "conds": [
+                "src_fsm_q"
+              ],
+              "loc": {
+                "line": 88,
+                "col": 11,
+                "end_line": 88,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "src_ack_o",
+              "reads": [
+                "src_ack"
+              ],
+              "conds": [
+                "src_fsm_q"
+              ],
+              "loc": {
+                "line": 90,
+                "col": 11,
+                "end_line": 90,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "src_fsm_d",
+              "conds": [
+                "src_fsm_q",
+                "src_req_i",
+                "src_ack"
+              ],
+              "loc": {
+                "line": 94,
+                "col": 13,
+                "end_line": 94,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "REQ-side FSM (SRC domain)"
           ],
@@ -730,6 +853,37 @@
               "cond": "EnRzHs"
             }
           ],
+          "assigns": [
+            {
+              "target": "src_fsm_q",
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 118,
+                "col": 9,
+                "end_line": 118,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "src_fsm_q",
+              "reads": [
+                "src_fsm_d"
+              ],
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 120,
+                "col": 9,
+                "end_line": 120,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "Registers"
           ],
@@ -749,6 +903,90 @@
               "kind": "if",
               "name": "gen_rz_hs_protocol",
               "cond": "EnRzHs"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "dst_fsm_d",
+              "reads": [
+                "dst_fsm_q"
+              ],
+              "loc": {
+                "line": 126,
+                "col": 7,
+                "end_line": 126,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "dst_req_o",
+              "loc": {
+                "line": 127,
+                "col": 7,
+                "end_line": 127,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "dst_ack",
+              "loc": {
+                "line": 128,
+                "col": 7,
+                "end_line": 128,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "dst_req_o",
+              "conds": [
+                "dst_fsm_q",
+                "dst_req"
+              ],
+              "loc": {
+                "line": 134,
+                "col": 13,
+                "end_line": 134,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "dst_fsm_d",
+              "conds": [
+                "dst_fsm_q",
+                "dst_req",
+                "dst_ack_i"
+              ],
+              "loc": {
+                "line": 138,
+                "col": 15,
+                "end_line": 138,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dst_ack",
+              "conds": [
+                "dst_fsm_q"
+              ],
+              "loc": {
+                "line": 143,
+                "col": 11,
+                "end_line": 143,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "dst_fsm_d",
+              "conds": [
+                "dst_fsm_q",
+                "dst_req"
+              ],
+              "loc": {
+                "line": 146,
+                "col": 13,
+                "end_line": 146,
+                "end_col": 30
+              }
             }
           ],
           "comment": [
@@ -785,6 +1023,37 @@
               "cond": "EnRzHs"
             }
           ],
+          "assigns": [
+            {
+              "target": "dst_fsm_q",
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 170,
+                "col": 9,
+                "end_line": 170,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "dst_fsm_q",
+              "reads": [
+                "dst_fsm_d"
+              ],
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 172,
+                "col": 9,
+                "end_line": 172,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "Registers"
           ],
@@ -802,7 +1071,131 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "src_fsm_ns",
+              "reads": [
+                "src_fsm_cs"
+              ],
+              "loc": {
+                "line": 219,
+                "col": 7,
+                "end_line": 219,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "src_req_d",
+              "reads": [
+                "src_req_q"
+              ],
+              "loc": {
+                "line": 222,
+                "col": 7,
+                "end_line": 222,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "src_ack_o",
+              "loc": {
+                "line": 223,
+                "col": 7,
+                "end_line": 223,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "src_req_d",
+              "reads": [
+                "src_req_i"
+              ],
+              "conds": [
+                "src_fsm_cs"
+              ],
+              "loc": {
+                "line": 229,
+                "col": 11,
+                "end_line": 229,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "src_ack_o",
+              "reads": [
+                "src_ack"
+              ],
+              "conds": [
+                "src_fsm_cs"
+              ],
+              "loc": {
+                "line": 230,
+                "col": 11,
+                "end_line": 230,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "src_fsm_ns",
+              "conds": [
+                "src_fsm_cs",
+                "src_handshake"
+              ],
+              "loc": {
+                "line": 234,
+                "col": 13,
+                "end_line": 234,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "src_req_d",
+              "reads": [
+                "src_req_i"
+              ],
+              "conds": [
+                "src_fsm_cs"
+              ],
+              "loc": {
+                "line": 241,
+                "col": 11,
+                "end_line": 241,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "src_ack_o",
+              "reads": [
+                "src_ack"
+              ],
+              "conds": [
+                "src_fsm_cs"
+              ],
+              "loc": {
+                "line": 242,
+                "col": 11,
+                "end_line": 242,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "src_fsm_ns",
+              "conds": [
+                "src_fsm_cs",
+                "src_handshake"
+              ],
+              "loc": {
+                "line": 246,
+                "col": 13,
+                "end_line": 246,
+                "end_col": 31
+              }
             }
           ],
           "comment": [
@@ -822,7 +1215,131 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "dst_fsm_ns",
+              "reads": [
+                "dst_fsm_cs"
+              ],
+              "loc": {
+                "line": 263,
+                "col": 7,
+                "end_line": 263,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dst_req_o",
+              "loc": {
+                "line": 266,
+                "col": 7,
+                "end_line": 266,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "dst_ack_d",
+              "reads": [
+                "dst_ack_q"
+              ],
+              "loc": {
+                "line": 267,
+                "col": 7,
+                "end_line": 267,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "dst_req_o",
+              "reads": [
+                "dst_req"
+              ],
+              "conds": [
+                "dst_fsm_cs"
+              ],
+              "loc": {
+                "line": 273,
+                "col": 11,
+                "end_line": 273,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dst_ack_d",
+              "reads": [
+                "dst_ack_i"
+              ],
+              "conds": [
+                "dst_fsm_cs"
+              ],
+              "loc": {
+                "line": 274,
+                "col": 11,
+                "end_line": 274,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "dst_fsm_ns",
+              "conds": [
+                "dst_fsm_cs",
+                "dst_handshake"
+              ],
+              "loc": {
+                "line": 278,
+                "col": 13,
+                "end_line": 278,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "dst_req_o",
+              "reads": [
+                "dst_req"
+              ],
+              "conds": [
+                "dst_fsm_cs"
+              ],
+              "loc": {
+                "line": 285,
+                "col": 11,
+                "end_line": 285,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dst_ack_d",
+              "reads": [
+                "dst_ack_i"
+              ],
+              "conds": [
+                "dst_fsm_cs"
+              ],
+              "loc": {
+                "line": 286,
+                "col": 11,
+                "end_line": 286,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "dst_fsm_ns",
+              "conds": [
+                "dst_fsm_cs",
+                "dst_handshake"
+              ],
+              "loc": {
+                "line": 290,
+                "col": 13,
+                "end_line": 290,
+                "end_col": 31
+              }
             }
           ],
           "comment": [
@@ -855,7 +1372,70 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "src_fsm_cs",
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 308,
+                "col": 9,
+                "end_line": 308,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "src_req_q",
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 309,
+                "col": 9,
+                "end_line": 309,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "src_fsm_cs",
+              "reads": [
+                "src_fsm_ns"
+              ],
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 311,
+                "col": 9,
+                "end_line": 311,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "src_req_q",
+              "reads": [
+                "src_req_d"
+              ],
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 312,
+                "col": 9,
+                "end_line": 312,
+                "end_col": 33
+              }
             }
           ],
           "comment": [
@@ -888,7 +1468,70 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "dst_fsm_cs",
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 317,
+                "col": 9,
+                "end_line": 317,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "dst_ack_q",
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 318,
+                "col": 9,
+                "end_line": 318,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "dst_fsm_cs",
+              "reads": [
+                "dst_fsm_ns"
+              ],
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 320,
+                "col": 9,
+                "end_line": 320,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "dst_ack_q",
+              "reads": [
+                "dst_ack_d"
+              ],
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 321,
+                "col": 9,
+                "end_line": 321,
+                "end_col": 33
+              }
             }
           ],
           "loc": {
@@ -915,6 +1558,42 @@
           "clock_edge": "posedge",
           "reset": "effective_rst_n",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "chk_flag",
+              "conds": [
+                "effective_rst_n"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 340,
+                "col": 9,
+                "end_line": 340,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "chk_flag",
+              "conds": [
+                "effective_rst_n",
+                "src_req_i",
+                "chk_flag"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 342,
+                "col": 9,
+                "end_line": 342,
+                "end_col": 26
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -947,6 +1626,41 @@
               "kind": "if",
               "name": "gen_assert_en_rst_chks",
               "cond": "EnRstChks"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "src_reset_flag",
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 374,
+                "col": 9,
+                "end_line": 374,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "src_reset_flag",
+              "conds": [
+                "rst_src_ni",
+                "src_req_i"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 376,
+                "col": 9,
+                "end_line": 376,
+                "end_col": 32
+              }
             }
           ],
           "ifdefs": [
@@ -983,6 +1697,41 @@
               "cond": "EnRstChks"
             }
           ],
+          "assigns": [
+            {
+              "target": "dst_reset_flag",
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 383,
+                "col": 9,
+                "end_line": 383,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "dst_reset_flag",
+              "conds": [
+                "rst_dst_ni",
+                "dst_req_o"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 385,
+                "col": 9,
+                "end_line": 385,
+                "end_col": 32
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -991,6 +1740,80 @@
             "col": 5,
             "end_line": 387,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "unused_req_chk",
+          "reads": [
+            "req_chk_i"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 10,
+            "end_line": 55,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "src_handshake",
+          "reads": [
+            "src_req_i",
+            "src_ack_o"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 194,
+            "col": 12,
+            "end_line": 194,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "dst_handshake",
+          "reads": [
+            "dst_req_o",
+            "dst_ack_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 195,
+            "col": 12,
+            "end_line": 195,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "effective_rst_n",
+          "reads": [
+            "rst_src_ni",
+            "rst_dst_ni"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 335,
+            "col": 12,
+            "end_line": 335,
+            "end_col": 54
           }
         }
       ],
@@ -1215,7 +2038,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {
@@ -1291,7 +2117,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_nrz_hs_protocol"
+              "name": "gen_nrz_hs_protocol",
+              "others": [
+                "EnRzHs"
+              ]
             }
           ],
           "loc": {

@@ -599,6 +599,184 @@
         {
           "id": "ibex_fetch_fifo.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "out_rdata_o",
+              "reads": [
+                "instr_rdata_dii"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "ifdefs": [
+                "DII_SIM"
+              ],
+              "loc": {
+                "line": 140,
+                "col": 6,
+                "end_line": 140,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "out_rdata_o",
+              "reads": [
+                "rdata_unaligned"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "ifdefs": [
+                "!DII_SIM"
+              ],
+              "loc": {
+                "line": 142,
+                "col": 7,
+                "end_line": 142,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "out_err_o",
+              "reads": [
+                "err_unaligned"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "loc": {
+                "line": 144,
+                "col": 7,
+                "end_line": 144,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "out_err_plus2_o",
+              "reads": [
+                "err_plus2"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "loc": {
+                "line": 145,
+                "col": 7,
+                "end_line": 145,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "out_valid_o",
+              "reads": [
+                "valid"
+              ],
+              "conds": [
+                "out_addr_o",
+                "unaligned_is_compressed"
+              ],
+              "loc": {
+                "line": 148,
+                "col": 9,
+                "end_line": 148,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "out_valid_o",
+              "reads": [
+                "valid_unaligned"
+              ],
+              "conds": [
+                "out_addr_o",
+                "unaligned_is_compressed"
+              ],
+              "loc": {
+                "line": 150,
+                "col": 9,
+                "end_line": 150,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "out_rdata_o",
+              "reads": [
+                "instr_rdata_dii"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "ifdefs": [
+                "DII_SIM"
+              ],
+              "loc": {
+                "line": 155,
+                "col": 6,
+                "end_line": 155,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "out_rdata_o",
+              "reads": [
+                "rdata"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "ifdefs": [
+                "!DII_SIM"
+              ],
+              "loc": {
+                "line": 157,
+                "col": 7,
+                "end_line": 157,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "out_err_o",
+              "reads": [
+                "err"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "loc": {
+                "line": 159,
+                "col": 7,
+                "end_line": 159,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "out_err_plus2_o",
+              "conds": [
+                "out_addr_o"
+              ],
+              "loc": {
+                "line": 160,
+                "col": 7,
+                "end_line": 160,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "out_valid_o",
+              "reads": [
+                "valid"
+              ],
+              "conds": [
+                "out_addr_o"
+              ],
+              "loc": {
+                "line": 161,
+                "col": 7,
+                "end_line": 161,
+                "end_col": 31
+              }
+            }
+          ],
           "comment": [
             "//////////////////////////////////////",
             "Instruction aligner (if unaligned) //",
@@ -635,6 +813,38 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "instr_addr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 186,
+                "col": 9,
+                "end_line": 186,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "instr_addr_q",
+              "reads": [
+                "instr_addr_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "instr_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 188,
+                "col": 9,
+                "end_line": 188,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 184,
             "col": 5,
@@ -656,7 +866,28 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_instr_addr_nr"
+              "name": "g_instr_addr_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "instr_addr_q",
+              "reads": [
+                "instr_addr_d"
+              ],
+              "conds": [
+                "instr_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 194,
+                "col": 9,
+                "end_line": 194,
+                "end_col": 38
+              }
             }
           ],
           "loc": {
@@ -683,6 +914,37 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "valid_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 261,
+                "col": 7,
+                "end_line": 261,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "valid_q",
+              "reads": [
+                "valid_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 263,
+                "col": 7,
+                "end_line": 263,
+                "end_col": 26
+              }
+            }
+          ],
           "comment": [
             "//////////////////",
             "FIFO registers //",
@@ -724,6 +986,82 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "rdata_q",
+              "select": "[i]",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 271,
+                "col": 11,
+                "end_line": 271,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "err_q",
+              "select": "[i]",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 272,
+                "col": 11,
+                "end_line": 272,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "rdata_q",
+              "select": "[i]",
+              "reads": [
+                "rdata_d",
+                "i"
+              ],
+              "conds": [
+                "rst_ni",
+                "entry_en",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 274,
+                "col": 11,
+                "end_line": 274,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "err_q",
+              "select": "[i]",
+              "reads": [
+                "err_d",
+                "i"
+              ],
+              "conds": [
+                "rst_ni",
+                "entry_en",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 275,
+                "col": 11,
+                "end_line": 275,
+                "end_col": 34
+              }
+            }
+          ],
           "loc": {
             "line": 269,
             "col": 7,
@@ -750,7 +1088,50 @@
             },
             {
               "kind": "else",
-              "name": "g_rdata_nr"
+              "name": "g_rdata_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rdata_q",
+              "select": "[i]",
+              "reads": [
+                "rdata_d",
+                "i"
+              ],
+              "conds": [
+                "entry_en",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 281,
+                "col": 11,
+                "end_line": 281,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "err_q",
+              "select": "[i]",
+              "reads": [
+                "err_d",
+                "i"
+              ],
+              "conds": [
+                "entry_en",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 282,
+                "col": 11,
+                "end_line": 282,
+                "end_col": 34
+              }
             }
           ],
           "loc": {
@@ -758,6 +1139,616 @@
             "col": 7,
             "end_line": 284,
             "end_col": 10
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rdata",
+          "reads": [
+            "rdata_q",
+            "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 10,
+            "end_line": 71,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "err",
+          "reads": [
+            "err_q",
+            "in_err_i"
+          ],
+          "conds": [
+            "valid_q"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 10,
+            "end_line": 72,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "valid",
+          "reads": [
+            "valid_q",
+            "in_valid_i"
+          ],
+          "loc": {
+            "line": 73,
+            "col": 10,
+            "end_line": 73,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "rdata_unaligned",
+          "reads": [
+            "rdata_q",
+            "rdata",
+            "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
+          ],
+          "loc": {
+            "line": 87,
+            "col": 10,
+            "end_line": 88,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "err_unaligned",
+          "reads": [
+            "err_q",
+            "unaligned_is_compressed",
+            "valid_q",
+            "in_err_i"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 10,
+            "end_line": 97,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "err_plus2",
+          "reads": [
+            "err_q",
+            "in_err_i",
+            "valid_q"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 10,
+            "end_line": 102,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "valid_unaligned",
+          "reads": [
+            "valid_q",
+            "in_valid_i"
+          ],
+          "loc": {
+            "line": 105,
+            "col": 10,
+            "end_line": 106,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "unaligned_is_compressed",
+          "reads": [
+            "out_addr_o",
+            "cheriot_force_uc_i",
+            "instr_rdata_dii",
+            "err"
+          ],
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 120,
+            "col": 10,
+            "end_line": 121,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "aligned_is_compressed",
+          "reads": [
+            "out_addr_o",
+            "instr_rdata_dii",
+            "err"
+          ],
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 122,
+            "col": 10,
+            "end_line": 122,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "instr_ack",
+          "reads": [
+            "out_ready_i",
+            "out_valid_o"
+          ],
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 124,
+            "col": 10,
+            "end_line": 124,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "instr_pc",
+          "reads": [
+            "out_addr_o"
+          ],
+          "ifdefs": [
+            "DII_SIM"
+          ],
+          "loc": {
+            "line": 125,
+            "col": 10,
+            "end_line": 125,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "unaligned_is_compressed",
+          "reads": [
+            "cheriot_force_uc_i",
+            "rdata",
+            "err"
+          ],
+          "ifdefs": [
+            "!DII_SIM"
+          ],
+          "loc": {
+            "line": 127,
+            "col": 10,
+            "end_line": 127,
+            "end_col": 89
+          }
+        },
+        {
+          "target": "aligned_is_compressed",
+          "reads": [
+            "rdata",
+            "err"
+          ],
+          "ifdefs": [
+            "!DII_SIM"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 10,
+            "end_line": 128,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "instr_addr_en",
+          "reads": [
+            "clear_i",
+            "out_ready_i",
+            "out_valid_o"
+          ],
+          "loc": {
+            "line": 170,
+            "col": 10,
+            "end_line": 170,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "addr_incr_two",
+          "reads": [
+            "unaligned_is_compressed",
+            "aligned_is_compressed"
+          ],
+          "conds": [
+            "instr_addr_q"
+          ],
+          "loc": {
+            "line": 173,
+            "col": 10,
+            "end_line": 174,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "instr_addr_next",
+          "reads": [
+            "instr_addr_q",
+            "addr_incr_two"
+          ],
+          "loc": {
+            "line": 176,
+            "col": 10,
+            "end_line": 178,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "instr_addr_d",
+          "reads": [
+            "in_addr_i",
+            "instr_addr_next"
+          ],
+          "conds": [
+            "clear_i"
+          ],
+          "loc": {
+            "line": 180,
+            "col": 10,
+            "end_line": 181,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "out_addr_o",
+          "reads": [
+            "instr_addr_q"
+          ],
+          "loc": {
+            "line": 200,
+            "col": 10,
+            "end_line": 200,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_addr_in",
+          "reads": [
+            "in_addr_i"
+          ],
+          "loc": {
+            "line": 203,
+            "col": 10,
+            "end_line": 203,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "busy_o",
+          "reads": [
+            "valid_q"
+          ],
+          "loc": {
+            "line": 212,
+            "col": 10,
+            "end_line": 212,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "pop_fifo",
+          "reads": [
+            "out_ready_i",
+            "out_valid_o",
+            "aligned_is_compressed",
+            "out_addr_o"
+          ],
+          "loc": {
+            "line": 219,
+            "col": 10,
+            "end_line": 219,
+            "end_col": 89
+          }
+        },
+        {
+          "target": "lowest_free_entry",
+          "select": "[i]",
+          "reads": [
+            "valid_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_ent0",
+              "cond": "i == 0"
+            }
+          ],
+          "loc": {
+            "line": 224,
+            "col": 14,
+            "end_line": 224,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "lowest_free_entry",
+          "select": "[i]",
+          "reads": [
+            "valid_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_ent_others",
+              "others": [
+                "i == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 226,
+            "col": 14,
+            "end_line": 226,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "valid_pushed",
+          "select": "[i]",
+          "reads": [
+            "in_valid_i",
+            "lowest_free_entry",
+            "i",
+            "valid_q"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 230,
+            "col": 12,
+            "end_line": 231,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "valid_popped",
+          "select": "[i]",
+          "reads": [
+            "valid_pushed",
+            "i"
+          ],
+          "conds": [
+            "pop_fifo"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 233,
+            "col": 12,
+            "end_line": 233,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "valid_d",
+          "select": "[i]",
+          "reads": [
+            "valid_popped",
+            "i",
+            "clear_i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 235,
+            "col": 12,
+            "end_line": 235,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "entry_en",
+          "select": "[i]",
+          "reads": [
+            "valid_pushed",
+            "i",
+            "pop_fifo",
+            "in_valid_i",
+            "lowest_free_entry"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 238,
+            "col": 12,
+            "end_line": 240,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "rdata_d",
+          "select": "[i]",
+          "reads": [
+            "rdata_q",
+            "i",
+            "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 243,
+            "col": 12,
+            "end_line": 243,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "err_d",
+          "select": "[i]",
+          "reads": [
+            "err_q",
+            "i",
+            "in_err_i"
+          ],
+          "conds": [
+            "valid_q"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_fifo_next",
+              "cond": "genvar i = 0; i < (DEPTH - 1); i++"
+            }
+          ],
+          "loc": {
+            "line": 244,
+            "col": 12,
+            "end_line": 244,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "lowest_free_entry",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "valid_q"
+          ],
+          "loc": {
+            "line": 247,
+            "col": 10,
+            "end_line": 247,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "valid_pushed",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "valid_q",
+            "in_valid_i",
+            "lowest_free_entry"
+          ],
+          "loc": {
+            "line": 248,
+            "col": 10,
+            "end_line": 248,
+            "end_col": 99
+          }
+        },
+        {
+          "target": "valid_popped",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "valid_pushed"
+          ],
+          "conds": [
+            "pop_fifo"
+          ],
+          "loc": {
+            "line": 249,
+            "col": 10,
+            "end_line": 249,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "valid_d",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "valid_popped",
+            "clear_i"
+          ],
+          "loc": {
+            "line": 250,
+            "col": 10,
+            "end_line": 250,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "entry_en",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "in_valid_i",
+            "lowest_free_entry"
+          ],
+          "loc": {
+            "line": 251,
+            "col": 10,
+            "end_line": 251,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "rdata_d",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "in_rdata_i"
+          ],
+          "loc": {
+            "line": 252,
+            "col": 10,
+            "end_line": 252,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "err_d",
+          "select": "[DEPTH-1]",
+          "reads": [
+            "in_err_i"
+          ],
+          "loc": {
+            "line": 253,
+            "col": 10,
+            "end_line": 253,
+            "end_col": 47
           }
         }
       ],

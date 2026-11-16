@@ -718,6 +718,169 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "FC_TX_Strobe",
+          "reads": [
+            "TXFIFO_Valid",
+            "TXUART_Full"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 177,
+            "col": 3,
+            "end_line": 177,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "FC_TX_Data",
+          "reads": [
+            "TXFIFO_Data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "FC_TX_got",
+          "reads": [
+            "FC_TX_Strobe"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "FC_RX_put",
+          "reads": [
+            "RXUART_Strobe"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 181,
+            "col": 3,
+            "end_line": 181,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "FC_RX_Data",
+          "reads": [
+            "RXUART_Data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 182,
+            "col": 3,
+            "end_line": 182,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "Overflow_r",
+          "reads": [
+            "ffrs",
+            "Overflow_r",
+            "Reset",
+            "RXUART_Strobe",
+            "RXFIFO_Full"
+          ],
+          "conds": [
+            "rising_edge",
+            "Clock"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 3,
+            "end_line": 184,
+            "end_col": 117
+          }
+        },
+        {
+          "target": "RX_Overflow",
+          "reads": [
+            "Overflow_r"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNOFC",
+              "cond": "FLOWCONTROL = UART_FLOWCONTROL_NONE"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 3,
+            "end_line": 186,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "UART_RX_sync",
+          "reads": [
+            "UART_RX"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNoSync",
+              "cond": "not ADD_INPUT_SYNCHRONIZERS"
+            }
+          ],
+          "loc": {
+            "line": 277,
+            "col": 3,
+            "end_line": 277,
+            "end_col": 27
+          }
+        }
+      ],
       "insts": [
         {
           "id": "uart_fifo.txfifo",

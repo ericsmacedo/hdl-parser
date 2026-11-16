@@ -104,11 +104,51 @@
         {
           "id": "stream_demux.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "oup_valid_o",
+              "loc": {
+                "line": 31,
+                "col": 5,
+                "end_line": 31,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "oup_valid_o",
+              "select": "[oup_sel_i]",
+              "reads": [
+                "inp_valid_i",
+                "oup_sel_i"
+              ],
+              "loc": {
+                "line": 32,
+                "col": 5,
+                "end_line": 32,
+                "end_col": 42
+              }
+            }
+          ],
           "loc": {
             "line": 30,
             "col": 3,
             "end_line": 33,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "inp_ready_o",
+          "reads": [
+            "oup_ready_i",
+            "oup_sel_i"
+          ],
+          "loc": {
+            "line": 34,
+            "col": 10,
+            "end_line": 34,
+            "end_col": 46
           }
         }
       ],

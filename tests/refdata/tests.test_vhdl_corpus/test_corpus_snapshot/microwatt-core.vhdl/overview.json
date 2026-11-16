@@ -1474,11 +1474,352 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "rst_fetch1",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 216,
+                "col": 13,
+                "end_line": 216,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_fetch2",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 217,
+                "col": 13,
+                "end_line": 217,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_icache",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 218,
+                "col": 13,
+                "end_line": 218,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_dcache",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 13,
+                "end_line": 219,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_dec1",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 220,
+                "col": 13,
+                "end_line": 220,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_dec2",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 221,
+                "col": 13,
+                "end_line": 221,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_ex1",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 222,
+                "col": 13,
+                "end_line": 222,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_fpu",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 223,
+                "col": 13,
+                "end_line": 223,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_ls1",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 224,
+                "col": 13,
+                "end_line": 224,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_wback",
+              "reads": [
+                "core_rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 225,
+                "col": 13,
+                "end_line": 225,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rst_dbg",
+              "reads": [
+                "rst"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 226,
+                "col": 13,
+                "end_line": 226,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "alt_reset_d",
+              "reads": [
+                "alt_reset"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 227,
+                "col": 13,
+                "end_line": 227,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 213,
             "col": 5,
             "end_line": 229,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "core_rst",
+          "reads": [
+            "dbg_core_rst",
+            "rst"
+          ],
+          "loc": {
+            "line": 211,
+            "col": 5,
+            "end_line": 211,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "fetch1_stall_in",
+          "reads": [
+            "icache_stall_out",
+            "decode1_busy"
+          ],
+          "loc": {
+            "line": 253,
+            "col": 5,
+            "end_line": 253,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "fetch1_flush",
+          "reads": [
+            "flush",
+            "decode1_flush"
+          ],
+          "loc": {
+            "line": 254,
+            "col": 5,
+            "end_line": 254,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "icache_stall_in",
+          "reads": [
+            "decode1_busy"
+          ],
+          "loc": {
+            "line": 281,
+            "col": 5,
+            "end_line": 281,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "decode1_stall_in",
+          "reads": [
+            "decode2_stall_out"
+          ],
+          "loc": {
+            "line": 302,
+            "col": 5,
+            "end_line": 302,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "decode2_busy_in",
+          "reads": [
+            "ex1_busy_out"
+          ],
+          "loc": {
+            "line": 334,
+            "col": 5,
+            "end_line": 334,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "fpu_to_execute1",
+          "reads": [
+            "FPUToExecute1Init"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_fpu",
+              "cond": "not HAS_FPU"
+            }
+          ],
+          "loc": {
+            "line": 437,
+            "col": 9,
+            "end_line": 437,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "fpu_to_writeback",
+          "reads": [
+            "FPUToWritebackInit"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_fpu",
+              "cond": "not HAS_FPU"
+            }
+          ],
+          "loc": {
+            "line": 438,
+            "col": 9,
+            "end_line": 438,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "log_data",
+          "select": "(150)",
+          "loc": {
+            "line": 518,
+            "col": 5,
+            "end_line": 518,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "log_data",
+          "select": "(139 downto 136)",
+          "loc": {
+            "line": 519,
+            "col": 5,
+            "end_line": 519,
+            "end_col": 40
           }
         }
       ],

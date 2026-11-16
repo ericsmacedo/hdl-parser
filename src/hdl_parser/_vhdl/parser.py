@@ -29,8 +29,11 @@ information from. Everything else is skipped:
 
 * brackets are always consumed as balanced groups,
 * unknown declarations and statements are skipped up to their terminating `;`,
-* processes, subprograms and other blocks are skipped up to their `end`,
+* subprograms and other blocks are skipped up to their `end`,
 * nothing is ever skipped beyond the end of an entity or architecture.
+
+The statements of processes and the concurrent signal assignments are walked, to extract their assignments.
+A statement which is not understood (i.e. a procedure call) is skipped and reported.
 
 An entity becomes a module with its generics as parameters. The instances found in the architectures of an entity
 are added to that module.
@@ -43,9 +46,10 @@ import re
 from collections.abc import Callable, Iterator
 from typing import Literal, NamedTuple, cast
 
+from .. import _refs  # noqa: TID252
 from .. import datamodel as dm  # noqa: TID252
 from .._diagnostics import Diagnostics, shorten  # noqa: TID252
-from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token, Tokens  # noqa: TID252
+from .._tokens import CLOSE, EOF, ID, KW, OPEN, Cursor, SourceMap, Token, Tokens  # noqa: TID252
 from .tokenizer import tokenize
 
 _MODES = frozenset(("in", "out", "inout", "buffer", "linkage"))
@@ -100,6 +104,8 @@ class _Unit:
         self.functions: list[dm.Function] = []
         self.components: list[dm.Module] = []
         self.processes: list[dm.Process] = []
+        # concurrent signal assignments
+        self.assigns: list[dm.Assignment] = []
         self.insts: list[dm.ModuleInstance] = []
         # names made visible by the `use` clauses in front
         self.imports: list[str] = []
@@ -434,6 +440,284 @@ def _find_reset(body: list[Token], events: list[dm.Event], clock: str) -> tuple[
     return "", ""
 
 
+# --- assignments ---
+
+_ASSIGNS = frozenset(("<=", ":="))
+# The search for the assignment operator never continues beyond these keywords
+_STATEMENT_STOPS = frozenset(("begin", "end", "if", "then", "elsif", "else", "case", "is", "loop", "process", "when"))
+# Statements without anything to extract
+_NO_DRIVERS = frozenset(("wait", "null", "exit", "next", "return", "report", "assert"))
+_SEMI_OR_THEN = frozenset((";", "then"))
+_SEMI_OR_LOOP = frozenset((";", "loop"))
+
+
+class _Walker:
+    """Assignments Of Processes And Concurrent Signal Assignments.
+
+    `conds` are the names read by the conditions around the current statement, from the outermost.
+    """
+
+    def __init__(self, c: Cursor, unit: _Unit, where: str):
+        self.c = c
+        self.unit = unit
+        self.where = where
+        self.assigns: list[dm.Assignment] = []
+        self.conds: list[tuple[str, ...]] = []
+
+    def cond_reads(self) -> tuple[str, ...]:
+        return _refs.unique(name for cond in self.conds for name in cond)
+
+    def until(self, stops: frozenset[str]) -> tuple[str, ...]:
+        """Consume tokens up to one of `stops` and return the names read by them."""
+        c = self.c
+        start = c.pos
+        c.skip_until(stops)
+        return _refs.reads(c.toks[start : c.pos], "vhdl")
+
+    def skip(self, start: int) -> None:
+        """Skip the statement from `start` up to its `;`, which is not understood."""
+        c = self.c
+        c.skip_until(_SEMI)
+        c.accept(";")
+        if c.pos > start:
+            self.unit.diagnostics.add(
+                "statement-skipped",
+                f"entity '{self.unit.name}': '{shorten(c.text(start, c.pos))}' in {self.where} is not understood. "
+                "What it drives is not known.",
+                self.unit.smap.span(c.toks[start], _last(c)),
+            )
+
+    def end(self) -> None:
+        """`end [keyword] [label];`."""
+        c = self.c
+        if c.accept("end"):
+            _skip_statement(c)
+
+    def statements(self) -> None:
+        """Statements up to `end`, `elsif`, `else` or `when`."""
+        c = self.c
+        while True:
+            tok = c.peek()
+            if tok.kind == EOF or (tok.kind == KW and tok.text in ("end", "elsif", "else", "when")):
+                return
+            pos = c.pos
+            self.statement()
+            if c.pos == pos:
+                c.next()
+
+    def statement(self) -> None:  # noqa: C901, PLR0912, PLR0915
+        """One sequential statement."""
+        c = self.c
+        tok = c.peek()
+        text = tok.text
+        if tok.kind == ID and c.peek(1).text == ":":
+            # label
+            c.next()
+            c.next()
+            tok = c.peek()
+            text = tok.text
+        if tok.kind == KW:
+            if text == "if":
+                c.next()
+                count = len(self.conds)
+                self.conds.append(self.until(_SEMI_OR_THEN))
+                c.accept("then")
+                self.statements()
+                while c.peek().text == "elsif":
+                    c.next()
+                    # the alternatives depend on the conditions in front too
+                    self.conds.append(self.until(_SEMI_OR_THEN))
+                    c.accept("then")
+                    self.statements()
+                if c.accept("else"):
+                    self.statements()
+                del self.conds[count:]
+                self.end()
+            elif text == "case":
+                c.next()
+                selector = self.until(frozenset((";", "is")))
+                c.accept("is")
+                while c.accept("when"):
+                    choices = self.until(_SEMI_OR_CHOICE)
+                    c.accept("=>")
+                    self.conds.append(_refs.unique((*selector, *choices)))
+                    self.statements()
+                    self.conds.pop()
+                self.end()
+            elif text in ("for", "while", "loop"):
+                c.next()
+                self.conds.append(self.until(_SEMI_OR_LOOP) if text != "loop" else ())
+                c.accept("loop")
+                self.statements()
+                self.conds.pop()
+                self.end()
+            elif text in _NO_DRIVERS:
+                _skip_statement(c)
+            else:
+                self.skip(c.pos)
+        elif tok.kind == ID or text == "(":
+            self.assignment()
+        elif text == ";":
+            c.next()
+        else:
+            self.skip(c.pos)
+
+    def assignment(self, concurrent: bool = False) -> None:
+        """`target <= value [when condition else value];`, `target := value;`. Anything else is skipped."""
+        c = self.c
+        toks = c.toks
+        start = c.pos
+        end = _assignment_operator(c, start)
+        if end is None:
+            self.skip(start)
+            return
+        op = toks[end].text
+        c.skip_to(end + 1)
+        while c.peek().text in ("guarded", "transport", "inertial", "force"):
+            c.next()
+        reads, conds = self.waveforms(frozenset((";",)))
+        c.accept(";")
+        self.add(toks[start:end], start, reads, (*self.cond_reads(), *conds), op == ":=" or concurrent)
+
+    def waveforms(self, stops: frozenset[str]) -> tuple[tuple[str, ...], tuple[str, ...]]:
+        """Names read by the values and by the conditions of `value [when condition else value ...]`."""
+        c = self.c
+        reads: list[str] = []
+        conds: list[str] = []
+        while True:
+            reads += self.until(frozenset((*stops, "when", "else")))
+            if c.accept("when"):
+                conds += self.until(frozenset((*stops, "else")))
+            if not c.accept("else"):
+                return _refs.unique(reads), _refs.unique(conds)
+
+    def add(self, lhs: list[Token], start: int, reads: tuple[str, ...], conds: tuple[str, ...], blocking: bool):
+        """Add the assignment of the target `lhs`. The statement spans from `start` to the last consumed token."""
+        c = self.c
+        first = c.toks[start]
+        found = _refs.targets(lhs, "vhdl")
+        if not found:
+            self.unit.diagnostics.add(
+                "statement-skipped",
+                f"entity '{self.unit.name}': '{shorten(c.text(start, c.pos))}' in {self.where} is not understood. "
+                "What it drives is not known.",
+                self.unit.smap.span(first, _last(c)),
+            )
+            return
+        loc = self.unit.smap.span(first, _last(c))
+        generates = tuple(self.unit.generates) if self.where == "architecture" else ()
+        for target in found:
+            self.assigns.append(
+                dm.Assignment(
+                    target=target.name,
+                    select=target.select,
+                    reads=_refs.unique((*reads, *target.reads)),
+                    conds=_refs.unique(conds),
+                    blocking=blocking,
+                    generates=generates,
+                    loc=loc,
+                )
+            )
+
+    def selected(self) -> None:
+        """`with selector select [?] target <= value when choices, ...;`."""
+        c = self.c
+        toks = c.toks
+        first = c.pos
+        c.next()
+        selector = self.until(frozenset((";", "select")))
+        if not c.accept("select"):
+            c.accept(";")
+            return
+        c.accept("?")
+        start = c.pos
+        end = _assignment_operator(c, start)
+        if end is None:
+            self.skip(start)
+            return
+        c.skip_to(end + 1)
+        while c.peek().text in ("guarded", "transport", "inertial"):
+            c.next()
+        reads: list[str] = []
+        conds = list(selector)
+        while True:
+            reads += self.until(frozenset((";", "when")))
+            if c.accept("when"):
+                conds += self.until(frozenset((";", ",")))
+            if not c.accept(","):
+                break
+        c.accept(";")
+        self.add(toks[start:end], first, _refs.unique(reads), (*self.cond_reads(), *conds), True)
+
+
+def _assignment_operator(c: Cursor, start: int) -> int | None:
+    """Index of the assignment operator of the statement at `start`. `None`, if there is none."""
+    toks = c.toks
+    idx = start
+    while True:
+        tok = toks[idx]
+        text = tok.text
+        if text in OPEN:
+            idx = c.match(idx)
+            continue
+        if text in _ASSIGNS:
+            return idx
+        if text == ";" or text in CLOSE or tok.kind == EOF or (tok.kind == KW and text in _STATEMENT_STOPS):
+            return None
+        idx += 1
+
+
+def _parse_process_body(c: Cursor, unit: _Unit, walker: _Walker) -> None:
+    """Parse `[is] declarations begin statements end process` of a process."""
+    scratch = _Unit(unit.name, unit.smap, unit.diagnostics)
+    while True:
+        tok = c.peek()
+        if tok.kind == EOF:
+            return
+        if tok.kind == KW and tok.text in ("begin", "end"):
+            break
+        if tok.kind == KW and tok.text in _SUBPROGRAMS:
+            # local subprograms have statements on their own
+            _handle_subprogram(c, scratch)
+        elif tok.kind == KW and tok.text in _TYPE_BLOCKS:
+            c.skip_past(frozenset((tok.text,)))
+        elif tok.text in OPEN:
+            c.skip_balanced()
+        else:
+            c.next()
+    if c.accept("begin"):
+        walker.statements()
+    if c.peek().text == "end" and c.peek(1).text == "process":
+        c.next()
+        c.next()
+    else:
+        # not understood: the statements behind are skipped
+        start = c.pos
+        c.skip_past(frozenset(("process",)))
+        if c.pos > start:
+            unit.diagnostics.add(
+                "statement-skipped",
+                f"entity '{unit.name}': '{shorten(c.text(start, c.pos))}' in process is not understood. "
+                "What it drives is not known.",
+                unit.smap.span(c.toks[start], _last(c)),
+            )
+
+
+@_handles("with")
+def _handle_selected(c: Cursor, unit: _Unit) -> None:
+    """Selected signal assignment: `with selector select target <= value when choices, ...;`."""
+    walker = _Walker(c, unit, "architecture")
+    walker.selected()
+    unit.assigns += walker.assigns
+
+
+def _parse_concurrent(c: Cursor, unit: _Unit) -> None:
+    """Concurrent signal assignment, or concurrent procedure call."""
+    walker = _Walker(c, unit, "architecture")
+    walker.assignment(concurrent=True)
+    unit.assigns += walker.assigns
+
+
 @_handles("process")
 def _handle_process(c: Cursor, unit: _Unit) -> None:
     """`[label :] process [(sensitivity list)] [is] ... begin ... end process [label];`."""
@@ -442,7 +726,8 @@ def _handle_process(c: Cursor, unit: _Unit) -> None:
     first = c.next()
     events = _parse_sensitivity(c)
     start = c.pos
-    c.skip_past(frozenset(("process",)))
+    walker = _Walker(c, unit, "process")
+    _parse_process_body(c, unit, walker)
     body = c.toks[start : c.pos]
     _skip_statement(c)
     clock, clock_edge = _find_clock(body)
@@ -457,6 +742,7 @@ def _handle_process(c: Cursor, unit: _Unit) -> None:
             reset=reset,
             reset_edge=reset_edge,
             generates=tuple(unit.generates),
+            assigns=tuple(walker.assigns),
             comment=tuple(comment),
             loc=unit.smap.span(label or first, _last(c)),
         )
@@ -691,6 +977,7 @@ def _handle_block(c: Cursor, unit: _Unit) -> None:
 def _handle_generate(c: Cursor, unit: _Unit) -> None:
     """`for|if|case ... generate ... end generate [label];`. The items within are parsed like any other item."""
     kind = cast("dm.GenerateKind", c.next().text)
+    _skip_alternative_label(c)
     start = c.pos
     c.skip_until(_SEMI_OR_GENERATE)
     if c.peek().text == "generate":
@@ -701,13 +988,31 @@ def _handle_generate(c: Cursor, unit: _Unit) -> None:
         c.accept(";")
 
 
+def _skip_alternative_label(c: Cursor) -> None:
+    """VHDL-2008: the label of an alternative of an `if` generate: `if label : condition generate`."""
+    if c.peek().kind == ID and c.peek(1).text == ":":
+        c.next()
+        c.next()
+
+
 @_handles("elsif", "else")
-def _handle_generate_alternative(c: Cursor, unit: _Unit) -> None:  # noqa: ARG001
-    """`elsif ... generate` and `else generate`."""
-    c.next()
+def _handle_generate_alternative(c: Cursor, unit: _Unit) -> None:
+    """`elsif ... generate` and `else generate`. They replace the construct of the alternative in front."""
+    kind = c.next().text
+    _skip_alternative_label(c)
+    start = c.pos
     c.skip_until(_SEMI_OR_GENERATE)
+    cond = c.text(start, c.pos).strip()
     if not c.accept("generate"):
         c.accept(";")
+        return
+    if unit.generates and unit.generates[-1].kind == "if":
+        current = unit.generates.pop()
+        others = (*current.others, current.cond)
+        if kind == "elsif":
+            unit.generates.append(dm.Generate(kind="if", name=current.name, cond=cond, others=others))
+        else:
+            unit.generates.append(dm.Generate(kind="else", name=current.name, others=others))
 
 
 @_handles("when")
@@ -761,7 +1066,7 @@ def _parse_architecture(c: Cursor, unit: _Unit) -> bool:
                 # the label belongs to the next item
                 continue
             # assignment or procedure call
-            _skip_statement(c)
+            _parse_concurrent(c, unit)
         elif kind == EOF:
             return False
         elif tok.text in OPEN:
@@ -895,6 +1200,35 @@ def _create_signals(unit: _Unit) -> tuple[dm.Signal, ...]:
     )
 
 
+def _local_names(unit: _Unit) -> frozenset[str]:
+    """Names of the unit, which are no signals (lower case): generics, constants, enumeration literals, ..."""
+    names = {decl.name for decl in (*unit.generics, *unit.constants)}
+    for typedef in unit.typedefs:
+        names.add(typedef.name)
+        if typedef.kind == "enum":
+            names.update(member.name for member in typedef.members)
+    names.update(function.name for function in unit.functions)
+    return frozenset(name.lower() for name in names)
+
+
+def _without(assigns, names: frozenset[str]) -> tuple[dm.Assignment, ...]:
+    """`assigns` without the reads of `names`."""
+    return tuple(
+        assign.model_copy(
+            update={
+                "reads": tuple(name for name in assign.reads if name.lower() not in names),
+                "conds": tuple(name for name in assign.conds if name.lower() not in names),
+            }
+        )
+        for assign in assigns
+    )
+
+
+def _create_processes(unit: _Unit) -> tuple[dm.Process, ...]:
+    names = _local_names(unit)
+    return tuple(process.model_copy(update={"assigns": _without(process.assigns, names)}) for process in unit.processes)
+
+
 def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
     """Parse VHDL `text` and return its entities as modules, and its packages.
 
@@ -913,7 +1247,8 @@ def parse(text: str, diagnostics: Diagnostics | None = None) -> dm.File:
                 signals=_create_signals(unit),
                 typedefs=tuple(unit.typedefs),
                 functions=tuple(unit.functions),
-                processes=tuple(unit.processes),
+                processes=_create_processes(unit),
+                assigns=_without(unit.assigns, _local_names(unit)),
                 components=tuple(unit.components),
                 insts=tuple(unit.insts),
                 imports=tuple(unit.imports),

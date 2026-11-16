@@ -1456,6 +1456,111 @@
         {
           "id": "ibex_alu.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "adder_op_a_shift1",
+              "loc": {
+                "line": 50,
+                "col": 5,
+                "end_line": 50,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "adder_op_a_shift2",
+              "loc": {
+                "line": 51,
+                "col": 5,
+                "end_line": 51,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "adder_op_a_shift3",
+              "loc": {
+                "line": 52,
+                "col": 5,
+                "end_line": 52,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "adder_op_b_negate",
+              "loc": {
+                "line": 53,
+                "col": 5,
+                "end_line": 53,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "adder_op_b_negate",
+              "conds": [
+                "operator_i",
+                "ALU_SUB",
+                "ALU_EQ",
+                "ALU_NE",
+                "ALU_GE",
+                "ALU_GEU",
+                "ALU_LT",
+                "ALU_LTU",
+                "ALU_SLT",
+                "ALU_SLTU",
+                "ALU_MIN",
+                "ALU_MINU",
+                "ALU_MAX",
+                "ALU_MAXU"
+              ],
+              "loc": {
+                "line": 66,
+                "col": 27,
+                "end_line": 66,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "adder_op_a_shift1",
+              "conds": [
+                "operator_i",
+                "ALU_SH1ADD",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 69,
+                "col": 43,
+                "end_line": 69,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "adder_op_a_shift2",
+              "conds": [
+                "operator_i",
+                "ALU_SH2ADD",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 70,
+                "col": 43,
+                "end_line": 70,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "adder_op_a_shift3",
+              "conds": [
+                "operator_i",
+                "ALU_SH3ADD",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 71,
+                "col": 43,
+                "end_line": 71,
+                "end_col": 68
+              }
+            }
+          ],
           "loc": {
             "line": 49,
             "col": 3,
@@ -1466,6 +1571,80 @@
         {
           "id": "ibex_alu.#always2",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "adder_in_a",
+              "reads": [
+                "multdiv_operand_a_i"
+              ],
+              "conds": [
+                "multdiv_sel_i"
+              ],
+              "loc": {
+                "line": 80,
+                "col": 26,
+                "end_line": 80,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "adder_in_a",
+              "reads": [
+                "operand_a_i"
+              ],
+              "conds": [
+                "adder_op_a_shift1"
+              ],
+              "loc": {
+                "line": 81,
+                "col": 26,
+                "end_line": 81,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "adder_in_a",
+              "reads": [
+                "operand_a_i"
+              ],
+              "conds": [
+                "adder_op_a_shift2"
+              ],
+              "loc": {
+                "line": 82,
+                "col": 26,
+                "end_line": 82,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "adder_in_a",
+              "reads": [
+                "operand_a_i"
+              ],
+              "conds": [
+                "adder_op_a_shift3"
+              ],
+              "loc": {
+                "line": 83,
+                "col": 26,
+                "end_line": 83,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "adder_in_a",
+              "reads": [
+                "operand_a_i"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 26,
+                "end_line": 84,
+                "end_col": 58
+              }
+            }
+          ],
           "comment": [
             "prepare operand a"
           ],
@@ -1479,6 +1658,50 @@
         {
           "id": "ibex_alu.#always3",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "adder_in_b",
+              "reads": [
+                "multdiv_operand_b_i"
+              ],
+              "conds": [
+                "multdiv_sel_i"
+              ],
+              "loc": {
+                "line": 92,
+                "col": 26,
+                "end_line": 92,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "adder_in_b",
+              "reads": [
+                "operand_b_neg"
+              ],
+              "conds": [
+                "adder_op_b_negate"
+              ],
+              "loc": {
+                "line": 93,
+                "col": 26,
+                "end_line": 93,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "adder_in_b",
+              "reads": [
+                "operand_b_i"
+              ],
+              "loc": {
+                "line": 94,
+                "col": 26,
+                "end_line": 94,
+                "end_col": 59
+              }
+            }
+          ],
           "loc": {
             "line": 90,
             "col": 3,
@@ -1489,6 +1712,37 @@
         {
           "id": "ibex_alu.#always4",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "cmp_signed",
+              "conds": [
+                "operator_i",
+                "ALU_GE",
+                "ALU_LT",
+                "ALU_SLT",
+                "ALU_MIN",
+                "ALU_MAX"
+              ],
+              "loc": {
+                "line": 120,
+                "col": 16,
+                "end_line": 120,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "cmp_signed",
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 122,
+                "col": 16,
+                "end_line": 122,
+                "end_col": 34
+              }
+            }
+          ],
           "loc": {
             "line": 113,
             "col": 3,
@@ -1499,6 +1753,41 @@
         {
           "id": "ibex_alu.#always5",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "is_greater_equal",
+              "reads": [
+                "adder_result"
+              ],
+              "conds": [
+                "operand_a_i",
+                "operand_b_i"
+              ],
+              "loc": {
+                "line": 132,
+                "col": 7,
+                "end_line": 132,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "is_greater_equal",
+              "reads": [
+                "operand_a_i",
+                "cmp_signed"
+              ],
+              "conds": [
+                "operand_a_i",
+                "operand_b_i"
+              ],
+              "loc": {
+                "line": 134,
+                "col": 7,
+                "end_line": 134,
+                "end_col": 57
+              }
+            }
+          ],
           "comment": [
             "Is greater equal"
           ],
@@ -1512,6 +1801,95 @@
         {
           "id": "ibex_alu.#always6",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "cmp_result",
+              "reads": [
+                "is_equal"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_EQ"
+              ],
+              "loc": {
+                "line": 155,
+                "col": 27,
+                "end_line": 155,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "cmp_result",
+              "reads": [
+                "is_equal"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_NE"
+              ],
+              "loc": {
+                "line": 156,
+                "col": 27,
+                "end_line": 156,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "cmp_result",
+              "reads": [
+                "is_greater_equal"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_GE",
+                "ALU_GEU",
+                "ALU_MAX",
+                "ALU_MAXU"
+              ],
+              "loc": {
+                "line": 158,
+                "col": 27,
+                "end_line": 158,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "cmp_result",
+              "reads": [
+                "is_greater_equal"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_LT",
+                "ALU_LTU",
+                "ALU_MIN",
+                "ALU_MINU",
+                "ALU_SLT",
+                "ALU_SLTU"
+              ],
+              "loc": {
+                "line": 161,
+                "col": 27,
+                "end_line": 161,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "cmp_result",
+              "reads": [
+                "is_equal"
+              ],
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 163,
+                "col": 16,
+                "end_line": 163,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 153,
             "col": 3,
@@ -1522,6 +1900,61 @@
         {
           "id": "ibex_alu.#always7",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "shift_left",
+              "conds": [
+                "operator_i",
+                "ALU_SLL"
+              ],
+              "loc": {
+                "line": 241,
+                "col": 16,
+                "end_line": 241,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "shift_left",
+              "reads": [
+                "RV32BNone"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_ROL"
+              ],
+              "loc": {
+                "line": 242,
+                "col": 16,
+                "end_line": 242,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "shift_left",
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 243,
+                "col": 16,
+                "end_line": 243,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "shift_left",
+              "conds": [
+                "shift_sbmode"
+              ],
+              "loc": {
+                "line": 246,
+                "col": 7,
+                "end_line": 246,
+                "end_col": 25
+              }
+            }
+          ],
           "comment": [
             "left shift if this is:",
             "* a standard left shift (sll)",
@@ -1538,6 +1971,139 @@
         {
           "id": "ibex_alu.#always8",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "shift_operand",
+              "conds": [
+                "shift_sbmode"
+              ],
+              "loc": {
+                "line": 258,
+                "col": 7,
+                "end_line": 258,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "shift_operand",
+              "reads": [
+                "operand_a_rev",
+                "operand_a_i"
+              ],
+              "conds": [
+                "shift_sbmode",
+                "shift_left"
+              ],
+              "loc": {
+                "line": 260,
+                "col": 7,
+                "end_line": 260,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "shift_fill",
+              "reads": [
+                "shift_operand"
+              ],
+              "conds": [
+                "shift_rot"
+              ],
+              "loc": {
+                "line": 264,
+                "col": 7,
+                "end_line": 264,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "shift_fill",
+              "reads": [
+                "shift_arith",
+                "shift_operand"
+              ],
+              "conds": [
+                "shift_rot"
+              ],
+              "loc": {
+                "line": 266,
+                "col": 7,
+                "end_line": 266,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "shift_result_ext",
+              "reads": [
+                "shift_fill",
+                "shift_operand",
+                "shift_amt"
+              ],
+              "loc": {
+                "line": 269,
+                "col": 5,
+                "end_line": 269,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "shift_result",
+              "reads": [
+                "shift_result_ext"
+              ],
+              "loc": {
+                "line": 271,
+                "col": 5,
+                "end_line": 271,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "unused_shift_result_ext",
+              "reads": [
+                "shift_result_ext"
+              ],
+              "loc": {
+                "line": 272,
+                "col": 5,
+                "end_line": 272,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "shift_result_rev",
+              "select": "[i]",
+              "reads": [
+                "shift_result",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 275,
+                "col": 7,
+                "end_line": 275,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "shift_result",
+              "reads": [
+                "shift_result_rev",
+                "shift_result"
+              ],
+              "conds": [
+                "shift_left"
+              ],
+              "loc": {
+                "line": 278,
+                "col": 5,
+                "end_line": 278,
+                "end_col": 65
+              }
+            }
+          ],
           "comment": [
             "shifter structure."
           ],
@@ -1551,6 +2117,36 @@
         {
           "id": "ibex_alu.#always9",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "bwlogic_op_b_negate",
+              "conds": [
+                "operator_i",
+                "ALU_XNOR",
+                "ALU_ORN",
+                "ALU_ANDN",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 301,
+                "col": 17,
+                "end_line": 301,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "bwlogic_op_b_negate",
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 302,
+                "col": 17,
+                "end_line": 302,
+                "end_col": 44
+              }
+            }
+          ],
           "loc": {
             "line": 296,
             "col": 3,
@@ -1561,6 +2157,50 @@
         {
           "id": "ibex_alu.#always10",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "bwlogic_result",
+              "reads": [
+                "bwlogic_or_result"
+              ],
+              "conds": [
+                "bwlogic_or"
+              ],
+              "loc": {
+                "line": 317,
+                "col": 20,
+                "end_line": 317,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "bwlogic_result",
+              "reads": [
+                "bwlogic_and_result"
+              ],
+              "conds": [
+                "bwlogic_and"
+              ],
+              "loc": {
+                "line": 318,
+                "col": 20,
+                "end_line": 318,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "bwlogic_result",
+              "reads": [
+                "bwlogic_xor_result"
+              ],
+              "loc": {
+                "line": 319,
+                "col": 20,
+                "end_line": 319,
+                "end_col": 56
+              }
+            }
+          ],
           "loc": {
             "line": 315,
             "col": 3,
@@ -1576,6 +2216,92 @@
               "kind": "if",
               "name": "g_alu_rvb",
               "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_mask_op"
+              ],
+              "loc": {
+                "line": 363,
+                "col": 7,
+                "end_line": 363,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 364,
+                "col": 7,
+                "end_line": 364,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 365,
+                "col": 7,
+                "end_line": 365,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 366,
+                "col": 7,
+                "end_line": 366,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 367,
+                "col": 7,
+                "end_line": 367,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 368,
+                "col": 7,
+                "end_line": 368,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "bitcnt_bit_mask",
+              "reads": [
+                "bitcnt_bit_mask"
+              ],
+              "loc": {
+                "line": 369,
+                "col": 7,
+                "end_line": 369,
+                "end_col": 42
+              }
             }
           ],
           "loc": {
@@ -1595,6 +2321,39 @@
               "cond": "RV32B != RV32BNone"
             }
           ],
+          "assigns": [
+            {
+              "target": "bitcnt_bits",
+              "reads": [
+                "bitcnt_bit_mask",
+                "bitcnt_mask_op"
+              ],
+              "conds": [
+                "bitcnt_cz"
+              ],
+              "loc": {
+                "line": 374,
+                "col": 9,
+                "end_line": 374,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "bitcnt_bits",
+              "reads": [
+                "operand_a_i"
+              ],
+              "conds": [
+                "bitcnt_cz"
+              ],
+              "loc": {
+                "line": 376,
+                "col": 9,
+                "end_line": 376,
+                "end_col": 35
+              }
+            }
+          ],
           "loc": {
             "line": 372,
             "col": 5,
@@ -1610,6 +2369,176 @@
               "kind": "if",
               "name": "g_alu_rvb",
               "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "bitcnt_partial",
+              "loc": {
+                "line": 422,
+                "col": 7,
+                "end_line": 422,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_bits",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 425,
+                "col": 9,
+                "end_line": 425,
+                "end_col": 79
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 429,
+                "col": 9,
+                "end_line": 429,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 433,
+                "col": 9,
+                "end_line": 433,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 437,
+                "col": 9,
+                "end_line": 437,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[31]",
+              "reads": [
+                "bitcnt_partial"
+              ],
+              "loc": {
+                "line": 440,
+                "col": 7,
+                "end_line": 440,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[23]",
+              "reads": [
+                "bitcnt_partial"
+              ],
+              "loc": {
+                "line": 444,
+                "col": 7,
+                "end_line": 444,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 448,
+                "col": 9,
+                "end_line": 448,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 453,
+                "col": 9,
+                "end_line": 453,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[0]",
+              "reads": [
+                "bitcnt_bits"
+              ],
+              "loc": {
+                "line": 456,
+                "col": 7,
+                "end_line": 456,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "bitcnt_partial",
+              "select": "[i]",
+              "reads": [
+                "bitcnt_partial",
+                "i",
+                "bitcnt_bits"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 458,
+                "col": 9,
+                "end_line": 458,
+                "end_col": 74
+              }
             }
           ],
           "comment": [
@@ -1671,6 +2600,40 @@
               "cond": "RV32B != RV32BNone"
             }
           ],
+          "assigns": [
+            {
+              "target": "pack_result",
+              "reads": [
+                "operand_b_i",
+                "operand_a_i"
+              ],
+              "conds": [
+                "packh"
+              ],
+              "loc": {
+                "line": 477,
+                "col": 9,
+                "end_line": 477,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "pack_result",
+              "reads": [
+                "operand_b_i",
+                "operand_a_i"
+              ],
+              "conds": [
+                "packh"
+              ],
+              "loc": {
+                "line": 479,
+                "col": 9,
+                "end_line": 479,
+                "end_col": 62
+              }
+            }
+          ],
           "loc": {
             "line": 475,
             "col": 5,
@@ -1686,6 +2649,74 @@
               "kind": "if",
               "name": "g_alu_rvb",
               "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "singlebit_result",
+              "reads": [
+                "operand_a_i",
+                "shift_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_BSET"
+              ],
+              "loc": {
+                "line": 496,
+                "col": 19,
+                "end_line": 496,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "singlebit_result",
+              "reads": [
+                "operand_a_i",
+                "shift_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_BCLR"
+              ],
+              "loc": {
+                "line": 497,
+                "col": 19,
+                "end_line": 497,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "singlebit_result",
+              "reads": [
+                "operand_a_i",
+                "shift_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_BINV"
+              ],
+              "loc": {
+                "line": 498,
+                "col": 19,
+                "end_line": 498,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "singlebit_result",
+              "reads": [
+                "shift_result"
+              ],
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 499,
+                "col": 19,
+                "end_line": 499,
+                "end_col": 63
+              }
             }
           ],
           "comment": [
@@ -1710,6 +2741,102 @@
               "cond": "RV32B != RV32BNone"
             }
           ],
+          "assigns": [
+            {
+              "target": "rev_result",
+              "reads": [
+                "operand_a_i"
+              ],
+              "loc": {
+                "line": 520,
+                "col": 7,
+                "end_line": 520,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "rev_result",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "rev_shift_amt",
+                "orcb_op"
+              ],
+              "loc": {
+                "line": 523,
+                "col": 9,
+                "end_line": 525,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "rev_result",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "rev_shift_amt",
+                "orcb_op"
+              ],
+              "loc": {
+                "line": 529,
+                "col": 9,
+                "end_line": 531,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "rev_result",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "rev_shift_amt",
+                "orcb_op"
+              ],
+              "loc": {
+                "line": 535,
+                "col": 9,
+                "end_line": 537,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "rev_result",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "rev_shift_amt",
+                "RV32BFull",
+                "orcb_op"
+              ],
+              "loc": {
+                "line": 541,
+                "col": 9,
+                "end_line": 544,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "rev_result",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "rev_shift_amt",
+                "RV32BFull",
+                "orcb_op"
+              ],
+              "loc": {
+                "line": 548,
+                "col": 9,
+                "end_line": 551,
+                "end_col": 59
+              }
+            }
+          ],
           "loc": {
             "line": 519,
             "col": 5,
@@ -1730,6 +2857,193 @@
               "kind": "if",
               "name": "gen_alu_rvb_full",
               "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "operand_a_i"
+              ],
+              "loc": {
+                "line": 584,
+                "col": 9,
+                "end_line": 584,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "shuffle_mode",
+              "select": "[3]",
+              "reads": [
+                "shift_amt"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 587,
+                "col": 11,
+                "end_line": 587,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "shuffle_mode",
+              "select": "[2]",
+              "reads": [
+                "shift_amt"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 588,
+                "col": 11,
+                "end_line": 588,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "shuffle_mode",
+              "select": "[1]",
+              "reads": [
+                "shift_amt"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 589,
+                "col": 11,
+                "end_line": 589,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "shuffle_mode",
+              "select": "[0]",
+              "reads": [
+                "shift_amt"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 590,
+                "col": 11,
+                "end_line": 590,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "shuffle_mode",
+              "reads": [
+                "shift_amt"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 592,
+                "col": 11,
+                "end_line": 592,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 596,
+                "col": 11,
+                "end_line": 604,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result",
+                "SHUFFLE_MASK_NOT"
+              ],
+              "conds": [
+                "shuffle_mode"
+              ],
+              "loc": {
+                "line": 608,
+                "col": 11,
+                "end_line": 610,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result",
+                "SHUFFLE_MASK_NOT"
+              ],
+              "conds": [
+                "shuffle_mode"
+              ],
+              "loc": {
+                "line": 613,
+                "col": 11,
+                "end_line": 615,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result",
+                "SHUFFLE_MASK_NOT"
+              ],
+              "conds": [
+                "shuffle_mode"
+              ],
+              "loc": {
+                "line": 618,
+                "col": 11,
+                "end_line": 620,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result",
+                "SHUFFLE_MASK_NOT"
+              ],
+              "conds": [
+                "shuffle_mode"
+              ],
+              "loc": {
+                "line": 623,
+                "col": 11,
+                "end_line": 625,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "shuffle_result",
+              "reads": [
+                "shuffle_result"
+              ],
+              "conds": [
+                "shuffle_flip"
+              ],
+              "loc": {
+                "line": 629,
+                "col": 11,
+                "end_line": 637,
+                "end_col": 57
+              }
             }
           ],
           "loc": {
@@ -1754,6 +3068,124 @@
               "cond": "RV32B == RV32BFull"
             }
           ],
+          "assigns": [
+            {
+              "target": "sel",
+              "reads": [
+                "sel_n"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM4"
+              ],
+              "loc": {
+                "line": 680,
+                "col": 13,
+                "end_line": 680,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "vld",
+              "reads": [
+                "vld_n"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM4"
+              ],
+              "loc": {
+                "line": 681,
+                "col": 13,
+                "end_line": 681,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "sel",
+              "select": "[b*2+0]",
+              "reads": [
+                "sel_b",
+                "b"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM8",
+                "b"
+              ],
+              "loc": {
+                "line": 687,
+                "col": 15,
+                "end_line": 687,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "sel",
+              "select": "[b*2+1]",
+              "reads": [
+                "sel_b",
+                "b"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM8",
+                "b"
+              ],
+              "loc": {
+                "line": 688,
+                "col": 15,
+                "end_line": 688,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "vld",
+              "select": "[b*2+:2]",
+              "reads": [
+                "vld_b",
+                "b"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM8",
+                "b"
+              ],
+              "loc": {
+                "line": 689,
+                "col": 15,
+                "end_line": 689,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "sel",
+              "reads": [
+                "sel_n"
+              ],
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 695,
+                "col": 13,
+                "end_line": 695,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "vld",
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 696,
+                "col": 13,
+                "end_line": 696,
+                "end_col": 22
+              }
+            }
+          ],
           "loc": {
             "line": 676,
             "col": 7,
@@ -1774,6 +3206,42 @@
               "kind": "if",
               "name": "gen_alu_rvb_full",
               "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "clmul_op_a",
+              "reads": [
+                "operand_a_rev",
+                "operand_a_i"
+              ],
+              "conds": [
+                "clmul_rmode",
+                "clmul_hmode"
+              ],
+              "loc": {
+                "line": 761,
+                "col": 9,
+                "end_line": 761,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "clmul_op_b",
+              "reads": [
+                "operand_b_rev",
+                "operand_b_i"
+              ],
+              "conds": [
+                "clmul_rmode",
+                "clmul_hmode"
+              ],
+              "loc": {
+                "line": 762,
+                "col": 9,
+                "end_line": 762,
+                "end_col": 78
+              }
             }
           ],
           "comment": [
@@ -1801,6 +3269,50 @@
               "cond": "RV32B == RV32BFull"
             }
           ],
+          "assigns": [
+            {
+              "target": "clmul_result",
+              "reads": [
+                "clmul_result_rev"
+              ],
+              "conds": [
+                "clmul_rmode"
+              ],
+              "loc": {
+                "line": 795,
+                "col": 24,
+                "end_line": 795,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "clmul_result",
+              "reads": [
+                "clmul_result_rev"
+              ],
+              "conds": [
+                "clmul_hmode"
+              ],
+              "loc": {
+                "line": 796,
+                "col": 24,
+                "end_line": 796,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "clmul_result",
+              "reads": [
+                "clmul_result_raw"
+              ],
+              "loc": {
+                "line": 797,
+                "col": 24,
+                "end_line": 797,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "clmulr_result = rev(clmul(rev(a), rev(b)))",
             "clmulh_result = clmulr_result >> 1"
@@ -1815,6 +3327,261 @@
         {
           "id": "ibex_alu.#always21",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "result_o",
+              "loc": {
+                "line": 824,
+                "col": 5,
+                "end_line": 824,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "bwlogic_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XOR",
+                "ALU_XNOR",
+                "ALU_OR",
+                "ALU_ORN",
+                "ALU_AND",
+                "ALU_ANDN"
+              ],
+              "loc": {
+                "line": 830,
+                "col": 27,
+                "end_line": 830,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "adder_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_ADD",
+                "ALU_SUB",
+                "ALU_SH1ADD",
+                "ALU_SH2ADD",
+                "ALU_SH3ADD"
+              ],
+              "loc": {
+                "line": 836,
+                "col": 19,
+                "end_line": 836,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "shift_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_SLL",
+                "ALU_SRL",
+                "ALU_SRA",
+                "ALU_ROL",
+                "ALU_ROR"
+              ],
+              "loc": {
+                "line": 841,
+                "col": 26,
+                "end_line": 841,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "shuffle_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_ZIP",
+                "ALU_UNZIP"
+              ],
+              "loc": {
+                "line": 844,
+                "col": 27,
+                "end_line": 844,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "xperm_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_XPERM4",
+                "ALU_XPERM8"
+              ],
+              "loc": {
+                "line": 847,
+                "col": 31,
+                "end_line": 847,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "cmp_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_EQ",
+                "ALU_NE",
+                "ALU_GE",
+                "ALU_GEU",
+                "ALU_LT",
+                "ALU_LTU",
+                "ALU_SLT",
+                "ALU_SLTU"
+              ],
+              "loc": {
+                "line": 853,
+                "col": 27,
+                "end_line": 853,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "minmax_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_MIN",
+                "ALU_MAX",
+                "ALU_MINU",
+                "ALU_MAXU"
+              ],
+              "loc": {
+                "line": 857,
+                "col": 27,
+                "end_line": 857,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "bitcnt_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_CLZ",
+                "ALU_CTZ",
+                "ALU_CPOP"
+              ],
+              "loc": {
+                "line": 861,
+                "col": 17,
+                "end_line": 861,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "pack_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_PACK",
+                "ALU_PACKH"
+              ],
+              "loc": {
+                "line": 864,
+                "col": 28,
+                "end_line": 864,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "sext_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_SEXTB",
+                "ALU_SEXTH"
+              ],
+              "loc": {
+                "line": 867,
+                "col": 29,
+                "end_line": 867,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "singlebit_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_BSET",
+                "ALU_BCLR",
+                "ALU_BINV",
+                "ALU_BEXT"
+              ],
+              "loc": {
+                "line": 871,
+                "col": 27,
+                "end_line": 871,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "rev_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_REV8",
+                "ALU_BREV8",
+                "ALU_ORCB"
+              ],
+              "loc": {
+                "line": 874,
+                "col": 38,
+                "end_line": 874,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "result_o",
+              "reads": [
+                "clmul_result"
+              ],
+              "conds": [
+                "operator_i",
+                "ALU_CLMUL",
+                "ALU_CLMULR",
+                "ALU_CLMULH"
+              ],
+              "loc": {
+                "line": 878,
+                "col": 19,
+                "end_line": 878,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "//////////////",
             "Result mux //",
@@ -1825,6 +3592,1278 @@
             "col": 3,
             "end_line": 882,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "operand_a_rev",
+          "select": "[k]",
+          "reads": [
+            "operand_a_i",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_rev_operand_a",
+              "cond": "genvar k = 0; k < 32; k++"
+            }
+          ],
+          "loc": {
+            "line": 35,
+            "col": 12,
+            "end_line": 35,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "operand_b_neg",
+          "reads": [
+            "operand_b_i"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 10,
+            "end_line": 89,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "adder_result_ext_o",
+          "reads": [
+            "adder_in_a",
+            "adder_in_b"
+          ],
+          "loc": {
+            "line": 99,
+            "col": 10,
+            "end_line": 99,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "adder_result",
+          "reads": [
+            "adder_result_ext_o"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 10,
+            "end_line": 101,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "adder_result_o",
+          "reads": [
+            "adder_result"
+          ],
+          "loc": {
+            "line": 103,
+            "col": 10,
+            "end_line": 103,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "is_equal",
+          "reads": [
+            "adder_result"
+          ],
+          "loc": {
+            "line": 126,
+            "col": 10,
+            "end_line": 126,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "is_equal_result_o",
+          "reads": [
+            "is_equal"
+          ],
+          "loc": {
+            "line": 127,
+            "col": 10,
+            "end_line": 127,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "comparison_result_o",
+          "reads": [
+            "cmp_result"
+          ],
+          "loc": {
+            "line": 167,
+            "col": 10,
+            "end_line": 167,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "shift_amt",
+          "reads": [
+            "operand_b_i"
+          ],
+          "loc": {
+            "line": 225,
+            "col": 10,
+            "end_line": 225,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "shift_sbmode",
+          "reads": [
+            "operator_i",
+            "ALU_BSET",
+            "ALU_BCLR",
+            "ALU_BINV"
+          ],
+          "conds": [
+            "RV32BNone"
+          ],
+          "loc": {
+            "line": 228,
+            "col": 10,
+            "end_line": 229,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "shift_rot",
+          "reads": [
+            "operator_i",
+            "ALU_ROL",
+            "ALU_ROR"
+          ],
+          "conds": [
+            "RV32BNone"
+          ],
+          "loc": {
+            "line": 232,
+            "col": 10,
+            "end_line": 233,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "shift_arith",
+          "reads": [
+            "operator_i",
+            "ALU_SRA"
+          ],
+          "loc": {
+            "line": 250,
+            "col": 10,
+            "end_line": 250,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "bwlogic_operand_b",
+          "reads": [
+            "operand_b_neg",
+            "operand_b_i"
+          ],
+          "conds": [
+            "bwlogic_op_b_negate"
+          ],
+          "loc": {
+            "line": 306,
+            "col": 10,
+            "end_line": 306,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "bwlogic_or_result",
+          "reads": [
+            "operand_a_i",
+            "bwlogic_operand_b"
+          ],
+          "loc": {
+            "line": 308,
+            "col": 10,
+            "end_line": 308,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "bwlogic_and_result",
+          "reads": [
+            "operand_a_i",
+            "bwlogic_operand_b"
+          ],
+          "loc": {
+            "line": 309,
+            "col": 10,
+            "end_line": 309,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "bwlogic_xor_result",
+          "reads": [
+            "operand_a_i",
+            "bwlogic_operand_b"
+          ],
+          "loc": {
+            "line": 310,
+            "col": 10,
+            "end_line": 310,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "bwlogic_or",
+          "reads": [
+            "operator_i",
+            "ALU_OR",
+            "ALU_ORN"
+          ],
+          "loc": {
+            "line": 312,
+            "col": 10,
+            "end_line": 312,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "bwlogic_and",
+          "reads": [
+            "operator_i",
+            "ALU_AND",
+            "ALU_ANDN"
+          ],
+          "loc": {
+            "line": 313,
+            "col": 10,
+            "end_line": 313,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "bitcnt_ctz",
+          "reads": [
+            "operator_i",
+            "ALU_CTZ"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 351,
+            "col": 12,
+            "end_line": 351,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "bitcnt_clz",
+          "reads": [
+            "operator_i",
+            "ALU_CLZ"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 352,
+            "col": 12,
+            "end_line": 352,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "bitcnt_cz",
+          "reads": [
+            "bitcnt_ctz",
+            "bitcnt_clz"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 353,
+            "col": 12,
+            "end_line": 353,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "bitcnt_result",
+          "reads": [
+            "bitcnt_partial"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 354,
+            "col": 12,
+            "end_line": 354,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "bitcnt_mask_op",
+          "reads": [
+            "operand_a_rev",
+            "operand_a_i"
+          ],
+          "conds": [
+            "bitcnt_clz"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 360,
+            "col": 12,
+            "end_line": 360,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "minmax_result",
+          "reads": [
+            "operand_a_i",
+            "operand_b_i"
+          ],
+          "conds": [
+            "cmp_result"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 466,
+            "col": 12,
+            "end_line": 466,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "packh",
+          "reads": [
+            "operator_i",
+            "ALU_PACKH"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 473,
+            "col": 12,
+            "end_line": 473,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "sext_result",
+          "reads": [
+            "operand_a_i"
+          ],
+          "conds": [
+            "operator_i",
+            "ALU_SEXTB"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 487,
+            "col": 12,
+            "end_line": 488,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "orcb_op",
+          "reads": [
+            "operator_i",
+            "ALU_ORCB"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 513,
+            "col": 12,
+            "end_line": 513,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "rev_shift_amt",
+          "select": "[2:0]",
+          "reads": [
+            "shift_amt"
+          ],
+          "conds": [
+            "RV32BFull"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 514,
+            "col": 12,
+            "end_line": 515,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "rev_shift_amt",
+          "select": "[4:3]",
+          "reads": [
+            "shift_amt"
+          ],
+          "conds": [
+            "RV32BFull"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            }
+          ],
+          "loc": {
+            "line": 516,
+            "col": 12,
+            "end_line": 517,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "SHUFFLE_MASK_NOT",
+          "select": "[i]",
+          "reads": [
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_shuffle_mask_not",
+              "cond": "genvar i = 0; i < 4; i++"
+            }
+          ],
+          "loc": {
+            "line": 575,
+            "col": 16,
+            "end_line": 575,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "shuffle_flip",
+          "reads": [
+            "operator_i",
+            "ALU_UNZIP"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 579,
+            "col": 14,
+            "end_line": 579,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "sel_n",
+          "select": "[i]",
+          "reads": [
+            "operand_b_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sel_vld_n",
+              "cond": "genvar i = 0; i < 8; i++"
+            }
+          ],
+          "loc": {
+            "line": 660,
+            "col": 16,
+            "end_line": 660,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "vld_n",
+          "select": "[i]",
+          "reads": [
+            "operand_b_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sel_vld_n",
+              "cond": "genvar i = 0; i < 8; i++"
+            }
+          ],
+          "loc": {
+            "line": 661,
+            "col": 16,
+            "end_line": 661,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "sel_b",
+          "select": "[i]",
+          "reads": [
+            "operand_b_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sel_vld_b",
+              "cond": "genvar i = 0; i < 4; i++"
+            }
+          ],
+          "loc": {
+            "line": 668,
+            "col": 16,
+            "end_line": 668,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "vld_b",
+          "select": "[i]",
+          "reads": [
+            "operand_b_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sel_vld_b",
+              "cond": "genvar i = 0; i < 4; i++"
+            }
+          ],
+          "loc": {
+            "line": 669,
+            "col": 16,
+            "end_line": 669,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "val_n",
+          "reads": [
+            "operand_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 704,
+            "col": 14,
+            "end_line": 704,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "xperm_n",
+          "select": "[i]",
+          "reads": [
+            "val_n",
+            "sel",
+            "i"
+          ],
+          "conds": [
+            "vld"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_xperm_n",
+              "cond": "genvar i = 0; i < 8; i++"
+            }
+          ],
+          "loc": {
+            "line": 706,
+            "col": 16,
+            "end_line": 706,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "xperm_result",
+          "reads": [
+            "xperm_n"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 708,
+            "col": 14,
+            "end_line": 708,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "operand_b_rev",
+          "select": "[i]",
+          "reads": [
+            "operand_b_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rev_operand_b",
+              "cond": "genvar i = 0; i < 32; i++"
+            }
+          ],
+          "loc": {
+            "line": 753,
+            "col": 16,
+            "end_line": 753,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "clmul_rmode",
+          "reads": [
+            "operator_i",
+            "ALU_CLMULR"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 756,
+            "col": 14,
+            "end_line": 756,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "clmul_hmode",
+          "reads": [
+            "operator_i",
+            "ALU_CLMULH"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 757,
+            "col": 14,
+            "end_line": 757,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "clmul_and_stage",
+          "select": "[i]",
+          "reads": [
+            "clmul_op_a",
+            "i"
+          ],
+          "conds": [
+            "clmul_op_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_clmul_and_op",
+              "cond": "genvar i = 0; i < 32; i++"
+            }
+          ],
+          "loc": {
+            "line": 766,
+            "col": 16,
+            "end_line": 766,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "clmul_xor_stage1",
+          "select": "[i]",
+          "reads": [
+            "clmul_and_stage",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_clmul_xor_op_l1",
+              "cond": "genvar i = 0; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 770,
+            "col": 16,
+            "end_line": 770,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "clmul_xor_stage2",
+          "select": "[i]",
+          "reads": [
+            "clmul_xor_stage1",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_clmul_xor_op_l2",
+              "cond": "genvar i = 0; i < 8; i++"
+            }
+          ],
+          "loc": {
+            "line": 774,
+            "col": 16,
+            "end_line": 774,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "clmul_xor_stage3",
+          "select": "[i]",
+          "reads": [
+            "clmul_xor_stage2",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_clmul_xor_op_l3",
+              "cond": "genvar i = 0; i < 4; i++"
+            }
+          ],
+          "loc": {
+            "line": 778,
+            "col": 16,
+            "end_line": 778,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "clmul_xor_stage4",
+          "select": "[i]",
+          "reads": [
+            "clmul_xor_stage3",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_clmul_xor_op_l4",
+              "cond": "genvar i = 0; i < 2; i++"
+            }
+          ],
+          "loc": {
+            "line": 782,
+            "col": 16,
+            "end_line": 782,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "clmul_result_raw",
+          "reads": [
+            "clmul_xor_stage4"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            }
+          ],
+          "loc": {
+            "line": 785,
+            "col": 14,
+            "end_line": 785,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "clmul_result_rev",
+          "select": "[i]",
+          "reads": [
+            "clmul_result_raw",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "if",
+              "name": "gen_alu_rvb_full",
+              "cond": "RV32B == RV32BFull"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rev_clmul_result",
+              "cond": "genvar i = 0; i < 32; i++"
+            }
+          ],
+          "loc": {
+            "line": 788,
+            "col": 16,
+            "end_line": 788,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "shuffle_result",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "else",
+              "name": "gen_alu_rvb_not_full",
+              "others": [
+                "RV32B == RV32BFull"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 801,
+            "col": 14,
+            "end_line": 801,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "xperm_result",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "else",
+              "name": "gen_alu_rvb_not_full",
+              "others": [
+                "RV32B == RV32BFull"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 802,
+            "col": 14,
+            "end_line": 802,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "clmul_result",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_alu_rvb",
+              "cond": "RV32B != RV32BNone"
+            },
+            {
+              "kind": "else",
+              "name": "gen_alu_rvb_not_full",
+              "others": [
+                "RV32B == RV32BFull"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 803,
+            "col": 14,
+            "end_line": 803,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "bitcnt_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 808,
+            "col": 12,
+            "end_line": 808,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "minmax_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 809,
+            "col": 12,
+            "end_line": 809,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "pack_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 810,
+            "col": 12,
+            "end_line": 810,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "sext_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 811,
+            "col": 12,
+            "end_line": 811,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "singlebit_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 812,
+            "col": 12,
+            "end_line": 812,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "rev_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 813,
+            "col": 12,
+            "end_line": 813,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "shuffle_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 814,
+            "col": 12,
+            "end_line": 814,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "xperm_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 815,
+            "col": 12,
+            "end_line": 815,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "clmul_result",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_alu_rvb",
+              "others": [
+                "RV32B != RV32BNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 816,
+            "col": 12,
+            "end_line": 816,
+            "end_col": 36
           }
         }
       ],

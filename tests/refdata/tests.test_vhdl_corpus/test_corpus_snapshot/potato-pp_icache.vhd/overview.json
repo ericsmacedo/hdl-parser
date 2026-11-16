@@ -511,6 +511,26 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "input_address_word",
+              "reads": [
+                "mem_address_in",
+                "log2"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 106,
+                "col": 4,
+                "end_line": 106,
+                "end_col": 75
+              }
+            }
+          ],
           "loc": {
             "line": 103,
             "col": 2,
@@ -529,6 +549,48 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "cache_memory",
+              "select": "(cl_current_line)",
+              "reads": [
+                "load_buffer",
+                "cl_current_line"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "store_cache_line"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 114,
+                "col": 5,
+                "end_line": 114,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "current_cache_line",
+              "reads": [
+                "cache_memory",
+                "to_integer",
+                "unsigned",
+                "input_address_line"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 117,
+                "col": 4,
+                "end_line": 117,
+                "end_col": 81
+              }
+            }
+          ],
           "loc": {
             "line": 110,
             "col": 2,
@@ -547,6 +609,51 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "tag_memory",
+              "select": "(cl_current_line)",
+              "reads": [
+                "load_buffer_tag",
+                "cl_current_line"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "store_cache_line"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 125,
+                "col": 5,
+                "end_line": 125,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "cache_hit",
+              "reads": [
+                "valid",
+                "to_integer",
+                "unsigned",
+                "input_address_line",
+                "to_std_logic",
+                "tag_memory",
+                "input_address_tag"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 128,
+                "col": 4,
+                "end_line": 129,
+                "end_col": 96
+              }
+            }
+          ],
           "loc": {
             "line": 121,
             "col": 2,
@@ -565,11 +672,633 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 137,
+                "col": 5,
+                "end_line": 137,
+                "end_col": 19
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".cyc",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 138,
+                "col": 5,
+                "end_line": 138,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 139,
+                "col": 5,
+                "end_line": 139,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "store_cache_line",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 140,
+                "col": 5,
+                "end_line": 140,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "valid",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 141,
+                "col": 5,
+                "end_line": 141,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".adr",
+              "reads": [
+                "mem_address_in",
+                "log2"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 146,
+                "col": 8,
+                "end_line": 146,
+                "end_col": 116
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".cyc",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 147,
+                "col": 8,
+                "end_line": 147,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".we",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 148,
+                "col": 8,
+                "end_line": 148,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".sel",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 149,
+                "col": 8,
+                "end_line": 149,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "load_buffer_tag",
+              "reads": [
+                "input_address_tag"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 150,
+                "col": 8,
+                "end_line": 150,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "cl_load_address",
+              "reads": [
+                "mem_address_in",
+                "log2"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 151,
+                "col": 8,
+                "end_line": 151,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "cl_current_line",
+              "reads": [
+                "to_integer",
+                "unsigned",
+                "input_address_line"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 152,
+                "col": 8,
+                "end_line": 152,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cl_current_word",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 153,
+                "col": 8,
+                "end_line": 153,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "mem_read_req",
+                "cache_hit"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 154,
+                "col": 8,
+                "end_line": 154,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 157,
+                "col": 7,
+                "end_line": 157,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 159,
+                "col": 7,
+                "end_line": 159,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".we",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 160,
+                "col": 7,
+                "end_line": 160,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".adr",
+              "reads": [
+                "cl_load_address",
+                "std_logic_vector",
+                "to_unsigned",
+                "cl_current_word",
+                "log2"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 161,
+                "col": 7,
+                "end_line": 161,
+                "end_col": 115
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 162,
+                "col": 7,
+                "end_line": 162,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".stb",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 165,
+                "col": 8,
+                "end_line": 165,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "load_buffer",
+              "select": "(cl_current_word*32+31 downto cl_current_word*32)",
+              "reads": [
+                "wb_inputs",
+                "cl_current_word"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 166,
+                "col": 8,
+                "end_line": 166,
+                "end_col": 92
+              }
+            },
+            {
+              "target": "wb_outputs",
+              "select": ".cyc",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs",
+                "natural",
+                "cl_current_word"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 168,
+                "col": 9,
+                "end_line": 168,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "store_cache_line",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs",
+                "natural",
+                "cl_current_word"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 169,
+                "col": 9,
+                "end_line": 169,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs",
+                "natural",
+                "cl_current_word"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 170,
+                "col": 9,
+                "end_line": 170,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "cl_current_word",
+              "reads": [
+                "cl_current_word"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs",
+                "natural",
+                "cl_current_word"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 172,
+                "col": 9,
+                "end_line": 172,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state",
+                "wb_inputs",
+                "natural",
+                "cl_current_word"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 173,
+                "col": 9,
+                "end_line": 173,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "store_cache_line",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 177,
+                "col": 7,
+                "end_line": 177,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "valid",
+              "select": "(cl_current_line)",
+              "reads": [
+                "cl_current_line"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 178,
+                "col": 7,
+                "end_line": 178,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "state",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "state"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 179,
+                "col": 7,
+                "end_line": 179,
+                "end_col": 33
+              }
+            }
+          ],
           "loc": {
             "line": 133,
             "col": 2,
             "end_line": 183,
             "end_col": 25
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "mem_data_out",
+          "reads": [
+            "current_cache_line_words",
+            "to_integer",
+            "unsigned",
+            "input_address_word"
+          ],
+          "loc": {
+            "line": 93,
+            "col": 2,
+            "end_line": 93,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "mem_read_ack",
+          "reads": [
+            "cache_hit",
+            "mem_read_req"
+          ],
+          "conds": [
+            "state"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 2,
+            "end_line": 94,
+            "end_col": 102
+          }
+        },
+        {
+          "target": "input_address_line",
+          "reads": [
+            "mem_address_in",
+            "log2"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 96,
+            "end_col": 109
+          }
+        },
+        {
+          "target": "input_address_tag",
+          "reads": [
+            "mem_address_in",
+            "log2"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 2,
+            "end_line": 97,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "current_cache_line_words",
+          "select": "(i)",
+          "reads": [
+            "current_cache_line",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "decompose_cache_line",
+              "cond": "i in 0 to LINE_SIZE - 1"
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 3,
+            "end_line": 100,
+            "end_col": 80
           }
         }
       ],

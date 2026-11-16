@@ -94,11 +94,12 @@ class Diagnostic(_BaseModel):
     | `filelist-not-found`  | error    | Filelist cannot be read.                                          |
     | `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |
     | `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |
+    | `statement-skipped`   | info     | Statement of a process is not understood (a task call).           |
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
 
-    Code the parser has no interest in (i.e. procedural code) is skipped without diagnostic.
+    Code the parser has no interest in (i.e. `initial` blocks, assertions) is skipped without diagnostic.
     The codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported
     by a [Project][hdl_parser.project.Project] only.
 
@@ -266,6 +267,8 @@ class Module(_BaseModel):
         typedefs: Types declared within the module.
         functions: Functions and tasks declared within the module.
         processes: The `always` blocks (VHDL: processes) with their clock and reset.
+        assigns: Continuous assignments: `assign`, net declarations with value (`wire x = a & b;`).
+                 VHDL: concurrent signal assignments. The assignments of processes are part of the process.
         components: Component declarations (VHDL): modules with name, parameters and ports.
         insts: Submodule Instances.
         ifdefs: Conditions the module is defined at.
@@ -286,6 +289,7 @@ class Module(_BaseModel):
     typedefs: tuple["Typedef", ...] = ()
     functions: tuple["Function", ...] = ()
     processes: tuple["Process", ...] = ()
+    assigns: tuple["Assignment", ...] = ()
     components: tuple["Module", ...] = ()
     insts: tuple["ModuleInstance", ...] = ()
     ifdefs: tuple[str, ...] = ()
@@ -567,6 +571,7 @@ class Process(_BaseModel):
         reset: Asynchronous reset signal. Empty, if there is none or it is not known.
         reset_edge: Edge the reset gets active at: `negedge` for an active low reset.
         generates: Generate constructs the block is located in, from the outermost to the innermost.
+        assigns: The assignments within the block, in the order of the code.
         comment: tuple of associated comments
         ifdefs: Conditions the block is defined at.
         loc: Source Location of the whole block.
@@ -583,7 +588,45 @@ class Process(_BaseModel):
     reset: str = ""
     reset_edge: str = ""
     generates: tuple["Generate", ...] = ()
+    assigns: tuple["Assignment", ...] = ()
     comment: tuple[str, ...] = ()
+    ifdefs: tuple[str, ...] = ()
+    loc: Location | None = None
+
+
+class Assignment(_BaseModel):
+    """One Assignment: Of A Signal, By A Continuous Assignment Or Within A Process.
+
+    | Code                                     | `target` | `select` | `reads`      | `conds`    |
+    | ---------------------------------------- | -------- | -------- | ------------ | ---------- |
+    | `assign y = a & b;`                      | `y`      |          | `a`, `b`     |            |
+    | `if (en) q[idx] <= d;`                   | `q`      | `[idx]`  | `idx`, `d`   | `en`       |
+    | `{c, s} = x + y;`                        | `c`, `s` (two assignments) | | `x`, `y` |          |
+    | `y <= a when sel = '1' else b;` (VHDL)   | `y`      |          | `a`, `b`, `sel` |         |
+
+    The names read are the signals, ports and variables used by the expression, and by the selects of the target.
+    Parameters, enumeration members, functions and packages are left out, as far as they are declared in the
+    module. Members of structs and interfaces stand for their base: `bus.req` reads `bus`.
+
+    Attributes:
+        target: Name of the assigned signal, port or variable. A concatenation of targets is split.
+        select: Select of the target, as written: `[3:0]`, `.field`, `(7 downto 0)`. Empty for the whole target.
+        reads: Names read by the assigned value.
+        conds: Names read by the conditions the assignment is located in: `if`, `case`, loops (control).
+        blocking: Blocking assignment (`=`, VHDL `:=`, any continuous assignment). `False` for `<=` within a
+                  process.
+        generates: Generate constructs a continuous assignment is located in, from the outermost to the innermost.
+                   The ones of an assignment within a process are the ones of the process.
+        ifdefs: Conditions the assignment is made at.
+        loc: Source Location of the assignment.
+    """
+
+    target: str
+    select: str = ""
+    reads: tuple[str, ...] = ()
+    conds: tuple[str, ...] = ()
+    blocking: bool = True
+    generates: tuple["Generate", ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
 
@@ -618,23 +661,27 @@ class Generate(_BaseModel):
     | SystemVerilog                     | VHDL                               | `kind` | `name` | `cond`      |
     | --------------------------------- | ---------------------------------- | ------ | ------ | ----------- |
     | `if (A) begin : g_a`              | `g_a : if A generate`              | `if`   | `g_a`  | `A`         |
-    | `else begin : g_b`                |                                    | `else` | `g_b`  |             |
+    | `else if (B) begin : g_b`         | `elsif B generate`                 | `if`   | `g_b`  | `B`         |
+    | `else begin : g_c`                | `else generate`                    | `else` | `g_c`  |             |
     | `for (i = 0; i < N; i++) begin`   | `g : for i in 0 to N-1 generate`   | `for`  |        | `i = 0; ...`|
     | `case (W)`                        | `g : case W generate`              | `case` |        | `W`         |
-    | `begin : g_c` (i.e. a case item)  |                                    | `begin`| `g_c`  |             |
+    | `begin : g_d` (i.e. a case item)  |                                    | `begin`| `g_d`  |             |
     |                                   | `b : block`                        | `block`| `b`    |             |
 
-    An instance within a `for` is created multiple times.
+    An instance within a `for` is created multiple times. VHDL: the alternatives of an `if` share its label.
 
     Attributes:
         kind: Kind of construct. See table above.
         name: Label. Empty for blocks without label, and constructs without `begin`.
         cond: Condition of `if`, loop of `for` or expression of `case`.
+        others: Alternatives (`else`, `else if`): the conditions of the alternatives in front, which are not
+                met: `A` for `g_b`, `A` and `B` for `g_c`.
     """
 
     kind: GenerateKind
     name: str = ""
     cond: str = ""
+    others: tuple[str, ...] = ()
 
 
 class ModuleInstance(_BaseModel):
@@ -646,6 +693,7 @@ class ModuleInstance(_BaseModel):
         dim: Dimension of an array of instances: `[3:0]`.
         params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.
         connections: Connections
+        wildcard: The ports which are not connected otherwise are connected by name: `.*`.
         generates: Generate constructs the instance is located in, from the outermost to the innermost.
         ifdefs: Conditions the instance is created at.
         loc: Source Location of the instantiation. Instances created together share it.
@@ -658,6 +706,7 @@ class ModuleInstance(_BaseModel):
     dim: str = ""
     params: tuple[Connection, ...] = ()
     connections: tuple[Connection, ...] = ()
+    wildcard: bool = False
     generates: tuple[Generate, ...] = ()
     ifdefs: tuple[str, ...] = ()
     loc: Location | None = None
@@ -757,4 +806,76 @@ class Use(_BaseModel):
 
     inst: str
     module: str
+    loc: Location | None = None
+
+
+LinkKind: TypeAlias = Literal["assign", "comb", "ff", "latch", "inst", "port", "passthrough", "unknown"]
+"""Kind Of A Driver Or Load."""
+
+
+class Link(_BaseModel):
+    """One Driver Or Load Of A Signal, Within The Hierarchy Below A Top.
+
+    | `kind`    | Driver                                    | Load                                        |
+    | --------- | ----------------------------------------- | ------------------------------------------- |
+    | `assign`  | continuous assignment                     | continuous assignment reading the signal    |
+    | `comb`    | assignment of a combinational process     | ... reading the signal                      |
+    | `ff`      | assignment of a clocked process           | ... reading the signal, or clocked by it    |
+    | `latch`   | assignment of `always_latch`              | ... reading the signal                      |
+    | `inst`    | output port of an instance                | input port of an instance                   |
+    | `port`    | input port: the connection of the parent  | output port: the connection of the parent   |
+    | `passthrough` | output of a pass-through cell: its input | input of a pass-through cell: its output |
+    | `unknown` | pin of an instance of an unknown module   | pin of an instance of an unknown module     |
+
+    A pass-through cell passes its input on to its output: a module given as such, or a module with one input
+    and one output, whose output is driven by modules which are not defined only (a wrapper of technology cells).
+
+    Attributes:
+        kind: See table above.
+        nets: Instance paths of the signals on the other side: the ones read by a driver, the ones driven by a load.
+        conds: Driver: instance paths of the signals read by the conditions around (`if`, `case`).
+        clock: Instance path of the clock of a flip-flop. Empty, if not known.
+        control: Load: the signal is read by a condition or as clock only.
+        select: Select of the driven signal, as written: `[3:0]`. Empty for the whole signal.
+        item: Full identifier of the process, the instance or the module (continuous assignment).
+        external: A port of the top: driven or loaded outside of the design.
+        multiple: A signal stands for multiple ones (of an instance array, or a `for` generate without index).
+        unknown: Why the other side is not known: i.e. the module is not defined in the project.
+        file: File of `loc`.
+        loc: Source Location of the assignment or connection.
+    """
+
+    kind: LinkKind
+    nets: tuple[str, ...] = ()
+    conds: tuple[str, ...] = ()
+    clock: str = ""
+    control: bool = False
+    select: str = ""
+    item: str = ""
+    external: bool = False
+    multiple: bool = False
+    unknown: str = ""
+    file: str = ""
+    loc: Location | None = None
+
+
+class Hop(_BaseModel):
+    """One Signal Of A Trace, With The Load Reaching It From The One In Front.
+
+    Attributes:
+        net: Instance path of the signal.
+        kind: Kind of the load reaching it (see [Link][hdl_parser.datamodel.Link]). Empty for the first one.
+        control: The signal in front is read by a condition or as clock only.
+        select: Select of this signal, as driven: `[3:0]`.
+        item: Full identifier of the process, instance or module of the load.
+        file: File of `loc`.
+        loc: Source Location of the assignment or connection.
+    """
+
+    net: str
+    kind: LinkKind | Literal[""] = ""
+    control: bool = False
+    select: str = ""
+    item: str = ""
+    file: str = ""
     loc: Location | None = None

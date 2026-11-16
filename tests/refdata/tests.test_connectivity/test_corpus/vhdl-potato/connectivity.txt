@@ -1,0 +1,12 @@
+# undriven
+pp_icache.vhd:pp_icache.cache_lookup
+toplevel.vhd:toplevel.error_dat_out
+
+# traces
+pp_potato.dmem_data_in -> pp_potato.processor.writeback.rd_data_in
+  pp_potato.dmem_data_in
+  pp_potato.processor.dmem_data_in inst pp_potato.vhd:83
+  pp_potato.processor.memory.dmem_data_in inst pp_core.vhd:388
+  pp_potato.processor.memory.rd_data_out comb pp_memory.vhd:136
+  pp_potato.processor.mem_rd_data port pp_core.vhd:395
+  pp_potato.processor.writeback.rd_data_in inst pp_core.vhd:437

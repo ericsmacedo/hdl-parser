@@ -545,7 +545,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {
@@ -562,7 +565,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {
@@ -579,7 +585,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {
@@ -597,7 +606,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {
@@ -615,7 +627,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {
@@ -716,6 +731,34 @@
         {
           "id": "prim_packer.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "inmask_ones",
+              "loc": {
+                "line": 65,
+                "col": 5,
+                "end_line": 65,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "inmask_ones",
+              "reads": [
+                "inmask_ones",
+                "mask_i",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 67,
+                "col": 7,
+                "end_line": 67,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "Computing next position =================================================="
           ],
@@ -734,6 +777,100 @@
               "kind": "if",
               "name": "g_pos_nodup",
               "cond": "EnProtection == 1'b 0"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_q"
+              ],
+              "loc": {
+                "line": 78,
+                "col": 7,
+                "end_line": 78,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_q"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 81,
+                "col": 16,
+                "end_line": 81,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_q"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 82,
+                "col": 16,
+                "end_line": 82,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_with_input"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 83,
+                "col": 16,
+                "end_line": 83,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_with_input"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 16,
+                "end_line": 84,
+                "end_col": 91
+              }
+            },
+            {
+              "target": "pos_d",
+              "reads": [
+                "pos_q"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 85,
+                "col": 18,
+                "end_line": 85,
+                "end_col": 32
+              }
             }
           ],
           "loc": {
@@ -767,6 +904,52 @@
               "cond": "EnProtection == 1'b 0"
             }
           ],
+          "assigns": [
+            {
+              "target": "pos_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 91,
+                "col": 9,
+                "end_line": 91,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "pos_q",
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 93,
+                "col": 9,
+                "end_line": 93,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "pos_q",
+              "reads": [
+                "pos_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 95,
+                "col": 9,
+                "end_line": 95,
+                "end_col": 24
+              }
+            }
+          ],
           "loc": {
             "line": 89,
             "col": 5,
@@ -781,7 +964,36 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "cnt_set",
+              "loc": {
+                "line": 120,
+                "col": 7,
+                "end_line": 120,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "cnt_set",
+              "reads": [
+                "pos_with_input"
+              ],
+              "conds": [
+                "pos_with_input"
+              ],
+              "loc": {
+                "line": 124,
+                "col": 9,
+                "end_line": 124,
+                "end_col": 48
+              }
             }
           ],
           "loc": {
@@ -794,6 +1006,33 @@
         {
           "id": "prim_packer.#always5",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "lod_idx",
+              "loc": {
+                "line": 157,
+                "col": 5,
+                "end_line": 157,
+                "end_col": 17
+              }
+            },
+            {
+              "target": "lod_idx",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i",
+                "mask_i"
+              ],
+              "loc": {
+                "line": 160,
+                "col": 9,
+                "end_line": 160,
+                "end_col": 39
+              }
+            }
+          ],
           "comment": [
             "---------------------------------------------------------------------------",
             "Leading one detector for mask_i"
@@ -808,6 +1047,168 @@
         {
           "id": "prim_packer.#always6",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "stored_data_next",
+              "reads": [
+                "stored_data"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 187,
+                "col": 9,
+                "end_line": 187,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "stored_mask_next",
+              "reads": [
+                "stored_mask"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 188,
+                "col": 9,
+                "end_line": 188,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "stored_data_next",
+              "reads": [
+                "stored_data"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 192,
+                "col": 9,
+                "end_line": 192,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "stored_mask_next",
+              "reads": [
+                "stored_mask"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 193,
+                "col": 9,
+                "end_line": 193,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "stored_data_next",
+              "reads": [
+                "concat_data"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 197,
+                "col": 9,
+                "end_line": 197,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "stored_mask_next",
+              "reads": [
+                "concat_mask"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 198,
+                "col": 9,
+                "end_line": 198,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "stored_data_next",
+              "reads": [
+                "concat_data"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 202,
+                "col": 9,
+                "end_line": 202,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "stored_mask_next",
+              "reads": [
+                "concat_mask"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 203,
+                "col": 9,
+                "end_line": 203,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "stored_data_next",
+              "reads": [
+                "stored_data"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 206,
+                "col": 9,
+                "end_line": 206,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "stored_mask_next",
+              "reads": [
+                "stored_mask"
+              ],
+              "conds": [
+                "ack_in",
+                "ack_out"
+              ],
+              "loc": {
+                "line": 207,
+                "col": 9,
+                "end_line": 207,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 184,
             "col": 3,
@@ -832,6 +1233,96 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "stored_data",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 215,
+                "col": 7,
+                "end_line": 215,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "stored_mask",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 216,
+                "col": 7,
+                "end_line": 216,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "stored_data",
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 218,
+                "col": 7,
+                "end_line": 218,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "stored_mask",
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 7,
+                "end_line": 219,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "stored_data",
+              "reads": [
+                "stored_data_next"
+              ],
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 221,
+                "col": 7,
+                "end_line": 221,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "stored_mask",
+              "reads": [
+                "stored_mask_next"
+              ],
+              "conds": [
+                "rst_ni",
+                "flush_done"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 222,
+                "col": 7,
+                "end_line": 222,
+                "end_col": 39
+              }
+            }
+          ],
           "comment": [
             "Store the data temporary if it doesn't exceed OutW"
           ],
@@ -859,6 +1350,37 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "flush_st",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 236,
+                "col": 7,
+                "end_line": 236,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "flush_st",
+              "reads": [
+                "flush_st_next"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 238,
+                "col": 7,
+                "end_line": 238,
+                "end_col": 33
+              }
+            }
+          ],
           "loc": {
             "line": 234,
             "col": 3,
@@ -869,11 +1391,500 @@
         {
           "id": "prim_packer.#always9",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "flush_st_next",
+              "loc": {
+                "line": 243,
+                "col": 5,
+                "end_line": 243,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_valid",
+              "loc": {
+                "line": 245,
+                "col": 5,
+                "end_line": 245,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "flush_done",
+              "loc": {
+                "line": 246,
+                "col": 5,
+                "end_line": 246,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "flush_st_next",
+              "conds": [
+                "flush_st",
+                "flush_i"
+              ],
+              "loc": {
+                "line": 251,
+                "col": 11,
+                "end_line": 251,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "flush_st_next",
+              "conds": [
+                "flush_st",
+                "flush_i"
+              ],
+              "loc": {
+                "line": 253,
+                "col": 11,
+                "end_line": 253,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "flush_st_next",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 259,
+                "col": 11,
+                "end_line": 259,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "flush_valid",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 261,
+                "col": 11,
+                "end_line": 261,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_done",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 262,
+                "col": 11,
+                "end_line": 262,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_st_next",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 264,
+                "col": 11,
+                "end_line": 264,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "flush_valid",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 266,
+                "col": 11,
+                "end_line": 266,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_done",
+              "conds": [
+                "flush_st",
+                "pos_q"
+              ],
+              "loc": {
+                "line": 267,
+                "col": 11,
+                "end_line": 267,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_st_next",
+              "conds": [
+                "flush_st"
+              ],
+              "loc": {
+                "line": 271,
+                "col": 9,
+                "end_line": 271,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "flush_valid",
+              "conds": [
+                "flush_st"
+              ],
+              "loc": {
+                "line": 273,
+                "col": 9,
+                "end_line": 273,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "flush_done",
+              "conds": [
+                "flush_st"
+              ],
+              "loc": {
+                "line": 274,
+                "col": 9,
+                "end_line": 274,
+                "end_col": 29
+              }
+            }
+          ],
           "loc": {
             "line": 242,
             "col": 3,
             "end_line": 277,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "pos_with_input",
+          "reads": [
+            "pos_q",
+            "inmask_ones"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 10,
+            "end_line": 72,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "err_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_pos_nodup",
+              "cond": "EnProtection == 1'b 0"
+            }
+          ],
+          "loc": {
+            "line": 99,
+            "col": 12,
+            "end_line": 99,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "cnt_incr_en",
+          "reads": [
+            "ack_in",
+            "ack_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 110,
+            "col": 12,
+            "end_line": 110,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "cnt_decr_en",
+          "reads": [
+            "ack_in",
+            "ack_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 111,
+            "col": 12,
+            "end_line": 111,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "cnt_set_en",
+          "reads": [
+            "ack_in",
+            "ack_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 12,
+            "end_line": 112,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "cnt_step",
+          "reads": [
+            "inmask_ones"
+          ],
+          "conds": [
+            "cnt_incr_en"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 115,
+            "col": 12,
+            "end_line": 115,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "ack_in",
+          "reads": [
+            "valid_i",
+            "ready_o"
+          ],
+          "loc": {
+            "line": 165,
+            "col": 10,
+            "end_line": 165,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "ack_out",
+          "reads": [
+            "valid_o",
+            "ready_i"
+          ],
+          "loc": {
+            "line": 166,
+            "col": 10,
+            "end_line": 166,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "shiftr_data",
+          "reads": [
+            "data_i",
+            "lod_idx"
+          ],
+          "conds": [
+            "valid_i"
+          ],
+          "loc": {
+            "line": 170,
+            "col": 10,
+            "end_line": 170,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "shiftr_mask",
+          "reads": [
+            "mask_i",
+            "lod_idx"
+          ],
+          "conds": [
+            "valid_i"
+          ],
+          "loc": {
+            "line": 171,
+            "col": 10,
+            "end_line": 171,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "shiftl_data",
+          "reads": [
+            "shiftr_data",
+            "pos_q"
+          ],
+          "loc": {
+            "line": 174,
+            "col": 10,
+            "end_line": 174,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "shiftl_mask",
+          "reads": [
+            "shiftr_mask",
+            "pos_q"
+          ],
+          "loc": {
+            "line": 175,
+            "col": 10,
+            "end_line": 175,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "concat_data",
+          "reads": [
+            "stored_data",
+            "stored_mask",
+            "shiftl_data",
+            "shiftl_mask"
+          ],
+          "loc": {
+            "line": 178,
+            "col": 10,
+            "end_line": 179,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "concat_mask",
+          "reads": [
+            "stored_mask",
+            "shiftl_mask"
+          ],
+          "loc": {
+            "line": 180,
+            "col": 10,
+            "end_line": 180,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "flush_done_o",
+          "reads": [
+            "flush_done"
+          ],
+          "loc": {
+            "line": 279,
+            "col": 10,
+            "end_line": 279,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "valid_next",
+          "reads": [
+            "flush_valid"
+          ],
+          "conds": [
+            "pos_q"
+          ],
+          "loc": {
+            "line": 283,
+            "col": 10,
+            "end_line": 283,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "ready_next",
+          "reads": [
+            "pos_q"
+          ],
+          "loc": {
+            "line": 291,
+            "col": 10,
+            "end_line": 291,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "valid_next"
+          ],
+          "loc": {
+            "line": 294,
+            "col": 10,
+            "end_line": 294,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "data_o",
+          "reads": [
+            "stored_data"
+          ],
+          "loc": {
+            "line": 295,
+            "col": 10,
+            "end_line": 295,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "mask_o",
+          "reads": [
+            "stored_mask"
+          ],
+          "loc": {
+            "line": 296,
+            "col": 10,
+            "end_line": 296,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "ready_o",
+          "reads": [
+            "ready_next"
+          ],
+          "loc": {
+            "line": 299,
+            "col": 10,
+            "end_line": 299,
+            "end_col": 30
           }
         }
       ],
@@ -1048,7 +2059,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_pos_dupcnt"
+              "name": "g_pos_dupcnt",
+              "others": [
+                "EnProtection == 1'b 0"
+              ]
             }
           ],
           "loc": {

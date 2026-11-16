@@ -1,6 +1,74 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$defs": {
+    "Assignment": {
+      "additionalProperties": false,
+      "description": "One Assignment: Of A Signal, By A Continuous Assignment Or Within A Process.\n\n| Code                                     | `target` | `select` | `reads`      | `conds`    |\n| ---------------------------------------- | -------- | -------- | ------------ | ---------- |\n| `assign y = a & b;`                      | `y`      |          | `a`, `b`     |            |\n| `if (en) q[idx] <= d;`                   | `q`      | `[idx]`  | `idx`, `d`   | `en`       |\n| `{c, s} = x + y;`                        | `c`, `s` (two assignments) | | `x`, `y` |          |\n| `y <= a when sel = '1' else b;` (VHDL)   | `y`      |          | `a`, `b`, `sel` |         |\n\nThe names read are the signals, ports and variables used by the expression, and by the selects of the target.\nParameters, enumeration members, functions and packages are left out, as far as they are declared in the\nmodule. Members of structs and interfaces stand for their base: `bus.req` reads `bus`.\n\nAttributes:\n    target: Name of the assigned signal, port or variable. A concatenation of targets is split.\n    select: Select of the target, as written: `[3:0]`, `.field`, `(7 downto 0)`. Empty for the whole target.\n    reads: Names read by the assigned value.\n    conds: Names read by the conditions the assignment is located in: `if`, `case`, loops (control).\n    blocking: Blocking assignment (`=`, VHDL `:=`, any continuous assignment). `False` for `<=` within a\n              process.\n    generates: Generate constructs a continuous assignment is located in, from the outermost to the innermost.\n               The ones of an assignment within a process are the ones of the process.\n    ifdefs: Conditions the assignment is made at.\n    loc: Source Location of the assignment.",
+      "properties": {
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "select": {
+          "default": "",
+          "title": "Select",
+          "type": "string"
+        },
+        "reads": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Reads",
+          "type": "array"
+        },
+        "conds": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Conds",
+          "type": "array"
+        },
+        "blocking": {
+          "default": true,
+          "title": "Blocking",
+          "type": "boolean"
+        },
+        "generates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Generate"
+          },
+          "title": "Generates",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "title": "Assignment",
+      "type": "object"
+    },
     "Connection": {
       "additionalProperties": false,
       "description": "Connection Of A Port, Or Value Of A Parameter, Of An Instance.\n\nAttributes:\n    port: Name of the port or parameter. Empty, if connected by order.\n    con: Connected expression, or value of the parameter.\n    comment: Comment\n    ifdefs: Conditions the connection is made at.\n    loc: Source Location: `.port(con)`, `port => con` or the expression of a connection by order.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
@@ -53,7 +121,7 @@
     },
     "Diagnostic": {
       "additionalProperties": false,
-      "description": "A Problem Found While Parsing.\n\nThe result is still valid, but it may be incomplete at the reported location.\n\n| `code`                | Severity | Meaning                                                           |\n| --------------------- | -------- | ----------------------------------------------------------------- |\n| `macro-not-expanded`  | warning  | Macro in a module header is not expanded. `item` is the macro.    |\n| `macro-ambiguous`     | warning  | Macro has different definitions under unknown conditions.         |\n| `macro-recursive`     | warning  | Macro uses itself.                                                |\n| `macro-args-missing`  | warning  | Macro with arguments is used without.                             |\n| `macro-args-count`    | warning  | Macro is used with the wrong number of arguments.                 |\n| `macro-bad-define`    | warning  | `` `define `` cannot be parsed.                                   |\n| `include-not-found`   | warning  | Included file is not found.                                       |\n| `include-unreadable`  | warning  | Included file cannot be read.                                     |\n| `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |\n| `missing-end`         | warning  | Module, entity or architecture without end.                       |\n| `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |\n| `no-module`           | info     | File without module, interface or package, i.e. an included file. |\n| `file-not-found`      | error    | File does not exist.                                              |\n| `file-unreadable`     | error    | File cannot be read.                                              |\n| `parse-failed`        | error    | File cannot be parsed. This is a bug of the parser.               |\n| `duplicate-definition`| warning  | Module, interface or package is defined more than once in the project. |\n| `undefined-module`    | warning  | Module of an instance is not defined in the project. `item` is the instance. |\n| `filelist-not-found`  | error    | Filelist cannot be read.                                          |\n| `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |\n| `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |\n\nThe macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are\nunknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.\n\nCode the parser has no interest in (i.e. procedural code) is skipped without diagnostic.\nThe codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported\nby a [Project][hdl_parser.project.Project] only.\n\nAttributes:\n    code: Kind of problem. See table above.\n    severity: `error`, `warning` or `info`.\n    message: Description.\n    loc: Source Location within the parsed file. A problem within an included file points to the\n         `` `include `` statement.\n    item: Identifier of the related item: the module the problem is located in, if not stated otherwise.\n    file: Included file or filelist the problem is located in. Empty, if located in the parsed file itself.",
+      "description": "A Problem Found While Parsing.\n\nThe result is still valid, but it may be incomplete at the reported location.\n\n| `code`                | Severity | Meaning                                                           |\n| --------------------- | -------- | ----------------------------------------------------------------- |\n| `macro-not-expanded`  | warning  | Macro in a module header is not expanded. `item` is the macro.    |\n| `macro-ambiguous`     | warning  | Macro has different definitions under unknown conditions.         |\n| `macro-recursive`     | warning  | Macro uses itself.                                                |\n| `macro-args-missing`  | warning  | Macro with arguments is used without.                             |\n| `macro-args-count`    | warning  | Macro is used with the wrong number of arguments.                 |\n| `macro-bad-define`    | warning  | `` `define `` cannot be parsed.                                   |\n| `include-not-found`   | warning  | Included file is not found.                                       |\n| `include-unreadable`  | warning  | Included file cannot be read.                                     |\n| `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |\n| `missing-end`         | warning  | Module, entity or architecture without end.                       |\n| `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |\n| `no-module`           | info     | File without module, interface or package, i.e. an included file. |\n| `file-not-found`      | error    | File does not exist.                                              |\n| `file-unreadable`     | error    | File cannot be read.                                              |\n| `parse-failed`        | error    | File cannot be parsed. This is a bug of the parser.               |\n| `duplicate-definition`| warning  | Module, interface or package is defined more than once in the project. |\n| `undefined-module`    | warning  | Module of an instance is not defined in the project. `item` is the instance. |\n| `filelist-not-found`  | error    | Filelist cannot be read.                                          |\n| `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |\n| `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |\n| `statement-skipped`   | info     | Statement of a process is not understood (a task call).           |\n\nThe macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are\nunknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.\n\nCode the parser has no interest in (i.e. `initial` blocks, assertions) is skipped without diagnostic.\nThe codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported\nby a [Project][hdl_parser.project.Project] only.\n\nAttributes:\n    code: Kind of problem. See table above.\n    severity: `error`, `warning` or `info`.\n    message: Description.\n    loc: Source Location within the parsed file. A problem within an included file points to the\n         `` `include `` statement.\n    item: Identifier of the related item: the module the problem is located in, if not stated otherwise.\n    file: Included file or filelist the problem is located in. Empty, if located in the parsed file itself.",
       "properties": {
         "code": {
           "title": "Code",
@@ -276,7 +344,7 @@
     },
     "Generate": {
       "additionalProperties": false,
-      "description": "Generate Construct An Instance Is Located In.\n\n| SystemVerilog                     | VHDL                               | `kind` | `name` | `cond`      |\n| --------------------------------- | ---------------------------------- | ------ | ------ | ----------- |\n| `if (A) begin : g_a`              | `g_a : if A generate`              | `if`   | `g_a`  | `A`         |\n| `else begin : g_b`                |                                    | `else` | `g_b`  |             |\n| `for (i = 0; i < N; i++) begin`   | `g : for i in 0 to N-1 generate`   | `for`  |        | `i = 0; ...`|\n| `case (W)`                        | `g : case W generate`              | `case` |        | `W`         |\n| `begin : g_c` (i.e. a case item)  |                                    | `begin`| `g_c`  |             |\n|                                   | `b : block`                        | `block`| `b`    |             |\n\nAn instance within a `for` is created multiple times.\n\nAttributes:\n    kind: Kind of construct. See table above.\n    name: Label. Empty for blocks without label, and constructs without `begin`.\n    cond: Condition of `if`, loop of `for` or expression of `case`.",
+      "description": "Generate Construct An Instance Is Located In.\n\n| SystemVerilog                     | VHDL                               | `kind` | `name` | `cond`      |\n| --------------------------------- | ---------------------------------- | ------ | ------ | ----------- |\n| `if (A) begin : g_a`              | `g_a : if A generate`              | `if`   | `g_a`  | `A`         |\n| `else if (B) begin : g_b`         | `elsif B generate`                 | `if`   | `g_b`  | `B`         |\n| `else begin : g_c`                | `else generate`                    | `else` | `g_c`  |             |\n| `for (i = 0; i < N; i++) begin`   | `g : for i in 0 to N-1 generate`   | `for`  |        | `i = 0; ...`|\n| `case (W)`                        | `g : case W generate`              | `case` |        | `W`         |\n| `begin : g_d` (i.e. a case item)  |                                    | `begin`| `g_d`  |             |\n|                                   | `b : block`                        | `block`| `b`    |             |\n\nAn instance within a `for` is created multiple times. VHDL: the alternatives of an `if` share its label.\n\nAttributes:\n    kind: Kind of construct. See table above.\n    name: Label. Empty for blocks without label, and constructs without `begin`.\n    cond: Condition of `if`, loop of `for` or expression of `case`.\n    others: Alternatives (`else`, `else if`): the conditions of the alternatives in front, which are not\n            met: `A` for `g_b`, `A` and `B` for `g_c`.",
       "properties": {
         "kind": {
           "enum": [
@@ -299,6 +367,14 @@
           "default": "",
           "title": "Cond",
           "type": "string"
+        },
+        "others": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Others",
+          "type": "array"
         }
       },
       "required": [
@@ -374,6 +450,14 @@
             "$ref": "#/$defs/Process"
           },
           "title": "Processes",
+          "type": "array"
+        },
+        "assigns": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Assignment"
+          },
+          "title": "Assigns",
           "type": "array"
         },
         "components": {
@@ -660,7 +744,7 @@
     },
     "Module": {
       "additionalProperties": false,
-      "description": "Represents a SystemVerilog Module with parameters, ports and submodules.\n\nAttributes:\n    name: Module Name\n    params: Parameters\n    ports: Ports\n    localparams: Local Parameters\n    signals: Signals: the nets and variables declared within the module.\n    typedefs: Types declared within the module.\n    functions: Functions and tasks declared within the module.\n    processes: The `always` blocks (VHDL: processes) with their clock and reset.\n    components: Component declarations (VHDL): modules with name, parameters and ports.\n    insts: Submodule Instances.\n    ifdefs: Conditions the module is defined at.\n    unresolved_macros: Macros used in the module header, which could not be expanded.\n                       Ports or parameters defined by these macros are missing.\n    imports: Imported names of packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.\n    partial: VHDL: the entity is not part of this file. This is just the content of an architecture.\n    loc: Source Location: from `module` to `endmodule`. VHDL: the entity.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "description": "Represents a SystemVerilog Module with parameters, ports and submodules.\n\nAttributes:\n    name: Module Name\n    params: Parameters\n    ports: Ports\n    localparams: Local Parameters\n    signals: Signals: the nets and variables declared within the module.\n    typedefs: Types declared within the module.\n    functions: Functions and tasks declared within the module.\n    processes: The `always` blocks (VHDL: processes) with their clock and reset.\n    assigns: Continuous assignments: `assign`, net declarations with value (`wire x = a & b;`).\n             VHDL: concurrent signal assignments. The assignments of processes are part of the process.\n    components: Component declarations (VHDL): modules with name, parameters and ports.\n    insts: Submodule Instances.\n    ifdefs: Conditions the module is defined at.\n    unresolved_macros: Macros used in the module header, which could not be expanded.\n                       Ports or parameters defined by these macros are missing.\n    imports: Imported names of packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.\n    partial: VHDL: the entity is not part of this file. This is just the content of an architecture.\n    loc: Source Location: from `module` to `endmodule`. VHDL: the entity.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
       "properties": {
         "id": {
           "default": "",
@@ -725,6 +809,14 @@
             "$ref": "#/$defs/Process"
           },
           "title": "Processes",
+          "type": "array"
+        },
+        "assigns": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Assignment"
+          },
+          "title": "Assigns",
           "type": "array"
         },
         "components": {
@@ -792,7 +884,7 @@
     },
     "ModuleInstance": {
       "additionalProperties": false,
-      "description": "Represents An Instance Of A Module Within Another Module.\n\nAttributes:\n    name: Module Instance Name\n    module: Module Name\n    dim: Dimension of an array of instances: `[3:0]`.\n    params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.\n    connections: Connections\n    generates: Generate constructs the instance is located in, from the outermost to the innermost.\n    ifdefs: Conditions the instance is created at.\n    loc: Source Location of the instantiation. Instances created together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "description": "Represents An Instance Of A Module Within Another Module.\n\nAttributes:\n    name: Module Instance Name\n    module: Module Name\n    dim: Dimension of an array of instances: `[3:0]`.\n    params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.\n    connections: Connections\n    wildcard: The ports which are not connected otherwise are connected by name: `.*`.\n    generates: Generate constructs the instance is located in, from the outermost to the innermost.\n    ifdefs: Conditions the instance is created at.\n    loc: Source Location of the instantiation. Instances created together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
       "properties": {
         "id": {
           "default": "",
@@ -827,6 +919,11 @@
           },
           "title": "Connections",
           "type": "array"
+        },
+        "wildcard": {
+          "default": false,
+          "title": "Wildcard",
+          "type": "boolean"
         },
         "generates": {
           "default": [],
@@ -1101,7 +1198,7 @@
     },
     "Process": {
       "additionalProperties": false,
-      "description": "Represents an `always` block (VHDL: a process), with its clock and reset.\n\n| Code                                                       | `clock`  | `reset`   |\n| ---------------------------------------------------------- | -------- | --------- |\n| `always_ff @(posedge clk_i)`                               | `clk_i`  |           |\n| `always_ff @(posedge clk_i or negedge rst_ni) if (!rst_ni)`| `clk_i`  | `rst_ni`  |\n| `always_comb`, `always @*`, `always @(a or b)`             |          |           |\n| `process (clk) ... if rising_edge(clk)` (VHDL)             | `clk`    |           |\n\nClock and reset are never guessed. The reset is the edge of the sensitivity list, which is checked by the\nleading `if` of the block. The clock is the one other edge. Both are empty, if this does not apply. A reset\nwhich is not part of the sensitivity list (a synchronous one) cannot be told from any other condition, and is\ntherefore not reported.\n\nAttributes:\n    name: Label of the block: `begin : name`. VHDL: the label of the process. Empty, if there is none.\n    kind: `always`, `always_ff`, `always_comb`, `always_latch` or `process` (VHDL).\n    events: Sensitivity list. Empty for `always_comb`, `always_latch` and `@*`.\n    clock: Clock signal. Empty, if there is none or it is not known.\n    clock_edge: Active edge of the clock: `posedge` or `negedge`.\n    reset: Asynchronous reset signal. Empty, if there is none or it is not known.\n    reset_edge: Edge the reset gets active at: `negedge` for an active low reset.\n    generates: Generate constructs the block is located in, from the outermost to the innermost.\n    comment: tuple of associated comments\n    ifdefs: Conditions the block is defined at.\n    loc: Source Location of the whole block.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].\n        Blocks without label are numbered. This number changes, if a block is added in front.",
+      "description": "Represents an `always` block (VHDL: a process), with its clock and reset.\n\n| Code                                                       | `clock`  | `reset`   |\n| ---------------------------------------------------------- | -------- | --------- |\n| `always_ff @(posedge clk_i)`                               | `clk_i`  |           |\n| `always_ff @(posedge clk_i or negedge rst_ni) if (!rst_ni)`| `clk_i`  | `rst_ni`  |\n| `always_comb`, `always @*`, `always @(a or b)`             |          |           |\n| `process (clk) ... if rising_edge(clk)` (VHDL)             | `clk`    |           |\n\nClock and reset are never guessed. The reset is the edge of the sensitivity list, which is checked by the\nleading `if` of the block. The clock is the one other edge. Both are empty, if this does not apply. A reset\nwhich is not part of the sensitivity list (a synchronous one) cannot be told from any other condition, and is\ntherefore not reported.\n\nAttributes:\n    name: Label of the block: `begin : name`. VHDL: the label of the process. Empty, if there is none.\n    kind: `always`, `always_ff`, `always_comb`, `always_latch` or `process` (VHDL).\n    events: Sensitivity list. Empty for `always_comb`, `always_latch` and `@*`.\n    clock: Clock signal. Empty, if there is none or it is not known.\n    clock_edge: Active edge of the clock: `posedge` or `negedge`.\n    reset: Asynchronous reset signal. Empty, if there is none or it is not known.\n    reset_edge: Edge the reset gets active at: `negedge` for an active low reset.\n    generates: Generate constructs the block is located in, from the outermost to the innermost.\n    assigns: The assignments within the block, in the order of the code.\n    comment: tuple of associated comments\n    ifdefs: Conditions the block is defined at.\n    loc: Source Location of the whole block.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].\n        Blocks without label are numbered. This number changes, if a block is added in front.",
       "properties": {
         "id": {
           "default": "",
@@ -1158,6 +1255,14 @@
             "$ref": "#/$defs/Generate"
           },
           "title": "Generates",
+          "type": "array"
+        },
+        "assigns": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Assignment"
+          },
+          "title": "Assigns",
           "type": "array"
         },
         "comment": {

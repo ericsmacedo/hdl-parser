@@ -1018,6 +1018,60 @@
               "cond": "NonLinearOut"
             }
           ],
+          "assigns": [
+            {
+              "target": "matrix_rotrev_indices",
+              "select": "[0]",
+              "reads": [
+                "matrix_indices"
+              ],
+              "loc": {
+                "line": 406,
+                "col": 7,
+                "end_line": 406,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "matrix_rotrev_indices",
+              "select": "[1]",
+              "reads": [
+                "matrix_indices"
+              ],
+              "loc": {
+                "line": 407,
+                "col": 7,
+                "end_line": 407,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "matrix_rotrev_indices",
+              "select": "[2]",
+              "reads": [
+                "matrix_indices"
+              ],
+              "loc": {
+                "line": 408,
+                "col": 7,
+                "end_line": 408,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "matrix_rotrev_indices",
+              "select": "[3]",
+              "reads": [
+                "matrix_indices"
+              ],
+              "loc": {
+                "line": 409,
+                "col": 7,
+                "end_line": 409,
+                "end_col": 72
+              }
+            }
+          ],
           "loc": {
             "line": 405,
             "col": 5,
@@ -1034,6 +1088,40 @@
               "kind": "if",
               "name": "gen_out_non_linear",
               "cond": "NonLinearOut"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "sbox_perm_test",
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 422,
+                "col": 9,
+                "end_line": 422,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "sbox_perm_test",
+              "select": "[sbox_in_indices[k]]",
+              "reads": [
+                "sbox_in_indices",
+                "k"
+              ],
+              "conds": [
+                "k"
+              ],
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 424,
+                "col": 11,
+                "end_line": 424,
+                "end_col": 53
+              }
             }
           ],
           "ifdefs": [
@@ -1064,6 +1152,37 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "lfsr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 488,
+                "col": 7,
+                "end_line": 488,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "lfsr_q",
+              "reads": [
+                "lfsr_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 490,
+                "col": 7,
+                "end_line": 490,
+                "end_col": 24
+              }
+            }
+          ],
           "loc": {
             "line": 486,
             "col": 3,
@@ -1096,6 +1215,78 @@
               "cond": "MaxLenSVA"
             }
           ],
+          "assigns": [
+            {
+              "target": "cnt_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 619,
+                "col": 9,
+                "end_line": 619,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "perturbed_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 620,
+                "col": 9,
+                "end_line": 620,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "cnt_q",
+              "reads": [
+                "cnt_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 622,
+                "col": 9,
+                "end_line": 622,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "perturbed_q",
+              "reads": [
+                "perturbed_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "!SYNTHESIS"
+              ],
+              "loc": {
+                "line": 623,
+                "col": 9,
+                "end_line": 623,
+                "end_col": 36
+              }
+            }
+          ],
           "ifdefs": [
             "!SYNTHESIS"
           ],
@@ -1104,6 +1295,529 @@
             "col": 5,
             "end_line": 625,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "coeffs",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_gal_xor",
+              "cond": "64'(LfsrType) == 64'(\"GAL_XOR\")"
+            },
+            {
+              "kind": "if",
+              "name": "gen_custom",
+              "cond": "CustomCoeffs > 0"
+            }
+          ],
+          "loc": {
+            "line": 287,
+            "col": 14,
+            "end_line": 287,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "coeffs",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_gal_xor",
+              "cond": "64'(LfsrType) == 64'(\"GAL_XOR\")"
+            },
+            {
+              "kind": "else",
+              "name": "gen_lut",
+              "others": [
+                "CustomCoeffs > 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 289,
+            "col": 14,
+            "end_line": 289,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "next_lfsr_state",
+          "reads": [
+            "entropy_i",
+            "lfsr_q",
+            "coeffs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_gal_xor",
+              "cond": "64'(LfsrType) == 64'(\"GAL_XOR\")"
+            }
+          ],
+          "loc": {
+            "line": 296,
+            "col": 12,
+            "end_line": 296,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "lockup",
+          "reads": [
+            "lfsr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_gal_xor",
+              "cond": "64'(LfsrType) == 64'(\"GAL_XOR\")"
+            }
+          ],
+          "loc": {
+            "line": 299,
+            "col": 12,
+            "end_line": 299,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "coeffs",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_fib_xnor",
+              "cond": "64'(LfsrType) == \"FIB_XNOR\"",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_custom",
+              "cond": "CustomCoeffs > 0"
+            }
+          ],
+          "loc": {
+            "line": 312,
+            "col": 14,
+            "end_line": 312,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "coeffs",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_fib_xnor",
+              "cond": "64'(LfsrType) == \"FIB_XNOR\"",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_lut",
+              "others": [
+                "CustomCoeffs > 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 314,
+            "col": 14,
+            "end_line": 314,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "next_lfsr_state",
+          "reads": [
+            "entropy_i",
+            "lfsr_q",
+            "coeffs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_fib_xnor",
+              "cond": "64'(LfsrType) == \"FIB_XNOR\"",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 321,
+            "col": 12,
+            "end_line": 321,
+            "end_col": 94
+          }
+        },
+        {
+          "target": "lockup",
+          "reads": [
+            "lfsr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_fib_xnor",
+              "cond": "64'(LfsrType) == \"FIB_XNOR\"",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 324,
+            "col": 12,
+            "end_line": 324,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "coeffs",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_unknown_type",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")",
+                "64'(LfsrType) == \"FIB_XNOR\""
+              ]
+            }
+          ],
+          "loc": {
+            "line": 334,
+            "col": 12,
+            "end_line": 334,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "next_lfsr_state",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_unknown_type",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")",
+                "64'(LfsrType) == \"FIB_XNOR\""
+              ]
+            }
+          ],
+          "loc": {
+            "line": 335,
+            "col": 12,
+            "end_line": 335,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "lockup",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_unknown_type",
+              "others": [
+                "64'(LfsrType) == 64'(\"GAL_XOR\")",
+                "64'(LfsrType) == \"FIB_XNOR\""
+              ]
+            }
+          ],
+          "loc": {
+            "line": 336,
+            "col": 12,
+            "end_line": 336,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "lfsr_d",
+          "reads": [
+            "seed_i",
+            "next_lfsr_state",
+            "lfsr_q"
+          ],
+          "conds": [
+            "seed_en_i",
+            "lfsr_en_i",
+            "lockup"
+          ],
+          "loc": {
+            "line": 345,
+            "col": 10,
+            "end_line": 348,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "matrix_indices",
+          "select": "[j/NumSboxes][j%NumSboxes]",
+          "reads": [
+            "j"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            },
+            {
+              "kind": "for",
+              "name": "gen_input_idx_map",
+              "cond": "genvar j = 0; j < LfsrDw; j++"
+            }
+          ],
+          "loc": {
+            "line": 368,
+            "col": 14,
+            "end_line": 368,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "sbox_in_indices",
+          "select": "[k]",
+          "reads": [
+            "matrix_rotrev_indices",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            },
+            {
+              "kind": "for",
+              "name": "gen_reverse_upper",
+              "cond": "genvar k = 0; k < LfsrDw; k++"
+            }
+          ],
+          "loc": {
+            "line": 415,
+            "col": 14,
+            "end_line": 415,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "sbox_in",
+          "reads": [
+            "lfsr_q",
+            "sbox_in_indices",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sboxes",
+              "cond": "genvar k = 0; k < NumSboxes; k++"
+            }
+          ],
+          "loc": {
+            "line": 458,
+            "col": 14,
+            "end_line": 461,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "sbox_out",
+          "select": "[k*4+:4]",
+          "reads": [
+            "sbox_in",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_out_non_linear",
+              "cond": "NonLinearOut"
+            },
+            {
+              "kind": "for",
+              "name": "gen_sboxes",
+              "cond": "genvar k = 0; k < NumSboxes; k++"
+            }
+          ],
+          "loc": {
+            "line": 462,
+            "col": 14,
+            "end_line": 462,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "sbox_out",
+          "reads": [
+            "lfsr_q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_out_passthru",
+              "others": [
+                "NonLinearOut"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 465,
+            "col": 12,
+            "end_line": 465,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "state_o",
+          "select": "[k]",
+          "reads": [
+            "sbox_out",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_state_perm",
+              "cond": "StatePermEn"
+            },
+            {
+              "kind": "for",
+              "name": "gen_perm_loop",
+              "cond": "genvar k = 0; k < StateOutDw; k++"
+            }
+          ],
+          "loc": {
+            "line": 472,
+            "col": 14,
+            "end_line": 472,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "unused_sbox_out",
+          "reads": [
+            "sbox_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_state_perm",
+              "cond": "StatePermEn"
+            },
+            {
+              "kind": "if",
+              "name": "gen_tieoff_unused",
+              "cond": "LfsrDw > StateOutDw"
+            }
+          ],
+          "loc": {
+            "line": 479,
+            "col": 14,
+            "end_line": 479,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "state_o",
+          "reads": [
+            "sbox_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_state_perm",
+              "others": [
+                "StatePermEn"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 483,
+            "col": 12,
+            "end_line": 483,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "cmp_val",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_max_len_sva",
+              "cond": "MaxLenSVA"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 609,
+            "col": 12,
+            "end_line": 609,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "cnt_d",
+          "reads": [
+            "cnt_q"
+          ],
+          "conds": [
+            "lfsr_en_i",
+            "lockup",
+            "cmp_val"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_max_len_sva",
+              "cond": "MaxLenSVA"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 610,
+            "col": 12,
+            "end_line": 613,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "perturbed_d",
+          "reads": [
+            "perturbed_q",
+            "entropy_i",
+            "seed_en_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_max_len_sva",
+              "cond": "MaxLenSVA"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS"
+          ],
+          "loc": {
+            "line": 615,
+            "col": 12,
+            "end_line": 615,
+            "end_col": 64
           }
         }
       ],

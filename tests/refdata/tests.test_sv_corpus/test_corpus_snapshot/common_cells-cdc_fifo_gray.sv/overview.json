@@ -738,6 +738,57 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "async_data_o",
+          "reads": [
+            "data_q"
+          ],
+          "loc": {
+            "line": 195,
+            "col": 10,
+            "end_line": 195,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "wptr_next",
+          "reads": [
+            "wptr_bin"
+          ],
+          "loc": {
+            "line": 213,
+            "col": 10,
+            "end_line": 213,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "async_wptr_o",
+          "reads": [
+            "wptr_q"
+          ],
+          "loc": {
+            "line": 217,
+            "col": 10,
+            "end_line": 217,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "src_ready_o",
+          "reads": [
+            "wptr_bin",
+            "rptr_bin"
+          ],
+          "loc": {
+            "line": 223,
+            "col": 10,
+            "end_line": 223,
+            "end_col": 58
+          }
+        }
+      ],
       "insts": [
         {
           "id": "cdc_fifo_gray_src.gen_sync.i_sync",
@@ -1250,6 +1301,58 @@
             "col": 3,
             "end_line": 251,
             "end_col": 30
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "dst_data",
+          "reads": [
+            "async_data_i",
+            "rptr_bin"
+          ],
+          "loc": {
+            "line": 253,
+            "col": 10,
+            "end_line": 253,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rptr_next",
+          "reads": [
+            "rptr_bin"
+          ],
+          "loc": {
+            "line": 256,
+            "col": 10,
+            "end_line": 256,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "async_rptr_o",
+          "reads": [
+            "rptr_q"
+          ],
+          "loc": {
+            "line": 260,
+            "col": 10,
+            "end_line": 260,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "dst_valid",
+          "reads": [
+            "wptr_bin",
+            "rptr_bin"
+          ],
+          "loc": {
+            "line": 277,
+            "col": 10,
+            "end_line": 277,
+            "end_col": 57
           }
         }
       ],

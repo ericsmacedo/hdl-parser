@@ -535,6 +535,78 @@
           "id": "axi_err_slv.proc_w_channel",
           "name": "proc_w_channel",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "err_resp",
+              "select": ".w_ready",
+              "loc": {
+                "line": 109,
+                "col": 5,
+                "end_line": 109,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "w_fifo_pop",
+              "loc": {
+                "line": 110,
+                "col": 5,
+                "end_line": 110,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "b_fifo_push",
+              "loc": {
+                "line": 111,
+                "col": 5,
+                "end_line": 111,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".w_ready",
+              "conds": [
+                "w_fifo_empty",
+                "b_fifo_full"
+              ],
+              "loc": {
+                "line": 114,
+                "col": 7,
+                "end_line": 114,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "w_fifo_pop",
+              "conds": [
+                "w_fifo_empty",
+                "b_fifo_full",
+                "err_req"
+              ],
+              "loc": {
+                "line": 117,
+                "col": 9,
+                "end_line": 117,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "b_fifo_push",
+              "conds": [
+                "w_fifo_empty",
+                "b_fifo_full",
+                "err_req"
+              ],
+              "loc": {
+                "line": 118,
+                "col": 9,
+                "end_line": 118,
+                "end_col": 30
+              }
+            }
+          ],
           "loc": {
             "line": 108,
             "col": 3,
@@ -546,6 +618,88 @@
           "id": "axi_err_slv.proc_b_channel",
           "name": "proc_b_channel",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "b_fifo_pop",
+              "loc": {
+                "line": 142,
+                "col": 5,
+                "end_line": 142,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".b",
+              "loc": {
+                "line": 143,
+                "col": 5,
+                "end_line": 143,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".b.id",
+              "reads": [
+                "b_fifo_data"
+              ],
+              "loc": {
+                "line": 144,
+                "col": 5,
+                "end_line": 144,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".b.resp",
+              "loc": {
+                "line": 145,
+                "col": 5,
+                "end_line": 145,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".b_valid",
+              "loc": {
+                "line": 146,
+                "col": 5,
+                "end_line": 146,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".b_valid",
+              "conds": [
+                "b_fifo_empty"
+              ],
+              "loc": {
+                "line": 148,
+                "col": 7,
+                "end_line": 148,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "b_fifo_pop",
+              "reads": [
+                "err_req"
+              ],
+              "conds": [
+                "b_fifo_empty"
+              ],
+              "loc": {
+                "line": 150,
+                "col": 7,
+                "end_line": 150,
+                "end_col": 36
+              }
+            }
+          ],
           "loc": {
             "line": 141,
             "col": 3,
@@ -557,6 +711,255 @@
           "id": "axi_err_slv.proc_r_channel",
           "name": "proc_r_channel",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "r_busy_d",
+              "reads": [
+                "r_busy_q"
+              ],
+              "loc": {
+                "line": 185,
+                "col": 5,
+                "end_line": 185,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "r_busy_load",
+              "loc": {
+                "line": 186,
+                "col": 5,
+                "end_line": 186,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "r_fifo_pop",
+              "loc": {
+                "line": 188,
+                "col": 5,
+                "end_line": 188,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "r_cnt_clear",
+              "loc": {
+                "line": 190,
+                "col": 5,
+                "end_line": 190,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "r_cnt_en",
+              "loc": {
+                "line": 191,
+                "col": 5,
+                "end_line": 191,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "r_cnt_load",
+              "loc": {
+                "line": 192,
+                "col": 5,
+                "end_line": 192,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r",
+              "loc": {
+                "line": 194,
+                "col": 5,
+                "end_line": 194,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r.id",
+              "reads": [
+                "r_fifo_data"
+              ],
+              "loc": {
+                "line": 195,
+                "col": 5,
+                "end_line": 195,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r.data",
+              "loc": {
+                "line": 196,
+                "col": 5,
+                "end_line": 196,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r.resp",
+              "loc": {
+                "line": 197,
+                "col": 5,
+                "end_line": 197,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r_valid",
+              "loc": {
+                "line": 198,
+                "col": 5,
+                "end_line": 198,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r_valid",
+              "conds": [
+                "r_busy_q"
+              ],
+              "loc": {
+                "line": 201,
+                "col": 7,
+                "end_line": 201,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "err_resp",
+              "select": ".r.last",
+              "reads": [
+                "r_current_beat"
+              ],
+              "conds": [
+                "r_busy_q"
+              ],
+              "loc": {
+                "line": 202,
+                "col": 7,
+                "end_line": 202,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "r_cnt_en",
+              "conds": [
+                "r_busy_q",
+                "err_req"
+              ],
+              "loc": {
+                "line": 205,
+                "col": 9,
+                "end_line": 205,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "r_busy_d",
+              "conds": [
+                "r_busy_q",
+                "err_req",
+                "r_current_beat"
+              ],
+              "loc": {
+                "line": 207,
+                "col": 11,
+                "end_line": 207,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "r_busy_load",
+              "conds": [
+                "r_busy_q",
+                "err_req",
+                "r_current_beat"
+              ],
+              "loc": {
+                "line": 208,
+                "col": 11,
+                "end_line": 208,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "r_cnt_clear",
+              "conds": [
+                "r_busy_q",
+                "err_req",
+                "r_current_beat"
+              ],
+              "loc": {
+                "line": 209,
+                "col": 11,
+                "end_line": 209,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "r_fifo_pop",
+              "conds": [
+                "r_busy_q",
+                "err_req",
+                "r_current_beat"
+              ],
+              "loc": {
+                "line": 210,
+                "col": 11,
+                "end_line": 210,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "r_busy_d",
+              "conds": [
+                "r_busy_q",
+                "r_fifo_empty"
+              ],
+              "loc": {
+                "line": 216,
+                "col": 9,
+                "end_line": 216,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "r_busy_load",
+              "conds": [
+                "r_busy_q",
+                "r_fifo_empty"
+              ],
+              "loc": {
+                "line": 217,
+                "col": 9,
+                "end_line": 217,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "r_cnt_load",
+              "conds": [
+                "r_busy_q",
+                "r_fifo_empty"
+              ],
+              "loc": {
+                "line": 218,
+                "col": 9,
+                "end_line": 218,
+                "end_col": 28
+              }
+            }
+          ],
           "loc": {
             "line": 183,
             "col": 3,
@@ -581,11 +984,163 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "r_busy_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 225,
+                "col": 7,
+                "end_line": 225,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "r_busy_q",
+              "reads": [
+                "r_busy_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "r_busy_load"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 227,
+                "col": 7,
+                "end_line": 227,
+                "end_col": 28
+              }
+            }
+          ],
           "loc": {
             "line": 223,
             "col": 3,
             "end_line": 229,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "err_req",
+          "reads": [
+            "slv_req_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "others": [
+                "ATOPs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 60,
+            "col": 12,
+            "end_line": 60,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "slv_resp_o",
+          "reads": [
+            "err_resp"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "others": [
+                "ATOPs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 61,
+            "col": 12,
+            "end_line": 61,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "w_fifo_push",
+          "reads": [
+            "err_req",
+            "w_fifo_full"
+          ],
+          "loc": {
+            "line": 87,
+            "col": 10,
+            "end_line": 87,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "err_resp",
+          "select": ".aw_ready",
+          "reads": [
+            "w_fifo_full"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 10,
+            "end_line": 88,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "r_fifo_push",
+          "reads": [
+            "err_req",
+            "r_fifo_full"
+          ],
+          "loc": {
+            "line": 158,
+            "col": 10,
+            "end_line": 158,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "err_resp",
+          "select": ".ar_ready",
+          "reads": [
+            "r_fifo_full"
+          ],
+          "loc": {
+            "line": 159,
+            "col": 10,
+            "end_line": 159,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "r_fifo_inp",
+          "select": ".id",
+          "reads": [
+            "err_req"
+          ],
+          "loc": {
+            "line": 162,
+            "col": 10,
+            "end_line": 162,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "r_fifo_inp",
+          "select": ".len",
+          "reads": [
+            "err_req"
+          ],
+          "loc": {
+            "line": 163,
+            "col": 10,
+            "end_line": 163,
+            "end_col": 41
           }
         }
       ],

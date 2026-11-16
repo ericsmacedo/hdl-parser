@@ -576,6 +576,42 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "bus_ack",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 98,
+                "col": 7,
+                "end_line": 98,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "bus_rden",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 99,
+                "col": 7,
+                "end_line": 99,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "-- Bus Access -----------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -603,6 +639,87 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "enable",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 7,
+                "end_line": 107,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "fifo_clr",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 108,
+                "col": 7,
+                "end_line": 108,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "fifo_clr",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 110,
+                "col": 7,
+                "end_line": 110,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "enable",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 112,
+                "col": 9,
+                "end_line": 112,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "fifo_clr",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 113,
+                "col": 9,
+                "end_line": 113,
+                "end_col": 53
+              }
+            }
+          ],
           "comment": [
             "-- write access --"
           ],
@@ -631,6 +748,182 @@
               "signal": "fifo"
             }
           ],
+          "assigns": [
+            {
+              "target": "bus_rdata",
+              "blocking": false,
+              "loc": {
+                "line": 121,
+                "col": 5,
+                "end_line": 121,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_en_c)",
+              "reads": [
+                "enable"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 124,
+                "col": 9,
+                "end_line": 124,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_fifo_clr_c)",
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 125,
+                "col": 9,
+                "end_line": 125,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_sim_mode_c)",
+              "reads": [
+                "bool_to_ulogic_f",
+                "is_simulation_c"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 126,
+                "col": 9,
+                "end_line": 126,
+                "end_col": 91
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_avail_c)",
+              "reads": [
+                "fifo"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 127,
+                "col": 9,
+                "end_line": 127,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_fifo3_c downto ctrl_fifo0_c)",
+              "reads": [
+                "std_ulogic_vector",
+                "to_unsigned"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 128,
+                "col": 9,
+                "end_line": 128,
+                "end_col": 109
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_nbit3_c downto ctrl_nbit0_c)",
+              "reads": [
+                "std_ulogic_vector",
+                "to_unsigned"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 129,
+                "col": 9,
+                "end_line": 129,
+                "end_col": 104
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_nro7_c downto ctrl_nro0_c)",
+              "reads": [
+                "std_ulogic_vector",
+                "to_unsigned"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 130,
+                "col": 9,
+                "end_line": 130,
+                "end_col": 99
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(ctrl_ninv11_c downto ctrl_ninv0_c)",
+              "reads": [
+                "std_ulogic_vector",
+                "to_unsigned"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 131,
+                "col": 9,
+                "end_line": 131,
+                "end_col": 109
+              }
+            },
+            {
+              "target": "bus_rdata",
+              "select": "(7 downto 0)",
+              "reads": [
+                "fifo"
+              ],
+              "conds": [
+                "bus_rden",
+                "bus_req_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 133,
+                "col": 9,
+                "end_line": 133,
+                "end_col": 45
+              }
+            }
+          ],
           "comment": [
             "-- read access (asynchronous) --"
           ],
@@ -652,6 +945,26 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "irq_o",
+              "reads": [
+                "enable",
+                "fifo"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 192,
+                "col": 7,
+                "end_line": 192,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "-- interrupt generator --"
           ],
@@ -660,6 +973,72 @@
             "col": 3,
             "end_line": 194,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "bus_rsp_o",
+          "select": ".ack",
+          "reads": [
+            "bus_ack"
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".err",
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".data",
+          "reads": [
+            "bus_rdata"
+          ],
+          "loc": {
+            "line": 141,
+            "col": 3,
+            "end_line": 141,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "fifo",
+          "select": ".clear",
+          "reads": [
+            "enable",
+            "fifo_clr"
+          ],
+          "loc": {
+            "line": 185,
+            "col": 3,
+            "end_line": 185,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "fifo",
+          "select": ".re",
+          "reads": [
+            "bus_rden",
+            "bus_req_i"
+          ],
+          "loc": {
+            "line": 186,
+            "col": 3,
+            "end_line": 186,
+            "end_col": 48
           }
         }
       ],
@@ -1451,6 +1830,47 @@
               "signal": "cell_rnd"
             }
           ],
+          "assigns": [
+            {
+              "target": "tmp_v",
+              "loc": {
+                "line": 357,
+                "col": 5,
+                "end_line": 357,
+                "end_col": 18
+              }
+            },
+            {
+              "target": "tmp_v",
+              "reads": [
+                "tmp_v",
+                "cell_rnd",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 359,
+                "col": 7,
+                "end_line": 359,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cell_sum",
+              "reads": [
+                "tmp_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 361,
+                "col": 5,
+                "end_line": 361,
+                "end_col": 23
+              }
+            }
+          ],
           "comment": [
             "-- combine cell outputs --"
           ],
@@ -1477,6 +1897,72 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "debias_sreg",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 370,
+                "col": 7,
+                "end_line": 370,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "debias_state",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 371,
+                "col": 7,
+                "end_line": 371,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "debias_sreg",
+              "reads": [
+                "debias_sreg",
+                "cell_sum"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 373,
+                "col": 7,
+                "end_line": 373,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "debias_state",
+              "reads": [
+                "debias_state",
+                "cell_en_out"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 375,
+                "col": 7,
+                "end_line": 375,
+                "end_col": 76
+              }
+            }
+          ],
           "comment": [
             "-- John von Neumann Randomness Extractor (De-Biasing) -------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1504,6 +1990,168 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "sample_en",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 389,
+                "col": 7,
+                "end_line": 389,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "sample_cnt",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 390,
+                "col": 7,
+                "end_line": 390,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "sample_sreg",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 391,
+                "col": 7,
+                "end_line": 391,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "sample_en",
+              "reads": [
+                "enable_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 393,
+                "col": 7,
+                "end_line": 393,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "sample_cnt",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "sample_en",
+                "sample_cnt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 395,
+                "col": 9,
+                "end_line": 395,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "sample_sreg",
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "sample_en",
+                "sample_cnt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 396,
+                "col": 9,
+                "end_line": 396,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "sample_cnt",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "sample_cnt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "sample_en",
+                "sample_cnt",
+                "debias_valid"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 398,
+                "col": 9,
+                "end_line": 398,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "sample_sreg",
+              "reads": [
+                "sample_sreg"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "sample_en",
+                "sample_cnt",
+                "debias_valid",
+                "sample_sreg",
+                "debias_data"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 401,
+                "col": 11,
+                "end_line": 401,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "sample_sreg",
+              "reads": [
+                "sample_sreg"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "sample_en",
+                "sample_cnt",
+                "debias_valid",
+                "sample_sreg",
+                "debias_data"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 403,
+                "col": 11,
+                "end_line": 403,
+                "end_col": 75
+              }
+            }
+          ],
           "comment": [
             "-- Sampling Control -----------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1513,6 +2161,70 @@
             "col": 3,
             "end_line": 407,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "cell_en_in",
+          "reads": [
+            "cell_en_out",
+            "sample_en"
+          ],
+          "loc": {
+            "line": 351,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "debias_valid",
+          "reads": [
+            "debias_state",
+            "debias_sreg"
+          ],
+          "loc": {
+            "line": 380,
+            "col": 3,
+            "end_line": 380,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "debias_data",
+          "reads": [
+            "debias_sreg"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 3,
+            "end_line": 381,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "data_o",
+          "reads": [
+            "sample_sreg"
+          ],
+          "loc": {
+            "line": 410,
+            "col": 3,
+            "end_line": 410,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "sample_cnt"
+          ],
+          "loc": {
+            "line": 411,
+            "col": 3,
+            "end_line": 411,
+            "end_col": 42
           }
         }
       ],
@@ -1954,6 +2666,40 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "sreg",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 459,
+                "col": 7,
+                "end_line": 459,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "sreg",
+              "reads": [
+                "sreg",
+                "en_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 461,
+                "col": 7,
+                "end_line": 461,
+                "end_col": 49
+              }
+            }
+          ],
           "comment": [
             "-- Enable Shift-Register ------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------",
@@ -1997,6 +2743,45 @@
               "cond": "SIM_MODE"
             }
           ],
+          "assigns": [
+            {
+              "target": "inv_out",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 494,
+                "col": 11,
+                "end_line": 494,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "inv_out",
+              "select": "(i)",
+              "reads": [
+                "inv_in",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 496,
+                "col": 11,
+                "end_line": 496,
+                "end_col": 39
+              }
+            }
+          ],
           "loc": {
             "line": 491,
             "col": 7,
@@ -2020,6 +2805,40 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "sync",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 514,
+                "col": 7,
+                "end_line": 514,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "sync",
+              "reads": [
+                "sync",
+                "latch"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 516,
+                "col": 7,
+                "end_line": 516,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "-- Output Synchronizer --------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------",
@@ -2030,6 +2849,97 @@
             "col": 3,
             "end_line": 518,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "en_o",
+          "reads": [
+            "sreg"
+          ],
+          "loc": {
+            "line": 466,
+            "col": 3,
+            "end_line": 466,
+            "end_col": 27
+          }
+        },
+        {
+          "target": "latch",
+          "select": "(i)",
+          "reads": [
+            "latch",
+            "i",
+            "inv_out"
+          ],
+          "conds": [
+            "en_i",
+            "sreg",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "ring_osc_gen",
+              "cond": "i in 0 to NUM_INV-1"
+            }
+          ],
+          "loc": {
+            "line": 480,
+            "col": 5,
+            "end_line": 480,
+            "end_col": 90
+          }
+        },
+        {
+          "target": "inv_out",
+          "select": "(i)",
+          "reads": [
+            "inv_in",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "ring_osc_gen",
+              "cond": "i in 0 to NUM_INV-1"
+            },
+            {
+              "kind": "if",
+              "name": "inverter_phy",
+              "cond": "not SIM_MODE"
+            }
+          ],
+          "loc": {
+            "line": 485,
+            "col": 7,
+            "end_line": 485,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "inv_in",
+          "reads": [
+            "latch"
+          ],
+          "loc": {
+            "line": 504,
+            "col": 3,
+            "end_line": 504,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rnd_o",
+          "reads": [
+            "sync"
+          ],
+          "loc": {
+            "line": 521,
+            "col": 3,
+            "end_line": 521,
+            "end_col": 20
           }
         }
       ],

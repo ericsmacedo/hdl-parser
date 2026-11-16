@@ -281,7 +281,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -299,7 +302,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -316,7 +322,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -333,7 +342,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -350,7 +362,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -367,7 +382,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -384,7 +402,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -402,7 +423,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -420,7 +444,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -437,7 +464,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             },
             {
               "kind": "if",
@@ -460,7 +490,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {
@@ -492,7 +525,42 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "under_rst",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 70,
+                "col": 9,
+                "end_line": 70,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "under_rst",
+              "reads": [
+                "under_rst"
+              ],
+              "conds": [
+                "rst_ni",
+                "under_rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 72,
+                "col": 9,
+                "end_line": 72,
+                "end_col": 33
+              }
             }
           ],
           "loc": {
@@ -516,12 +584,34 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             },
             {
               "kind": "if",
               "name": "gen_depth_eq1",
               "cond": "Depth == 1"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "storage",
+              "select": "[0]",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 112,
+                "col": 11,
+                "end_line": 112,
+                "end_col": 33
+              }
             }
           ],
           "loc": {
@@ -545,11 +635,37 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             },
             {
               "kind": "else",
-              "name": "gen_depth_gt1"
+              "name": "gen_depth_gt1",
+              "others": [
+                "Depth == 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "storage",
+              "select": "[fifo_wptr]",
+              "reads": [
+                "wdata_i",
+                "fifo_wptr"
+              ],
+              "conds": [
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 124,
+                "col": 11,
+                "end_line": 124,
+                "end_col": 41
+              }
             }
           ],
           "loc": {
@@ -557,6 +673,478 @@
             "col": 7,
             "end_line": 125,
             "end_col": 12
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "depth_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 41,
+            "col": 12,
+            "end_line": 41,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "rvalid_o",
+          "reads": [
+            "wvalid_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 44,
+            "col": 12,
+            "end_line": 44,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "wdata_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 45,
+            "col": 12,
+            "end_line": 45,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "wready_o",
+          "reads": [
+            "rready_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 48,
+            "col": 12,
+            "end_line": 48,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "full_o",
+          "reads": [
+            "rready_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 49,
+            "col": 12,
+            "end_line": 49,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "unused_clr",
+          "reads": [
+            "clr_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 53,
+            "col": 12,
+            "end_line": 53,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "err_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_passthru_fifo",
+              "cond": "Depth == 0"
+            }
+          ],
+          "loc": {
+            "line": 56,
+            "col": 12,
+            "end_line": 56,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "wready_o",
+          "reads": [
+            "full_o",
+            "under_rst"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 81,
+            "col": 12,
+            "end_line": 81,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "rvalid_o",
+          "reads": [
+            "empty",
+            "under_rst"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 82,
+            "col": 12,
+            "end_line": 82,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "fifo_incr_wptr",
+          "reads": [
+            "wvalid_i",
+            "wready_o",
+            "under_rst"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 12,
+            "end_line": 100,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "fifo_incr_rptr",
+          "reads": [
+            "rvalid_o",
+            "rready_i",
+            "under_rst"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 12,
+            "end_line": 101,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "storage_rdata",
+          "reads": [
+            "storage"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_depth_eq1",
+              "cond": "Depth == 1"
+            }
+          ],
+          "loc": {
+            "line": 108,
+            "col": 14,
+            "end_line": 108,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "unused_ptrs",
+          "reads": [
+            "fifo_wptr",
+            "fifo_rptr"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_depth_eq1",
+              "cond": "Depth == 1"
+            }
+          ],
+          "loc": {
+            "line": 116,
+            "col": 14,
+            "end_line": 116,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "storage_rdata",
+          "reads": [
+            "storage",
+            "fifo_rptr"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_depth_gt1",
+              "others": [
+                "Depth == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 120,
+            "col": 14,
+            "end_line": 120,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "rdata_int",
+          "reads": [
+            "wdata_i",
+            "storage_rdata"
+          ],
+          "conds": [
+            "fifo_empty",
+            "wvalid_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_pass",
+              "cond": "Pass == 1'b1"
+            }
+          ],
+          "loc": {
+            "line": 130,
+            "col": 14,
+            "end_line": 130,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "empty",
+          "reads": [
+            "fifo_empty",
+            "wvalid_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_pass",
+              "cond": "Pass == 1'b1"
+            }
+          ],
+          "loc": {
+            "line": 131,
+            "col": 14,
+            "end_line": 131,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "rdata_int",
+          "reads": [
+            "storage_rdata"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_nopass",
+              "others": [
+                "Pass == 1'b1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 133,
+            "col": 14,
+            "end_line": 133,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "empty",
+          "reads": [
+            "fifo_empty"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_nopass",
+              "others": [
+                "Pass == 1'b1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 134,
+            "col": 14,
+            "end_line": 134,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "rdata_int"
+          ],
+          "conds": [
+            "empty"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_output_zero",
+              "cond": "OutputZeroIfEmpty == 1'b1"
+            }
+          ],
+          "loc": {
+            "line": 138,
+            "col": 14,
+            "end_line": 138,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "rdata_int"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_no_output_zero",
+              "others": [
+                "OutputZeroIfEmpty == 1'b1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 140,
+            "col": 14,
+            "end_line": 140,
+            "end_col": 33
           }
         }
       ],
@@ -715,7 +1303,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_fifo"
+              "name": "gen_normal_fifo",
+              "others": [
+                "Depth == 0"
+              ]
             }
           ],
           "loc": {

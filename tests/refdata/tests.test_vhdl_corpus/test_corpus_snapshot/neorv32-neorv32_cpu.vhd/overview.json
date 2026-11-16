@@ -1557,6 +1557,229 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "irq_machine",
+          "reads": [
+            "mei_i",
+            "mti_i",
+            "msi_i"
+          ],
+          "loc": {
+            "line": 330,
+            "col": 3,
+            "end_line": 330,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "xcsr_res",
+          "reads": [
+            "xcsr_tm",
+            "xcsr_cnt",
+            "xcsr_alu",
+            "xcsr_pmp"
+          ],
+          "loc": {
+            "line": 333,
+            "col": 3,
+            "end_line": 333,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "sleep_o",
+          "reads": [
+            "ctrl",
+            "cnt_event_cy_c"
+          ],
+          "loc": {
+            "line": 336,
+            "col": 3,
+            "end_line": 336,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "ifence_o",
+          "reads": [
+            "ctrl"
+          ],
+          "loc": {
+            "line": 339,
+            "col": 3,
+            "end_line": 339,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "dfence_o",
+          "reads": [
+            "ctrl"
+          ],
+          "loc": {
+            "line": 340,
+            "col": 3,
+            "end_line": 340,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "xcsr_tm",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "trigger_module_disabled",
+              "cond": "(RISCV_ISA_Sdtrig = false) or (NUM_HW_TRIGGERS = 0)"
+            }
+          ],
+          "loc": {
+            "line": 367,
+            "col": 5,
+            "end_line": 367,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "hwtrig",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "trigger_module_disabled",
+              "cond": "(RISCV_ISA_Sdtrig = false) or (NUM_HW_TRIGGERS = 0)"
+            }
+          ],
+          "loc": {
+            "line": 368,
+            "col": 5,
+            "end_line": 368,
+            "end_col": 20
+          }
+        },
+        {
+          "target": "xcsr_cnt",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "cnts_disabled",
+              "cond": "not (RISCV_ISA_Zicntr or RISCV_ISA_Zihpm)"
+            }
+          ],
+          "loc": {
+            "line": 399,
+            "col": 5,
+            "end_line": 399,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "rf_wdata",
+          "reads": [
+            "alu_res",
+            "lsu_rdata",
+            "csr_rdata",
+            "ctrl"
+          ],
+          "loc": {
+            "line": 429,
+            "col": 3,
+            "end_line": 429,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "dbus_req_o",
+          "reads": [
+            "dbus_req"
+          ],
+          "loc": {
+            "line": 504,
+            "col": 3,
+            "end_line": 504,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "xcsr_pmp",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "pmp_disabled",
+              "cond": "not RISCV_ISA_Smpmp"
+            }
+          ],
+          "loc": {
+            "line": 537,
+            "col": 5,
+            "end_line": 537,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "if_pmp_err",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "pmp_disabled",
+              "cond": "not RISCV_ISA_Smpmp"
+            }
+          ],
+          "loc": {
+            "line": 538,
+            "col": 5,
+            "end_line": 538,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "rw_pmp_err",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "pmp_disabled",
+              "cond": "not RISCV_ISA_Smpmp"
+            }
+          ],
+          "loc": {
+            "line": 539,
+            "col": 5,
+            "end_line": 539,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "trace",
+          "reads": [
+            "trace_port_terminate_c"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "trace_disabled",
+              "cond": "not (TRACE_PORT_EN or (TRACE_SIMLOG_EN and is_simulation_c))"
+            }
+          ],
+          "loc": {
+            "line": 567,
+            "col": 5,
+            "end_line": 567,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "trace_o",
+          "reads": [
+            "trace",
+            "trace_port_terminate_c"
+          ],
+          "loc": {
+            "line": 599,
+            "col": 3,
+            "end_line": 599,
+            "end_col": 67
+          }
+        }
+      ],
       "insts": [
         {
           "id": "neorv32_cpu.cpu_frontend_inst",

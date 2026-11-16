@@ -381,6 +381,48 @@
               "cond": "i in 0 to NUM_HARTS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "mswi",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 137,
+                "col": 9,
+                "end_line": 137,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "mswi",
+              "select": "(i)",
+              "reads": [
+                "bus_req_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "mswi_en",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 140,
+                "col": 11,
+                "end_line": 140,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 134,
             "col": 5,
@@ -399,6 +441,46 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "bus_ack",
+              "reads": [
+                "bus_req_i",
+                "mtime_en",
+                "or_reduce_f",
+                "mtimecmp_en",
+                "mswi_en"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 161,
+                "col": 7,
+                "end_line": 161,
+                "end_col": 100
+              }
+            },
+            {
+              "target": "bus_rden",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 162,
+                "col": 7,
+                "end_line": 162,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "-- Bus Response ---------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -425,6 +507,49 @@
               "signal": "mswi_rd"
             }
           ],
+          "assigns": [
+            {
+              "target": "tmp_v",
+              "loc": {
+                "line": 170,
+                "col": 5,
+                "end_line": 170,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "tmp_v",
+              "reads": [
+                "tmp_v",
+                "mtimecmp_rd",
+                "i",
+                "mswi_rd"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 172,
+                "col": 7,
+                "end_line": 172,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "rdata",
+              "reads": [
+                "mtime_rd",
+                "tmp_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 174,
+                "col": 5,
+                "end_line": 174,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "-- data read-back --"
           ],
@@ -433,6 +558,253 @@
             "col": 3,
             "end_line": 175,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "mtime_en",
+          "conds": [
+            "unsigned",
+            "bus_req_i"
+          ],
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 104
+          }
+        },
+        {
+          "target": "mtime_we",
+          "select": "(0)",
+          "reads": [
+            "bus_req_i",
+            "mtime_en"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 3,
+            "end_line": 94,
+            "end_col": 90
+          }
+        },
+        {
+          "target": "mtime_we",
+          "select": "(1)",
+          "reads": [
+            "bus_req_i",
+            "mtime_en"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 3,
+            "end_line": 95,
+            "end_col": 90
+          }
+        },
+        {
+          "target": "mtime_rd",
+          "reads": [
+            "mtime"
+          ],
+          "conds": [
+            "mtime_en",
+            "bus_req_i"
+          ],
+          "loc": {
+            "line": 98,
+            "col": 3,
+            "end_line": 99,
+            "end_col": 90
+          }
+        },
+        {
+          "target": "time_o",
+          "reads": [
+            "mtime"
+          ],
+          "loc": {
+            "line": 102,
+            "col": 3,
+            "end_line": 102,
+            "end_col": 19
+          }
+        },
+        {
+          "target": "mtimecmp_en",
+          "select": "(i)",
+          "reads": [
+            "i"
+          ],
+          "conds": [
+            "unsigned",
+            "bus_req_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_mtimecmp_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 123,
+            "col": 5,
+            "end_line": 123,
+            "end_col": 118
+          }
+        },
+        {
+          "target": "mtimecmp_we",
+          "select": "(i)",
+          "reads": [
+            "mtimecmp_en",
+            "i",
+            "bus_req_i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_mtimecmp_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 124,
+            "col": 5,
+            "end_line": 124,
+            "end_col": 79
+          }
+        },
+        {
+          "target": "mtimecmp_re",
+          "select": "(i)",
+          "reads": [
+            "mtimecmp_en",
+            "i",
+            "bus_req_i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_mtimecmp_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 125,
+            "col": 5,
+            "end_line": 125,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "msi_o",
+          "select": "(i)",
+          "reads": [
+            "mswi",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_swi_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 146,
+            "col": 5,
+            "end_line": 146,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "mswi_en",
+          "select": "(i)",
+          "reads": [
+            "i"
+          ],
+          "conds": [
+            "unsigned",
+            "bus_req_i",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_swi_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 149,
+            "col": 5,
+            "end_line": 149,
+            "end_col": 110
+          }
+        },
+        {
+          "target": "mswi_rd",
+          "select": "(i)",
+          "reads": [
+            "mswi_en",
+            "i",
+            "mswi"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "neorv32_clint_swi_gen",
+              "cond": "i in 0 to NUM_HARTS-1"
+            }
+          ],
+          "loc": {
+            "line": 152,
+            "col": 5,
+            "end_line": 152,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".ack",
+          "reads": [
+            "bus_ack"
+          ],
+          "loc": {
+            "line": 178,
+            "col": 3,
+            "end_line": 178,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".err",
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".data",
+          "reads": [
+            "rdata"
+          ],
+          "conds": [
+            "bus_rden"
+          ],
+          "loc": {
+            "line": 180,
+            "col": 3,
+            "end_line": 180,
+            "end_col": 70
           }
         }
       ],
@@ -1044,6 +1416,74 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "mtimecmp_lo",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 225,
+                "col": 7,
+                "end_line": 225,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mtimecmp_hi",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 226,
+                "col": 7,
+                "end_line": 226,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mtimecmp_lo",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i",
+                "addr_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 230,
+                "col": 11,
+                "end_line": 230,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "mtimecmp_hi",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i",
+                "addr_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 232,
+                "col": 11,
+                "end_line": 232,
+                "end_col": 34
+              }
+            }
+          ],
           "comment": [
             "-- MTIMECMP Access ------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1066,6 +1506,45 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "cmp_lo_ge",
+              "reads": [
+                "cmp_lo_gt",
+                "cmp_lo_eq"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 246,
+                "col": 7,
+                "end_line": 246,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "mti_o",
+              "reads": [
+                "cmp_hi_gt",
+                "cmp_hi_eq",
+                "cmp_lo_ge"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 247,
+                "col": 7,
+                "end_line": 247,
+                "end_col": 59
+              }
+            }
+          ],
           "comment": [
             "-- Interrupt Generator --------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1075,6 +1554,81 @@
             "col": 3,
             "end_line": 249,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rdata_o",
+          "reads": [
+            "mtimecmp_lo",
+            "mtimecmp_hi"
+          ],
+          "conds": [
+            "re_i",
+            "addr_i"
+          ],
+          "loc": {
+            "line": 239,
+            "col": 3,
+            "end_line": 239,
+            "end_col": 102
+          }
+        },
+        {
+          "target": "cmp_lo_eq",
+          "conds": [
+            "unsigned",
+            "mtime_i",
+            "mtimecmp_lo"
+          ],
+          "loc": {
+            "line": 252,
+            "col": 3,
+            "end_line": 252,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "cmp_lo_gt",
+          "conds": [
+            "unsigned",
+            "mtime_i",
+            "mtimecmp_lo"
+          ],
+          "loc": {
+            "line": 253,
+            "col": 3,
+            "end_line": 253,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "cmp_hi_eq",
+          "conds": [
+            "unsigned",
+            "mtime_i",
+            "mtimecmp_hi"
+          ],
+          "loc": {
+            "line": 254,
+            "col": 3,
+            "end_line": 254,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "cmp_hi_gt",
+          "conds": [
+            "unsigned",
+            "mtime_i",
+            "mtimecmp_hi"
+          ],
+          "loc": {
+            "line": 255,
+            "col": 3,
+            "end_line": 255,
+            "end_col": 92
           }
         }
       ],

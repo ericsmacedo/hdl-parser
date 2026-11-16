@@ -1017,6 +1017,484 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "In_Ack",
+          "loc": {
+            "line": 126,
+            "col": 2,
+            "end_line": 126,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "Synchronized_r",
+          "reads": [
+            "ffrs",
+            "Synchronized_r",
+            "In_SOF",
+            "In_Valid",
+            "Reset"
+          ],
+          "conds": [
+            "rising_edge",
+            "Clock"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 2,
+            "end_line": 128,
+            "end_col": 114
+          }
+        },
+        {
+          "target": "SyncIn",
+          "reads": [
+            "In_SOF",
+            "In_Valid",
+            "Synchronized_r"
+          ],
+          "loc": {
+            "line": 130,
+            "col": 2,
+            "end_line": 130,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "MetaIn",
+          "select": "(META_ISKEY_BIT)",
+          "reads": [
+            "In_IsKey"
+          ],
+          "loc": {
+            "line": 131,
+            "col": 2,
+            "end_line": 131,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "MetaIn",
+          "select": "(META_BITS-1 downto META_BITS-STREAM_META_BITS)",
+          "reads": [
+            "In_Meta"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 2,
+            "end_line": 132,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "DataInputMatrix",
+          "reads": [
+            "to_slm",
+            "gearup_Data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOES",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_SORT"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 3,
+            "end_line": 162,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "sort_Data",
+          "reads": [
+            "to_slv",
+            "DataOutputMatrix"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOES",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_SORT"
+            }
+          ],
+          "loc": {
+            "line": 192,
+            "col": 3,
+            "end_line": 192,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "DataInputMatrix",
+          "reads": [
+            "to_slm",
+            "gearup_Data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOEMS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+            }
+          ],
+          "loc": {
+            "line": 201,
+            "col": 3,
+            "end_line": 201,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "sort_Data",
+          "reads": [
+            "to_slv",
+            "DataOutputMatrix"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genOEMS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_ODDEVEN_MERGESORT"
+            }
+          ],
+          "loc": {
+            "line": 229,
+            "col": 3,
+            "end_line": 229,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "DataInputMatrix",
+          "reads": [
+            "to_slm",
+            "gearup_Data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genBS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_BITONIC_SORT"
+            }
+          ],
+          "loc": {
+            "line": 238,
+            "col": 3,
+            "end_line": 238,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "sort_Data",
+          "reads": [
+            "to_slv",
+            "DataOutputMatrix"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genBS",
+              "cond": "SORTNET_IMPL = SORT_SORTNET_IMPL_BITONIC_SORT"
+            }
+          ],
+          "loc": {
+            "line": 266,
+            "col": 3,
+            "end_line": 266,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "DataInputMatrix",
+          "reads": [
+            "to_slm",
+            "sort_Data"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkTransform"
+            }
+          ],
+          "loc": {
+            "line": 274,
+            "col": 3,
+            "end_line": 274,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "transform_Data",
+          "reads": [
+            "to_slv",
+            "DataOutputMatrix"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkTransform"
+            }
+          ],
+          "loc": {
+            "line": 298,
+            "col": 3,
+            "end_line": 298,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "MergeSortMatrix_Valid",
+          "select": "(0)",
+          "reads": [
+            "transform_Valid"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 311,
+            "col": 3,
+            "end_line": 311,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "MergeSortMatrix_Data",
+          "select": "(0)",
+          "reads": [
+            "transform_Data"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 312,
+            "col": 3,
+            "end_line": 312,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "MergeSortMatrix_SOF",
+          "select": "(0)",
+          "reads": [
+            "transform_SOF"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 313,
+            "col": 3,
+            "end_line": 313,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "MergeSortMatrix_EOF",
+          "select": "(0)",
+          "reads": [
+            "transform_EOF"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 314,
+            "col": 3,
+            "end_line": 314,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "merge_Ack",
+          "reads": [
+            "MergeSortMatrix_Ack"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 315,
+            "col": 3,
+            "end_line": 315,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "merge_Valid",
+          "reads": [
+            "MergeSortMatrix_Valid"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 348,
+            "col": 3,
+            "end_line": 348,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "merge_Data",
+          "reads": [
+            "MergeSortMatrix_Data"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 349,
+            "col": 3,
+            "end_line": 349,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "merge_Meta",
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 350,
+            "col": 3,
+            "end_line": 350,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "merge_SOF",
+          "reads": [
+            "MergeSortMatrix_SOF"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 351,
+            "col": 3,
+            "end_line": 351,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "merge_EOF",
+          "reads": [
+            "MergeSortMatrix_EOF"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 352,
+            "col": 3,
+            "end_line": 352,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "MergeSortMatrix_Ack",
+          "select": "(MERGENET_STAGES)",
+          "reads": [
+            "geardown_nxt"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkMergeSort"
+            }
+          ],
+          "loc": {
+            "line": 353,
+            "col": 3,
+            "end_line": 353,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "merge_Sync",
+          "reads": [
+            "merge_SOF",
+            "merge_Valid"
+          ],
+          "loc": {
+            "line": 356,
+            "col": 2,
+            "end_line": 356,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "Out_Meta",
+          "reads": [
+            "geardown_Meta"
+          ],
+          "loc": {
+            "line": 382,
+            "col": 2,
+            "end_line": 382,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "Out_SOF",
+          "reads": [
+            "geardown_First"
+          ],
+          "loc": {
+            "line": 383,
+            "col": 2,
+            "end_line": 383,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "Out_EOF",
+          "reads": [
+            "geardown_Last"
+          ],
+          "loc": {
+            "line": 384,
+            "col": 2,
+            "end_line": 384,
+            "end_col": 37
+          }
+        }
+      ],
       "insts": [
         {
           "id": "sortnet_stream_adapter2.gearup",

@@ -223,6 +223,106 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "lbit",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "i"
+              ],
+              "loc": {
+                "line": 54,
+                "col": 17,
+                "end_line": 54,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mbit",
+              "reads": [
+                "lbit"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "i"
+              ],
+              "loc": {
+                "line": 55,
+                "col": 17,
+                "end_line": 55,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "widx",
+              "reads": [
+                "to_integer",
+                "unsigned",
+                "wr_addr"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "i",
+                "wr_sel"
+              ],
+              "loc": {
+                "line": 58,
+                "col": 21,
+                "end_line": 58,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "ram",
+              "select": "(widx)(mbit downto lbit)",
+              "reads": [
+                "wr_data",
+                "mbit",
+                "lbit",
+                "widx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "i",
+                "wr_sel"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 59,
+                "col": 21,
+                "end_line": 59,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "rd_data0",
+              "reads": [
+                "ram",
+                "to_integer",
+                "unsigned",
+                "rd_addr"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rd_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 64,
+                "col": 17,
+                "end_line": 64,
+                "end_col": 64
+              }
+            }
+          ],
           "loc": {
             "line": 38,
             "col": 5,
@@ -247,11 +347,51 @@
               "cond": "ADD_BUF"
             }
           ],
+          "assigns": [
+            {
+              "target": "rd_data",
+              "reads": [
+                "rd_data0"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 78,
+                "col": 17,
+                "end_line": 78,
+                "end_col": 37
+              }
+            }
+          ],
           "loc": {
             "line": 75,
             "col": 9,
             "end_line": 80,
             "end_col": 21
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rd_data",
+          "reads": [
+            "rd_data0"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nobuf",
+              "cond": "not ADD_BUF"
+            }
+          ],
+          "loc": {
+            "line": 85,
+            "col": 9,
+            "end_line": 85,
+            "end_col": 29
           }
         }
       ],
