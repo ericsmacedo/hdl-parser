@@ -281,6 +281,12 @@ def opt_project(func):
             type=click.Path(file_okay=False, path_type=Path),
             help="Keep the results in this directory, parse changed files only. Implies '--cache'.",
         ),
+        click.option(
+            "--jobs",
+            "-j",
+            type=click.IntRange(min=1),
+            help="Number of processes parsing the files. One per CPU by default.",
+        ),
     )
     for option in reversed(options):
         func = option(func)
@@ -347,6 +353,7 @@ def load_project(  # noqa: PLR0913
     exclude: tuple[str, ...] = (),
     cache: bool = False,
     cache_dir: Path | None = None,
+    jobs: int | None = None,
 ) -> Project:
     """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
@@ -367,6 +374,7 @@ def load_project(  # noqa: PLR0913
         "defines": dict(_split_define(define) for define in defines),
         "inc_dirs": inc_dirs,
         "cache": cache_dir or cache,
+        "jobs": jobs,
     }
     if filelist:
         return Project.from_filelist(filelist, **kwargs)

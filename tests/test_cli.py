@@ -237,6 +237,25 @@ def test_project_failure(runner, tmp_path, examples, monkeypatch):
     assert files[1]["modules"][0]["name"] == "adder"
 
 
+@mark.parametrize("args, jobs", (((), None), (("--jobs", "2"), 2), (("-j", "1"), 1)))
+def test_project_jobs(runner, examples, monkeypatch, args, jobs):
+    """The Files Are Parsed By One Process Per CPU, Or By `--jobs`."""
+    from hdl_parser import project  # noqa: PLC0415
+
+    seen = []
+    builder = project._Builder
+
+    def create(*args):
+        seen.append(args[-1])
+        return builder(*args)
+
+    monkeypatch.setattr(project, "_Builder", create)
+    result = runner.invoke(cli, ["project", *args, str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 0
+    assert seen == [jobs]
+    assert json.loads(result.stdout)["files"][0]["modules"][0]["name"] == "adder"
+
+
 @mark.parametrize(
     "args",
     (

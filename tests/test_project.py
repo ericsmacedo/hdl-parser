@@ -854,3 +854,92 @@ def test_cache_corpus(tmp_path, path, parsed):
             assert len(parsed) == len(plain.files)
     finally:
         logging.disable(logging.NOTSET)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# jobs
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+def _many(tmp_path) -> None:
+    """Enough Files For Several Processes. With Diagnostics And An Include."""
+    files = {f"rtl/mod{idx}.sv": f"module mod{idx} (input logic clk);\nendmodule\n" for idx in range(30)}
+    files["rtl/top.sv"] = '`include "defs.svh"\n`include "nowhere.svh"\nmodule top (input [`WIDTH-1:0] a);\nendmodule\n'
+    files["rtl/empty.sv"] = "// nothing\n"
+    files["inc/defs.svh"] = "`define WIDTH 8\n"
+    _write(tmp_path, files)
+
+
+def _jobs(tmp_path, jobs, **kwargs):
+    """Project Of All Files, And One Which Is Not There."""
+    paths = [*sorted(tmp_path.glob("rtl/*.sv")), tmp_path / "rtl" / "missing.sv"]
+    kwargs.update(root=tmp_path, expand_macros=True, inc_dirs=[tmp_path / "inc"], jobs=jobs)
+    return Project.from_files(paths, **kwargs)
+
+
+def _messages(caplog) -> list[tuple[int, str]]:
+    return [(record.levelno, record.getMessage()) for record in caplog.records if record.levelno > logging.DEBUG]
+
+
+@mark.parametrize("jobs", (2, None))
+def test_jobs(tmp_path, caplog, monkeypatch, jobs):
+    """Several Processes Give The Same Result And The Same Messages."""
+    monkeypatch.setattr(project_module, "_cpu_count", lambda: 3)
+    _many(tmp_path)
+    with caplog.at_level(logging.INFO):
+        serial = _jobs(tmp_path, 1)
+    expected = _messages(caplog)
+    assert any("nowhere.svh" in message for _, message in expected)
+    assert any(message == "rtl/missing.sv: file not found." for _, message in expected)
+    caplog.clear()
+
+    pools = []
+    original = project_module.ProcessPoolExecutor
+
+    def executor(*args, **kwargs):
+        pools.append(args[0])
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(project_module, "ProcessPoolExecutor", executor)
+    with caplog.at_level(logging.INFO):
+        parallel = _jobs(tmp_path, jobs)
+    assert pools == [jobs or 3]
+    assert parallel == serial
+    assert _messages(caplog) == expected
+
+
+def test_jobs_few_files(tmp_path, monkeypatch):
+    """A Few Files Are Parsed By This Process."""
+    monkeypatch.setattr(project_module, "ProcessPoolExecutor", None)
+    _write(tmp_path, FILES)
+    assert len(Project.from_dir(tmp_path, jobs=8).files) == len(FILES)
+
+
+def test_jobs_cache(tmp_path, parsed):
+    """Files Parsed By Several Processes Are Kept. The Next Run Needs None."""
+    _many(tmp_path)
+    cold = _jobs(tmp_path, 2, cache=True)
+    assert parsed == []  # parsed by the other processes
+    warm = _jobs(tmp_path, 2, cache=True)
+    # the file which is not there is never kept
+    assert parsed == ["missing.sv"]
+    assert cold == warm == _jobs(tmp_path, 1)
+
+
+def test_jobs_no_processes(tmp_path, monkeypatch):
+    """Without Processes The Files Are Parsed By This One."""
+
+    def executor(*args, **kwargs):
+        raise OSError("no processes")
+
+    monkeypatch.setattr(project_module, "ProcessPoolExecutor", executor)
+    _many(tmp_path)
+    assert _jobs(tmp_path, 2) == _jobs(tmp_path, 1)
+
+
+def test_cpu_count(monkeypatch):
+    """Number Of CPUs."""
+    assert project_module._cpu_count() >= 1
+    monkeypatch.delattr(project_module.os, "sched_getaffinity", raising=False)
+    monkeypatch.setattr(project_module.os, "cpu_count", lambda: None)
+    assert project_module._cpu_count() == 1

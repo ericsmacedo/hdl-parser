@@ -40,7 +40,8 @@ hdl-parser module top -f top.f -e               # a filelist, with macros expand
 ```
 
 `--cache` keeps the results in `.hdl_parser_cache` within the root: repeated queries on a large design parse
-changed files only. `hdl-parser project` gives everything as one JSON document (see `hdl-parser schema`).
+changed files only. The files are parsed by one process per CPU, `--jobs N` limits them.
+`hdl-parser project` gives everything as one JSON document (see `hdl-parser schema`).
 
 ## Worked Examples
 

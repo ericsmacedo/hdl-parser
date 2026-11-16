@@ -148,6 +148,9 @@ and answers questions about the design instead of single files:
 * A filelist contributes its macros (`+define+`), include directories and libraries (`-v`, `-y`).
 * `cache=True` keeps the result of every file in `.hdl_parser_cache` within the root of the project.
   A file is parsed again only if it changed, a file it includes changed, or it is parsed in another way.
+* `jobs=None` parses the files by one process per CPU, `jobs=4` by four. The result is the same. A script
+  using it has to protect its entry point by `if __name__ == "__main__":`. The command line does so by default
+  (`--jobs`).
 * `project.overview` is one JSON document for all files, with a `schema_version`.
 
 On the command line, `hdl-parser project` prints this document, for files, a directory or a filelist:
