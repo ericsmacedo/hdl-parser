@@ -192,6 +192,27 @@ def test_sv_instances(sv):
     assert loop.params["WIDTH"].unknown == "'i' is not known"
 
 
+def test_sv_unit_imports(tmp_path):
+    """Imports At File Scope Apply To The Modules And Packages Declared After Them."""
+    _write(
+        tmp_path,
+        {
+            "pkg.sv": "package cfg_pkg;\n  localparam int W = 12;\nendpackage\n",
+            "mod.sv": """\
+import cfg_pkg::*;
+package derived_pkg;
+  localparam int W2 = W * 2;
+endpackage
+module mod (input logic [W-1:0] a, input logic [derived_pkg::W2-1:0] b);
+endmodule
+""",
+        },
+    )
+    project = Project.from_dir(tmp_path)
+    node = project.elaborate("mod")
+    assert _values(node.ports) == {"a": 12, "b": 24}
+
+
 def test_sv_top_params(sv):
     """Values Of The Parameters Of The Top."""
     top = sv.elaborate("top", params={"W": 64})
