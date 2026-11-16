@@ -294,7 +294,7 @@ def test_hierarchy_tops_sorted(tmp_path):
     assert [top["name"] for top in query.hierarchy(project, leaves=True)["result"]] == ["big", "lonely"]
     assert (
         query.hierarchy(project, "big", text=True)["tree"]
-        == "big\n  u1 (small)\n    u (inv)\n  u2 (small)\n    u (inv)"
+        == "big\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
     )
     with raises(query.QueryError):
         query.hierarchy(project, "big", depth=-1)
