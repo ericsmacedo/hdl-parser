@@ -242,7 +242,7 @@ class Project(dm._BaseModel):
         return builder.build(filelist.files, filelist.lib_files, filelist.lib_dirs, filelist.diagnostics)
 
     @classmethod
-    def from_dir(cls, dir_path: Path | str, exclude: Iterable[str] = (), **kwargs) -> "Project":
+    def from_dir(cls, dir_path: Path | str, exclude: Iterable[str] = (), **kwargs: Any) -> "Project":
         """Create project from all SystemVerilog and VHDL files below a directory. It is the root of the project.
 
         Hidden directories (`.git`, ...) are skipped.
