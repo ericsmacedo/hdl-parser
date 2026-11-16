@@ -842,10 +842,10 @@ def _work(path: Path) -> dm.File:  # pragma: no cover
 
 def _cpu_count() -> int:
     """Number of CPUs this process may use."""
-    try:
-        return len(os.sched_getaffinity(0))
-    except AttributeError:
-        return os.cpu_count() or 1
+    affinity = getattr(os, "sched_getaffinity", None)  # not on macOS/Windows
+    if affinity is not None:
+        return len(affinity(0))
+    return os.cpu_count() or 1
 
 
 def _size(path: Path) -> int:
