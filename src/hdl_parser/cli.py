@@ -21,6 +21,7 @@
 # SOFTWARE.
 """Command Line Interface."""
 
+import json as json_
 import logging
 import sys
 from collections.abc import Iterator
@@ -35,6 +36,7 @@ from ._gen_templates import gen_instance, gen_markdown_table
 from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
+from .project import Project
 
 LOGGER = logging.getLogger(__name__)
 
@@ -222,6 +224,91 @@ def json(filepaths: tuple[Path, ...], **options) -> None:
     """Dump All Extracted Information in a JSON file."""
     for file in _parse_files(filepaths, **options):
         print(file.overview)
+
+
+@cli.command()
+@click.argument("paths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path))
+@click.option(
+    "--filelist", "-f", type=click.Path(exists=True, dir_okay=False, path_type=Path), help="Filelist of the project."
+)
+@opt_expand_macros
+@opt_resolve_ifdefs
+@opt_inc_dirs
+@click.option(
+    "--define",
+    "-D",
+    "defines",
+    multiple=True,
+    metavar="NAME[=VALUE]",
+    help="Macro defined for all files. Used by '--expand-macros'. Can be given multiple times.",
+)
+@click.option(
+    "--root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Root directory. All paths are relative to it. By default the directory given, or the common one.",
+)
+@click.option("--exclude", "-x", multiple=True, help="Pattern of files to be left out of a directory: 'models/*'.")
+@click.option("--cache", is_flag=True, help="Keep the results within the root, parse changed files only.")
+def project(  # noqa: PLR0913
+    paths: tuple[Path, ...],
+    filelist: Path | None = None,
+    expand_macros: bool = False,
+    resolve_ifdefs: bool = False,
+    inc_dirs: tuple[Path, ...] = (),
+    defines: tuple[str, ...] = (),
+    root: Path | None = None,
+    exclude: tuple[str, ...] = (),
+    cache: bool = False,
+) -> None:
+    """Dump All Files Of A Design As One JSON Document.
+
+    PATHS are the files of the design, or one directory with all of them.
+    Alternatively a filelist is given by '--filelist'.
+
+    The document has the format given by 'hdl-parser schema'. Problems are listed
+    in its 'diagnostics' and the ones of its files. A file which cannot be read or
+    parsed does not stop the others.
+    """
+    if resolve_ifdefs and not expand_macros:
+        raise click.UsageError("'--resolve-ifdefs' requires '--expand-macros'.")
+    dirs = [path for path in paths if path.is_dir()]
+    if filelist and paths:
+        raise click.UsageError("Give either PATHS or '--filelist'.")
+    if dirs and len(paths) > 1:
+        raise click.UsageError("Give either one directory or files.")
+    if exclude and not dirs:
+        raise click.UsageError("'--exclude' requires a directory.")
+    kwargs = {
+        "root": root,
+        "expand_macros": expand_macros,
+        "resolve_ifdefs": resolve_ifdefs,
+        "defines": dict(_split_define(define) for define in defines),
+        "inc_dirs": inc_dirs,
+        "cache": cache,
+    }
+    if filelist:
+        prj = Project.from_filelist(filelist, **kwargs)
+    elif dirs:
+        if root is not None:
+            raise click.UsageError("'--root' is the directory given.")
+        del kwargs["root"]
+        prj = Project.from_dir(dirs[0], exclude=exclude, **kwargs)
+    else:
+        prj = Project.from_files(paths, **kwargs)
+    print(prj.overview)
+
+
+def _split_define(define: str) -> tuple[str, str]:
+    name, _, value = define.partition("=")
+    if not name:
+        raise click.BadParameter(f"'{define}' has no name.", param_hint="'--define'")
+    return name, value
+
+
+@cli.command()
+def schema() -> None:
+    """Print The JSON Schema Of The Document Of 'hdl-parser project'."""
+    print(json_.dumps(Project.json_schema(), indent=2))
 
 
 def _parse_files(  # noqa: PLR0913

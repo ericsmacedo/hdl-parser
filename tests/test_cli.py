@@ -22,6 +22,7 @@
 
 """Test Command Line Interface."""
 
+import json
 from pathlib import Path
 
 from click.testing import CliRunner
@@ -30,6 +31,7 @@ from pytest import mark
 from test2ref import assert_refdata, configure
 
 from hdl_parser.cli import cli
+from hdl_parser.project import SCHEMA_VERSION, Project
 
 from .conftest import EXAMPLES_PATH, PRJ_PATH
 
@@ -126,7 +128,7 @@ def test_empty(tmp_path, runner):
         assert result.output == ""
 
 
-@mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
+@mark.parametrize("cmd", ("json", "info", "gen-sv-instance", "project", "schema"))
 def test_command_help(runner, cmd):
     """The Help Of A Command Is No Failure."""
     result = runner.invoke(cli, [cmd, "--help"])
@@ -163,3 +165,83 @@ def test_no_module(runner, tmp_path, examples, cmd):
     result = runner.invoke(cli, [cmd, str(package), str(examples / "sv" / "adder.sv")])
     assert result.exit_code == 0
     assert "adder" in result.output
+
+
+def test_project(runner, examples):
+    """All Files As One JSON Document."""
+    sv_dir = examples / "sv"
+    result = runner.invoke(cli, ["project", str(sv_dir / "adder.sv"), str(sv_dir / "bcd_adder.sv")])
+    assert result.exit_code == 0
+    data = json.loads(result.stdout)
+    assert data["schema_version"] == SCHEMA_VERSION
+    assert [file["path"] for file in data["files"]] == ["adder.sv", "bcd_adder.sv"]
+    assert data["files"][0]["diagnostics"][0]["code"] == "undefined-module"
+    assert data["files"][0]["modules"][0]["loc"]["line"] == 3
+
+
+def test_project_dir(runner, examples):
+    """A Directory, With Excluded Files."""
+    result = runner.invoke(cli, ["project", str(examples / "sv"), "-x", "macros/*", "-x", "ifdef*"])
+    assert result.exit_code == 0
+    paths = [file["path"] for file in json.loads(result.stdout)["files"]]
+    assert "adder.sv" in paths
+    assert not any(path.startswith(("macros/", "ifdef")) for path in paths)
+
+
+def test_project_filelist(runner, examples):
+    """A Filelist, With Macros."""
+    filelist = examples / "sv" / "filelist.f"
+    result = runner.invoke(cli, ["project", "-f", str(filelist), "-e", "-D", "WIDTH=8", "-D", "SYNTHESIS"])
+    assert result.exit_code == 0
+    data = json.loads(result.stdout)
+    assert "adder.sv" in [file["path"] for file in data["files"]]
+    assert data["settings"]["defines"] == {"WIDTH": "8", "SYNTHESIS": ""}
+
+
+def test_project_failure(runner, tmp_path, examples, monkeypatch):
+    """A File Which Cannot Be Parsed Is Part Of The Document, With A Diagnostic."""
+    from hdl_parser import project  # noqa: PLC0415
+
+    bad = tmp_path / "bad.sv"
+    bad.write_text("module bad; endmodule\n")
+    parse_file = project.parse_file
+
+    def failing(path, **kwargs):
+        if path.name == "bad.sv":
+            raise ValueError("something is wrong")
+        return parse_file(path, **kwargs)
+
+    monkeypatch.setattr(project, "parse_file", failing)
+    result = runner.invoke(cli, ["project", "--root", str(tmp_path), str(bad), str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 0
+    files = json.loads(result.stdout)["files"]
+    assert files[0]["diagnostics"][0]["code"] == "parse-failed"
+    assert files[1]["modules"][0]["name"] == "adder"
+
+
+@mark.parametrize(
+    "args",
+    (
+        ("-f", "examples/sv/filelist.f", "examples/sv/adder.sv"),
+        ("examples/sv", "examples/sv/adder.sv"),
+        ("examples/sv/adder.sv", "-x", "*"),
+        ("examples/sv", "--root", "examples"),
+        ("examples/sv/adder.sv", "-r"),
+        ("examples/sv/adder.sv", "-D", "=1"),
+    ),
+)
+def test_project_usage(runner, args):
+    """Options Which Do Not Fit Together."""
+    with chdir(PRJ_PATH):
+        result = runner.invoke(cli, ["project", *args])
+    assert result.exit_code == 2
+    assert "Failed" not in result.output
+
+
+def test_schema(runner):
+    """The Published JSON Schema Is Up To Date."""
+    result = runner.invoke(cli, ["schema"])
+    assert result.exit_code == 0
+    assert json.loads(result.stdout) == Project.json_schema()
+    published = PRJ_PATH / "docs" / "schema" / "project.schema.json"
+    assert json.loads(published.read_text()) == Project.json_schema(), "run: hdl-parser schema > " + str(published)
