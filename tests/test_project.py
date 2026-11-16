@@ -24,6 +24,7 @@
 
 import logging
 import re
+from pathlib import Path
 
 from pytest import fixture, mark
 
@@ -106,16 +107,27 @@ def test_from_dir_exclude(design):
     assert [file.file_id for file in project.files] == ["rtl/leaf.sv", "rtl/top.sv"]
 
 
-def test_from_files_root(design):
+def test_from_files_root(design, monkeypatch):
     """The Root Is The Common Directory Of All Files, Or Given."""
     project = Project.from_files([design / "rtl" / "top.sv", design / "rtl" / "mid.sv"])
     assert project.root == design / "rtl"
     assert [file.file_id for file in project.files] == ["top.sv", "mid.sv"]
     project = Project.from_files([str(design / "rtl" / "top.sv")], root=design)
     assert [file.file_id for file in project.files] == ["rtl/top.sv"]
-    # a file outside of the root keeps its path
-    project = Project.from_files([design / "rtl" / "top.sv"], root=design / "other")
-    assert [file.file_id for file in project.files] == [(design / "rtl" / "top.sv").as_posix()]
+    # a file outside of the root: its path never depends on the current directory
+    (design / "sim").mkdir()
+    (design / "sim" / "leaf.sv").write_text("module leaf; endmodule\n")
+    for cwd in (design, design / "rtl", design.parent):
+        monkeypatch.chdir(cwd)
+        project = Project.from_files(
+            [design / "rtl" / "top.sv", design / "rtl" / "leaf.sv", design / "sim" / "leaf.sv"],
+            root=design / "sim",
+            prefer={"leaf": "../rtl/leaf.sv"},
+        )
+        assert [file.file_id for file in project.files] == ["../rtl/top.sv", "../rtl/leaf.sv", "leaf.sv"]
+        assert project.file("../rtl/top.sv") is project.files[0]
+        assert project.resolve("leaf").id == "../rtl/leaf.sv:leaf"
+        assert Project.model_validate_json(project.model_dump_json()) == project
     assert Project.from_files([]).files == ()
 
 
@@ -126,7 +138,7 @@ def test_from_filelist(design):
     assert [file.file_id for file in project.files] == [
         "rtl/pkg.sv",
         "rtl/leaf.sv",
-        (design.parent / "outside.sv").as_posix(),
+        "../outside.sv",
     ]
     assert project.settings.inc_dirs == ("inc",)
     assert project.settings.expand_macros
@@ -361,6 +373,9 @@ def test_mixed_language(tmp_path):
     assert _codes(project) == [("sv_leaf.sv", "undefined-module"), ("vhdl_leaf_sim.vhd", "undefined-module")]
     assert [use.module for use in project.where_used("sub")] == ["vhdl_leaf_ent.vhd:vhdl_leaf"]
     assert [use.inst for use in project.where_used("sub")] == ["vhdl_leaf_rtl.vhd:vhdl_leaf.u_sub"]
+    # the identifier of an architecture stands for its entity
+    assert project.resolve("vhdl_leaf_rtl.vhd:vhdl_leaf").id == "vhdl_leaf_ent.vhd:vhdl_leaf"
+    assert project.resolve("vhdl_leaf_rtl.vhd:vhdl_leaf.u_sub") is None
 
 
 def test_architecture_without_entity(tmp_path):
@@ -658,7 +673,7 @@ def test_veer_filelist():
     """A Real Filelist, Without Its Files: Every File Is Part Of The Project, With A Diagnostic."""
     path = CORPUS / "filelists" / "veer_el2" / "flist"
     project = Project.from_filelist(path, env={"RV_ROOT": "/veer"})
-    assert project.root.as_posix() == "/veer"
+    assert project.root == Path(path.anchor) / "veer"
     assert len(project.files) == 56
     assert len(project.libraries) == 4
     assert project.files[0].file_id == "design/lib/el2_assert.sv"
@@ -802,6 +817,11 @@ def test_cache_broken(tmp_path, parsed):
     next(cache.glob("*.json")).write_text("{ broken")
     assert Project.from_files(paths, root=tmp_path, cache=str(cache)) == project
     assert parsed == ["leaf.sv", "none.sv"] * 2
+    damaged = ("[1]", '{"file": {"path": "rtl/leaf.sv"}, "depends": 1}', '{"file": 1, "depends": {}}')
+    for number, text in enumerate(damaged):
+        next(cache.glob("*.json")).write_text(text)
+        assert Project.from_files(paths, root=tmp_path, cache=cache) == project
+        assert parsed == ["leaf.sv", "none.sv"] * (number + 3)
     # a directory which cannot be created
     (tmp_path / "file").write_text("")
     assert Project.from_files(paths, root=tmp_path, cache=tmp_path / "file" / "cache") == project

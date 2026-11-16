@@ -188,6 +188,13 @@ class File(_BaseModel):
     packages: tuple["Package", ...] = ()
     diagnostics: tuple[Diagnostic, ...] = ()
 
+    @pyd.field_serializer("path", when_used="json")
+    def _serialize_path(self, path: Path | None) -> str | None:
+        """A relative path is the same on all platforms: with forward slashes."""
+        if path is None or path.is_absolute():
+            return None if path is None else str(path)
+        return path.as_posix()
+
     @property
     def file_id(self) -> str:
         """File part of the full identifiers.

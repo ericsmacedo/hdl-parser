@@ -134,13 +134,33 @@ def _remainder(left: int, right: int) -> int:
     return left - right * int(_divide(left, right))
 
 
+_MAX_BITS = 4096
+_MAX_DIGITS = 1000
+"""Largest number of bits of an integer. Nothing real is that large, and the evaluation always ends."""
+
+
+def _bounded(value: int) -> int:
+    if value.bit_length() > _MAX_BITS:
+        raise Unknown("result out of range")
+    return value
+
+
 def _power(base: float, exponent: float) -> int | float:
-    if isinstance(base, int) and isinstance(exponent, int) and exponent < 0:
-        raise Unknown("negative exponent")
+    if isinstance(base, int) and isinstance(exponent, int):
+        if exponent < 0:
+            raise Unknown("negative exponent")
+        if abs(base) > 1 and exponent * (abs(base).bit_length() - 1) > _MAX_BITS:
+            raise Unknown("result out of range")
     try:
-        return base**exponent
-    except (OverflowError, ZeroDivisionError) as exc:
-        raise Unknown(str(exc)) from None
+        result = base**exponent
+        if isinstance(result, complex):
+            raise Unknown("result is no real number")
+        return result
+    except OverflowError:
+        # The text of the message depends on the platform and the version of Python.
+        raise Unknown("result out of range") from None
+    except ZeroDivisionError:
+        raise Unknown("division by zero") from None
 
 
 def _shift(value: int, amount: int, left: bool) -> int:
@@ -528,16 +548,18 @@ class _SvParser(_Parser):
     @staticmethod
     def decimal(text: str) -> int:
         digits = text.replace("_", "")
-        if not digits.isdecimal():
+        if not digits.isdecimal() or len(digits) > _MAX_DIGITS:
             raise Unknown(f"'{text}' is no number")
         return int(digits)
 
     def number(self, text: str) -> Num:
         """Value of a number without base: `12`, `1_000`, `1.5`, `2e3`."""
         digits = text.replace("_", "")
-        if digits.isdecimal():
+        if digits.isdecimal() and len(digits) <= _MAX_DIGITS:
             return Num(int(digits))
         try:
+            if digits.isdecimal():
+                raise ValueError
             return Num(float(digits))
         except ValueError:
             raise Unknown(f"'{text}' is no number") from None
@@ -829,12 +851,17 @@ class _VhdlParser(_Parser):
                 base_text, digits, exponent = lower.split("#")
                 value = int(digits, int(base_text))
                 if exponent:
-                    value *= int(base_text) ** int(exponent.lstrip("e"))
+                    value *= int(_power(int(base_text), int(exponent.lstrip("e"))))
                 return Num(value)
             if "." in lower or "e-" in lower:
                 return Num(float(lower))
             mantissa, _, exponent = lower.partition("e")
-            return Num(int(mantissa) * 10 ** int(exponent or 0))
+            if lower.endswith("e"):
+                # the exponent is negative: 1e-3
+                raise ValueError
+            if len(mantissa) > _MAX_DIGITS:
+                raise ValueError
+            return Num(int(mantissa) * int(_power(10, int(exponent or 0))))
         except (ValueError, KeyError):
             raise Unknown(f"'{text}' is no number") from None
 
@@ -925,10 +952,16 @@ def evaluate(text: str, lang: str = "sv", names: Names | None = None) -> Num:
     names = names or DictNames()
     try:
         if lang == "vhdl":
-            return _VhdlParser(tokenize_vhdl(text).tokens, names).parse()
-        parser = _SvParser(tokenize_sv(text).tokens, names)
-        parser.source = text
-        return parser.parse()
+            num = _VhdlParser(tokenize_vhdl(text).tokens, names).parse()
+        else:
+            parser = _SvParser(tokenize_sv(text).tokens, names)
+            parser.source = text
+            num = parser.parse()
+        if isinstance(num.value, int):
+            _bounded(num.value)
+        elif isinstance(num.value, float) and not math.isfinite(num.value):
+            raise Unknown("result out of range")
+        return num
     except RecursionError:
         raise Unknown("expression is nested too deep") from None
 

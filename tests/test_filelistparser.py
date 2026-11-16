@@ -64,6 +64,11 @@ FILELISTS = PRJ_PATH / "tests" / "corpus" / "filelists"
 IBEX = PRJ_PATH / "tests" / "corpus" / "sv" / "ibex"
 
 
+def _rooted(path: Path, name: str) -> Path:
+    """Absolute path `/name`, as a filelist located at `path` names it. On Windows, it is on the drive of `path`."""
+    return Path(path.anchor) / name
+
+
 def _codes(filelist) -> list[tuple[str, int]]:
     return [(diag.code, diag.loc.line if diag.loc else 0) for diag in filelist.diagnostics]
 
@@ -115,7 +120,7 @@ def test_read_filelist_variables(tmp_path):
         "$ROOT/a.sv\n${ROOT}/b.sv\n$(ROOT)/c.sv\n$NONE/d.sv\n+incdir+${NONE}/inc\n$OTHER/e.sv\n"
     )
     filelist = read_filelist(tmp_path / "design.f", env={"ROOT": "/root"})
-    assert [path.as_posix() for path in filelist.files] == ["/root/a.sv", "/root/b.sv", "/root/c.sv"]
+    assert filelist.files == [_rooted(tmp_path, f"root/{name}.sv") for name in "abc"]
     assert filelist.inc_dirs == []
     assert _codes(filelist) == [("filelist-variable", 4), ("filelist-variable", 6)]
     diag = filelist.diagnostics[0]
@@ -123,11 +128,37 @@ def test_read_filelist_variables(tmp_path):
     assert (diag.severity, diag.file, diag.loc.end_col) == ("warning", str(tmp_path / "design.f"), 11)
 
 
+def test_read_filelist_backslash(tmp_path):
+    """Backslashes Are Part Of A Path (Windows), In The Filelist And In The Values Of Variables."""
+    (tmp_path / "design.f").write_text(
+        "rtl\\top.sv\n+incdir+$INC\n-y $LIB\n\"${LIB}\\cells.v\"\n'my dir\\a.sv'\n", encoding="utf-8"
+    )
+    filelist = read_filelist(tmp_path / "design.f", env={"INC": "C:\\work\\inc", "LIB": "my lib\\'dir'"})
+    assert filelist.diagnostics == []
+    assert [str(path) for path in filelist.files] == [
+        str(tmp_path / "rtl\\top.sv"),
+        str(tmp_path / "my lib\\'dir'\\cells.v"),
+        str(tmp_path / "my dir\\a.sv"),
+    ]
+    assert filelist.inc_dirs == [tmp_path / "C:\\work\\inc"]
+    assert filelist.lib_dirs == [tmp_path / "my lib\\'dir'"]
+
+
+def test_read_filelist_no_argument(tmp_path):
+    """An Option Without Its Argument Is Reported, And Adds Nothing."""
+    (tmp_path / "design.f").write_text("a.sv\n-f\n-v\n-y\n-incdir\n-D\n+incdir+\n+define+\n+define+=1\n")
+    filelist = read_filelist(tmp_path / "design.f")
+    assert filelist.files == [tmp_path / "a.sv"]
+    assert (filelist.inc_dirs, filelist.lib_files, filelist.lib_dirs, filelist.defines) == ([], [], [], {})
+    assert _codes(filelist) == [("filelist-unknown", number) for number in range(2, 7)]
+    assert filelist.diagnostics[0].message == "option '-f' has no argument."
+
+
 def test_read_filelist_environment(tmp_path, monkeypatch):
     """The Environment Of The Process Is Used By Default."""
     monkeypatch.setenv("HDL_PARSER_TEST_ROOT", "/from/env")
     (tmp_path / "design.f").write_text("$HDL_PARSER_TEST_ROOT/a.sv\n")
-    assert read_filelist(tmp_path / "design.f").files == [Path("/from/env/a.sv")]
+    assert read_filelist(tmp_path / "design.f").files == [_rooted(tmp_path, "from/env/a.sv")]
 
 
 def test_read_filelist_problems(tmp_path, caplog):
@@ -161,16 +192,16 @@ def test_veer_filelist():
     filelist = read_filelist(FILELISTS / "veer_el2" / "flist", env={"RV_ROOT": "/veer"})
     assert filelist.diagnostics == []
     assert len(filelist.files) == 52
-    assert filelist.files[0] == Path("/veer/design/lib/el2_assert.sv")
+    assert filelist.files[0] == _rooted(FILELISTS, "veer/design/lib/el2_assert.sv")
     assert filelist.defines == {"RV_OPENSOURCE": ""}
-    assert filelist.inc_dirs == [Path("/veer/testbench"), Path("/veer/design/include")]
+    assert filelist.inc_dirs == [_rooted(FILELISTS, "veer/testbench"), _rooted(FILELISTS, "veer/design/include")]
     assert [path.name for path in filelist.lib_files] == [
         "beh_lib.sv",
         "mem_lib.sv",
         "axi_lsu_dma_bridge.sv",
         "user_cells.sv",
     ]
-    assert filelist.lib_dirs == [Path("/veer/design/lib")]
+    assert filelist.lib_dirs == [_rooted(FILELISTS, "veer/design/lib")]
     assert filelist.lib_exts == [".v", ".sv"]
     # the library directory within a comment is none
     assert "SYNOPSYS_SYN_ROOT" in (FILELISTS / "veer_el2" / "flist").read_text()
@@ -187,9 +218,9 @@ def test_cva6_filelist():
     filelist = read_filelist(FILELISTS / "cva6" / "Flist.cva6", env=env)
     assert len(filelist.files) == 131
     assert len(filelist.inc_dirs) == 5
-    assert Path("/cva6/core/include/cv64a6_config_pkg.sv") in filelist.files
+    assert _rooted(FILELISTS, "cva6/core/include/cv64a6_config_pkg.sv") in filelist.files
     assert _codes(filelist) == [("filelist-not-found", 162)]
-    assert "/hpdcache/rtl/hpdcache.Flist" in filelist.diagnostics[0].message
+    assert str(_rooted(FILELISTS, "hpdcache/rtl/hpdcache.Flist")) in filelist.diagnostics[0].message
 
 
 def test_ibex_filelists():
@@ -201,4 +232,4 @@ def test_ibex_filelists():
     dv = read_filelist(IBEX / "ibex_dv.f", env={"PRJ_DIR": "/ibex", "LOWRISC_IP_DIR": "/lowrisc"})
     assert dv.diagnostics == []
     assert (len(dv.files), len(dv.inc_dirs)) == (114, 18)
-    assert dv.files[0] == Path("/lowrisc/ip/prim_generic/rtl/prim_pkg.sv")
+    assert dv.files[0] == _rooted(IBEX, "lowrisc/ip/prim_generic/rtl/prim_pkg.sv")

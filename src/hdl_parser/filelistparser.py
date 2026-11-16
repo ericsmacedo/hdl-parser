@@ -60,6 +60,7 @@ _HDL_SUFFIXES = frozenset((".sv", ".v", ".vhd", ".vhdl", ".svh", ".vh"))
 _FILELIST = frozenset(("-f", "-F"))
 _INCDIR = frozenset(("-incdir", "-I"))
 _DEFINE = frozenset(("-define", "-D"))
+_ONE_ARGUMENT = frozenset((*_FILELIST, *_INCDIR, *_DEFINE, "-v", "-y"))
 # options without relevance
 _IGNORED = frozenset(("-sv", "-sverilog", "-v2k", "-v2k5", "-vhdl", "-93", "-2008"))
 DEFAULT_LIB_EXTS = (".v", ".sv")
@@ -158,28 +159,27 @@ class _Reader:
         diagnostics.add(code, message, loc, file=str(path))
         self.filelist.diagnostics += diagnostics.items
 
-    def _expand(self, path: Path, number: int, line: str) -> str | None:
-        """Replace the environment variables of `line`. `None`, if one of them is not defined."""
+    def _defined(self, path: Path, number: int, line: str) -> bool:
+        """All environment variables of `line` are defined. The ones which are not are reported."""
         missing = [name for groups in _RE_VARIABLE.findall(line) for name in groups if name and name not in self.env]
         for name in missing:
             if name not in self.undefined:
                 self.undefined.add(name)
                 message = f"environment variable '{name}' is not defined. All lines using it are skipped."
                 self._report(path, number, line, "filelist-variable", message)
-        if missing:
-            return None
-        return _RE_VARIABLE.sub(lambda mat: self.env[mat.group(1) or mat.group(2) or mat.group(3)], line)
+        return not missing
+
+    def _expand(self, word: str) -> str:
+        """Replace the environment variables of `word`."""
+        return _RE_VARIABLE.sub(lambda mat: self.env[mat.group(1) or mat.group(2) or mat.group(3)], word)
 
     def _read_line(self, path: Path, number: int, line: str) -> None:  # noqa: C901, PLR0912
         mat = _RE_COMMENT.match(line)
         text = (mat.group(1) if mat else line).strip()
-        expanded = self._expand(path, number, text) if text else None
-        if not expanded:
+        if not text or not self._defined(path, number, text):
             return
-        try:
-            words = shlex.split(expanded)
-        except ValueError:
-            words = expanded.split()
+        # The values of variables are never split, and may contain anything: spaces, quotes, backslashes.
+        words = [self._expand(word) for word in _split(text)]
         filelist = self.filelist
         basedir = path.parent
         idx = 0
@@ -197,12 +197,14 @@ class _Reader:
                     for value in values:
                         _add(filelist.inc_dirs, basedir / value)
                 elif name == "define":
-                    filelist.defines.update(_parse_define(value) for value in values)
+                    filelist.defines.update(_parse_define(value) for value in values if not value.startswith("="))
                 elif name == "libext":
                     for value in values:
                         _add(filelist.lib_exts, value)
                 else:
                     self._report(path, number, line, "filelist-unknown", f"option '{word}' is not understood.")
+            elif word in _ONE_ARGUMENT and not arg:
+                self._report(path, number, line, "filelist-unknown", f"option '{word}' has no argument.")
             elif word in _FILELIST:
                 self.read(basedir / arg, (path, number, line))
                 idx += 1
@@ -225,6 +227,19 @@ class _Reader:
                     idx += 1
             else:
                 _add(filelist.files, basedir / word)
+
+
+def _split(text: str) -> list[str]:
+    """Split `text` at white space. Quotes keep words together. A backslash is part of a path, and no escape."""
+    lexer = shlex.shlex(text, posix=True)
+    lexer.whitespace_split = True
+    lexer.commenters = ""
+    lexer.escape = ""
+    try:
+        return list(lexer)
+    except ValueError:
+        # a quote which is never closed
+        return text.split()
 
 
 def _parse_define(text: str) -> tuple[str, str]:

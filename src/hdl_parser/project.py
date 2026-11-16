@@ -132,6 +132,7 @@ class Project(dm._BaseModel):
     """All Files Of A Design.
 
     The paths of the files, and therefore the full identifiers of all items, are relative to `root`.
+    A file which is located elsewhere starts with `../`.
 
     A module, interface or package may be defined more than once, i.e. as RTL and as simulation model.
     All definitions are kept and reported (`duplicate-definition`). The one used by
@@ -356,7 +357,11 @@ class Project(dm._BaseModel):
         """
         if ":" in name:
             unit = self.find(name)
-            return next((definition for definition in self._all_modules if definition.unit is unit), None)
+            for definition in self._all_modules:
+                # VHDL: an architecture located in another file stands for its entity
+                if definition.unit is unit or any(module is unit for _, module in definition.bodies):
+                    return definition
+            return None
         found = self._modules.get(name, casefold)
         return found[0] if found else None
 
@@ -686,8 +691,9 @@ class _Cache:
         try:
             entry = json.loads(self._entry(path).read_text(encoding="utf-8"))
             file = dm.File.model_validate(entry["file"])
-            depends = entry["depends"]
-        except (OSError, ValueError, KeyError):
+            depends = dict(entry["depends"])
+        except (OSError, ValueError, KeyError, TypeError):
+            # no entry, or one which is damaged
             return None
         if depends.pop("", None) != self._hash(path):
             return None
@@ -737,9 +743,16 @@ def _absolute(path: Path) -> Path:
 
 
 def _relative(path: Path, root: Path) -> str:
-    """`path` relative to `root`, if located there."""
+    """`path` relative to `root`: `rtl/top.sv`, or `../lib/cells.v` if located elsewhere.
+
+    The result never depends on the current directory. Windows: a path on another drive stays absolute.
+    """
     try:
         return path.relative_to(root).as_posix()
+    except ValueError:
+        pass
+    try:
+        return Path(os.path.relpath(path, root)).as_posix()
     except ValueError:
         return path.as_posix()
 
