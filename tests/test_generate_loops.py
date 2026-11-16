@@ -53,7 +53,9 @@ def surf() -> Project:
 
 def _ranges(project: Project, top: str, params: dict, path: str, ctx: dict | None = None):
     conn = project._connectivity(params)
-    return conn.loop_range(conn.top(top), path, ctx or {})
+    inst = conn.top(top)
+    assert inst is not None
+    return conn.loop_range(inst, path, ctx or {})
 
 
 @mark.parametrize(
