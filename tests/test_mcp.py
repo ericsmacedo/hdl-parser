@@ -94,7 +94,7 @@ def test_errors(tmp_path, monkeypatch):
         {"jsonrpc": "2.0", "id": 2, "method": "foo"},
         _call(3, "nope"),
         _call(4, "module", name="tpo"),
-        _call(5, "module", name="top", nmae="x"),
+        _call(5, "module", name="top", unknown="x"),
         _call(6, "find", pattern="x"),
         _call(7, "module", name="top", summary=True),
     )
