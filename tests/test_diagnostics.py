@@ -241,3 +241,71 @@ def test_corpus(path):
             assert diag.code in allowed, diag
             assert diag.severity == SEVERITIES[diag.code]
             assert diag.loc is None or diag.loc.end_line <= lines
+
+
+DRIVERS = """
+module m #(parameter P = 1) (input clk, input [1:0] a, output y, output reg q, output [1:0] z, inout io,
+                             output w, output v, output u);
+  tri t;
+  assign y = a[0];
+  assign y = a[1];
+  assign z[0] = a[0];
+  assign z[1] = a[1];
+  always_ff @(posedge clk) q <= a[0];
+  always_ff @(posedge clk) q <= a[1];
+  assign io = a[0];
+  assign io = 1'bz;
+  assign t = a[0];
+  assign t = a[1];
+  if (P) begin : g_a
+    assign w = a[0];
+  end else begin : g_b
+    assign w = a[1];
+  end
+`ifdef X
+  assign v = a[0];
+`else
+  assign v = a[1];
+`endif
+  always_comb begin
+    u = a[0];
+    if (a[1]) u = 1'b0;
+  end
+endmodule
+"""
+
+
+def test_multiple_drivers():
+    """Signals Driven By More Than One Statement."""
+    diags = [diag for diag in parse_text(DRIVERS).diagnostics if diag.code == "multiple-drivers"]
+    assert [(diag.item, diag.message, diag.loc.line) for diag in diags] == [
+        ("m.y", "'y' is driven by 2 statements (lines 5, 6).", 6),
+        ("m.q", "'q' is driven by 2 statements (lines 9, 10).", 10),
+    ]
+    assert all(diag.severity == "warning" for diag in diags)
+
+
+def test_multiple_drivers_vhdl():
+    """VHDL: Signals Driven By More Than One Process. Variables Are Fine."""
+    text = """
+entity e is
+  port (clk : in std_logic; a : in std_logic; q : out std_logic);
+end entity;
+architecture rtl of e is
+begin
+  p1 : process (clk)
+    variable v : std_logic;
+  begin
+    v := a;
+    Q <= v;
+  end process;
+  p2 : process (clk)
+    variable v : std_logic;
+  begin
+    v := a;
+    q <= v;
+  end process;
+end architecture;
+"""
+    diags = [diag for diag in parse_text(text, lang="vhdl").diagnostics if diag.code == "multiple-drivers"]
+    assert [diag.message for diag in diags] == ["'q' is driven by 2 statements (lines 11, 17)."]

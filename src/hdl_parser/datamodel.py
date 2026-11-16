@@ -95,6 +95,10 @@ class Diagnostic(_BaseModel):
     | `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |
     | `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |
     | `statement-skipped`   | info     | Statement of a process is not understood (a task call).           |
+    | `multiple-drivers`    | warning  | Signal or port is driven by more than one assignment or process.  |
+
+    `multiple-drivers`: `item` is the signal or port. Drivers of different bits, generate constructs or `` `ifdef ``
+    branches are fine, as well as `inout` ports and `tri`, `wand`, ... nets.
 
     The macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are
     unknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.
@@ -736,6 +740,8 @@ class Settings(_BaseModel):
     Attributes:
         expand_macros: Macros with known definition are expanded.
         resolve_ifdefs: `` `ifdef `` conditions on macros which are known to be defined are resolved.
+        closed_world: `` `ifdef `` conditions on macros which no file of the project defines (and no `defines`)
+                      are resolved too: these macros are undefined.
         defines: Macros defined for all files, by name. Used by `expand_macros` only.
         inc_dirs: Include directories, relative to the root of the project if located there.
         lib_dirs: Library directories: a module which is not defined is searched for as `<lib_dir>/<module><lib_ext>`.
@@ -744,6 +750,7 @@ class Settings(_BaseModel):
 
     expand_macros: bool = False
     resolve_ifdefs: bool = False
+    closed_world: bool = False
     defines: dict[str, str] = {}
     inc_dirs: tuple[str, ...] = ()
     lib_dirs: tuple[str, ...] = ()

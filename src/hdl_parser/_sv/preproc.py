@@ -48,6 +48,11 @@ which has been compiled earlier. So a condition is
   defined here is *conditional*: it is expanded, as long as there is no other definition with a different
   body, but it is not known to be defined.
 
+In the *closed world* (`closed_world`) all definitions are known: the given macros, the ones of the text and its
+included files, and the names of `maybe_defined` (the macros other files of the design may define). A macro
+which is none of them **is** undefined, like for a compiler: `` `ifdef X `` is *false*, `` `ifndef X `` is *true*.
+Once an included file is not found, this ends: the file may have defined any macro.
+
 Include guards and defaults (`` `ifndef X `` directly followed by `` `define X ``) are assumed to be compiled.
 """
 
@@ -153,12 +158,14 @@ class _Preprocessor:
         ambiguous: Macros with different definitions under unknown conditions. They are not expanded.
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         diagnostics: Diagnostics,
         macros: Macros | None = None,
         inc_dirs: Iterable[Path] = (),
         resolve_ifdefs: bool = False,
+        closed_world: bool = False,
+        maybe_defined: Iterable[str] = (),
     ):
         self.diagnostics = diagnostics
         self.macros: dict[str, Macro] = dict(macros or {})
@@ -167,6 +174,9 @@ class _Preprocessor:
         self.fixed = frozenset(self.macros)
         self.inc_dirs = tuple(inc_dirs)
         self.resolve_ifdefs = resolve_ifdefs
+        # all definitions are known: other macros are undefined
+        self.closed_world = closed_world and resolve_ifdefs
+        self.maybe_defined = frozenset(maybe_defined)
         self.state = _ACTIVE
         self.conds: list[_Cond] = []
         # macros which are just expanded, files which are just included, files which are done
@@ -292,12 +302,16 @@ class _Preprocessor:
         self.conds.clear()
         self.state = _ACTIVE
 
-    def _is_defined(self, name: str | None) -> bool:
-        """`name` is known to be defined."""
+    def _is_defined(self, name: str | None) -> bool | None:
+        """`name` is known to be defined (`True`), known to be undefined (`False`) or unknown (`None`)."""
         if not self.resolve_ifdefs or name is None:
-            return False
+            return None
         macro = self.macros.get(name)
-        return macro is not None and not macro.conditional
+        if macro is not None:
+            return None if macro.conditional else True
+        if self.closed_world and name not in self.ambiguous and name not in self.maybe_defined:
+            return False
+        return None
 
     def _branch(  # noqa: C901, PLR0911
         self, directive: str, name: str | None, original: str, text: str = "", pos: int = 0
@@ -316,8 +330,9 @@ class _Preprocessor:
             return ""
         # true, false or unknown (None)
         value = True if directive == "else" else None
-        if self._is_defined(name):
-            value = directive != "ifndef"
+        defined = self._is_defined(name)
+        if defined is not None:
+            value = defined != (directive == "ifndef")
         if value is False:
             self.state = _INACTIVE
             return ""
@@ -387,6 +402,8 @@ class _Preprocessor:
                 break
         else:
             self._report("include-not-found", f"included file '{name}' not found. Its macros are unknown.", context)
+            # any macro may be defined by now
+            self.closed_world = False
             return
         resolved = file_path.resolve()
         if resolved in self.included or resolved in self.including:
@@ -491,16 +508,21 @@ def expand_mapped(  # noqa: PLR0913
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
     includes: list[Path] | None = None,
+    closed_world: bool = False,
+    maybe_defined: Iterable[str] = (),
 ) -> tuple[str, SourceMap]:
     """Like [expand][hdl_parser._sv.preproc.expand], but also return the source map of the result.
 
     Problems are reported to `diagnostics`. The included files which have been read are added to `includes`.
+    With `closed_world`, any macro which is neither known nor named by `maybe_defined` is undefined.
     """
     smap = SourceMap(text)
     if "`" not in text:
         return text, smap
     context = str(file_path) if file_path else "<text>"
-    preproc = _Preprocessor(diagnostics or Diagnostics(context), macros, inc_dirs, resolve_ifdefs)
+    preproc = _Preprocessor(
+        diagnostics or Diagnostics(context), macros, inc_dirs, resolve_ifdefs, closed_world, maybe_defined
+    )
     preproc.smap = smap
     out: list[str] = []
     preproc.main_out = out
@@ -631,3 +653,38 @@ def _substitute(body: str, args: dict[str, str]) -> str:
     body = body.replace('`\\`"', "\x00").replace('`"', "\x01")
     body = _RE_BODY_IDENT.sub(repl, body)
     return body.replace("``", "").replace("\x00", '\\"').replace("\x01", '"')
+
+
+def defined_names(file_paths: Iterable[Path], inc_dirs: Iterable[Path] = ()) -> frozenset[str]:
+    """Names of all macros which are `` `define ``d by `file_paths` and the files they include, under any condition.
+
+    Included files are searched next to the including file and in `inc_dirs`. Files which cannot be read are
+    skipped.
+    """
+    dirs = tuple(inc_dirs)
+    names: set[str] = set()
+    done: set[Path] = set()
+    todo = [Path(path) for path in file_paths]
+    while todo:
+        path = todo.pop()
+        resolved = path.resolve()
+        if resolved in done:
+            continue
+        done.add(resolved)
+        try:
+            text = read_text(path)
+        except (OSError, UnicodeError):
+            continue
+        if "`" not in text:
+            continue
+        for mat in _RE_SCAN.finditer(text):
+            kind = mat.lastgroup
+            if kind == "define":
+                names.add(mat.group("dname"))
+            elif kind == "include":
+                name = mat.group("include")
+                for directory in (path.parent, *dirs):
+                    if (directory / name).is_file():
+                        todo.append(directory / name)
+                        break
+    return frozenset(names)

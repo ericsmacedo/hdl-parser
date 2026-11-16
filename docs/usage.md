@@ -355,11 +355,26 @@ A macro which is defined under such a condition is expanded, but it is not known
 
 Macros which are defined outside of your files are handed over by `--macro-file` / `macros=`.
 
+If you know all definitions (your filelist and its `+define+` / `--define` options are complete), the
+**closed world** (`--closed-world`, `closed_world=True`) resolves the remaining conditions like a compiler does:
+a macro which is neither defined by the given macros, nor by the file or its included files, is undefined.
+`DEBUG` above is undefined, so `dbg` is removed:
+
+```python
+>>> file = hdl_parser.parse_text(text, expand_macros=True, resolve_ifdefs=True, closed_world=True)
+>>> [port.name for port in file.modules[0].ports]
+['awvalid', 'awready', 'clk']
+
+```
+
+A project (and the commands working on one, `mcp` included) leaves the conditions on macros unknown,
+which any of its files or their included files define - under any condition. Only macros which are defined nowhere
+are undefined. The closed world ends at an included file which is not found: it may define any macro.
+
 !!! info "Limitations"
 
     * Include guards and defaults (`` `ifndef X `` directly followed by `` `define X ``) are assumed to be compiled.
-    * `` `ifdef `` conditions on macros without a known definition are never resolved.
-      There is no way to declare a macro as undefined.
+    * `` `ifdef `` conditions on macros without a known definition are resolved in the closed world only.
     * Unknown macros are reported for the module header only (parameter and port list), not for the module body.
     * `` `include `` statements are followed for their `` `define `` statements only.
       The included code itself is not inserted.

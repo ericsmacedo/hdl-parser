@@ -356,3 +356,87 @@ def test_cli(runner, tmp_path, cmd):
     result = runner.invoke(cli, [cmd, "--resolve-ifdefs", str(top)])
     assert result.exit_code == 2
     assert "'--resolve-ifdefs' requires '--expand-macros'" in result.output
+
+
+CLOSED = """
+module m (
+`ifndef NEVER
+  input a,
+`else
+  input b,
+`endif
+`ifdef ELSEWHERE
+  input c,
+`elsif NEVER
+  input d,
+`endif
+  input clk
+);
+endmodule
+"""
+
+
+def test_closed_world():
+    """Macros Which Are Never Defined Are Undefined In The Closed World."""
+    assert _ports(CLOSED) == [
+        ("a", ("!NEVER",)),
+        ("b", ("NEVER",)),
+        ("c", ("ELSEWHERE",)),
+        ("d", ("!ELSEWHERE", "NEVER")),
+        ("clk", ()),
+    ]
+    assert _ports(CLOSED, closed_world=True) == [("a", ()), ("clk", ())]
+    # maybe defined by another file: unknown
+    assert _ports(CLOSED, closed_world=True, maybe_defined=["ELSEWHERE"]) == [
+        ("a", ()),
+        ("c", ("ELSEWHERE",)),
+        ("clk", ()),
+    ]
+    # defined: as before
+    assert _ports("`define NEVER\n" + CLOSED, closed_world=True) == [("b", ()), ("d", ()), ("clk", ())]
+
+
+def test_closed_world_include(tmp_path):
+    """The Closed World Ends At An Included File, Which Is Not Found."""
+    top = tmp_path / "top.sv"
+    top.write_text('`include "missing.svh"\n' + CLOSED)
+    file = parse_file(top, closed_world=True)
+    assert [(port.name, port.ifdefs) for port in file.modules[0].ports][:2] == [("a", ("!NEVER",)), ("b", ("NEVER",))]
+
+
+def test_closed_world_requires_resolve_ifdefs():
+    """The Closed World Resolves Conditions."""
+    with raises(ValueError, match="'closed_world' requires 'resolve_ifdefs=True'"):
+        hdl_parser.parse_text("module m; endmodule", expand_macros=True, closed_world=True)
+
+
+def test_closed_world_project(tmp_path):
+    """Macros Defined By Any File Of A Project, Or Its Included Files, Stay Unknown."""
+    (tmp_path / "inc").mkdir()
+    (tmp_path / "inc" / "defs.svh").write_text("`define ELSEWHERE\n")
+    (tmp_path / "top.sv").write_text(CLOSED)
+    (tmp_path / "other.sv").write_text('`include "defs.svh"\nmodule other; endmodule\n')
+    project = hdl_parser.Project.from_files(
+        [tmp_path / "top.sv", tmp_path / "other.sv"],
+        expand_macros=True,
+        resolve_ifdefs=True,
+        closed_world=True,
+        inc_dirs=[tmp_path / "inc"],
+    )
+    ports = [(port.name, port.ifdefs) for port in project.files[0].modules[0].ports]
+    assert ports == [("a", ()), ("c", ("ELSEWHERE",)), ("clk", ())]
+    assert project.settings.closed_world
+    with raises(ValueError, match="'closed_world' requires 'resolve_ifdefs=True'"):
+        hdl_parser.Project.from_files([tmp_path / "top.sv"], expand_macros=True, closed_world=True)
+
+
+def test_closed_world_cli(runner, tmp_path):
+    """Command Line Option --closed-world."""
+    (tmp_path / "top.sv").write_text(CLOSED)
+    result = runner.invoke(cli, ["info", "-e", "-r", "--closed-world", str(tmp_path / "top.sv")])
+    assert result.exit_code == 0, result.output
+    assert "a" in result.output
+    assert " b " not in result.output
+    result = runner.invoke(cli, ["info", "-e", "--closed-world", str(tmp_path / "top.sv")])
+    assert result.exit_code == 2
+    assert "'--closed-world' requires '--resolve-ifdefs'" in result.output

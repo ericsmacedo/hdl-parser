@@ -1963,6 +1963,8 @@ def parse(  # noqa: PLR0913
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
     diagnostics: Diagnostics | None = None,
+    closed_world: bool = False,
+    maybe_defined: Iterable[str] = (),
 ) -> dm.File:
     """Parse SystemVerilog `text` and return its modules, interfaces and packages.
 
@@ -1971,6 +1973,8 @@ def parse(  # noqa: PLR0913
     With `expand_macros`, macros are expanded upfront, if they are defined within `text`, within an included
     file or given by `macros`. Included files are searched next to `file_path` and in `inc_dirs`.
     With `resolve_ifdefs`, the `` `ifdef `` conditions on macros which are known to be defined are resolved.
+    With `closed_world` too, the ones on macros which are neither known nor named by `maybe_defined` are resolved
+    as undefined.
     Problems are reported to `diagnostics`.
     """
     if diagnostics is None:
@@ -1985,6 +1989,8 @@ def parse(  # noqa: PLR0913
             resolve_ifdefs=resolve_ifdefs,
             diagnostics=diagnostics,
             includes=includes,
+            closed_world=closed_world,
+            maybe_defined=maybe_defined,
         )
     else:
         smap = SourceMap(text)

@@ -52,6 +52,7 @@ SEVERITIES: dict[str, dm.Severity] = {
     "parse-failed": "error",
     "duplicate-definition": "warning",
     "undefined-module": "warning",
+    "multiple-drivers": "warning",
     "filelist-not-found": "error",
     "filelist-unknown": "warning",
     "filelist-variable": "warning",

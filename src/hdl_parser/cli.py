@@ -36,6 +36,7 @@ from rich.logging import RichHandler
 from . import query
 from ._gen_templates import gen_instance, gen_markdown_table
 from ._mcp import serve
+from ._sv.preproc import defined_names
 from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
@@ -74,6 +75,12 @@ opt_resolve_ifdefs = click.option(
     is_flag=True,
     help="Resolve `ifdef conditions on macros which are known to be defined. Requires '--expand-macros'.",
 )
+opt_closed_world = click.option(
+    "--closed-world",
+    is_flag=True,
+    help="All definitions are known: a macro which no file and no '--define' defines is undefined, and "
+    "`ifdef conditions on it are resolved too, like by a compiler. Requires '--resolve-ifdefs'.",
+)
 opt_inc_dirs = click.option(
     "--incdir",
     "-I",
@@ -87,7 +94,8 @@ opt_inc_dirs = click.option(
 
 def opt_parse(func):
     """Options which control the parser. See `_parse_files`."""
-    for option in (opt_resolve_ifdefs, opt_inc_dirs, opt_macro_files, opt_expand_macros, opt_filelists):
+    options = (opt_closed_world, opt_resolve_ifdefs, opt_inc_dirs, opt_macro_files, opt_expand_macros, opt_filelists)
+    for option in options:
         func = option(func)
     return func
 
@@ -258,6 +266,7 @@ def opt_project(func):
         ),
         opt_expand_macros,
         opt_resolve_ifdefs,
+        opt_closed_world,
         opt_inc_dirs,
         click.option(
             "--define",
@@ -347,6 +356,7 @@ def load_project(  # noqa: PLR0913
     filelist: Path | None = None,
     expand_macros: bool = False,
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
     inc_dirs: tuple[Path, ...] = (),
     defines: tuple[str, ...] = (),
     root: Path | None = None,
@@ -358,6 +368,8 @@ def load_project(  # noqa: PLR0913
     """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
         raise click.UsageError("'--resolve-ifdefs' requires '--expand-macros'.")
+    if closed_world and not resolve_ifdefs:
+        raise click.UsageError("'--closed-world' requires '--resolve-ifdefs'.")
     if filelist and paths:
         raise click.UsageError("Give either PATHS or '--filelist'.")
     if not filelist and not paths:
@@ -371,6 +383,7 @@ def load_project(  # noqa: PLR0913
         "root": root,
         "expand_macros": expand_macros,
         "resolve_ifdefs": resolve_ifdefs,
+        "closed_world": closed_world,
         "defines": dict(_split_define(define) for define in defines),
         "inc_dirs": inc_dirs,
         "cache": cache_dir or cache,
@@ -814,17 +827,28 @@ def _parse_files(  # noqa: PLR0913
     macro_files: tuple[Path, ...] = (),
     inc_dirs: tuple[Path, ...] = (),
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
 ) -> Iterator[File]:
     """Parse all files according to the options of `opt_parse`."""
     for option, value in (("--macro-file", macro_files), ("--resolve-ifdefs", resolve_ifdefs)):
         if value and not expand_macros:
             raise click.UsageError(f"'{option}' requires '--expand-macros'.")
+    if closed_world and not resolve_ifdefs:
+        raise click.UsageError("'--closed-world' requires '--resolve-ifdefs'.")
     all_filepaths = list(filepaths)
     all_inc_dirs = list(inc_dirs)
     for filelist_path in filelist:
         parse_filelist(all_filepaths, all_inc_dirs, filelist_path)
     macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    # the macros the other files define
+    maybe_defined = defined_names(all_filepaths, all_inc_dirs) if closed_world else frozenset()
     for filepath in all_filepaths:
         yield parse_file(
-            filepath, expand_macros=expand_macros, macros=macros, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs
+            filepath,
+            expand_macros=expand_macros,
+            macros=macros,
+            inc_dirs=all_inc_dirs,
+            resolve_ifdefs=resolve_ifdefs,
+            closed_world=closed_world,
+            maybe_defined=maybe_defined,
         )
