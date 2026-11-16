@@ -1273,9 +1273,13 @@ def _parse_package(c: Cursor) -> _Package | None:
 
 
 def _parse_units(c: Cursor) -> tuple[list[_Module], list[_Package]]:
-    """Parse all modules and packages."""
+    """Parse all modules and packages.
+
+    Imports at file scope (the compilation unit) are visible to all modules and packages declared after them.
+    """
     mods: list[_Module] = []
     pkgs: list[_Package] = []
+    unit_imports: list[str] = []
     while True:
         tok = c.peek()
         if tok.kind == EOF:
@@ -1283,11 +1287,15 @@ def _parse_units(c: Cursor) -> tuple[list[_Module], list[_Package]]:
         if tok.kind == KW and (tok.text in _MODULE_START or (tok.text == "interface" and c.peek(1).text != "class")):
             mod = _parse_module(c)
             if mod:
+                mod.imports[:0] = [text for text in unit_imports if text not in mod.imports]
                 mods.append(mod)
         elif tok.kind == KW and tok.text == "package":
             pkg = _parse_package(c)
             if pkg:
+                pkg.imports[:0] = [text for text in unit_imports if text not in pkg.imports]
                 pkgs.append(pkg)
+        elif tok.kind == KW and tok.text == "import" and c.peek(1).kind == ID:
+            unit_imports += [text for text in _parse_imports(c) if text not in unit_imports]
         elif tok.text == "extern":
             c.skip_until(_SEMI)
             c.next()
