@@ -549,10 +549,99 @@ def diagnostics(  # noqa: PLR0913
     )
 
 
+opt_params = click.option(
+    "--param",
+    "-p",
+    "params",
+    multiple=True,
+    metavar="NAME=VALUE",
+    help="Value of a parameter of the top or scope. Can be given multiple times.",
+)
+
+
+def _params(params: tuple[str, ...]) -> dict[str, int | float | str | bool]:
+    values: dict[str, int | float | str | bool] = {}
+    for param in params:
+        name, sep, text = param.partition("=")
+        if not sep or not name:
+            raise click.UsageError(f"'{param}' is no NAME=VALUE.")
+        values[name] = _scalar(text)
+    return values
+
+
+def _scalar(text: str) -> int | float | str | bool:
+    if text.lower() in ("true", "false"):
+        return text.lower() == "true"
+    for convert in (int, float):
+        try:
+            return convert(text)
+        except ValueError:  # noqa: PERF203
+            pass
+    return text
+
+
+@cli.command(
+    help=f"""Parameter Values And Port Widths Of An Instance As JSON.
+
+    TOP is a name or a full identifier ('rtl/top.sv:top').
+{_PATHS_HELP}"""
+)
+@click.argument("top")
+@click.option("--path", default="", help="Instance names below TOP, separated by dots: 'u_core.u_alu'.")
+@opt_params
+@click.option("--depth", "-d", type=click.IntRange(min=0), default=0, help="Instance levels below, default 0.")
+@click.option("--name", "names", multiple=True, help="Pattern of names of parameters and ports.")
+@click.option("--unknown", is_flag=True, help="Only values which are not known, with the reason.")
+@opt_project
+@opt_answer
+@pass_ctx
+def elaborate(  # noqa: PLR0913
+    ctx: Ctx,
+    top: str,
+    path: str,
+    params: tuple[str, ...],
+    depth: int,
+    names: tuple[str, ...],
+    unknown: bool,
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(
+        lambda: query.elaborate(
+            prj, top, path=path, params=values, depth=depth, names=names, unknown=unknown, limit=limit
+        ),
+        compact,
+    )
+
+
+@cli.command(
+    help=f"""Value Of An Expression Within A Module Or Package As JSON.
+{_PATHS_HELP}"""
+)
+@click.argument("expr")
+@click.argument("scope")
+@opt_params
+@opt_project
+@opt_answer
+@pass_ctx
+def evaluate(ctx: Ctx, expr: str, scope: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):  # noqa: ARG001, PLR0913
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.evaluate(prj, expr, scope, params=values), compact)
+
+
 @cli.command(
     help=f"""Serve The Queries As MCP Server On Standard Input And Output.
 
-    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics' and 'reload'.
+    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate'
+    and 'reload'.
     Files which changed are parsed again on the next query.
 {_PATHS_HELP}"""
 )

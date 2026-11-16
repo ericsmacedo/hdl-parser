@@ -140,6 +140,55 @@ TOOLS: tuple[dict[str, Any], ...] = (
         },
     },
     {
+        "name": "elaborate",
+        "description": "Values of the parameters and widths of the ports (in bits) of one instance, with the "
+        "parameter values given down the hierarchy applied. Names are resolved across files and packages. "
+        "Nothing is guessed: what is not known has 'unknown' with the reason.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "top": _NAME,
+                "path": {"type": "string", "description": "Instance names below the top, i.e. 'u_core.u_alu'."},
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
+                    "description": "Values of the parameters of the top, by name. Defaults otherwise.",
+                },
+                "depth": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "Instance levels below the node returned too. Default 0: the node only.",
+                },
+                "names": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Patterns of names of parameters and ports: 'WIDTH', '*_i'. All by default.",
+                },
+                "unknown": {"type": "boolean", "description": "Only values which are not known, with the reason."},
+                "limit": {**_LIMIT, "description": "Number of nodes, and of parameters and ports of every node."},
+            },
+            "required": ["top"],
+        },
+    },
+    {
+        "name": "evaluate",
+        "description": "Value of an expression ('$clog2(DEPTH)+1', 'pkg::WIDTH') within a module, interface or "
+        "package.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "expr": {"type": "string"},
+                "scope": {**_NAME, "description": "Module, interface or package. Name or full identifier."},
+                "params": {
+                    "type": "object",
+                    "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
+                    "description": "Values of the parameters of the scope, by name. Defaults otherwise.",
+                },
+            },
+            "required": ["expr", "scope"],
+        },
+    },
+    {
         "name": "reload",
         "description": "Read the project again, i.e. after files were added. Changed files are read again "
         "automatically.",
@@ -156,6 +205,8 @@ _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "where_used": query.where_used,
     "find": query.find,
     "diagnostics": query.diagnostics,
+    "elaborate": query.elaborate,
+    "evaluate": query.evaluate,
 }
 
 
@@ -241,12 +292,20 @@ Questions about the SystemVerilog and VHDL design of this project. Every item ha
 '<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source location 'loc' (lines and columns start at 1). \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
-with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude."""
+with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
+'elaborate' gives the values of the parameters and the widths of the ports of an instance \
+('path' below 'top'), 'evaluate' the value of an expression."""
 
 
 def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:
     """Check `arguments` against the types and minimums of `properties`."""
-    types: dict[str, Any] = {"integer": int, "boolean": bool, "string": str, "array": (list, tuple)}
+    types: dict[str, Any] = {
+        "integer": int,
+        "boolean": bool,
+        "string": str,
+        "array": (list, tuple),
+        "object": dict,
+    }
     for key, value in arguments.items():
         schema = properties[key]
         expected = types.get(schema.get("type", ""))

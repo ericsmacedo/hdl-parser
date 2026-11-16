@@ -292,10 +292,7 @@ def test_hierarchy_tops_sorted(tmp_path):
     assert [(top["name"], top["insts"]) for top in answer["result"]] == [("big", 4)]
     assert answer["leaves"] == 1
     assert [top["name"] for top in query.hierarchy(project, leaves=True)["result"]] == ["big", "lonely"]
-    assert (
-        query.hierarchy(project, "big", text=True)["tree"]
-        == "big\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
-    )
+    assert query.hierarchy(project, "big", text=True)["tree"] == "big\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
     with raises(query.QueryError):
         query.hierarchy(project, "big", depth=-1)
 
@@ -324,3 +321,31 @@ def test_module_bad_field_suggestions(small):
     with raises(query.QueryError) as error:
         query.module(small, "top", fields=["nope"])
     assert len(error.value.suggestions) == len(set(error.value.suggestions))
+
+
+def test_elaborate(tmp_path):
+    """Values Down The Hierarchy, Path, Names, Unknown, Errors."""
+    (tmp_path / "top.sv").write_text(
+        "module top #(parameter W = 8) ();\n  sub #(.N(W * 2)) u_sub ();\n  bb u_bb ();\nendmodule\n"
+    )
+    (tmp_path / "sub.sv").write_text(
+        "module sub #(parameter N = 1, parameter M = f(N)) (input logic [N-1:0] d_i);\nendmodule\n"
+    )
+    project = Project.from_dir(tmp_path)
+    result = query.elaborate(project, "top", path="u_sub", params={"W": 4})["result"]
+    assert result["params"]["N"]["value"] == 8
+    assert result["ports"]["d_i"]["value"] == 8
+    assert "unknown" in result["params"]["M"]
+    assert set(query.elaborate(project, "top", path="u_sub", names=["N"])["result"]["params"]) == {"N"}
+    assert set(query.elaborate(project, "top", path="u_sub", unknown=True)["result"]["params"]) == {"M"}
+    top = query.elaborate(project, "top", depth=1)["result"]
+    assert [child["name"] for child in top["children"]] == ["u_sub", "u_bb"]
+    assert "unknown" in top["children"][1]
+    with raises(query.QueryError) as error:
+        query.elaborate(project, "top", path="u_nope")
+    assert error.value.suggestions == ("u_sub", "u_bb")
+    with raises(query.QueryError):
+        query.elaborate(project, "nope")
+    assert query.evaluate(project, "N + 1", "sub", params={"N": 3})["result"]["value"] == 4
+    with raises(query.QueryError):
+        query.evaluate(project, "1", "nope")

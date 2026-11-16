@@ -31,6 +31,8 @@ MCP server (`hdl-parser mcp`).
 * [where_used][hdl_parser.query.where_used]: all instances of a module.
 * [find][hdl_parser.query.find]: items by name.
 * [diagnostics][hdl_parser.query.diagnostics]: problems found.
+* [elaborate][hdl_parser.query.elaborate]: values of the parameters and widths of the ports of an instance.
+* [evaluate][hdl_parser.query.evaluate]: value of an expression within a module or package.
 
 Answers are sized for a context window:
 
@@ -500,6 +502,121 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
 
 
 _GROUPS = ("code", "file", "module")
+
+
+# --- elaborate ---
+
+
+def elaborate(  # noqa: PLR0913
+    project: Project,
+    top: str,
+    path: str = "",
+    params: dict[str, int | float | str | bool] | None = None,
+    depth: int = 0,
+    names: Iterable[str] = (),
+    unknown: bool = False,
+    limit: int | None = None,
+) -> dict[str, Any]:
+    """Values of the parameters and widths of the ports of the instance `path` below the module `top`.
+
+    Args:
+        project: Project.
+        top: Name or full identifier of the top module.
+
+    Keyword Args:
+        path: Instance names below `top`, separated by dots: `u_core.u_alu`. The top itself by default.
+        params: Values of the parameters of the top, by name. Its defaults are used otherwise.
+        depth: Number of instance levels below the node, which are returned too. Default 0: the node only.
+        names: Patterns of the names of the parameters and ports to be returned. All by default.
+        unknown: Only parameters and ports whose value is not known, with the reason.
+        limit: Number of nodes, and number of parameters and of ports of every node.
+
+    Every value has the expression as written (`expr`) and its `value`, or the reason why it is not known
+    (`unknown`). For a port, `value` is its number of bits. Nothing is guessed.
+    """
+    if depth < 0:
+        raise QueryError("bad-argument", "depth must not be negative.")
+    steps = [step for step in path.split(".") if step]
+    try:
+        node = project.elaborate(top, params=params, depth=len(steps) + depth)
+    except (TypeError, ValueError) as exc:
+        raise QueryError("bad-argument", str(exc)) from exc
+    if node is None:
+        raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
+    for index, step in enumerate(steps):
+        child = next((child for child in node.children if child.name == step), None)
+        if child is None:
+            where = ".".join(steps[:index]) or top
+            raise QueryError(
+                "not-found", f"'{where}' has no instance '{step}'.", [child.name for child in node.children]
+            )
+        node = child
+    patterns = tuple(names)
+    budget = [_resolve_limit(limit)]
+    omitted: dict[str, int] = {}
+    answer: dict[str, Any] = {
+        "query": "elaborate",
+        "result": _elab_node(node, patterns, unknown, limit, budget, omitted),
+    }
+    if omitted:
+        answer["omitted"] = omitted
+    return answer
+
+
+def _elab_node(  # noqa: PLR0913
+    node: dm.HierarchyNode,
+    patterns: tuple[str, ...],
+    unknown: bool,
+    limit: int | None,
+    budget: list[int | None],
+    omitted: dict[str, int],
+) -> dict[str, Any]:
+    data: dict[str, Any] = node.model_dump(
+        mode="json", exclude_defaults=True, exclude={"children", "params", "ports", "truncated"}
+    )
+    if not node.definition:
+        data["unknown"] = f"module '{node.module}' is not defined in the project"
+    for key in ("params", "ports"):
+        values = [
+            (name, value.model_dump(mode="json", exclude_defaults=True))
+            for name, value in getattr(node, key).items()
+            if (not patterns or any(fnmatchcase(name, pattern) for pattern in patterns))
+            and (not unknown or value.value is None)
+        ]
+        kept, left = _limit(values, limit)
+        if kept:
+            data[key] = dict(kept)
+        if left:
+            omitted[key] = omitted.get(key, 0) + left
+    children = []
+    truncated = node.truncated
+    for child in node.children:
+        if budget[0] is not None and budget[0] <= 0:
+            omitted["nodes"] = omitted.get("nodes", 0) + 1
+            truncated = True
+            continue
+        if budget[0] is not None:
+            budget[0] -= 1
+        children.append(_elab_node(child, patterns, unknown, limit, budget, omitted))
+    if children:
+        data["children"] = children
+    if truncated:
+        data["truncated"] = True
+    return data
+
+
+def evaluate(
+    project: Project, expr: str, scope: str, params: dict[str, int | float | str | bool] | None = None
+) -> dict[str, Any]:
+    """Value of the expression `expr` within the module, interface or package `scope` (a name or full identifier).
+
+    `params`: Values of the parameters of `scope`, by name. Its defaults are used otherwise.
+    The answer has `value`, or the reason why it is not known (`unknown`).
+    """
+    if not (project.definitions(scope) or (":" in scope and project.find(scope) is not None)):
+        raise QueryError("not-found", f"'{scope}' is not defined in the project.", _similar_units(project, scope))
+    value = project.evaluate(expr, scope, params=params)
+    return {"query": "evaluate", "result": value.model_dump(mode="json", exclude_defaults=True)}
 
 
 # --- helpers ---
