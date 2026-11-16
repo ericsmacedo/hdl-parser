@@ -381,6 +381,18 @@ With a [configuration file](usage.md#configuration-file) `hdl-parser.toml` in th
 there and the server is started without any: `claude mcp add hdl-parser -- hdl-parser mcp`. Start it within the
 design, or give `--config FILE` before `mcp`.
 
+## Skill
+
+The repository ships an [Agent Skill](https://github.com/ericsmacedo/hdl-parser/tree/main/skills/hdl-parser):
+`SKILL.md` tells an agent when to use hdl-parser, how to set up the project, which query answers which question
+and how to read the answers; `reference.md` lists every MCP tool argument, option and diagnostic code.
+Install it for Claude Code, for one design or for all of them:
+
+```bash
+git clone https://github.com/ericsmacedo/hdl-parser
+cp -r hdl-parser/skills/hdl-parser <design>/.claude/skills/   # or: ~/.claude/skills/
+```
+
 ## Python
 
 The same queries are available in Python: [hdl_parser.query][].
