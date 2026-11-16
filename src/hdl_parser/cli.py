@@ -637,11 +637,91 @@ def evaluate(ctx: Ctx, expr: str, scope: str, params: tuple[str, ...], limit: in
     _answer(lambda: query.evaluate(prj, expr, scope, params=values), compact)
 
 
+_PATH_HELP = """PATH is the instance path of a signal: the top module, the instance names below (with the labels
+    of the generate blocks around) and the signal, separated by dots ('top.u_core.u_alu.result_o')."""
+
+
+@cli.command(
+    help=f"""What Drives A Signal As JSON.
+
+    {_PATH_HELP}
+{_PATHS_HELP}"""
+)
+@click.argument("path")
+@opt_params
+@opt_project
+@opt_answer
+@pass_ctx
+def drivers(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.drivers(prj, path, params=values, limit=limit), compact)
+
+
+@cli.command(
+    help=f"""What A Signal Drives As JSON.
+
+    {_PATH_HELP}
+{_PATHS_HELP}"""
+)
+@click.argument("path")
+@opt_params
+@opt_project
+@opt_answer
+@pass_ctx
+def loads(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.loads(prj, path, params=values, limit=limit), compact)
+
+
+@cli.command(
+    help=f"""Shortest Connection From Signal SRC To Signal DST As JSON.
+
+    SRC and DST are instance paths of signals below the same top ('top.u_core.u_alu.result_o').
+    The search stops behind flip-flops, unless '--through-regs' is given.
+{_PATHS_HELP}"""
+)
+@click.argument("src")
+@click.argument("dst")
+@opt_params
+@click.option("--through-regs", is_flag=True, help="Continue behind flip-flops.")
+@click.option("--data-only", is_flag=True, help="Do not follow conditions, resets and clocks.")
+@opt_project
+@opt_answer
+@pass_ctx
+def trace(  # noqa: PLR0913
+    ctx: Ctx,
+    src: str,
+    dst: str,
+    params: tuple[str, ...],
+    through_regs: bool,
+    data_only: bool,
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(
+        lambda: query.trace(
+            prj, src, dst, params=values, through_regs=through_regs, control=not data_only, limit=limit
+        ),
+        compact,
+    )
+
+
 @cli.command(
     help=f"""Serve The Queries As MCP Server On Standard Input And Output.
 
-    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate'
-    and 'reload'.
+    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate',
+    'drivers', 'loads', 'trace' and 'reload'.
     Files which changed are parsed again on the next query.
 {_PATHS_HELP}"""
 )

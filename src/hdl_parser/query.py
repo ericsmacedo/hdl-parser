@@ -33,6 +33,9 @@ MCP server (`hdl-parser mcp`).
 * [diagnostics][hdl_parser.query.diagnostics]: problems found.
 * [elaborate][hdl_parser.query.elaborate]: values of the parameters and widths of the ports of an instance.
 * [evaluate][hdl_parser.query.evaluate]: value of an expression within a module or package.
+* [drivers][hdl_parser.query.drivers]: what drives a signal.
+* [loads][hdl_parser.query.loads]: what a signal drives.
+* [trace][hdl_parser.query.trace]: how one signal reaches another one.
 
 Answers are sized for a context window:
 
@@ -56,6 +59,7 @@ from pathlib import Path
 from typing import Any
 
 from . import datamodel as dm
+from ._conn import Connectivity, Node, PathError
 from .project import Definition, Project, _relative
 
 DEFAULT_LIMIT = 100
@@ -617,6 +621,127 @@ def evaluate(
         raise QueryError("not-found", f"'{scope}' is not defined in the project.", _similar_units(project, scope))
     value = project.evaluate(expr, scope, params=params)
     return {"query": "evaluate", "result": value.model_dump(mode="json", exclude_defaults=True)}
+
+
+# --- connectivity ---
+
+
+def drivers(
+    project: Project, path: str, params: dict[str, int | float | str | bool] | None = None, limit: int | None = None
+) -> dict[str, Any]:
+    """What drives the signal with the instance path `path`: `top.u_core.u_alu.result_o`.
+
+    Args:
+        project: Project.
+        path: The top module (name or full identifier), the instance names below (with the labels of the generate
+              blocks around) and the signal, separated by dots. Indices of instance arrays are ignored.
+
+    Keyword Args:
+        params: Values of the parameters of the top, by name. Its defaults are used otherwise.
+        limit: Number of drivers.
+
+    `net` describes the signal: its `path`, `kind` (`port`, `signal`, `variable` of a process, `implicit`),
+    `direction`, identifier and location. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
+    `port`, `unknown`), the signals it reads (`nets`), the ones read by its conditions (`conds`), the process,
+    instance or module (`item`) and the location. Ask for the drivers of `nets` to go further.
+    See [Link][hdl_parser.datamodel.Link].
+    """
+    conn, node = _locate(project, path, params)
+    links = [conn.link(node, step, driver=True) for step in conn.drivers(node)]
+    return _links("drivers", conn, node, links, limit)
+
+
+def loads(
+    project: Project, path: str, params: dict[str, int | float | str | bool] | None = None, limit: int | None = None
+) -> dict[str, Any]:
+    """What the signal with the instance path `path` drives. See [drivers][hdl_parser.query.drivers].
+
+    Every load has the signals it drives (`nets`). `control` marks a load, which reads the signal by a condition
+    or as clock only.
+    """
+    conn, node = _locate(project, path, params)
+    links = [conn.link(node, step, driver=False) for step in conn.loads(node)]
+    return _links("loads", conn, node, links, limit)
+
+
+def trace(  # noqa: PLR0913
+    project: Project,
+    src: str,
+    dst: str,
+    params: dict[str, int | float | str | bool] | None = None,
+    through_regs: bool = False,
+    control: bool = True,
+    limit: int | None = None,
+) -> dict[str, Any]:
+    """Shortest connection from the signal `src` to the signal `dst`: instance paths below the same top.
+
+    Args:
+        project: Project.
+        src: Instance path of the signal to start at. See [drivers][hdl_parser.query.drivers].
+        dst: Instance path of the signal to reach.
+
+    Keyword Args:
+        params: Values of the parameters of the top, by name. Its defaults are used otherwise.
+        through_regs: Continue behind flip-flops. The search stops there by default.
+        control: Follow conditions, resets and clocks too. Data only otherwise.
+        limit: Number of hops.
+
+    The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
+    (`kind`, `item`, location). The search stops at modules which are not defined (blackboxes).
+    """
+    conn, source = _locate(project, src, params)
+    _, target = _locate(project, dst, params, conn)
+    if _top(source[0]) is not _top(target[0]):
+        raise QueryError("bad-argument", "'src' and 'dst' must be located below the same top.")
+    hops = [_dump(hop) for hop in conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))]
+    result, omitted = _limit(hops, limit)
+    answer = _list_answer("trace", result, len(hops), omitted)
+    answer["found"] = bool(hops)
+    if not hops:
+        stops = "behind flip-flops (see 'through_regs'), " if not through_regs else ""
+        answer["hint"] = f"No connection. The search follows loads and stops {stops}at modules which are not defined."
+    return answer
+
+
+def _top(inst: Any) -> Any:
+    while inst.parent is not None:
+        inst = inst.parent
+    return inst
+
+
+def _locate(
+    project: Project,
+    path: str,
+    params: dict[str, int | float | str | bool] | None,
+    conn: Connectivity | None = None,
+) -> tuple[Connectivity, Node]:
+    try:
+        conn = conn or project._connectivity(params)
+        return conn, conn.locate(path)
+    except PathError as exc:
+        raise QueryError("not-found", exc.message, exc.suggestions) from exc
+    except (TypeError, ValueError) as exc:
+        raise QueryError("bad-argument", str(exc)) from exc
+
+
+def _links(query: str, conn: Connectivity, node: Node, links: list[dm.Link], limit: int | None) -> dict[str, Any]:
+    entries = [_dump(link) for link in links]
+    result, omitted = _limit(entries, limit)
+    net = conn.net(node)
+    info: dict[str, Any] = {"path": conn.path(node), "kind": net.kind}
+    if net.direction:
+        info["direction"] = net.direction
+    if net.item is not None and net.file is not None:
+        info["id"] = net.file.full_id(net.item)
+        info["file"] = net.file.file_id
+        info.update(_loc(net.item.loc))
+    if node[0].multiple:
+        info["multiple"] = True
+    return {"query": query, "net": info, **_list_answer(query, result, len(entries), omitted)}
+
+
+def _dump(model: dm.Link | dm.Hop) -> dict[str, Any]:
+    return model.model_dump(mode="json", exclude_defaults=True)
 
 
 # --- helpers ---

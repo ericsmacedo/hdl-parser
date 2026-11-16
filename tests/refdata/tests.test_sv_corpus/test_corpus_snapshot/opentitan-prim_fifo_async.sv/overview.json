@@ -734,6 +734,38 @@
           "clock_edge": "posedge",
           "reset": "rst_wr_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "fifo_wptr_q",
+              "conds": [
+                "rst_wr_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 60,
+                "col": 7,
+                "end_line": 60,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "fifo_wptr_q",
+              "reads": [
+                "fifo_wptr_d"
+              ],
+              "conds": [
+                "rst_wr_ni",
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 62,
+                "col": 7,
+                "end_line": 62,
+                "end_col": 34
+              }
+            }
+          ],
           "loc": {
             "line": 58,
             "col": 3,
@@ -758,6 +790,38 @@
           "clock_edge": "posedge",
           "reset": "rst_wr_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "fifo_wptr_gray_q",
+              "conds": [
+                "rst_wr_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 69,
+                "col": 7,
+                "end_line": 69,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "fifo_wptr_gray_q",
+              "reads": [
+                "fifo_wptr_gray_d"
+              ],
+              "conds": [
+                "rst_wr_ni",
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 71,
+                "col": 7,
+                "end_line": 71,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "gray-coded version"
           ],
@@ -785,6 +849,38 @@
           "clock_edge": "posedge",
           "reset": "rst_rd_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "fifo_rptr_q",
+              "conds": [
+                "rst_rd_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 93,
+                "col": 7,
+                "end_line": 93,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "fifo_rptr_q",
+              "reads": [
+                "fifo_rptr_d"
+              ],
+              "conds": [
+                "rst_rd_ni",
+                "fifo_incr_rptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 95,
+                "col": 7,
+                "end_line": 95,
+                "end_col": 34
+              }
+            }
+          ],
           "loc": {
             "line": 91,
             "col": 3,
@@ -809,6 +905,38 @@
           "clock_edge": "posedge",
           "reset": "rst_rd_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "fifo_rptr_gray_q",
+              "conds": [
+                "rst_rd_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 102,
+                "col": 7,
+                "end_line": 102,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "fifo_rptr_gray_q",
+              "reads": [
+                "fifo_rptr_gray_d"
+              ],
+              "conds": [
+                "rst_rd_ni",
+                "fifo_incr_rptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 104,
+                "col": 7,
+                "end_line": 104,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "gray-coded version"
           ],
@@ -836,6 +964,37 @@
           "clock_edge": "posedge",
           "reset": "rst_wr_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "fifo_rptr_sync_q",
+              "conds": [
+                "rst_wr_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 118,
+                "col": 7,
+                "end_line": 118,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "fifo_rptr_sync_q",
+              "reads": [
+                "fifo_rptr_sync_combi"
+              ],
+              "conds": [
+                "rst_wr_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 120,
+                "col": 7,
+                "end_line": 120,
+                "end_col": 48
+              }
+            }
+          ],
           "comment": [
             "Registered version of synced read pointer"
           ],
@@ -864,6 +1023,26 @@
               "cond": "Depth > 1"
             }
           ],
+          "assigns": [
+            {
+              "target": "storage",
+              "select": "[fifo_wptr_q[PTRV_W-1:0]]",
+              "reads": [
+                "wdata_i",
+                "fifo_wptr_q"
+              ],
+              "conds": [
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 183,
+                "col": 9,
+                "end_line": 183,
+                "end_col": 53
+              }
+            }
+          ],
           "loc": {
             "line": 181,
             "col": 5,
@@ -885,7 +1064,29 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_storage_simple"
+              "name": "g_storage_simple",
+              "others": [
+                "Depth > 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "storage",
+              "select": "[0]",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "fifo_incr_wptr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 193,
+                "col": 9,
+                "end_line": 193,
+                "end_col": 31
+              }
             }
           ],
           "loc": {
@@ -893,6 +1094,773 @@
             "col": 5,
             "end_line": 195,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "fifo_incr_wptr",
+          "reads": [
+            "wvalid_i",
+            "wready_o"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 10,
+            "end_line": 53,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "fifo_wptr_d",
+          "reads": [
+            "fifo_wptr_q"
+          ],
+          "loc": {
+            "line": 56,
+            "col": 10,
+            "end_line": 56,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "fifo_incr_rptr",
+          "reads": [
+            "rvalid_o",
+            "rready_i"
+          ],
+          "loc": {
+            "line": 86,
+            "col": 10,
+            "end_line": 86,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "fifo_rptr_d",
+          "reads": [
+            "fifo_rptr_q"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 10,
+            "end_line": 89,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "xor_mask",
+          "loc": {
+            "line": 129,
+            "col": 10,
+            "end_line": 129,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "full_wclk",
+          "reads": [
+            "fifo_wptr_q",
+            "fifo_rptr_sync_q",
+            "xor_mask"
+          ],
+          "loc": {
+            "line": 130,
+            "col": 10,
+            "end_line": 130,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "full_rclk",
+          "reads": [
+            "fifo_wptr_sync_combi",
+            "fifo_rptr_q",
+            "xor_mask"
+          ],
+          "loc": {
+            "line": 131,
+            "col": 10,
+            "end_line": 131,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "empty_rclk",
+          "reads": [
+            "fifo_wptr_sync_combi",
+            "fifo_rptr_q"
+          ],
+          "loc": {
+            "line": 132,
+            "col": 10,
+            "end_line": 132,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "wptr_msb",
+          "reads": [
+            "fifo_wptr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 142,
+            "col": 12,
+            "end_line": 142,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "rptr_sync_msb",
+          "reads": [
+            "fifo_rptr_sync_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 143,
+            "col": 12,
+            "end_line": 143,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "wptr_value",
+          "reads": [
+            "fifo_wptr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 144,
+            "col": 12,
+            "end_line": 144,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "rptr_sync_value",
+          "reads": [
+            "fifo_rptr_sync_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 145,
+            "col": 12,
+            "end_line": 145,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "wdepth_o",
+          "reads": [
+            "full_wclk",
+            "wptr_msb",
+            "rptr_sync_msb",
+            "wptr_value",
+            "rptr_sync_value"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 146,
+            "col": 12,
+            "end_line": 148,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "wptr_sync_msb",
+          "reads": [
+            "fifo_wptr_sync_combi"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 156,
+            "col": 12,
+            "end_line": 156,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "rptr_msb",
+          "reads": [
+            "fifo_rptr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 157,
+            "col": 12,
+            "end_line": 157,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "wptr_sync_value",
+          "reads": [
+            "fifo_wptr_sync_combi"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 158,
+            "col": 12,
+            "end_line": 158,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "rptr_value",
+          "reads": [
+            "fifo_rptr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 159,
+            "col": 12,
+            "end_line": 159,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "rdepth_o",
+          "reads": [
+            "full_rclk",
+            "wptr_sync_msb",
+            "rptr_msb",
+            "wptr_sync_value",
+            "rptr_value"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_depth_calc",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 160,
+            "col": 12,
+            "end_line": 162,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "rdepth_o",
+          "reads": [
+            "full_rclk"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_depth_calc",
+              "others": [
+                "Depth > 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 166,
+            "col": 12,
+            "end_line": 166,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "wdepth_o",
+          "reads": [
+            "full_wclk"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_depth_calc",
+              "others": [
+                "Depth > 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 12,
+            "end_line": 167,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "wready_o",
+          "reads": [
+            "full_wclk"
+          ],
+          "loc": {
+            "line": 171,
+            "col": 10,
+            "end_line": 171,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "rvalid_o",
+          "reads": [
+            "empty_rclk"
+          ],
+          "loc": {
+            "line": 172,
+            "col": 10,
+            "end_line": 172,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "rdata_int",
+          "reads": [
+            "storage",
+            "fifo_rptr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_storage_mux",
+              "cond": "Depth > 1"
+            }
+          ],
+          "loc": {
+            "line": 187,
+            "col": 12,
+            "end_line": 187,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "rdata_int",
+          "reads": [
+            "storage"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_storage_simple",
+              "others": [
+                "Depth > 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 197,
+            "col": 12,
+            "end_line": 197,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "empty_rclk",
+            "rvalid_o",
+            "rdata_int"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_output_zero",
+              "cond": "OutputZeroIfEmpty == 1'b1"
+            },
+            {
+              "kind": "if",
+              "name": "gen_invalid_zero",
+              "cond": "OutputZeroIfInvalid  == 1'b1"
+            }
+          ],
+          "loc": {
+            "line": 204,
+            "col": 14,
+            "end_line": 204,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "empty_rclk",
+            "rdata_int"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_output_zero",
+              "cond": "OutputZeroIfEmpty == 1'b1"
+            },
+            {
+              "kind": "else",
+              "name": "gen_invalid_non_zero",
+              "others": [
+                "OutputZeroIfInvalid  == 1'b1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 207,
+            "col": 14,
+            "end_line": 207,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "rvalid_o",
+            "rdata_int"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_output_zero",
+              "others": [
+                "OutputZeroIfEmpty == 1'b1"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "gen_invalid_zero",
+              "cond": "OutputZeroIfInvalid  == 1'b1"
+            }
+          ],
+          "loc": {
+            "line": 211,
+            "col": 16,
+            "end_line": 211,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "rdata_int"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_output_zero",
+              "others": [
+                "OutputZeroIfEmpty == 1'b1"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_invalid_non_zero",
+              "others": [
+                "OutputZeroIfInvalid  == 1'b1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 214,
+            "col": 16,
+            "end_line": 214,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "fifo_rptr_sync_combi",
+          "reads": [
+            "fifo_rptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_full_gray_conversion",
+              "cond": "Depth > 2"
+            }
+          ],
+          "loc": {
+            "line": 267,
+            "col": 12,
+            "end_line": 267,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "fifo_wptr_sync_combi",
+          "reads": [
+            "fifo_wptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_full_gray_conversion",
+              "cond": "Depth > 2"
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 12,
+            "end_line": 269,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "fifo_rptr_gray_d",
+          "reads": [
+            "fifo_rptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_full_gray_conversion",
+              "cond": "Depth > 2"
+            }
+          ],
+          "loc": {
+            "line": 271,
+            "col": 12,
+            "end_line": 271,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "fifo_wptr_gray_d",
+          "reads": [
+            "fifo_wptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_full_gray_conversion",
+              "cond": "Depth > 2"
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 12,
+            "end_line": 272,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "fifo_rptr_sync_combi",
+          "reads": [
+            "fifo_rptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_simple_gray_conversion",
+              "cond": "Depth == 2",
+              "others": [
+                "Depth > 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 276,
+            "col": 12,
+            "end_line": 276,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "fifo_wptr_sync_combi",
+          "reads": [
+            "fifo_wptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_simple_gray_conversion",
+              "cond": "Depth == 2",
+              "others": [
+                "Depth > 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 277,
+            "col": 12,
+            "end_line": 277,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "fifo_rptr_gray_d",
+          "reads": [
+            "fifo_rptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_simple_gray_conversion",
+              "cond": "Depth == 2",
+              "others": [
+                "Depth > 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 279,
+            "col": 12,
+            "end_line": 279,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "fifo_wptr_gray_d",
+          "reads": [
+            "fifo_wptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_simple_gray_conversion",
+              "cond": "Depth == 2",
+              "others": [
+                "Depth > 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 280,
+            "col": 12,
+            "end_line": 280,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "fifo_rptr_sync_combi",
+          "reads": [
+            "fifo_rptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_gray_conversion",
+              "others": [
+                "Depth > 2",
+                "Depth == 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 284,
+            "col": 12,
+            "end_line": 284,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "fifo_wptr_sync_combi",
+          "reads": [
+            "fifo_wptr_gray_sync"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_gray_conversion",
+              "others": [
+                "Depth > 2",
+                "Depth == 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 285,
+            "col": 12,
+            "end_line": 285,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "fifo_rptr_gray_d",
+          "reads": [
+            "fifo_rptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_gray_conversion",
+              "others": [
+                "Depth > 2",
+                "Depth == 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 287,
+            "col": 12,
+            "end_line": 287,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "fifo_wptr_gray_d",
+          "reads": [
+            "fifo_wptr_d"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_gray_conversion",
+              "others": [
+                "Depth > 2",
+                "Depth == 2"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 288,
+            "col": 12,
+            "end_line": 288,
+            "end_col": 42
           }
         }
       ],

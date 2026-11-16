@@ -211,7 +211,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -229,7 +232,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -247,7 +253,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -265,7 +274,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -283,7 +295,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -301,7 +316,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             }
           ],
           "loc": {
@@ -320,11 +338,17 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             },
             {
               "kind": "else",
-              "name": "gen_nodatapath"
+              "name": "gen_nodatapath",
+              "others": [
+                "EnDataPort == 1"
+              ]
             }
           ],
           "loc": {
@@ -406,7 +430,43 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "ppc_out",
+              "select": "[0]",
+              "reads": [
+                "arb_req"
+              ],
+              "loc": {
+                "line": 82,
+                "col": 7,
+                "end_line": 82,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "ppc_out",
+              "select": "[i]",
+              "reads": [
+                "ppc_out",
+                "i",
+                "arb_req"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 84,
+                "col": 9,
+                "end_line": 84,
+                "end_col": 48
+              }
             }
           ],
           "comment": [
@@ -441,7 +501,61 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mask",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 97,
+                "col": 9,
+                "end_line": 97,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "mask",
+              "reads": [
+                "mask_next"
+              ],
+              "conds": [
+                "rst_ni",
+                "valid_o",
+                "ready_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 100,
+                "col": 9,
+                "end_line": 100,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "mask",
+              "reads": [
+                "ppc_out"
+              ],
+              "conds": [
+                "rst_ni",
+                "valid_o",
+                "ready_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 103,
+                "col": 9,
+                "end_line": 103,
+                "end_col": 25
+              }
             }
           ],
           "loc": {
@@ -457,12 +571,43 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
             },
             {
               "kind": "if",
               "name": "gen_datapath",
               "cond": "EnDataPort == 1"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "data_o",
+              "loc": {
+                "line": 109,
+                "col": 9,
+                "end_line": 109,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "data_o",
+              "reads": [
+                "data_i",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "winner"
+              ],
+              "loc": {
+                "line": 112,
+                "col": 13,
+                "end_line": 112,
+                "end_col": 32
+              }
             }
           ],
           "loc": {
@@ -478,7 +623,37 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_normal_case"
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "idx_o",
+              "loc": {
+                "line": 124,
+                "col": 7,
+                "end_line": 124,
+                "end_col": 18
+              }
+            },
+            {
+              "target": "idx_o",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i",
+                "winner"
+              ],
+              "loc": {
+                "line": 127,
+                "col": 11,
+                "end_line": 127,
+                "end_col": 31
+              }
             }
           ],
           "loc": {
@@ -513,6 +688,45 @@
               "cond": "genvar n = 1; n <= N; n++"
             }
           ],
+          "assigns": [
+            {
+              "target": "gnt_cnt",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "FPV_ON"
+              ],
+              "loc": {
+                "line": 213,
+                "col": 9,
+                "end_line": 213,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "gnt_cnt",
+              "reads": [
+                "gnt_cnt",
+                "gnt_o",
+                "k"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "FPV_ON"
+              ],
+              "loc": {
+                "line": 215,
+                "col": 9,
+                "end_line": 215,
+                "end_col": 39
+              }
+            }
+          ],
           "ifdefs": [
             "FPV_ON"
           ],
@@ -521,6 +735,277 @@
             "col": 5,
             "end_line": 217,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "unused_req_chk",
+          "reads": [
+            "req_chk_i"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 10,
+            "end_line": 55,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "req_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_case",
+              "cond": "N == 1"
+            }
+          ],
+          "loc": {
+            "line": 62,
+            "col": 12,
+            "end_line": 62,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "data_o",
+          "reads": [
+            "data_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_case",
+              "cond": "N == 1"
+            }
+          ],
+          "loc": {
+            "line": 63,
+            "col": 12,
+            "end_line": 63,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "gnt_o",
+          "select": "[0]",
+          "reads": [
+            "valid_o",
+            "ready_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_case",
+              "cond": "N == 1"
+            }
+          ],
+          "loc": {
+            "line": 64,
+            "col": 12,
+            "end_line": 64,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "idx_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_case",
+              "cond": "N == 1"
+            }
+          ],
+          "loc": {
+            "line": 65,
+            "col": 12,
+            "end_line": 65,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "masked_req",
+          "reads": [
+            "mask",
+            "req_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 75,
+            "col": 12,
+            "end_line": 75,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "arb_req",
+          "reads": [
+            "masked_req",
+            "req_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 76,
+            "col": 12,
+            "end_line": 76,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "winner",
+          "reads": [
+            "ppc_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 89,
+            "col": 12,
+            "end_line": 89,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "gnt_o",
+          "reads": [
+            "ready_i",
+            "winner"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 12,
+            "end_line": 90,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "req_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 12,
+            "end_line": 92,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "mask_next",
+          "reads": [
+            "ppc_out"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 94,
+            "col": 12,
+            "end_line": 94,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "data_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_nodatapath",
+              "others": [
+                "EnDataPort == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 117,
+            "col": 14,
+            "end_line": 117,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "unused_data",
+          "reads": [
+            "data_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_normal_case",
+              "others": [
+                "N == 1"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "gen_nodatapath",
+              "others": [
+                "EnDataPort == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 120,
+            "col": 14,
+            "end_line": 120,
+            "end_col": 34
           }
         }
       ],

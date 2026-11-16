@@ -533,6 +533,92 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "time_clk",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 5,
+                "end_line": 107,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "time_clk_counter",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 108,
+                "col": 5,
+                "end_line": 108,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "time_clk_counter",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "time_clk_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 111,
+                "col": 6,
+                "end_line": 111,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "time_clk",
+              "reads": [
+                "time_clk"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "time_clk_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 112,
+                "col": 6,
+                "end_line": 112,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "time_clk_counter",
+              "reads": [
+                "time_clk_counter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "time_clk_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 114,
+                "col": 6,
+                "end_line": 114,
+                "end_col": 47
+              }
+            }
+          ],
           "loc": {
             "line": 103,
             "col": 2,
@@ -551,6 +637,94 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "mtime_clock_counter",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 124,
+                "col": 5,
+                "end_line": 124,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "counter_mtime",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 125,
+                "col": 5,
+                "end_line": 125,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mtime_clock_counter",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "mtime_clock_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 128,
+                "col": 6,
+                "end_line": 128,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "counter_mtime",
+              "reads": [
+                "std_logic_vector",
+                "unsigned",
+                "counter_mtime"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "mtime_clock_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 129,
+                "col": 6,
+                "end_line": 129,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "mtime_clock_counter",
+              "reads": [
+                "mtime_clock_counter"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "mtime_clock_counter"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 131,
+                "col": 6,
+                "end_line": 131,
+                "end_col": 53
+              }
+            }
+          ],
           "loc": {
             "line": 120,
             "col": 2,
@@ -569,6 +743,63 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "timer_interrupt",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 141,
+                "col": 5,
+                "end_line": 141,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "timer_interrupt",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTIMECMP"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 144,
+                "col": 6,
+                "end_line": 144,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "timer_interrupt",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTIMECMP",
+                "counter_mtime",
+                "mtime_compare"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 146,
+                "col": 6,
+                "end_line": 146,
+                "end_col": 29
+              }
+            }
+          ],
           "loc": {
             "line": 137,
             "col": 2,
@@ -587,6 +818,394 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "software_interrupt",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 156,
+                "col": 5,
+                "end_line": 156,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mtvec",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 157,
+                "col": 5,
+                "end_line": 157,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mepc",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 158,
+                "col": 5,
+                "end_line": 158,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "mie",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 159,
+                "col": 5,
+                "end_line": 159,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "ie",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 160,
+                "col": 5,
+                "end_line": 160,
+                "end_col": 15
+              }
+            },
+            {
+              "target": "ie1",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 161,
+                "col": 5,
+                "end_line": 161,
+                "end_col": 16
+              }
+            },
+            {
+              "target": "test_register",
+              "reads": [
+                "TEST_IDLE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 162,
+                "col": 5,
+                "end_line": 162,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "ie",
+              "reads": [
+                "exception_context"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_context_write"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 165,
+                "col": 6,
+                "end_line": 165,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "ie1",
+              "reads": [
+                "exception_context"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_context_write"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 166,
+                "col": 6,
+                "end_line": 166,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "mcause",
+              "reads": [
+                "exception_context"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_context_write"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 167,
+                "col": 6,
+                "end_line": 167,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "mbadaddr",
+              "reads": [
+                "exception_context"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_context_write"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 168,
+                "col": 6,
+                "end_line": 168,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "ie1",
+              "reads": [
+                "write_data_in",
+                "CSR_SR_MPIE_INDEX"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MSTATUS"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 174,
+                "col": 8,
+                "end_line": 174,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "ie",
+              "reads": [
+                "write_data_in",
+                "CSR_SR_MIE_INDEX"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MSTATUS"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 175,
+                "col": 8,
+                "end_line": 175,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "mscratch",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MSCRATCH"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 177,
+                "col": 8,
+                "end_line": 177,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "mepc",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MEPC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 179,
+                "col": 8,
+                "end_line": 179,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mtvec",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTVEC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 183,
+                "col": 8,
+                "end_line": 183,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "mtime_compare",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTIMECMP"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 185,
+                "col": 8,
+                "end_line": 185,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "mie",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MIE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 187,
+                "col": 8,
+                "end_line": 187,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "software_interrupt",
+              "reads": [
+                "write_data_in",
+                "CSR_MIP_MSIP"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MIP"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 189,
+                "col": 8,
+                "end_line": 189,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "test_register",
+              "reads": [
+                "std_logic_to_test_context",
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_TEST"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 191,
+                "col": 8,
+                "end_line": 191,
+                "end_col": 66
+              }
+            }
+          ],
           "loc": {
             "line": 152,
             "col": 2,
@@ -605,11 +1224,661 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "mtvec_out",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTVEC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 205,
+                "col": 5,
+                "end_line": 205,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "mtvec_out",
+              "reads": [
+                "mtvec"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "CSR_MTVEC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 207,
+                "col": 5,
+                "end_line": 207,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "write_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 211,
+                "col": 5,
+                "end_line": 211,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "csr_make_mstatus",
+                "ie",
+                "ie1"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MSTATUS"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 217,
+                "col": 7,
+                "end_line": 217,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mscratch"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MSCRATCH"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 7,
+                "end_line": 219,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mepc"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MEPC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 221,
+                "col": 7,
+                "end_line": 221,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mtvec"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MTVEC"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 223,
+                "col": 7,
+                "end_line": 223,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MTDELEG"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 225,
+                "col": 7,
+                "end_line": 225,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "irq",
+                "timer_interrupt",
+                "software_interrupt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MIP"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 227,
+                "col": 7,
+                "end_line": 228,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mie"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MIE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 230,
+                "col": 7,
+                "end_line": 230,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mbadaddr"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MBADADDR"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 232,
+                "col": 7,
+                "end_line": 232,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mcause"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MCAUSE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 234,
+                "col": 7,
+                "end_line": 234,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MISA"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 238,
+                "col": 7,
+                "end_line": 241,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MVENDORID"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 243,
+                "col": 7,
+                "end_line": 243,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MARCHID"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 245,
+                "col": 7,
+                "end_line": 245,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MIMPID"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 247,
+                "col": 7,
+                "end_line": 247,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MHARTID"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 249,
+                "col": 7,
+                "end_line": 249,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_mtime"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MTIME"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 253,
+                "col": 7,
+                "end_line": 253,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "mtime_compare"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_MTIMECMP"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 255,
+                "col": 7,
+                "end_line": 255,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_time"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_TIME"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 258,
+                "col": 7,
+                "end_line": 258,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_time"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_TIMEH"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 260,
+                "col": 7,
+                "end_line": 260,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_cycle"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_CYCLE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 262,
+                "col": 7,
+                "end_line": 262,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_cycle"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_CYCLEH"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 264,
+                "col": 7,
+                "end_line": 264,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_instret"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_INSTRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 266,
+                "col": 7,
+                "end_line": 266,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "counter_instret"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_INSTRETH"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 268,
+                "col": 7,
+                "end_line": 268,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "read_data_out",
+              "reads": [
+                "test_context_to_std_logic",
+                "test_register"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address",
+                "CSR_TEST"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 272,
+                "col": 7,
+                "end_line": 272,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "read_data_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "write_mode",
+                "CSR_WRITE_NONE",
+                "write_address",
+                "read_address"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 276,
+                "col": 7,
+                "end_line": 276,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 200,
             "col": 2,
             "end_line": 280,
             "end_col": 19
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "software_interrupt_out",
+          "reads": [
+            "software_interrupt"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 2,
+            "end_line": 94,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "timer_interrupt_out",
+          "reads": [
+            "timer_interrupt"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 2,
+            "end_line": 95,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "ie_out",
+          "reads": [
+            "ie"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 96,
+            "end_col": 15
+          }
+        },
+        {
+          "target": "ie1_out",
+          "reads": [
+            "ie1"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 2,
+            "end_line": 97,
+            "end_col": 17
+          }
+        },
+        {
+          "target": "mie_out",
+          "reads": [
+            "mie"
+          ],
+          "loc": {
+            "line": 98,
+            "col": 2,
+            "end_line": 98,
+            "end_col": 17
+          }
+        },
+        {
+          "target": "test_context_out",
+          "reads": [
+            "test_register"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 2,
+            "end_line": 101,
+            "end_col": 36
           }
         }
       ],

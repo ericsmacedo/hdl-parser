@@ -487,6 +487,160 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "icache_inputs",
+          "reads": [
+            "m1_inputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_enabled",
+              "cond": "ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 111,
+            "col": 3,
+            "end_line": 111,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "m1_outputs",
+          "reads": [
+            "icache_outputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_enabled",
+              "cond": "ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 3,
+            "end_line": 112,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "dmem_if_inputs",
+          "reads": [
+            "m2_inputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_enabled",
+              "cond": "ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 114,
+            "col": 3,
+            "end_line": 114,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "m2_outputs",
+          "reads": [
+            "dmem_if_outputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_enabled",
+              "cond": "ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "dmem_if_inputs",
+          "reads": [
+            "m1_inputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_disabled",
+              "cond": "not ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 136,
+            "col": 3,
+            "end_line": 136,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "m1_outputs",
+          "reads": [
+            "dmem_if_outputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_disabled",
+              "cond": "not ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 137,
+            "col": 3,
+            "end_line": 137,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "icache_inputs",
+          "reads": [
+            "m2_inputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_disabled",
+              "cond": "not ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 139,
+            "col": 3,
+            "end_line": 139,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "m2_outputs",
+          "reads": [
+            "icache_outputs"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "icache_disabled",
+              "cond": "not ICACHE_ENABLE"
+            }
+          ],
+          "loc": {
+            "line": 140,
+            "col": 3,
+            "end_line": 140,
+            "end_col": 32
+          }
+        }
+      ],
       "insts": [
         {
           "id": "pp_potato.processor",

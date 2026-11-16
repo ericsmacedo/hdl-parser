@@ -153,11 +153,127 @@
               "cond": "i in 0 to DIGITS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "cnt_r",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 81,
+                "col": 6,
+                "end_line": 81,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cnt_r",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "inc",
+                "c",
+                "i",
+                "p"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 84,
+                "col": 7,
+                "end_line": 84,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "cnt_r",
+              "reads": [
+                "T_BCD",
+                "unsigned",
+                "cnt_r"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "inc",
+                "c",
+                "i",
+                "p"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 86,
+                "col": 7,
+                "end_line": 86,
+                "end_col": 43
+              }
+            }
+          ],
           "loc": {
             "line": 77,
             "col": 3,
             "end_line": 90,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "c",
+          "reads": [
+            "p"
+          ],
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "p",
+          "select": "(i)",
+          "reads": [
+            "cnt_r",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gDigit",
+              "cond": "i in 0 to DIGITS-1"
+            }
+          ],
+          "loc": {
+            "line": 76,
+            "col": 3,
+            "end_line": 76,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "val",
+          "select": "(i)",
+          "reads": [
+            "cnt_r",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gDigit",
+              "cond": "i in 0 to DIGITS-1"
+            }
+          ],
+          "loc": {
+            "line": 93,
+            "col": 3,
+            "end_line": 93,
+            "end_col": 19
           }
         }
       ],

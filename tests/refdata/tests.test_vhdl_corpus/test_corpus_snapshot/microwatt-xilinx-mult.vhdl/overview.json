@@ -493,11 +493,260 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "product",
+              "select": "(31 downto 0)",
+              "reads": [
+                "sumlo",
+                "pp0"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "valid_1",
+                "rnot_1"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 996,
+                "col": 21,
+                "end_line": 996,
+                "end_col": 82
+              }
+            },
+            {
+              "target": "product",
+              "select": "(31 downto 0)",
+              "reads": [
+                "sumlo",
+                "pp0"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "valid_1",
+                "rnot_1"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 998,
+                "col": 21,
+                "end_line": 998,
+                "end_col": 88
+              }
+            },
+            {
+              "target": "m_out",
+              "select": ".valid",
+              "reads": [
+                "valid_1"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1001,
+                "col": 13,
+                "end_line": 1001,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "valid_1",
+              "reads": [
+                "m_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1002,
+                "col": 13,
+                "end_line": 1002,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rnot_1",
+              "reads": [
+                "m_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1003,
+                "col": 13,
+                "end_line": 1003,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "overflow",
+              "reads": [
+                "p1_pat",
+                "p0_pat",
+                "p1_patb",
+                "p0_patb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1004,
+                "col": 13,
+                "end_line": 1004,
+                "end_col": 76
+              }
+            }
+          ],
           "loc": {
             "line": 991,
             "col": 5,
             "end_line": 1006,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "addend",
+          "reads": [
+            "m_in"
+          ],
+          "conds": [
+            "m_in"
+          ],
+          "loc": {
+            "line": 44,
+            "col": 5,
+            "end_line": 44,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "d1sign",
+          "reads": [
+            "m_in"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 5,
+            "end_line": 45,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "d2sign",
+          "reads": [
+            "m_in"
+          ],
+          "loc": {
+            "line": 46,
+            "col": 5,
+            "end_line": 46,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "pp0",
+          "reads": [
+            "std_ulogic_vector",
+            "resize",
+            "signed",
+            "m13_p",
+            "m12_p",
+            "m01_p",
+            "m00_p"
+          ],
+          "loc": {
+            "line": 738,
+            "col": 5,
+            "end_line": 739,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "pp1",
+          "reads": [
+            "m23_p",
+            "m22_p",
+            "m11_p",
+            "m10_p"
+          ],
+          "loc": {
+            "line": 740,
+            "col": 5,
+            "end_line": 740,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "pp23",
+          "reads": [
+            "std_ulogic_vector",
+            "resize",
+            "signed",
+            "m03_p",
+            "m02_p",
+            "m21_p",
+            "m20_p"
+          ],
+          "loc": {
+            "line": 744,
+            "col": 5,
+            "end_line": 745,
+            "end_col": 102
+          }
+        },
+        {
+          "target": "sumlo",
+          "reads": [
+            "std_ulogic_vector",
+            "unsigned",
+            "pp0",
+            "pp1"
+          ],
+          "loc": {
+            "line": 747,
+            "col": 5,
+            "end_line": 747,
+            "end_col": 103
+          }
+        },
+        {
+          "target": "m_out",
+          "select": ".result",
+          "reads": [
+            "product"
+          ],
+          "loc": {
+            "line": 1008,
+            "col": 5,
+            "end_line": 1008,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "m_out",
+          "select": ".overflow",
+          "reads": [
+            "overflow"
+          ],
+          "loc": {
+            "line": 1009,
+            "col": 5,
+            "end_line": 1009,
+            "end_col": 32
           }
         }
       ],
@@ -10019,6 +10268,20 @@
             "col": 5,
             "end_line": 1031,
             "end_col": 53
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "m_out",
+          "reads": [
+            "mshort_p"
+          ],
+          "loc": {
+            "line": 1090,
+            "col": 5,
+            "end_line": 1090,
+            "end_col": 36
           }
         }
       ],

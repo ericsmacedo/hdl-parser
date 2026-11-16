@@ -843,6 +843,33 @@
               "cond": "(REG_EN_G = false)"
             }
           ],
+          "assigns": [
+            {
+              "target": "mem",
+              "select": "(conv_integer(addra))(minimum(DATA_WIDTH_G-1,(i+1)*BYTE_WIDTH_G-1)downto i*BYTE_WIDTH_G)",
+              "reads": [
+                "dina",
+                "minimum",
+                "i",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rising_edge",
+                "clka",
+                "en_a",
+                "i",
+                "weaByteInt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 138,
+                "col": 22,
+                "end_line": 139,
+                "end_col": 99
+              }
+            }
+          ],
           "loc": {
             "line": 132,
             "col": 7,
@@ -870,6 +897,33 @@
               "kind": "if",
               "name": "NO_CHANGE_MODE",
               "cond": "MODE_G = \"no-change\""
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mem",
+              "select": "(conv_integer(addra))(minimum(DATA_WIDTH_G-1,(i+1)*BYTE_WIDTH_G-1)downto i*BYTE_WIDTH_G)",
+              "reads": [
+                "dina",
+                "minimum",
+                "i",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rising_edge",
+                "clka",
+                "en_a",
+                "i",
+                "weaByteInt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 160,
+                "col": 25,
+                "end_line": 161,
+                "end_col": 102
+              }
             }
           ],
           "loc": {
@@ -906,6 +960,59 @@
               "cond": "MODE_G = \"no-change\""
             }
           ],
+          "assigns": [
+            {
+              "target": "douta",
+              "conds": [
+                "rsta"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 171,
+                "col": 16,
+                "end_line": 171,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "douta",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "en_a",
+                "weaByteInt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 174,
+                "col": 19,
+                "end_line": 174,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "douta",
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 177,
+                "col": 19,
+                "end_line": 177,
+                "end_col": 47
+              }
+            }
+          ],
           "loc": {
             "line": 168,
             "col": 10,
@@ -938,6 +1045,84 @@
               "kind": "if",
               "name": "READ_FIRST_MODE",
               "cond": "MODE_G = \"read-first\""
+            }
+          ],
+          "assigns": [
+            {
+              "target": "douta",
+              "conds": [
+                "rsta"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 188,
+                "col": 16,
+                "end_line": 188,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "douta",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "en_a"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 191,
+                "col": 19,
+                "end_line": 191,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "mem",
+              "select": "(conv_integer(addra))(minimum(DATA_WIDTH_G-1,(i+1)*BYTE_WIDTH_G-1)downto i*BYTE_WIDTH_G)",
+              "reads": [
+                "dina",
+                "minimum",
+                "i",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "en_a",
+                "i",
+                "weaByteInt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 194,
+                "col": 25,
+                "end_line": 195,
+                "end_col": 102
+              }
+            },
+            {
+              "target": "douta",
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 200,
+                "col": 19,
+                "end_line": 200,
+                "end_col": 47
+              }
             }
           ],
           "loc": {
@@ -974,6 +1159,84 @@
               "cond": "MODE_G = \"write-first\""
             }
           ],
+          "assigns": [
+            {
+              "target": "douta",
+              "conds": [
+                "rsta"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 210,
+                "col": 16,
+                "end_line": 210,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "mem",
+              "select": "(conv_integer(addra))(minimum(DATA_WIDTH_G-1,(i+1)*BYTE_WIDTH_G-1)downto i*BYTE_WIDTH_G)",
+              "reads": [
+                "dina",
+                "minimum",
+                "i",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "en_a",
+                "i",
+                "weaByteInt"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 215,
+                "col": 25,
+                "end_line": 216,
+                "end_col": 102
+              }
+            },
+            {
+              "target": "douta",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addra"
+              ],
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "en_a"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 19,
+                "end_line": 219,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "douta",
+              "conds": [
+                "rsta",
+                "rising_edge",
+                "clka",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 223,
+                "col": 19,
+                "end_line": 223,
+                "end_col": 47
+              }
+            }
+          ],
           "loc": {
             "line": 207,
             "col": 10,
@@ -1001,6 +1264,59 @@
               "kind": "if",
               "name": "PORT_B_REG",
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 2)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "doutb",
+              "conds": [
+                "rstb"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 236,
+                "col": 13,
+                "end_line": 236,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doutb",
+              "conds": [
+                "rstb",
+                "rising_edge",
+                "clkb",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 239,
+                "col": 16,
+                "end_line": 239,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doutb",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrb"
+              ],
+              "conds": [
+                "rstb",
+                "rising_edge",
+                "clkb",
+                "false",
+                "en_b"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 241,
+                "col": 16,
+                "end_line": 241,
+                "end_col": 62
+              }
             }
           ],
           "loc": {
@@ -1032,6 +1348,59 @@
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 3)"
             }
           ],
+          "assigns": [
+            {
+              "target": "doutc",
+              "conds": [
+                "rstc"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 256,
+                "col": 13,
+                "end_line": 256,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doutc",
+              "conds": [
+                "rstc",
+                "rising_edge",
+                "clkc",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 259,
+                "col": 16,
+                "end_line": 259,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doutc",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrc"
+              ],
+              "conds": [
+                "rstc",
+                "rising_edge",
+                "clkc",
+                "false",
+                "en_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 261,
+                "col": 16,
+                "end_line": 261,
+                "end_col": 62
+              }
+            }
+          ],
           "loc": {
             "line": 253,
             "col": 7,
@@ -1059,6 +1428,59 @@
               "kind": "if",
               "name": "PORT_D_REG",
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 4)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "doutd",
+              "conds": [
+                "rstd"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 276,
+                "col": 13,
+                "end_line": 276,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doutd",
+              "conds": [
+                "rstd",
+                "rising_edge",
+                "clkd",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 279,
+                "col": 16,
+                "end_line": 279,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doutd",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrd"
+              ],
+              "conds": [
+                "rstd",
+                "rising_edge",
+                "clkd",
+                "false",
+                "en_d"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 281,
+                "col": 16,
+                "end_line": 281,
+                "end_col": 62
+              }
             }
           ],
           "loc": {
@@ -1090,6 +1512,59 @@
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 5)"
             }
           ],
+          "assigns": [
+            {
+              "target": "doute",
+              "conds": [
+                "rste"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 296,
+                "col": 13,
+                "end_line": 296,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doute",
+              "conds": [
+                "rste",
+                "rising_edge",
+                "clke",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 299,
+                "col": 16,
+                "end_line": 299,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doute",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addre"
+              ],
+              "conds": [
+                "rste",
+                "rising_edge",
+                "clke",
+                "false",
+                "en_e"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 301,
+                "col": 16,
+                "end_line": 301,
+                "end_col": 62
+              }
+            }
+          ],
           "loc": {
             "line": 293,
             "col": 7,
@@ -1117,6 +1592,59 @@
               "kind": "if",
               "name": "PORT_F_REG",
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 6)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "doutf",
+              "conds": [
+                "rstf"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 316,
+                "col": 13,
+                "end_line": 316,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doutf",
+              "conds": [
+                "rstf",
+                "rising_edge",
+                "clkf",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 319,
+                "col": 16,
+                "end_line": 319,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doutf",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrf"
+              ],
+              "conds": [
+                "rstf",
+                "rising_edge",
+                "clkf",
+                "false",
+                "en_f"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 321,
+                "col": 16,
+                "end_line": 321,
+                "end_col": 62
+              }
             }
           ],
           "loc": {
@@ -1148,6 +1676,59 @@
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 7)"
             }
           ],
+          "assigns": [
+            {
+              "target": "doutg",
+              "conds": [
+                "rstg"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 336,
+                "col": 13,
+                "end_line": 336,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "doutg",
+              "conds": [
+                "rstg",
+                "rising_edge",
+                "clkg",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 339,
+                "col": 16,
+                "end_line": 339,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "doutg",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrg"
+              ],
+              "conds": [
+                "rstg",
+                "rising_edge",
+                "clkg",
+                "false",
+                "en_g"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 341,
+                "col": 16,
+                "end_line": 341,
+                "end_col": 62
+              }
+            }
+          ],
           "loc": {
             "line": 333,
             "col": 7,
@@ -1177,11 +1758,247 @@
               "cond": "(REG_EN_G = true) and (NUM_PORTS_G >= 8)"
             }
           ],
+          "assigns": [
+            {
+              "target": "douth",
+              "conds": [
+                "rsth"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 356,
+                "col": 13,
+                "end_line": 356,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "douth",
+              "conds": [
+                "rsth",
+                "rising_edge",
+                "clkh",
+                "false"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 359,
+                "col": 16,
+                "end_line": 359,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "douth",
+              "reads": [
+                "mem",
+                "conv_integer",
+                "addrh"
+              ],
+              "conds": [
+                "rsth",
+                "rising_edge",
+                "clkh",
+                "false",
+                "en_h"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 361,
+                "col": 16,
+                "end_line": 361,
+                "end_col": 62
+              }
+            }
+          ],
           "loc": {
             "line": 353,
             "col": 7,
             "end_line": 364,
             "end_col": 19
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "weaByteInt",
+          "reads": [
+            "weaByte",
+            "wea"
+          ],
+          "loc": {
+            "line": 126,
+            "col": 4,
+            "end_line": 126,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "douta",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addra"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_A_NOT_REG",
+              "cond": "(REG_EN_G = false)"
+            }
+          ],
+          "loc": {
+            "line": 146,
+            "col": 7,
+            "end_line": 146,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doutb",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrb"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_B_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 2)"
+            }
+          ],
+          "loc": {
+            "line": 248,
+            "col": 7,
+            "end_line": 248,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doutc",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrc"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_C_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 3)"
+            }
+          ],
+          "loc": {
+            "line": 268,
+            "col": 7,
+            "end_line": 268,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doutd",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrd"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_D_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 4)"
+            }
+          ],
+          "loc": {
+            "line": 288,
+            "col": 7,
+            "end_line": 288,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doute",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addre"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_E_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 5)"
+            }
+          ],
+          "loc": {
+            "line": 308,
+            "col": 7,
+            "end_line": 308,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doutf",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrf"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_F_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 6)"
+            }
+          ],
+          "loc": {
+            "line": 328,
+            "col": 7,
+            "end_line": 328,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "doutg",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrg"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_G_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 7)"
+            }
+          ],
+          "loc": {
+            "line": 348,
+            "col": 7,
+            "end_line": 348,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "douth",
+          "reads": [
+            "mem",
+            "conv_integer",
+            "addrh"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PORT_H_NOT_REG",
+              "cond": "(REG_EN_G = false) and (NUM_PORTS_G >= 8)"
+            }
+          ],
+          "loc": {
+            "line": 368,
+            "col": 7,
+            "end_line": 368,
+            "end_col": 41
           }
         }
       ],

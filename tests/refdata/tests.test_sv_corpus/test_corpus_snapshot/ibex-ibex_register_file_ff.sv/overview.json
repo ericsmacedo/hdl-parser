@@ -616,7 +616,10 @@
             },
             {
               "kind": "else",
-              "name": "g_normal_r0"
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
             }
           ],
           "loc": {
@@ -639,7 +642,10 @@
             },
             {
               "kind": "else",
-              "name": "g_normal_r0"
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
             },
             {
               "kind": "if",
@@ -666,11 +672,17 @@
             },
             {
               "kind": "else",
-              "name": "g_normal_r0"
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
             },
             {
               "kind": "else",
-              "name": "g_rf_shared0_no_x16"
+              "name": "g_rf_shared0_no_x16",
+              "others": [
+                "!RV32E"
+              ]
             }
           ],
           "loc": {
@@ -707,7 +719,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -725,7 +740,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -742,7 +760,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -760,7 +781,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "for",
@@ -782,7 +806,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "if",
@@ -805,7 +832,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "if",
@@ -827,11 +857,17 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "else",
-              "name": "g_normal_r0"
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
             }
           ],
           "loc": {
@@ -849,7 +885,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "if",
@@ -871,7 +910,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -888,7 +930,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -905,7 +950,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -926,6 +974,26 @@
               "kind": "if",
               "name": "g_cheriot_rf",
               "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "we_a_dec",
+              "select": "[i]",
+              "reads": [
+                "waddr_a_i",
+                "i",
+                "we_a_i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 94,
+                "col": 9,
+                "end_line": 94,
+                "end_col": 65
+              }
             }
           ],
           "loc": {
@@ -964,6 +1032,40 @@
               "cond": "genvar i = 1; i < 16; i++"
             }
           ],
+          "assigns": [
+            {
+              "target": "rf_reg_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 11,
+                "end_line": 107,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_reg_q",
+              "reads": [
+                "wdata_a_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "we_a_dec",
+                "i",
+                "waddr_a_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 109,
+                "col": 11,
+                "end_line": 109,
+                "end_col": 33
+              }
+            }
+          ],
           "loc": {
             "line": 105,
             "col": 7,
@@ -998,6 +1100,41 @@
               "kind": "for",
               "name": "g_rf_shared_flops",
               "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rf_reg_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 122,
+                "col": 11,
+                "end_line": 122,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "rf_reg_q",
+              "reads": [
+                "wshared_data"
+              ],
+              "conds": [
+                "rst_ni",
+                "cheriot_enabled",
+                "we_a_dec",
+                "i",
+                "waddr_a_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 125,
+                "col": 11,
+                "end_line": 125,
+                "end_col": 36
+              }
             }
           ],
           "loc": {
@@ -1036,6 +1173,38 @@
               "cond": "DummyInstructions"
             }
           ],
+          "assigns": [
+            {
+              "target": "rf_data_r0_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 154,
+                "col": 11,
+                "end_line": 154,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "rf_data_r0_q",
+              "reads": [
+                "wdata_a_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "we_data_r0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 156,
+                "col": 11,
+                "end_line": 156,
+                "end_col": 37
+              }
+            }
+          ],
           "loc": {
             "line": 152,
             "col": 7,
@@ -1072,6 +1241,38 @@
               "cond": "DummyInstructions"
             }
           ],
+          "assigns": [
+            {
+              "target": "rf_shared_r0_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 165,
+                "col": 11,
+                "end_line": 165,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "rf_shared_r0_q",
+              "reads": [
+                "wshared_data"
+              ],
+              "conds": [
+                "rst_ni",
+                "we_shared_r0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 167,
+                "col": 11,
+                "end_line": 167,
+                "end_col": 42
+              }
+            }
+          ],
           "loc": {
             "line": 163,
             "col": 7,
@@ -1104,12 +1305,49 @@
             },
             {
               "kind": "else",
-              "name": "g_normal_r0"
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
             },
             {
               "kind": "if",
               "name": "g_rf_shared0_x16",
               "cond": "!RV32E"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rf_shared_r0_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 188,
+                "col": 13,
+                "end_line": 188,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "rf_shared_r0_q",
+              "reads": [
+                "wdata_a_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "cheriot_enabled",
+                "we_a_dec",
+                "waddr_a_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 190,
+                "col": 13,
+                "end_line": 190,
+                "end_col": 41
+              }
             }
           ],
           "loc": {
@@ -1126,7 +1364,30 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "we_a_dec",
+              "select": "[i]",
+              "reads": [
+                "waddr_a_i",
+                "i",
+                "we_a_i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 239,
+                "col": 9,
+                "end_line": 239,
+                "end_col": 60
+              }
             }
           ],
           "loc": {
@@ -1156,12 +1417,48 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             },
             {
               "kind": "for",
               "name": "g_rf_flops",
               "cond": "genvar i = 1; i < NUM_WORDS; i++"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rf_reg_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 252,
+                "col": 11,
+                "end_line": 252,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_reg_q",
+              "reads": [
+                "wdata_a_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "we_a_dec",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 254,
+                "col": 11,
+                "end_line": 254,
+                "end_col": 33
+              }
             }
           ],
           "loc": {
@@ -1191,7 +1488,163 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_plain_rf"
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "rf_r0_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 274,
+                "col": 11,
+                "end_line": 274,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "rf_r0_q",
+              "reads": [
+                "wdata_a_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "we_r0_dummy"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 276,
+                "col": 11,
+                "end_line": 276,
+                "end_col": 32
+              }
+            }
+          ],
+          "loc": {
+            "line": 272,
+            "col": 7,
+            "end_line": 278,
+            "end_col": 10
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "cheriot_enabled",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 82,
+            "col": 12,
+            "end_line": 82,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "wshared_data",
+          "reads": [
+            "cheriot_enabled",
+            "wcap_a_i",
+            "wdata_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 12,
+            "end_line": 100,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "rf_data",
+          "select": "[i]",
+          "reads": [
+            "rf_reg_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_data_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 14,
+            "end_line": 112,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "rf_shared",
+          "select": "[i]",
+          "reads": [
+            "rf_reg_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_shared_flops",
+              "cond": "genvar i = 1; i < 16; i++"
+            }
+          ],
+          "loc": {
+            "line": 128,
+            "col": 14,
+            "end_line": 128,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "we_data_r0",
+          "reads": [
+            "we_a_dec",
+            "waddr_a_i",
+            "dummy_instr_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
             },
             {
               "kind": "if",
@@ -1200,10 +1653,719 @@
             }
           ],
           "loc": {
-            "line": 272,
-            "col": 7,
-            "end_line": 278,
-            "end_col": 10
+            "line": 146,
+            "col": 14,
+            "end_line": 146,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "we_shared_r0",
+          "reads": [
+            "cheriot_enabled",
+            "we_data_r0",
+            "we_a_dec",
+            "waddr_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 147,
+            "col": 14,
+            "end_line": 148,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "rf_data",
+          "select": "[0]",
+          "reads": [
+            "dummy_instr_id_i",
+            "rf_data_r0_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 160,
+            "col": 14,
+            "end_line": 160,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "rf_shared",
+          "select": "[0]",
+          "reads": [
+            "rf_shared_r0_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 172,
+            "col": 14,
+            "end_line": 172,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "rcap_r0",
+          "reads": [
+            "dummy_instr_id_i",
+            "rf_shared"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 173,
+            "col": 14,
+            "end_line": 173,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "rf_data",
+          "select": "[0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 176,
+            "col": 14,
+            "end_line": 176,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "rcap_r0",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 177,
+            "col": 14,
+            "end_line": 177,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "unused_dummy_instr",
+          "reads": [
+            "dummy_instr_id_i",
+            "dummy_instr_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 14,
+            "end_line": 180,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "rf_shared",
+          "select": "[0]",
+          "reads": [
+            "rf_shared_r0_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_rf_shared0_x16",
+              "cond": "!RV32E"
+            }
+          ],
+          "loc": {
+            "line": 193,
+            "col": 16,
+            "end_line": 193,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "rf_shared",
+          "select": "[0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "g_rf_shared0_no_x16",
+              "others": [
+                "!RV32E"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 195,
+            "col": 16,
+            "end_line": 195,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "unused_we_a_dec0",
+          "reads": [
+            "we_a_dec"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "g_rf_shared0_no_x16",
+              "others": [
+                "!RV32E"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 198,
+            "col": 16,
+            "end_line": 198,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "rdata_a_o",
+          "reads": [
+            "raddr_a_i",
+            "cheriot_enabled",
+            "rf_shared",
+            "rf_data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 208,
+            "col": 12,
+            "end_line": 209,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "rdata_b_o",
+          "reads": [
+            "raddr_b_i",
+            "cheriot_enabled",
+            "rf_shared",
+            "rf_data"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 210,
+            "col": 12,
+            "end_line": 211,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "rcap_a_o",
+          "reads": [
+            "cheriot_enabled",
+            "raddr_a_i",
+            "rcap_r0",
+            "rf_shared"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 214,
+            "col": 12,
+            "end_line": 215,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "rcap_b_o",
+          "reads": [
+            "cheriot_enabled",
+            "raddr_b_i",
+            "rcap_r0",
+            "rf_shared"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 216,
+            "col": 12,
+            "end_line": 217,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "unused_test_en",
+          "reads": [
+            "test_en_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_rf",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 220,
+            "col": 12,
+            "end_line": 220,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "unused_strobe",
+          "reads": [
+            "we_a_dec"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 244,
+            "col": 12,
+            "end_line": 244,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "rf_reg",
+          "select": "[i]",
+          "reads": [
+            "rf_reg_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_rf_flops",
+              "cond": "genvar i = 1; i < NUM_WORDS; i++"
+            }
+          ],
+          "loc": {
+            "line": 258,
+            "col": 14,
+            "end_line": 258,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "we_r0_dummy",
+          "reads": [
+            "we_a_i",
+            "dummy_instr_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 269,
+            "col": 14,
+            "end_line": 269,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "rf_reg",
+          "select": "[0]",
+          "reads": [
+            "dummy_instr_id_i",
+            "rf_r0_q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_dummy_r0",
+              "cond": "DummyInstructions"
+            }
+          ],
+          "loc": {
+            "line": 281,
+            "col": 14,
+            "end_line": 281,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "unused_dummy_instr",
+          "reads": [
+            "dummy_instr_id_i",
+            "dummy_instr_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 285,
+            "col": 14,
+            "end_line": 285,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "rf_reg",
+          "select": "[0]",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "g_normal_r0",
+              "others": [
+                "DummyInstructions"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 288,
+            "col": 14,
+            "end_line": 288,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "rdata_a_o",
+          "reads": [
+            "rf_reg",
+            "raddr_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 291,
+            "col": 12,
+            "end_line": 291,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "rdata_b_o",
+          "reads": [
+            "rf_reg",
+            "raddr_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 292,
+            "col": 12,
+            "end_line": 292,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "unused_raddr_msb",
+          "reads": [
+            "raddr_a_i",
+            "raddr_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_unused_raddr_msb",
+              "cond": "RV32E"
+            }
+          ],
+          "loc": {
+            "line": 297,
+            "col": 14,
+            "end_line": 297,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "unused_test_en",
+          "reads": [
+            "test_en_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 302,
+            "col": 12,
+            "end_line": 302,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "rcap_a_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 305,
+            "col": 12,
+            "end_line": 305,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "rcap_b_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 306,
+            "col": 12,
+            "end_line": 306,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "unused_wcap_a",
+          "reads": [
+            "wcap_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 309,
+            "col": 12,
+            "end_line": 309,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "unused_cheriot_enable",
+          "reads": [
+            "cheriot_enable_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_plain_rf",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 312,
+            "col": 12,
+            "end_line": 312,
+            "end_col": 53
           }
         }
       ],

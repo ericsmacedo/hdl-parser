@@ -44,6 +44,16 @@ _LIMIT = {"type": "integer", "minimum": 0, "description": "Number of entries of 
 _FIELDS = {"type": "array", "items": {"type": "string"}, "description": "Fields to be returned. All by default."}
 _SUMMARY = {"type": "boolean", "description": "Names and counts only."}
 _NAME = {"type": "string", "description": "Name or full identifier ('rtl/top.sv:top')."}
+_PATH = {
+    "type": "string",
+    "description": "Instance path of a signal: top module, instance names (with generate labels), signal: "
+    "'top.u_core.u_alu.result_o'.",
+}
+_TOP_PARAMS = {
+    "type": "object",
+    "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
+    "description": "Values of the parameters of the top, by name. Defaults otherwise.",
+}
 
 TOOLS: tuple[dict[str, Any], ...] = (
     {
@@ -189,6 +199,47 @@ TOOLS: tuple[dict[str, Any], ...] = (
         },
     },
     {
+        "name": "drivers",
+        "description": "What drives a signal: assignments (with the signals they read and their conditions), "
+        "output ports of instances, the connection of an input port within the parent. Ask for the drivers of "
+        "the signals read ('nets') to go further.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT},
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "loads",
+        "description": "What a signal drives: assignments reading it (also by a condition: 'control'), input ports "
+        "of instances, the connection of an output port within the parent.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT},
+            "required": ["path"],
+        },
+    },
+    {
+        "name": "trace",
+        "description": "Shortest connection from one signal to another one below the same top, hop by hop with "
+        "kind and location. Stops behind flip-flops unless through_regs=true, and at undefined modules.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "src": {**_PATH, "description": "Instance path of the signal to start at."},
+                "dst": {**_PATH, "description": "Instance path of the signal to reach."},
+                "params": _TOP_PARAMS,
+                "through_regs": {"type": "boolean", "description": "Continue behind flip-flops."},
+                "control": {
+                    "type": "boolean",
+                    "description": "Follow conditions, resets and clocks too. Default true.",
+                },
+                "limit": {**_LIMIT, "description": "Number of hops. Default 100. 0: no limit."},
+            },
+            "required": ["src", "dst"],
+        },
+    },
+    {
         "name": "reload",
         "description": "Read the project again, i.e. after files were added. Changed files are read again "
         "automatically.",
@@ -207,6 +258,9 @@ _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "diagnostics": query.diagnostics,
     "elaborate": query.elaborate,
     "evaluate": query.evaluate,
+    "drivers": query.drivers,
+    "loads": query.loads,
+    "trace": query.trace,
 }
 
 
@@ -294,7 +348,8 @@ Lists are limited: what is left out is counted in 'omitted'. Start small: 'hiera
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
 'elaborate' gives the values of the parameters and the widths of the ports of an instance \
-('path' below 'top'), 'evaluate' the value of an expression."""
+('path' below 'top'), 'evaluate' the value of an expression. 'drivers' and 'loads' tell what drives a signal \
+and what it drives, by instance path ('top.u_core.result_o'), 'trace' the connection between two signals."""
 
 
 def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:

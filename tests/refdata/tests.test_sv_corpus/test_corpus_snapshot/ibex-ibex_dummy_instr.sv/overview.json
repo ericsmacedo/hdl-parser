@@ -556,6 +556,38 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "dummy_instr_seed_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 73,
+                "col": 7,
+                "end_line": 73,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dummy_instr_seed_q",
+              "reads": [
+                "dummy_instr_seed_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "dummy_instr_seed_en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 75,
+                "col": 7,
+                "end_line": 75,
+                "end_col": 48
+              }
+            }
+          ],
           "loc": {
             "line": 71,
             "col": 3,
@@ -580,6 +612,38 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "dummy_cnt_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 111,
+                "col": 7,
+                "end_line": 111,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "dummy_cnt_q",
+              "reads": [
+                "dummy_cnt_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "dummy_cnt_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 113,
+                "col": 7,
+                "end_line": 113,
+                "end_col": 34
+              }
+            }
+          ],
           "loc": {
             "line": 109,
             "col": 3,
@@ -590,6 +654,128 @@
         {
           "id": "ibex_dummy_instr.#always3",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "dummy_set",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 9,
+                "end_line": 125,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "dummy_opcode",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 126,
+                "col": 9,
+                "end_line": 126,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dummy_set",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 129,
+                "col": 9,
+                "end_line": 129,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "dummy_opcode",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 130,
+                "col": 9,
+                "end_line": 130,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dummy_set",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 133,
+                "col": 9,
+                "end_line": 133,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "dummy_opcode",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 134,
+                "col": 9,
+                "end_line": 134,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dummy_set",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 137,
+                "col": 9,
+                "end_line": 137,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "dummy_opcode",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 138,
+                "col": 9,
+                "end_line": 138,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "dummy_set",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 141,
+                "col": 9,
+                "end_line": 141,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "dummy_opcode",
+              "conds": [
+                "lfsr_data"
+              ],
+              "loc": {
+                "line": 142,
+                "col": 9,
+                "end_line": 142,
+                "end_col": 31
+              }
+            }
+          ],
           "comment": [
             "Encode instruction"
           ],
@@ -598,6 +784,180 @@
             "col": 3,
             "end_line": 145,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "lfsr_en",
+          "reads": [
+            "insert_dummy_instr",
+            "id_in_ready_i"
+          ],
+          "loc": {
+            "line": 67,
+            "col": 10,
+            "end_line": 67,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "dummy_instr_seed_d",
+          "reads": [
+            "dummy_instr_seed_q",
+            "dummy_instr_seed_i"
+          ],
+          "loc": {
+            "line": 69,
+            "col": 10,
+            "end_line": 69,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "lfsr_data",
+          "reads": [
+            "lfsr_state"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 10,
+            "end_line": 96,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "dummy_cnt_threshold",
+          "reads": [
+            "lfsr_data",
+            "dummy_instr_mask_i"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 10,
+            "end_line": 100,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "dummy_cnt_incr",
+          "reads": [
+            "dummy_cnt_q"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 10,
+            "end_line": 101,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "dummy_cnt_d",
+          "reads": [
+            "insert_dummy_instr",
+            "dummy_cnt_incr"
+          ],
+          "loc": {
+            "line": 103,
+            "col": 10,
+            "end_line": 103,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "dummy_cnt_en",
+          "reads": [
+            "dummy_instr_en_i",
+            "id_in_ready_i",
+            "insert_hold_i",
+            "fetch_valid_i",
+            "insert_dummy_instr"
+          ],
+          "loc": {
+            "line": 106,
+            "col": 10,
+            "end_line": 107,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "insert_dummy_instr",
+          "reads": [
+            "dummy_instr_en_i",
+            "insert_hold_i",
+            "dummy_cnt_q",
+            "dummy_cnt_threshold"
+          ],
+          "loc": {
+            "line": 118,
+            "col": 10,
+            "end_line": 119,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "dummy_op_a",
+          "reads": [
+            "lfsr_data",
+            "dummy_instr_16regs_i"
+          ],
+          "loc": {
+            "line": 148,
+            "col": 10,
+            "end_line": 148,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "dummy_op_b",
+          "reads": [
+            "lfsr_data",
+            "dummy_instr_16regs_i"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 10,
+            "end_line": 149,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "dummy_instr",
+          "reads": [
+            "dummy_set",
+            "dummy_op_b",
+            "dummy_op_a",
+            "dummy_opcode"
+          ],
+          "loc": {
+            "line": 152,
+            "col": 10,
+            "end_line": 152,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "insert_dummy_instr_o",
+          "reads": [
+            "insert_dummy_instr"
+          ],
+          "loc": {
+            "line": 155,
+            "col": 10,
+            "end_line": 155,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "dummy_instr_data_o",
+          "reads": [
+            "dummy_instr"
+          ],
+          "loc": {
+            "line": 156,
+            "col": 10,
+            "end_line": 156,
+            "end_col": 44
           }
         }
       ],

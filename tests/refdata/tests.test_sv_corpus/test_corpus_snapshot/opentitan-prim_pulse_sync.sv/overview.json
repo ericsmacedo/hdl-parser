@@ -176,6 +176,38 @@
           "clock_edge": "posedge",
           "reset": "rst_src_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "src_level",
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 32,
+                "col": 7,
+                "end_line": 32,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "src_level",
+              "reads": [
+                "src_level",
+                "src_pulse_i"
+              ],
+              "conds": [
+                "rst_src_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 34,
+                "col": 7,
+                "end_line": 34,
+                "end_col": 44
+              }
+            }
+          ],
           "loc": {
             "line": 30,
             "col": 3,
@@ -200,6 +232,43 @@
           "clock_edge": "posedge",
           "reset": "effective_rst_n",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "src_active_flag_q",
+              "conds": [
+                "effective_rst_n"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 56,
+                "col": 7,
+                "end_line": 56,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "src_active_flag_q",
+              "reads": [
+                "src_active_flag_d"
+              ],
+              "conds": [
+                "effective_rst_n"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 58,
+                "col": 7,
+                "end_line": 58,
+                "end_col": 46
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -227,6 +296,37 @@
           "clock_edge": "posedge",
           "reset": "rst_dst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "dst_level_q",
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 90,
+                "col": 7,
+                "end_line": 90,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "dst_level_q",
+              "reads": [
+                "dst_level"
+              ],
+              "conds": [
+                "rst_dst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 92,
+                "col": 7,
+                "end_line": 92,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "delay dst_level by 1 cycle"
           ],
@@ -235,6 +335,53 @@
             "col": 3,
             "end_line": 94,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "effective_rst_n",
+          "reads": [
+            "rst_src_ni",
+            "dst_pulse_o"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 10,
+            "end_line": 49,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "src_active_flag_d",
+          "reads": [
+            "src_pulse_i",
+            "src_active_flag_q"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 10,
+            "end_line": 52,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "dst_pulse_o",
+          "reads": [
+            "dst_level_q",
+            "dst_level"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 10,
+            "end_line": 97,
+            "end_col": 47
           }
         }
       ],

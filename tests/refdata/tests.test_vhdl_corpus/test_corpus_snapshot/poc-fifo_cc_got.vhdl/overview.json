@@ -687,6 +687,76 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "IP0",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 195,
+                "col": 9,
+                "end_line": 195,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "OP0",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 196,
+                "col": 9,
+                "end_line": 196,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "IP0",
+              "reads": [
+                "IP1"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 200,
+                "col": 11,
+                "end_line": 200,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "OP0",
+              "reads": [
+                "OP1"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "re"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 205,
+                "col": 11,
+                "end_line": 205,
+                "end_col": 22
+              }
+            }
+          ],
           "loc": {
             "line": 191,
             "col": 3,
@@ -706,6 +776,83 @@
             },
             {
               "signal": "fulli"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "estate_wr",
+              "blocking": false,
+              "loc": {
+                "line": 218,
+                "col": 5,
+                "end_line": 218,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "fstate_rd",
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 5,
+                "end_line": 219,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "d",
+              "conds": [
+                "fulli"
+              ],
+              "loc": {
+                "line": 223,
+                "col": 7,
+                "end_line": 223,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "d",
+              "reads": [
+                "std_logic_vector",
+                "IP0",
+                "OP0"
+              ],
+              "conds": [
+                "fulli"
+              ],
+              "loc": {
+                "line": 225,
+                "col": 7,
+                "end_line": 225,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "estate_wr",
+              "reads": [
+                "d"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 232,
+                "col": 7,
+                "end_line": 232,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "fstate_rd",
+              "reads": [
+                "d"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 235,
+                "col": 7,
+                "end_line": 235,
+                "end_col": 61
+              }
             }
           ],
           "comment": [
@@ -735,6 +882,43 @@
               "cond": "not STATE_REG"
             }
           ],
+          "assigns": [
+            {
+              "target": "DF",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 256,
+                "col": 11,
+                "end_line": 256,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "DF",
+              "reads": [
+                "we"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we",
+                "re"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 258,
+                "col": 11,
+                "end_line": 258,
+                "end_col": 20
+              }
+            }
+          ],
           "comment": [
             "-- Direction Flag remembering the last Operation"
           ],
@@ -760,6 +944,114 @@
               "kind": "if",
               "name": "genStateReg",
               "cond": "STATE_REG"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "Ful",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 279,
+                "col": 11,
+                "end_line": 279,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "Avl",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 280,
+                "col": 11,
+                "end_line": 280,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "Ful",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we",
+                "re",
+                "IP1",
+                "OP0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 285,
+                "col": 13,
+                "end_line": 285,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "Ful",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we",
+                "re",
+                "IP1",
+                "OP0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 287,
+                "col": 13,
+                "end_line": 287,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "Avl",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we",
+                "re",
+                "OP1",
+                "IP0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 292,
+                "col": 13,
+                "end_line": 292,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "Avl",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "we",
+                "re",
+                "OP1",
+                "IP0"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 294,
+                "col": 13,
+                "end_line": 294,
+                "end_col": 24
+              }
             }
           ],
           "loc": {
@@ -791,6 +1083,43 @@
               "cond": "not OUTPUT_REG"
             }
           ],
+          "assigns": [
+            {
+              "target": "Vld",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 344,
+                "col": 13,
+                "end_line": 344,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "Vld",
+              "reads": [
+                "Vld",
+                "got",
+                "empti"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 346,
+                "col": 13,
+                "end_line": 346,
+                "end_col": 51
+              }
+            }
+          ],
           "loc": {
             "line": 340,
             "col": 7,
@@ -820,6 +1149,99 @@
               "cond": "OUTPUT_REG"
             }
           ],
+          "assigns": [
+            {
+              "target": "Buf",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 366,
+                "col": 13,
+                "end_line": 366,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "Vld",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 367,
+                "col": 13,
+                "end_line": 367,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "Vld",
+              "select": "(0)",
+              "reads": [
+                "Vld",
+                "got",
+                "empti"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 369,
+                "col": 13,
+                "end_line": 369,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "Vld",
+              "select": "(1)",
+              "reads": [
+                "Vld",
+                "got"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 370,
+                "col": 13,
+                "end_line": 370,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "Buf",
+              "reads": [
+                "do"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "Vld",
+                "got"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 372,
+                "col": 15,
+                "end_line": 372,
+                "end_col": 25
+              }
+            }
+          ],
           "loc": {
             "line": 362,
             "col": 7,
@@ -844,6 +1266,47 @@
               "cond": "DATA_REG"
             }
           ],
+          "assigns": [
+            {
+              "target": "regfile",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "SIMULATION",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 405,
+                "col": 11,
+                "end_line": 405,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "regfile",
+              "select": "(to_integer(wa))",
+              "reads": [
+                "din",
+                "to_integer",
+                "wa"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "SIMULATION",
+                "rst",
+                "we"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 409,
+                "col": 13,
+                "end_line": 409,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "-- Memory State"
           ],
@@ -852,6 +1315,444 @@
             "col": 5,
             "end_line": 415,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "IP0_slv",
+          "reads": [
+            "std_logic_vector",
+            "IP0"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 166,
+            "col": 3,
+            "end_line": 166,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "OP0_slv",
+          "reads": [
+            "std_logic_vector",
+            "OP0"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 167,
+            "col": 3,
+            "end_line": 167,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "IP1",
+          "reads": [
+            "unsigned",
+            "IP1_slv"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 187,
+            "col": 3,
+            "end_line": 187,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "OP1",
+          "reads": [
+            "unsigned",
+            "OP1_slv"
+          ],
+          "generates": [
+            {
+              "kind": "block",
+              "name": "blkPointer"
+            }
+          ],
+          "loc": {
+            "line": 188,
+            "col": 3,
+            "end_line": 188,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "wa",
+          "reads": [
+            "IP0"
+          ],
+          "loc": {
+            "line": 211,
+            "col": 3,
+            "end_line": 211,
+            "end_col": 13
+          }
+        },
+        {
+          "target": "ra",
+          "reads": [
+            "OP0"
+          ],
+          "loc": {
+            "line": 212,
+            "col": 3,
+            "end_line": 212,
+            "end_col": 13
+          }
+        },
+        {
+          "target": "Peq",
+          "conds": [
+            "IP0",
+            "OP0"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 264,
+            "col": 5,
+            "end_line": 264,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "fulli",
+          "reads": [
+            "Peq",
+            "DF"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 265,
+            "col": 5,
+            "end_line": 265,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "empti",
+          "reads": [
+            "Peq",
+            "DF"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateCmb",
+              "cond": "not STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 266,
+            "col": 5,
+            "end_line": 266,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "fulli",
+          "reads": [
+            "Ful"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateReg",
+              "cond": "STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 300,
+            "col": 5,
+            "end_line": 300,
+            "end_col": 18
+          }
+        },
+        {
+          "target": "empti",
+          "reads": [
+            "Avl"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genStateReg",
+              "cond": "STATE_REG"
+            }
+          ],
+          "loc": {
+            "line": 301,
+            "col": 5,
+            "end_line": 301,
+            "end_col": 22
+          }
+        },
+        {
+          "target": "full",
+          "reads": [
+            "fulli"
+          ],
+          "loc": {
+            "line": 308,
+            "col": 3,
+            "end_line": 308,
+            "end_col": 17
+          }
+        },
+        {
+          "target": "we",
+          "reads": [
+            "put",
+            "fulli"
+          ],
+          "loc": {
+            "line": 309,
+            "col": 3,
+            "end_line": 309,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "re",
+          "reads": [
+            "Vld",
+            "got",
+            "empti"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputCmb",
+              "cond": "not OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 350,
+            "col": 7,
+            "end_line": 350,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "dout",
+          "reads": [
+            "do"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputCmb",
+              "cond": "not OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 351,
+            "col": 7,
+            "end_line": 351,
+            "end_col": 19
+          }
+        },
+        {
+          "target": "valid",
+          "reads": [
+            "Vld"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputCmb",
+              "cond": "not OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 352,
+            "col": 7,
+            "end_line": 352,
+            "end_col": 20
+          }
+        },
+        {
+          "target": "re",
+          "reads": [
+            "Vld",
+            "got",
+            "empti"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 377,
+            "col": 7,
+            "end_line": 377,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "dout",
+          "reads": [
+            "Buf"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 378,
+            "col": 7,
+            "end_line": 378,
+            "end_col": 20
+          }
+        },
+        {
+          "target": "valid",
+          "reads": [
+            "Vld"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genLarge",
+              "cond": "not DATA_REG"
+            },
+            {
+              "kind": "if",
+              "name": "genOutputReg",
+              "cond": "OUTPUT_REG"
+            }
+          ],
+          "loc": {
+            "line": 379,
+            "col": 7,
+            "end_line": 379,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "re",
+          "reads": [
+            "got",
+            "empti"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSmall",
+              "cond": "DATA_REG"
+            }
+          ],
+          "loc": {
+            "line": 418,
+            "col": 5,
+            "end_line": 418,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "dout",
+          "reads": [
+            "regfile",
+            "to_integer",
+            "ra"
+          ],
+          "conds": [
+            "Is_X",
+            "std_logic_vector",
+            "ra"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSmall",
+              "cond": "DATA_REG"
+            }
+          ],
+          "loc": {
+            "line": 419,
+            "col": 5,
+            "end_line": 420,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "valid",
+          "reads": [
+            "empti"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genSmall",
+              "cond": "DATA_REG"
+            }
+          ],
+          "loc": {
+            "line": 421,
+            "col": 5,
+            "end_line": 421,
+            "end_col": 24
           }
         }
       ],

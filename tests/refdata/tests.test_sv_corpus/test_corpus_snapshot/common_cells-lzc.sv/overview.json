@@ -122,7 +122,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_lzc"
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
             }
           ],
           "loc": {
@@ -140,7 +143,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_lzc"
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
             }
           ],
           "loc": {
@@ -158,7 +164,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_lzc"
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
             }
           ],
           "loc": {
@@ -176,7 +185,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_lzc"
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
             }
           ],
           "loc": {
@@ -195,7 +207,29 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_lzc"
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "in_tmp",
+              "select": "[i]",
+              "reads": [
+                "in_i",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 59,
+                "col": 9,
+                "end_line": 59,
+                "end_col": 56
+              }
             }
           ],
           "comment": [
@@ -206,6 +240,463 @@
             "col": 5,
             "end_line": 61,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "cnt_o",
+          "select": "[0]",
+          "reads": [
+            "in_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_lzc",
+              "cond": "WIDTH == 1"
+            }
+          ],
+          "loc": {
+            "line": 35,
+            "col": 12,
+            "end_line": 35,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "empty_o",
+          "reads": [
+            "in_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_degenerate_lzc",
+              "cond": "WIDTH == 1"
+            }
+          ],
+          "loc": {
+            "line": 36,
+            "col": 12,
+            "end_line": 36,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "index_lut",
+          "select": "[j]",
+          "reads": [
+            "j"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_index_lut",
+              "cond": "genvar j = 0; unsigned'(j) < WIDTH; j++"
+            }
+          ],
+          "loc": {
+            "line": 64,
+            "col": 14,
+            "end_line": 64,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "sel_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "in_tmp",
+            "k",
+            "level"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_reduce",
+              "cond": "unsigned'(k) * 2 < WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 72,
+            "col": 20,
+            "end_line": 72,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "index_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "in_tmp",
+            "k",
+            "index_lut",
+            "level"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_reduce",
+              "cond": "unsigned'(k) * 2 < WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 73,
+            "col": 20,
+            "end_line": 75,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "sel_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "in_tmp",
+            "k",
+            "level"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_base",
+              "cond": "unsigned'(k) * 2 == WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 79,
+            "col": 20,
+            "end_line": 79,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "index_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "index_lut",
+            "k",
+            "level"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_base",
+              "cond": "unsigned'(k) * 2 == WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 80,
+            "col": 20,
+            "end_line": 80,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "sel_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "level",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_out_of_range",
+              "cond": "unsigned'(k) * 2 > WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 84,
+            "col": 20,
+            "end_line": 84,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "index_nodes",
+          "select": "[2**level-1+k]",
+          "reads": [
+            "level",
+            "k"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "if",
+              "name": "g_last_level",
+              "cond": "unsigned'(level) == NumLevels - 1"
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar k = 0; k < 2 ** level; k++"
+            },
+            {
+              "kind": "if",
+              "name": "g_out_of_range",
+              "cond": "unsigned'(k) * 2 > WIDTH - 1"
+            }
+          ],
+          "loc": {
+            "line": 85,
+            "col": 20,
+            "end_line": 85,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "sel_nodes",
+          "select": "[2**level-1+l]",
+          "reads": [
+            "sel_nodes",
+            "level",
+            "l"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "else",
+              "name": "g_not_last_level",
+              "others": [
+                "unsigned'(level) == NumLevels - 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar l = 0; l < 2 ** level; l++"
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 18,
+            "end_line": 91,
+            "end_col": 100
+          }
+        },
+        {
+          "target": "index_nodes",
+          "select": "[2**level-1+l]",
+          "reads": [
+            "sel_nodes",
+            "level",
+            "l",
+            "index_nodes"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_levels",
+              "cond": "genvar level = 0; unsigned'(level) < NumLevels; level++"
+            },
+            {
+              "kind": "else",
+              "name": "g_not_last_level",
+              "others": [
+                "unsigned'(level) == NumLevels - 1"
+              ]
+            },
+            {
+              "kind": "for",
+              "name": "g_level",
+              "cond": "genvar l = 0; l < 2 ** level; l++"
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 18,
+            "end_line": 94,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "cnt_o",
+          "reads": [
+            "index_nodes"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 99,
+            "col": 12,
+            "end_line": 99,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "empty_o",
+          "reads": [
+            "sel_nodes",
+            "in_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_lzc",
+              "others": [
+                "WIDTH == 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 12,
+            "end_line": 100,
+            "end_col": 73
           }
         }
       ],

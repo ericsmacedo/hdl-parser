@@ -115,7 +115,11 @@ def test_model():
     file = parse_text(TEXT)
     assert file.diagnostics == ()
     proc = file.find("top.p_reg")
-    assert plain(proc) == Process(
+    assert [(assign.target, assign.reads, assign.conds, assign.blocking) for assign in proc.assigns] == [
+        ("q", (), ("rst_ni",), False),
+        ("q", ("d",), ("rst_ni",), False),
+    ]
+    assert plain(proc).model_copy(update={"assigns": ()}) == Process(
         name="p_reg",
         kind="always_ff",
         events=(Event(edge="posedge", signal="clk_i"), Event(edge="negedge", signal="rst_ni")),

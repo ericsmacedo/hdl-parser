@@ -1224,6 +1224,38 @@
           "id": "ibex_decoder.csr_operand_check",
           "name": "csr_operand_check",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "csr_op_o",
+              "reads": [
+                "csr_op"
+              ],
+              "loc": {
+                "line": 214,
+                "col": 5,
+                "end_line": 214,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "csr_op_o",
+              "reads": [
+                "CSR_OP_READ"
+              ],
+              "conds": [
+                "csr_op",
+                "CSR_OP_SET",
+                "CSR_OP_CLEAR",
+                "instr_rs1"
+              ],
+              "loc": {
+                "line": 220,
+                "col": 7,
+                "end_line": 220,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "/////////////////////",
             "CSR operand check //",
@@ -1239,6 +1271,4117 @@
         {
           "id": "ibex_decoder.#always2",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "jump_in_dec_o",
+              "loc": {
+                "line": 229,
+                "col": 5,
+                "end_line": 229,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "jump_set_o",
+              "loc": {
+                "line": 230,
+                "col": 5,
+                "end_line": 230,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "branch_in_dec_o",
+              "loc": {
+                "line": 231,
+                "col": 5,
+                "end_line": 231,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "icache_inval_o",
+              "loc": {
+                "line": 232,
+                "col": 5,
+                "end_line": 232,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 234,
+                "col": 5,
+                "end_line": 234,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "loc": {
+                "line": 235,
+                "col": 5,
+                "end_line": 235,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rf_wdata_sel_o",
+              "reads": [
+                "RF_WD_EX"
+              ],
+              "loc": {
+                "line": 237,
+                "col": 5,
+                "end_line": 237,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_we",
+              "loc": {
+                "line": 238,
+                "col": 5,
+                "end_line": 238,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "loc": {
+                "line": 239,
+                "col": 5,
+                "end_line": 239,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rf_ren_b_o",
+              "loc": {
+                "line": 240,
+                "col": 5,
+                "end_line": 240,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "csr_access_o",
+              "loc": {
+                "line": 242,
+                "col": 5,
+                "end_line": 242,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "csr_illegal",
+              "loc": {
+                "line": 243,
+                "col": 5,
+                "end_line": 243,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "csr_op",
+              "reads": [
+                "CSR_OP_READ"
+              ],
+              "loc": {
+                "line": 244,
+                "col": 5,
+                "end_line": 244,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "csr_cheriot_always_ok_o",
+              "loc": {
+                "line": 245,
+                "col": 5,
+                "end_line": 245,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "data_we_o",
+              "loc": {
+                "line": 247,
+                "col": 5,
+                "end_line": 247,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "data_type_o",
+              "loc": {
+                "line": 248,
+                "col": 5,
+                "end_line": 248,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "data_sign_extension_o",
+              "loc": {
+                "line": 249,
+                "col": 5,
+                "end_line": 249,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "data_req_o",
+              "loc": {
+                "line": 250,
+                "col": 5,
+                "end_line": 250,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cheriot_data_req_o",
+              "loc": {
+                "line": 251,
+                "col": 5,
+                "end_line": 251,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "loc": {
+                "line": 253,
+                "col": 5,
+                "end_line": 253,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "ebrk_insn_o",
+              "loc": {
+                "line": 254,
+                "col": 5,
+                "end_line": 254,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "mret_insn_o",
+              "loc": {
+                "line": 255,
+                "col": 5,
+                "end_line": 255,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "dret_insn_o",
+              "loc": {
+                "line": 256,
+                "col": 5,
+                "end_line": 256,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "ecall_insn_o",
+              "loc": {
+                "line": 257,
+                "col": 5,
+                "end_line": 257,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "wfi_insn_o",
+              "loc": {
+                "line": 258,
+                "col": 5,
+                "end_line": 258,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "loc": {
+                "line": 260,
+                "col": 5,
+                "end_line": 260,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "loc": {
+                "line": 261,
+                "col": 5,
+                "end_line": 261,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_PERM"
+              ],
+              "loc": {
+                "line": 262,
+                "col": 5,
+                "end_line": 262,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_ZERO"
+              ],
+              "loc": {
+                "line": 263,
+                "col": 5,
+                "end_line": 263,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_ZERO"
+              ],
+              "loc": {
+                "line": 264,
+                "col": 5,
+                "end_line": 264,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_NONE"
+              ],
+              "loc": {
+                "line": 265,
+                "col": 5,
+                "end_line": 265,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_NONE"
+              ],
+              "loc": {
+                "line": 266,
+                "col": 5,
+                "end_line": 266,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "opcode",
+              "reads": [
+                "instr"
+              ],
+              "loc": {
+                "line": 268,
+                "col": 5,
+                "end_line": 268,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CJAL",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 280,
+                "col": 11,
+                "end_line": 280,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 281,
+                "col": 11,
+                "end_line": 281,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 282,
+                "col": 11,
+                "end_line": 282,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 283,
+                "col": 11,
+                "end_line": 283,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_IMM21"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 284,
+                "col": 11,
+                "end_line": 284,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_PC"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 285,
+                "col": 11,
+                "end_line": 285,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_PCC_PCNXT"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 286,
+                "col": 11,
+                "end_line": 286,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "jump_in_dec_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 288,
+                "col": 11,
+                "end_line": 288,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 292,
+                "col": 13,
+                "end_line": 292,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "jump_set_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 293,
+                "col": 13,
+                "end_line": 293,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JAL",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 296,
+                "col": 13,
+                "end_line": 296,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CJALR",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 305,
+                "col": 37,
+                "end_line": 305,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 306,
+                "col": 11,
+                "end_line": 306,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 307,
+                "col": 11,
+                "end_line": 307,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 308,
+                "col": 11,
+                "end_line": 308,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_IMM12"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 309,
+                "col": 11,
+                "end_line": 309,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_RS1"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 310,
+                "col": 11,
+                "end_line": 310,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_PCC_PCNXT"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 311,
+                "col": 11,
+                "end_line": 311,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 314,
+                "col": 13,
+                "end_line": 314,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "jump_in_dec_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 317,
+                "col": 11,
+                "end_line": 317,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 321,
+                "col": 13,
+                "end_line": 321,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "jump_set_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 322,
+                "col": 13,
+                "end_line": 322,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 325,
+                "col": 13,
+                "end_line": 325,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 328,
+                "col": 13,
+                "end_line": 328,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_JALR",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 331,
+                "col": 11,
+                "end_line": 331,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "branch_in_dec_o",
+              "conds": [
+                "opcode",
+                "OPCODE_BRANCH"
+              ],
+              "loc": {
+                "line": 336,
+                "col": 9,
+                "end_line": 336,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_BRANCH",
+                "instr"
+              ],
+              "loc": {
+                "line": 344,
+                "col": 20,
+                "end_line": 344,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_BRANCH",
+                "instr"
+              ],
+              "loc": {
+                "line": 345,
+                "col": 20,
+                "end_line": 345,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_BRANCH"
+              ],
+              "loc": {
+                "line": 348,
+                "col": 9,
+                "end_line": 348,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "rf_ren_b_o",
+              "conds": [
+                "opcode",
+                "OPCODE_BRANCH"
+              ],
+              "loc": {
+                "line": 349,
+                "col": 9,
+                "end_line": 349,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 357,
+                "col": 9,
+                "end_line": 357,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_ren_b_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 358,
+                "col": 9,
+                "end_line": 358,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 359,
+                "col": 9,
+                "end_line": 359,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "data_we_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 360,
+                "col": 9,
+                "end_line": 360,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr"
+              ],
+              "loc": {
+                "line": 363,
+                "col": 11,
+                "end_line": 363,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSTORE_CAP",
+              "reads": [
+                "illegal_c_insn_i"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 366,
+                "col": 13,
+                "end_line": 366,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "reads": [
+                "illegal_c_insn_i"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 367,
+                "col": 13,
+                "end_line": 367,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "cheriot_data_req_o",
+              "reads": [
+                "illegal_c_insn_i"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 368,
+                "col": 13,
+                "end_line": 368,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 369,
+                "col": 13,
+                "end_line": 369,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 370,
+                "col": 13,
+                "end_line": 370,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "cheriot_data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 372,
+                "col": 13,
+                "end_line": 372,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 373,
+                "col": 13,
+                "end_line": 373,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr"
+              ],
+              "loc": {
+                "line": 379,
+                "col": 20,
+                "end_line": 379,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr"
+              ],
+              "loc": {
+                "line": 380,
+                "col": 20,
+                "end_line": 380,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr"
+              ],
+              "loc": {
+                "line": 381,
+                "col": 20,
+                "end_line": 381,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_STORE",
+                "instr"
+              ],
+              "loc": {
+                "line": 382,
+                "col": 20,
+                "end_line": 382,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 388,
+                "col": 9,
+                "end_line": 388,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 389,
+                "col": 9,
+                "end_line": 389,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 390,
+                "col": 9,
+                "end_line": 390,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "data_sign_extension_o",
+              "reads": [
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 393,
+                "col": 9,
+                "end_line": 393,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr"
+              ],
+              "loc": {
+                "line": 397,
+                "col": 18,
+                "end_line": 397,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr"
+              ],
+              "loc": {
+                "line": 398,
+                "col": 18,
+                "end_line": 398,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "data_type_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr"
+              ],
+              "loc": {
+                "line": 400,
+                "col": 13,
+                "end_line": 400,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr"
+              ],
+              "loc": {
+                "line": 402,
+                "col": 15,
+                "end_line": 402,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CLOAD_CAP",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 412,
+                "col": 15,
+                "end_line": 412,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 413,
+                "col": 15,
+                "end_line": 413,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "cheriot_data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 414,
+                "col": 15,
+                "end_line": 414,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 415,
+                "col": 15,
+                "end_line": 415,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 416,
+                "col": 15,
+                "end_line": 416,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "cheriot_data_req_o",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 418,
+                "col": 15,
+                "end_line": 418,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 419,
+                "col": 15,
+                "end_line": 419,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_LOAD",
+                "instr"
+              ],
+              "loc": {
+                "line": 423,
+                "col": 13,
+                "end_line": 423,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 433,
+                "col": 9,
+                "end_line": 433,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CAUIPCC",
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 439,
+                "col": 11,
+                "end_line": 439,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 440,
+                "col": 11,
+                "end_line": 440,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 441,
+                "col": 11,
+                "end_line": 441,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 442,
+                "col": 11,
+                "end_line": 442,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_IMM20"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 443,
+                "col": 11,
+                "end_line": 443,
+                "end_col": 62
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_PC"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 444,
+                "col": 11,
+                "end_line": 444,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_PCC_ARITH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 445,
+                "col": 11,
+                "end_line": 445,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_AUIPC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 447,
+                "col": 11,
+                "end_line": 447,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM"
+              ],
+              "loc": {
+                "line": 452,
+                "col": 9,
+                "end_line": 452,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM"
+              ],
+              "loc": {
+                "line": 453,
+                "col": 9,
+                "end_line": 453,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 461,
+                "col": 19,
+                "end_line": 461,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 465,
+                "col": 26,
+                "end_line": 465,
+                "end_col": 79
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone",
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 468,
+                "col": 26,
+                "end_line": 469,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 473,
+                "col": 19,
+                "end_line": 473,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 475,
+                "col": 19,
+                "end_line": 475,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 484,
+                "col": 32,
+                "end_line": 484,
+                "end_col": 82
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 485,
+                "col": 28,
+                "end_line": 485,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 488,
+                "col": 25,
+                "end_line": 488,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 494,
+                "col": 15,
+                "end_line": 494,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 498,
+                "col": 28,
+                "end_line": 498,
+                "end_col": 81
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone",
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 501,
+                "col": 28,
+                "end_line": 502,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 507,
+                "col": 21,
+                "end_line": 507,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 509,
+                "col": 21,
+                "end_line": 509,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 511,
+                "col": 21,
+                "end_line": 511,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "instr",
+                "RV32BNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 516,
+                "col": 19,
+                "end_line": 517,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "instr",
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 521,
+                "col": 19,
+                "end_line": 522,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 525,
+                "col": 26,
+                "end_line": 525,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP_IMM",
+                "instr"
+              ],
+              "loc": {
+                "line": 530,
+                "col": 20,
+                "end_line": 530,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP"
+              ],
+              "loc": {
+                "line": 535,
+                "col": 9,
+                "end_line": 535,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "rf_ren_b_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP"
+              ],
+              "loc": {
+                "line": 536,
+                "col": 9,
+                "end_line": 536,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_OP"
+              ],
+              "loc": {
+                "line": 537,
+                "col": 9,
+                "end_line": 537,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 549,
+                "col": 34,
+                "end_line": 549,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 569,
+                "col": 34,
+                "end_line": 569,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 574,
+                "col": 15,
+                "end_line": 574,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 576,
+                "col": 15,
+                "end_line": 576,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 579,
+                "col": 34,
+                "end_line": 579,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32BFull"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 587,
+                "col": 13,
+                "end_line": 587,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_MULL"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 592,
+                "col": 13,
+                "end_line": 592,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 593,
+                "col": 13,
+                "end_line": 593,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 594,
+                "col": 13,
+                "end_line": 594,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_MULH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 597,
+                "col": 13,
+                "end_line": 597,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 598,
+                "col": 13,
+                "end_line": 598,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 599,
+                "col": 13,
+                "end_line": 599,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_MULH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 602,
+                "col": 13,
+                "end_line": 602,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 603,
+                "col": 13,
+                "end_line": 603,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 604,
+                "col": 13,
+                "end_line": 604,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_MULH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 607,
+                "col": 13,
+                "end_line": 607,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 608,
+                "col": 13,
+                "end_line": 608,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 609,
+                "col": 13,
+                "end_line": 609,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_DIV"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 612,
+                "col": 13,
+                "end_line": 612,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 613,
+                "col": 13,
+                "end_line": 613,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 614,
+                "col": 13,
+                "end_line": 614,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_DIV"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 617,
+                "col": 13,
+                "end_line": 617,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 618,
+                "col": 13,
+                "end_line": 618,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 619,
+                "col": 13,
+                "end_line": 619,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_REM"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 622,
+                "col": 13,
+                "end_line": 622,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 623,
+                "col": 13,
+                "end_line": 623,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 624,
+                "col": 13,
+                "end_line": 624,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "multdiv_operator_o",
+              "reads": [
+                "MD_OP_REM"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 627,
+                "col": 13,
+                "end_line": 627,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "multdiv_signed_mode_o",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 628,
+                "col": 13,
+                "end_line": 628,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 629,
+                "col": 13,
+                "end_line": 629,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_OP",
+                "instr"
+              ],
+              "loc": {
+                "line": 632,
+                "col": 13,
+                "end_line": 632,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 645,
+                "col": 13,
+                "end_line": 645,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "jump_in_dec_o",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 652,
+                "col": 13,
+                "end_line": 652,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 654,
+                "col": 13,
+                "end_line": 654,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "jump_set_o",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 657,
+                "col": 15,
+                "end_line": 657,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "icache_inval_o",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 658,
+                "col": 15,
+                "end_line": 658,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_MISC_MEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 662,
+                "col": 13,
+                "end_line": 662,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "ecall_insn_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 673,
+                "col": 15,
+                "end_line": 673,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "ebrk_insn_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 677,
+                "col": 15,
+                "end_line": 677,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "mret_insn_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 680,
+                "col": 15,
+                "end_line": 680,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "dret_insn_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 683,
+                "col": 15,
+                "end_line": 683,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "wfi_insn_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 686,
+                "col": 15,
+                "end_line": 686,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 689,
+                "col": 15,
+                "end_line": 689,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr",
+                "instr_rs1",
+                "instr_rd"
+              ],
+              "loc": {
+                "line": 694,
+                "col": 13,
+                "end_line": 694,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "csr_access_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 698,
+                "col": 11,
+                "end_line": 698,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_wdata_sel_o",
+              "reads": [
+                "RF_WD_CSR"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 699,
+                "col": 11,
+                "end_line": 699,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 700,
+                "col": 11,
+                "end_line": 700,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 703,
+                "col": 13,
+                "end_line": 703,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "csr_op",
+              "reads": [
+                "CSR_OP_WRITE"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 707,
+                "col": 22,
+                "end_line": 707,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "csr_op",
+              "reads": [
+                "CSR_OP_SET"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 708,
+                "col": 22,
+                "end_line": 708,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "csr_op",
+              "reads": [
+                "CSR_OP_CLEAR"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 709,
+                "col": 22,
+                "end_line": 709,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "csr_illegal",
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 710,
+                "col": 22,
+                "end_line": 710,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "csr_cheriot_always_ok_o",
+              "reads": [
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "instr"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 715,
+                "col": 11,
+                "end_line": 718,
+                "end_col": 88
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "reads": [
+                "csr_illegal"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_SYSTEM",
+                "instr"
+              ],
+              "loc": {
+                "line": 720,
+                "col": 11,
+                "end_line": 720,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 731,
+                "col": 11,
+                "end_line": 731,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 732,
+                "col": 11,
+                "end_line": 732,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 733,
+                "col": 11,
+                "end_line": 733,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 739,
+                "col": 30,
+                "end_line": 739,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_PERM"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 740,
+                "col": 30,
+                "end_line": 740,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 741,
+                "col": 30,
+                "end_line": 741,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_TYPE"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 742,
+                "col": 30,
+                "end_line": 742,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 743,
+                "col": 30,
+                "end_line": 743,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_BASE"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 744,
+                "col": 30,
+                "end_line": 744,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 745,
+                "col": 30,
+                "end_line": 745,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_LEN"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 746,
+                "col": 30,
+                "end_line": 746,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 747,
+                "col": 30,
+                "end_line": 747,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_TAG"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 748,
+                "col": 30,
+                "end_line": 748,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CRRL",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 749,
+                "col": 30,
+                "end_line": 749,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_CRRL"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 750,
+                "col": 30,
+                "end_line": 750,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CRAM",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 751,
+                "col": 30,
+                "end_line": 751,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_CRAM"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 752,
+                "col": 30,
+                "end_line": 752,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CMOVE_CAP",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 753,
+                "col": 24,
+                "end_line": 753,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CCLEAR_TAG",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 754,
+                "col": 24,
+                "end_line": 754,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 755,
+                "col": 30,
+                "end_line": 755,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_ADDR"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 756,
+                "col": 30,
+                "end_line": 756,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 757,
+                "col": 30,
+                "end_line": 757,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_HIGH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 758,
+                "col": 30,
+                "end_line": 758,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CGET_FIELD",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 759,
+                "col": 30,
+                "end_line": 759,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_cap_field_sel_o",
+              "reads": [
+                "CFIELD_TOP"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 760,
+                "col": 30,
+                "end_line": 760,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 761,
+                "col": 26,
+                "end_line": 761,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CCSR_RW",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 766,
+                "col": 15,
+                "end_line": 766,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_SCR"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 767,
+                "col": 15,
+                "end_line": 767,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "rf_ren_b_o",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 771,
+                "col": 15,
+                "end_line": 771,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_BOUNDS",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 773,
+                "col": 30,
+                "end_line": 773,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_RS2"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 774,
+                "col": 30,
+                "end_line": 774,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_BOUNDS_EX",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 775,
+                "col": 30,
+                "end_line": 775,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_RS2_EX"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 776,
+                "col": 30,
+                "end_line": 776,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_BOUNDS_RNDN",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 777,
+                "col": 30,
+                "end_line": 777,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_RNDN"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 778,
+                "col": 30,
+                "end_line": 778,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSEAL",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 779,
+                "col": 24,
+                "end_line": 779,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CUNSEAL",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 780,
+                "col": 24,
+                "end_line": 780,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CAND_PERM",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 781,
+                "col": 24,
+                "end_line": 781,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_ADDR",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 782,
+                "col": 30,
+                "end_line": 782,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_RS2"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 783,
+                "col": 30,
+                "end_line": 783,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_RFA_ARITH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 784,
+                "col": 30,
+                "end_line": 784,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CINC_ADDR",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 785,
+                "col": 30,
+                "end_line": 785,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_RS2"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 786,
+                "col": 30,
+                "end_line": 786,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_RS1"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 787,
+                "col": 30,
+                "end_line": 787,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_RFA_ARITH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 788,
+                "col": 30,
+                "end_line": 788,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSUB_CAP",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 789,
+                "col": 24,
+                "end_line": 789,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_HIGH",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 790,
+                "col": 24,
+                "end_line": 790,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CIS_SUBSET",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 791,
+                "col": 24,
+                "end_line": 791,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CIS_EQUAL",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 792,
+                "col": 24,
+                "end_line": 792,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 793,
+                "col": 26,
+                "end_line": 793,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CINC_ADDR_IMM",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 799,
+                "col": 13,
+                "end_line": 799,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_IMM12"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 800,
+                "col": 13,
+                "end_line": 800,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_RS1"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 801,
+                "col": 13,
+                "end_line": 801,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_RFA_ARITH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 802,
+                "col": 13,
+                "end_line": 802,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CSET_BOUNDS_IMM",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 806,
+                "col": 13,
+                "end_line": 806,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "cheriot_setbounds_sel_o",
+              "reads": [
+                "SETBOUNDS_IMM"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 807,
+                "col": 13,
+                "end_line": 807,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i",
+                "instr"
+              ],
+              "loc": {
+                "line": 810,
+                "col": 13,
+                "end_line": 810,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_CHERI",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 814,
+                "col": 11,
+                "end_line": 814,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cheriot_operator_o",
+              "select": ".CAUICGP",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 821,
+                "col": 11,
+                "end_line": 821,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "instr_is_cheriot_o",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 822,
+                "col": 11,
+                "end_line": 822,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "rf_ren_a_o",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 823,
+                "col": 11,
+                "end_line": 823,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 824,
+                "col": 11,
+                "end_line": 824,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 825,
+                "col": 11,
+                "end_line": 825,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "cheriot_adder_a_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_A_IMM20"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 826,
+                "col": 11,
+                "end_line": 826,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "cheriot_adder_b_sel_o",
+              "reads": [
+                "CHERIOT_ADDER_B_RS1"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 827,
+                "col": 11,
+                "end_line": 827,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "cheriot_setaddr_sel_o",
+              "reads": [
+                "SETADDR_RFA_ARITH"
+              ],
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 828,
+                "col": 11,
+                "end_line": 828,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode",
+                "OPCODE_AUICGP",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 830,
+                "col": 11,
+                "end_line": 830,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "opcode"
+              ],
+              "loc": {
+                "line": 835,
+                "col": 9,
+                "end_line": 835,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "illegal_insn",
+              "conds": [
+                "illegal_c_insn_i"
+              ],
+              "loc": {
+                "line": 841,
+                "col": 7,
+                "end_line": 841,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "rf_we",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 850,
+                "col": 7,
+                "end_line": 850,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "data_req_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 851,
+                "col": 7,
+                "end_line": 851,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "data_we_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 852,
+                "col": 7,
+                "end_line": 852,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "jump_in_dec_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 853,
+                "col": 7,
+                "end_line": 853,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "jump_set_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 854,
+                "col": 7,
+                "end_line": 854,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "branch_in_dec_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 855,
+                "col": 7,
+                "end_line": 855,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "csr_access_o",
+              "conds": [
+                "illegal_insn"
+              ],
+              "loc": {
+                "line": 856,
+                "col": 7,
+                "end_line": 856,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "///////////",
             "Decoder //",
@@ -1254,6 +5397,2662 @@
         {
           "id": "ibex_decoder.#always3",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLTU"
+              ],
+              "loc": {
+                "line": 865,
+                "col": 5,
+                "end_line": 865,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_IMM"
+              ],
+              "loc": {
+                "line": 866,
+                "col": 5,
+                "end_line": 866,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "loc": {
+                "line": 867,
+                "col": 5,
+                "end_line": 867,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "imm_a_mux_sel_o",
+              "reads": [
+                "IMM_A_ZERO"
+              ],
+              "loc": {
+                "line": 869,
+                "col": 5,
+                "end_line": 869,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "loc": {
+                "line": 870,
+                "col": 5,
+                "end_line": 870,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "bt_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "loc": {
+                "line": 872,
+                "col": 5,
+                "end_line": 872,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "bt_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "loc": {
+                "line": 873,
+                "col": 5,
+                "end_line": 873,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "opcode_alu",
+              "reads": [
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 876,
+                "col": 5,
+                "end_line": 876,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "mult_sel_o",
+              "loc": {
+                "line": 878,
+                "col": 5,
+                "end_line": 878,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "div_sel_o",
+              "loc": {
+                "line": 879,
+                "col": 5,
+                "end_line": 879,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "bt_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL"
+              ],
+              "loc": {
+                "line": 889,
+                "col": 11,
+                "end_line": 889,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "bt_b_mux_sel_o",
+              "reads": [
+                "IMM_B_J"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL"
+              ],
+              "loc": {
+                "line": 890,
+                "col": 11,
+                "end_line": 890,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 896,
+                "col": 11,
+                "end_line": 896,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 897,
+                "col": 11,
+                "end_line": 897,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_J"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 898,
+                "col": 11,
+                "end_line": 898,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 899,
+                "col": 11,
+                "end_line": 899,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 902,
+                "col": 11,
+                "end_line": 902,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 903,
+                "col": 11,
+                "end_line": 903,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 904,
+                "col": 11,
+                "end_line": 904,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JAL",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 905,
+                "col": 11,
+                "end_line": 905,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "bt_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR"
+              ],
+              "loc": {
+                "line": 911,
+                "col": 11,
+                "end_line": 911,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "bt_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR"
+              ],
+              "loc": {
+                "line": 912,
+                "col": 11,
+                "end_line": 912,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 918,
+                "col": 11,
+                "end_line": 918,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 919,
+                "col": 11,
+                "end_line": 919,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 920,
+                "col": 11,
+                "end_line": 920,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 921,
+                "col": 11,
+                "end_line": 921,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 924,
+                "col": 11,
+                "end_line": 924,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 925,
+                "col": 11,
+                "end_line": 925,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 926,
+                "col": 11,
+                "end_line": 926,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_JALR",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 927,
+                "col": 11,
+                "end_line": 927,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_EQ"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 934,
+                "col": 20,
+                "end_line": 934,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_NE"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 935,
+                "col": 20,
+                "end_line": 935,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_LT"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 936,
+                "col": 20,
+                "end_line": 936,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_GE"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 937,
+                "col": 20,
+                "end_line": 937,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_LTU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 938,
+                "col": 20,
+                "end_line": 938,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_GEU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 939,
+                "col": 20,
+                "end_line": 939,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "bt_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH"
+              ],
+              "loc": {
+                "line": 944,
+                "col": 11,
+                "end_line": 944,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "bt_b_mux_sel_o",
+              "reads": [
+                "branch_taken_i",
+                "IMM_B_B",
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH"
+              ],
+              "loc": {
+                "line": 946,
+                "col": 11,
+                "end_line": 946,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 953,
+                "col": 11,
+                "end_line": 953,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_REG_B"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 954,
+                "col": 11,
+                "end_line": 954,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 957,
+                "col": 11,
+                "end_line": 957,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 958,
+                "col": 11,
+                "end_line": 958,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "branch_taken_i",
+                "IMM_B_B",
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 960,
+                "col": 11,
+                "end_line": 960,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_BRANCH",
+                "instr_first_cycle_i"
+              ],
+              "loc": {
+                "line": 961,
+                "col": 11,
+                "end_line": 961,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 970,
+                "col": 9,
+                "end_line": 970,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_REG_B"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 971,
+                "col": 9,
+                "end_line": 971,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_STORE"
+              ],
+              "loc": {
+                "line": 972,
+                "col": 9,
+                "end_line": 972,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_S"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_STORE",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 976,
+                "col": 11,
+                "end_line": 976,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_STORE",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 977,
+                "col": 11,
+                "end_line": 977,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 982,
+                "col": 9,
+                "end_line": 982,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 985,
+                "col": 9,
+                "end_line": 985,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 986,
+                "col": 9,
+                "end_line": 986,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LOAD"
+              ],
+              "loc": {
+                "line": 987,
+                "col": 9,
+                "end_line": 987,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 995,
+                "col": 9,
+                "end_line": 995,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 996,
+                "col": 9,
+                "end_line": 996,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_a_mux_sel_o",
+              "reads": [
+                "IMM_A_ZERO"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 997,
+                "col": 9,
+                "end_line": 997,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_U"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 998,
+                "col": 9,
+                "end_line": 998,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_LUI"
+              ],
+              "loc": {
+                "line": 999,
+                "col": 9,
+                "end_line": 999,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_AUIPC"
+              ],
+              "loc": {
+                "line": 1004,
+                "col": 9,
+                "end_line": 1004,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_AUIPC"
+              ],
+              "loc": {
+                "line": 1005,
+                "col": 9,
+                "end_line": 1005,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_U"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_AUIPC"
+              ],
+              "loc": {
+                "line": 1006,
+                "col": 9,
+                "end_line": 1006,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_AUIPC"
+              ],
+              "loc": {
+                "line": 1007,
+                "col": 9,
+                "end_line": 1007,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM"
+              ],
+              "loc": {
+                "line": 1011,
+                "col": 9,
+                "end_line": 1011,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM"
+              ],
+              "loc": {
+                "line": 1012,
+                "col": 9,
+                "end_line": 1012,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_I"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM"
+              ],
+              "loc": {
+                "line": 1013,
+                "col": 9,
+                "end_line": 1013,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1016,
+                "col": 19,
+                "end_line": 1016,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLT"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1017,
+                "col": 19,
+                "end_line": 1017,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLTU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1018,
+                "col": 19,
+                "end_line": 1018,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_XOR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1019,
+                "col": 19,
+                "end_line": 1019,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_OR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1020,
+                "col": 19,
+                "end_line": 1020,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_AND"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1021,
+                "col": 19,
+                "end_line": 1021,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1026,
+                "col": 28,
+                "end_line": 1026,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BCLR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1027,
+                "col": 28,
+                "end_line": 1027,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BSET"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1028,
+                "col": 28,
+                "end_line": 1028,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BINV"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1029,
+                "col": 28,
+                "end_line": 1029,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ZIP"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1031,
+                "col": 65,
+                "end_line": 1031,
+                "end_col": 90
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CLZ"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1034,
+                "col": 34,
+                "end_line": 1034,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CTZ"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1035,
+                "col": 34,
+                "end_line": 1035,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CPOP"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1036,
+                "col": 34,
+                "end_line": 1036,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SEXTB"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1037,
+                "col": 34,
+                "end_line": 1037,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SEXTH"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1038,
+                "col": 34,
+                "end_line": 1038,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1046,
+                "col": 15,
+                "end_line": 1046,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1053,
+                "col": 28,
+                "end_line": 1053,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRA"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1054,
+                "col": 28,
+                "end_line": 1054,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BEXT"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1055,
+                "col": 28,
+                "end_line": 1055,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ROR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1057,
+                "col": 28,
+                "end_line": 1057,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_REV8"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1061,
+                "col": 21,
+                "end_line": 1061,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BREV8"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1063,
+                "col": 21,
+                "end_line": 1063,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ORCB"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1067,
+                "col": 63,
+                "end_line": 1067,
+                "end_col": 89
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_UNZIP"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1071,
+                "col": 58,
+                "end_line": 1071,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1079,
+                "col": 17,
+                "end_line": 1079,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRA"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP_IMM",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1081,
+                "col": 17,
+                "end_line": 1081,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP"
+              ],
+              "loc": {
+                "line": 1091,
+                "col": 9,
+                "end_line": 1091,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_REG_B"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP"
+              ],
+              "loc": {
+                "line": 1092,
+                "col": 9,
+                "end_line": 1092,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1096,
+                "col": 34,
+                "end_line": 1096,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SUB"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1097,
+                "col": 34,
+                "end_line": 1097,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLT"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1098,
+                "col": 34,
+                "end_line": 1098,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLTU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1099,
+                "col": 34,
+                "end_line": 1099,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_XOR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1100,
+                "col": 34,
+                "end_line": 1100,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_OR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1101,
+                "col": 34,
+                "end_line": 1101,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_AND"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1102,
+                "col": 34,
+                "end_line": 1102,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SLL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1103,
+                "col": 34,
+                "end_line": 1103,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1104,
+                "col": 34,
+                "end_line": 1104,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SRA"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1105,
+                "col": 34,
+                "end_line": 1105,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ROL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1109,
+                "col": 58,
+                "end_line": 1109,
+                "end_col": 83
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ROR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1110,
+                "col": 58,
+                "end_line": 1110,
+                "end_col": 83
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_MIN"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1112,
+                "col": 58,
+                "end_line": 1112,
+                "end_col": 83
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_MAX"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1113,
+                "col": 58,
+                "end_line": 1113,
+                "end_col": 83
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_MINU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1114,
+                "col": 58,
+                "end_line": 1114,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_MAXU"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1115,
+                "col": 58,
+                "end_line": 1115,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_PACK"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1120,
+                "col": 39,
+                "end_line": 1120,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_PACK"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1122,
+                "col": 39,
+                "end_line": 1122,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_PACKH"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1125,
+                "col": 58,
+                "end_line": 1125,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_XNOR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1127,
+                "col": 58,
+                "end_line": 1127,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ORN"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1128,
+                "col": 58,
+                "end_line": 1128,
+                "end_col": 83
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ANDN"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1129,
+                "col": 58,
+                "end_line": 1129,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SH1ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1132,
+                "col": 58,
+                "end_line": 1132,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SH2ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1133,
+                "col": 58,
+                "end_line": 1133,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_SH3ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1134,
+                "col": 58,
+                "end_line": 1134,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BCLR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1137,
+                "col": 58,
+                "end_line": 1137,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BSET"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1138,
+                "col": 58,
+                "end_line": 1138,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BINV"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1139,
+                "col": 58,
+                "end_line": 1139,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_BEXT"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BNone"
+              ],
+              "loc": {
+                "line": 1140,
+                "col": 58,
+                "end_line": 1140,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_XPERM4"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1144,
+                "col": 37,
+                "end_line": 1144,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_XPERM8"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1147,
+                "col": 37,
+                "end_line": 1147,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CLMUL"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1152,
+                "col": 37,
+                "end_line": 1152,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CLMULR"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1155,
+                "col": 37,
+                "end_line": 1155,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_CLMULH"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu",
+                "RV32BFull"
+              ],
+              "loc": {
+                "line": 1158,
+                "col": 37,
+                "end_line": 1158,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1163,
+                "col": 13,
+                "end_line": 1163,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mult_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1164,
+                "col": 13,
+                "end_line": 1164,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1167,
+                "col": 13,
+                "end_line": 1167,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mult_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1168,
+                "col": 13,
+                "end_line": 1168,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1171,
+                "col": 13,
+                "end_line": 1171,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mult_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1172,
+                "col": 13,
+                "end_line": 1172,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1175,
+                "col": 13,
+                "end_line": 1175,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mult_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1176,
+                "col": 13,
+                "end_line": 1176,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1179,
+                "col": 13,
+                "end_line": 1179,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1180,
+                "col": 13,
+                "end_line": 1180,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1183,
+                "col": 13,
+                "end_line": 1183,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1184,
+                "col": 13,
+                "end_line": 1184,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1187,
+                "col": 13,
+                "end_line": 1187,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1188,
+                "col": 13,
+                "end_line": 1188,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1191,
+                "col": 13,
+                "end_line": 1191,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_sel_o",
+              "reads": [
+                "RV32MNone"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_OP",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1192,
+                "col": 13,
+                "end_line": 1192,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1207,
+                "col": 13,
+                "end_line": 1207,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1208,
+                "col": 13,
+                "end_line": 1208,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1209,
+                "col": 13,
+                "end_line": 1209,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "bt_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1214,
+                "col": 15,
+                "end_line": 1214,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "bt_b_mux_sel_o",
+              "reads": [
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1215,
+                "col": 15,
+                "end_line": 1215,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_CURRPC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1217,
+                "col": 15,
+                "end_line": 1217,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1218,
+                "col": 15,
+                "end_line": 1218,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b_mux_sel_o",
+              "reads": [
+                "IMM_B_INCR_PC"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1219,
+                "col": 15,
+                "end_line": 1219,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "alu_operator_o",
+              "reads": [
+                "ALU_ADD"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_MISC_MEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1220,
+                "col": 15,
+                "end_line": 1220,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_SYSTEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1230,
+                "col": 11,
+                "end_line": 1230,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "alu_op_b_mux_sel_o",
+              "reads": [
+                "OP_B_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_SYSTEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1231,
+                "col": 11,
+                "end_line": 1231,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "imm_a_mux_sel_o",
+              "reads": [
+                "IMM_A_Z"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_SYSTEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1234,
+                "col": 11,
+                "end_line": 1234,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_IMM"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_SYSTEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1241,
+                "col": 13,
+                "end_line": 1241,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "alu_op_a_mux_sel_o",
+              "reads": [
+                "OP_A_REG_A"
+              ],
+              "conds": [
+                "opcode_alu",
+                "OPCODE_SYSTEM",
+                "instr_alu"
+              ],
+              "loc": {
+                "line": 1243,
+                "col": 13,
+                "end_line": 1243,
+                "end_col": 45
+              }
+            }
+          ],
           "comment": [
             "///////////////////////////",
             "Decoder for ALU control //",
@@ -1264,6 +8063,533 @@
             "col": 3,
             "end_line": 1250,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "instr",
+          "reads": [
+            "instr_rdata_i"
+          ],
+          "loc": {
+            "line": 140,
+            "col": 10,
+            "end_line": 140,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "instr_alu",
+          "reads": [
+            "instr_rdata_alu_i"
+          ],
+          "loc": {
+            "line": 141,
+            "col": 10,
+            "end_line": 141,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "imm_i_type_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 148,
+            "col": 10,
+            "end_line": 148,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "imm_s_type_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 10,
+            "end_line": 149,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "imm_b_type_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 150,
+            "col": 10,
+            "end_line": 150,
+            "end_col": 98
+          }
+        },
+        {
+          "target": "imm_u_type_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 151,
+            "col": 10,
+            "end_line": 151,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "imm_j_type_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 152,
+            "col": 10,
+            "end_line": 152,
+            "end_col": 89
+          }
+        },
+        {
+          "target": "csr_addr_o",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 154,
+            "col": 10,
+            "end_line": 154,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "zimm_rs1_type_o",
+          "reads": [
+            "instr_rs1"
+          ],
+          "loc": {
+            "line": 157,
+            "col": 10,
+            "end_line": 157,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "instr_rs1",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 160,
+            "col": 10,
+            "end_line": 160,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "instr_rs2",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 161,
+            "col": 10,
+            "end_line": 161,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "raddr_a",
+          "reads": [
+            "cheriot_operator_o",
+            "instr_rs1"
+          ],
+          "loc": {
+            "line": 167,
+            "col": 10,
+            "end_line": 167,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "raddr_b",
+          "reads": [
+            "instr_rs2"
+          ],
+          "loc": {
+            "line": 168,
+            "col": 10,
+            "end_line": 168,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "instr_rd",
+          "reads": [
+            "instr"
+          ],
+          "loc": {
+            "line": 172,
+            "col": 10,
+            "end_line": 172,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "rf_raddr_a_o",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "raddr_a"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_16_regs",
+              "cond": "CheriLimit16Regs"
+            }
+          ],
+          "loc": {
+            "line": 176,
+            "col": 12,
+            "end_line": 177,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rf_raddr_b_o",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "raddr_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_16_regs",
+              "cond": "CheriLimit16Regs"
+            }
+          ],
+          "loc": {
+            "line": 178,
+            "col": 12,
+            "end_line": 179,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rf_waddr_o",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "instr_rd"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_16_regs",
+              "cond": "CheriLimit16Regs"
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 12,
+            "end_line": 181,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "rf_raddr_a_o",
+          "reads": [
+            "raddr_a"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_regs",
+              "others": [
+                "CheriLimit16Regs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 183,
+            "col": 12,
+            "end_line": 183,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "rf_raddr_b_o",
+          "reads": [
+            "raddr_b"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_regs",
+              "others": [
+                "CheriLimit16Regs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 184,
+            "col": 12,
+            "end_line": 184,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "rf_waddr_o",
+          "reads": [
+            "instr_rd"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_regs",
+              "others": [
+                "CheriLimit16Regs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 185,
+            "col": 12,
+            "end_line": 185,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "rf_we_or_load",
+          "reads": [
+            "rf_we",
+            "opcode",
+            "OPCODE_LOAD"
+          ],
+          "loc": {
+            "line": 195,
+            "col": 10,
+            "end_line": 195,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "rf_we_or_load_o",
+          "reads": [
+            "rf_we_or_load"
+          ],
+          "loc": {
+            "line": 197,
+            "col": 10,
+            "end_line": 197,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "illegal_reg_16",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "raddr_a",
+            "rf_ren_a_o",
+            "raddr_b",
+            "rf_ren_b_o",
+            "instr_rd",
+            "rf_we_or_load"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_16reg_check_active",
+              "cond": "RV32E || CheriLimit16Regs"
+            }
+          ],
+          "loc": {
+            "line": 202,
+            "col": 12,
+            "end_line": 205,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "illegal_reg_16",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_16reg_check_inactive",
+              "others": [
+                "RV32E || CheriLimit16Regs"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 207,
+            "col": 12,
+            "end_line": 207,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "mult_en_o",
+          "reads": [
+            "illegal_insn_o",
+            "mult_sel_o"
+          ],
+          "loc": {
+            "line": 1253,
+            "col": 10,
+            "end_line": 1253,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "div_en_o",
+          "reads": [
+            "illegal_insn_o",
+            "div_sel_o"
+          ],
+          "loc": {
+            "line": 1254,
+            "col": 10,
+            "end_line": 1254,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "illegal_insn_o",
+          "reads": [
+            "illegal_insn",
+            "illegal_reg_16"
+          ],
+          "loc": {
+            "line": 1257,
+            "col": 10,
+            "end_line": 1257,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "rf_we_o",
+          "reads": [
+            "rf_we",
+            "illegal_reg_16"
+          ],
+          "loc": {
+            "line": 1260,
+            "col": 10,
+            "end_line": 1260,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "unused_instr_alu",
+          "reads": [
+            "instr_alu"
+          ],
+          "loc": {
+            "line": 1263,
+            "col": 10,
+            "end_line": 1263,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "instr_is_legal_cheriot",
+          "reads": [
+            "cheriot_operator_o"
+          ],
+          "loc": {
+            "line": 1265,
+            "col": 10,
+            "end_line": 1265,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "instr_is_legal_cheriot_o",
+          "reads": [
+            "instr_is_legal_cheriot",
+            "illegal_reg_16"
+          ],
+          "loc": {
+            "line": 1266,
+            "col": 10,
+            "end_line": 1266,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "cheriot_cs2_dec_o",
+          "reads": [
+            "cheriot_operator_o",
+            "instr"
+          ],
+          "loc": {
+            "line": 1269,
+            "col": 10,
+            "end_line": 1269,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "cheriot_imm12_o",
+          "reads": [
+            "cheriot_operator_o",
+            "instr"
+          ],
+          "loc": {
+            "line": 1271,
+            "col": 10,
+            "end_line": 1276,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "cheriot_imm20_o",
+          "reads": [
+            "cheriot_operator_o",
+            "instr"
+          ],
+          "loc": {
+            "line": 1278,
+            "col": 10,
+            "end_line": 1279,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "cheriot_imm21_o",
+          "reads": [
+            "cheriot_operator_o",
+            "instr"
+          ],
+          "loc": {
+            "line": 1281,
+            "col": 10,
+            "end_line": 1282,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "unused_cheriot_enable",
+          "reads": [
+            "cheriot_enable_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_no_cheriot_decoder",
+              "cond": "BaseIsa != BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 1286,
+            "col": 12,
+            "end_line": 1286,
+            "end_col": 53
           }
         }
       ],

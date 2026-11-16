@@ -1,0 +1,77 @@
+# undriven
+ibex_fetch_fifo.sv:ibex_fetch_fifo.instr_rdata_dii
+ibex_if_stage.sv:ibex_if_stage.g_branch_predictor_asserts.predicted_branch_nt_pc_d
+ibex_if_stage.sv:ibex_if_stage.g_branch_predictor_asserts.awaiting_instr_after_mispredict_q
+ibex_if_stage.sv:ibex_if_stage.g_branch_predictor_asserts.awaiting_instr_after_mispredict_d
+ibex_if_stage.sv:ibex_if_stage.g_branch_predictor_asserts.mispredicted
+ibex_mem_intf.sv:ibex_mem_intf.reset
+ibex_mem_intf.sv:ibex_mem_intf.request
+ibex_mem_intf.sv:ibex_mem_intf.grant
+ibex_mem_intf.sv:ibex_mem_intf.addr
+ibex_mem_intf.sv:ibex_mem_intf.we
+ibex_mem_intf.sv:ibex_mem_intf.be
+ibex_mem_intf.sv:ibex_mem_intf.rvalid
+ibex_mem_intf.sv:ibex_mem_intf.wdata
+ibex_mem_intf.sv:ibex_mem_intf.wintg
+ibex_mem_intf.sv:ibex_mem_intf.rdata
+ibex_mem_intf.sv:ibex_mem_intf.rintg
+ibex_mem_intf.sv:ibex_mem_intf.error
+ibex_mem_intf.sv:ibex_mem_intf.misaligned_first
+ibex_mem_intf.sv:ibex_mem_intf.misaligned_second
+ibex_mem_intf.sv:ibex_mem_intf.misaligned_first_saw_error
+ibex_mem_intf.sv:ibex_mem_intf.m_mode_access
+ibex_mem_intf.sv:ibex_mem_intf.spurious_response
+irq_if.sv:irq_if.reset
+irq_if.sv:irq_if.irq_software
+irq_if.sv:irq_if.irq_timer
+irq_if.sv:irq_if.irq_external
+irq_if.sv:irq_if.irq_fast
+irq_if.sv:irq_if.irq_nm
+
+# traces
+ibex_top.instr_rdata_i -> ibex_top.u_ibex_core.id_stage_i.instr_rdata_i
+  ibex_top.instr_rdata_i
+  ibex_top.instr_rdata_core assign ibex_top.sv:358
+  ibex_top.u_ibex_core.instr_rdata_i inst ibex_top.sv:422
+  ibex_top.u_ibex_core.if_stage_i.instr_rdata_i inst ibex_core.sv:558
+  ibex_top.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.instr_rdata_i inst ibex_if_stage.sv:375
+  ibex_top.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fifo_i.in_rdata_i inst ibex_prefetch_buffer.sv:102
+  ibex_top.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fifo_i.rdata assign ibex_fetch_fifo.sv:71
+  ibex_top.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fifo_i.out_rdata_o comb ibex_fetch_fifo.sv:157
+  ibex_top.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.rdata_o port ibex_prefetch_buffer.sv:108
+  ibex_top.u_ibex_core.if_stage_i.fetch_rdata port ibex_if_stage.sv:364
+  ibex_top.u_ibex_core.if_stage_i.if_instr_rdata assign ibex_if_stage.sv:859
+  ibex_top.u_ibex_core.if_stage_i.compressed_decoder_i.instr_i inst ibex_if_stage.sv:495
+  ibex_top.u_ibex_core.if_stage_i.compressed_decoder_i.instr_o comb ibex_compressed_decoder.sv:215
+  ibex_top.u_ibex_core.if_stage_i.instr_decompressed port ibex_if_stage.sv:497
+  ibex_top.u_ibex_core.if_stage_i.instr_out assign ibex_if_stage.sv:598
+  ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o ff ibex_if_stage.sv:659
+  ibex_top.u_ibex_core.instr_rdata_id port ibex_core.sv:578
+  ibex_top.u_ibex_core.id_stage_i.instr_rdata_i inst ibex_core.sv:683
+ibex_top.rst_ni -> ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs
+  ibex_top.rst_ni
+  ibex_top.u_ibex_core.rst_ni inst ibex_top.sv:412
+  ibex_top.u_ibex_core.id_stage_i.rst_ni inst ibex_core.sv:672
+  ibex_top.u_ibex_core.id_stage_i.controller_i.rst_ni inst ibex_id_stage.sv:618
+  ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs ff ibex_controller.sv:1037
+ibex_top.u_ibex_core.ex_block_i.alu_i.adder_result_o -> ibex_top.u_ibex_core.id_stage_i.pc_set_o
+  ibex_top.u_ibex_core.ex_block_i.alu_i.adder_result_o
+  ibex_top.u_ibex_core.ex_block_i.alu_adder_result_ex_o port ibex_ex_block.sv:119
+  ibex_top.u_ibex_core.alu_adder_result_ex port ibex_core.sv:896
+  ibex_top.u_ibex_core.lsu_addr assign ibex_core.sv:1019
+  ibex_top.u_ibex_core.load_store_unit_i.adder_result_ex_i inst ibex_core.sv:1099
+  ibex_top.u_ibex_core.load_store_unit_i.data_addr assign ibex_load_store_unit.sv:132
+  ibex_top.u_ibex_core.load_store_unit_i.data_offset assign ibex_load_store_unit.sv:133
+  ibex_top.u_ibex_core.load_store_unit_i.split_misaligned_access assign ibex_load_store_unit.sv:405
+  ibex_top.u_ibex_core.load_store_unit_i.ls_fsm_ns comb ibex_load_store_unit.sv:496
+  ibex_top.u_ibex_core.load_store_unit_i.ls_fsm_cs ff ibex_load_store_unit.sv:672
+  ibex_top.u_ibex_core.load_store_unit_i.lsu_resp_valid_o assign ibex_load_store_unit.sv:711
+  ibex_top.u_ibex_core.load_store_unit_i.load_err_o assign ibex_load_store_unit.sv:772
+  ibex_top.u_ibex_core.lsu_load_err_raw port ibex_core.sv:1108
+  ibex_top.u_ibex_core.lsu_load_err assign ibex_core.sv:1186
+  ibex_top.u_ibex_core.id_stage_i.lsu_load_err_i inst ibex_core.sv:771
+  ibex_top.u_ibex_core.id_stage_i.controller_i.load_err_i inst ibex_id_stage.sv:664
+  ibex_top.u_ibex_core.id_stage_i.controller_i.load_err_d assign ibex_controller.sv:224
+  ibex_top.u_ibex_core.id_stage_i.controller_i.load_err_q ff ibex_controller.sv:1052
+  ibex_top.u_ibex_core.id_stage_i.controller_i.pc_set_o comb ibex_controller.sv:834
+  ibex_top.u_ibex_core.id_stage_i.pc_set_o port ibex_id_stage.sv:656

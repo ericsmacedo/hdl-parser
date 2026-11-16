@@ -1373,6 +1373,26 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "csr_read_address_p",
+              "reads": [
+                "id_csr_address"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_ex"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 204,
+                "col": 4,
+                "end_line": 204,
+                "end_col": 41
+              }
+            }
+          ],
           "loc": {
             "line": 201,
             "col": 2,
@@ -1394,6 +1414,44 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "rs1_address_p",
+              "reads": [
+                "id_rs1_address"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_ex"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 227,
+                "col": 4,
+                "end_line": 227,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rs2_address_p",
+              "reads": [
+                "id_rs2_address"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_ex"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 228,
+                "col": 4,
+                "end_line": 228,
+                "end_col": 36
+              }
+            }
+          ],
           "loc": {
             "line": 224,
             "col": 2,
@@ -1415,11 +1473,341 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "dmem_address_p",
+              "reads": [
+                "ex_dmem_address"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_mem"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 374,
+                "col": 4,
+                "end_line": 374,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "dmem_data_size_p",
+              "reads": [
+                "ex_dmem_data_size"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_mem"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 375,
+                "col": 4,
+                "end_line": 375,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "dmem_data_out_p",
+              "reads": [
+                "ex_dmem_data_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_mem"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 376,
+                "col": 4,
+                "end_line": 376,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "dmem_read_req_p",
+              "reads": [
+                "ex_dmem_read_req"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_mem"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 377,
+                "col": 4,
+                "end_line": 377,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "dmem_write_req_p",
+              "reads": [
+                "ex_dmem_write_req"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "stall_mem"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 378,
+                "col": 4,
+                "end_line": 378,
+                "end_col": 42
+              }
+            }
+          ],
           "loc": {
             "line": 371,
             "col": 2,
             "end_line": 380,
             "end_col": 42
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "stall_if",
+          "reads": [
+            "stall_id"
+          ],
+          "loc": {
+            "line": 163,
+            "col": 2,
+            "end_line": 163,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "stall_id",
+          "reads": [
+            "stall_ex"
+          ],
+          "loc": {
+            "line": 164,
+            "col": 2,
+            "end_line": 164,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "stall_ex",
+          "reads": [
+            "hazard_detected",
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 165,
+            "col": 2,
+            "end_line": 165,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "stall_mem",
+          "reads": [
+            "to_std_logic",
+            "memop_is_load",
+            "mem_mem_op",
+            "dmem_read_ack",
+            "MEMOP_TYPE_STORE",
+            "dmem_write_ack"
+          ],
+          "loc": {
+            "line": 166,
+            "col": 2,
+            "end_line": 167,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "flush_if",
+          "reads": [
+            "branch_taken",
+            "exception_taken",
+            "stall_if"
+          ],
+          "loc": {
+            "line": 169,
+            "col": 2,
+            "end_line": 169,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "flush_id",
+          "reads": [
+            "branch_taken",
+            "exception_taken",
+            "stall_id"
+          ],
+          "loc": {
+            "line": 170,
+            "col": 2,
+            "end_line": 170,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "flush_ex",
+          "reads": [
+            "branch_taken",
+            "exception_taken",
+            "stall_ex"
+          ],
+          "loc": {
+            "line": 171,
+            "col": 2,
+            "end_line": 171,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "csr_read_address",
+          "reads": [
+            "id_csr_address",
+            "csr_read_address_p"
+          ],
+          "conds": [
+            "stall_ex"
+          ],
+          "loc": {
+            "line": 200,
+            "col": 2,
+            "end_line": 200,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "rs1_address",
+          "reads": [
+            "id_rs1_address",
+            "rs1_address_p"
+          ],
+          "conds": [
+            "stall_ex"
+          ],
+          "loc": {
+            "line": 221,
+            "col": 2,
+            "end_line": 221,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "rs2_address",
+          "reads": [
+            "id_rs2_address",
+            "rs2_address_p"
+          ],
+          "conds": [
+            "stall_ex"
+          ],
+          "loc": {
+            "line": 222,
+            "col": 2,
+            "end_line": 222,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "if_count_instruction",
+          "reads": [
+            "if_instruction_ready"
+          ],
+          "loc": {
+            "line": 253,
+            "col": 2,
+            "end_line": 253,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "dmem_address",
+          "reads": [
+            "ex_dmem_address",
+            "dmem_address_p"
+          ],
+          "conds": [
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 365,
+            "col": 2,
+            "end_line": 365,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "dmem_data_size",
+          "reads": [
+            "ex_dmem_data_size",
+            "dmem_data_size_p"
+          ],
+          "conds": [
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 366,
+            "col": 2,
+            "end_line": 366,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "dmem_data_out",
+          "reads": [
+            "ex_dmem_data_out",
+            "dmem_data_out_p"
+          ],
+          "conds": [
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 367,
+            "col": 2,
+            "end_line": 367,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "dmem_read_req",
+          "reads": [
+            "ex_dmem_read_req",
+            "dmem_read_req_p"
+          ],
+          "conds": [
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 368,
+            "col": 2,
+            "end_line": 368,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "dmem_write_req",
+          "reads": [
+            "ex_dmem_write_req",
+            "dmem_write_req_p"
+          ],
+          "conds": [
+            "stall_mem"
+          ],
+          "loc": {
+            "line": 369,
+            "col": 2,
+            "end_line": 369,
+            "end_col": 81
           }
         }
       ],

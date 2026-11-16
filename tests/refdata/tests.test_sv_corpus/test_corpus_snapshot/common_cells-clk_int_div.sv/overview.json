@@ -598,6 +598,416 @@
         {
           "id": "clk_int_div.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "div_d",
+              "reads": [
+                "div_q"
+              ],
+              "loc": {
+                "line": 154,
+                "col": 5,
+                "end_line": 154,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "div_ready_o",
+              "loc": {
+                "line": 155,
+                "col": 5,
+                "end_line": 155,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "clk_div_bypass_en_d",
+              "reads": [
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 156,
+                "col": 5,
+                "end_line": 156,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "use_odd_division_d",
+              "reads": [
+                "use_odd_division_q"
+              ],
+              "loc": {
+                "line": 157,
+                "col": 5,
+                "end_line": 157,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "reads": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 158,
+                "col": 5,
+                "end_line": 158,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "cycle_counter_en",
+              "loc": {
+                "line": 159,
+                "col": 5,
+                "end_line": 159,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "clear_cycle_counter",
+              "loc": {
+                "line": 160,
+                "col": 5,
+                "end_line": 160,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "clear_toggle_flops",
+              "loc": {
+                "line": 161,
+                "col": 5,
+                "end_line": 161,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "loc": {
+                "line": 162,
+                "col": 5,
+                "end_line": 162,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "gate_en_d",
+              "loc": {
+                "line": 164,
+                "col": 5,
+                "end_line": 164,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "reads": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 165,
+                "col": 5,
+                "end_line": 165,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "gate_en_d",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 168,
+                "col": 9,
+                "end_line": 168,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 169,
+                "col": 9,
+                "end_line": 169,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "div_ready_o",
+              "conds": [
+                "clk_gate_state_q",
+                "div_valid_i",
+                "div_i_normalized",
+                "div_q"
+              ],
+              "loc": {
+                "line": 172,
+                "col": 13,
+                "end_line": 172,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "conds": [
+                "clk_gate_state_q",
+                "div_valid_i",
+                "div_i_normalized",
+                "div_q"
+              ],
+              "loc": {
+                "line": 174,
+                "col": 13,
+                "end_line": 174,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "gate_en_d",
+              "conds": [
+                "clk_gate_state_q",
+                "div_valid_i",
+                "div_i_normalized",
+                "div_q"
+              ],
+              "loc": {
+                "line": 175,
+                "col": 13,
+                "end_line": 175,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cycle_counter_en",
+              "conds": [
+                "clk_gate_state_q",
+                "div_valid_i",
+                "en_i",
+                "gate_is_open_q"
+              ],
+              "loc": {
+                "line": 180,
+                "col": 13,
+                "end_line": 180,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "conds": [
+                "clk_gate_state_q",
+                "div_valid_i",
+                "en_i",
+                "gate_is_open_q"
+              ],
+              "loc": {
+                "line": 181,
+                "col": 13,
+                "end_line": 181,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "gate_en_d",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 186,
+                "col": 9,
+                "end_line": 186,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 187,
+                "col": 9,
+                "end_line": 187,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 197,
+                "col": 11,
+                "end_line": 197,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "div_d",
+              "reads": [
+                "div_i_normalized"
+              ],
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 198,
+                "col": 11,
+                "end_line": 198,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "div_ready_o",
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 199,
+                "col": 11,
+                "end_line": 199,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "clear_cycle_counter",
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 200,
+                "col": 11,
+                "end_line": 200,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "clear_toggle_flops",
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 201,
+                "col": 11,
+                "end_line": 201,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "use_odd_division_d",
+              "reads": [
+                "div_i_normalized"
+              ],
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 202,
+                "col": 11,
+                "end_line": 202,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "clk_div_bypass_en_d",
+              "reads": [
+                "div_i_normalized"
+              ],
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 203,
+                "col": 11,
+                "end_line": 203,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "conds": [
+                "clk_gate_state_q",
+                "gate_is_open_q",
+                "clk_div_bypass_en_q"
+              ],
+              "loc": {
+                "line": 204,
+                "col": 11,
+                "end_line": 204,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "gate_en_d",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 209,
+                "col": 9,
+                "end_line": 209,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "toggle_ffs_en",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 214,
+                "col": 9,
+                "end_line": 214,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "conds": [
+                "clk_gate_state_q",
+                "cycle_cntr_q",
+                "div_q"
+              ],
+              "loc": {
+                "line": 216,
+                "col": 11,
+                "end_line": 216,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "clk_gate_state_d",
+              "conds": [
+                "clk_gate_state_q"
+              ],
+              "loc": {
+                "line": 221,
+                "col": 9,
+                "end_line": 221,
+                "end_col": 33
+              }
+            }
+          ],
           "comment": [
             "-------------------- Divider Load FSM --------------------"
           ],
@@ -625,6 +1035,153 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "use_odd_division_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 231,
+                "col": 7,
+                "end_line": 231,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "clk_div_bypass_en_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 232,
+                "col": 7,
+                "end_line": 232,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "div_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 233,
+                "col": 7,
+                "end_line": 233,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "clk_gate_state_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 234,
+                "col": 7,
+                "end_line": 234,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "gate_en_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 235,
+                "col": 7,
+                "end_line": 235,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "use_odd_division_q",
+              "reads": [
+                "use_odd_division_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 237,
+                "col": 7,
+                "end_line": 237,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "clk_div_bypass_en_q",
+              "reads": [
+                "clk_div_bypass_en_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 238,
+                "col": 7,
+                "end_line": 238,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "div_q",
+              "reads": [
+                "div_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 239,
+                "col": 7,
+                "end_line": 239,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "clk_gate_state_q",
+              "reads": [
+                "clk_gate_state_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 240,
+                "col": 7,
+                "end_line": 240,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "gate_en_q",
+              "reads": [
+                "gate_en_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 241,
+                "col": 7,
+                "end_line": 241,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 229,
             "col": 3,
@@ -635,6 +1192,67 @@
         {
           "id": "clk_int_div.#always3",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "cycle_cntr_d",
+              "reads": [
+                "cycle_cntr_q"
+              ],
+              "loc": {
+                "line": 249,
+                "col": 5,
+                "end_line": 249,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "cycle_cntr_d",
+              "conds": [
+                "clear_cycle_counter"
+              ],
+              "loc": {
+                "line": 252,
+                "col": 7,
+                "end_line": 252,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "cycle_cntr_d",
+              "conds": [
+                "clear_cycle_counter",
+                "cycle_counter_en",
+                "clk_div_bypass_en_q",
+                "cycle_cntr_q",
+                "div_q"
+              ],
+              "loc": {
+                "line": 259,
+                "col": 11,
+                "end_line": 259,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "cycle_cntr_d",
+              "reads": [
+                "cycle_cntr_q"
+              ],
+              "conds": [
+                "clear_cycle_counter",
+                "cycle_counter_en",
+                "clk_div_bypass_en_q",
+                "cycle_cntr_q",
+                "div_q"
+              ],
+              "loc": {
+                "line": 261,
+                "col": 11,
+                "end_line": 261,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "---------------------- Cycle Counter ----------------------",
             "Cycle Counter"
@@ -663,6 +1281,37 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "cycle_cntr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 269,
+                "col": 7,
+                "end_line": 269,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "cycle_cntr_q",
+              "reads": [
+                "cycle_cntr_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 271,
+                "col": 7,
+                "end_line": 271,
+                "end_col": 36
+              }
+            }
+          ],
           "loc": {
             "line": 267,
             "col": 3,
@@ -687,6 +1336,36 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "t_ff1_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "loc": {
+                "line": 290,
+                "col": 7,
+                "end_line": 290,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "t_ff1_q",
+              "reads": [
+                "t_ff1_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "t_ff1_en"
+              ],
+              "loc": {
+                "line": 293,
+                "col": 9,
+                "end_line": 293,
+                "end_col": 27
+              }
+            }
+          ],
           "comment": [
             "----------------------- T-Flip-Flops -----------------------",
             "These T-Flip-Flop intentionally use blocking assignments! If we were to use",
@@ -722,6 +1401,36 @@
           "clock_edge": "negedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "t_ff2_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "loc": {
+                "line": 302,
+                "col": 7,
+                "end_line": 302,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "t_ff2_q",
+              "reads": [
+                "t_ff2_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "t_ff2_en"
+              ],
+              "loc": {
+                "line": 305,
+                "col": 9,
+                "end_line": 305,
+                "end_col": 27
+              }
+            }
+          ],
           "comment": [
             "The second flip-flop is required for odd integer division and needs to",
             "negative edge tirggered."
@@ -736,6 +1445,64 @@
         {
           "id": "clk_int_div.#always7",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "t_ff1_d",
+              "conds": [
+                "clear_toggle_flops"
+              ],
+              "loc": {
+                "line": 312,
+                "col": 7,
+                "end_line": 312,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "t_ff2_d",
+              "conds": [
+                "clear_toggle_flops"
+              ],
+              "loc": {
+                "line": 313,
+                "col": 7,
+                "end_line": 313,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "t_ff1_d",
+              "reads": [
+                "t_ff1_en",
+                "t_ff1_q"
+              ],
+              "conds": [
+                "clear_toggle_flops"
+              ],
+              "loc": {
+                "line": 315,
+                "col": 7,
+                "end_line": 315,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "t_ff2_d",
+              "reads": [
+                "t_ff2_en",
+                "t_ff2_q"
+              ],
+              "conds": [
+                "clear_toggle_flops"
+              ],
+              "loc": {
+                "line": 316,
+                "col": 7,
+                "end_line": 316,
+                "end_col": 45
+              }
+            }
+          ],
           "loc": {
             "line": 310,
             "col": 3,
@@ -746,6 +1513,79 @@
         {
           "id": "clk_int_div.#always8",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "t_ff1_en",
+              "loc": {
+                "line": 324,
+                "col": 5,
+                "end_line": 324,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "t_ff2_en",
+              "loc": {
+                "line": 325,
+                "col": 5,
+                "end_line": 325,
+                "end_col": 21
+              }
+            },
+            {
+              "target": "t_ff1_en",
+              "reads": [
+                "cycle_cntr_q"
+              ],
+              "conds": [
+                "clk_div_bypass_en_q",
+                "toggle_ffs_en",
+                "use_odd_division_q"
+              ],
+              "loc": {
+                "line": 328,
+                "col": 9,
+                "end_line": 328,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "t_ff2_en",
+              "reads": [
+                "cycle_cntr_q",
+                "div_q"
+              ],
+              "conds": [
+                "clk_div_bypass_en_q",
+                "toggle_ffs_en",
+                "use_odd_division_q"
+              ],
+              "loc": {
+                "line": 329,
+                "col": 9,
+                "end_line": 329,
+                "end_col": 62
+              }
+            },
+            {
+              "target": "t_ff1_en",
+              "reads": [
+                "cycle_cntr_q",
+                "div_q"
+              ],
+              "conds": [
+                "clk_div_bypass_en_q",
+                "toggle_ffs_en",
+                "use_odd_division_q"
+              ],
+              "loc": {
+                "line": 331,
+                "col": 9,
+                "end_line": 331,
+                "end_col": 79
+              }
+            }
+          ],
           "comment": [
             "----- FSM to control T-FF enable and clk_div_bypass_en -----"
           ],
@@ -773,6 +1613,38 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "gate_is_open_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 374,
+                "col": 7,
+                "end_line": 374,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "gate_is_open_q",
+              "reads": [
+                "gate_en_q",
+                "en_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 376,
+                "col": 7,
+                "end_line": 376,
+                "end_col": 42
+              }
+            }
+          ],
           "comment": [
             "--------------------- Clock gate logic ---------------------",
             "During the transitioning phase, we gate the clock to prevent clock glitches",
@@ -790,6 +1662,44 @@
             "col": 3,
             "end_line": 378,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "div_i_normalized",
+          "reads": [
+            "div_i"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 10,
+            "end_line": 149,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "cycl_count_o",
+          "reads": [
+            "cycle_cntr_q"
+          ],
+          "loc": {
+            "line": 275,
+            "col": 10,
+            "end_line": 275,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "even_clk",
+          "reads": [
+            "t_ff1_q"
+          ],
+          "loc": {
+            "line": 336,
+            "col": 10,
+            "end_line": 336,
+            "end_col": 28
           }
         }
       ],

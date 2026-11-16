@@ -574,7 +574,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_no_branch_target_alu"
+              "name": "g_no_branch_target_alu",
+              "others": [
+                "BranchTargetALU"
+              ]
             }
           ],
           "loc": {
@@ -592,7 +595,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_no_branch_target_alu"
+              "name": "g_no_branch_target_alu",
+              "others": [
+                "BranchTargetALU"
+              ]
             }
           ],
           "loc": {
@@ -628,6 +634,331 @@
             "col": 3,
             "end_line": 202,
             "end_col": 37
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "multdiv_sel",
+          "reads": [
+            "mult_sel_i",
+            "div_sel_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_multdiv_m",
+              "cond": "RV32M != RV32MNone"
+            }
+          ],
+          "loc": {
+            "line": 73,
+            "col": 12,
+            "end_line": 73,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "multdiv_sel",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_multdiv_no_m",
+              "others": [
+                "RV32M != RV32MNone"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 75,
+            "col": 12,
+            "end_line": 75,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[0]",
+          "reads": [
+            "multdiv_sel",
+            "multdiv_imd_val_d"
+          ],
+          "loc": {
+            "line": 79,
+            "col": 10,
+            "end_line": 79,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[1]",
+          "reads": [
+            "multdiv_sel",
+            "multdiv_imd_val_d"
+          ],
+          "loc": {
+            "line": 80,
+            "col": 10,
+            "end_line": 80,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "imd_val_we_o",
+          "reads": [
+            "multdiv_sel",
+            "multdiv_imd_val_we"
+          ],
+          "loc": {
+            "line": 81,
+            "col": 10,
+            "end_line": 81,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "result_ex_o",
+          "reads": [
+            "multdiv_sel",
+            "multdiv_result",
+            "alu_result"
+          ],
+          "loc": {
+            "line": 83,
+            "col": 10,
+            "end_line": 83,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "branch_decision_o",
+          "reads": [
+            "alu_cmp_result"
+          ],
+          "loc": {
+            "line": 86,
+            "col": 10,
+            "end_line": 86,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "bt_alu_result",
+          "reads": [
+            "bt_a_operand_i",
+            "bt_b_operand_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_target_alu",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "loc": {
+            "line": 92,
+            "col": 12,
+            "end_line": 92,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "unused_bt_carry",
+          "reads": [
+            "bt_alu_result"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_target_alu",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "loc": {
+            "line": 94,
+            "col": 12,
+            "end_line": 94,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "branch_target_o",
+          "reads": [
+            "bt_alu_result"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_target_alu",
+              "cond": "BranchTargetALU"
+            }
+          ],
+          "loc": {
+            "line": 95,
+            "col": 12,
+            "end_line": 95,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "unused_bt_a_operand",
+          "reads": [
+            "bt_a_operand_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_branch_target_alu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 12,
+            "end_line": 100,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_bt_b_operand",
+          "reads": [
+            "bt_b_operand_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_branch_target_alu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 101,
+            "col": 12,
+            "end_line": 101,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "branch_target_o",
+          "reads": [
+            "alu_adder_result_ex_o"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_branch_target_alu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 103,
+            "col": 12,
+            "end_line": 103,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "ex_valid_o",
+          "reads": [
+            "multdiv_sel",
+            "multdiv_valid"
+          ],
+          "loc": {
+            "line": 186,
+            "col": 10,
+            "end_line": 186,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "sva_multdiv_fsm_idle",
+          "reads": [
+            "gen_multdiv_slow"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_multdiv_sva_idle_slow",
+              "cond": "RV32M == RV32MSlow"
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 12,
+            "end_line": 194,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "sva_multdiv_fsm_idle",
+          "reads": [
+            "gen_multdiv_fast"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_multdiv_sva_idle_fast",
+              "cond": "RV32M == RV32MFast || RV32M == RV32MSingleCycle",
+              "others": [
+                "RV32M == RV32MSlow"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 196,
+            "col": 12,
+            "end_line": 196,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "sva_multdiv_fsm_idle",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_multdiv_sva_idle_none",
+              "others": [
+                "RV32M == RV32MSlow",
+                "RV32M == RV32MFast || RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 198,
+            "col": 12,
+            "end_line": 198,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "unused_sva_multdiv_fsm_idle",
+          "reads": [
+            "sva_multdiv_fsm_idle"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 203,
+            "col": 10,
+            "end_line": 203,
+            "end_col": 60
           }
         }
       ],
@@ -1306,7 +1637,10 @@
             {
               "kind": "if",
               "name": "gen_multdiv_fast",
-              "cond": "RV32M == RV32MFast || RV32M == RV32MSingleCycle"
+              "cond": "RV32M == RV32MFast || RV32M == RV32MSingleCycle",
+              "others": [
+                "RV32M == RV32MSlow"
+              ]
             }
           ],
           "loc": {

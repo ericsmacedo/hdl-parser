@@ -101,6 +101,7 @@ hdl-parser module ibex_alu --summary
       "localparams": 4,
       "signals": 74,
       "processes": 21,
+      "assigns": 60,
       "imports": 1
     }
   }
@@ -287,6 +288,104 @@ hdl-parser find operator --kind port --limit 2
 }
 ```
 
+### What drives this signal?
+
+A signal is addressed by its instance path: the top, the instance names (with the labels of the generate blocks
+around) and the signal. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`, `port`,
+`unknown`), the signals it reads (`nets`) and the ones its conditions read (`conds`). Ask for their drivers to
+go further. `loads` is the other direction: what the signal drives.
+
+```bash
+hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
+```
+
+```json
+{
+  "query": "drivers",
+  "net": {
+    "path": "ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o",
+    "kind": "port",
+    "direction": "output",
+    "id": "ibex_if_stage.sv:ibex_if_stage.instr_rdata_id_o",
+    "file": "ibex_if_stage.sv",
+    "loc": {
+      "line": 72,
+      "col": 3,
+      "end_line": 72,
+      "end_col": 55
+    }
+  },
+  "result": [
+    {
+      "kind": "ff",
+      "nets": [
+        "ibex_top.u_ibex_core.if_stage_i.instr_out"
+      ],
+      "conds": [
+        "ibex_top.u_ibex_core.if_stage_i.if_id_pipe_reg_we"
+      ],
+      "clock": "ibex_top.u_ibex_core.if_stage_i.clk_i",
+      "item": "ibex_if_stage.sv:ibex_if_stage.g_instr_rdata_nr.#always6",
+      "file": "ibex_if_stage.sv",
+      "loc": {
+        "line": 659,
+        "col": 9,
+        "end_line": 659,
+        "end_col": 54
+      }
+    }
+  ],
+  "total": 1
+}
+```
+
+### How does this signal get there?
+
+`trace` gives the shortest connection between two signals, hop by hop, data before conditions. It stops behind
+flip-flops, unless `--through-regs` is given, and at modules which are not defined.
+
+```bash
+hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs --limit 3
+```
+
+```json
+{
+  "query": "trace",
+  "result": [
+    {
+      "net": "ibex_top.rst_ni"
+    },
+    {
+      "net": "ibex_top.u_ibex_core.rst_ni",
+      "kind": "inst",
+      "item": "ibex_top.sv:ibex_top.u_ibex_core",
+      "file": "ibex_top.sv",
+      "loc": {
+        "line": 412,
+        "col": 5,
+        "end_line": 412,
+        "end_col": 12
+      }
+    },
+    {
+      "net": "ibex_top.u_ibex_core.id_stage_i.rst_ni",
+      "kind": "inst",
+      "item": "ibex_core.sv:ibex_core.id_stage_i",
+      "file": "ibex_core.sv",
+      "loc": {
+        "line": 672,
+        "col": 5,
+        "end_line": 672,
+        "end_col": 20
+      }
+    }
+  ],
+  "total": 5,
+  "omitted": 2,
+  "found": true
+}
+```
+
 ### Can I trust the answers? What is missing?
 
 Modules which are not part of the project, macros which are not expanded, files which cannot be read: all are listed here, with location.
@@ -346,7 +445,8 @@ hdl-parser module ibex_alux
 ## MCP Server
 
 `hdl-parser mcp` serves the same queries as tools on standard input and output: `module`, `hierarchy`,
-`where_used`, `find`, `diagnostics`, `elaborate`, `evaluate` and `reload`. It takes the same options to create the project.
+`where_used`, `find`, `diagnostics`, `elaborate`, `evaluate`, `drivers`, `loads`, `trace` and `reload`. It takes the
+same options to create the project.
 Files which changed are read again on the next call, `reload` reads the project again (i.e. after files
 were added). Answers are the same JSON, in `structuredContent` and as text. A failed query has `isError`.
 All tools are read-only (`readOnlyHint`).
@@ -358,6 +458,10 @@ All tools are read-only (`readOnlyHint`).
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then.
+* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`) and `params` of the top.
+  Generate constructs whose condition is false are left out. Instance arrays and `for` generate constructs are
+  not unrolled (`multiple`), and the granularity is the whole signal: the select (`[3:0]`) is given as text.
+  Procedural statements which are not understood (task calls) are reported as `statement-skipped`.
 * `--cache-dir DIR` keeps the cache outside the root, i.e. outside a shared work area.
 
 ```json

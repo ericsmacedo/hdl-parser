@@ -1202,7 +1202,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
             }
           ],
           "loc": {
@@ -1220,7 +1223,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
             }
           ],
           "loc": {
@@ -1237,7 +1243,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
             }
           ],
           "loc": {
@@ -1254,7 +1263,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
             }
           ],
           "loc": {
@@ -1513,6 +1525,158 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "div_counter_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 103,
+                "col": 7,
+                "end_line": 103,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "md_state_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 104,
+                "col": 7,
+                "end_line": 104,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "op_numerator_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 105,
+                "col": 7,
+                "end_line": 105,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "op_quotient_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 106,
+                "col": 7,
+                "end_line": 106,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "div_by_zero_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 7,
+                "end_line": 107,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "div_counter_q",
+              "reads": [
+                "div_counter_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "div_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 109,
+                "col": 7,
+                "end_line": 109,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "op_numerator_q",
+              "reads": [
+                "op_numerator_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "div_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 110,
+                "col": 7,
+                "end_line": 110,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "op_quotient_q",
+              "reads": [
+                "op_quotient_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "div_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 111,
+                "col": 7,
+                "end_line": 111,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "md_state_q",
+              "reads": [
+                "md_state_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "div_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 112,
+                "col": 7,
+                "end_line": 112,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_by_zero_q",
+              "reads": [
+                "div_by_zero_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "div_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 113,
+                "col": 7,
+                "end_line": 113,
+                "end_col": 41
+              }
+            }
+          ],
           "loc": {
             "line": 101,
             "col": 3,
@@ -1528,6 +1692,362 @@
               "kind": "if",
               "name": "gen_mult_single_cycle",
               "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mult3_sign_a",
+              "reads": [
+                "sign_a"
+              ],
+              "loc": {
+                "line": 192,
+                "col": 7,
+                "end_line": 192,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "mult3_sign_b",
+              "loc": {
+                "line": 193,
+                "col": 7,
+                "end_line": 193,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "mult3_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "loc": {
+                "line": 194,
+                "col": 7,
+                "end_line": 194,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "mult3_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "loc": {
+                "line": 195,
+                "col": 7,
+                "end_line": 195,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "summand1",
+              "reads": [
+                "mult1_res_uns"
+              ],
+              "loc": {
+                "line": 197,
+                "col": 7,
+                "end_line": 197,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "summand2",
+              "reads": [
+                "mult2_res"
+              ],
+              "loc": {
+                "line": 198,
+                "col": 7,
+                "end_line": 198,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "summand3",
+              "reads": [
+                "mult3_res"
+              ],
+              "loc": {
+                "line": 199,
+                "col": 7,
+                "end_line": 199,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res",
+                "mult1_res_uns"
+              ],
+              "loc": {
+                "line": 202,
+                "col": 7,
+                "end_line": 202,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "mult_valid",
+              "reads": [
+                "mult_en_i"
+              ],
+              "loc": {
+                "line": 203,
+                "col": 7,
+                "end_line": 203,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "loc": {
+                "line": 204,
+                "col": 7,
+                "end_line": 204,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "mult_hold",
+              "loc": {
+                "line": 206,
+                "col": 7,
+                "end_line": 206,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 212,
+                "col": 13,
+                "end_line": 212,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_valid",
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 213,
+                "col": 13,
+                "end_line": 213,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 214,
+                "col": 13,
+                "end_line": 214,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 216,
+                "col": 13,
+                "end_line": 216,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "mult3_sign_a",
+              "reads": [
+                "sign_a"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 222,
+                "col": 11,
+                "end_line": 222,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult3_sign_b",
+              "reads": [
+                "sign_b"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 223,
+                "col": 11,
+                "end_line": 223,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult3_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 224,
+                "col": 11,
+                "end_line": 224,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mult3_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 225,
+                "col": 11,
+                "end_line": 225,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 226,
+                "col": 11,
+                "end_line": 226,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "summand1",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 228,
+                "col": 11,
+                "end_line": 228,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "summand2",
+              "reads": [
+                "accum"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 229,
+                "col": 11,
+                "end_line": 229,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "summand3",
+              "reads": [
+                "mult3_res"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 230,
+                "col": 11,
+                "end_line": 230,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 232,
+                "col": 11,
+                "end_line": 232,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_valid",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 233,
+                "col": 11,
+                "end_line": 233,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "mult_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 235,
+                "col": 11,
+                "end_line": 235,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 239,
+                "col": 11,
+                "end_line": 239,
+                "end_col": 31
+              }
             }
           ],
           "loc": {
@@ -1561,6 +2081,38 @@
               "cond": "RV32M == RV32MSingleCycle"
             }
           ],
+          "assigns": [
+            {
+              "target": "mult_state_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 247,
+                "col": 9,
+                "end_line": 247,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mult_state_q",
+              "reads": [
+                "mult_state_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "mult_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 250,
+                "col": 11,
+                "end_line": 250,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 245,
             "col": 5,
@@ -1574,7 +2126,668 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mult_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "loc": {
+                "line": 283,
+                "col": 7,
+                "end_line": 283,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "mult_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "loc": {
+                "line": 284,
+                "col": 7,
+                "end_line": 284,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "sign_a",
+              "loc": {
+                "line": 285,
+                "col": 7,
+                "end_line": 285,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "sign_b",
+              "loc": {
+                "line": 286,
+                "col": 7,
+                "end_line": 286,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "accum",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "loc": {
+                "line": 287,
+                "col": 7,
+                "end_line": 287,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "loc": {
+                "line": 288,
+                "col": 7,
+                "end_line": 288,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "reads": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 289,
+                "col": 7,
+                "end_line": 289,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "mult_valid",
+              "loc": {
+                "line": 290,
+                "col": 7,
+                "end_line": 290,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "mult_hold",
+              "loc": {
+                "line": 291,
+                "col": 7,
+                "end_line": 291,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "mult_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 297,
+                "col": 11,
+                "end_line": 297,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mult_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 298,
+                "col": 11,
+                "end_line": 298,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "sign_a",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 299,
+                "col": 11,
+                "end_line": 299,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "sign_b",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 300,
+                "col": 11,
+                "end_line": 300,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "accum",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 301,
+                "col": 11,
+                "end_line": 301,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 302,
+                "col": 11,
+                "end_line": 302,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 303,
+                "col": 11,
+                "end_line": 303,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 308,
+                "col": 11,
+                "end_line": 308,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mult_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 309,
+                "col": 11,
+                "end_line": 309,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "sign_a",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 310,
+                "col": 11,
+                "end_line": 310,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "sign_b",
+              "reads": [
+                "signed_mode_i",
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 311,
+                "col": 11,
+                "end_line": 311,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "accum",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 313,
+                "col": 11,
+                "end_line": 313,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res",
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 315,
+                "col": 13,
+                "end_line": 315,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 318,
+                "col": 13,
+                "end_line": 318,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 320,
+                "col": 11,
+                "end_line": 320,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 325,
+                "col": 11,
+                "end_line": 325,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mult_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 326,
+                "col": 11,
+                "end_line": 326,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "sign_a",
+              "reads": [
+                "signed_mode_i",
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 327,
+                "col": 11,
+                "end_line": 327,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "sign_b",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 328,
+                "col": 11,
+                "end_line": 328,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "accum",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 330,
+                "col": 13,
+                "end_line": 330,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res",
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 331,
+                "col": 13,
+                "end_line": 331,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "mult_valid",
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 332,
+                "col": 13,
+                "end_line": 332,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 335,
+                "col": 13,
+                "end_line": 335,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 336,
+                "col": 13,
+                "end_line": 336,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "accum",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 338,
+                "col": 13,
+                "end_line": 338,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 339,
+                "col": 13,
+                "end_line": 339,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 340,
+                "col": 13,
+                "end_line": 340,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "mult_op_a",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 347,
+                "col": 11,
+                "end_line": 347,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "mult_op_b",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 348,
+                "col": 11,
+                "end_line": 348,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "sign_a",
+              "reads": [
+                "signed_mode_i",
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 349,
+                "col": 11,
+                "end_line": 349,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "sign_b",
+              "reads": [
+                "signed_mode_i",
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 350,
+                "col": 11,
+                "end_line": 350,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "accum",
+              "select": "[17:0]",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 351,
+                "col": 11,
+                "end_line": 351,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "accum",
+              "select": "[33:18]",
+              "reads": [
+                "signed_mult",
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 352,
+                "col": 11,
+                "end_line": 352,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "mac_res_d",
+              "reads": [
+                "mac_res"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 354,
+                "col": 11,
+                "end_line": 354,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "mult_valid",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 355,
+                "col": 11,
+                "end_line": 355,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 358,
+                "col": 11,
+                "end_line": 358,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mult_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 359,
+                "col": 11,
+                "end_line": 359,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "mult_state_d",
+              "conds": [
+                "mult_state_q"
+              ],
+              "loc": {
+                "line": 362,
+                "col": 11,
+                "end_line": 362,
+                "end_col": 31
+              }
             }
           ],
           "loc": {
@@ -1604,7 +2817,42 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_mult_fast"
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mult_state_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 369,
+                "col": 9,
+                "end_line": 369,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mult_state_q",
+              "reads": [
+                "mult_state_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "mult_en_internal"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 372,
+                "col": 11,
+                "end_line": 372,
+                "end_col": 40
+              }
             }
           ],
           "loc": {
@@ -1617,6 +2865,40 @@
         {
           "id": "ibex_multdiv_fast.#always6",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "is_greater_equal",
+              "reads": [
+                "res_adder_h"
+              ],
+              "conds": [
+                "imd_val_q_i",
+                "op_denominator_q"
+              ],
+              "loc": {
+                "line": 400,
+                "col": 7,
+                "end_line": 400,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "is_greater_equal",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "imd_val_q_i",
+                "op_denominator_q"
+              ],
+              "loc": {
+                "line": 402,
+                "col": 7,
+                "end_line": 402,
+                "end_col": 45
+              }
+            }
+          ],
           "comment": [
             "The adder in the ALU computes alu_operand_a_o + alu_operand_b_o which means",
             "Remainder - Divisor. If Remainder - Divisor >= 0, is_greater_equal is equal to 1,",
@@ -1632,11 +2914,1541 @@
         {
           "id": "ibex_multdiv_fast.#always7",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "div_counter_d",
+              "reads": [
+                "div_counter_q"
+              ],
+              "loc": {
+                "line": 413,
+                "col": 5,
+                "end_line": 413,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "loc": {
+                "line": 414,
+                "col": 5,
+                "end_line": 414,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "op_quotient_d",
+              "reads": [
+                "op_quotient_q"
+              ],
+              "loc": {
+                "line": 415,
+                "col": 5,
+                "end_line": 415,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "md_state_d",
+              "reads": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 416,
+                "col": 5,
+                "end_line": 416,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "op_numerator_d",
+              "reads": [
+                "op_numerator_q"
+              ],
+              "loc": {
+                "line": 417,
+                "col": 5,
+                "end_line": 417,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "op_denominator_d",
+              "reads": [
+                "op_denominator_q"
+              ],
+              "loc": {
+                "line": 418,
+                "col": 5,
+                "end_line": 418,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "loc": {
+                "line": 419,
+                "col": 5,
+                "end_line": 419,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_i"
+              ],
+              "loc": {
+                "line": 420,
+                "col": 5,
+                "end_line": 420,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "div_valid",
+              "loc": {
+                "line": 421,
+                "col": 5,
+                "end_line": 421,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "div_hold",
+              "loc": {
+                "line": 422,
+                "col": 5,
+                "end_line": 422,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "div_by_zero_d",
+              "reads": [
+                "div_by_zero_q"
+              ],
+              "loc": {
+                "line": 423,
+                "col": 5,
+                "end_line": 423,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 432,
+                "col": 11,
+                "end_line": 432,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "md_state_d",
+              "reads": [
+                "data_ind_timing_i",
+                "equal_to_zero_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 434,
+                "col": 11,
+                "end_line": 434,
+                "end_col": 91
+              }
+            },
+            {
+              "target": "div_by_zero_d",
+              "reads": [
+                "equal_to_zero_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 437,
+                "col": 11,
+                "end_line": 437,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 443,
+                "col": 11,
+                "end_line": 443,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "md_state_d",
+              "reads": [
+                "data_ind_timing_i",
+                "equal_to_zero_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 445,
+                "col": 11,
+                "end_line": 445,
+                "end_col": 91
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 448,
+                "col": 9,
+                "end_line": 448,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 449,
+                "col": 9,
+                "end_line": 449,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "div_counter_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 450,
+                "col": 9,
+                "end_line": 450,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "op_quotient_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 455,
+                "col": 9,
+                "end_line": 455,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "op_numerator_d",
+              "reads": [
+                "div_sign_a",
+                "alu_adder_i",
+                "op_a_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 457,
+                "col": 9,
+                "end_line": 457,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 458,
+                "col": 9,
+                "end_line": 458,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "div_counter_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 459,
+                "col": 9,
+                "end_line": 459,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 461,
+                "col": 9,
+                "end_line": 461,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 462,
+                "col": 9,
+                "end_line": 462,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "op_numerator_q"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 467,
+                "col": 9,
+                "end_line": 467,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "op_denominator_d",
+              "reads": [
+                "div_sign_b",
+                "alu_adder_i",
+                "op_b_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 469,
+                "col": 9,
+                "end_line": 469,
+                "end_col": 62
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 470,
+                "col": 9,
+                "end_line": 470,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "div_counter_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 471,
+                "col": 9,
+                "end_line": 471,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 473,
+                "col": 9,
+                "end_line": 473,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 474,
+                "col": 9,
+                "end_line": 474,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "next_remainder",
+                "op_numerator_q",
+                "div_counter_d"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 478,
+                "col": 9,
+                "end_line": 478,
+                "end_col": 87
+              }
+            },
+            {
+              "target": "op_quotient_d",
+              "reads": [
+                "next_quotient"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 479,
+                "col": 9,
+                "end_line": 479,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "md_state_d",
+              "reads": [
+                "div_counter_q"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 480,
+                "col": 9,
+                "end_line": 480,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 482,
+                "col": 9,
+                "end_line": 482,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_denominator_q"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 483,
+                "col": 9,
+                "end_line": 483,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "next_quotient"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 490,
+                "col": 11,
+                "end_line": 490,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "next_remainder"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 493,
+                "col": 11,
+                "end_line": 493,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 496,
+                "col": 9,
+                "end_line": 496,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_denominator_q"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 497,
+                "col": 9,
+                "end_line": 497,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 499,
+                "col": 9,
+                "end_line": 499,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 503,
+                "col": 9,
+                "end_line": 503,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "div_change_sign",
+                "alu_adder_i",
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 505,
+                "col": 11,
+                "end_line": 505,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "op_remainder_d",
+              "reads": [
+                "rem_change_sign",
+                "alu_adder_i",
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 507,
+                "col": 11,
+                "end_line": 507,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 510,
+                "col": 9,
+                "end_line": 510,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "imd_val_q_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 511,
+                "col": 9,
+                "end_line": 511,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 517,
+                "col": 9,
+                "end_line": 517,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "div_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 518,
+                "col": 9,
+                "end_line": 518,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "div_valid",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 519,
+                "col": 9,
+                "end_line": 519,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 523,
+                "col": 9,
+                "end_line": 523,
+                "end_col": 30
+              }
+            }
+          ],
           "loc": {
             "line": 412,
             "col": 3,
             "end_line": 526,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "unused_mult_sel_i",
+          "reads": [
+            "mult_sel_i"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 10,
+            "end_line": 96,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "mult_en_internal",
+          "reads": [
+            "mult_en_i",
+            "mult_hold"
+          ],
+          "loc": {
+            "line": 98,
+            "col": 10,
+            "end_line": 98,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "div_en_internal",
+          "reads": [
+            "div_en_i",
+            "div_hold"
+          ],
+          "loc": {
+            "line": 99,
+            "col": 10,
+            "end_line": 99,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "multdiv_en",
+          "reads": [
+            "mult_en_internal",
+            "div_en_internal"
+          ],
+          "loc": {
+            "line": 121,
+            "col": 10,
+            "end_line": 121,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[0]",
+          "reads": [
+            "div_sel_i",
+            "op_remainder_d",
+            "mac_res_d"
+          ],
+          "loc": {
+            "line": 124,
+            "col": 10,
+            "end_line": 124,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "imd_val_we_o",
+          "select": "[0]",
+          "reads": [
+            "multdiv_en"
+          ],
+          "loc": {
+            "line": 125,
+            "col": 10,
+            "end_line": 125,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[1]",
+          "reads": [
+            "op_denominator_d"
+          ],
+          "loc": {
+            "line": 127,
+            "col": 10,
+            "end_line": 127,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "imd_val_we_o",
+          "select": "[1]",
+          "reads": [
+            "div_en_internal"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 10,
+            "end_line": 128,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "op_denominator_q",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 129,
+            "col": 10,
+            "end_line": 129,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "unused_imd_val",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 131,
+            "col": 10,
+            "end_line": 131,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_mac_res_ext",
+          "reads": [
+            "mac_res_ext"
+          ],
+          "loc": {
+            "line": 133,
+            "col": 10,
+            "end_line": 133,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "signed_mult",
+          "reads": [
+            "signed_mode_i"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 10,
+            "end_line": 135,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "multdiv_result_o",
+          "reads": [
+            "div_sel_i",
+            "imd_val_q_i",
+            "mac_res_d"
+          ],
+          "loc": {
+            "line": 136,
+            "col": 10,
+            "end_line": 136,
+            "end_col": 79
+          }
+        },
+        {
+          "target": "mult1_res",
+          "reads": [
+            "mult1_sign_a",
+            "mult1_op_a",
+            "mult1_sign_b",
+            "mult1_op_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 158,
+            "col": 12,
+            "end_line": 158,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "mult2_res",
+          "reads": [
+            "mult2_sign_a",
+            "mult2_op_a",
+            "mult2_sign_b",
+            "mult2_op_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 159,
+            "col": 12,
+            "end_line": 159,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "mult3_res",
+          "reads": [
+            "mult3_sign_a",
+            "mult3_op_a",
+            "mult3_sign_b",
+            "mult3_op_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 160,
+            "col": 12,
+            "end_line": 160,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "mac_res_signed",
+          "reads": [
+            "summand1",
+            "summand2",
+            "summand3"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 162,
+            "col": 12,
+            "end_line": 162,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "mult1_res_uns",
+          "reads": [
+            "mult1_res"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 164,
+            "col": 12,
+            "end_line": 164,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "mac_res_ext",
+          "reads": [
+            "mac_res_signed"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 165,
+            "col": 12,
+            "end_line": 165,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "mac_res",
+          "reads": [
+            "mac_res_ext"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 166,
+            "col": 12,
+            "end_line": 166,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "sign_a",
+          "reads": [
+            "signed_mode_i",
+            "op_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 168,
+            "col": 12,
+            "end_line": 168,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "sign_b",
+          "reads": [
+            "signed_mode_i",
+            "op_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 169,
+            "col": 12,
+            "end_line": 169,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "mult1_sign_a",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 173,
+            "col": 12,
+            "end_line": 173,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "mult1_sign_b",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 174,
+            "col": 12,
+            "end_line": 174,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "mult1_op_a",
+          "reads": [
+            "op_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 175,
+            "col": 12,
+            "end_line": 175,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "mult1_op_b",
+          "reads": [
+            "op_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 176,
+            "col": 12,
+            "end_line": 176,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "mult2_sign_a",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 179,
+            "col": 12,
+            "end_line": 179,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "mult2_sign_b",
+          "reads": [
+            "sign_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 180,
+            "col": 12,
+            "end_line": 180,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "mult2_op_a",
+          "reads": [
+            "op_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 181,
+            "col": 12,
+            "end_line": 181,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "mult2_op_b",
+          "reads": [
+            "op_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 182,
+            "col": 12,
+            "end_line": 182,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "accum",
+          "select": "[17:0]",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 185,
+            "col": 12,
+            "end_line": 185,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "accum",
+          "select": "[33:18]",
+          "reads": [
+            "signed_mult",
+            "imd_val_q_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 186,
+            "col": 12,
+            "end_line": 186,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "unused_mult1_res_uns",
+          "reads": [
+            "mult1_res_uns"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 255,
+            "col": 12,
+            "end_line": 255,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "sva_mul_fsm_idle",
+          "reads": [
+            "mult_state_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mult_single_cycle",
+              "cond": "RV32M == RV32MSingleCycle"
+            }
+          ],
+          "loc": {
+            "line": 260,
+            "col": 12,
+            "end_line": 260,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "mac_res_signed",
+          "reads": [
+            "sign_a",
+            "mult_op_a",
+            "sign_b",
+            "mult_op_b",
+            "accum"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 277,
+            "col": 12,
+            "end_line": 278,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "mac_res_ext",
+          "reads": [
+            "mac_res_signed"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 279,
+            "col": 12,
+            "end_line": 279,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "mac_res",
+          "reads": [
+            "mac_res_ext"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 280,
+            "col": 12,
+            "end_line": 280,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "sva_mul_fsm_idle",
+          "reads": [
+            "mult_state_q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_mult_fast",
+              "others": [
+                "RV32M == RV32MSingleCycle"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 380,
+            "col": 12,
+            "end_line": 380,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "res_adder_h",
+          "reads": [
+            "alu_adder_ext_i"
+          ],
+          "loc": {
+            "line": 385,
+            "col": 10,
+            "end_line": 385,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_alu_adder_ext",
+          "reads": [
+            "alu_adder_ext_i"
+          ],
+          "loc": {
+            "line": 387,
+            "col": 10,
+            "end_line": 387,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "next_remainder",
+          "reads": [
+            "is_greater_equal",
+            "res_adder_h",
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 389,
+            "col": 10,
+            "end_line": 389,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "next_quotient",
+          "reads": [
+            "is_greater_equal",
+            "op_quotient_q",
+            "one_shift"
+          ],
+          "loc": {
+            "line": 390,
+            "col": 10,
+            "end_line": 391,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "one_shift",
+          "reads": [
+            "div_counter_q"
+          ],
+          "loc": {
+            "line": 393,
+            "col": 10,
+            "end_line": 393,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "div_sign_a",
+          "reads": [
+            "op_a_i",
+            "signed_mode_i"
+          ],
+          "loc": {
+            "line": 406,
+            "col": 10,
+            "end_line": 406,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "div_sign_b",
+          "reads": [
+            "op_b_i",
+            "signed_mode_i"
+          ],
+          "loc": {
+            "line": 407,
+            "col": 10,
+            "end_line": 407,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "div_change_sign",
+          "reads": [
+            "div_sign_a",
+            "div_sign_b",
+            "div_by_zero_q"
+          ],
+          "loc": {
+            "line": 408,
+            "col": 10,
+            "end_line": 408,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "rem_change_sign",
+          "reads": [
+            "div_sign_a"
+          ],
+          "loc": {
+            "line": 409,
+            "col": 10,
+            "end_line": 409,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "mult_valid",
+            "div_valid"
+          ],
+          "loc": {
+            "line": 529,
+            "col": 10,
+            "end_line": 529,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "sva_fsm_idle",
+          "reads": [
+            "md_state_q",
+            "sva_mul_fsm_idle"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 541,
+            "col": 10,
+            "end_line": 541,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "unused_sva_fsm_idle",
+          "reads": [
+            "sva_fsm_idle"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 543,
+            "col": 10,
+            "end_line": 543,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "unused_sva_mul_fsm_idle",
+          "reads": [
+            "sva_mul_fsm_idle"
+          ],
+          "ifdefs": [
+            "!INC_ASSERT"
+          ],
+          "loc": {
+            "line": 547,
+            "col": 10,
+            "end_line": 547,
+            "end_col": 52
           }
         }
       ],

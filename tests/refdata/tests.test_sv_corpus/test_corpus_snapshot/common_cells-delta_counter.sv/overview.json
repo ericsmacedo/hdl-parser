@@ -251,6 +251,22 @@
               "cond": "STICKY_OVERFLOW"
             }
           ],
+          "assigns": [
+            {
+              "target": "overflow_q",
+              "reads": [
+                "rst_ni",
+                "overflow_d"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 31,
+                "col": 54,
+                "end_line": 31,
+                "end_col": 96
+              }
+            }
+          ],
           "loc": {
             "line": 31,
             "col": 9,
@@ -268,6 +284,73 @@
               "cond": "STICKY_OVERFLOW"
             }
           ],
+          "assigns": [
+            {
+              "target": "overflow_d",
+              "reads": [
+                "overflow_q"
+              ],
+              "loc": {
+                "line": 33,
+                "col": 13,
+                "end_line": 33,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "overflow_d",
+              "conds": [
+                "clear_i",
+                "load_i"
+              ],
+              "loc": {
+                "line": 35,
+                "col": 17,
+                "end_line": 35,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "overflow_d",
+              "reads": [
+                "delta_i",
+                "counter_q"
+              ],
+              "conds": [
+                "clear_i",
+                "load_i",
+                "overflow_q",
+                "en_i",
+                "down_i"
+              ],
+              "loc": {
+                "line": 38,
+                "col": 21,
+                "end_line": 38,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "overflow_d",
+              "reads": [
+                "counter_q",
+                "delta_i"
+              ],
+              "conds": [
+                "clear_i",
+                "load_i",
+                "overflow_q",
+                "en_i",
+                "down_i"
+              ],
+              "loc": {
+                "line": 40,
+                "col": 21,
+                "end_line": 40,
+                "end_col": 83
+              }
+            }
+          ],
           "loc": {
             "line": 32,
             "col": 9,
@@ -278,6 +361,86 @@
         {
           "id": "delta_counter.#always3",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter_q"
+              ],
+              "loc": {
+                "line": 52,
+                "col": 9,
+                "end_line": 52,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "counter_d",
+              "conds": [
+                "clear_i"
+              ],
+              "loc": {
+                "line": 55,
+                "col": 13,
+                "end_line": 55,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "d_i"
+              ],
+              "conds": [
+                "clear_i",
+                "load_i"
+              ],
+              "loc": {
+                "line": 57,
+                "col": 13,
+                "end_line": 57,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter_q",
+                "delta_i"
+              ],
+              "conds": [
+                "clear_i",
+                "load_i",
+                "en_i",
+                "down_i"
+              ],
+              "loc": {
+                "line": 60,
+                "col": 17,
+                "end_line": 60,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter_q",
+                "delta_i"
+              ],
+              "conds": [
+                "clear_i",
+                "load_i",
+                "en_i",
+                "down_i"
+              ],
+              "loc": {
+                "line": 62,
+                "col": 17,
+                "end_line": 62,
+                "end_col": 49
+              }
+            }
+          ],
           "loc": {
             "line": 51,
             "col": 5,
@@ -302,11 +465,96 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "counter_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 69,
+                "col": 12,
+                "end_line": 69,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "counter_q",
+              "reads": [
+                "counter_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 71,
+                "col": 12,
+                "end_line": 71,
+                "end_col": 35
+              }
+            }
+          ],
           "loc": {
             "line": 67,
             "col": 5,
             "end_line": 73,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "overflow_o",
+          "reads": [
+            "overflow_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_sticky_overflow",
+              "cond": "STICKY_OVERFLOW"
+            }
+          ],
+          "loc": {
+            "line": 44,
+            "col": 16,
+            "end_line": 44,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "overflow_o",
+          "reads": [
+            "counter_q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_transient_overflow",
+              "others": [
+                "STICKY_OVERFLOW"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 47,
+            "col": 16,
+            "end_line": 47,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "q_o",
+          "reads": [
+            "counter_q"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 12,
+            "end_line": 49,
+            "end_col": 38
           }
         }
       ],

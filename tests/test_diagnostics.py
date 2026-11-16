@@ -232,7 +232,7 @@ def test_codes_documented():
 @mark.parametrize("path", CORPUS, ids=lambda path: str(path.relative_to(PRJ_PATH / "tests" / "corpus")))
 def test_corpus(path):
     """Real Code Parses Without Parser Problems. Diagnostics Have A Known Code And Point Into The File."""
-    allowed = {"no-module", "macro-not-expanded", "include-not-found"}
+    allowed = {"no-module", "macro-not-expanded", "include-not-found", "statement-skipped"}
     lines = path.read_bytes().count(b"\n") + 1
     for kwargs in ({}, {"expand_macros": True}):
         if kwargs and path.suffix not in (".sv", ".v"):

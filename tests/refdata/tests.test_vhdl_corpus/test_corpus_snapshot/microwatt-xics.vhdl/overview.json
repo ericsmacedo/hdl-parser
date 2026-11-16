@@ -350,6 +350,45 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "r",
+              "reads": [
+                "r_next"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 80,
+                "col": 13,
+                "end_line": 80,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "core_irq_out",
+              "select": "(i)",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 84,
+                "col": 17,
+                "end_line": 84,
+                "end_col": 49
+              }
+            }
+          ],
           "loc": {
             "line": 77,
             "col": 5,
@@ -361,11 +400,449 @@
           "id": "xics_icp.comb",
           "name": "comb",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "v",
+              "reads": [
+                "r"
+              ],
+              "loc": {
+                "line": 112,
+                "col": 9,
+                "end_line": 112,
+                "end_col": 16
+              }
+            },
+            {
+              "target": "v",
+              "select": ".wb_ack",
+              "loc": {
+                "line": 114,
+                "col": 9,
+                "end_line": 114,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "be_in",
+              "reads": [
+                "bswap",
+                "wb_in"
+              ],
+              "loc": {
+                "line": 116,
+                "col": 9,
+                "end_line": 116,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "be_out",
+              "loc": {
+                "line": 117,
+                "col": 9,
+                "end_line": 117,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "v",
+              "select": ".wb_ack",
+              "conds": [
+                "wb_in"
+              ],
+              "loc": {
+                "line": 119,
+                "col": 13,
+                "end_line": 119,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "xirr_accept_rd",
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 123,
+                "col": 13,
+                "end_line": 123,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).cppr",
+              "reads": [
+                "be_in",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 132,
+                "col": 29,
+                "end_line": 132,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).cppr",
+              "reads": [
+                "be_in",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 134,
+                "col": 29,
+                "end_line": 134,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).mfrr",
+              "reads": [
+                "be_in",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 146,
+                "col": 29,
+                "end_line": 146,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "be_out",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 165,
+                "col": 29,
+                "end_line": 165,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "be_out",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 168,
+                "col": 29,
+                "end_line": 168,
+                "end_col": 69
+              }
+            },
+            {
+              "target": "xirr_accept_rd",
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 170,
+                "col": 33,
+                "end_line": 170,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "be_out",
+              "select": "(31 downto 24)",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "wb_in",
+                "to_integer",
+                "unsigned"
+              ],
+              "loc": {
+                "line": 174,
+                "col": 29,
+                "end_line": 174,
+                "end_col": 67
+              }
+            },
+            {
+              "target": "pending_priority",
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 180,
+                "col": 13,
+                "end_line": 180,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).xisr",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 181,
+                "col": 13,
+                "end_line": 181,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).irq",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 182,
+                "col": 13,
+                "end_line": 182,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).xisr",
+              "reads": [
+                "ics_in",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "ics_in"
+              ],
+              "loc": {
+                "line": 185,
+                "col": 17,
+                "end_line": 185,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "pending_priority",
+              "reads": [
+                "ics_in",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "ics_in"
+              ],
+              "loc": {
+                "line": 186,
+                "col": 17,
+                "end_line": 186,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).xisr",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i",
+                "unsigned",
+                "r",
+                "pending_priority"
+              ],
+              "loc": {
+                "line": 191,
+                "col": 17,
+                "end_line": 191,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "pending_priority",
+              "reads": [
+                "r",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "unsigned",
+                "r",
+                "pending_priority"
+              ],
+              "loc": {
+                "line": 192,
+                "col": 17,
+                "end_line": 192,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).cppr",
+              "reads": [
+                "pending_priority",
+                "i"
+              ],
+              "conds": [
+                "i",
+                "xirr_accept_rd"
+              ],
+              "loc": {
+                "line": 201,
+                "col": 17,
+                "end_line": 201,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "v",
+              "select": ".wb_rd_data",
+              "reads": [
+                "bswap",
+                "be_out"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 204,
+                "col": 13,
+                "end_line": 204,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "v",
+              "select": ".icp(i).irq",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i",
+                "unsigned",
+                "pending_priority",
+                "v"
+              ],
+              "loc": {
+                "line": 210,
+                "col": 17,
+                "end_line": 210,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "v",
+              "conds": [
+                "rst"
+              ],
+              "loc": {
+                "line": 217,
+                "col": 13,
+                "end_line": 217,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "r_next",
+              "reads": [
+                "v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 220,
+                "col": 9,
+                "end_line": 220,
+                "end_col": 21
+              }
+            }
+          ],
           "loc": {
             "line": 93,
             "col": 5,
             "end_line": 222,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "wb_out",
+          "select": ".dat",
+          "reads": [
+            "r"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 5,
+            "end_line": 89,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "wb_out",
+          "select": ".ack",
+          "reads": [
+            "r"
+          ],
+          "loc": {
+            "line": 90,
+            "col": 5,
+            "end_line": 90,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "wb_out",
+          "select": ".stall",
+          "loc": {
+            "line": 91,
+            "col": 5,
+            "end_line": 91,
+            "end_col": 25
           }
         }
       ],
@@ -915,6 +1392,25 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "int_level_l",
+              "reads": [
+                "int_level_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 390,
+                "col": 13,
+                "end_line": 390,
+                "end_col": 41
+              }
+            }
+          ],
           "comment": [
             "-- Latch interrupt inputs for timing"
           ],
@@ -936,6 +1432,168 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "be_out",
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "loc": {
+                "line": 405,
+                "col": 13,
+                "end_line": 405,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "be_out",
+              "select": "(31)",
+              "reads": [
+                "int_level_l",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive"
+              ],
+              "loc": {
+                "line": 408,
+                "col": 17,
+                "end_line": 408,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "be_out",
+              "select": "(29)",
+              "reads": [
+                "int_level_l",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive"
+              ],
+              "loc": {
+                "line": 409,
+                "col": 17,
+                "end_line": 409,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "be_out",
+              "select": "(8+SERVER_NUM_BITS-1 downto 8)",
+              "reads": [
+                "std_ulogic_vector",
+                "xives",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive"
+              ],
+              "loc": {
+                "line": 410,
+                "col": 17,
+                "end_line": 410,
+                "end_col": 102
+              }
+            },
+            {
+              "target": "be_out",
+              "select": "(7 downto 0)",
+              "reads": [
+                "xives",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive"
+              ],
+              "loc": {
+                "line": 411,
+                "col": 17,
+                "end_line": 411,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "be_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive",
+                "reg_is_config"
+              ],
+              "loc": {
+                "line": 413,
+                "col": 17,
+                "end_line": 413,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "be_out",
+              "reads": [
+                "icp_out_next"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reg_is_xive",
+                "reg_is_config",
+                "reg_is_debug"
+              ],
+              "loc": {
+                "line": 415,
+                "col": 17,
+                "end_line": 415,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "wb_out",
+              "select": ".dat",
+              "reads": [
+                "be_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 417,
+                "col": 13,
+                "end_line": 417,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "wb_out",
+              "select": ".ack",
+              "reads": [
+                "wb_valid"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 418,
+                "col": 13,
+                "end_line": 418,
+                "end_col": 36
+              }
+            }
+          ],
           "comment": [
             "-- Big read mux. This could be replaced by a slower state",
             "-- machine iterating registers instead if timing gets tight."
@@ -958,6 +1616,94 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "xives",
+              "select": "(i)",
+              "reads": [
+                "to_unsigned",
+                "i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 429,
+                "col": 21,
+                "end_line": 429,
+                "end_col": 96
+              }
+            },
+            {
+              "target": "be_in",
+              "reads": [
+                "wb_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "wb_valid",
+                "wb_in"
+              ],
+              "loc": {
+                "line": 433,
+                "col": 17,
+                "end_line": 433,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "xives",
+              "select": "(reg_idx).pri",
+              "reads": [
+                "be_in",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "wb_valid",
+                "wb_in",
+                "reg_is_xive"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 436,
+                "col": 25,
+                "end_line": 436,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "xives",
+              "select": "(reg_idx).server",
+              "reads": [
+                "be_in",
+                "reg_idx"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst",
+                "wb_valid",
+                "wb_in",
+                "reg_is_xive"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 441,
+                "col": 25,
+                "end_line": 441,
+                "end_col": 83
+              }
+            }
+          ],
           "comment": [
             "-- Register write machine"
           ],
@@ -979,6 +1725,25 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "icp_out",
+              "reads": [
+                "icp_out_next"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 457,
+                "col": 13,
+                "end_line": 457,
+                "end_col": 37
+              }
+            }
+          ],
           "comment": [
             "-- generate interrupt. This is a simple combinational process,",
             "-- potentially wasteful in HW for large number of interrupts.",
@@ -998,11 +1763,241 @@
           "id": "xics_ics.irq_gen",
           "name": "irq_gen",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "icp_out_next",
+              "select": ".src",
+              "blocking": false,
+              "loc": {
+                "line": 467,
+                "col": 9,
+                "end_line": 467,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "icp_out_next",
+              "select": ".pri",
+              "blocking": false,
+              "loc": {
+                "line": 468,
+                "col": 9,
+                "end_line": 468,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "pending_pri",
+              "conds": [
+                "cpu"
+              ],
+              "loc": {
+                "line": 472,
+                "col": 13,
+                "end_line": 472,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "pending_pri",
+              "reads": [
+                "pending_pri",
+                "xives",
+                "i"
+              ],
+              "conds": [
+                "cpu",
+                "i",
+                "int_level_l",
+                "to_integer",
+                "xives"
+              ],
+              "loc": {
+                "line": 475,
+                "col": 21,
+                "end_line": 475,
+                "end_col": 77
+              }
+            },
+            {
+              "target": "max_pri",
+              "reads": [
+                "pending_pri"
+              ],
+              "conds": [
+                "cpu"
+              ],
+              "loc": {
+                "line": 478,
+                "col": 13,
+                "end_line": 478,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "pending_at_pri",
+              "conds": [
+                "cpu"
+              ],
+              "loc": {
+                "line": 481,
+                "col": 13,
+                "end_line": 481,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "pending_at_pri",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "cpu",
+                "i",
+                "int_level_l",
+                "xives",
+                "max_pri",
+                "to_integer"
+              ],
+              "loc": {
+                "line": 485,
+                "col": 21,
+                "end_line": 485,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "max_idx",
+              "reads": [
+                "pending_at_pri"
+              ],
+              "conds": [
+                "cpu"
+              ],
+              "loc": {
+                "line": 488,
+                "col": 13,
+                "end_line": 488,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "icp_out_next",
+              "select": ".src(4*cpu+3 downto 4*cpu)",
+              "reads": [
+                "max_idx",
+                "cpu"
+              ],
+              "conds": [
+                "cpu"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 494,
+                "col": 13,
+                "end_line": 494,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "icp_out_next",
+              "select": ".pri(8*cpu+7 downto 8*cpu)",
+              "reads": [
+                "max_pri",
+                "cpu"
+              ],
+              "conds": [
+                "cpu"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 495,
+                "col": 13,
+                "end_line": 495,
+                "end_col": 78
+              }
+            }
+          ],
           "loc": {
             "line": 461,
             "col": 5,
             "end_line": 497,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "reg_is_xive",
+          "reads": [
+            "wb_in"
+          ],
+          "loc": {
+            "line": 379,
+            "col": 5,
+            "end_line": 379,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "reg_is_config",
+          "conds": [
+            "wb_in"
+          ],
+          "loc": {
+            "line": 380,
+            "col": 5,
+            "end_line": 380,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "reg_is_debug",
+          "conds": [
+            "wb_in"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 5,
+            "end_line": 381,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "reg_idx",
+          "reads": [
+            "to_integer",
+            "unsigned",
+            "wb_in"
+          ],
+          "loc": {
+            "line": 384,
+            "col": 5,
+            "end_line": 384,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "wb_out",
+          "select": ".stall",
+          "loc": {
+            "line": 396,
+            "col": 5,
+            "end_line": 396,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "wb_valid",
+          "reads": [
+            "wb_in"
+          ],
+          "loc": {
+            "line": 397,
+            "col": 5,
+            "end_line": 397,
+            "end_col": 41
           }
         }
       ],

@@ -63,7 +63,19 @@ def test_session(tmp_path):
     assert responses[0]["result"]["protocolVersion"] == "2025-03-26"
     assert responses[0]["result"]["serverInfo"]["name"] == "hdl-parser"
     names = [tool["name"] for tool in responses[1]["result"]["tools"]]
-    assert names == ["module", "hierarchy", "where_used", "find", "diagnostics", "elaborate", "evaluate", "reload"]
+    assert names == [
+        "module",
+        "hierarchy",
+        "where_used",
+        "find",
+        "diagnostics",
+        "elaborate",
+        "evaluate",
+        "drivers",
+        "loads",
+        "trace",
+        "reload",
+    ]
     result = responses[2]["result"]
     assert result["isError"] is False
     assert result["structuredContent"]["result"][0]["inst"] == "top.sv:top.u_sub"

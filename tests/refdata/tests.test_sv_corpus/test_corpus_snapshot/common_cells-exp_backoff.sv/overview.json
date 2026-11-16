@@ -225,11 +225,171 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "lfsr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 70,
+                "col": 7,
+                "end_line": 70,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "mask_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 71,
+                "col": 7,
+                "end_line": 71,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "cnt_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 72,
+                "col": 7,
+                "end_line": 72,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "lfsr_q",
+              "reads": [
+                "lfsr_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 74,
+                "col": 7,
+                "end_line": 74,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "mask_q",
+              "reads": [
+                "mask_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 75,
+                "col": 7,
+                "end_line": 75,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "cnt_q",
+              "reads": [
+                "cnt_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 76,
+                "col": 7,
+                "end_line": 76,
+                "end_col": 23
+              }
+            }
+          ],
           "loc": {
             "line": 68,
             "col": 3,
             "end_line": 78,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "lfsr",
+          "reads": [
+            "lfsr_q"
+          ],
+          "loc": {
+            "line": 49,
+            "col": 10,
+            "end_line": 52,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "lfsr_d",
+          "reads": [
+            "set_i",
+            "lfsr",
+            "lfsr_q"
+          ],
+          "loc": {
+            "line": 54,
+            "col": 10,
+            "end_line": 55,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "mask_d",
+          "reads": [
+            "clr_i",
+            "set_i",
+            "mask_q"
+          ],
+          "loc": {
+            "line": 58,
+            "col": 10,
+            "end_line": 60,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "cnt_d",
+          "reads": [
+            "clr_i",
+            "set_i",
+            "mask_q",
+            "lfsr_q",
+            "is_zero_o",
+            "cnt_q"
+          ],
+          "loc": {
+            "line": 62,
+            "col": 10,
+            "end_line": 64,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "is_zero_o",
+          "reads": [
+            "cnt_q"
+          ],
+          "loc": {
+            "line": 66,
+            "col": 10,
+            "end_line": 66,
+            "end_col": 33
           }
         }
       ],

@@ -215,6 +215,41 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "dout",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 116,
+                "col": 9,
+                "end_line": 116,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "dout",
+              "reads": [
+                "data"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "rst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 118,
+                "col": 9,
+                "end_line": 118,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "-- Processes are skipped"
           ],
@@ -223,6 +258,34 @@
             "col": 3,
             "end_line": 121,
             "end_col": 21
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "data",
+          "select": "(0)",
+          "reads": [
+            "din"
+          ],
+          "loc": {
+            "line": 55,
+            "col": 3,
+            "end_line": 55,
+            "end_col": 18
+          }
+        },
+        {
+          "target": "status",
+          "select": ".valid",
+          "conds": [
+            "rst"
+          ],
+          "loc": {
+            "line": 124,
+            "col": 3,
+            "end_line": 124,
+            "end_col": 47
           }
         }
       ],

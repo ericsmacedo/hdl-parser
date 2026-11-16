@@ -143,11 +143,64 @@
         {
           "id": "stream_mux.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "inp_ready_o",
+              "loc": {
+                "line": 32,
+                "col": 5,
+                "end_line": 32,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "inp_ready_o",
+              "select": "[inp_sel_i]",
+              "reads": [
+                "oup_ready_i",
+                "inp_sel_i"
+              ],
+              "loc": {
+                "line": 33,
+                "col": 5,
+                "end_line": 33,
+                "end_col": 42
+              }
+            }
+          ],
           "loc": {
             "line": 31,
             "col": 3,
             "end_line": 34,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "oup_data_o",
+          "reads": [
+            "inp_data_i",
+            "inp_sel_i"
+          ],
+          "loc": {
+            "line": 35,
+            "col": 10,
+            "end_line": 35,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "oup_valid_o",
+          "reads": [
+            "inp_valid_i",
+            "inp_sel_i"
+          ],
+          "loc": {
+            "line": 36,
+            "col": 10,
+            "end_line": 36,
+            "end_col": 47
           }
         }
       ],

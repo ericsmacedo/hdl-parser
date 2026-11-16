@@ -274,7 +274,7 @@ def test_guide(runner):
     """The Worked Examples Of The Guide For Agents Are Up To Date."""
     text = (PRJ_PATH / "docs" / "agents.md").read_text()
     examples = list(_EXAMPLE.finditer(text))
-    assert len(examples) == 8
+    assert len(examples) == 10
     with chdir(IBEX):
         for example in examples:
             result = runner.invoke(cli, shlex.split(example["cmd"]))

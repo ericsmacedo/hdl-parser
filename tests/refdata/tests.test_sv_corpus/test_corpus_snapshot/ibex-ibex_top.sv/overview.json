@@ -2966,7 +2966,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_clock_en_non_secure"
+              "name": "g_clock_en_non_secure",
+              "others": [
+                "SecureIbex"
+              ]
             }
           ],
           "loc": {
@@ -2983,7 +2986,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_non_mem_rdata_ecc"
+              "name": "gen_non_mem_rdata_ecc",
+              "others": [
+                "MemECC"
+              ]
             }
           ],
           "loc": {
@@ -3001,7 +3007,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_noscramble"
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
             }
           ],
           "loc": {
@@ -3074,7 +3083,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_norams"
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
             }
           ],
           "loc": {
@@ -3091,7 +3103,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_norams"
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
             }
           ],
           "loc": {
@@ -4254,7 +4269,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_lockstep"
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
             }
           ],
           "loc": {
@@ -4271,7 +4289,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_cheriot_trvk"
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -4643,7 +4664,44 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_clock_en_non_secure"
+              "name": "g_clock_en_non_secure",
+              "others": [
+                "SecureIbex"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "core_busy_q",
+              "reads": [
+                "IbexMuBiOff"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 320,
+                "col": 9,
+                "end_line": 320,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "core_busy_q",
+              "reads": [
+                "core_busy_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 322,
+                "col": 9,
+                "end_line": 322,
+                "end_col": 36
+              }
             }
           ],
           "comment": [
@@ -4681,6 +4739,68 @@
               "cond": "ICacheScramble"
             }
           ],
+          "assigns": [
+            {
+              "target": "scramble_key_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 634,
+                "col": 9,
+                "end_line": 634,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "scramble_nonce_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 635,
+                "col": 9,
+                "end_line": 635,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "scramble_key_q",
+              "reads": [
+                "scramble_key_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "scramble_key_valid_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 637,
+                "col": 9,
+                "end_line": 637,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "scramble_nonce_q",
+              "reads": [
+                "scramble_nonce_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "scramble_key_valid_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 638,
+                "col": 9,
+                "end_line": 638,
+                "end_col": 50
+              }
+            }
+          ],
           "loc": {
             "line": 632,
             "col": 5,
@@ -4710,6 +4830,66 @@
               "kind": "if",
               "name": "gen_scramble",
               "cond": "ICacheScramble"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "scramble_key_valid_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 644,
+                "col": 9,
+                "end_line": 644,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "scramble_req_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 645,
+                "col": 9,
+                "end_line": 645,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "scramble_key_valid_q",
+              "reads": [
+                "scramble_key_valid_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 647,
+                "col": 9,
+                "end_line": 647,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "scramble_req_q",
+              "reads": [
+                "scramble_req_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 648,
+                "col": 9,
+                "end_line": 648,
+                "end_col": 48
+              }
             }
           ],
           "loc": {
@@ -4753,6 +4933,47 @@
               "cond": "ICacheScramble"
             }
           ],
+          "assigns": [
+            {
+              "target": "sampled_scramble_key",
+              "reads": [
+                "x"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 770,
+                "col": 15,
+                "end_line": 770,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "sampled_scramble_key",
+              "reads": [
+                "scramble_key_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "scramble_key_valid_i"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 772,
+                "col": 15,
+                "end_line": 772,
+                "end_col": 54
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -4787,6 +5008,49 @@
               "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
             }
           ],
+          "assigns": [
+            {
+              "target": "pending_dside_accesses_q",
+              "select": "[i]",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1468,
+                "col": 11,
+                "end_line": 1468,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "pending_dside_accesses_q",
+              "select": "[i]",
+              "reads": [
+                "pending_dside_accesses_d",
+                "i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1470,
+                "col": 11,
+                "end_line": 1470,
+                "end_col": 70
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -4805,6 +5069,66 @@
               "kind": "for",
               "name": "g_dside_tracker",
               "cond": "genvar i = 0; i < MaxOutstandingDSideAccesses; i++"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "pending_dside_accesses_shifted",
+              "select": "[i]",
+              "reads": [
+                "pending_dside_accesses_q",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1475,
+                "col": 9,
+                "end_line": 1475,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "pending_dside_accesses_shifted",
+              "select": "[i]",
+              "reads": [
+                "pending_dside_accesses_q",
+                "i"
+              ],
+              "conds": [
+                "data_rvalid_i",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1479,
+                "col": 13,
+                "end_line": 1479,
+                "end_col": 81
+              }
+            },
+            {
+              "target": "pending_dside_accesses_shifted",
+              "select": "[i]",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "data_rvalid_i",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1481,
+                "col": 13,
+                "end_line": 1481,
+                "end_col": 52
+              }
             }
           ],
           "ifdefs": [
@@ -4832,6 +5156,70 @@
               "cond": "i == 0"
             }
           ],
+          "assigns": [
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i]",
+              "reads": [
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1488,
+                "col": 11,
+                "end_line": 1488,
+                "end_col": 75
+              }
+            },
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i].valid",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "data_req_o",
+                "data_gnt_i",
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1491,
+                "col": 13,
+                "end_line": 1491,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i].is_read",
+              "reads": [
+                "data_we_o",
+                "i"
+              ],
+              "conds": [
+                "data_req_o",
+                "data_gnt_i",
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1492,
+                "col": 13,
+                "end_line": 1492,
+                "end_col": 62
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT"
           ],
@@ -4853,7 +5241,74 @@
             },
             {
               "kind": "else",
-              "name": "g_track_other_entries"
+              "name": "g_track_other_entries",
+              "others": [
+                "i == 0"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i]",
+              "reads": [
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1497,
+                "col": 11,
+                "end_line": 1497,
+                "end_col": 75
+              }
+            },
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i].valid",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "data_req_o",
+                "data_gnt_i",
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1501,
+                "col": 13,
+                "end_line": 1501,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "pending_dside_accesses_d",
+              "select": "[i].is_read",
+              "reads": [
+                "data_we_o",
+                "i"
+              ],
+              "conds": [
+                "data_req_o",
+                "data_gnt_i",
+                "pending_dside_accesses_shifted",
+                "i"
+              ],
+              "ifdefs": [
+                "INC_ASSERT"
+              ],
+              "loc": {
+                "line": 1502,
+                "col": 13,
+                "end_line": 1502,
+                "end_col": 62
+              }
             }
           ],
           "ifdefs": [
@@ -4883,6 +5338,125 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "double_fault_seen_delay_buffer_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1585,
+                "col": 9,
+                "end_line": 1585,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "sync_exc_seen",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1586,
+                "col": 9,
+                "end_line": 1586,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "double_fault_seen_delay_buffer_q",
+              "reads": [
+                "double_fault_seen_delay_buffer"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1588,
+                "col": 9,
+                "end_line": 1589,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "sync_exc_seen",
+              "conds": [
+                "rst_ni",
+                "new_sync_exc"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1593,
+                "col": 11,
+                "end_line": 1593,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "sync_exc_seen",
+              "conds": [
+                "rst_ni",
+                "new_sync_exc",
+                "rvfi_valid",
+                "rvfi_insn"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1596,
+                "col": 11,
+                "end_line": 1596,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "sync_exc_seen",
+              "reads": [
+                "rvfi_insn",
+                "rvfi_rs1_rdata",
+                "sync_exc_seen"
+              ],
+              "conds": [
+                "rst_ni",
+                "new_sync_exc",
+                "rvfi_valid",
+                "rvfi_insn"
+              ],
+              "blocking": false,
+              "ifdefs": [
+                "INC_ASSERT",
+                "RVFI"
+              ],
+              "loc": {
+                "line": 1600,
+                "col": 11,
+                "end_line": 1600,
+                "end_col": 87
+              }
+            }
+          ],
           "ifdefs": [
             "INC_ASSERT",
             "RVFI"
@@ -4892,6 +5466,2438 @@
             "col": 5,
             "end_line": 1603,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "clock_en",
+          "reads": [
+            "core_busy_q",
+            "IbexMuBiOff",
+            "debug_req_i",
+            "irq_pending",
+            "irq_nm_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_clock_en_secure",
+              "cond": "SecureIbex"
+            }
+          ],
+          "loc": {
+            "line": 314,
+            "col": 12,
+            "end_line": 314,
+            "end_col": 90
+          }
+        },
+        {
+          "target": "clock_en",
+          "reads": [
+            "core_busy_q",
+            "debug_req_i",
+            "irq_pending",
+            "irq_nm_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_clock_en_non_secure",
+              "others": [
+                "SecureIbex"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 325,
+            "col": 12,
+            "end_line": 325,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "unused_core_busy",
+          "reads": [
+            "core_busy_q",
+            "ibex_mubi_t"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_clock_en_non_secure",
+              "others": [
+                "SecureIbex"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 328,
+            "col": 12,
+            "end_line": 328,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "core_sleep_o",
+          "reads": [
+            "clock_en"
+          ],
+          "loc": {
+            "line": 331,
+            "col": 10,
+            "end_line": 331,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "data_rdata_core",
+          "select": "[31:0]",
+          "reads": [
+            "trvk_rdata"
+          ],
+          "loc": {
+            "line": 357,
+            "col": 10,
+            "end_line": 357,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "instr_rdata_core",
+          "select": "[31:0]",
+          "reads": [
+            "instr_rdata_i"
+          ],
+          "loc": {
+            "line": 358,
+            "col": 10,
+            "end_line": 358,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "data_rdata_core",
+          "select": "[MemDataWidth-1:32]",
+          "reads": [
+            "trvk_rdata_intg"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mem_rdata_ecc",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 361,
+            "col": 12,
+            "end_line": 361,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "instr_rdata_core",
+          "select": "[MemDataWidth-1:32]",
+          "reads": [
+            "instr_rdata_intg_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_mem_rdata_ecc",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 362,
+            "col": 12,
+            "end_line": 362,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "unused_intg",
+          "reads": [
+            "instr_rdata_intg_i",
+            "trvk_rdata_intg"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_non_mem_rdata_ecc",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 366,
+            "col": 12,
+            "end_line": 366,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "scramble_key_valid_d",
+          "reads": [
+            "scramble_req_q",
+            "scramble_key_valid_i",
+            "ic_scr_key_req",
+            "scramble_key_valid_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_scramble",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "loc": {
+            "line": 628,
+            "col": 12,
+            "end_line": 630,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "scramble_req_d",
+          "reads": [
+            "scramble_req_q",
+            "scramble_key_valid_i",
+            "ic_scr_key_req"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_scramble",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "loc": {
+            "line": 654,
+            "col": 12,
+            "end_line": 654,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "scramble_req_o",
+          "reads": [
+            "scramble_req_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_scramble",
+              "cond": "ICacheScramble"
+            }
+          ],
+          "loc": {
+            "line": 655,
+            "col": 12,
+            "end_line": 655,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "scramble_req_d",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 665,
+            "col": 12,
+            "end_line": 665,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "scramble_req_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 666,
+            "col": 12,
+            "end_line": 666,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "scramble_req_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 667,
+            "col": 12,
+            "end_line": 667,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "scramble_key_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 668,
+            "col": 12,
+            "end_line": 668,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "scramble_nonce_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 669,
+            "col": 12,
+            "end_line": 669,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "scramble_key_valid_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 670,
+            "col": 12,
+            "end_line": 670,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "scramble_key_valid_d",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_noscramble",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 671,
+            "col": 12,
+            "end_line": 671,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "icache_tag_alert",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "else",
+              "name": "gen_noscramble_rams",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 837,
+            "col": 16,
+            "end_line": 837,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "icache_data_alert",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rams",
+              "cond": "ICache"
+            },
+            {
+              "kind": "for",
+              "name": "gen_rams_inner",
+              "cond": "genvar way = 0; way < IC_NUM_WAYS; way++"
+            },
+            {
+              "kind": "else",
+              "name": "gen_noscramble_rams",
+              "others": [
+                "ICacheScramble"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 838,
+            "col": 16,
+            "end_line": 838,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "unused_ram_cfg",
+          "reads": [
+            "ram_cfg_icache_tag_i",
+            "ram_cfg_icache_data_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 847,
+            "col": 12,
+            "end_line": 847,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "ram_cfg_icache_tag_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 848,
+            "col": 12,
+            "end_line": 848,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "ram_cfg_icache_data_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 849,
+            "col": 12,
+            "end_line": 849,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "unused_ram_inputs",
+          "reads": [
+            "ic_tag_req",
+            "ic_tag_write",
+            "ic_tag_addr",
+            "ic_tag_wdata",
+            "ic_data_req",
+            "ic_data_write",
+            "ic_data_addr",
+            "ic_data_wdata"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 850,
+            "col": 12,
+            "end_line": 852,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "ic_tag_rdata",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 854,
+            "col": 12,
+            "end_line": 854,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "ic_data_rdata",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 855,
+            "col": 12,
+            "end_line": 855,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "icache_tag_alert",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 857,
+            "col": 12,
+            "end_line": 857,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "icache_data_alert",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_norams",
+              "others": [
+                "ICache"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 858,
+            "col": 12,
+            "end_line": 858,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "trvk_wdata",
+          "reads": [
+            "data_wdata_core"
+          ],
+          "loc": {
+            "line": 861,
+            "col": 10,
+            "end_line": 861,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "trvk_wdata_intg",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_mem_ecc",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 869,
+            "col": 12,
+            "end_line": 869,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "buf_in",
+          "reads": [
+            "hart_id_i",
+            "boot_addr_i",
+            "instr_req_o",
+            "instr_gnt_i",
+            "instr_rvalid_i",
+            "instr_addr_o",
+            "instr_rdata_core",
+            "instr_err_i",
+            "trvk_req",
+            "trvk_gnt",
+            "trvk_rvalid",
+            "trvk_we",
+            "trvk_be",
+            "trvk_addr",
+            "trvk_wdata",
+            "trvk_wtag",
+            "data_rdata_core",
+            "trvk_rtag",
+            "trvk_err",
+            "rf_raddr_a",
+            "rf_raddr_b",
+            "rf_waddr_wb",
+            "rf_we_wb",
+            "rf_wdata_wb",
+            "rf_rdata_a",
+            "rf_rdata_b",
+            "ic_tag_req",
+            "ic_tag_write",
+            "ic_tag_addr",
+            "ic_tag_wdata",
+            "ic_data_req",
+            "ic_data_write",
+            "ic_data_addr",
+            "ic_data_wdata",
+            "scramble_key_valid_q",
+            "ic_scr_key_req",
+            "irq_software_i",
+            "irq_timer_i",
+            "irq_external_i",
+            "irq_fast_i",
+            "irq_nm_i",
+            "irq_pending",
+            "debug_req_i",
+            "crash_dump_o",
+            "double_fault_seen_o",
+            "fetch_enable_i",
+            "mcounteren_writable_i",
+            "core_busy_d",
+            "cheriot_enable_i",
+            "rf_wcap",
+            "rf_rcap_a",
+            "rf_rcap_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 999,
+            "col": 12,
+            "end_line": 1052,
+            "end_col": 6
+          }
+        },
+        {
+          "target": "hart_id_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "boot_addr_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_gnt_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_rvalid_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_addr_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_rdata_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "instr_err_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_gnt_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_rvalid_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_we_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_be_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_addr_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_wdata_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_tag_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_rdata_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_rdata_tag_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "data_err_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_raddr_a_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_raddr_b_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_waddr_wb_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_we_wb_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_wdata_wb_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_rdata_a_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_rdata_b_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_tag_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_tag_write_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_tag_addr_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_tag_wdata_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_data_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_data_write_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_data_addr_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_data_wdata_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "scramble_key_valid_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "ic_scr_key_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_software_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_timer_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_external_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_fast_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_nm_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "irq_pending_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "debug_req_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "crash_dump_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "double_fault_seen_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "fetch_enable_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "mcounteren_writable_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "core_busy_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "cheriot_enable_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_wcap_vec_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_rcap_a_vec_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_rcap_b_vec_local",
+          "reads": [
+            "buf_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1054,
+            "col": 12,
+            "end_line": 1107,
+            "end_col": 16
+          }
+        },
+        {
+          "target": "rf_wcap_local",
+          "reads": [
+            "rf_wcap_vec_local"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1109,
+            "col": 12,
+            "end_line": 1109,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "rf_rcap_a_local",
+          "reads": [
+            "rf_rcap_a_vec_local"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1110,
+            "col": 12,
+            "end_line": 1110,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "rf_rcap_b_local",
+          "reads": [
+            "rf_rcap_b_vec_local"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_lockstep",
+              "cond": "Lockstep"
+            }
+          ],
+          "loc": {
+            "line": 1111,
+            "col": 12,
+            "end_line": 1111,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "lockstep_alert_major_internal",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1277,
+            "col": 12,
+            "end_line": 1277,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "lockstep_alert_major_bus",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1278,
+            "col": 12,
+            "end_line": 1278,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "lockstep_alert_minor",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1279,
+            "col": 12,
+            "end_line": 1279,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "lockstep_cmp_en_o",
+          "reads": [
+            "IbexMuBiOff"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1281,
+            "col": 12,
+            "end_line": 1281,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "data_req_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1282,
+            "col": 12,
+            "end_line": 1282,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "data_we_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1283,
+            "col": 12,
+            "end_line": 1283,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "data_be_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1284,
+            "col": 12,
+            "end_line": 1284,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "data_addr_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1285,
+            "col": 12,
+            "end_line": 1285,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "data_wdata_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1286,
+            "col": 12,
+            "end_line": 1286,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "data_wdata_intg_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1287,
+            "col": 12,
+            "end_line": 1287,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "instr_req_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1288,
+            "col": 12,
+            "end_line": 1288,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "instr_addr_shadow_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1289,
+            "col": 12,
+            "end_line": 1289,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "unused_scan",
+          "reads": [
+            "scan_rst_ni"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_lockstep",
+              "others": [
+                "Lockstep"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1292,
+            "col": 12,
+            "end_line": 1292,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "trvk_revbm_req_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1350,
+            "col": 12,
+            "end_line": 1350,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "trvk_revbm_addr_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1351,
+            "col": 12,
+            "end_line": 1351,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "trvk_rtag",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1352,
+            "col": 12,
+            "end_line": 1352,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "data_tag_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1353,
+            "col": 12,
+            "end_line": 1353,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "trvk_revbm_data_intg_error",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1354,
+            "col": 12,
+            "end_line": 1354,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "trvk_revbm_device_error",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1355,
+            "col": 12,
+            "end_line": 1355,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "unused_trvk",
+          "reads": [
+            "trvk_heap_base_addr_i",
+            "trvk_revbm_gnt_i",
+            "trvk_revbm_rvalid_i",
+            "trvk_revbm_rdata_i",
+            "trvk_revbm_rdata_intg_i",
+            "trvk_revbm_err_i",
+            "trvk_wtag",
+            "data_tag_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1356,
+            "col": 12,
+            "end_line": 1365,
+            "end_col": 6
+          }
+        },
+        {
+          "target": "data_req_o",
+          "reads": [
+            "trvk_req"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1368,
+            "col": 12,
+            "end_line": 1368,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "trvk_gnt",
+          "reads": [
+            "data_gnt_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1369,
+            "col": 12,
+            "end_line": 1369,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "trvk_rvalid",
+          "reads": [
+            "data_rvalid_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1370,
+            "col": 12,
+            "end_line": 1370,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "data_we_o",
+          "reads": [
+            "trvk_we"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1371,
+            "col": 12,
+            "end_line": 1371,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "data_be_o",
+          "reads": [
+            "trvk_be"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1372,
+            "col": 12,
+            "end_line": 1372,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "data_addr_o",
+          "reads": [
+            "trvk_addr"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1373,
+            "col": 12,
+            "end_line": 1373,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "data_wdata_o",
+          "reads": [
+            "trvk_wdata"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1374,
+            "col": 12,
+            "end_line": 1374,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "data_wdata_intg_o",
+          "reads": [
+            "trvk_wdata_intg"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1375,
+            "col": 12,
+            "end_line": 1375,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "trvk_rdata",
+          "reads": [
+            "data_rdata_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1376,
+            "col": 12,
+            "end_line": 1376,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "trvk_rdata_intg",
+          "reads": [
+            "data_rdata_intg_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1377,
+            "col": 12,
+            "end_line": 1377,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "trvk_err",
+          "reads": [
+            "data_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_cheriot_trvk",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1378,
+            "col": 12,
+            "end_line": 1378,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "icache_alert_major_internal",
+          "reads": [
+            "icache_tag_alert",
+            "icache_data_alert"
+          ],
+          "loc": {
+            "line": 1385,
+            "col": 10,
+            "end_line": 1385,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "alert_major_internal_o",
+          "reads": [
+            "core_alert_major_internal",
+            "lockstep_alert_major_internal",
+            "icache_alert_major_internal"
+          ],
+          "loc": {
+            "line": 1387,
+            "col": 10,
+            "end_line": 1389,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "alert_major_bus_o",
+          "reads": [
+            "core_alert_major_bus",
+            "lockstep_alert_major_bus",
+            "trvk_revbm_data_intg_error",
+            "trvk_revbm_device_error"
+          ],
+          "loc": {
+            "line": 1390,
+            "col": 10,
+            "end_line": 1393,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "alert_minor_o",
+          "reads": [
+            "core_alert_minor",
+            "lockstep_alert_minor"
+          ],
+          "loc": {
+            "line": 1394,
+            "col": 10,
+            "end_line": 1394,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "new_sync_exc",
+          "reads": [
+            "rvfi_valid",
+            "rvfi_trap",
+            "rvfi_ext_debug_mode"
+          ],
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1571,
+            "col": 12,
+            "end_line": 1571,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "double_fault_seen_predicted",
+          "reads": [
+            "sync_exc_seen",
+            "new_sync_exc"
+          ],
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1572,
+            "col": 12,
+            "end_line": 1572,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "double_fault_seen_delay_buffer",
+          "reads": [
+            "double_fault_seen_delay_buffer_q",
+            "double_fault_seen_o"
+          ],
+          "ifdefs": [
+            "INC_ASSERT",
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1581,
+            "col": 12,
+            "end_line": 1581,
+            "end_col": 100
           }
         }
       ],
@@ -7375,7 +10381,10 @@
             {
               "kind": "if",
               "name": "gen_regfile_fpga",
-              "cond": "RegFile == RegFileFPGA"
+              "cond": "RegFile == RegFileFPGA",
+              "others": [
+                "RegFile == RegFileFF"
+              ]
             }
           ],
           "loc": {
@@ -7628,7 +10637,11 @@
             {
               "kind": "if",
               "name": "gen_regfile_latch",
-              "cond": "RegFile == RegFileLatch"
+              "cond": "RegFile == RegFileLatch",
+              "others": [
+                "RegFile == RegFileFF",
+                "RegFile == RegFileFPGA"
+              ]
             }
           ],
           "loc": {
@@ -8459,7 +11472,10 @@
             },
             {
               "kind": "else",
-              "name": "gen_noscramble_rams"
+              "name": "gen_noscramble_rams",
+              "others": [
+                "ICacheScramble"
+              ]
             }
           ],
           "loc": {
@@ -8633,7 +11649,10 @@
             },
             {
               "kind": "else",
-              "name": "gen_noscramble_rams"
+              "name": "gen_noscramble_rams",
+              "others": [
+                "ICacheScramble"
+              ]
             }
           ],
           "loc": {

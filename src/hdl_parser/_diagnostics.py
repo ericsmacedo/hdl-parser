@@ -43,6 +43,7 @@ SEVERITIES: dict[str, dm.Severity] = {
     "include-not-found": "warning",
     "include-unreadable": "warning",
     "header-item-skipped": "warning",
+    "statement-skipped": "info",
     "missing-end": "warning",
     "unbalanced-bracket": "warning",
     "no-module": "info",

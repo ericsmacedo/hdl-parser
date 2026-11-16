@@ -591,6 +591,70 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "req_src_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 113,
+                "col": 7,
+                "end_line": 113,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "data_src_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 114,
+                "col": 7,
+                "end_line": 114,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "req_src_q",
+              "reads": [
+                "req_src_q"
+              ],
+              "conds": [
+                "rst_ni",
+                "valid_i",
+                "ready_o"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 116,
+                "col": 7,
+                "end_line": 116,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "data_src_q",
+              "reads": [
+                "data_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "valid_i",
+                "ready_o"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 117,
+                "col": 7,
+                "end_line": 117,
+                "end_col": 28
+              }
+            }
+          ],
           "comment": [
             "The req_src and data_src registers change when a new data item is accepted."
           ],
@@ -618,6 +682,66 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "ack_src_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 124,
+                "col": 7,
+                "end_line": 124,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "ack_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 125,
+                "col": 7,
+                "end_line": 125,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "ack_src_q",
+              "reads": [
+                "async_ack_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 127,
+                "col": 7,
+                "end_line": 127,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ack_q",
+              "reads": [
+                "ack_src_q"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 128,
+                "col": 7,
+                "end_line": 128,
+                "end_col": 30
+              }
+            }
+          ],
           "comment": [
             "The ack_src and ack registers act as synchronization stages."
           ],
@@ -626,6 +750,45 @@
             "col": 3,
             "end_line": 130,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "ready_o",
+          "reads": [
+            "req_src_q",
+            "ack_q"
+          ],
+          "loc": {
+            "line": 133,
+            "col": 10,
+            "end_line": 133,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "async_req_o",
+          "reads": [
+            "req_src_q"
+          ],
+          "loc": {
+            "line": 134,
+            "col": 10,
+            "end_line": 134,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "async_data_o",
+          "reads": [
+            "data_src_q"
+          ],
+          "loc": {
+            "line": 135,
+            "col": 10,
+            "end_line": 135,
+            "end_col": 35
           }
         }
       ],
@@ -826,6 +989,39 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "ack_dst_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 164,
+                "col": 7,
+                "end_line": 164,
+                "end_col": 23
+              }
+            },
+            {
+              "target": "ack_dst_q",
+              "reads": [
+                "ack_dst_q"
+              ],
+              "conds": [
+                "rst_ni",
+                "valid_o",
+                "ready_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 166,
+                "col": 7,
+                "end_line": 166,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "The ack_dst register changes when a new data item is accepted."
           ],
@@ -853,6 +1049,40 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "data_dst_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 174,
+                "col": 7,
+                "end_line": 174,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "data_dst_q",
+              "reads": [
+                "async_data_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "req_q0",
+                "req_q1",
+                "valid_o"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 176,
+                "col": 7,
+                "end_line": 176,
+                "end_col": 34
+              }
+            }
+          ],
           "comment": [
             "The data_dst register changes when a new data item is presented. This is",
             "indicated by the async_req line changing levels."
@@ -881,6 +1111,95 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "req_dst_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 183,
+                "col": 7,
+                "end_line": 183,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "req_q0",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 184,
+                "col": 7,
+                "end_line": 184,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "req_q1",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 185,
+                "col": 7,
+                "end_line": 185,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "req_dst_q",
+              "reads": [
+                "async_req_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 187,
+                "col": 7,
+                "end_line": 187,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "req_q0",
+              "reads": [
+                "req_dst_q"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 188,
+                "col": 7,
+                "end_line": 188,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "req_q1",
+              "reads": [
+                "req_q0"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 189,
+                "col": 7,
+                "end_line": 189,
+                "end_col": 27
+              }
+            }
+          ],
           "comment": [
             "The req_dst and req registers act as synchronization stages."
           ],
@@ -889,6 +1208,45 @@
             "col": 3,
             "end_line": 191,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "valid_o",
+          "reads": [
+            "ack_dst_q",
+            "req_q1"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 10,
+            "end_line": 194,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "data_o",
+          "reads": [
+            "data_dst_q"
+          ],
+          "loc": {
+            "line": 195,
+            "col": 10,
+            "end_line": 195,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "async_ack_o",
+          "reads": [
+            "ack_dst_q"
+          ],
+          "loc": {
+            "line": 196,
+            "col": 10,
+            "end_line": 196,
+            "end_col": 33
           }
         }
       ],

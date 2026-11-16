@@ -169,11 +169,103 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "q_sync_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 48,
+                "col": 18,
+                "end_line": 48,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "q_sync_q",
+              "reads": [
+                "q_sync_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 49,
+                "col": 18,
+                "end_line": 49,
+                "end_col": 39
+              }
+            }
+          ],
           "loc": {
             "line": 47,
             "col": 3,
             "end_line": 50,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "q_sync_d",
+          "reads": [
+            "d_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nosync",
+              "others": [
+                "EnSync"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 42,
+            "col": 12,
+            "end_line": 42,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "q_sync_o",
+          "reads": [
+            "q_sync_d"
+          ],
+          "loc": {
+            "line": 45,
+            "col": 10,
+            "end_line": 45,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "q_posedge_pulse_o",
+          "reads": [
+            "q_sync_d",
+            "q_sync_q"
+          ],
+          "loc": {
+            "line": 52,
+            "col": 10,
+            "end_line": 52,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "q_negedge_pulse_o",
+          "reads": [
+            "q_sync_d",
+            "q_sync_q"
+          ],
+          "loc": {
+            "line": 53,
+            "col": 10,
+            "end_line": 53,
+            "end_col": 50
           }
         }
       ],

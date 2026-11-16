@@ -447,6 +447,70 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "w_pnt",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 61,
+                "col": 7,
+                "end_line": 61,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "r_pnt",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 62,
+                "col": 7,
+                "end_line": 62,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "w_pnt",
+              "reads": [
+                "w_nxt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 64,
+                "col": 7,
+                "end_line": 64,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "r_pnt",
+              "reads": [
+                "r_nxt"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 65,
+                "col": 7,
+                "end_line": 65,
+                "end_col": 22
+              }
+            }
+          ],
           "comment": [
             "-- Pointers -------------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -481,6 +545,26 @@
               "cond": "not ASYNCRD"
             }
           ],
+          "assigns": [
+            {
+              "target": "avail",
+              "reads": [
+                "empty",
+                "clear_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 95,
+                "col": 11,
+                "end_line": 95,
+                "end_col": 50
+              }
+            }
+          ],
           "loc": {
             "line": 92,
             "col": 7,
@@ -509,6 +593,50 @@
               "kind": "if",
               "name": "memory_large_sync_read",
               "cond": "not ASYNCRD"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "fifo",
+              "select": "(to_integer(unsigned(w_pnt(AWIDTH-1 downto 0))))",
+              "reads": [
+                "wdata_i",
+                "to_integer",
+                "unsigned",
+                "w_pnt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "we"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 137,
+                "col": 13,
+                "end_line": 137,
+                "end_col": 77
+              }
+            },
+            {
+              "target": "rdata",
+              "reads": [
+                "fifo",
+                "to_integer",
+                "unsigned",
+                "r_pnt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 139,
+                "col": 11,
+                "end_line": 139,
+                "end_col": 73
+              }
             }
           ],
           "loc": {
@@ -541,6 +669,30 @@
               "cond": "ASYNCRD"
             }
           ],
+          "assigns": [
+            {
+              "target": "fifo",
+              "select": "(to_integer(unsigned(w_pnt(AWIDTH-1 downto 0))))",
+              "reads": [
+                "wdata_i",
+                "to_integer",
+                "unsigned",
+                "w_pnt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "we"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 153,
+                "col": 13,
+                "end_line": 153,
+                "end_col": 77
+              }
+            }
+          ],
           "loc": {
             "line": 149,
             "col": 7,
@@ -566,11 +718,359 @@
               "cond": "(AWIDTH = 0)"
             }
           ],
+          "assigns": [
+            {
+              "target": "fifo",
+              "select": "(0)",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "we"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 171,
+                "col": 11,
+                "end_line": 171,
+                "end_col": 30
+              }
+            }
+          ],
           "loc": {
             "line": 167,
             "col": 5,
             "end_line": 174,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "re",
+          "reads": [
+            "re_i",
+            "empty"
+          ],
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "we",
+          "reads": [
+            "we_i",
+            "full"
+          ],
+          "loc": {
+            "line": 71,
+            "col": 3,
+            "end_line": 71,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "w_nxt",
+          "reads": [
+            "std_ulogic_vector",
+            "unsigned",
+            "w_pnt"
+          ],
+          "conds": [
+            "clear_i",
+            "we"
+          ],
+          "loc": {
+            "line": 74,
+            "col": 3,
+            "end_line": 74,
+            "end_col": 120
+          }
+        },
+        {
+          "target": "r_nxt",
+          "reads": [
+            "std_ulogic_vector",
+            "unsigned",
+            "r_pnt"
+          ],
+          "conds": [
+            "clear_i",
+            "re"
+          ],
+          "loc": {
+            "line": 75,
+            "col": 3,
+            "end_line": 75,
+            "end_col": 120
+          }
+        },
+        {
+          "target": "level_o",
+          "reads": [
+            "std_ulogic_vector",
+            "unsigned",
+            "w_pnt",
+            "r_pnt"
+          ],
+          "loc": {
+            "line": 78,
+            "col": 3,
+            "end_line": 78,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "match",
+          "conds": [
+            "r_pnt",
+            "w_pnt"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_large",
+              "cond": "(AWIDTH > 0)"
+            }
+          ],
+          "loc": {
+            "line": 85,
+            "col": 5,
+            "end_line": 85,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "full",
+          "conds": [
+            "r_pnt",
+            "w_pnt",
+            "match"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_large",
+              "cond": "(AWIDTH > 0)"
+            }
+          ],
+          "loc": {
+            "line": 86,
+            "col": 5,
+            "end_line": 86,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "empty",
+          "conds": [
+            "r_pnt",
+            "w_pnt",
+            "match"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_large",
+              "cond": "(AWIDTH > 0)"
+            }
+          ],
+          "loc": {
+            "line": 87,
+            "col": 5,
+            "end_line": 87,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "avail",
+          "reads": [
+            "empty"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "status_large_async_read",
+              "cond": "ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 103,
+            "col": 7,
+            "end_line": 103,
+            "end_col": 26
+          }
+        },
+        {
+          "target": "match",
+          "conds": [
+            "r_pnt",
+            "w_pnt"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 111,
+            "col": 5,
+            "end_line": 111,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "full",
+          "reads": [
+            "match"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 112,
+            "col": 5,
+            "end_line": 112,
+            "end_col": 24
+          }
+        },
+        {
+          "target": "empty",
+          "reads": [
+            "full"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 113,
+            "col": 5,
+            "end_line": 113,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "avail",
+          "reads": [
+            "empty"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "status_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 114,
+            "col": 5,
+            "end_line": 114,
+            "end_col": 24
+          }
+        },
+        {
+          "target": "free_o",
+          "reads": [
+            "full"
+          ],
+          "loc": {
+            "line": 118,
+            "col": 3,
+            "end_line": 118,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "avail_o",
+          "reads": [
+            "avail"
+          ],
+          "loc": {
+            "line": 119,
+            "col": 3,
+            "end_line": 119,
+            "end_col": 20
+          }
+        },
+        {
+          "target": "rdata",
+          "reads": [
+            "fifo",
+            "to_integer",
+            "unsigned",
+            "r_pnt"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_large",
+              "cond": "(AWIDTH > 0)"
+            },
+            {
+              "kind": "if",
+              "name": "memory_large_async_read",
+              "cond": "ASYNCRD"
+            }
+          ],
+          "loc": {
+            "line": 157,
+            "col": 7,
+            "end_line": 157,
+            "end_col": 69
+          }
+        },
+        {
+          "target": "rdata",
+          "reads": [
+            "fifo"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 175,
+            "col": 5,
+            "end_line": 175,
+            "end_col": 22
+          }
+        },
+        {
+          "target": "rdata_o",
+          "reads": [
+            "rdata"
+          ],
+          "conds": [
+            "avail"
+          ],
+          "loc": {
+            "line": 179,
+            "col": 3,
+            "end_line": 179,
+            "end_col": 72
           }
         }
       ],
@@ -815,6 +1315,52 @@
               "cond": "(AWIDTH > 0)"
             }
           ],
+          "assigns": [
+            {
+              "target": "spram",
+              "select": "(to_integer(unsigned(addr_i)))",
+              "reads": [
+                "data_i",
+                "to_integer",
+                "unsigned",
+                "addr_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "rw_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 239,
+                "col": 13,
+                "end_line": 239,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "rdata",
+              "reads": [
+                "spram",
+                "to_integer",
+                "unsigned",
+                "addr_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 241,
+                "col": 11,
+                "end_line": 241,
+                "end_col": 56
+              }
+            }
+          ],
           "loc": {
             "line": 234,
             "col": 5,
@@ -838,6 +1384,28 @@
               "kind": "if",
               "name": "memory_small",
               "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "spram",
+              "select": "(0)",
+              "reads": [
+                "data_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "rw_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 256,
+                "col": 11,
+                "end_line": 256,
+                "end_col": 30
+              }
             }
           ],
           "loc": {
@@ -865,11 +1433,70 @@
               "cond": "OUTREG"
             }
           ],
+          "assigns": [
+            {
+              "target": "data_o",
+              "reads": [
+                "rdata"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 270,
+                "col": 9,
+                "end_line": 270,
+                "end_col": 25
+              }
+            }
+          ],
           "loc": {
             "line": 267,
             "col": 5,
             "end_line": 272,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rdata",
+          "reads": [
+            "spram"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "memory_small",
+              "cond": "(AWIDTH = 0)"
+            }
+          ],
+          "loc": {
+            "line": 260,
+            "col": 5,
+            "end_line": 260,
+            "end_col": 23
+          }
+        },
+        {
+          "target": "data_o",
+          "reads": [
+            "rdata"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "output_register_disabled",
+              "cond": "not OUTREG"
+            }
+          ],
+          "loc": {
+            "line": 278,
+            "col": 5,
+            "end_line": 278,
+            "end_col": 21
           }
         }
       ],
@@ -1266,6 +1893,48 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "opa",
+              "reads": [
+                "signed",
+                "opa_i",
+                "opas_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 331,
+                "col": 9,
+                "end_line": 331,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "opb",
+              "reads": [
+                "signed",
+                "opb_i",
+                "opbs_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 332,
+                "col": 9,
+                "end_line": 332,
+                "end_col": 63
+              }
+            }
+          ],
           "comment": [
             "-- Input Registers ------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1295,6 +1964,26 @@
               "cond": "(NUM_REGS = 1)"
             }
           ],
+          "assigns": [
+            {
+              "target": "res",
+              "reads": [
+                "opa",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 344,
+                "col": 9,
+                "end_line": 344,
+                "end_col": 26
+              }
+            }
+          ],
           "loc": {
             "line": 341,
             "col": 5,
@@ -1318,6 +2007,26 @@
               "kind": "if",
               "name": "two_regs",
               "cond": "(NUM_REGS = 2)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mul_res",
+              "reads": [
+                "opa",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 356,
+                "col": 9,
+                "end_line": 356,
+                "end_col": 30
+              }
             }
           ],
           "loc": {
@@ -1345,6 +2054,25 @@
               "cond": "(NUM_REGS = 2)"
             }
           ],
+          "assigns": [
+            {
+              "target": "res",
+              "reads": [
+                "mul_res"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 363,
+                "col": 9,
+                "end_line": 363,
+                "end_col": 24
+              }
+            }
+          ],
           "loc": {
             "line": 360,
             "col": 5,
@@ -1368,6 +2096,90 @@
               "kind": "if",
               "name": "three_regs",
               "cond": "(NUM_REGS = 3)"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "q_ll",
+              "reads": [
+                "resize",
+                "signed",
+                "std_ulogic_vector",
+                "opa",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 381,
+                "col": 9,
+                "end_line": 382,
+                "end_col": 97
+              }
+            },
+            {
+              "target": "q_lh",
+              "reads": [
+                "resize",
+                "signed",
+                "std_ulogic_vector",
+                "opa",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 383,
+                "col": 9,
+                "end_line": 384,
+                "end_col": 89
+              }
+            },
+            {
+              "target": "q_hl",
+              "reads": [
+                "resize",
+                "opa",
+                "signed",
+                "std_ulogic_vector",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 385,
+                "col": 9,
+                "end_line": 386,
+                "end_col": 97
+              }
+            },
+            {
+              "target": "q_hh",
+              "reads": [
+                "resize",
+                "opa",
+                "opb"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 387,
+                "col": 9,
+                "end_line": 388,
+                "end_col": 89
+              }
             }
           ],
           "loc": {
@@ -1395,6 +2207,48 @@
               "cond": "(NUM_REGS = 3)"
             }
           ],
+          "assigns": [
+            {
+              "target": "q_sum_lo",
+              "reads": [
+                "resize",
+                "q_ll",
+                "shift_left",
+                "q_lh"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 395,
+                "col": 9,
+                "end_line": 395,
+                "end_col": 97
+              }
+            },
+            {
+              "target": "q_sum_hi",
+              "reads": [
+                "shift_left",
+                "resize",
+                "q_hl",
+                "q_hh"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 396,
+                "col": 9,
+                "end_line": 397,
+                "end_col": 72
+              }
+            }
+          ],
           "loc": {
             "line": 392,
             "col": 5,
@@ -1420,11 +2274,46 @@
               "cond": "(NUM_REGS = 3)"
             }
           ],
+          "assigns": [
+            {
+              "target": "res",
+              "reads": [
+                "q_sum_lo",
+                "q_sum_hi"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 404,
+                "col": 9,
+                "end_line": 404,
+                "end_col": 36
+              }
+            }
+          ],
           "loc": {
             "line": 401,
             "col": 5,
             "end_line": 406,
             "end_col": 17
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "res_o",
+          "reads": [
+            "std_ulogic_vector",
+            "res"
+          ],
+          "loc": {
+            "line": 410,
+            "col": 3,
+            "end_line": 410,
+            "end_col": 58
           }
         }
       ],
@@ -1624,6 +2513,136 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "count",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 463,
+                "col": 7,
+                "end_line": 463,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "carry",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 464,
+                "col": 7,
+                "end_line": 464,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "count",
+              "select": "(31 downto 0)",
+              "reads": [
+                "data_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 468,
+                "col": 9,
+                "end_line": 468,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "count",
+              "select": "(31 downto 0)",
+              "reads": [
+                "inc"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 470,
+                "col": 9,
+                "end_line": 470,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "carry",
+              "select": "(0)",
+              "reads": [
+                "inc"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 473,
+                "col": 7,
+                "end_line": 473,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "count",
+              "select": "(63 downto 32)",
+              "reads": [
+                "data_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 476,
+                "col": 9,
+                "end_line": 476,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "count",
+              "select": "(63 downto 32)",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "count",
+                "carry"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "we_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 478,
+                "col": 9,
+                "end_line": 478,
+                "end_col": 99
+              }
+            }
+          ],
           "comment": [
             "-- 64-Bit Counter (split across two 32-bit registers) -------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1647,6 +2666,35 @@
               "signal": "count"
             }
           ],
+          "assigns": [
+            {
+              "target": "cnt_o",
+              "blocking": false,
+              "loc": {
+                "line": 490,
+                "col": 5,
+                "end_line": 490,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "cnt_o",
+              "select": "(CWIDTH-1 downto 0)",
+              "reads": [
+                "count"
+              ],
+              "conds": [
+                "oe_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 492,
+                "col": 7,
+                "end_line": 492,
+                "end_col": 60
+              }
+            }
+          ],
           "comment": [
             "-- Output Gating and Trimming -------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1656,6 +2704,25 @@
             "col": 3,
             "end_line": 494,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "inc",
+          "reads": [
+            "std_ulogic_vector",
+            "unsigned",
+            "count"
+          ],
+          "conds": [
+            "inc_i"
+          ],
+          "loc": {
+            "line": 484,
+            "col": 3,
+            "end_line": 484,
+            "end_col": 121
           }
         }
       ],

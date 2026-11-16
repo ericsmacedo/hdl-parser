@@ -282,6 +282,126 @@
         {
           "id": "ibex_counter.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "we",
+              "reads": [
+                "counter_we_i",
+                "counterh_we_i"
+              ],
+              "loc": {
+                "line": 35,
+                "col": 5,
+                "end_line": 35,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "counter_load",
+              "select": "[63:32]",
+              "reads": [
+                "counter"
+              ],
+              "loc": {
+                "line": 36,
+                "col": 5,
+                "end_line": 36,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "counter_load",
+              "select": "[31:0]",
+              "reads": [
+                "counter_val_i"
+              ],
+              "loc": {
+                "line": 37,
+                "col": 5,
+                "end_line": 37,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "counter_load",
+              "select": "[63:32]",
+              "reads": [
+                "counter_val_i"
+              ],
+              "conds": [
+                "counterh_we_i"
+              ],
+              "loc": {
+                "line": 39,
+                "col": 7,
+                "end_line": 39,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "counter_load",
+              "select": "[31:0]",
+              "reads": [
+                "counter"
+              ],
+              "conds": [
+                "counterh_we_i"
+              ],
+              "loc": {
+                "line": 40,
+                "col": 7,
+                "end_line": 40,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter_load"
+              ],
+              "conds": [
+                "we"
+              ],
+              "loc": {
+                "line": 45,
+                "col": 7,
+                "end_line": 45,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter_upd"
+              ],
+              "conds": [
+                "we",
+                "counter_inc_i"
+              ],
+              "loc": {
+                "line": 47,
+                "col": 7,
+                "end_line": 47,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "counter_d",
+              "reads": [
+                "counter"
+              ],
+              "conds": [
+                "we",
+                "counter_inc_i"
+              ],
+              "loc": {
+                "line": 49,
+                "col": 7,
+                "end_line": 49,
+                "end_col": 45
+              }
+            }
+          ],
           "comment": [
             "Update"
           ],
@@ -308,6 +428,37 @@
               "kind": "if",
               "name": "g_cnt_dsp",
               "cond": "UseDsp == \"yes\""
+            }
+          ],
+          "assigns": [
+            {
+              "target": "counter_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 69,
+                "col": 9,
+                "end_line": 69,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "counter_q",
+              "reads": [
+                "counter_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 71,
+                "col": 9,
+                "end_line": 71,
+                "end_col": 32
+              }
             }
           ],
           "comment": [
@@ -340,7 +491,41 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_cnt_no_dsp"
+              "name": "g_cnt_no_dsp",
+              "others": [
+                "UseDsp == \"yes\""
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "counter_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 78,
+                "col": 9,
+                "end_line": 78,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "counter_q",
+              "reads": [
+                "counter_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 80,
+                "col": 9,
+                "end_line": 80,
+                "end_col": 32
+              }
             }
           ],
           "comment": [
@@ -351,6 +536,226 @@
             "col": 5,
             "end_line": 82,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "counter_upd",
+          "reads": [
+            "counter"
+          ],
+          "loc": {
+            "line": 30,
+            "col": 10,
+            "end_line": 30,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "counter",
+          "select": "[CounterWidth-1:0]",
+          "reads": [
+            "counter_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            }
+          ],
+          "loc": {
+            "line": 89,
+            "col": 12,
+            "end_line": 89,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "counter",
+          "select": "[63:CounterWidth]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            }
+          ],
+          "loc": {
+            "line": 90,
+            "col": 12,
+            "end_line": 90,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "counter_val_upd_o",
+          "select": "[CounterWidth-1:0]",
+          "reads": [
+            "counter_upd"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            },
+            {
+              "kind": "if",
+              "name": "g_counter_val_upd_o",
+              "cond": "ProvideValUpd"
+            }
+          ],
+          "loc": {
+            "line": 93,
+            "col": 14,
+            "end_line": 93,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "counter_val_upd_o",
+          "select": "[CounterWidth-1:0]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            },
+            {
+              "kind": "else",
+              "name": "g_no_counter_val_upd_o",
+              "others": [
+                "ProvideValUpd"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 95,
+            "col": 14,
+            "end_line": 95,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "counter_val_upd_o",
+          "select": "[63:CounterWidth]",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            }
+          ],
+          "loc": {
+            "line": 97,
+            "col": 12,
+            "end_line": 97,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "unused_counter_load",
+          "reads": [
+            "counter_load"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_counter_narrow",
+              "cond": "CounterWidth < 64"
+            }
+          ],
+          "loc": {
+            "line": 98,
+            "col": 12,
+            "end_line": 98,
+            "end_col": 79
+          }
+        },
+        {
+          "target": "counter",
+          "reads": [
+            "counter_q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_counter_full",
+              "others": [
+                "CounterWidth < 64"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 100,
+            "col": 12,
+            "end_line": 100,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "counter_val_upd_o",
+          "reads": [
+            "counter_upd"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_counter_full",
+              "others": [
+                "CounterWidth < 64"
+              ]
+            },
+            {
+              "kind": "if",
+              "name": "g_counter_val_upd_o",
+              "cond": "ProvideValUpd"
+            }
+          ],
+          "loc": {
+            "line": 103,
+            "col": 14,
+            "end_line": 103,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "counter_val_upd_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_counter_full",
+              "others": [
+                "CounterWidth < 64"
+              ]
+            },
+            {
+              "kind": "else",
+              "name": "g_no_counter_val_upd_o",
+              "others": [
+                "ProvideValUpd"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 105,
+            "col": 14,
+            "end_line": 105,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "counter_val_o",
+          "reads": [
+            "counter"
+          ],
+          "loc": {
+            "line": 109,
+            "col": 10,
+            "end_line": 109,
+            "end_col": 33
           }
         }
       ],

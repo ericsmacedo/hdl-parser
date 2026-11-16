@@ -602,6 +602,38 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "stored_addr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 156,
+                "col": 9,
+                "end_line": 156,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "stored_addr_q",
+              "reads": [
+                "stored_addr_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "stored_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 158,
+                "col": 9,
+                "end_line": 158,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 154,
             "col": 5,
@@ -623,7 +655,28 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_stored_addr_nr"
+              "name": "g_stored_addr_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "stored_addr_q",
+              "reads": [
+                "stored_addr_d"
+              ],
+              "conds": [
+                "stored_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 164,
+                "col": 9,
+                "end_line": 164,
+                "end_col": 40
+              }
             }
           ],
           "loc": {
@@ -657,6 +710,38 @@
               "cond": "ResetAll"
             }
           ],
+          "assigns": [
+            {
+              "target": "fetch_addr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 180,
+                "col": 9,
+                "end_line": 180,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "fetch_addr_q",
+              "reads": [
+                "fetch_addr_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "fetch_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 182,
+                "col": 9,
+                "end_line": 182,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 178,
             "col": 5,
@@ -678,7 +763,28 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_fetch_addr_nr"
+              "name": "g_fetch_addr_nr",
+              "others": [
+                "ResetAll"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "fetch_addr_q",
+              "reads": [
+                "fetch_addr_d"
+              ],
+              "conds": [
+                "fetch_addr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 188,
+                "col": 9,
+                "end_line": 188,
+                "end_col": 38
+              }
             }
           ],
           "loc": {
@@ -705,6 +811,124 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "valid_req_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 248,
+                "col": 7,
+                "end_line": 248,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "discard_req_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 249,
+                "col": 7,
+                "end_line": 249,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "rdata_outstanding_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 250,
+                "col": 7,
+                "end_line": 250,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "branch_discard_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 251,
+                "col": 7,
+                "end_line": 251,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "valid_req_q",
+              "reads": [
+                "valid_req_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 253,
+                "col": 7,
+                "end_line": 253,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "discard_req_q",
+              "reads": [
+                "discard_req_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 254,
+                "col": 7,
+                "end_line": 254,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "rdata_outstanding_q",
+              "reads": [
+                "rdata_outstanding_s"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 255,
+                "col": 7,
+                "end_line": 255,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "branch_discard_q",
+              "reads": [
+                "branch_discard_s"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 256,
+                "col": 7,
+                "end_line": 256,
+                "end_col": 48
+              }
+            }
+          ],
           "comment": [
             "/////////////",
             "Registers //",
@@ -715,6 +939,403 @@
             "col": 3,
             "end_line": 258,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "busy_o",
+          "reads": [
+            "rdata_outstanding_q",
+            "instr_req_o"
+          ],
+          "loc": {
+            "line": 69,
+            "col": 10,
+            "end_line": 69,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "fifo_clear",
+          "reads": [
+            "branch_i"
+          ],
+          "loc": {
+            "line": 78,
+            "col": 10,
+            "end_line": 78,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "rdata_outstanding_rev",
+          "select": "[i]",
+          "reads": [
+            "rdata_outstanding_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_rd_rev",
+              "cond": "genvar i = 0; i < NUM_REQS; i++"
+            }
+          ],
+          "loc": {
+            "line": 82,
+            "col": 12,
+            "end_line": 82,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "fifo_ready",
+          "reads": [
+            "fifo_busy",
+            "rdata_outstanding_rev"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 10,
+            "end_line": 88,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "valid_new_req",
+          "reads": [
+            "req_i",
+            "fifo_ready",
+            "branch_i",
+            "rdata_outstanding_q"
+          ],
+          "loc": {
+            "line": 119,
+            "col": 10,
+            "end_line": 120,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "valid_req",
+          "reads": [
+            "valid_req_q",
+            "valid_new_req"
+          ],
+          "loc": {
+            "line": 122,
+            "col": 10,
+            "end_line": 122,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "valid_req_d",
+          "reads": [
+            "valid_req",
+            "instr_gnt_i"
+          ],
+          "loc": {
+            "line": 125,
+            "col": 10,
+            "end_line": 125,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "discard_req_d",
+          "reads": [
+            "valid_req_q",
+            "branch_i",
+            "discard_req_q"
+          ],
+          "loc": {
+            "line": 128,
+            "col": 10,
+            "end_line": 128,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "stored_addr_en",
+          "reads": [
+            "valid_new_req",
+            "valid_req_q",
+            "instr_gnt_i"
+          ],
+          "loc": {
+            "line": 147,
+            "col": 10,
+            "end_line": 147,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "stored_addr_d",
+          "reads": [
+            "instr_addr"
+          ],
+          "loc": {
+            "line": 150,
+            "col": 10,
+            "end_line": 150,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "fetch_addr_en",
+          "reads": [
+            "branch_i",
+            "valid_new_req",
+            "valid_req_q"
+          ],
+          "loc": {
+            "line": 171,
+            "col": 10,
+            "end_line": 171,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "fetch_addr_d",
+          "reads": [
+            "branch_i",
+            "addr_i",
+            "fetch_addr_q",
+            "valid_new_req",
+            "valid_req_q"
+          ],
+          "loc": {
+            "line": 173,
+            "col": 10,
+            "end_line": 175,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "instr_addr",
+          "reads": [
+            "valid_req_q",
+            "stored_addr_q",
+            "branch_i",
+            "addr_i",
+            "fetch_addr_q"
+          ],
+          "loc": {
+            "line": 194,
+            "col": 10,
+            "end_line": 196,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "instr_addr_w_aligned",
+          "reads": [
+            "instr_addr"
+          ],
+          "loc": {
+            "line": 198,
+            "col": 10,
+            "end_line": 198,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rdata_outstanding_n",
+          "select": "[i]",
+          "reads": [
+            "valid_req",
+            "instr_gnt_i",
+            "rdata_outstanding_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_outstanding_reqs",
+              "cond": "genvar i = 0; i < NUM_REQS; i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_req0",
+              "cond": "i == 0"
+            }
+          ],
+          "loc": {
+            "line": 209,
+            "col": 14,
+            "end_line": 210,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "branch_discard_n",
+          "select": "[i]",
+          "reads": [
+            "valid_req",
+            "instr_gnt_i",
+            "discard_req_d",
+            "branch_i",
+            "rdata_outstanding_q",
+            "i",
+            "branch_discard_q"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_outstanding_reqs",
+              "cond": "genvar i = 0; i < NUM_REQS; i++"
+            },
+            {
+              "kind": "if",
+              "name": "g_req0",
+              "cond": "i == 0"
+            }
+          ],
+          "loc": {
+            "line": 213,
+            "col": 14,
+            "end_line": 215,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rdata_outstanding_n",
+          "select": "[i]",
+          "reads": [
+            "valid_req",
+            "instr_gnt_i",
+            "rdata_outstanding_q",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_outstanding_reqs",
+              "cond": "genvar i = 0; i < NUM_REQS; i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_reqtop",
+              "others": [
+                "i == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 221,
+            "col": 14,
+            "end_line": 223,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "branch_discard_n",
+          "select": "[i]",
+          "reads": [
+            "valid_req",
+            "instr_gnt_i",
+            "discard_req_d",
+            "rdata_outstanding_q",
+            "i",
+            "branch_i",
+            "branch_discard_q"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "g_outstanding_reqs",
+              "cond": "genvar i = 0; i < NUM_REQS; i++"
+            },
+            {
+              "kind": "else",
+              "name": "g_reqtop",
+              "others": [
+                "i == 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 224,
+            "col": 14,
+            "end_line": 227,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "rdata_outstanding_s",
+          "reads": [
+            "instr_rvalid_i",
+            "rdata_outstanding_n"
+          ],
+          "loc": {
+            "line": 232,
+            "col": 10,
+            "end_line": 233,
+            "end_col": 68
+          }
+        },
+        {
+          "target": "branch_discard_s",
+          "reads": [
+            "instr_rvalid_i",
+            "branch_discard_n"
+          ],
+          "loc": {
+            "line": 234,
+            "col": 10,
+            "end_line": 235,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "fifo_valid",
+          "reads": [
+            "instr_rvalid_i",
+            "branch_discard_q"
+          ],
+          "loc": {
+            "line": 238,
+            "col": 10,
+            "end_line": 238,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "fifo_addr",
+          "reads": [
+            "addr_i"
+          ],
+          "loc": {
+            "line": 240,
+            "col": 10,
+            "end_line": 240,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "instr_req_o",
+          "reads": [
+            "valid_req"
+          ],
+          "loc": {
+            "line": 264,
+            "col": 10,
+            "end_line": 264,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "instr_addr_o",
+          "reads": [
+            "instr_addr_w_aligned"
+          ],
+          "loc": {
+            "line": 265,
+            "col": 10,
+            "end_line": 265,
+            "end_col": 45
           }
         }
       ],

@@ -237,11 +237,114 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 57,
+                "col": 7,
+                "end_line": 57,
+                "end_col": 19
+              }
+            },
+            {
+              "target": "q",
+              "reads": [
+                "wr_data"
+              ],
+              "conds": [
+                "rst_ni",
+                "wr_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 59,
+                "col": 7,
+                "end_line": 59,
+                "end_col": 20
+              }
+            }
+          ],
           "loc": {
             "line": 55,
             "col": 3,
             "end_line": 61,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "ds",
+          "reads": [
+            "wr_en",
+            "wr_data",
+            "qs"
+          ],
+          "loc": {
+            "line": 64,
+            "col": 10,
+            "end_line": 64,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "qe",
+          "reads": [
+            "wr_en"
+          ],
+          "loc": {
+            "line": 65,
+            "col": 10,
+            "end_line": 65,
+            "end_col": 20
+          }
+        },
+        {
+          "target": "qs",
+          "reads": [
+            "de",
+            "we",
+            "d",
+            "q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_rc",
+              "cond": "SwAccess == SwAccessRC"
+            }
+          ],
+          "loc": {
+            "line": 70,
+            "col": 12,
+            "end_line": 70,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "qs",
+          "reads": [
+            "q"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_rc",
+              "others": [
+                "SwAccess == SwAccessRC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 72,
+            "col": 12,
+            "end_line": 72,
+            "end_col": 18
           }
         }
       ],
