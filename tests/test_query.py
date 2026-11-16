@@ -279,3 +279,48 @@ def test_guide(runner):
         for example in examples:
             result = runner.invoke(cli, shlex.split(example["cmd"]))
             assert json.loads(result.stdout) == json.loads(example["answer"]), example["cmd"]
+
+
+def test_hierarchy_tops_sorted(tmp_path):
+    """Tops By Size, Leaves Left Out, Text Tree, Negative Depth."""
+    (tmp_path / "a.sv").write_text("module inv; endmodule\n")
+    (tmp_path / "b.sv").write_text("module mid; inv u (); endmodule\n")
+    (tmp_path / "c.sv").write_text("module big; mid u1 (); mid u2 (); endmodule\n")
+    (tmp_path / "d.sv").write_text("module lonely; endmodule\n")
+    project = Project.from_dir(tmp_path)
+    answer = query.hierarchy(project)
+    assert [(top["name"], top["insts"]) for top in answer["result"]] == [("big", 4)]
+    assert answer["leaves"] == 1
+    assert [top["name"] for top in query.hierarchy(project, leaves=True)["result"]] == ["big", "lonely"]
+    assert (
+        query.hierarchy(project, "big", text=True)["tree"]
+        == "big\n  u1 (small)\n    u (inv)\n  u2 (small)\n    u (inv)"
+    )
+    with raises(query.QueryError):
+        query.hierarchy(project, "big", depth=-1)
+
+
+def test_where_used_undefined(small):
+    """Modules Which Are Not Defined Are Found By Their Instances."""
+    answer = query.where_used(small, "missing")
+    assert answer["defined"] is False
+    assert answer["result"][0]["inst"] == "top.sv:top.u_m"
+    assert answer["result"][0]["module"] == "top.sv:top"
+
+
+def test_diagnostics_group_exclude_blackbox(small):
+    """Grouped, Files Excluded, Blackboxes."""
+    assert query.diagnostics(small, group_by="code")["result"] == [{"code": "undefined-module", "count": 1}]
+    assert query.diagnostics(small, group_by="module")["result"] == [{"module": "missing", "count": 1}]
+    assert query.diagnostics(small, exclude=["top.*"])["total"] == 0
+    assert query.diagnostics(small, file="t*")["total"] == 1
+    assert query.diagnostics(small, blackboxes=["miss*"])["total"] == 0
+    with raises(query.QueryError):
+        query.diagnostics(small, group_by="foo")
+
+
+def test_module_bad_field_suggestions(small):
+    """Suggestions Without Duplicates."""
+    with raises(query.QueryError) as error:
+        query.module(small, "top", fields=["nope"])
+    assert len(error.value.suggestions) == len(set(error.value.suggestions))

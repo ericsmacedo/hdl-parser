@@ -276,6 +276,11 @@ def opt_project(func):
             "--exclude", "-x", multiple=True, help="Pattern of files to be left out of a directory: 'models/*'."
         ),
         click.option("--cache", is_flag=True, help="Keep the results within the root, parse changed files only."),
+        click.option(
+            "--cache-dir",
+            type=click.Path(file_okay=False, path_type=Path),
+            help="Keep the results in this directory, parse changed files only. Implies '--cache'.",
+        ),
     )
     for option in reversed(options):
         func = option(func)
@@ -302,6 +307,14 @@ def opt_answer(func):
 opt_fields = click.option(
     "--fields", "-F", multiple=True, help="Comma separated fields to be returned. Can be given multiple times."
 )
+opt_blackbox = click.option(
+    "--blackbox",
+    "blackboxes",
+    multiple=True,
+    metavar="PATTERN",
+    help="Module names known to be missing (blackboxes, cells): no 'undefined-module' for them. Can be given "
+    "multiple times.",
+)
 opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
 
 
@@ -315,6 +328,7 @@ def load_project(  # noqa: PLR0913
     root: Path | None = None,
     exclude: tuple[str, ...] = (),
     cache: bool = False,
+    cache_dir: Path | None = None,
 ) -> Project:
     """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
@@ -334,7 +348,7 @@ def load_project(  # noqa: PLR0913
         "resolve_ifdefs": resolve_ifdefs,
         "defines": dict(_split_define(define) for define in defines),
         "inc_dirs": inc_dirs,
-        "cache": cache,
+        "cache": cache_dir or cache,
     }
     if filelist:
         return Project.from_filelist(filelist, **kwargs)
@@ -421,6 +435,8 @@ def module(ctx: Ctx, name: str, fields: tuple[str, ...], summary: bool, limit: i
 )
 @click.option("--top", "-t", help="Name or full identifier of the module.")
 @click.option("--depth", "-d", type=click.IntRange(min=0), help="Number of instance levels below the top.")
+@click.option("--leaves", is_flag=True, help="Without '--top': top modules without instances too.")
+@click.option("--text", is_flag=True, help="The tree as indented text, much smaller than JSON.")
 @opt_project
 @opt_fields
 @opt_summary
@@ -430,6 +446,8 @@ def hierarchy(  # noqa: PLR0913
     ctx: Ctx,
     top: str | None,
     depth: int | None,
+    leaves: bool,
+    text: bool,
     fields: tuple[str, ...],
     summary: bool,
     limit: int | None,
@@ -440,7 +458,10 @@ def hierarchy(  # noqa: PLR0913
     _quiet(ctx)
     prj = load_project(**options)
     _answer(
-        lambda: query.hierarchy(prj, top, depth=depth, limit=limit, fields=_fields(fields), summary=summary), compact
+        lambda: query.hierarchy(
+            prj, top, depth=depth, limit=limit, fields=_fields(fields), summary=summary, leaves=leaves, text=text
+        ),
+        compact,
     )
 
 
@@ -491,7 +512,10 @@ def find(  # noqa: PLR0913
 )
 @click.option("--severity", type=click.Choice(query.SEVERITIES), help="Minimum severity. Everything by default.")
 @click.option("--code", "codes", multiple=True, help="Code of the problems. Can be given multiple times.")
-@click.option("--file", "file_", help="Path of a file, relative to the root.")
+@click.option("--file", "file_", help="Path of a file, relative to the root, or a pattern ('rtl/*').")
+@click.option("--exclude-file", "excludes", multiple=True, help="Pattern of files whose problems are left out.")
+@opt_blackbox
+@click.option("--group-by", type=click.Choice(("code", "file", "module")), help="Number of problems by group.")
 @opt_project
 @opt_answer
 @pass_ctx
@@ -500,6 +524,9 @@ def diagnostics(  # noqa: PLR0913
     severity: str | None,
     codes: tuple[str, ...],
     file_: str | None,
+    excludes: tuple[str, ...],
+    blackboxes: tuple[str, ...],
+    group_by: str | None,
     limit: int | None,
     compact: bool,
     **options,
@@ -507,7 +534,19 @@ def diagnostics(  # noqa: PLR0913
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     prj = load_project(**options)
-    _answer(lambda: query.diagnostics(prj, severity=severity, codes=codes, file=file_, limit=limit), compact)
+    _answer(
+        lambda: query.diagnostics(
+            prj,
+            severity=severity,
+            codes=codes,
+            file=file_,
+            limit=limit,
+            exclude=excludes,
+            blackboxes=blackboxes,
+            group_by=group_by,
+        ),
+        compact,
+    )
 
 
 @cli.command(
@@ -517,13 +556,14 @@ def diagnostics(  # noqa: PLR0913
     Files which changed are parsed again on the next query.
 {_PATHS_HELP}"""
 )
+@opt_blackbox
 @opt_project
 @pass_ctx
-def mcp(ctx: Ctx, **options) -> None:
+def mcp(ctx: Ctx, blackboxes: tuple[str, ...], **options) -> None:
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     prj = load_project(**options)  # usage errors are reported right away
-    serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj)
+    serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj, blackboxes=blackboxes)
 
 
 @cli.command()

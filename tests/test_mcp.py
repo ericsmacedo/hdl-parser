@@ -133,3 +133,15 @@ def test_tools_schema():
     for tool in TOOLS:
         assert tool["inputSchema"]["type"] == "object"
         assert set(tool["inputSchema"].get("required", ())) <= set(tool["inputSchema"]["properties"])
+
+
+def test_annotations_and_checks(tmp_path):
+    """Read-Only Tools, Arguments Checked Against The Schema, Server Blackboxes."""
+    assert all(tool["annotations"]["readOnlyHint"] for tool in TOOLS)
+    (tmp_path / "top.sv").write_text("module top;\n  bb u_bb ();\nendmodule\n")
+    server = Server(lambda: Project.from_dir(tmp_path), blackboxes=("bb",))
+    error = server.handle(_call(1, "hierarchy", top="top", depth=-1))["result"]
+    assert error["isError"] is True
+    assert error["structuredContent"]["error"]["code"] == "bad-argument"
+    assert server.handle(_call(2, "hierarchy", depth="x"))["result"]["isError"] is True
+    assert server.handle(_call(3, "diagnostics"))["result"]["structuredContent"]["total"] == 0

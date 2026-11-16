@@ -70,12 +70,21 @@ TOOLS: tuple[dict[str, Any], ...] = (
                     "description": "Fields of every node: module, inst, definition, multiple, loc. All by default.",
                 },
                 "summary": {"type": "boolean", "description": "Every node has name and module only."},
+                "leaves": {
+                    "type": "boolean",
+                    "description": "Without 'top': tops without instances too (mostly unused library cells).",
+                },
+                "text": {
+                    "type": "boolean",
+                    "description": "The tree as indented text 'name (module)', much smaller than JSON.",
+                },
             },
         },
     },
     {
         "name": "where_used",
-        "description": "All places a module or interface is instantiated at, with file and location.",
+        "description": "All places a module or interface is instantiated at, with file and location. "
+        "Works for modules which are not defined in the project (blackboxes, hard macros) too.",
         "inputSchema": {
             "type": "object",
             "properties": {"name": _NAME, "limit": _LIMIT},
@@ -110,7 +119,22 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "properties": {
                 "severity": {"type": "string", "enum": list(query.SEVERITIES), "description": "Minimum severity."},
                 "codes": {"type": "array", "items": {"type": "string"}},
-                "file": {"type": "string", "description": "Path of a file, relative to the root."},
+                "file": {"type": "string", "description": "Path of a file, relative to the root, or a pattern."},
+                "exclude": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Patterns of files whose problems are left out: 'lib/stdcells/*'.",
+                },
+                "blackboxes": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Patterns of module names known to be missing: no 'undefined-module' for them.",
+                },
+                "group_by": {
+                    "type": "string",
+                    "enum": ["code", "file", "module"],
+                    "description": "Number of problems by group instead of the problems. Start with this.",
+                },
                 "limit": _LIMIT,
             },
         },
@@ -122,6 +146,9 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "inputSchema": {"type": "object", "properties": {}},
     },
 )
+
+for _tool in TOOLS:
+    _tool["annotations"] = {"readOnlyHint": True, "destructiveHint": False, "openWorldHint": False}
 
 _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "module": query.module,
@@ -135,8 +162,9 @@ _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
 class Server:
     """MCP Server on the project created by `load`."""
 
-    def __init__(self, load: Callable[[], Project], project: Project | None = None):
+    def __init__(self, load: Callable[[], Project], project: Project | None = None, blackboxes: tuple[str, ...] = ()):
         self.load = load
+        self.blackboxes = blackboxes
         self._project = project
         self._stamps = _stamps(project) if project is not None else {}
 
@@ -194,7 +222,10 @@ class Server:
         unknown = sorted(set(arguments) - set(tool["inputSchema"]["properties"]))
         if unknown:
             return _result(id_, _content({"error": {"code": "bad-argument", "message": f"unknown: {unknown}"}}, True))
+        if name == "diagnostics" and self.blackboxes:
+            arguments = {**arguments, "blackboxes": (*self.blackboxes, *arguments.get("blackboxes", ()))}
         try:
+            _check(tool["inputSchema"]["properties"], arguments)
             answer = func(self.project, **arguments)
         except query.QueryError as exc:
             return _result(id_, _content(exc.to_dict(), True))
@@ -209,13 +240,37 @@ INSTRUCTIONS = """\
 Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
 '<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source location 'loc' (lines and columns start at 1). \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
-modules, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' tells what may be \
-missing or wrong."""
+modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
+with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude."""
 
 
-def serve(load: Callable[[], Project], stdin: TextIO, stdout: TextIO, project: Project | None = None) -> None:
-    """Serve the project created by `load` until `stdin` ends. `project`: the one already created by `load`."""
-    server = Server(load, project)
+def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:
+    """Check `arguments` against the types and minimums of `properties`."""
+    types: dict[str, Any] = {"integer": int, "boolean": bool, "string": str, "array": (list, tuple)}
+    for key, value in arguments.items():
+        schema = properties[key]
+        expected = types.get(schema.get("type", ""))
+        valid = expected is None or (isinstance(value, expected) and not (expected is int and isinstance(value, bool)))
+        if not valid:
+            raise query.QueryError("bad-argument", f"'{key}' must be of type {schema['type']}.")
+        if "minimum" in schema and value < schema["minimum"]:
+            raise query.QueryError("bad-argument", f"'{key}' must be at least {schema['minimum']}.")
+        if "enum" in schema and value not in schema["enum"]:
+            raise query.QueryError("bad-argument", f"'{key}' must be one of {schema['enum']}.", schema["enum"])
+
+
+def serve(
+    load: Callable[[], Project],
+    stdin: TextIO,
+    stdout: TextIO,
+    project: Project | None = None,
+    blackboxes: tuple[str, ...] = (),
+) -> None:
+    """Serve the project created by `load` until `stdin` ends. `project`: the one already created by `load`.
+
+    `blackboxes`: Patterns of module names known to be missing, applied to every 'diagnostics' call.
+    """
+    server = Server(load, project, blackboxes)
     for line in stdin:
         if not line.strip():
             continue

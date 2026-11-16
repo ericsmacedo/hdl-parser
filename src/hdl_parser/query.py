@@ -177,7 +177,7 @@ def _unit_dict(definition: Definition) -> dict[str, Any]:
 
 
 def _unit_fields(unit: dm.Module | dm.Package) -> tuple[str, ...]:
-    return (*_ALWAYS, "file", "bodies", *type(unit).model_fields)
+    return tuple(dict.fromkeys((*_ALWAYS, "file", "bodies", *type(unit).model_fields)))
 
 
 # --- hierarchy ---
@@ -190,6 +190,8 @@ def hierarchy(  # noqa: PLR0913
     limit: int | None = None,
     fields: Iterable[str] = (),
     summary: bool = False,
+    leaves: bool = False,
+    text: bool = False,
 ) -> dict[str, Any]:
     """The instance tree below the module `top`, or the top modules, if `top` is not given.
 
@@ -204,24 +206,82 @@ def hierarchy(  # noqa: PLR0913
         fields: Fields of every node (`module`, `inst`, `definition`, `multiple`, `loc`).
                 `name`, `children` and `truncated` are always returned.
         summary: Every node has `name` and `module` only.
+        leaves: Top modules without instances are returned too. They are left out by default and counted in
+                `leaves`, as they are mostly unused library cells, unless no top has instances.
+        text: The tree as indented text (`tree`), one line per node: `<name> (<module>)`. Much smaller than JSON.
+
+    The top modules are sorted by their number of instances (`insts`, all levels), the largest first.
+    `library` marks a top found through a library option of a filelist.
 
     A node of a module which is not defined in the project has no `definition`. Its `loc` is the location of
     the instance.
     """
+    if depth is not None and depth < 0:
+        raise QueryError("bad-argument", "depth must not be negative.")
     if top is None:
-        tops = [_brief(definition.file, definition.unit) for definition in project.tops()]
-        result, omitted = _limit(tops, limit)
-        return _list_answer("hierarchy", result, len(tops), omitted)
+        return _tops(project, limit, leaves)
     node = project.hierarchy(top, depth=depth)
     if node is None:
         raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
-    names = ("name", "module") if summary else tuple(fields)
+    names = ("name", "module") if summary or text else tuple(fields)
     budget = [_resolve_limit(limit)]
     left_out = [0]
-    answer: dict[str, Any] = {"query": "hierarchy", "result": _node(project, node, names, budget, left_out)}
+    tree = _node(project, node, names, budget, left_out)
+    answer: dict[str, Any] = {"query": "hierarchy"}
+    if text:
+        answer["tree"] = "\n".join(_lines(tree, 0))
+    else:
+        answer["result"] = tree
     if left_out[0]:
         answer["omitted"] = left_out[0]
     return answer
+
+
+def _tops(project: Project, limit: int | None, leaves: bool) -> dict[str, Any]:
+    counts: dict[str, int] = {}
+
+    def count(definition: Definition, path: tuple[str, ...]) -> int:
+        if definition.id in counts:
+            return counts[definition.id]
+        number = 0
+        for file, inst in definition.insts:
+            number += 1
+            child = project._resolve_inst(file, inst)
+            if child is not None and child.id not in path:
+                number += count(child, (*path, child.id))
+        counts[definition.id] = number
+        return number
+
+    sizes = [(definition, count(definition, (definition.id,))) for definition in project.tops()]
+    # a design of leaves only: all of them
+    leaves = leaves or not any(insts for _, insts in sizes)
+    tops = []
+    left_out = 0
+    for definition, insts in sizes:
+        if not insts and not leaves:
+            left_out += 1
+            continue
+        entry = {**_brief(definition.file, definition.unit), "insts": insts}
+        if definition.file.file_id in project.libraries:
+            entry["library"] = True
+        tops.append(entry)
+    tops.sort(key=lambda entry: -entry["insts"])
+    result, omitted = _limit(tops, limit)
+    answer = _list_answer("hierarchy", result, len(tops), omitted)
+    if left_out:
+        answer["leaves"] = left_out
+    return answer
+
+
+def _lines(node: dict[str, Any], level: int) -> Iterable[str]:
+    indent = "  " * level
+    module = node.get("module", "")
+    line = f"{indent}{node['name']}" if module == node["name"] else f"{indent}{node['name']} ({module})"
+    if node.get("truncated"):
+        line += " ..."
+    yield line
+    for child in node.get("children", ()):
+        yield from _lines(child, level + 1)
 
 
 _NODE_FIELDS = ("name", "module", "inst", "definition", "multiple", "loc", "children", "truncated")
@@ -266,16 +326,42 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
 
     Every entry has the full identifier of the instance (`inst`), the module it is located in (`module`),
     its file and location. `module` of the answer is the identifier of the definition, which is used.
+
+    A module which is not defined in the project (a blackbox, a hard macro, a cell) is found by the module
+    name of its instances. `module` of the answer is missing then and `defined` is `false`.
     """
     definition = project.resolve(name) or project.resolve(name, casefold=True)
     if definition is None:
-        raise QueryError("not-found", f"'{name}' is no module of the project.", _similar_units(project, name))
+        undefined = [
+            (file, inst)
+            for file, inst in project._undefined
+            if inst.module == name or (file.lang == "vhdl" and inst.module.lower() == name.lower())
+        ]
+        if not undefined:
+            names = (*(unit.name for _, unit in _units(project)), *(inst.module for _, inst in project._undefined))
+            raise QueryError("not-found", f"'{name}' is neither defined nor instantiated.", _similar(name, names))
+        uses = [
+            {
+                "inst": file.full_id(inst),
+                "module": _parent_id(file.full_id(inst)),
+                "file": file.file_id,
+                **_loc(inst.loc),
+            }
+            for file, inst in undefined
+        ]
+        result, omitted = _limit(uses, limit)
+        return {**_list_answer("where-used", result, len(uses), omitted), "defined": False}
     uses = [
         {"inst": use.inst, "module": use.module, "file": _file_of(use.inst), **_loc(use.loc)}
         for use in project.where_used(definition.id)
     ]
     result, omitted = _limit(uses, limit)
     return {**_list_answer("where-used", result, len(uses), omitted), "module": definition.id}
+
+
+def _parent_id(full_id: str) -> str:
+    file_id, _, item_id = full_id.rpartition(":")
+    return f"{file_id}:{item_id.split('.', 1)[0]}"
 
 
 # --- find ---
@@ -331,12 +417,15 @@ def find(
 # --- diagnostics ---
 
 
-def diagnostics(
+def diagnostics(  # noqa: C901, PLR0912, PLR0913
     project: Project,
     severity: str | None = None,
     codes: Iterable[str] = (),
     file: str | None = None,
     limit: int | None = None,
+    exclude: Iterable[str] = (),
+    blackboxes: Iterable[str] = (),
+    group_by: str | None = None,
 ) -> dict[str, Any]:
     """Problems found in the project, in the order of the files.
 
@@ -346,22 +435,40 @@ def diagnostics(
     Keyword Args:
         severity: Minimum severity: `error`, `warning` or `info` (everything, the default).
         codes: Codes to be returned (`undefined-module`, ...). All by default.
-        file: Path of a file. All files by default.
+        file: Path of a file, or a pattern on the paths (`rtl/*`). All files by default.
         limit: Number of problems.
+        exclude: Patterns on the paths of files, whose problems are left out (`lib/stdcells/*`).
+        blackboxes: Patterns on module names, which are known not to be part of the project (blackboxes,
+                    hard macros, cells): their `undefined-module` problems are left out.
+        group_by: `code`, `file` or `module` (the undefined module): the number of problems by group,
+                  the largest first, instead of the problems.
 
     `counts` has the number of problems by severity, with the filters applied.
     """
     if severity is not None and severity not in SEVERITIES:
         raise QueryError("bad-argument", f"unknown severity '{severity}'.", SEVERITIES)
-    if file is not None and project.file(file) is None:
-        raise QueryError("not-found", f"'{file}' is no file of the project.", _similar_files(project, file))
+    if group_by is not None and group_by not in _GROUPS:
+        raise QueryError("bad-argument", f"unknown group '{group_by}'.", _GROUPS)
+    if file is not None and not _WILDCARD.search(file):
+        found_file = project.file(file)
+        if found_file is None:
+            raise QueryError("not-found", f"'{file}' is no file of the project.", _similar_files(project, file))
+        file = found_file.file_id
     allowed = SEVERITIES[: SEVERITIES.index(severity) + 1] if severity else SEVERITIES
     wanted = set(codes)
+    excluded = tuple(exclude)
+    boxes = tuple(blackboxes)
+    modules = {file.full_id(inst): inst.module for file, inst in project._undefined} if boxes or group_by else {}
     found = []
     for file_id, diagnostic in project.iter_diagnostics():
         if diagnostic.severity not in allowed or (wanted and diagnostic.code not in wanted):
             continue
-        if file is not None and file_id != project.file(file).file_id:  # type: ignore[union-attr]
+        if file is not None and not fnmatchcase(file_id, file):
+            continue
+        if any(fnmatchcase(file_id, pattern) for pattern in excluded):
+            continue
+        module_name = modules.get(f"{file_id}:{diagnostic.item}") if diagnostic.code == "undefined-module" else None
+        if module_name and any(fnmatchcase(module_name, pattern) for pattern in boxes):
             continue
         data = diagnostic.model_dump(mode="json", exclude_defaults=True)
         if file_id:
@@ -372,11 +479,27 @@ def diagnostics(
             if "item" in data:
                 data["item"] = f"{file_id}:{data['item']}"
             data = {"file": file_id, **data}
+        if group_by == "module":
+            data["module"] = module_name
         found.append(data)
-    result, omitted = _limit(found, limit)
-    answer = _list_answer("diagnostics", result, len(found), omitted)
-    answer["counts"] = {name: sum(entry["severity"] == name for entry in found) for name in SEVERITIES}
+    counts = {name: sum(entry["severity"] == name for entry in found) for name in SEVERITIES}
+    if group_by is not None:
+        groups: dict[str, int] = {}
+        for entry in found:
+            key = entry.get(group_by)
+            if key is not None:
+                groups[key] = groups.get(key, 0) + 1
+        ordered = [{group_by: key, "count": number} for key, number in sorted(groups.items(), key=lambda kv: -kv[1])]
+        result, omitted = _limit(ordered, limit)
+        answer = _list_answer("diagnostics", result, len(ordered), omitted)
+    else:
+        result, omitted = _limit(found, limit)
+        answer = _list_answer("diagnostics", result, len(found), omitted)
+    answer["counts"] = counts
     return answer
+
+
+_GROUPS = ("code", "file", "module")
 
 
 # --- helpers ---
