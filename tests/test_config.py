@@ -87,18 +87,20 @@ def test_find(design):
     assert found is None or design not in found.parents
 
 
-def test_read(tmp_path):
+def test_read(tmp_path, tmp_path_factory):
     """Values By Command Line Parameter, Paths Relative To The File."""
     path = tmp_path / "hdl-parser.toml"
+    absolute = tmp_path_factory.mktemp("abs")
     path.write_text(
-        'paths = ["rtl"]\nexclude = "models/*"\ninc_dirs = ["inc", "/abs"]\ncache_dir = "~/cache"\njobs = 4\n'
+        f'paths = ["rtl"]\nexclude = "models/*"\ninc_dirs = ["inc", "{absolute.as_posix()}"]\ncache_dir = "~/cache"\n'
+        "jobs = 4\n"
         'cache = true\ndefines = { A = "", W = 8 }\nblackbox = ["*_cell_*"]\npassthrough = "buf"\n'
         'exclude_problems = ["lib/*"]\nroot = "."\n'
     )
     assert read_config(path) == {
         "paths": (tmp_path / "rtl",),
         "exclude": ("models/*",),
-        "inc_dirs": (tmp_path / "inc", Path("/abs")),
+        "inc_dirs": (tmp_path / "inc", absolute),
         "cache_dir": Path("~/cache").expanduser(),
         "jobs": 4,
         "cache": True,
