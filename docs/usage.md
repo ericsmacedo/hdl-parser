@@ -167,6 +167,31 @@ Its format is the JSON Schema printed by `hdl-parser schema`, which is also publ
 Problems are part of the document: in `diagnostics` of the project and of every file, with code, severity,
 message and location. Warnings on standard error are for humans only.
 
+### Configuration File
+
+The options which create the project can be kept in a file `hdl-parser.toml`, so they are not repeated on every
+call. It is searched in the current directory and its parents; `--config FILE` names another one, `--no-config`
+ignores it. Paths are relative to the directory of the file, `~` is expanded:
+
+```toml
+filelist = "sim/lint/list.f"     # or: paths = ["rtl"], with exclude = ["models/*"]
+expand_macros = true
+resolve_ifdefs = true
+closed_world = true
+defines = { SYNTHESIS = "", WIDTH = 8 }
+inc_dirs = ["include"]
+cache_dir = "~/.cache/hdl-parser/my_design"   # or: cache = true
+jobs = 8
+root = "."
+blackbox = ["*_cell_*"]          # --blackbox of 'diagnostics' and 'mcp'
+passthrough = ["buf_wrap"]       # --passthrough of 'drivers', 'loads' and 'trace'
+exclude_problems = ["lib/*"]     # --exclude-file of 'diagnostics'
+```
+
+It applies to the commands working on a project (`project`, `module`, ..., `mcp`), not to the ones parsing single
+files (`json`, `info`, `gen-sv-instance`). The command line takes precedence: an option given there replaces
+the value of the file (`-D` replaces all `defines`), and files given there replace `filelist` and `paths`.
+
 Narrow questions with small answers (`hdl-parser module`, `hierarchy`, `where-used`, `find`, `diagnostics`)
 and the MCP server (`hdl-parser mcp`) are described in the [Guide for AI Agents](agents.md).
 

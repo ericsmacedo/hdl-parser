@@ -377,6 +377,10 @@ For Claude Code:
 claude mcp add hdl-parser -- hdl-parser mcp --cache
 ```
 
+With a [configuration file](usage.md#configuration-file) `hdl-parser.toml` in the design, the options are kept
+there and the server is started without any: `claude mcp add hdl-parser -- hdl-parser mcp`. Start it within the
+design, or give `--config FILE` before `mcp`.
+
 ## Python
 
 The same queries are available in Python: [hdl_parser.query][].
