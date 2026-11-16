@@ -1,0 +1,1471 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Connection": {
+      "additionalProperties": false,
+      "description": "Connection Of A Port, Or Value Of A Parameter, Of An Instance.\n\nAttributes:\n    port: Name of the port or parameter. Empty, if connected by order.\n    con: Connected expression, or value of the parameter.\n    comment: Comment\n    ifdefs: Conditions the connection is made at.\n    loc: Source Location: `.port(con)`, `port => con` or the expression of a connection by order.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "port": {
+          "default": "",
+          "title": "Port",
+          "type": "string"
+        },
+        "con": {
+          "default": "",
+          "title": "Con",
+          "type": "string"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "Connection",
+      "type": "object"
+    },
+    "Diagnostic": {
+      "additionalProperties": false,
+      "description": "A Problem Found While Parsing.\n\nThe result is still valid, but it may be incomplete at the reported location.\n\n| `code`                | Severity | Meaning                                                           |\n| --------------------- | -------- | ----------------------------------------------------------------- |\n| `macro-not-expanded`  | warning  | Macro in a module header is not expanded. `item` is the macro.    |\n| `macro-ambiguous`     | warning  | Macro has different definitions under unknown conditions.         |\n| `macro-recursive`     | warning  | Macro uses itself.                                                |\n| `macro-args-missing`  | warning  | Macro with arguments is used without.                             |\n| `macro-args-count`    | warning  | Macro is used with the wrong number of arguments.                 |\n| `macro-bad-define`    | warning  | `` `define `` cannot be parsed.                                   |\n| `include-not-found`   | warning  | Included file is not found.                                       |\n| `include-unreadable`  | warning  | Included file cannot be read.                                     |\n| `header-item-skipped` | warning  | Code within a parameter or port list is not understood.           |\n| `missing-end`         | warning  | Module, entity or architecture without end.                       |\n| `unbalanced-bracket`  | warning  | Bracket is never closed.                                          |\n| `no-module`           | info     | File without module, interface or package, i.e. an included file. |\n| `file-not-found`      | error    | File does not exist.                                              |\n| `file-unreadable`     | error    | File cannot be read.                                              |\n| `parse-failed`        | error    | File cannot be parsed. This is a bug of the parser.               |\n| `duplicate-definition`| warning  | Module, interface or package is defined more than once in the project. |\n| `undefined-module`    | warning  | Module of an instance is not defined in the project. `item` is the instance. |\n| `filelist-not-found`  | error    | Filelist cannot be read.                                          |\n| `filelist-unknown`    | warning  | Option of a filelist is not understood.                           |\n| `filelist-variable`   | warning  | Environment variable used by a filelist is not defined.           |\n\nThe macros of the `macro-*` codes are not expanded, the macros of a file of the `include-*` codes are\nunknown. In both cases and on `header-item-skipped`, parameters or ports may be missing.\n\nCode the parser has no interest in (i.e. procedural code) is skipped without diagnostic.\nThe codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported\nby a [Project][hdl_parser.project.Project] only.\n\nAttributes:\n    code: Kind of problem. See table above.\n    severity: `error`, `warning` or `info`.\n    message: Description.\n    loc: Source Location within the parsed file. A problem within an included file points to the\n         `` `include `` statement.\n    item: Identifier of the related item: the module the problem is located in, if not stated otherwise.\n    file: Included file or filelist the problem is located in. Empty, if located in the parsed file itself.",
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "item": {
+          "default": "",
+          "title": "Item",
+          "type": "string"
+        },
+        "file": {
+          "default": "",
+          "title": "File",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message"
+      ],
+      "title": "Diagnostic",
+      "type": "object"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "description": "One entry of a sensitivity list: `posedge clk_i`.\n\nAttributes:\n    edge: `posedge`, `negedge` or `edge`. Empty for a level sensitive signal.\n    signal: The signal.",
+      "properties": {
+        "edge": {
+          "default": "",
+          "enum": [
+            "posedge",
+            "negedge",
+            "edge",
+            ""
+          ],
+          "title": "Edge",
+          "type": "string"
+        },
+        "signal": {
+          "title": "Signal",
+          "type": "string"
+        }
+      },
+      "required": [
+        "signal"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "File": {
+      "additionalProperties": false,
+      "description": "Represents a SystemVerilog File with SystemVerilog Modules.\n\nEvery item has an `id`, which is unique within the file and stable: it is built from names only, so it\ndoes not change on unrelated edits. It follows the hierarchical names of SystemVerilog:\n\n| Item                                     | `id`                 |\n| ---------------------------------------- | -------------------- |\n| Module, interface, package               | `top`, `bus_pkg`     |\n| Modport, port of a modport               | `bus_if.master.req`  |\n| Parameter, local parameter, port, signal | `top.WIDTH`          |\n| Signal within labeled generate blocks    | `top.g_a.data`       |\n| Type                                     | `bus_pkg.req_t`      |\n| Function or task, argument               | `bus_pkg.f.arg`      |\n| Process with label, without label        | `top.p_reg`, `top.#always1` |\n| Component (VHDL), its generics and ports | `pkg.comp`, `pkg.comp.clk` |\n| Enum member, struct or union field       | `bus_pkg.req_t.addr` |\n| Instance                                 | `top.u_sub`          |\n| Instance within labeled generate blocks  | `top.g_a.u_sub`      |\n| Connection, parameter value by name      | `top.u_sub.clk`      |\n| Connection by order (first, second, ...) | `top.u_sub.#1`       |\n| Parameter value by order                 | `top.u_sub.#p1`      |\n| Unresolved macro call in the header      | ``top.`PORTS``       |\n\nA name used again (i.e. in two `` `ifdef `` branches) gets a suffix: `top.a`, `top.a~2`.\nVHDL names are lower case, as VHDL is case insensitive.\nThe characters `.:#~%` and white space within names are percent-encoded.\n\nThe full identifier adds the file: `rtl/top.sv:top.u_sub` (see [full_id][hdl_parser.datamodel.File.full_id]).\n\nAttributes:\n    path: Related File. Within a project, the path is relative to the root of the project.\n    lang: Language: `sv` (SystemVerilog) or `vhdl`.\n    includes: Paths of the included files, which have been read to expand macros (the file depends on them).\n              Within a project, the paths are relative to the root of the project.\n    modules: Modules Within That File.\n    interfaces: Interfaces Within That File.\n    packages: Packages Within That File.\n    diagnostics: Problems found while parsing, in the order of the file.",
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Path"
+        },
+        "lang": {
+          "default": "sv",
+          "enum": [
+            "sv",
+            "vhdl"
+          ],
+          "title": "Lang",
+          "type": "string"
+        },
+        "includes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Includes",
+          "type": "array"
+        },
+        "modules": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Module"
+          },
+          "title": "Modules",
+          "type": "array"
+        },
+        "interfaces": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Interface"
+          },
+          "title": "Interfaces",
+          "type": "array"
+        },
+        "packages": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Package"
+          },
+          "title": "Packages",
+          "type": "array"
+        },
+        "diagnostics": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Diagnostic"
+          },
+          "title": "Diagnostics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "File",
+      "type": "object"
+    },
+    "Function": {
+      "additionalProperties": false,
+      "description": "Represents the signature of a function or task (VHDL: procedure).\n\nAttributes:\n    name: Name\n    kind: `function`, `task` or `procedure`.\n    rtype: Return type of a function: `logic`, `int unsigned`, `pkg::t`, `void`. Empty, if not given.\n    dim: Dimension (Packed) of the return type.\n    args: Arguments, as ports with direction (`input` by default), type, dimensions and default.\n    comment: tuple of associated comments\n    ifdefs: Conditions the function is defined at.\n    loc: Source Location: from `function` to `endfunction`.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "function",
+            "task",
+            "procedure"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "rtype": {
+          "default": "",
+          "title": "Rtype",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "args": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Args",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ],
+      "title": "Function",
+      "type": "object"
+    },
+    "Generate": {
+      "additionalProperties": false,
+      "description": "Generate Construct An Instance Is Located In.\n\n| SystemVerilog                     | VHDL                               | `kind` | `name` | `cond`      |\n| --------------------------------- | ---------------------------------- | ------ | ------ | ----------- |\n| `if (A) begin : g_a`              | `g_a : if A generate`              | `if`   | `g_a`  | `A`         |\n| `else begin : g_b`                |                                    | `else` | `g_b`  |             |\n| `for (i = 0; i < N; i++) begin`   | `g : for i in 0 to N-1 generate`   | `for`  |        | `i = 0; ...`|\n| `case (W)`                        | `g : case W generate`              | `case` |        | `W`         |\n| `begin : g_c` (i.e. a case item)  |                                    | `begin`| `g_c`  |             |\n|                                   | `b : block`                        | `block`| `b`    |             |\n\nAn instance within a `for` is created multiple times.\n\nAttributes:\n    kind: Kind of construct. See table above.\n    name: Label. Empty for blocks without label, and constructs without `begin`.\n    cond: Condition of `if`, loop of `for` or expression of `case`.",
+      "properties": {
+        "kind": {
+          "enum": [
+            "if",
+            "else",
+            "for",
+            "case",
+            "begin",
+            "block"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "cond": {
+          "default": "",
+          "title": "Cond",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Generate",
+      "type": "object"
+    },
+    "Interface": {
+      "additionalProperties": false,
+      "description": "Represents a SystemVerilog Interface. It has everything a module has, and modports.\n\nAttributes:\n    modports: Modports",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "params": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Params",
+          "type": "array"
+        },
+        "ports": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Ports",
+          "type": "array"
+        },
+        "localparams": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Localparams",
+          "type": "array"
+        },
+        "signals": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Signal"
+          },
+          "title": "Signals",
+          "type": "array"
+        },
+        "typedefs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Typedef"
+          },
+          "title": "Typedefs",
+          "type": "array"
+        },
+        "functions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Function"
+          },
+          "title": "Functions",
+          "type": "array"
+        },
+        "processes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Process"
+          },
+          "title": "Processes",
+          "type": "array"
+        },
+        "components": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Module"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "insts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModuleInstance"
+          },
+          "title": "Insts",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "unresolved_macros": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/MacroCall"
+          },
+          "title": "Unresolved Macros",
+          "type": "array"
+        },
+        "imports": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Imports",
+          "type": "array"
+        },
+        "partial": {
+          "default": false,
+          "title": "Partial",
+          "type": "boolean"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "modports": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Modport"
+          },
+          "title": "Modports",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Interface",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "description": "Source Location.\n\nLines and columns start at 1. Columns count characters, not bytes. The end is exclusive: `end_col` is\nthe column behind the last character.\n\nCode created by a macro points at the macro call in the parsed file. Nested macros point at the outermost\ncall.\n\nAttributes:\n    line: First line.\n    col: First column.\n    end_line: Last line.\n    end_col: Column behind the last character on `end_line`.\n    macro: Name of the macro (without backtick), which created the item. Empty, if the item is written in\n           the source. The item cannot be edited directly, but only via the macro call.",
+      "properties": {
+        "line": {
+          "title": "Line",
+          "type": "integer"
+        },
+        "col": {
+          "title": "Col",
+          "type": "integer"
+        },
+        "end_line": {
+          "title": "End Line",
+          "type": "integer"
+        },
+        "end_col": {
+          "title": "End Col",
+          "type": "integer"
+        },
+        "macro": {
+          "default": "",
+          "title": "Macro",
+          "type": "string"
+        }
+      },
+      "required": [
+        "line",
+        "col",
+        "end_line",
+        "end_col"
+      ],
+      "title": "Location",
+      "type": "object"
+    },
+    "MacroCall": {
+      "additionalProperties": false,
+      "description": "Represents The Use Of A Macro.\n\nAttributes:\n    name: Macro Name, without backtick\n    args: Arguments. `None` if the macro is used without parenthesis\n    ifdefs: Conditions the macro is used at\n    loc: Source Location of the call, including the arguments.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "args": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Args"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "MacroCall",
+      "type": "object"
+    },
+    "Member": {
+      "additionalProperties": false,
+      "description": "Member Of An Enumeration, Or Field Of A Struct Or Union.\n\nAttributes:\n    name: Name\n    dtype: Data type of a field: `logic`, `logic signed`, `pkg::other_t`. Empty for enumeration members.\n    dim: Dimension (Packed) of a field.\n    dim_unpacked: Unpacked dimension of a field. Range of an enumeration member: `[3]` of `NAME[3]`.\n    value: Value of an enumeration member, or default of a field. Empty, if not given.\n    comment: tuple of associated comments\n    ifdefs: Conditions the member is defined at.\n    loc: Source Location. Fields declared together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "dtype": {
+          "default": "",
+          "title": "Dtype",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "dim_unpacked": {
+          "default": "",
+          "title": "Dim Unpacked",
+          "type": "string"
+        },
+        "value": {
+          "default": "",
+          "title": "Value",
+          "type": "string"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Member",
+      "type": "object"
+    },
+    "Modport": {
+      "additionalProperties": false,
+      "description": "Represents a modport of a SystemVerilog interface: `modport master (output req, input ack);`.\n\nAttributes:\n    name: Name of the modport\n    ports: Signals of the interface with their direction. Just `name` and `direction` are set.\n           Imported and exported tasks and functions, and clocking blocks are not listed.\n    comment: tuple of associated comments\n    ifdefs: Conditions the modport is defined at.\n    loc: Source Location. Modports declared together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "ports": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Ports",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Modport",
+      "type": "object"
+    },
+    "Module": {
+      "additionalProperties": false,
+      "description": "Represents a SystemVerilog Module with parameters, ports and submodules.\n\nAttributes:\n    name: Module Name\n    params: Parameters\n    ports: Ports\n    localparams: Local Parameters\n    signals: Signals: the nets and variables declared within the module.\n    typedefs: Types declared within the module.\n    functions: Functions and tasks declared within the module.\n    processes: The `always` blocks (VHDL: processes) with their clock and reset.\n    components: Component declarations (VHDL): modules with name, parameters and ports.\n    insts: Submodule Instances.\n    ifdefs: Conditions the module is defined at.\n    unresolved_macros: Macros used in the module header, which could not be expanded.\n                       Ports or parameters defined by these macros are missing.\n    imports: Imported names of packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.\n    partial: VHDL: the entity is not part of this file. This is just the content of an architecture.\n    loc: Source Location: from `module` to `endmodule`. VHDL: the entity.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "params": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Params",
+          "type": "array"
+        },
+        "ports": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Ports",
+          "type": "array"
+        },
+        "localparams": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Localparams",
+          "type": "array"
+        },
+        "signals": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Signal"
+          },
+          "title": "Signals",
+          "type": "array"
+        },
+        "typedefs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Typedef"
+          },
+          "title": "Typedefs",
+          "type": "array"
+        },
+        "functions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Function"
+          },
+          "title": "Functions",
+          "type": "array"
+        },
+        "processes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Process"
+          },
+          "title": "Processes",
+          "type": "array"
+        },
+        "components": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Module"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "insts": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModuleInstance"
+          },
+          "title": "Insts",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "unresolved_macros": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/MacroCall"
+          },
+          "title": "Unresolved Macros",
+          "type": "array"
+        },
+        "imports": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Imports",
+          "type": "array"
+        },
+        "partial": {
+          "default": false,
+          "title": "Partial",
+          "type": "boolean"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Module",
+      "type": "object"
+    },
+    "ModuleInstance": {
+      "additionalProperties": false,
+      "description": "Represents An Instance Of A Module Within Another Module.\n\nAttributes:\n    name: Module Instance Name\n    module: Module Name\n    dim: Dimension of an array of instances: `[3:0]`.\n    params: Parameter values: `#(.WIDTH(8))`, or `generic map (WIDTH => 8)` in VHDL.\n    connections: Connections\n    generates: Generate constructs the instance is located in, from the outermost to the innermost.\n    ifdefs: Conditions the instance is created at.\n    loc: Source Location of the instantiation. Instances created together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "module": {
+          "title": "Module",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "params": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Connection"
+          },
+          "title": "Params",
+          "type": "array"
+        },
+        "connections": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Connection"
+          },
+          "title": "Connections",
+          "type": "array"
+        },
+        "generates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Generate"
+          },
+          "title": "Generates",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "module"
+      ],
+      "title": "ModuleInstance",
+      "type": "object"
+    },
+    "Package": {
+      "additionalProperties": false,
+      "description": "Represents a SystemVerilog or VHDL Package with parameters, types and functions.\n\nThe constants of a VHDL package are its local parameters.\n\nAttributes:\n    name: Package Name\n    params: Parameters\n    localparams: Local Parameters\n    typedefs: Types\n    functions: Functions and tasks (VHDL: procedures)\n    components: Component declarations (VHDL): modules with name, parameters and ports.\n    imports: Imported names of other packages: `my_pkg::*`, `my_pkg::WIDTH`. VHDL: `work.my_pkg.all`.\n    ifdefs: Conditions the package is defined at.\n    loc: Source Location: from `package` to `endpackage`.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "params": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Params",
+          "type": "array"
+        },
+        "localparams": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Param"
+          },
+          "title": "Localparams",
+          "type": "array"
+        },
+        "typedefs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Typedef"
+          },
+          "title": "Typedefs",
+          "type": "array"
+        },
+        "functions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Function"
+          },
+          "title": "Functions",
+          "type": "array"
+        },
+        "components": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Module"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "imports": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Imports",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Package",
+      "type": "object"
+    },
+    "Param": {
+      "additionalProperties": false,
+      "description": "Represents a parameter in a SystemVerilog module.\n\nAttributes:\n    ptype: Parameter type ('integer', 'real', 'string', etc.). VHDL: `constant`, if stated.\n    dtype: Data Type: `signed` or `unsigned`. VHDL: the type.\n    name: Name of the parameter\n    dim: Dimension (Packed)\n    dim_unpacked: Unpacked Dimension\n    comment: tuple of associated comments\n    loc: Source Location of the declaration. Names declared together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "ptype": {
+          "default": "",
+          "title": "Ptype",
+          "type": "string"
+        },
+        "dtype": {
+          "default": "",
+          "title": "Dtype",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "dim_unpacked": {
+          "default": "",
+          "title": "Dim Unpacked",
+          "type": "string"
+        },
+        "default": {
+          "type": "string",
+          "default": "",
+          "title": "Default"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Param",
+      "type": "object"
+    },
+    "Port": {
+      "additionalProperties": false,
+      "description": "Represents a port in a SystemVerilog module.\n\nAttributes:\n    direction: Port Direction\n    ptype: Port Type\n    dtype: Data Type\n    name: Name of the port\n    dim: Dimension (Packed)\n    dim_unpacked: Unpacked\n    default: Default value. Empty, if not given.\n    comment: tuple of associated comments\n    loc: Source Location of the declaration. Names declared together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "direction": {
+          "default": "",
+          "title": "Direction",
+          "type": "string"
+        },
+        "ptype": {
+          "default": "",
+          "title": "Ptype",
+          "type": "string"
+        },
+        "dtype": {
+          "default": "",
+          "title": "Dtype",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "dim_unpacked": {
+          "default": "",
+          "title": "Dim Unpacked",
+          "type": "string"
+        },
+        "default": {
+          "type": "string",
+          "default": "",
+          "title": "Default"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Port",
+      "type": "object"
+    },
+    "Process": {
+      "additionalProperties": false,
+      "description": "Represents an `always` block (VHDL: a process), with its clock and reset.\n\n| Code                                                       | `clock`  | `reset`   |\n| ---------------------------------------------------------- | -------- | --------- |\n| `always_ff @(posedge clk_i)`                               | `clk_i`  |           |\n| `always_ff @(posedge clk_i or negedge rst_ni) if (!rst_ni)`| `clk_i`  | `rst_ni`  |\n| `always_comb`, `always @*`, `always @(a or b)`             |          |           |\n| `process (clk) ... if rising_edge(clk)` (VHDL)             | `clk`    |           |\n\nClock and reset are never guessed. The reset is the edge of the sensitivity list, which is checked by the\nleading `if` of the block. The clock is the one other edge. Both are empty, if this does not apply. A reset\nwhich is not part of the sensitivity list (a synchronous one) cannot be told from any other condition, and is\ntherefore not reported.\n\nAttributes:\n    name: Label of the block: `begin : name`. VHDL: the label of the process. Empty, if there is none.\n    kind: `always`, `always_ff`, `always_comb`, `always_latch` or `process` (VHDL).\n    events: Sensitivity list. Empty for `always_comb`, `always_latch` and `@*`.\n    clock: Clock signal. Empty, if there is none or it is not known.\n    clock_edge: Active edge of the clock: `posedge` or `negedge`.\n    reset: Asynchronous reset signal. Empty, if there is none or it is not known.\n    reset_edge: Edge the reset gets active at: `negedge` for an active low reset.\n    generates: Generate constructs the block is located in, from the outermost to the innermost.\n    comment: tuple of associated comments\n    ifdefs: Conditions the block is defined at.\n    loc: Source Location of the whole block.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].\n        Blocks without label are numbered. This number changes, if a block is added in front.",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "always",
+            "always_ff",
+            "always_comb",
+            "always_latch",
+            "process"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "events": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Event"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "clock": {
+          "default": "",
+          "title": "Clock",
+          "type": "string"
+        },
+        "clock_edge": {
+          "default": "",
+          "title": "Clock Edge",
+          "type": "string"
+        },
+        "reset": {
+          "default": "",
+          "title": "Reset",
+          "type": "string"
+        },
+        "reset_edge": {
+          "default": "",
+          "title": "Reset Edge",
+          "type": "string"
+        },
+        "generates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Generate"
+          },
+          "title": "Generates",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Process",
+      "type": "object"
+    },
+    "Settings": {
+      "additionalProperties": false,
+      "description": "How The Files Of A Project Are Parsed.\n\nAttributes:\n    expand_macros: Macros with known definition are expanded.\n    resolve_ifdefs: `` `ifdef `` conditions on macros which are known to be defined are resolved.\n    defines: Macros defined for all files, by name. Used by `expand_macros` only.\n    inc_dirs: Include directories, relative to the root of the project if located there.\n    lib_dirs: Library directories: a module which is not defined is searched for as `<lib_dir>/<module><lib_ext>`.\n    lib_exts: Extensions of the files within library directories.",
+      "properties": {
+        "expand_macros": {
+          "default": false,
+          "title": "Expand Macros",
+          "type": "boolean"
+        },
+        "resolve_ifdefs": {
+          "default": false,
+          "title": "Resolve Ifdefs",
+          "type": "boolean"
+        },
+        "defines": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "title": "Defines",
+          "type": "object"
+        },
+        "inc_dirs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Inc Dirs",
+          "type": "array"
+        },
+        "lib_dirs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Lib Dirs",
+          "type": "array"
+        },
+        "lib_exts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Lib Exts",
+          "type": "array"
+        }
+      },
+      "title": "Settings",
+      "type": "object"
+    },
+    "Signal": {
+      "additionalProperties": false,
+      "description": "Represents a net or variable declared within a module: `logic [7:0] data_q;`.\n\nVariables of functions, tasks and procedural code are no signals of the module.\n\nAttributes:\n    ptype: Type: `logic`, `wire`, `reg`, `my_pkg::my_t`, `enum`, `struct`, ...\n    dtype: Data Type: `signed` or `unsigned`. VHDL: the type.\n    name: Name of the signal\n    dim: Dimension (Packed)\n    dim_unpacked: Unpacked Dimension\n    default: Initial value, or the expression assigned to a net. Empty, if not given.\n    generates: Generate constructs the signal is declared in, from the outermost to the innermost.\n    ifdefs: Conditions the signal is declared at.\n    comment: tuple of associated comments\n    loc: Source Location of the declaration. Names declared together share it.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "ptype": {
+          "default": "",
+          "title": "Ptype",
+          "type": "string"
+        },
+        "dtype": {
+          "default": "",
+          "title": "Dtype",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "dim_unpacked": {
+          "default": "",
+          "title": "Dim Unpacked",
+          "type": "string"
+        },
+        "default": {
+          "type": "string",
+          "default": "",
+          "title": "Default"
+        },
+        "generates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Generate"
+          },
+          "title": "Generates",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Signal",
+      "type": "object"
+    },
+    "Typedef": {
+      "additionalProperties": false,
+      "description": "Represents a type: `typedef ... name;`.\n\n| `typedef`                                      | `kind`   | `dtype`  | `dim`   | `members` |\n| ---------------------------------------------- | -------- | -------- | ------- | --------- |\n| `typedef logic [7:0] byte_t;`                  | `alias`  | `logic`  | `[7:0]` |           |\n| `typedef enum logic [1:0] {IDLE, BUSY} st_t;`  | `enum`   | `logic`  | `[1:0]` | 2         |\n| `typedef struct packed {logic a;} req_t;`      | `struct` | `packed` |         | 1         |\n| `typedef union {int i; real r;} num_t;`        | `union`  |          |         | 2         |\n\nAttributes:\n    name: Name of the type\n    kind: `alias`, `enum`, `struct` or `union`.\n    dtype: Aliased type, base type of an enumeration or qualifiers of a struct or union.\n    dim: Dimension (Packed)\n    dim_unpacked: Unpacked Dimension\n    members: Members of an enumeration, fields of a struct or union.\n    comment: tuple of associated comments\n    ifdefs: Conditions the type is defined at.\n    loc: Source Location: from `typedef` to `;`.\n    id: Identifier, unique within the file. See [hdl_parser.datamodel.File][].",
+      "properties": {
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "alias",
+            "enum",
+            "struct",
+            "union"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "dtype": {
+          "default": "",
+          "title": "Dtype",
+          "type": "string"
+        },
+        "dim": {
+          "default": "",
+          "title": "Dim",
+          "type": "string"
+        },
+        "dim_unpacked": {
+          "default": "",
+          "title": "Dim Unpacked",
+          "type": "string"
+        },
+        "members": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Member"
+          },
+          "title": "Members",
+          "type": "array"
+        },
+        "comment": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Comment",
+          "type": "array"
+        },
+        "ifdefs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ifdefs",
+          "type": "array"
+        },
+        "loc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ],
+      "title": "Typedef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "All Files Of A Design.\n\nThe paths of the files, and therefore the full identifiers of all items, are relative to `root`.\nA file which is located elsewhere starts with `../`.\n\nA module, interface or package may be defined more than once, i.e. as RTL and as simulation model.\nAll definitions are kept and reported (`duplicate-definition`). The one used by\n[resolve][hdl_parser.project.Project.resolve] and the hierarchy is\n\n1. the one of the file named by `prefer`,\n2. one of a file given directly, before one found through a library option of a filelist,\n3. the first one, in the order of the files.\n\nThe full identifier (`models/fifo.sv:fifo`) always addresses one definition exactly.\n\nAttributes:\n    schema_version: Version of this document.\n    root: Root directory of the project.\n    settings: How the files are parsed.\n    files: Files, in the given order.\n    libraries: Paths of the files, which have been found through a library option of a filelist.\n    prefer: File to be used for a module, interface or package which is defined more than once, by name.\n    diagnostics: Problems which are not related to one of the files, i.e. of a filelist.\n                 The problems of a file are located in its `diagnostics`.",
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "root": {
+      "format": "path",
+      "title": "Root",
+      "type": "string"
+    },
+    "settings": {
+      "$ref": "#/$defs/Settings",
+      "default": {
+        "expand_macros": false,
+        "resolve_ifdefs": false,
+        "defines": {},
+        "inc_dirs": [],
+        "lib_dirs": [],
+        "lib_exts": []
+      }
+    },
+    "files": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/File"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "libraries": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Libraries",
+      "type": "array"
+    },
+    "prefer": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "default": {},
+      "title": "Prefer",
+      "type": "object"
+    },
+    "diagnostics": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Diagnostic"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "root"
+  ],
+  "title": "Project",
+  "type": "object"
+}

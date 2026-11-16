@@ -267,6 +267,15 @@ class Project(dm._BaseModel):
                 file_paths.append(file_path)
         return cls.from_files(file_paths, root=root, **kwargs)
 
+    @classmethod
+    def json_schema(cls) -> dict[str, Any]:
+        """JSON Schema of the JSON document of a project (`overview`).
+
+        It is published as `schema/project.schema.json` with the documentation.
+        """
+        schema = cls.model_json_schema(mode="serialization")
+        return {"$schema": "https://json-schema.org/draft/2020-12/schema", **schema}
+
     # --- files and items ---
 
     @cached_property

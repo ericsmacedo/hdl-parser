@@ -139,6 +139,23 @@ and answers questions about the design instead of single files:
   A file is parsed again only if it changed, a file it includes changed, or it is parsed in another way.
 * `project.overview` is one JSON document for all files, with a `schema_version`.
 
+On the command line, `hdl-parser project` prints this document, for files, a directory or a filelist:
+
+```bash
+hdl-parser project rtl/top.sv rtl/fifo.sv
+hdl-parser project rtl --exclude 'models/*'
+hdl-parser project -f top.f --expand-macros -D SYNTHESIS -D WIDTH=8 --cache
+```
+
+Its format is the JSON Schema printed by `hdl-parser schema`, which is also published as
+[schema/project.schema.json](schema/project.schema.json) (`Project.json_schema()` in Python).
+`schema_version` is incremented on every change which is not backward compatible.
+Problems are part of the document: in `diagnostics` of the project and of every file, with code, severity,
+message and location. Warnings on standard error are for humans only.
+
+Narrow questions with small answers (`hdl-parser module`, `hierarchy`, `where-used`, `find`, `diagnostics`)
+and the MCP server (`hdl-parser mcp`) are described in the [Guide for AI Agents](agents.md).
+
 ### Values Of Parameters
 
 `elaborate` is the hierarchy with the values of all parameters and the number of bits of all ports, per instance.

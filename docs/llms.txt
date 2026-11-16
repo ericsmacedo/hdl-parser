@@ -1,0 +1,27 @@
+# hdl-parser
+
+> Fast, tolerant parser for SystemVerilog and VHDL. It answers narrow questions on a design (modules, ports,
+> parameters, instances, hierarchy, where a module is used, problems found) with small JSON answers, which
+> point into the source: every item has a full identifier `<file>:<id>` and a location `loc`.
+
+Use it on the command line or as MCP server (`hdl-parser mcp`). Every query reads all SystemVerilog and VHDL
+files below the current directory, or the files, directory or filelist (`-f top.f`) given.
+
+- `hdl-parser hierarchy`: the top modules. `hierarchy --top <name> --depth 1`: the instance tree.
+- `hdl-parser module <name> --summary`: one module, interface or package in brief. `--fields ports,params`.
+- `hdl-parser where-used <name>`: all instances of a module, with location.
+- `hdl-parser find <pattern> --kind port`: items by name (part of the name, or wildcards).
+- `hdl-parser diagnostics --severity warning`: what may be missing or wrong.
+- `hdl-parser project`: everything as one JSON document. `hdl-parser schema`: its JSON Schema.
+
+Lists are limited to 100 entries (`--limit`, 0 for no limit), the rest is counted in `omitted`.
+Exit codes: 0 answer, 1 internal failure, 2 usage or bad argument, 3 name not found (with suggestions).
+Macros are not expanded by default: `--expand-macros` (`-e`), `-D NAME=VALUE`, `-I <dir>`.
+
+## Docs
+
+- [Guide for AI agents](https://hdl-parser.readthedocs.io/en/stable/agents/): one worked example per query
+- [Usage](https://hdl-parser.readthedocs.io/en/stable/usage/): what is extracted, projects, macros
+- [Query API](https://hdl-parser.readthedocs.io/en/stable/api-query/): the same queries in Python
+- [Data model](https://hdl-parser.readthedocs.io/en/stable/api-datamodel/): all fields
+- [JSON Schema](https://hdl-parser.readthedocs.io/en/stable/schema/project.schema.json): format of `hdl-parser project`

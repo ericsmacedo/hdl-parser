@@ -2,27 +2,43 @@
   "path": "examples/sv/adder.sv",
   "modules": [
     {
+      "id": "adder",
       "name": "adder",
       "params": [
         {
+          "id": "adder.DATA_WIDTH",
           "ptype": "integer",
           "name": "DATA_WIDTH",
           "default": "8",
           "comment": [
             "Width of input operands"
-          ]
+          ],
+          "loc": {
+            "line": 4,
+            "col": 3,
+            "end_line": 4,
+            "end_col": 35
+          }
         },
         {
+          "id": "adder.OUTPUT_WIDTH",
           "ptype": "integer",
           "name": "OUTPUT_WIDTH",
           "default": "4",
           "comment": [
             "Test configuration value"
-          ]
+          ],
+          "loc": {
+            "line": 5,
+            "col": 3,
+            "end_line": 5,
+            "end_col": 37
+          }
         }
       ],
       "ports": [
         {
+          "id": "adder.A",
           "direction": "input",
           "ptype": "logic",
           "dtype": "unsigned",
@@ -30,9 +46,16 @@
           "dim": "[DATA_WIDTH-1:0]",
           "comment": [
             "Packed input operand A"
-          ]
+          ],
+          "loc": {
+            "line": 7,
+            "col": 3,
+            "end_line": 7,
+            "end_col": 43
+          }
         },
         {
+          "id": "adder.B",
           "direction": "input",
           "ptype": "logic",
           "dtype": "unsigned",
@@ -40,9 +63,16 @@
           "dim": "[DATA_WIDTH-1:0]",
           "comment": [
             "Packed input operand B"
-          ]
+          ],
+          "loc": {
+            "line": 8,
+            "col": 3,
+            "end_line": 8,
+            "end_col": 43
+          }
         },
         {
+          "id": "adder.X",
           "direction": "output",
           "ptype": "logic",
           "dtype": "unsigned",
@@ -50,35 +80,63 @@
           "dim": "[DATA_WIDTH:0]",
           "comment": [
             "Packed sum output"
-          ]
+          ],
+          "loc": {
+            "line": 9,
+            "col": 3,
+            "end_line": 9,
+            "end_col": 43
+          }
         },
         {
+          "id": "adder.byte_p",
           "direction": "input",
           "ptype": "logic",
           "name": "byte_p",
           "dim": "[7:0]",
           "comment": [
             "Packed byte input"
-          ]
+          ],
+          "loc": {
+            "line": 10,
+            "col": 3,
+            "end_line": 10,
+            "end_col": 48
+          }
         },
         {
+          "id": "adder.word_p",
           "direction": "input",
           "ptype": "logic",
           "name": "word_p",
           "dim": "[3:0][7:0]",
           "comment": [
             "Packed 32-bit word (4 bytes)"
-          ]
+          ],
+          "loc": {
+            "line": 11,
+            "col": 3,
+            "end_line": 11,
+            "end_col": 48
+          }
         },
         {
+          "id": "adder.flag_u",
           "direction": "input",
           "ptype": "logic",
           "name": "flag_u",
           "comment": [
             "Unpacked single bit"
-          ]
+          ],
+          "loc": {
+            "line": 12,
+            "col": 3,
+            "end_line": 12,
+            "end_col": 48
+          }
         },
         {
+          "id": "adder.arr_u",
           "direction": "input",
           "ptype": "logic",
           "name": "arr_u",
@@ -86,37 +144,107 @@
           "dim_unpacked": "[0:3]",
           "comment": [
             "Unpacked byte array"
-          ]
+          ],
+          "loc": {
+            "line": 13,
+            "col": 3,
+            "end_line": 13,
+            "end_col": 53
+          }
         }
       ],
       "localparams": [
         {
+          "id": "adder.SUM_WIDTH",
           "name": "SUM_WIDTH",
-          "default": "DATA_WIDTH + 1"
+          "default": "DATA_WIDTH + 1",
+          "loc": {
+            "line": 16,
+            "col": 3,
+            "end_line": 16,
+            "end_col": 41
+          }
+        }
+      ],
+      "signals": [
+        {
+          "id": "adder.a_port",
+          "ptype": "logic",
+          "name": "a_port",
+          "comment": [
+            "Test port A"
+          ],
+          "loc": {
+            "line": 20,
+            "col": 3,
+            "end_line": 20,
+            "end_col": 16
+          }
+        },
+        {
+          "id": "adder.b_port",
+          "ptype": "logic",
+          "name": "b_port",
+          "comment": [
+            "Test port B"
+          ],
+          "loc": {
+            "line": 21,
+            "col": 3,
+            "end_line": 21,
+            "end_col": 16
+          }
         }
       ],
       "insts": [
         {
+          "id": "adder.u_test_module",
           "name": "u_test_module",
           "module": "test_module",
           "connections": [
             {
+              "id": "adder.u_test_module.test_input",
               "port": "test_input",
               "con": "a_port",
               "comment": [
                 "Connected to a_port"
-              ]
+              ],
+              "loc": {
+                "line": 25,
+                "col": 7,
+                "end_line": 25,
+                "end_col": 26
+              }
             },
             {
+              "id": "adder.u_test_module.test_output",
               "port": "test_output",
               "con": "b_port",
               "comment": [
                 "Connected to b_port"
-              ]
+              ],
+              "loc": {
+                "line": 26,
+                "col": 7,
+                "end_line": 26,
+                "end_col": 27
+              }
             }
-          ]
+          ],
+          "loc": {
+            "line": 24,
+            "col": 3,
+            "end_line": 27,
+            "end_col": 9
+          }
         }
-      ]
+      ],
+      "loc": {
+        "line": 3,
+        "col": 1,
+        "end_line": 35,
+        "end_col": 10
+      }
     }
   ]
 }
