@@ -66,6 +66,15 @@ def shorten(text: str, width: int = 40) -> str:
     return text if len(text) <= width else f"{text[: width - 3]}..."
 
 
+def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
+    """Log `diagnostic`, found while parsing `context`."""
+    loc = diagnostic.loc
+    where = f"{context}:{loc.line}:{loc.col}" if loc else context
+    if diagnostic.file:
+        where = f"{where}: {diagnostic.file}"
+    LOGGER.log(_LOGLEVELS[diagnostic.severity], "%s: %s", where, diagnostic.message)
+
+
 class Diagnostics:
     """Problems Found While Parsing `context` (the file path, or `<text>`)."""
 
@@ -77,10 +86,7 @@ class Diagnostics:
         """Report the problem `code` at `loc`. See [Diagnostic][hdl_parser.datamodel.Diagnostic] for the arguments."""
         severity = SEVERITIES[code]
         self.items.append(dm.Diagnostic(code=code, severity=severity, message=message, loc=loc, file=file, item=item))
-        where = f"{self.context}:{loc.line}:{loc.col}" if loc else self.context
-        if file:
-            where = f"{where}: {file}"
-        LOGGER.log(_LOGLEVELS[severity], "%s: %s", where, message)
+        log_diagnostic(self.context, self.items[-1])
 
     def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
         """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""

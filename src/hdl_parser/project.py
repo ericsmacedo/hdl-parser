@@ -40,24 +40,33 @@ It answers questions about the design, instead of single files:
 A file which cannot be read or parsed never stops the others: it is part of the project, with a diagnostic.
 """
 
+import gc
 import hashlib
 import json
+import logging
 import os
 import re
 from collections.abc import Iterable, Iterator, Mapping
+from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures.process import BrokenProcessPool
 from fnmatch import fnmatch
 from functools import cache, cached_property
 from pathlib import Path
 from typing import Any, NamedTuple
 
 from . import datamodel as dm
-from ._diagnostics import Diagnostics
+from ._diagnostics import Diagnostics, log_diagnostic
 from ._elab import Elaboration
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
 from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
 SCHEMA_VERSION = 1
 """Version of the JSON document of a project. Incremented on changes, which are not backward compatible."""
+
+LOGGER = logging.getLogger(__name__)
+
+MIN_FILES_PER_JOB = 8
+"""Number of files a process has to parse at least: starting a process for less takes longer than parsing them."""
 
 CACHE_DIR = ".hdl_parser_cache"
 """Name of the cache directory within the root of a project."""
@@ -176,6 +185,7 @@ class Project(dm._BaseModel):
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
         cache: bool | Path | str = False,
+        jobs: int | None = 1,
     ) -> "Project":
         """Create project from files.
 
@@ -194,9 +204,14 @@ class Project(dm._BaseModel):
             cache: Keep the result of every file, and parse a file again only if it changed: the file itself,
                    a file it includes, or how it is parsed. `True` uses the directory `.hdl_parser_cache` within
                    the root of the project, a path any other directory.
+            jobs: Number of processes parsing the files. `None` for one per CPU. The result is the same for any
+                  number. More than one process requires the calling script to be importable without side
+                  effects (`if __name__ == "__main__":`), and pays off for many files only: a few files are
+                  always parsed by this process.
         """
         settings = dm.Settings(expand_macros=expand_macros, resolve_ifdefs=resolve_ifdefs, defines=defines or {})
-        return _Builder(cls, root, settings, map(Path, inc_dirs), prefer, cache).build(map(Path, file_paths))
+        builder = _Builder(cls, root, settings, map(Path, inc_dirs), prefer, cache, jobs)
+        return builder.build(map(Path, file_paths))
 
     @classmethod
     def from_filelist(  # noqa: PLR0913
@@ -210,6 +225,7 @@ class Project(dm._BaseModel):
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
         cache: bool | Path | str = False,
+        jobs: int | None = 1,
     ) -> "Project":
         """Create project from a filelist: its files, include directories, macros and libraries.
 
@@ -231,6 +247,7 @@ class Project(dm._BaseModel):
             inc_dirs: Include directories, in addition to the ones of the filelist.
             prefer: See [from_files][hdl_parser.project.Project.from_files].
             cache: See [from_files][hdl_parser.project.Project.from_files].
+            jobs: See [from_files][hdl_parser.project.Project.from_files].
         """
         filelist = read_filelist(filelist_path, env=env)
         settings = dm.Settings(
@@ -239,7 +256,7 @@ class Project(dm._BaseModel):
             defines={**filelist.defines, **(defines or {})},
             lib_exts=tuple(filelist.lib_exts) or DEFAULT_LIB_EXTS,
         )
-        builder = _Builder(cls, root, settings, (*filelist.inc_dirs, *map(Path, inc_dirs)), prefer, cache)
+        builder = _Builder(cls, root, settings, (*filelist.inc_dirs, *map(Path, inc_dirs)), prefer, cache, jobs)
         return builder.build(filelist.files, filelist.lib_files, filelist.lib_dirs, filelist.diagnostics)
 
     @classmethod
@@ -536,9 +553,11 @@ class _Builder:
         inc_dirs: Iterable[Path],
         prefer: dict[str, str] | None,
         cache: bool | Path | str = False,
+        jobs: int | None = 1,
     ):
         self.cls = cls
         self.cache_dir = cache
+        self.jobs = _cpu_count() if jobs is None else max(jobs, 1)
         self.root = None if root is None else _absolute(Path(root))
         self.settings = settings
         self.inc_dirs = [_absolute(inc_dir) for inc_dir in inc_dirs]
@@ -579,7 +598,7 @@ class _Builder:
             "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
         }
         self.cache = self._create_cache(root)
-        files = [self._parse(path, root) for path in (*paths, *lib_paths)]
+        files = self._parse(root, (*paths, *lib_paths))
         libraries = [_relative(path, root) for path in lib_paths]
         while True:
             project = self.cls(files=tuple(files), libraries=tuple(libraries), **fields)
@@ -588,7 +607,7 @@ class _Builder:
             if not found:
                 return _link(project)
             lib_paths += found
-            files += [self._parse(path, root) for path in found]
+            files += self._parse(root, found)
             libraries += [_relative(path, root) for path in found]
 
     def _search(self, project: Project, lib_dirs: list[Path], known: set[Path]) -> list[Path]:
@@ -613,37 +632,123 @@ class _Builder:
         how = [settings.expand_macros, settings.resolve_ifdefs, settings.defines, [str(path) for path in self.inc_dirs]]
         return _Cache(directory, root, self.inc_dirs, json.dumps(how, sort_keys=True))
 
-    def _parse(self, path: Path, root: Path) -> dm.File:
-        """Parse the file at `path`, or take it from the cache."""
-        if self.cache is None:
-            return self._parse_file(path, root)
-        file = self.cache.load(path)
-        if file is None:
-            file = self._parse_file(path, root)
-            self.cache.store(path, file)
-        return file
-
-    def _parse_file(self, path: Path, root: Path) -> dm.File:
-        """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
+    def _parse(self, root: Path, paths: Iterable[Path]) -> list[dm.File]:
+        """Parse the files at `paths`, or take them from the cache."""
+        files: dict[Path, dm.File | None] = dict.fromkeys(paths)
+        if self.cache is not None:
+            for path in files:
+                files[path] = self.cache.load(path)
+        todo = [path for path, file in files.items() if file is None]
         settings = self.settings
-        rel = Path(_relative(path, root))
+        job = _Job(root, settings.expand_macros, settings.resolve_ifdefs, self.macros, tuple(self.inc_dirs))
+        # the garbage collector finds nothing in the many items created, but takes its time to look at them
+        collecting = gc.isenabled()
+        gc.disable()
         try:
-            file = parse_file(
-                path,
-                expand_macros=settings.expand_macros,
-                macros=self.macros,
-                inc_dirs=self.inc_dirs,
-                resolve_ifdefs=settings.resolve_ifdefs,
-            )
-        except FileNotFoundError:
-            return _failed(rel, "file-not-found", "file not found.")
-        except (OSError, UnicodeError) as exc:
-            return _failed(rel, "file-unreadable", f"cannot read file: {exc}")
-        except Exception as exc:
-            # never a crash: the other files are still of use
-            return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
-        includes = tuple(_relative(Path(include), root) for include in file.includes)
-        return file.model_copy(update={"path": rel, "includes": includes})
+            parsed = self._parse_files(todo, job)
+        finally:
+            if collecting:
+                gc.enable()
+        for path, file in zip(todo, parsed, strict=True):
+            files[path] = file
+            if self.cache is not None:
+                self.cache.store(path, file)
+        return list(files.values())  # type: ignore[arg-type]
+
+    def _parse_files(self, paths: list[Path], job: "_Job") -> list[dm.File]:
+        """Parse the files at `paths`, by several processes if this pays off."""
+        jobs = min(self.jobs, len(paths) // MIN_FILES_PER_JOB)
+        if jobs > 1:
+            # large files first: the processes are loaded equally. Some files per task: less overhead.
+            order = sorted(range(len(paths)), key=lambda idx: _size(paths[idx]), reverse=True)
+            chunksize = max(min(len(paths) // (jobs * 8), 16), 1)
+            try:
+                with ProcessPoolExecutor(jobs, initializer=_init_worker, initargs=(job,)) as pool:
+                    parsed = list(pool.map(_work, [paths[idx] for idx in order], chunksize=chunksize))
+            except (OSError, ImportError, BrokenProcessPool) as exc:
+                # no processes here (sandbox, missing semaphores, ...)
+                LOGGER.debug("cannot parse by %d processes (%s): parsing by one.", jobs, exc)
+            else:
+                files = [file for _, file in sorted(zip(order, parsed, strict=True), key=lambda pair: pair[0])]
+                # the processes are silent: report here, in the order of the files
+                for path, file in zip(paths, files, strict=True):
+                    _log(path, file)
+                return files
+        return [_parse_file(path, job) for path in paths]
+
+
+class _Job(NamedTuple):
+    """How Files Are Parsed."""
+
+    root: Path
+    expand_macros: bool
+    resolve_ifdefs: bool
+    macros: Macros | None
+    inc_dirs: tuple[Path, ...]
+
+
+_FAILED = frozenset(("file-not-found", "file-unreadable", "parse-failed"))
+
+
+def _parse_file(path: Path, job: _Job) -> dm.File:
+    """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
+    root = job.root
+    rel = Path(_relative(path, root))
+    try:
+        file = parse_file(
+            path,
+            expand_macros=job.expand_macros,
+            macros=job.macros,
+            inc_dirs=job.inc_dirs,
+            resolve_ifdefs=job.resolve_ifdefs,
+        )
+    except FileNotFoundError:
+        return _failed(rel, "file-not-found", "file not found.")
+    except (OSError, UnicodeError) as exc:
+        return _failed(rel, "file-unreadable", f"cannot read file: {exc}")
+    except Exception as exc:
+        # never a crash: the other files are still of use
+        return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
+    includes = tuple(_relative(Path(include), root) for include in file.includes)
+    return file.model_copy(update={"path": rel, "includes": includes})
+
+
+def _log(path: Path, file: dm.File) -> None:
+    """Log the diagnostics of `file`, parsed from `path` by another process, the way `_parse_file` does."""
+    for diagnostic in file.diagnostics:
+        context = file.file_id if diagnostic.code in _FAILED else str(path)
+        log_diagnostic(context, diagnostic)
+
+
+# --- worker process ---
+
+_WORKER_JOB: _Job | None = None
+
+
+def _init_worker(job: _Job) -> None:  # pragma: no cover
+    global _WORKER_JOB  # noqa: PLW0603
+    _WORKER_JOB = job
+    # reported by the main process
+    logging.getLogger(log_diagnostic.__module__).disabled = True
+
+
+def _work(path: Path) -> dm.File:  # pragma: no cover
+    return _parse_file(path, _WORKER_JOB)  # type: ignore[arg-type]
+
+
+def _cpu_count() -> int:
+    """Number of CPUs this process may use."""
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        return os.cpu_count() or 1
+
+
+def _size(path: Path) -> int:
+    try:
+        return path.stat().st_size
+    except OSError:
+        return 0
 
 
 _RE_QUOTED = re.compile(r"'([^']*)'")
