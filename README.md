@@ -19,6 +19,7 @@
   <a href="https://hdl-parser.readthedocs.io/en/stable/usage/">Usage</a> ·
   <a href="https://hdl-parser.readthedocs.io/en/stable/agents/">AI Agents &amp; MCP</a> ·
   <a href="https://hdl-parser.readthedocs.io/en/stable/cli/">CLI Reference</a> ·
+  <a href="https://hdl-parser.readthedocs.io/en/stable/architecture/">How It Works</a> ·
   <a href="https://github.com/ericsmacedo/hdl-parser/issues">Issues</a>
 </p>
 
