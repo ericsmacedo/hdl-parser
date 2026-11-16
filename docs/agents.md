@@ -43,7 +43,9 @@ All examples are run within `tests/corpus/sv/ibex` of the repository, a RISC-V c
 
 ### Where do I start? Which modules are on top?
 
-Without `--top`, `hierarchy` gives the modules which are instantiated nowhere.
+Without `--top`, `hierarchy` gives the modules which are instantiated nowhere, the largest first (`insts`:
+number of instances at all levels). Tops without instances (mostly unused library cells) are left out and
+counted in `leaves`; `--leaves` returns them too. `--text` gives a tree as indented text, much smaller than JSON.
 
 ```bash
 hdl-parser hierarchy
@@ -63,7 +65,8 @@ hdl-parser hierarchy
         "col": 1,
         "end_line": 1667,
         "end_col": 10
-      }
+      },
+      "insts": 85
     }
   ],
   "total": 1
@@ -343,9 +346,19 @@ hdl-parser module ibex_alux
 ## MCP Server
 
 `hdl-parser mcp` serves the same queries as tools on standard input and output: `module`, `hierarchy`,
-`where_used`, `find`, `diagnostics` and `reload`. It takes the same options to create the project.
+`where_used`, `find`, `diagnostics`, `elaborate`, `evaluate` and `reload`. It takes the same options to create the project.
 Files which changed are read again on the next call, `reload` reads the project again (i.e. after files
 were added). Answers are the same JSON, in `structuredContent` and as text. A failed query has `isError`.
+All tools are read-only (`readOnlyHint`).
+
+* `diagnostics` with `group_by` (`code`, `file`, `module`) gives counts first; `exclude` drops files by pattern,
+  `blackboxes` drops `undefined-module` for known blackboxes. `--blackbox PATTERN` applies to every call.
+* `elaborate` gives the values of the parameters and the widths of the ports (bits) of one instance: `top`,
+  `path` (`u_core.u_alu`), `params` of the top, `names` patterns, `unknown` for the values not known, with
+  the reason. `evaluate` gives the value of an expression within a module or package. Same as
+  `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
+* `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then.
+* `--cache-dir DIR` keeps the cache outside the root, i.e. outside a shared work area.
 
 ```json
 {

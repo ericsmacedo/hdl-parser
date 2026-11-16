@@ -63,7 +63,7 @@ def test_session(tmp_path):
     assert responses[0]["result"]["protocolVersion"] == "2025-03-26"
     assert responses[0]["result"]["serverInfo"]["name"] == "hdl-parser"
     names = [tool["name"] for tool in responses[1]["result"]["tools"]]
-    assert names == ["module", "hierarchy", "where_used", "find", "diagnostics", "reload"]
+    assert names == ["module", "hierarchy", "where_used", "find", "diagnostics", "elaborate", "evaluate", "reload"]
     result = responses[2]["result"]
     assert result["isError"] is False
     assert result["structuredContent"]["result"][0]["inst"] == "top.sv:top.u_sub"
@@ -133,3 +133,26 @@ def test_tools_schema():
     for tool in TOOLS:
         assert tool["inputSchema"]["type"] == "object"
         assert set(tool["inputSchema"].get("required", ())) <= set(tool["inputSchema"]["properties"])
+
+
+def test_annotations_and_checks(tmp_path):
+    """Read-Only Tools, Arguments Checked Against The Schema, Server Blackboxes."""
+    assert all(tool["annotations"]["readOnlyHint"] for tool in TOOLS)
+    (tmp_path / "top.sv").write_text("module top;\n  bb u_bb ();\nendmodule\n")
+    server = Server(lambda: Project.from_dir(tmp_path), blackboxes=("bb",))
+    error = server.handle(_call(1, "hierarchy", top="top", depth=-1))["result"]
+    assert error["isError"] is True
+    assert error["structuredContent"]["error"]["code"] == "bad-argument"
+    assert server.handle(_call(2, "hierarchy", depth="x"))["result"]["isError"] is True
+    assert server.handle(_call(3, "diagnostics"))["result"]["structuredContent"]["total"] == 0
+
+
+def test_elaborate_tool(tmp_path):
+    """Elaborate And Evaluate As Tools."""
+    (tmp_path / "top.sv").write_text("module top #(parameter W = 8) (input logic [W-1:0] a);\nendmodule\n")
+    server = Server(lambda: Project.from_dir(tmp_path))
+    answer = server.handle(_call(1, "elaborate", top="top", params={"W": 3}))["result"]["structuredContent"]
+    assert answer["result"]["ports"]["a"]["value"] == 3
+    answer = server.handle(_call(2, "evaluate", expr="W * 2", scope="top"))["result"]["structuredContent"]
+    assert answer["result"]["value"] == 16
+    assert server.handle(_call(3, "elaborate", top="top", params=[1]))["result"]["isError"] is True

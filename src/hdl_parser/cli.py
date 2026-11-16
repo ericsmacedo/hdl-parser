@@ -276,6 +276,11 @@ def opt_project(func):
             "--exclude", "-x", multiple=True, help="Pattern of files to be left out of a directory: 'models/*'."
         ),
         click.option("--cache", is_flag=True, help="Keep the results within the root, parse changed files only."),
+        click.option(
+            "--cache-dir",
+            type=click.Path(file_okay=False, path_type=Path),
+            help="Keep the results in this directory, parse changed files only. Implies '--cache'.",
+        ),
     )
     for option in reversed(options):
         func = option(func)
@@ -302,6 +307,14 @@ def opt_answer(func):
 opt_fields = click.option(
     "--fields", "-F", multiple=True, help="Comma separated fields to be returned. Can be given multiple times."
 )
+opt_blackbox = click.option(
+    "--blackbox",
+    "blackboxes",
+    multiple=True,
+    metavar="PATTERN",
+    help="Module names known to be missing (blackboxes, cells): no 'undefined-module' for them. Can be given "
+    "multiple times.",
+)
 opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
 
 
@@ -315,6 +328,7 @@ def load_project(  # noqa: PLR0913
     root: Path | None = None,
     exclude: tuple[str, ...] = (),
     cache: bool = False,
+    cache_dir: Path | None = None,
 ) -> Project:
     """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
@@ -334,7 +348,7 @@ def load_project(  # noqa: PLR0913
         "resolve_ifdefs": resolve_ifdefs,
         "defines": dict(_split_define(define) for define in defines),
         "inc_dirs": inc_dirs,
-        "cache": cache,
+        "cache": cache_dir or cache,
     }
     if filelist:
         return Project.from_filelist(filelist, **kwargs)
@@ -421,6 +435,8 @@ def module(ctx: Ctx, name: str, fields: tuple[str, ...], summary: bool, limit: i
 )
 @click.option("--top", "-t", help="Name or full identifier of the module.")
 @click.option("--depth", "-d", type=click.IntRange(min=0), help="Number of instance levels below the top.")
+@click.option("--leaves", is_flag=True, help="Without '--top': top modules without instances too.")
+@click.option("--text", is_flag=True, help="The tree as indented text, much smaller than JSON.")
 @opt_project
 @opt_fields
 @opt_summary
@@ -430,6 +446,8 @@ def hierarchy(  # noqa: PLR0913
     ctx: Ctx,
     top: str | None,
     depth: int | None,
+    leaves: bool,
+    text: bool,
     fields: tuple[str, ...],
     summary: bool,
     limit: int | None,
@@ -440,7 +458,10 @@ def hierarchy(  # noqa: PLR0913
     _quiet(ctx)
     prj = load_project(**options)
     _answer(
-        lambda: query.hierarchy(prj, top, depth=depth, limit=limit, fields=_fields(fields), summary=summary), compact
+        lambda: query.hierarchy(
+            prj, top, depth=depth, limit=limit, fields=_fields(fields), summary=summary, leaves=leaves, text=text
+        ),
+        compact,
     )
 
 
@@ -491,7 +512,10 @@ def find(  # noqa: PLR0913
 )
 @click.option("--severity", type=click.Choice(query.SEVERITIES), help="Minimum severity. Everything by default.")
 @click.option("--code", "codes", multiple=True, help="Code of the problems. Can be given multiple times.")
-@click.option("--file", "file_", help="Path of a file, relative to the root.")
+@click.option("--file", "file_", help="Path of a file, relative to the root, or a pattern ('rtl/*').")
+@click.option("--exclude-file", "excludes", multiple=True, help="Pattern of files whose problems are left out.")
+@opt_blackbox
+@click.option("--group-by", type=click.Choice(("code", "file", "module")), help="Number of problems by group.")
 @opt_project
 @opt_answer
 @pass_ctx
@@ -500,6 +524,9 @@ def diagnostics(  # noqa: PLR0913
     severity: str | None,
     codes: tuple[str, ...],
     file_: str | None,
+    excludes: tuple[str, ...],
+    blackboxes: tuple[str, ...],
+    group_by: str | None,
     limit: int | None,
     compact: bool,
     **options,
@@ -507,23 +534,125 @@ def diagnostics(  # noqa: PLR0913
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     prj = load_project(**options)
-    _answer(lambda: query.diagnostics(prj, severity=severity, codes=codes, file=file_, limit=limit), compact)
+    _answer(
+        lambda: query.diagnostics(
+            prj,
+            severity=severity,
+            codes=codes,
+            file=file_,
+            limit=limit,
+            exclude=excludes,
+            blackboxes=blackboxes,
+            group_by=group_by,
+        ),
+        compact,
+    )
+
+
+opt_params = click.option(
+    "--param",
+    "-p",
+    "params",
+    multiple=True,
+    metavar="NAME=VALUE",
+    help="Value of a parameter of the top or scope. Can be given multiple times.",
+)
+
+
+def _params(params: tuple[str, ...]) -> dict[str, int | float | str | bool]:
+    values: dict[str, int | float | str | bool] = {}
+    for param in params:
+        name, sep, text = param.partition("=")
+        if not sep or not name:
+            raise click.UsageError(f"'{param}' is no NAME=VALUE.")
+        values[name] = _scalar(text)
+    return values
+
+
+def _scalar(text: str) -> int | float | str | bool:
+    if text.lower() in ("true", "false"):
+        return text.lower() == "true"
+    for convert in (int, float):
+        try:
+            return convert(text)
+        except ValueError:  # noqa: PERF203
+            pass
+    return text
+
+
+@cli.command(
+    help=f"""Parameter Values And Port Widths Of An Instance As JSON.
+
+    TOP is a name or a full identifier ('rtl/top.sv:top').
+{_PATHS_HELP}"""
+)
+@click.argument("top")
+@click.option("--path", default="", help="Instance names below TOP, separated by dots: 'u_core.u_alu'.")
+@opt_params
+@click.option("--depth", "-d", type=click.IntRange(min=0), default=0, help="Instance levels below, default 0.")
+@click.option("--name", "names", multiple=True, help="Pattern of names of parameters and ports.")
+@click.option("--unknown", is_flag=True, help="Only values which are not known, with the reason.")
+@opt_project
+@opt_answer
+@pass_ctx
+def elaborate(  # noqa: PLR0913
+    ctx: Ctx,
+    top: str,
+    path: str,
+    params: tuple[str, ...],
+    depth: int,
+    names: tuple[str, ...],
+    unknown: bool,
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(
+        lambda: query.elaborate(
+            prj, top, path=path, params=values, depth=depth, names=names, unknown=unknown, limit=limit
+        ),
+        compact,
+    )
+
+
+@cli.command(
+    help=f"""Value Of An Expression Within A Module Or Package As JSON.
+{_PATHS_HELP}"""
+)
+@click.argument("expr")
+@click.argument("scope")
+@opt_params
+@opt_project
+@opt_answer
+@pass_ctx
+def evaluate(ctx: Ctx, expr: str, scope: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):  # noqa: ARG001, PLR0913
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.evaluate(prj, expr, scope, params=values), compact)
 
 
 @cli.command(
     help=f"""Serve The Queries As MCP Server On Standard Input And Output.
 
-    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics' and 'reload'.
+    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate'
+    and 'reload'.
     Files which changed are parsed again on the next query.
 {_PATHS_HELP}"""
 )
+@opt_blackbox
 @opt_project
 @pass_ctx
-def mcp(ctx: Ctx, **options) -> None:
+def mcp(ctx: Ctx, blackboxes: tuple[str, ...], **options) -> None:
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     prj = load_project(**options)  # usage errors are reported right away
-    serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj)
+    serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj, blackboxes=blackboxes)
 
 
 @cli.command()
