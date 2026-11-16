@@ -1,0 +1,271 @@
+# MIT License
+#
+# Copyright (c) 2025-2026 ericsmacedo
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+"""MCP Server: The Queries As Tools.
+
+A minimal implementation of the Model Context Protocol over standard input and output (JSON-RPC 2.0, one
+message per line), without further dependencies. See [hdl_parser.query][] for the queries.
+"""
+
+import json
+import logging
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any, TextIO
+
+from . import query
+from .project import Project
+
+LOGGER = logging.getLogger(__name__)
+
+PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
+"""Supported protocol versions, the latest first."""
+
+_LIMIT = {"type": "integer", "minimum": 0, "description": "Number of entries of every list. Default 100. 0: no limit."}
+_FIELDS = {"type": "array", "items": {"type": "string"}, "description": "Fields to be returned. All by default."}
+_SUMMARY = {"type": "boolean", "description": "Names and counts only."}
+_NAME = {"type": "string", "description": "Name or full identifier ('rtl/top.sv:top')."}
+
+TOOLS: tuple[dict[str, Any], ...] = (
+    {
+        "name": "module",
+        "description": "One module, interface or package: parameters, ports, instances, signals, types, ... "
+        "with source locations. Start with summary=true, then ask for the fields needed.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"name": _NAME, "fields": _FIELDS, "limit": _LIMIT, "summary": _SUMMARY},
+            "required": ["name"],
+        },
+    },
+    {
+        "name": "hierarchy",
+        "description": "Instance tree below the module 'top'. Without 'top': the top modules of the design.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "top": _NAME,
+                "depth": {"type": "integer", "minimum": 0, "description": "Number of instance levels below the top."},
+                "limit": {**_LIMIT, "description": "Number of nodes. Default 100. 0: no limit."},
+                "fields": {
+                    **_FIELDS,
+                    "description": "Fields of every node: module, inst, definition, multiple, loc. All by default.",
+                },
+                "summary": {"type": "boolean", "description": "Every node has name and module only."},
+            },
+        },
+    },
+    {
+        "name": "where_used",
+        "description": "All places a module or interface is instantiated at, with file and location.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"name": _NAME, "limit": _LIMIT},
+            "required": ["name"],
+        },
+    },
+    {
+        "name": "find",
+        "description": "Items by name. Without wildcard: part of the name, not case sensitive. With wildcards "
+        "(*, ?, [...]): the name or the full identifier ('rtl/top.sv:top.*').",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "pattern": {"type": "string"},
+                "kinds": {
+                    "type": "array",
+                    "items": {"type": "string", "enum": sorted(set(query.KINDS.values()))},
+                    "description": "Kinds of items. All by default.",
+                },
+                "limit": _LIMIT,
+                "fields": _FIELDS,
+            },
+            "required": ["pattern"],
+        },
+    },
+    {
+        "name": "diagnostics",
+        "description": "Problems found in the design: undefined modules, macros not expanded, files which cannot "
+        "be read, ... with code, severity, message and location.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "severity": {"type": "string", "enum": list(query.SEVERITIES), "description": "Minimum severity."},
+                "codes": {"type": "array", "items": {"type": "string"}},
+                "file": {"type": "string", "description": "Path of a file, relative to the root."},
+                "limit": _LIMIT,
+            },
+        },
+    },
+    {
+        "name": "reload",
+        "description": "Read the project again, i.e. after files were added. Changed files are read again "
+        "automatically.",
+        "inputSchema": {"type": "object", "properties": {}},
+    },
+)
+
+_QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
+    "module": query.module,
+    "hierarchy": query.hierarchy,
+    "where_used": query.where_used,
+    "find": query.find,
+    "diagnostics": query.diagnostics,
+}
+
+
+class Server:
+    """MCP Server on the project created by `load`."""
+
+    def __init__(self, load: Callable[[], Project], project: Project | None = None):
+        self.load = load
+        self._project = project
+        self._stamps = _stamps(project) if project is not None else {}
+
+    @property
+    def project(self) -> Project:
+        """The project, read again if one of its files changed."""
+        if self._project is None or self._stamps != _stamps(self._project):
+            self.reload()
+        return self._project  # type: ignore[return-value]
+
+    def reload(self) -> None:
+        """Read the project again."""
+        self._project = self.load()
+        self._stamps = _stamps(self._project)
+
+    def handle(self, message: Any) -> dict[str, Any] | None:  # noqa: PLR0911
+        """Answer to `message`. `None` for a notification."""
+        if not isinstance(message, dict) or message.get("jsonrpc") != "2.0" or "method" not in message:
+            return _error(message.get("id") if isinstance(message, dict) else None, -32600, "Invalid Request")
+        if "id" not in message:
+            return None
+        id_ = message["id"]
+        method = message["method"]
+        params = message.get("params") or {}
+        if method == "initialize":
+            requested = params.get("protocolVersion")
+            version = requested if requested in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0]
+            return _result(
+                id_,
+                {
+                    "protocolVersion": version,
+                    "capabilities": {"tools": {}},
+                    "serverInfo": {"name": "hdl-parser", "version": _version()},
+                    "instructions": INSTRUCTIONS,
+                },
+            )
+        if method == "ping":
+            return _result(id_, {})
+        if method == "tools/list":
+            return _result(id_, {"tools": list(TOOLS)})
+        if method == "tools/call":
+            return self._call(id_, params)
+        return _error(id_, -32601, f"Method not found: {method}")
+
+    def _call(self, id_: Any, params: dict[str, Any]) -> dict[str, Any]:
+        name = params.get("name")
+        arguments = params.get("arguments") or {}
+        if name == "reload":
+            self.reload()
+            return _result(id_, _content({"reloaded": True, "files": len(self.project.files)}))
+        func = _QUERIES.get(name)  # type: ignore[arg-type]
+        if func is None:
+            return _error(id_, -32602, f"Unknown tool: {name}")
+        tool = next(tool for tool in TOOLS if tool["name"] == name)
+        unknown = sorted(set(arguments) - set(tool["inputSchema"]["properties"]))
+        if unknown:
+            return _result(id_, _content({"error": {"code": "bad-argument", "message": f"unknown: {unknown}"}}, True))
+        try:
+            answer = func(self.project, **arguments)
+        except query.QueryError as exc:
+            return _result(id_, _content(exc.to_dict(), True))
+        except Exception as exc:
+            LOGGER.exception("tool %s failed", name)
+            error = {"code": "failed", "message": f"{type(exc).__name__}: {exc}"}
+            return _result(id_, _content({"error": error}, True))
+        return _result(id_, _content(answer))
+
+
+INSTRUCTIONS = """\
+Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
+'<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source location 'loc' (lines and columns start at 1). \
+Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
+modules, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' tells what may be \
+missing or wrong."""
+
+
+def serve(load: Callable[[], Project], stdin: TextIO, stdout: TextIO, project: Project | None = None) -> None:
+    """Serve the project created by `load` until `stdin` ends. `project`: the one already created by `load`."""
+    server = Server(load, project)
+    for line in stdin:
+        if not line.strip():
+            continue
+        try:
+            message = json.loads(line)
+        except ValueError:
+            response: dict[str, Any] | None = _error(None, -32700, "Parse error")
+        else:
+            response = server.handle(message)
+        if response is not None:
+            stdout.write(json.dumps(response) + "\n")
+            stdout.flush()
+
+
+def _stamps(project: Project) -> dict[Path, tuple[int, int] | None]:
+    """Modification time and size of all files of `project` and the files they include."""
+    stamps: dict[Path, tuple[int, int] | None] = {}
+    for file in project.files:
+        for path in (file.path, *file.includes):
+            if path is None:
+                continue
+            full = project.root / path
+            try:
+                stat = full.stat()
+                stamps[full] = (stat.st_mtime_ns, stat.st_size)
+            except OSError:
+                stamps[full] = None
+    return stamps
+
+
+def _content(answer: dict[str, Any], is_error: bool = False) -> dict[str, Any]:
+    return {
+        "content": [{"type": "text", "text": json.dumps(answer)}],
+        "structuredContent": answer,
+        "isError": is_error,
+    }
+
+
+def _result(id_: Any, result: dict[str, Any]) -> dict[str, Any]:
+    return {"jsonrpc": "2.0", "id": id_, "result": result}
+
+
+def _error(id_: Any, code: int, message: str) -> dict[str, Any]:
+    return {"jsonrpc": "2.0", "id": id_, "error": {"code": code, "message": message}}
+
+
+def _version() -> str:
+    from importlib.metadata import PackageNotFoundError, version  # noqa: PLC0415
+
+    try:
+        return version("hdl-parser")
+    except PackageNotFoundError:  # pragma: no cover
+        return "0"

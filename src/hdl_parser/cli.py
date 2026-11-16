@@ -32,7 +32,9 @@ from pydantic import BaseModel, ConfigDict
 from rich.console import Console
 from rich.logging import RichHandler
 
+from . import query
 from ._gen_templates import gen_instance, gen_markdown_table
+from ._mcp import serve
 from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
@@ -133,13 +135,15 @@ class Ctx(BaseModel):
     def __exit__(self, exc_type, exc_value, tb):  # pragma: no cover
         # '--help' and usage errors are handled by click
         if exc_type and not issubclass(exc_type, (click.exceptions.Exit, click.ClickException)):
+            # standard output is kept for the answer
+            stderr = _create_console(stderr=True, no_color=self.no_color)
             if exc_type is KeyboardInterrupt:
-                self.console.print("[red]Aborted.")
+                stderr.print("[red]Aborted.")
             else:
                 # tell the reason
                 LOGGER.error("%s: %s", exc_type.__name__, exc_value)
-                self.console.print("[red][bold]Failed.")
-            sys.exit(1)
+                stderr.print("[red][bold]Failed.")
+            sys.exit(EXIT_FAILED)
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -226,31 +230,82 @@ def json(filepaths: tuple[Path, ...], **options) -> None:
         print(file.overview)
 
 
-@cli.command()
-@click.argument("paths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path))
-@click.option(
-    "--filelist", "-f", type=click.Path(exists=True, dir_okay=False, path_type=Path), help="Filelist of the project."
+EXIT_OK = 0
+"""The answer is printed. Problems of the design are part of the answer, never a failure."""
+EXIT_FAILED = 1
+"""Internal failure: a bug. The reason is printed on standard error."""
+EXIT_USAGE = 2
+"""Wrong command line, or bad argument of a query (`{"error": {"code": "bad-argument", ...}}`)."""
+EXIT_NOT_FOUND = 3
+"""Name not found: `{"error": {"code": "not-found", "suggestions": [...]}}` on standard output."""
+
+_PATHS_HELP = """
+    PATHS are the files of the design, or one directory with all of them. The current directory by default.
+    Alternatively a filelist is given by '--filelist'.
+"""
+
+
+def opt_project(func):
+    """Options which create the project."""
+    options = (
+        click.argument("paths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path)),
+        click.option(
+            "--filelist",
+            "-f",
+            type=click.Path(exists=True, dir_okay=False, path_type=Path),
+            help="Filelist of the project.",
+        ),
+        opt_expand_macros,
+        opt_resolve_ifdefs,
+        opt_inc_dirs,
+        click.option(
+            "--define",
+            "-D",
+            "defines",
+            multiple=True,
+            metavar="NAME[=VALUE]",
+            help="Macro defined for all files. Used by '--expand-macros'. Can be given multiple times.",
+        ),
+        click.option(
+            "--root",
+            type=click.Path(exists=True, file_okay=False, path_type=Path),
+            help="Root directory. All paths are relative to it. By default the directory given, or the common one.",
+        ),
+        click.option(
+            "--exclude", "-x", multiple=True, help="Pattern of files to be left out of a directory: 'models/*'."
+        ),
+        click.option("--cache", is_flag=True, help="Keep the results within the root, parse changed files only."),
+    )
+    for option in reversed(options):
+        func = option(func)
+    return func
+
+
+def opt_answer(func):
+    """Options which size the answer of a query."""
+    options = (
+        click.option(
+            "--limit",
+            "-n",
+            type=click.IntRange(min=0),
+            help="Number of entries of every list. Default 100. 0 for no limit. "
+            "Left out entries are counted in 'omitted'.",
+        ),
+        click.option("--compact", "-c", is_flag=True, help="JSON on a single line."),
+    )
+    for option in reversed(options):
+        func = option(func)
+    return func
+
+
+opt_fields = click.option(
+    "--fields", "-F", multiple=True, help="Comma separated fields to be returned. Can be given multiple times."
 )
-@opt_expand_macros
-@opt_resolve_ifdefs
-@opt_inc_dirs
-@click.option(
-    "--define",
-    "-D",
-    "defines",
-    multiple=True,
-    metavar="NAME[=VALUE]",
-    help="Macro defined for all files. Used by '--expand-macros'. Can be given multiple times.",
-)
-@click.option(
-    "--root",
-    type=click.Path(exists=True, file_okay=False, path_type=Path),
-    help="Root directory. All paths are relative to it. By default the directory given, or the common one.",
-)
-@click.option("--exclude", "-x", multiple=True, help="Pattern of files to be left out of a directory: 'models/*'.")
-@click.option("--cache", is_flag=True, help="Keep the results within the root, parse changed files only.")
-def project(  # noqa: PLR0913
-    paths: tuple[Path, ...],
+opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
+
+
+def load_project(  # noqa: PLR0913
+    paths: tuple[Path, ...] = (),
     filelist: Path | None = None,
     expand_macros: bool = False,
     resolve_ifdefs: bool = False,
@@ -259,21 +314,15 @@ def project(  # noqa: PLR0913
     root: Path | None = None,
     exclude: tuple[str, ...] = (),
     cache: bool = False,
-) -> None:
-    """Dump All Files Of A Design As One JSON Document.
-
-    PATHS are the files of the design, or one directory with all of them.
-    Alternatively a filelist is given by '--filelist'.
-
-    The document has the format given by 'hdl-parser schema'. Problems are listed
-    in its 'diagnostics' and the ones of its files. A file which cannot be read or
-    parsed does not stop the others.
-    """
+) -> Project:
+    """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
         raise click.UsageError("'--resolve-ifdefs' requires '--expand-macros'.")
-    dirs = [path for path in paths if path.is_dir()]
     if filelist and paths:
         raise click.UsageError("Give either PATHS or '--filelist'.")
+    if not filelist and not paths:
+        paths = (Path(),)
+    dirs = [path for path in paths if path.is_dir()]
     if dirs and len(paths) > 1:
         raise click.UsageError("Give either one directory or files.")
     if exclude and not dirs:
@@ -287,15 +336,13 @@ def project(  # noqa: PLR0913
         "cache": cache,
     }
     if filelist:
-        prj = Project.from_filelist(filelist, **kwargs)
-    elif dirs:
+        return Project.from_filelist(filelist, **kwargs)
+    if dirs:
         if root is not None:
             raise click.UsageError("'--root' is the directory given.")
         del kwargs["root"]
-        prj = Project.from_dir(dirs[0], exclude=exclude, **kwargs)
-    else:
-        prj = Project.from_files(paths, **kwargs)
-    print(prj.overview)
+        return Project.from_dir(dirs[0], exclude=exclude, **kwargs)
+    return Project.from_files(paths, **kwargs)
 
 
 def _split_define(define: str) -> tuple[str, str]:
@@ -303,6 +350,179 @@ def _split_define(define: str) -> tuple[str, str]:
     if not name:
         raise click.BadParameter(f"'{define}' has no name.", param_hint="'--define'")
     return name, value
+
+
+def _quiet(ctx: Ctx) -> None:
+    """Problems are part of the JSON answer. Log them on request only (`-v`)."""
+    if ctx.verbose:
+        return
+    logger = logging.getLogger("hdl_parser._diagnostics")
+    level = logger.level
+    logger.setLevel(logging.ERROR)
+    click.get_current_context().call_on_close(lambda: logger.setLevel(level))
+
+
+def _fields(fields: tuple[str, ...]) -> tuple[str, ...]:
+    return tuple(name.strip() for item in fields for name in item.split(",") if name.strip())
+
+
+def _answer(func, compact: bool = False) -> None:
+    """Print the answer of the query `func`. A failed query is an error object and exit code."""
+    try:
+        answer = func()
+        code = EXIT_OK
+    except query.QueryError as exc:
+        answer = exc.to_dict()
+        code = EXIT_NOT_FOUND if exc.code == "not-found" else EXIT_USAGE
+    print(json_.dumps(answer, indent=None if compact else 2))
+    if code:
+        raise click.exceptions.Exit(code)
+
+
+@cli.command(
+    help=f"""Dump All Files Of A Design As One JSON Document.
+{_PATHS_HELP}
+    The document has the format given by 'hdl-parser schema'. Problems are listed
+    in its 'diagnostics' and the ones of its files. A file which cannot be read or
+    parsed does not stop the others.
+"""
+)
+@opt_project
+@pass_ctx
+def project(ctx: Ctx, **options) -> None:
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    print(load_project(**options).overview)
+
+
+@cli.command(
+    help=f"""One Module, Interface Or Package As JSON.
+
+    NAME is a name or a full identifier ('rtl/top.sv:top').
+{_PATHS_HELP}"""
+)
+@click.argument("name")
+@opt_project
+@opt_fields
+@opt_summary
+@opt_answer
+@pass_ctx
+def module(ctx: Ctx, name: str, fields: tuple[str, ...], summary: bool, limit: int | None, compact: bool, **options):  # noqa: PLR0913
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)
+    _answer(lambda: query.module(prj, name, fields=_fields(fields), limit=limit, summary=summary), compact)
+
+
+@cli.command(
+    help=f"""Instance Tree Below A Module As JSON. The Top Modules, If '--top' Is Not Given.
+{_PATHS_HELP}"""
+)
+@click.option("--top", "-t", help="Name or full identifier of the module.")
+@click.option("--depth", "-d", type=click.IntRange(min=0), help="Number of instance levels below the top.")
+@opt_project
+@opt_fields
+@opt_summary
+@opt_answer
+@pass_ctx
+def hierarchy(  # noqa: PLR0913
+    ctx: Ctx,
+    top: str | None,
+    depth: int | None,
+    fields: tuple[str, ...],
+    summary: bool,
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)
+    _answer(
+        lambda: query.hierarchy(prj, top, depth=depth, limit=limit, fields=_fields(fields), summary=summary), compact
+    )
+
+
+@cli.command(
+    help=f"""All Instances Of A Module As JSON.
+
+    NAME is a name or a full identifier ('rtl/top.sv:top').
+{_PATHS_HELP}"""
+)
+@click.argument("name")
+@opt_project
+@opt_answer
+@pass_ctx
+def where_used(ctx: Ctx, name: str, limit: int | None, compact: bool, **options):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)
+    _answer(lambda: query.where_used(prj, name, limit=limit), compact)
+
+
+@cli.command(
+    help=f"""Items By Name As JSON.
+
+    PATTERN without wildcard is part of the name, not case sensitive ('clk' finds 'clk_i').
+    With wildcards ('*', '?', '[...]') it matches the name or the full identifier ('rtl/top.sv:top.*').
+{_PATHS_HELP}"""
+)
+@click.argument("pattern")
+@click.option(
+    "--kind", "-k", "kinds", multiple=True, type=click.Choice(sorted(set(query.KINDS.values()))), help="Kind of items."
+)
+@opt_project
+@opt_fields
+@opt_answer
+@pass_ctx
+def find(  # noqa: PLR0913
+    ctx: Ctx, pattern: str, kinds: tuple[str, ...], fields: tuple[str, ...], limit: int | None, compact: bool, **options
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)
+    _answer(lambda: query.find(prj, pattern, kinds=kinds, limit=limit, fields=_fields(fields)), compact)
+
+
+@cli.command(
+    help=f"""Problems Found In The Design As JSON.
+{_PATHS_HELP}"""
+)
+@click.option("--severity", type=click.Choice(query.SEVERITIES), help="Minimum severity. Everything by default.")
+@click.option("--code", "codes", multiple=True, help="Code of the problems. Can be given multiple times.")
+@click.option("--file", "file_", help="Path of a file, relative to the root.")
+@opt_project
+@opt_answer
+@pass_ctx
+def diagnostics(  # noqa: PLR0913
+    ctx: Ctx,
+    severity: str | None,
+    codes: tuple[str, ...],
+    file_: str | None,
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)
+    _answer(lambda: query.diagnostics(prj, severity=severity, codes=codes, file=file_, limit=limit), compact)
+
+
+@cli.command(
+    help=f"""Serve The Queries As MCP Server On Standard Input And Output.
+
+    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics' and 'reload'.
+    Files which changed are parsed again on the next query.
+{_PATHS_HELP}"""
+)
+@opt_project
+@pass_ctx
+def mcp(ctx: Ctx, **options) -> None:
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    prj = load_project(**options)  # usage errors are reported right away
+    serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj)
 
 
 @cli.command()

@@ -153,6 +153,9 @@ Its format is the JSON Schema printed by `hdl-parser schema`, which is also publ
 Problems are part of the document: in `diagnostics` of the project and of every file, with code, severity,
 message and location. Warnings on standard error are for humans only.
 
+Narrow questions with small answers (`hdl-parser module`, `hierarchy`, `where-used`, `find`, `diagnostics`)
+and the MCP server (`hdl-parser mcp`) are described in the [Guide for AI Agents](agents.md).
+
 ### Values Of Parameters
 
 `elaborate` is the hierarchy with the values of all parameters and the number of bits of all ports, per instance.

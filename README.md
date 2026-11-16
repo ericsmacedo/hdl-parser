@@ -27,6 +27,10 @@
 * Extract Submodule Instances and their connections
 * `ifdef` support
 * Optional expansion of macros (ports, parameters and instances created by macros)
+* Projects: hierarchy, where-used, values of parameters across files
+* Made for AI agents: small JSON answers with source locations (`hdl-parser module`, `hierarchy`, `where-used`,
+  `find`, `diagnostics`) and an MCP server (`hdl-parser mcp`). See the
+  [Guide for AI Agents](https://hdl-parser.readthedocs.io/en/stable/agents/)
 * Standards: `IEEE 1800-2009 SystemVerilog`
 
 ## Limitations

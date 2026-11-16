@@ -128,7 +128,22 @@ def test_empty(tmp_path, runner):
         assert result.output == ""
 
 
-@mark.parametrize("cmd", ("json", "info", "gen-sv-instance", "project", "schema"))
+@mark.parametrize(
+    "cmd",
+    (
+        "json",
+        "info",
+        "gen-sv-instance",
+        "project",
+        "schema",
+        "module",
+        "hierarchy",
+        "where-used",
+        "find",
+        "diagnostics",
+        "mcp",
+    ),
+)
 def test_command_help(runner, cmd):
     """The Help Of A Command Is No Failure."""
     result = runner.invoke(cli, [cmd, "--help"])
@@ -245,3 +260,107 @@ def test_schema(runner):
     assert json.loads(result.stdout) == Project.json_schema()
     published = PRJ_PATH / "docs" / "schema" / "project.schema.json"
     assert json.loads(published.read_text()) == Project.json_schema(), "run: hdl-parser schema > " + str(published)
+
+
+IBEX = PRJ_PATH / "tests" / "corpus" / "sv" / "ibex"
+
+
+@mark.parametrize(
+    "args",
+    (
+        ("module", "ibex_alu", "-s"),
+        ("module", "ibex_alu", "-F", "ports,params", "-n", "2"),
+        ("hierarchy",),
+        ("hierarchy", "-t", "ibex_core", "-d", "1", "-s", "-n", "5"),
+        ("where-used", "ibex_alu"),
+        ("find", "clk_i", "-k", "port", "-n", "3", "-F", "direction"),
+        ("diagnostics", "--severity", "warning", "-n", "2"),
+    ),
+)
+def test_query(tmp_path, runner, args):
+    """Queries On A Real Design."""
+    with chdir(IBEX):
+        result = runner.invoke(cli, [*args, "-c"])
+    assert result.exit_code == 0
+    assert len(result.stdout.splitlines()) == 1
+    answer = json.loads(result.stdout)
+    assert answer["query"] == args[0]
+    (tmp_path / "output.json").write_text(json.dumps(answer, indent=2) + "\n")
+    assert_refdata(test_query, tmp_path, flavor="-".join(args).replace(",", "_"))
+
+
+def test_query_quiet(runner, caplog):
+    """Problems Are Part Of The Answer, Logged With '-v' Only."""
+    with chdir(IBEX):
+        quiet = runner.invoke(cli, ["where-used", "ibex_alu"])
+        assert "not defined" not in caplog.text
+        verbose = runner.invoke(cli, ["-v", "where-used", "ibex_alu"])
+        assert "not defined" in caplog.text
+    assert quiet.stdout == verbose.stdout
+
+
+def test_query_filelist(runner):
+    """A Filelist Instead Of The Current Directory."""
+    result = runner.invoke(cli, ["where-used", "ibex_alu", "-f", str(IBEX / "ibex_core.f")])
+    assert result.exit_code == 0
+    assert json.loads(result.stdout)["total"] == 1
+
+
+@mark.parametrize(
+    "args, code, error",
+    (
+        (("module", "ibex_aluu"), 3, "not-found"),
+        (("where-used", "nope"), 3, "not-found"),
+        (("hierarchy", "-t", "nope"), 3, "not-found"),
+        (("module", "ibex_alu", "-F", "foo"), 2, "bad-argument"),
+        (("diagnostics", "--file", "nope.sv"), 3, "not-found"),
+    ),
+)
+def test_query_error(runner, args, code, error):
+    """A Failed Query: An Error Object And An Exit Code."""
+    with chdir(IBEX):
+        result = runner.invoke(cli, list(args))
+    assert result.exit_code == code
+    assert json.loads(result.stdout)["error"]["code"] == error
+
+
+def test_query_usage(runner):
+    """Usage Errors: Exit Code 2."""
+    with chdir(IBEX):
+        result = runner.invoke(cli, ["find", "x", "-k", "foo"])
+    assert result.exit_code == 2
+    assert result.stdout == ""
+
+
+def test_failed_stderr(runner, monkeypatch):
+    """An Internal Failure Keeps Standard Output Clean."""
+
+    def failing(*args, **kwargs):
+        raise ValueError("bug")
+
+    monkeypatch.setattr("hdl_parser.query.find", failing)
+    with chdir(IBEX):
+        result = runner.invoke(cli, ["find", "x"])
+    assert result.exit_code == 1
+    assert result.stdout == ""
+    assert "Failed" in result.stderr
+
+
+def test_mcp(runner, tmp_path):
+    """MCP Server On Standard Input And Output."""
+    (tmp_path / "top.sv").write_text("module top; endmodule\n")
+    messages = [
+        {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+        {"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "hierarchy", "arguments": {}}},
+    ]
+    stdin = "".join(json.dumps(message) + "\n" for message in messages)
+    result = runner.invoke(cli, ["mcp", str(tmp_path)], input=stdin)
+    assert result.exit_code == 0
+    responses = [json.loads(line) for line in result.stdout.splitlines()]
+    assert responses[1]["result"]["structuredContent"]["result"][0]["id"] == "top.sv:top"
+
+
+def test_mcp_usage(runner, tmp_path):
+    """Usage Errors Are Reported Before Serving."""
+    result = runner.invoke(cli, ["mcp", str(tmp_path), "-r"], input="")
+    assert result.exit_code == 2
