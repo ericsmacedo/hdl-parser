@@ -337,7 +337,11 @@ def test_trace(design):
 
 def test_paths(design):
     """Full Identifiers, Indices, Generate Labels, Errors With Suggestions."""
-    assert design.drivers("top.sv:top.u_sub[0].q") == design.drivers("top.u_sub.q")
+    assert design.drivers("top.sv:top.u_sub.q[0]") == design.drivers("top.u_sub.q")
+    with raises(ValueError, match=r"'top\.u_sub' is no instance array"):
+        design.drivers("top.u_sub[0].q")
+    with raises(ValueError, match="has no instance or generate block 'u_nope'") as exc:
+        design.drivers("top.u_nope.x")
     with raises(ValueError, match="has no signal 'qq'") as exc:
         design.drivers("top.u_sub.qq")
     assert exc.value.suggestions == ("q",)
@@ -503,3 +507,110 @@ def test_latch_and_empty(tmp_path):
     project = _project(tmp_path, {"top.sv": text})
     (link,) = project.drivers("top.q")
     assert (link.kind, link.nets, link.conds) == ("latch", ("top.d",), ("top.en",))
+
+
+def test_sv_conditional_operator():
+    """The Select Of `?:` Is A Condition."""
+    text = """\
+module top (input logic s, t, input logic [7:0] a, b, output logic [7:0] y, z);
+  assign y = s ? a : (t & a[0]) ? b : a;
+  always_comb z = f(s ? a : b) + (s ? 1 : 0);
+endmodule
+"""
+    (module,) = parse_text(text).modules
+    assert _assigns(module.assigns) == [("y", "", ("a", "b"), ("s", "t"), True)]
+    assert _assigns(module.processes[0].assigns) == [("z", "", ("a", "b"), ("s",), True)]
+
+
+@fixture
+def stages(tmp_path) -> Project:
+    """Loops Of Stages, A Wrapper Of A Technology Cell."""
+    files = {
+        "top.sv": """\
+module top #(parameter int N = 2) (
+  input logic clk, en_i, input logic [7:0] x_i, output logic [7:0] y_o, z_o, output logic r_o, s_o
+);
+  logic [7:0] q;
+  for (genvar i = 0; i < N; i++) begin : g_st
+    logic [7:0] vl, out;
+    assign vl = x_i + i;
+    stage u_st (.clk, .d(vl), .q(out));
+    if (i == 0) begin : g_first
+      assign q = out;
+    end
+  end
+  assign y_o = en_i ? g_st[1].vl : 8'd0;
+  always_comb z_o = en_i ? q : 8'd0;
+  buf_wrap u_buf (.i(x_i[0]), .o(r_o));
+  BUFX2 u_cell (.A(x_i[1]), .Y(s_o));
+endmodule
+""",
+        "stage.sv": "module stage (input logic clk, input logic [7:0] d, output logic [7:0] q);\n"
+        "  assign q = d;\nendmodule\n",
+        "buf_wrap.sv": """\
+module buf_wrap (input logic i, output logic o);
+`ifdef TECH
+  BUFX2 u_b (.A(i), .Y(o));
+`endif
+endmodule
+""",
+    }
+    return _project(tmp_path, files)
+
+
+def test_loops(stages):
+    """Iterations Are Told Apart, Indices Are Checked."""
+    assert _links(stages.drivers("top.q")) == [("assign", ("top.g_st[0].out",), "top.sv:top")]
+    assert _links(stages.drivers("top.g_st[1].u_st.d")) == [("port", ("top.g_st[1].vl",), "top.sv:top.g_st.u_st")]
+    # a reference into a generate block from outside
+    assert _links(stages.loads("top.g_st[0].vl")) == [("inst", ("top.g_st[0].u_st.d",), "top.sv:top.g_st.u_st")]
+    assert [link.nets for link in stages.loads("top.g_st[1].vl")] == [("top.y_o",), ("top.g_st[1].u_st.d",)]
+    # without index: all iterations
+    (link,) = stages.loads("top.x_i")[:1]
+    assert (link.nets, link.multiple) == (("top.g_st[0].vl", "top.g_st[1].vl"), False)
+    (link,) = stages.drivers("top.g_st.vl")
+    assert link.multiple
+    with raises(ValueError, match=r"'top\.g_st' has no index 7: the indices are 0\.\.1\."):
+        stages.drivers("top.g_st[7].vl")
+    with raises(ValueError, match=r"has no index 2"):
+        stages.drivers("top.g_st[2].vl", params={"N": 2})
+    assert stages.drivers("top.g_st[2].vl", params={"N": 3})
+    assert [hop.net for hop in stages.trace("top.x_i", "top.q")] == [
+        "top.x_i",
+        "top.g_st[0].vl",
+        "top.g_st[0].u_st.d",
+        "top.g_st[0].u_st.q",
+        "top.g_st[0].out",
+        "top.q",
+    ]
+    assert stages.trace("top.g_st[1].vl", "top.q") == ()
+
+
+def test_passthrough(stages):
+    """Wrappers Of Technology Cells, Cells Given As Pass-Through."""
+    assert [(hop.net, hop.kind) for hop in stages.trace("top.x_i", "top.r_o")] == [
+        ("top.x_i", ""),
+        ("top.u_buf.i", "inst"),
+        ("top.u_buf.o", "passthrough"),
+        ("top.r_o", "port"),
+    ]
+    answer = query.trace(stages, "top.x_i", "top.s_o")
+    assert answer["found"] is False
+    assert "2 modules which are not defined" in answer["hint"]
+    assert [(stop["item"], stop["reason"], stop["line"]) for stop in answer["stopped_at"]] == [
+        ("top.sv:top.u_cell", "module 'BUFX2' is not defined in the project", 16),
+        ("buf_wrap.sv:buf_wrap.u_b", "module 'BUFX2' is not defined in the project", 3),
+    ]
+    hops = stages.trace("top.x_i", "top.s_o", passthrough=["BUFX2:A->Y"])
+    assert [(hop.net, hop.kind) for hop in hops] == [("top.x_i", ""), ("top.s_o", "passthrough")]
+    (link,) = stages.drivers("top.s_o", passthrough=["BUFX2"])
+    assert (link.kind, link.nets) == ("passthrough", ("top.x_i",))
+    with raises(query.QueryError, match="is no pass-through cell"):
+        query.trace(stages, "top.x_i", "top.s_o", passthrough=["BUFX2:A"])
+
+
+def test_trace_counts(stages):
+    """Hops, Flip-Flops And Conditions Of A Trace."""
+    answer = query.trace(stages, "top.en_i", "top.z_o")
+    assert answer["counts"] == {"hops": 1, "ff": 0, "control": 1}
+    assert query.trace(stages, "top.en_i", "top.z_o", control=False)["found"] is False

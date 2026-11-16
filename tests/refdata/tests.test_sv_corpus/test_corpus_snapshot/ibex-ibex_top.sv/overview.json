@@ -5642,10 +5642,12 @@
         {
           "target": "scramble_key_valid_d",
           "reads": [
-            "scramble_req_q",
             "scramble_key_valid_i",
-            "ic_scr_key_req",
             "scramble_key_valid_q"
+          ],
+          "conds": [
+            "scramble_req_q",
+            "ic_scr_key_req"
           ],
           "generates": [
             {
@@ -5664,9 +5666,11 @@
         {
           "target": "scramble_req_d",
           "reads": [
-            "scramble_req_q",
             "scramble_key_valid_i",
             "ic_scr_key_req"
+          ],
+          "conds": [
+            "scramble_req_q"
           ],
           "generates": [
             {

@@ -64,12 +64,62 @@ def unique(names: Iterable[str]) -> tuple[str, ...]:
     return tuple(dict.fromkeys(names))
 
 
-def reads(toks: Sequence[Token], lang: str = "sv") -> tuple[str, ...]:
-    """Names read by the expression `toks`, in their order, without duplicates."""
-    return unique(_vhdl_reads(toks) if lang == "vhdl" else _sv_reads(toks))
+def reads(toks: Sequence[Token], lang: str = "sv", paths: bool = False) -> tuple[str, ...]:
+    """Names read by the expression `toks`, in their order, without duplicates.
+
+    `paths`: SystemVerilog: a hierarchical reference is returned as written, with its indices: `g[0].data`, `bus.req`.
+    """
+    return unique(_vhdl_reads(toks) if lang == "vhdl" else _sv_reads(toks, paths))
 
 
-def _sv_reads(toks: Sequence[Token]) -> Iterable[str]:
+def split_reads(
+    toks: Sequence[Token], lang: str = "sv", paths: bool = False
+) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Names read by the expression `toks`: the data, and the ones read by conditions only (`sel ? a : b`).
+
+    VHDL expressions have no conditions: their conditions belong to the statement.
+    """
+    if lang == "vhdl":
+        return reads(toks, lang), ()
+    marked = _conditions(toks)
+    if not marked:
+        return reads(toks, lang, paths), ()
+    data = unique(_sv_reads(toks, paths, only=set(range(len(toks))) - marked))
+    conds = _sv_reads(toks, paths, only=marked)
+    return data, unique(name for name in conds if name not in data)
+
+
+def _conditions(toks: Sequence[Token]) -> set[int]:
+    """Indices of the tokens, which are the condition of a conditional operator `cond ? a : b`."""
+    marked: set[int] = set()
+    # start of the current operand, per bracket depth
+    starts = [0]
+    for idx, tok in enumerate(toks):
+        text = tok.text
+        if text in OPEN:
+            starts.append(idx + 1)
+        elif text in CLOSE:
+            if len(starts) > 1:
+                starts.pop()
+        elif text in (",", ":", ";"):
+            starts[-1] = idx + 1
+        elif text == "?":
+            marked.update(range(starts[-1], idx))
+            starts[-1] = idx + 1
+    return marked
+
+
+def base(name: str) -> str:
+    """Name of the reference `name` without members and indices: `g` of `g[0].data`."""
+    end = len(name)
+    for char in ".[":
+        pos = name.find(char)
+        if pos != -1:
+            end = min(end, pos)
+    return name[:end]
+
+
+def _sv_reads(toks: Sequence[Token], paths: bool = False, only: set[int] | None = None) -> Iterable[str]:
     # groups opened in front of the current token: is it an assignment pattern `'{...}`?
     patterns: list[bool] = []
     last = len(toks) - 1
@@ -91,7 +141,24 @@ def _sv_reads(toks: Sequence[Token]) -> Iterable[str]:
         if nxt == ":" and patterns and patterns[-1]:
             # field name of an assignment pattern
             continue
-        yield text
+        if only is not None and idx not in only:
+            continue
+        yield _path(toks, idx) if paths else text
+
+
+def _path(toks: Sequence[Token], idx: int) -> str:
+    """The hierarchical reference starting at `idx`: `g[0].data`. Just the name, if it is none."""
+    end = idx + 1
+    pos = end
+    while pos < len(toks):
+        while pos < len(toks) and toks[pos].text == "[":
+            pos = _group_end(toks, pos)
+        if pos + 1 < len(toks) and toks[pos].text == "." and toks[pos + 1].kind == ID:
+            pos += 2
+            end = pos
+        else:
+            break
+    return join(toks[idx:end])
 
 
 def _vhdl_reads(toks: Sequence[Token]) -> Iterable[str]:
@@ -175,9 +242,9 @@ def tokens(text: str, lang: str = "sv") -> list[Token]:
     return (tokenize_vhdl(text) if lang == "vhdl" else tokenize_sv(text)).tokens[:-1]
 
 
-def reads_text(text: str, lang: str = "sv") -> tuple[str, ...]:
+def reads_text(text: str, lang: str = "sv", paths: bool = False) -> tuple[str, ...]:
     """Names read by the expression `text`."""
-    return reads(tokens(text, lang), lang)
+    return reads(tokens(text, lang), lang, paths)
 
 
 def targets_text(text: str, lang: str = "sv") -> list[Target]:

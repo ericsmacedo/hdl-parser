@@ -1100,11 +1100,13 @@
         {
           "target": "fetch_addr_d",
           "reads": [
-            "branch_i",
             "addr_i",
             "fetch_addr_q",
             "valid_new_req",
             "valid_req_q"
+          ],
+          "conds": [
+            "branch_i"
           ],
           "loc": {
             "line": 173,
@@ -1116,11 +1118,13 @@
         {
           "target": "instr_addr",
           "reads": [
-            "valid_req_q",
             "stored_addr_q",
-            "branch_i",
             "addr_i",
             "fetch_addr_q"
+          ],
+          "conds": [
+            "valid_req_q",
+            "branch_i"
           ],
           "loc": {
             "line": 194,
@@ -1266,8 +1270,10 @@
         {
           "target": "rdata_outstanding_s",
           "reads": [
-            "instr_rvalid_i",
             "rdata_outstanding_n"
+          ],
+          "conds": [
+            "instr_rvalid_i"
           ],
           "loc": {
             "line": 232,
@@ -1279,8 +1285,10 @@
         {
           "target": "branch_discard_s",
           "reads": [
-            "instr_rvalid_i",
             "branch_discard_n"
+          ],
+          "conds": [
+            "instr_rvalid_i"
           ],
           "loc": {
             "line": 234,

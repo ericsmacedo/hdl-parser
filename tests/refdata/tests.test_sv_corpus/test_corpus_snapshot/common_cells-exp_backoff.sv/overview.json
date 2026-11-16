@@ -338,9 +338,11 @@
         {
           "target": "lfsr_d",
           "reads": [
-            "set_i",
             "lfsr",
             "lfsr_q"
+          ],
+          "conds": [
+            "set_i"
           ],
           "loc": {
             "line": 54,
@@ -352,9 +354,11 @@
         {
           "target": "mask_d",
           "reads": [
-            "clr_i",
-            "set_i",
             "mask_q"
+          ],
+          "conds": [
+            "clr_i",
+            "set_i"
           ],
           "loc": {
             "line": 58,
@@ -366,12 +370,14 @@
         {
           "target": "cnt_d",
           "reads": [
-            "clr_i",
-            "set_i",
             "mask_q",
             "lfsr_q",
-            "is_zero_o",
             "cnt_q"
+          ],
+          "conds": [
+            "clr_i",
+            "set_i",
+            "is_zero_o"
           ],
           "loc": {
             "line": 62,

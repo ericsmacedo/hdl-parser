@@ -1539,12 +1539,14 @@
         {
           "target": "lfsr_d",
           "reads": [
-            "seed_en_i",
             "seed_i",
-            "lfsr_en_i",
-            "lockup",
             "next_lfsr_state",
             "lfsr_q"
+          ],
+          "conds": [
+            "seed_en_i",
+            "lfsr_en_i",
+            "lockup"
           ],
           "loc": {
             "line": 345,
@@ -1770,9 +1772,11 @@
         {
           "target": "cnt_d",
           "reads": [
+            "cnt_q"
+          ],
+          "conds": [
             "lfsr_en_i",
             "lockup",
-            "cnt_q",
             "cmp_val"
           ],
           "generates": [

@@ -1146,9 +1146,11 @@
         {
           "target": "rdata",
           "reads": [
-            "valid_q",
             "rdata_q",
             "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
           ],
           "loc": {
             "line": 71,
@@ -1160,9 +1162,11 @@
         {
           "target": "err",
           "reads": [
-            "valid_q",
             "err_q",
             "in_err_i"
+          ],
+          "conds": [
+            "valid_q"
           ],
           "loc": {
             "line": 72,
@@ -1187,10 +1191,12 @@
         {
           "target": "rdata_unaligned",
           "reads": [
-            "valid_q",
             "rdata_q",
             "rdata",
             "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
           ],
           "loc": {
             "line": 87,
@@ -1202,9 +1208,9 @@
         {
           "target": "err_unaligned",
           "reads": [
-            "valid_q",
             "err_q",
             "unaligned_is_compressed",
+            "valid_q",
             "in_err_i"
           ],
           "loc": {
@@ -1217,9 +1223,9 @@
         {
           "target": "err_plus2",
           "reads": [
-            "valid_q",
             "err_q",
-            "in_err_i"
+            "in_err_i",
+            "valid_q"
           ],
           "loc": {
             "line": 101,
@@ -1357,9 +1363,11 @@
         {
           "target": "addr_incr_two",
           "reads": [
-            "instr_addr_q",
             "unaligned_is_compressed",
             "aligned_is_compressed"
+          ],
+          "conds": [
+            "instr_addr_q"
           ],
           "loc": {
             "line": 173,
@@ -1384,9 +1392,11 @@
         {
           "target": "instr_addr_d",
           "reads": [
-            "clear_i",
             "in_addr_i",
             "instr_addr_next"
+          ],
+          "conds": [
+            "clear_i"
           ],
           "loc": {
             "line": 180,
@@ -1527,9 +1537,11 @@
           "target": "valid_popped",
           "select": "[i]",
           "reads": [
-            "pop_fifo",
             "valid_pushed",
             "i"
+          ],
+          "conds": [
+            "pop_fifo"
           ],
           "generates": [
             {
@@ -1595,10 +1607,12 @@
           "target": "rdata_d",
           "select": "[i]",
           "reads": [
-            "valid_q",
-            "i",
             "rdata_q",
+            "i",
             "in_rdata_i"
+          ],
+          "conds": [
+            "valid_q"
           ],
           "generates": [
             {
@@ -1618,10 +1632,12 @@
           "target": "err_d",
           "select": "[i]",
           "reads": [
-            "valid_q",
-            "i",
             "err_q",
+            "i",
             "in_err_i"
+          ],
+          "conds": [
+            "valid_q"
           ],
           "generates": [
             {
@@ -1669,8 +1685,10 @@
           "target": "valid_popped",
           "select": "[DEPTH-1]",
           "reads": [
-            "pop_fifo",
             "valid_pushed"
+          ],
+          "conds": [
+            "pop_fifo"
           ],
           "loc": {
             "line": 249,

@@ -2765,14 +2765,14 @@
             {
               "target": "exc_pc",
               "reads": [
-                "BaseIsaRV32IorCHERIoT",
-                "cheriot_enable_i",
-                "IbexMuBiOn",
                 "csr_mtvec_i"
               ],
               "conds": [
                 "exc_pc_mux_i",
-                "EXC_PC_EXC"
+                "EXC_PC_EXC",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
               ],
               "loc": {
                 "line": 223,
@@ -2784,15 +2784,15 @@
             {
               "target": "exc_pc",
               "reads": [
-                "BaseIsaRV32IorCHERIoT",
-                "cheriot_enable_i",
-                "IbexMuBiOn",
                 "csr_mtvec_i",
                 "irq_vec"
               ],
               "conds": [
                 "exc_pc_mux_i",
-                "EXC_PC_IRQ"
+                "EXC_PC_IRQ",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
               ],
               "loc": {
                 "line": 226,
@@ -4668,10 +4668,12 @@
         {
           "target": "pc_mux_internal",
           "reads": [
-            "predict_branch_taken",
-            "pc_set_i",
             "PC_BP",
             "pc_mux_i"
+          ],
+          "conds": [
+            "predict_branch_taken",
+            "pc_set_i"
           ],
           "loc": {
             "line": 238,
@@ -4773,9 +4775,11 @@
         {
           "target": "prefetch_addr",
           "reads": [
-            "branch_req",
             "fetch_addr_n",
             "nt_branch_addr_i"
+          ],
+          "conds": [
+            "branch_req"
           ],
           "loc": {
             "line": 289,
@@ -5242,9 +5246,11 @@
           "target": "hdrm_ok",
           "reads": [
             "allow_all",
-            "instr_is_compressed",
             "hdrm_ge2",
             "hdrm_ge4"
+          ],
+          "conds": [
+            "instr_is_compressed"
           ],
           "loc": {
             "line": 453,
@@ -5352,9 +5358,11 @@
         {
           "target": "instr_out",
           "reads": [
-            "insert_dummy_instr",
             "dummy_instr_data",
             "instr_decompressed"
+          ],
+          "conds": [
+            "insert_dummy_instr"
           ],
           "generates": [
             {
@@ -5373,8 +5381,10 @@
         {
           "target": "instr_is_compressed_out",
           "reads": [
-            "insert_dummy_instr",
             "instr_is_compressed"
+          ],
+          "conds": [
+            "insert_dummy_instr"
           ],
           "generates": [
             {
@@ -5393,9 +5403,11 @@
         {
           "target": "instr_gets_expanded_out",
           "reads": [
-            "insert_dummy_instr",
             "INSTR_NOT_EXPANDED",
             "instr_gets_expanded"
+          ],
+          "conds": [
+            "insert_dummy_instr"
           ],
           "generates": [
             {
@@ -5414,8 +5426,10 @@
         {
           "target": "illegal_c_instr_out",
           "reads": [
-            "insert_dummy_instr",
             "illegal_c_insn"
+          ],
+          "conds": [
+            "insert_dummy_instr"
           ],
           "generates": [
             {
@@ -5434,8 +5448,10 @@
         {
           "target": "instr_err_out",
           "reads": [
-            "insert_dummy_instr",
             "if_instr_err"
+          ],
+          "conds": [
+            "insert_dummy_instr"
           ],
           "generates": [
             {
@@ -5872,7 +5888,9 @@
         {
           "target": "prev_instr_addr_incr",
           "reads": [
-            "pc_id_o",
+            "pc_id_o"
+          ],
+          "conds": [
             "instr_is_compressed_id_o"
           ],
           "generates": [
@@ -6020,9 +6038,11 @@
         {
           "target": "if_instr_rdata",
           "reads": [
-            "instr_skid_valid_q",
             "instr_skid_data_q",
             "fetch_rdata"
+          ],
+          "conds": [
+            "instr_skid_valid_q"
           ],
           "generates": [
             {
@@ -6041,9 +6061,11 @@
         {
           "target": "if_instr_addr",
           "reads": [
-            "instr_skid_valid_q",
             "instr_skid_addr_q",
             "fetch_addr"
+          ],
+          "conds": [
+            "instr_skid_valid_q"
           ],
           "generates": [
             {
@@ -6082,9 +6104,11 @@
         {
           "target": "instr_bp_taken_d",
           "reads": [
-            "instr_skid_valid_q",
             "instr_skid_bp_taken_q",
             "predict_branch_taken"
+          ],
+          "conds": [
+            "instr_skid_valid_q"
           ],
           "generates": [
             {
@@ -6309,7 +6333,9 @@
         {
           "target": "next_pc",
           "reads": [
-            "fetch_addr",
+            "fetch_addr"
+          ],
+          "conds": [
             "instr_is_compressed_out"
           ],
           "generates": [

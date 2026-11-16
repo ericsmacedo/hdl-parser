@@ -291,8 +291,9 @@ hdl-parser find operator --kind port --limit 2
 ### What drives this signal?
 
 A signal is addressed by its instance path: the top, the instance names (with the labels of the generate blocks
-around) and the signal. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`, `port`,
-`unknown`), the signals it reads (`nets`) and the ones its conditions read (`conds`). Ask for their drivers to
+around) and the signal. The index of a `for` generate block selects one iteration (`top.g_st[1].data`), it is
+checked against the range of the loop. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
+`port`, `passthrough`, `unknown`), the signals it reads (`nets`) and the ones its conditions read (`conds`). Ask for their drivers to
 go further. `loads` is the other direction: what the signal drives.
 
 ```bash
@@ -341,8 +342,11 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
 
 ### How does this signal get there?
 
-`trace` gives the shortest connection between two signals, hop by hop, data before conditions. It stops behind
-flip-flops, unless `--through-regs` is given, and at modules which are not defined.
+`trace` gives the shortest connection between two signals, hop by hop, data before conditions (`if`, `case`
+and the select of `?:` are conditions). `counts` tells the hops, and how many of them are flip-flops or
+conditions: judge the path by them. It stops behind flip-flops, unless `--through-regs` is given, and at
+modules which are not defined (`stopped_at` names them). Wrappers of technology cells (one input, one output,
+driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`.
 
 ```bash
 hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs --limit 3
@@ -382,7 +386,12 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
   ],
   "total": 5,
   "omitted": 2,
-  "found": true
+  "found": true,
+  "counts": {
+    "hops": 4,
+    "ff": 1,
+    "control": 1
+  }
 }
 ```
 
@@ -458,9 +467,10 @@ All tools are read-only (`readOnlyHint`).
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then.
-* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`) and `params` of the top.
-  Generate constructs whose condition is false are left out. Instance arrays and `for` generate constructs are
-  not unrolled (`multiple`), and the granularity is the whole signal: the select (`[3:0]`) is given as text.
+* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `params` of the top
+  and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
+  constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for
+  all of them (`multiple`). The granularity is the whole signal: the select (`[3:0]`) is given as text.
   Procedural statements which are not understood (task calls) are reported as `statement-skipped`.
 * `--cache-dir DIR` keeps the cache outside the root, i.e. outside a shared work area.
 

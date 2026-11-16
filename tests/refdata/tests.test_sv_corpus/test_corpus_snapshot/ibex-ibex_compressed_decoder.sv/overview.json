@@ -3533,11 +3533,11 @@
             {
               "target": "cm_state_q",
               "reads": [
-                "flush_expanded_i",
                 "cm_state_d"
               ],
               "conds": [
-                "rst_ni"
+                "rst_ni",
+                "flush_expanded_i"
               ],
               "blocking": false,
               "loc": {
@@ -3747,9 +3747,11 @@
         {
           "target": "gets_expanded_o",
           "reads": [
-            "valid_i",
             "gets_expanded",
             "INSTR_NOT_EXPANDED"
+          ],
+          "conds": [
+            "valid_i"
           ],
           "generates": [
             {

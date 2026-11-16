@@ -809,7 +809,7 @@ class Use(_BaseModel):
     loc: Location | None = None
 
 
-LinkKind: TypeAlias = Literal["assign", "comb", "ff", "latch", "inst", "port", "unknown"]
+LinkKind: TypeAlias = Literal["assign", "comb", "ff", "latch", "inst", "port", "passthrough", "unknown"]
 """Kind Of A Driver Or Load."""
 
 
@@ -824,7 +824,11 @@ class Link(_BaseModel):
     | `latch`   | assignment of `always_latch`              | ... reading the signal                      |
     | `inst`    | output port of an instance                | input port of an instance                   |
     | `port`    | input port: the connection of the parent  | output port: the connection of the parent   |
+    | `passthrough` | output of a pass-through cell: its input | input of a pass-through cell: its output |
     | `unknown` | pin of an instance of an unknown module   | pin of an instance of an unknown module     |
+
+    A pass-through cell passes its input on to its output: a module given as such, or a module with one input
+    and one output, whose output is driven by modules which are not defined only (a wrapper of technology cells).
 
     Attributes:
         kind: See table above.
@@ -835,7 +839,7 @@ class Link(_BaseModel):
         select: Select of the driven signal, as written: `[3:0]`. Empty for the whole signal.
         item: Full identifier of the process, the instance or the module (continuous assignment).
         external: A port of the top: driven or loaded outside of the design.
-        multiple: The instance is created multiple times (array or `for` generate), which are not told apart.
+        multiple: A signal stands for multiple ones (of an instance array, or a `for` generate without index).
         unknown: Why the other side is not known: i.e. the module is not defined in the project.
         file: File of `loc`.
         loc: Source Location of the assignment or connection.

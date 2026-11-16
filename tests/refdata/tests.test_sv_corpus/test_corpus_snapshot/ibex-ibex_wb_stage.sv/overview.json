@@ -1987,9 +1987,11 @@
           "target": "rf_wdata_wb_mux",
           "select": "[0]",
           "reads": [
-            "wb_is_cheriot_q",
             "cheriot_rf_wdata_q",
             "rf_wdata_wb_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
           ],
           "generates": [
             {
@@ -2009,10 +2011,12 @@
           "target": "rf_wdata_wb_mux_we",
           "select": "[0]",
           "reads": [
-            "wb_is_cheriot_q",
             "cheriot_rf_we_q",
             "rf_we_wb_q",
             "wb_valid_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
           ],
           "generates": [
             {
@@ -2244,9 +2248,11 @@
         {
           "target": "rf_wdata_fwd_wb_o",
           "reads": [
-            "wb_is_cheriot_q",
             "cheriot_rf_wdata_q",
             "rf_wdata_wb_q"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
           ],
           "generates": [
             {
@@ -2265,9 +2271,11 @@
         {
           "target": "rf_wcap_fwd_wb_o",
           "reads": [
-            "wb_is_cheriot_q",
             "cheriot_rf_wcap_q",
             "NULL_CAP"
+          ],
+          "conds": [
+            "wb_is_cheriot_q"
           ],
           "generates": [
             {
@@ -2286,10 +2294,12 @@
         {
           "target": "rf_wcap_wb",
           "reads": [
-            "wb_is_cheriot_q",
-            "wb_cheriot_load_q",
             "cheriot_rf_wcap_q",
             "NULL_CAP"
+          ],
+          "conds": [
+            "wb_is_cheriot_q",
+            "wb_cheriot_load_q"
           ],
           "generates": [
             {
@@ -2423,9 +2433,11 @@
           "target": "rf_wdata_wb_mux",
           "select": "[0]",
           "reads": [
-            "instr_is_cheriot_i",
             "cheriot_rf_wdata_i",
             "rf_wdata_id_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_i"
           ],
           "generates": [
             {
@@ -2447,9 +2459,11 @@
           "target": "rf_wdata_wb_mux_we",
           "select": "[0]",
           "reads": [
-            "instr_is_cheriot_i",
             "cheriot_rf_we_i",
             "rf_we_id_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_i"
           ],
           "generates": [
             {
@@ -2492,10 +2506,12 @@
         {
           "target": "rf_wcap_wb",
           "reads": [
-            "instr_is_cheriot_i",
-            "cheriot_load_i",
             "cheriot_rf_wcap_i",
             "NULL_CAP"
+          ],
+          "conds": [
+            "instr_is_cheriot_i",
+            "cheriot_load_i"
           ],
           "generates": [
             {
@@ -2952,10 +2968,12 @@
         {
           "target": "rf_wcap_wb_o",
           "reads": [
-            "rf_wdata_wb_mux_we",
             "rf_wcap_wb",
             "rf_wcap_lsu_i",
             "NULL_CAP"
+          ],
+          "conds": [
+            "rf_wdata_wb_mux_we"
           ],
           "loc": {
             "line": 313,

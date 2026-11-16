@@ -3054,14 +3054,12 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "equal_to_zero_i"
-              ],
               "conds": [
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
               ],
               "loc": {
                 "line": 434,
@@ -3106,14 +3104,12 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "equal_to_zero_i"
-              ],
               "conds": [
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
               ],
               "loc": {
                 "line": 445,
@@ -3176,12 +3172,12 @@
             {
               "target": "op_numerator_d",
               "reads": [
-                "div_sign_a",
                 "alu_adder_i",
                 "op_a_i"
               ],
               "conds": [
-                "md_state_q"
+                "md_state_q",
+                "div_sign_a"
               ],
               "loc": {
                 "line": 457,
@@ -3259,12 +3255,12 @@
             {
               "target": "op_denominator_d",
               "reads": [
-                "div_sign_b",
                 "alu_adder_i",
                 "op_b_i"
               ],
               "conds": [
-                "md_state_q"
+                "md_state_q",
+                "div_sign_b"
               ],
               "loc": {
                 "line": 469,
@@ -3358,11 +3354,9 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "div_counter_q"
-              ],
               "conds": [
-                "md_state_q"
+                "md_state_q",
+                "div_counter_q"
               ],
               "loc": {
                 "line": 480,
@@ -3492,14 +3486,14 @@
             {
               "target": "op_remainder_d",
               "reads": [
-                "div_change_sign",
                 "alu_adder_i",
                 "imd_val_q_i"
               ],
               "conds": [
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "div_change_sign"
               ],
               "loc": {
                 "line": 505,
@@ -3511,14 +3505,14 @@
             {
               "target": "op_remainder_d",
               "reads": [
-                "rem_change_sign",
                 "alu_adder_i",
                 "imd_val_q_i"
               ],
               "conds": [
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "rem_change_sign"
               ],
               "loc": {
                 "line": 507,
@@ -3670,9 +3664,11 @@
           "target": "imd_val_d_o",
           "select": "[0]",
           "reads": [
-            "div_sel_i",
             "op_remainder_d",
             "mac_res_d"
+          ],
+          "conds": [
+            "div_sel_i"
           ],
           "loc": {
             "line": 124,
@@ -3771,9 +3767,11 @@
         {
           "target": "multdiv_result_o",
           "reads": [
-            "div_sel_i",
             "imd_val_q_i",
             "mac_res_d"
+          ],
+          "conds": [
+            "div_sel_i"
           ],
           "loc": {
             "line": 136,
@@ -4303,9 +4301,11 @@
         {
           "target": "next_remainder",
           "reads": [
-            "is_greater_equal",
             "res_adder_h",
             "imd_val_q_i"
+          ],
+          "conds": [
+            "is_greater_equal"
           ],
           "loc": {
             "line": 389,
@@ -4317,9 +4317,11 @@
         {
           "target": "next_quotient",
           "reads": [
-            "is_greater_equal",
             "op_quotient_q",
             "one_shift"
+          ],
+          "conds": [
+            "is_greater_equal"
           ],
           "loc": {
             "line": 390,

@@ -680,8 +680,10 @@
           "target": "imd_val_d_o",
           "select": "[0]",
           "reads": [
-            "multdiv_sel",
             "multdiv_imd_val_d"
+          ],
+          "conds": [
+            "multdiv_sel"
           ],
           "loc": {
             "line": 79,
@@ -694,8 +696,10 @@
           "target": "imd_val_d_o",
           "select": "[1]",
           "reads": [
-            "multdiv_sel",
             "multdiv_imd_val_d"
+          ],
+          "conds": [
+            "multdiv_sel"
           ],
           "loc": {
             "line": 80,
@@ -707,8 +711,10 @@
         {
           "target": "imd_val_we_o",
           "reads": [
-            "multdiv_sel",
             "multdiv_imd_val_we"
+          ],
+          "conds": [
+            "multdiv_sel"
           ],
           "loc": {
             "line": 81,
@@ -720,9 +726,11 @@
         {
           "target": "result_ex_o",
           "reads": [
-            "multdiv_sel",
             "multdiv_result",
             "alu_result"
+          ],
+          "conds": [
+            "multdiv_sel"
           ],
           "loc": {
             "line": 83,
@@ -867,8 +875,10 @@
         {
           "target": "ex_valid_o",
           "reads": [
-            "multdiv_sel",
             "multdiv_valid"
+          ],
+          "conds": [
+            "multdiv_sel"
           ],
           "loc": {
             "line": 186,
@@ -880,7 +890,7 @@
         {
           "target": "sva_multdiv_fsm_idle",
           "reads": [
-            "gen_multdiv_slow"
+            "gen_multdiv_slow.multdiv_i.sva_fsm_idle"
           ],
           "generates": [
             {
@@ -902,7 +912,7 @@
         {
           "target": "sva_multdiv_fsm_idle",
           "reads": [
-            "gen_multdiv_fast"
+            "gen_multdiv_fast.multdiv_i.sva_fsm_idle"
           ],
           "generates": [
             {

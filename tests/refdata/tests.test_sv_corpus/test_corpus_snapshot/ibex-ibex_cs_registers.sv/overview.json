@@ -4585,15 +4585,15 @@
             {
               "target": "csr_rdata_int",
               "reads": [
-                "BaseIsaRV32IorCHERIoT",
-                "cheriot_enable_i",
-                "IbexMuBiOn",
                 "CSR_MARCHID_CHERIOT_VALUE",
                 "CSR_MARCHID_VALUE"
               ],
               "conds": [
                 "csr_addr_i",
-                "CSR_MARCHID"
+                "CSR_MARCHID",
+                "BaseIsaRV32IorCHERIoT",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
               ],
               "loc": {
                 "line": 422,
@@ -6533,12 +6533,14 @@
             {
               "target": "mtvec_d",
               "reads": [
-                "csr_mtvec_init_i",
                 "boot_addr_i",
                 "BaseIsaRV32IorCHERIoT",
                 "cheriot_enable_i",
                 "IbexMuBiOn",
                 "csr_wdata_int"
+              ],
+              "conds": [
+                "csr_mtvec_init_i"
               ],
               "loc": {
                 "line": 737,
@@ -8907,12 +8909,12 @@
             {
               "target": "cheriot_csr_rdata_o",
               "reads": [
-                "debug_mode_i",
                 "depc_q"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DEPCC"
+                "CHERIOT_SCR_DEPCC",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2034,
@@ -8924,13 +8926,13 @@
             {
               "target": "cheriot_csr_rcap_o",
               "reads": [
-                "debug_mode_i",
                 "depc_cap",
                 "NULL_CAP"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DEPCC"
+                "CHERIOT_SCR_DEPCC",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2035,
@@ -8942,12 +8944,12 @@
             {
               "target": "cheriot_csr_rdata_o",
               "reads": [
-                "debug_mode_i",
                 "dscratch0_q"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DSCRATCHC0"
+                "CHERIOT_SCR_DSCRATCHC0",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2039,
@@ -8959,13 +8961,13 @@
             {
               "target": "cheriot_csr_rcap_o",
               "reads": [
-                "debug_mode_i",
                 "dscratch0_cap",
                 "NULL_CAP"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DSCRATCHC0"
+                "CHERIOT_SCR_DSCRATCHC0",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2040,
@@ -8977,12 +8979,12 @@
             {
               "target": "cheriot_csr_rdata_o",
               "reads": [
-                "debug_mode_i",
                 "dscratch1_q"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DSCRATCHC1"
+                "CHERIOT_SCR_DSCRATCHC1",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2044,
@@ -8994,13 +8996,13 @@
             {
               "target": "cheriot_csr_rcap_o",
               "reads": [
-                "debug_mode_i",
                 "dscratch1_cap",
                 "NULL_CAP"
               ],
               "conds": [
                 "cheriot_csr_addr_i",
-                "CHERIOT_SCR_DSCRATCHC1"
+                "CHERIOT_SCR_DSCRATCHC1",
+                "debug_mode_i"
               ],
               "loc": {
                 "line": 2045,
@@ -10178,9 +10180,11 @@
         {
           "target": "misa_value_masked",
           "reads": [
-            "BaseIsaRV32IorCHERIoT",
             "cheriot_enable_i",
             "IbexMuBiOn"
+          ],
+          "conds": [
+            "BaseIsaRV32IorCHERIoT"
           ],
           "loc": {
             "line": 376,
@@ -10349,6 +10353,9 @@
           "reads": [
             "mstatus_q",
             "priv_lvl_q"
+          ],
+          "conds": [
+            "mstatus_q"
           ],
           "loc": {
             "line": 996,
@@ -10789,9 +10796,11 @@
         {
           "target": "mshwm_d",
           "reads": [
-            "csr_mshwm_set_i",
             "csr_mshwm_new_i",
             "csr_wdata_int"
+          ],
+          "conds": [
+            "csr_mshwm_set_i"
           ],
           "loc": {
             "line": 1300,
@@ -11134,10 +11143,12 @@
           "target": "pmp_cfg_wdata",
           "select": "[i].write",
           "reads": [
-            "pmp_mseccfg_q",
             "csr_wdata_int",
             "i",
             "PMP_CFG_W"
+          ],
+          "conds": [
+            "pmp_mseccfg_q"
           ],
           "generates": [
             {
@@ -11388,9 +11399,11 @@
           "target": "pmp_mseccfg_d",
           "select": ".mml",
           "reads": [
-            "pmp_mseccfg_q",
             "csr_wdata_int",
             "CSR_MSECCFG_MML_BIT"
+          ],
+          "conds": [
+            "pmp_mseccfg_q"
           ],
           "generates": [
             {
@@ -11410,9 +11423,11 @@
           "target": "pmp_mseccfg_d",
           "select": ".mmwp",
           "reads": [
-            "pmp_mseccfg_q",
             "csr_wdata_int",
             "CSR_MSECCFG_MMWP_BIT"
+          ],
+          "conds": [
+            "pmp_mseccfg_q"
           ],
           "generates": [
             {
@@ -11451,9 +11466,11 @@
           "target": "pmp_mseccfg_d",
           "select": ".rlb",
           "reads": [
-            "any_pmp_entry_locked",
             "csr_wdata_int",
             "CSR_MSECCFG_RLB_BIT"
+          ],
+          "conds": [
+            "any_pmp_entry_locked"
           ],
           "generates": [
             {
@@ -11669,10 +11686,12 @@
           "target": "mhpmcounter",
           "select": "[2]",
           "reads": [
-            "instr_ret_spec_i",
-            "mcountinhibit",
             "minstret_next",
             "minstret_raw"
+          ],
+          "conds": [
+            "instr_ret_spec_i",
+            "mcountinhibit"
           ],
           "loc": {
             "line": 1656,
@@ -11731,10 +11750,12 @@
           "target": "mhpmcounter",
           "select": "[Cnt]",
           "reads": [
-            "instr_ret_compressed_spec_i",
-            "mcountinhibit",
             "mhpmcounter_next",
             "mhpmcounter_raw"
+          ],
+          "conds": [
+            "instr_ret_compressed_spec_i",
+            "mcountinhibit"
           ],
           "generates": [
             {

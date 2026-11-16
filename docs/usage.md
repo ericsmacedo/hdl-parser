@@ -210,9 +210,12 @@ condition is false for the parameter values are left out.
 
 ```
 
-The granularity is the whole signal: the select of an assignment (`[3:0]`) is kept as text. Instance arrays and
-`for` generate constructs are not unrolled. The search of `trace` stops behind flip-flops (`through_regs`) and at
-modules which are not defined.
+The granularity is the whole signal: the select of an assignment (`[3:0]`) is kept as text. Labeled `for`
+generate constructs are unrolled: `top.g_st[1].data` is the signal of the second iteration (the index is checked),
+`top.g_st.data` stands for all of them (`multiple`). Instance arrays are not unrolled. The select of `?:` is a
+condition, like the ones of `if` and `case`. The search of `trace` stops behind flip-flops (`through_regs`) and at
+modules which are not defined, but passes cells which pass their input on: wrappers of technology cells (one input,
+one output, driven by undefined cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`).
 
 See [Project][hdl_parser.project.Project] for a full reference.
 

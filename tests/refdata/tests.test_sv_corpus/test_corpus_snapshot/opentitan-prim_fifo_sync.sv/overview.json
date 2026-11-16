@@ -979,10 +979,12 @@
         {
           "target": "rdata_int",
           "reads": [
-            "fifo_empty",
-            "wvalid_i",
             "wdata_i",
             "storage_rdata"
+          ],
+          "conds": [
+            "fifo_empty",
+            "wvalid_i"
           ],
           "generates": [
             {
@@ -1091,8 +1093,10 @@
         {
           "target": "rdata_o",
           "reads": [
-            "empty",
             "rdata_int"
+          ],
+          "conds": [
+            "empty"
           ],
           "generates": [
             {

@@ -627,18 +627,24 @@ def evaluate(
 
 
 def drivers(
-    project: Project, path: str, params: dict[str, int | float | str | bool] | None = None, limit: int | None = None
+    project: Project,
+    path: str,
+    params: dict[str, int | float | str | bool] | None = None,
+    limit: int | None = None,
+    passthrough: list[str] | tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """What drives the signal with the instance path `path`: `top.u_core.u_alu.result_o`.
 
     Args:
         project: Project.
         path: The top module (name or full identifier), the instance names below (with the labels of the generate
-              blocks around) and the signal, separated by dots. Indices of instance arrays are ignored.
+              blocks around) and the signal, separated by dots. The index of a `for` generate block selects one
+              iteration (`top.g_st[1].data`), all of them without (`multiple`).
 
     Keyword Args:
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
         limit: Number of drivers.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
 
     `net` describes the signal: its `path`, `kind` (`port`, `signal`, `variable` of a process, `implicit`),
     `direction`, identifier and location. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
@@ -646,20 +652,24 @@ def drivers(
     instance or module (`item`) and the location. Ask for the drivers of `nets` to go further.
     See [Link][hdl_parser.datamodel.Link].
     """
-    conn, node = _locate(project, path, params)
+    conn, node = _locate(project, path, params, passthrough=passthrough)
     links = [conn.link(node, step, driver=True) for step in conn.drivers(node)]
     return _links("drivers", conn, node, links, limit)
 
 
 def loads(
-    project: Project, path: str, params: dict[str, int | float | str | bool] | None = None, limit: int | None = None
+    project: Project,
+    path: str,
+    params: dict[str, int | float | str | bool] | None = None,
+    limit: int | None = None,
+    passthrough: list[str] | tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """What the signal with the instance path `path` drives. See [drivers][hdl_parser.query.drivers].
 
     Every load has the signals it drives (`nets`). `control` marks a load, which reads the signal by a condition
     or as clock only.
     """
-    conn, node = _locate(project, path, params)
+    conn, node = _locate(project, path, params, passthrough=passthrough)
     links = [conn.link(node, step, driver=False) for step in conn.loads(node)]
     return _links("loads", conn, node, links, limit)
 
@@ -672,6 +682,7 @@ def trace(  # noqa: PLR0913
     through_regs: bool = False,
     control: bool = True,
     limit: int | None = None,
+    passthrough: list[str] | tuple[str, ...] = (),
 ) -> dict[str, Any]:
     """Shortest connection from the signal `src` to the signal `dst`: instance paths below the same top.
 
@@ -683,23 +694,41 @@ def trace(  # noqa: PLR0913
     Keyword Args:
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
         through_regs: Continue behind flip-flops. The search stops there by default.
-        control: Follow conditions, resets and clocks too. Data only otherwise.
+        control: Follow conditions (`if`, `case`, `?:`), resets and clocks too. Data only otherwise.
         limit: Number of hops.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
-    (`kind`, `item`, location). The search stops at modules which are not defined (blackboxes).
+    (`kind`, `item`, location). `counts` tells the number of `hops`, the ones by flip-flops (`ff`) and the ones by
+    conditions (`control`): a path with many of these is a weak connection. The search stops at modules which
+    are not defined (blackboxes): `stopped_at` names them, if there is no connection.
     """
-    conn, source = _locate(project, src, params)
+    conn, source = _locate(project, src, params, passthrough=passthrough)
     _, target = _locate(project, dst, params, conn)
     if _top(source[0]) is not _top(target[0]):
         raise QueryError("bad-argument", "'src' and 'dst' must be located below the same top.")
-    hops = [_dump(hop) for hop in conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))]
+    found = conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
+    hops = [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
     answer = _list_answer("trace", result, len(hops), omitted)
     answer["found"] = bool(hops)
-    if not hops:
-        stops = "behind flip-flops (see 'through_regs'), " if not through_regs else ""
-        answer["hint"] = f"No connection. The search follows loads and stops {stops}at modules which are not defined."
+    if hops:
+        answer["counts"] = {
+            "hops": len(found) - 1,
+            "ff": sum(hop.kind == "ff" for hop in found),
+            "control": sum(hop.control for hop in found),
+        }
+    else:
+        stops = []
+        if conn.ff_stops and not through_regs:
+            stops.append(f"behind {conn.ff_stops} flip-flops (see 'through_regs')")
+        stopped = conn.stopped()
+        if stopped:
+            stops.append(f"at {len(stopped)} modules which are not defined (see 'stopped_at', 'passthrough')")
+        where = " and ".join(stops) or "with all loads followed"
+        answer["hint"] = f"No connection. The search follows loads: it stopped {where}."
+        if stopped:
+            answer["stopped_at"] = stopped
     return answer
 
 
@@ -714,9 +743,10 @@ def _locate(
     path: str,
     params: dict[str, int | float | str | bool] | None,
     conn: Connectivity | None = None,
+    passthrough: list[str] | tuple[str, ...] = (),
 ) -> tuple[Connectivity, Node]:
     try:
-        conn = conn or project._connectivity(params)
+        conn = conn or project._connectivity(params, passthrough)
         return conn, conn.locate(path)
     except PathError as exc:
         raise QueryError("not-found", exc.message, exc.suggestions) from exc
@@ -735,7 +765,7 @@ def _links(query: str, conn: Connectivity, node: Node, links: list[dm.Link], lim
         info["id"] = net.file.full_id(net.item)
         info["file"] = net.file.file_id
         info.update(_loc(net.item.loc))
-    if node[0].multiple:
+    if conn.multiple(node):
         info["multiple"] = True
     return {"query": query, "net": info, **_list_answer(query, result, len(entries), omitted)}
 

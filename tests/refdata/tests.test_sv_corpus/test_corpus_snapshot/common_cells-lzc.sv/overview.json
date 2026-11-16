@@ -358,10 +358,12 @@
           "target": "index_nodes",
           "select": "[2**level-1+k]",
           "reads": [
-            "in_tmp",
-            "k",
             "index_lut",
+            "k",
             "level"
+          ],
+          "conds": [
+            "in_tmp"
           ],
           "generates": [
             {
@@ -618,10 +620,12 @@
           "target": "index_nodes",
           "select": "[2**level-1+l]",
           "reads": [
-            "sel_nodes",
+            "index_nodes",
             "level",
-            "l",
-            "index_nodes"
+            "l"
+          ],
+          "conds": [
+            "sel_nodes"
           ],
           "generates": [
             {

@@ -832,13 +832,13 @@
             {
               "target": "alu_operand_b_o",
               "reads": [
-                "md_state_q",
                 "op_a_bw_last_pp",
                 "op_a_bw_pp"
               ],
               "conds": [
                 "operator_i",
-                "MD_OP_MULH"
+                "MD_OP_MULH",
+                "md_state_q"
               ],
               "loc": {
                 "line": 106,
@@ -1210,16 +1210,14 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "op_b_ext"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_MULL"
+                "MD_OP_MULL",
+                "data_ind_timing_i",
+                "op_b_ext"
               ],
               "loc": {
                 "line": 194,
@@ -1320,16 +1318,14 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "equal_to_zero_i"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
               ],
               "loc": {
                 "line": 210,
@@ -1378,16 +1374,14 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "equal_to_zero_i"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_REM"
+                "MD_OP_REM",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
               ],
               "loc": {
                 "line": 222,
@@ -1427,14 +1421,14 @@
             {
               "target": "op_numerator_d",
               "reads": [
-                "sign_a",
                 "alu_adder_i",
                 "op_a_i"
               ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
-                "md_state_q"
+                "md_state_q",
+                "sign_a"
               ],
               "loc": {
                 "line": 233,
@@ -1477,14 +1471,14 @@
             {
               "target": "op_b_shift_d",
               "reads": [
-                "sign_b",
                 "alu_adder_i",
                 "op_b_i"
               ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
-                "md_state_q"
+                "md_state_q",
+                "sign_b"
               ],
               "loc": {
                 "line": 241,
@@ -1583,17 +1577,15 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "data_ind_timing_i",
-                "op_b_shift_d",
-                "multdiv_count_q"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_MULL"
+                "MD_OP_MULL",
+                "data_ind_timing_i",
+                "op_b_shift_d",
+                "multdiv_count_q"
               ],
               "loc": {
                 "line": 255,
@@ -1661,15 +1653,13 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "multdiv_count_q"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_MULH"
+                "MD_OP_MULH",
+                "multdiv_count_q"
               ],
               "loc": {
                 "line": 262,
@@ -1722,16 +1712,14 @@
             },
             {
               "target": "md_state_d",
-              "reads": [
-                "multdiv_count_q"
-              ],
               "conds": [
                 "mult_sel_i",
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
                 "MD_OP_DIV",
-                "MD_OP_REM"
+                "MD_OP_REM",
+                "multdiv_count_q"
               ],
               "loc": {
                 "line": 268,
@@ -1951,7 +1939,6 @@
             {
               "target": "accum_window_d",
               "reads": [
-                "div_change_sign",
                 "alu_adder_i",
                 "accum_window_q"
               ],
@@ -1960,7 +1947,8 @@
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_DIV"
+                "MD_OP_DIV",
+                "div_change_sign"
               ],
               "loc": {
                 "line": 310,
@@ -1972,7 +1960,6 @@
             {
               "target": "accum_window_d",
               "reads": [
-                "rem_change_sign",
                 "alu_adder_i",
                 "accum_window_q"
               ],
@@ -1981,7 +1968,8 @@
                 "div_sel_i",
                 "md_state_q",
                 "operator_i",
-                "MD_OP_REM"
+                "MD_OP_REM",
+                "rem_change_sign"
               ],
               "loc": {
                 "line": 312,
@@ -2440,9 +2428,11 @@
         {
           "target": "is_greater_equal",
           "reads": [
-            "accum_window_q",
-            "op_b_shift_q",
-            "res_adder_h"
+            "res_adder_h",
+            "accum_window_q"
+          ],
+          "conds": [
+            "op_b_shift_q"
           ],
           "loc": {
             "line": 163,
@@ -2466,9 +2456,11 @@
         {
           "target": "next_remainder",
           "reads": [
-            "is_greater_equal",
             "res_adder_h",
             "accum_window_q"
+          ],
+          "conds": [
+            "is_greater_equal"
           ],
           "loc": {
             "line": 168,
@@ -2480,9 +2472,11 @@
         {
           "target": "next_quotient",
           "reads": [
-            "is_greater_equal",
             "op_a_shift_q",
             "one_shift"
+          ],
+          "conds": [
+            "is_greater_equal"
           ],
           "loc": {
             "line": 169,
@@ -2549,9 +2543,11 @@
         {
           "target": "multdiv_result_o",
           "reads": [
-            "div_en_i",
             "accum_window_q",
             "res_adder_l"
+          ],
+          "conds": [
+            "div_en_i"
           ],
           "loc": {
             "line": 362,

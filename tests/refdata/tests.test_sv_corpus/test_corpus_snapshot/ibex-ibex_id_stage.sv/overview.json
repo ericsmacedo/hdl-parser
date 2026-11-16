@@ -3700,12 +3700,10 @@
             },
             {
               "target": "bt_b_operand_o",
-              "reads": [
-                "instr_is_compressed_i"
-              ],
               "conds": [
                 "bt_b_mux_sel",
-                "IMM_B_INCR_PC"
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
               ],
               "loc": {
                 "line": 384,
@@ -3716,11 +3714,9 @@
             },
             {
               "target": "bt_b_operand_o",
-              "reads": [
-                "instr_is_compressed_i"
-              ],
               "conds": [
-                "bt_b_mux_sel"
+                "bt_b_mux_sel",
+                "instr_is_compressed_i"
               ],
               "loc": {
                 "line": 385,
@@ -3802,12 +3798,10 @@
             },
             {
               "target": "imm_b",
-              "reads": [
-                "instr_is_compressed_i"
-              ],
               "conds": [
                 "imm_b_mux_sel",
-                "IMM_B_INCR_PC"
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
               ],
               "loc": {
                 "line": 395,
@@ -3948,12 +3942,10 @@
             },
             {
               "target": "imm_b",
-              "reads": [
-                "instr_is_compressed_i"
-              ],
               "conds": [
                 "imm_b_mux_sel",
-                "IMM_B_INCR_PC"
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
               ],
               "loc": {
                 "line": 423,
@@ -4570,14 +4562,12 @@
             },
             {
               "target": "id_fsm_d",
-              "reads": [
-                "data_ind_timing_i",
-                "branch_decision_i"
-              ],
               "conds": [
                 "instr_executing_spec",
                 "id_fsm_q",
-                "branch_in_dec"
+                "branch_in_dec",
+                "data_ind_timing_i",
+                "branch_decision_i"
               ],
               "loc": {
                 "line": 921,
@@ -4884,9 +4874,11 @@
         {
           "target": "alu_op_a_mux_sel",
           "reads": [
-            "lsu_addr_incr_req_i",
             "OP_A_FWD",
             "alu_op_a_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
           ],
           "loc": {
             "line": 346,
@@ -4898,9 +4890,11 @@
         {
           "target": "alu_op_b_mux_sel",
           "reads": [
-            "lsu_addr_incr_req_i",
             "OP_B_IMM",
             "alu_op_b_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
           ],
           "loc": {
             "line": 347,
@@ -4912,9 +4906,11 @@
         {
           "target": "imm_b_mux_sel",
           "reads": [
-            "lsu_addr_incr_req_i",
             "IMM_B_INCR_ADDR",
             "imm_b_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
           ],
           "loc": {
             "line": 348,
@@ -4926,9 +4922,11 @@
         {
           "target": "imm_a",
           "reads": [
-            "imm_a_mux_sel",
-            "IMM_A_Z",
             "zimm_rs1_type"
+          ],
+          "conds": [
+            "imm_a_mux_sel",
+            "IMM_A_Z"
           ],
           "loc": {
             "line": 355,
@@ -5018,10 +5016,12 @@
         {
           "target": "alu_operand_b",
           "reads": [
-            "alu_op_b_mux_sel",
-            "OP_B_IMM",
             "imm_b",
             "rf_rdata_b_fwd"
+          ],
+          "conds": [
+            "alu_op_b_mux_sel",
+            "OP_B_IMM"
           ],
           "loc": {
             "line": 439,
@@ -5071,9 +5071,11 @@
         {
           "target": "ex_valid_all",
           "reads": [
-            "instr_is_cheriot_id_o",
             "cheriot_ex_valid_i",
             "ex_valid_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_id_o"
           ],
           "loc": {
             "line": 574,
@@ -5211,9 +5213,11 @@
         {
           "target": "lsu_req",
           "reads": [
-            "instr_executing",
             "data_req_allowed",
             "lsu_req_dec"
+          ],
+          "conds": [
+            "instr_executing"
           ],
           "loc": {
             "line": 729,
@@ -5225,8 +5229,10 @@
         {
           "target": "mult_en_id",
           "reads": [
-            "instr_executing",
             "mult_en_dec"
+          ],
+          "conds": [
+            "instr_executing"
           ],
           "loc": {
             "line": 730,
@@ -5238,8 +5244,10 @@
         {
           "target": "div_en_id",
           "reads": [
-            "instr_executing",
             "div_en_dec"
+          ],
+          "conds": [
+            "instr_executing"
           ],
           "loc": {
             "line": 731,
@@ -5313,11 +5321,13 @@
           "reads": [
             "csr_access_o",
             "instr_executing",
-            "BaseIsaRV32IorCHERIoT",
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "instr_first_cycle",
             "instr_id_done_o"
+          ],
+          "conds": [
+            "BaseIsaRV32IorCHERIoT",
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "loc": {
             "line": 744,
@@ -5456,9 +5466,11 @@
         {
           "target": "branch_set_raw",
           "reads": [
-            "data_ind_timing_i",
             "branch_set_raw_d",
             "branch_set_raw_q"
+          ],
+          "conds": [
+            "data_ind_timing_i"
           ],
           "generates": [
             {
@@ -5558,7 +5570,9 @@
         {
           "target": "nt_branch_addr_o",
           "reads": [
-            "pc_id_i",
+            "pc_id_i"
+          ],
+          "conds": [
             "instr_is_compressed_i"
           ],
           "generates": [
@@ -5663,10 +5677,12 @@
         {
           "target": "multicycle_done",
           "reads": [
-            "lsu_req_dec",
-            "cheriot_lsu_req_dec",
             "stall_mem",
             "ex_valid_all"
+          ],
+          "conds": [
+            "lsu_req_dec",
+            "cheriot_lsu_req_dec"
           ],
           "generates": [
             {
@@ -5959,10 +5975,12 @@
         {
           "target": "rf_rdata_a_fwd",
           "reads": [
-            "rf_rd_a_wb_match",
-            "rf_write_wb_i",
             "rf_wdata_fwd_wb_i",
             "rf_rdata_a_i"
+          ],
+          "conds": [
+            "rf_rd_a_wb_match",
+            "rf_write_wb_i"
           ],
           "generates": [
             {
@@ -5981,10 +5999,12 @@
         {
           "target": "rf_rdata_b_fwd",
           "reads": [
-            "rf_rd_b_wb_match",
-            "rf_write_wb_i",
             "rf_wdata_fwd_wb_i",
             "rf_rdata_b_i"
+          ],
+          "conds": [
+            "rf_rd_b_wb_match",
+            "rf_write_wb_i"
           ],
           "generates": [
             {
@@ -6046,11 +6066,13 @@
         {
           "target": "instr_type_wb_o",
           "reads": [
-            "lsu_req_dec",
             "WB_INSTR_OTHER",
-            "lsu_we",
             "WB_INSTR_STORE",
             "WB_INSTR_LOAD"
+          ],
+          "conds": [
+            "lsu_req_dec",
+            "lsu_we"
           ],
           "generates": [
             {
@@ -6163,10 +6185,12 @@
         {
           "target": "multicycle_done",
           "reads": [
-            "cheriot_lsu_req_dec",
-            "lsu_req_dec",
             "lsu_resp_valid_i",
             "ex_valid_all"
+          ],
+          "conds": [
+            "cheriot_lsu_req_dec",
+            "lsu_req_dec"
           ],
           "generates": [
             {

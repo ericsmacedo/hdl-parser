@@ -312,9 +312,13 @@ class _Module:
     closed: dm.Generate | None = None
     previous: dm.Generate | None = None
     others: tuple[str, ...] = ()
+    # labels of the generate blocks
+    labels: set[str] = field(default_factory=set)
 
     def open_generate(self, generate: dm.Generate, single: bool = False) -> None:
         """Enter `generate`. `single`: it has no `begin` and ends with the next item."""
+        if generate.name:
+            self.labels.add(generate.name)
         self.generates.append(generate)
         self.single.append(single)
 
@@ -940,7 +944,7 @@ class _Walker:
             return ()
         start = c.pos
         c.skip_balanced()
-        return _refs.reads(c.toks[start : c.pos])
+        return _refs.reads(c.toks[start : c.pos], paths=True)
 
     def skip(self, start: int) -> None:
         """Skip the statement from `start` up to its `;`, which is not understood."""
@@ -1086,7 +1090,7 @@ class _Walker:
                 items: tuple[str, ...] = ()
             else:
                 c.skip_until(frozenset((":",)))
-                items = _refs.reads(c.toks[pos : c.pos])
+                items = _refs.reads(c.toks[pos : c.pos], paths=True)
                 if not c.accept(":"):
                     c.skip_past(frozenset(("endcase",)), _CASES)
                     self.skipped.append((pos, c.pos))
@@ -1111,9 +1115,10 @@ class _Walker:
                 start = c.pos
                 c.skip_until(frozenset((",", ";")))
                 target = _refs.Target(name.text, "", ())
-                reads = _refs.reads(c.toks[start : c.pos])
+                reads, control = _refs.split_reads(c.toks[start : c.pos], paths=True)
                 last = c.toks[c.pos - 1]
-                self.assigns.append(_Assign(name, last, target, reads, self.cond_reads(), True))
+                conds = _refs.unique((*self.cond_reads(), *control))
+                self.assigns.append(_Assign(name, last, target, reads, conds, True))
             if not c.accept(","):
                 break
         c.skip_until(_SEMI)
@@ -1147,9 +1152,9 @@ class _Walker:
         if not found:
             self.skipped.append((start, c.pos))
             return
-        conds = self.cond_reads()
         last = toks[c.pos - 1]
-        reads = _refs.reads(value)
+        reads, control = _refs.split_reads(value, paths=True)
+        conds = _refs.unique((*self.cond_reads(), *control))
         for target in found:
             own = (target.name,) if compound else ()
             names = _refs.unique((*own, *reads, *target.reads))
@@ -1375,10 +1380,11 @@ def _handle_assign(c: Cursor, mod: _Module) -> None:
         c.skip_to(end + 1)
         value_start = c.pos
         c.skip_until(frozenset((",", ";")))
-        reads = _refs.reads(toks[value_start : c.pos])
+        reads, control = _refs.split_reads(toks[value_start : c.pos], paths=True)
         last = toks[c.pos - 1]
         for target in _refs.targets(lhs):
-            assign = _Assign(toks[start], last, target, _refs.unique((*reads, *target.reads)), (), True)
+            names = _refs.unique((*reads, *target.reads))
+            assign = _Assign(toks[start], last, target, names, tuple(n for n in control if n not in names), True)
             mod.assigns.append((assign, generates))
         if not c.accept(","):
             break
@@ -1481,7 +1487,8 @@ def _parse_signals(c: Cursor, mod: _Module) -> None:
     for decl in decls:
         if decl.default and decl.ptype in _NETS:
             target = _refs.Target(decl.name.text, "", ())
-            assign = _Assign(decl.name, decl.last, target, _refs.reads_text(decl.default), (), True)
+            reads, control = _refs.split_reads(_refs.tokens(decl.default), paths=True)
+            assign = _Assign(decl.name, decl.last, target, reads, control, True)
             mod.assigns.append((assign, generates))
 
 
@@ -1811,12 +1818,22 @@ def _local_names(mod: _Module) -> frozenset[str]:
     return frozenset(names)
 
 
-def _without(assign: _Assign, names: frozenset[str]) -> _Assign:
-    """`assign` without the reads of `names`."""
-    return assign._replace(
-        reads=tuple(name for name in assign.reads if name not in names),
-        conds=tuple(name for name in assign.conds if name not in names),
-    )
+def _without(assign: _Assign, names: frozenset[str], labels: frozenset[str]) -> _Assign:
+    """`assign` without the reads of `names`.
+
+    A hierarchical reference into a generate block (one of `labels`) is kept as written (`g[0].data`), any other one
+    stands for its base: `bus` of `bus.req`.
+    """
+
+    def refs(reads: tuple[str, ...]) -> tuple[str, ...]:
+        found = []
+        for name in reads:
+            base = _refs.base(name)
+            if base not in names:
+                found.append(name if base in labels and "." in name else base)
+        return _refs.unique(found)
+
+    return assign._replace(reads=refs(assign.reads), conds=refs(assign.conds))
 
 
 def _create_processes(processes: list[_Process], smap: SourceMap) -> tuple[dm.Process, ...]:
@@ -1983,8 +2000,9 @@ def parse(  # noqa: PLR0913
     interfaces = []
     for mod in mods:
         names = _local_names(mod)
+        labels = frozenset(mod.labels)
         processes = [
-            process._replace(assigns=[_without(assign, names) for assign in process.assigns])
+            process._replace(assigns=[_without(assign, names, labels) for assign in process.assigns])
             for process in mod.processes
         ]
         fields: dict[str, Any] = {
@@ -1997,7 +2015,7 @@ def parse(  # noqa: PLR0913
             "functions": _create_functions(mod.functions, smap),
             "processes": _create_processes(processes, smap),
             "assigns": tuple(
-                _create_assign(_without(assign, names), smap, generates) for assign, generates in mod.assigns
+                _create_assign(_without(assign, names, labels), smap, generates) for assign, generates in mod.assigns
             ),
             "insts": _create_insts(mod.insts, smap),
             "ifdefs": mod.first.ifdefs,

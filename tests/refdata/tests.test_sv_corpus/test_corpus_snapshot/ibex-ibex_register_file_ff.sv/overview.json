@@ -981,12 +981,12 @@
               "target": "we_a_dec",
               "select": "[i]",
               "reads": [
-                "waddr_a_i",
-                "i",
-                "we_a_i"
+                "we_a_i",
+                "i"
               ],
               "conds": [
-                "i"
+                "i",
+                "waddr_a_i"
               ],
               "loc": {
                 "line": 94,
@@ -1375,12 +1375,12 @@
               "target": "we_a_dec",
               "select": "[i]",
               "reads": [
-                "waddr_a_i",
-                "i",
-                "we_a_i"
+                "we_a_i",
+                "i"
               ],
               "conds": [
-                "i"
+                "i",
+                "waddr_a_i"
               ],
               "loc": {
                 "line": 239,
@@ -1563,9 +1563,11 @@
         {
           "target": "wshared_data",
           "reads": [
-            "cheriot_enabled",
             "wcap_a_i",
             "wdata_a_i"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -1662,10 +1664,12 @@
         {
           "target": "we_shared_r0",
           "reads": [
-            "cheriot_enabled",
             "we_data_r0",
             "we_a_dec",
             "waddr_a_i"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -1690,8 +1694,10 @@
           "target": "rf_data",
           "select": "[0]",
           "reads": [
-            "dummy_instr_id_i",
             "rf_data_r0_q"
+          ],
+          "conds": [
+            "dummy_instr_id_i"
           ],
           "generates": [
             {
@@ -1740,8 +1746,10 @@
         {
           "target": "rcap_r0",
           "reads": [
-            "dummy_instr_id_i",
             "rf_shared"
+          ],
+          "conds": [
+            "dummy_instr_id_i"
           ],
           "generates": [
             {
@@ -1935,10 +1943,12 @@
         {
           "target": "rdata_a_o",
           "reads": [
-            "raddr_a_i",
-            "cheriot_enabled",
             "rf_shared",
+            "raddr_a_i",
             "rf_data"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -1957,10 +1967,12 @@
         {
           "target": "rdata_b_o",
           "reads": [
-            "raddr_b_i",
-            "cheriot_enabled",
             "rf_shared",
+            "raddr_b_i",
             "rf_data"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -1979,10 +1991,12 @@
         {
           "target": "rcap_a_o",
           "reads": [
-            "cheriot_enabled",
-            "raddr_a_i",
             "rcap_r0",
-            "rf_shared"
+            "rf_shared",
+            "raddr_a_i"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -2001,10 +2015,12 @@
         {
           "target": "rcap_b_o",
           "reads": [
-            "cheriot_enabled",
-            "raddr_b_i",
             "rcap_r0",
-            "rf_shared"
+            "rf_shared",
+            "raddr_b_i"
+          ],
+          "conds": [
+            "cheriot_enabled"
           ],
           "generates": [
             {
@@ -2119,8 +2135,10 @@
           "target": "rf_reg",
           "select": "[0]",
           "reads": [
-            "dummy_instr_id_i",
             "rf_r0_q"
+          ],
+          "conds": [
+            "dummy_instr_id_i"
           ],
           "generates": [
             {

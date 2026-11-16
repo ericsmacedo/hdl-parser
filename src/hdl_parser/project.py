@@ -507,10 +507,17 @@ class Project(dm._BaseModel):
             graph = self._graphs[definition.id] = Graph(self, definition)
         return graph
 
-    def _connectivity(self, params: Mapping[str, int | float | str | bool] | None) -> Connectivity:
-        return Connectivity(self, Elaboration(self).top_overrides(params))
+    def _connectivity(
+        self, params: Mapping[str, int | float | str | bool] | None, passthrough: Iterable[str] = ()
+    ) -> Connectivity:
+        return Connectivity(self, Elaboration(self).top_overrides(params), passthrough)
 
-    def drivers(self, path: str, params: Mapping[str, int | float | str | bool] | None = None) -> tuple[dm.Link, ...]:
+    def drivers(
+        self,
+        path: str,
+        params: Mapping[str, int | float | str | bool] | None = None,
+        passthrough: Iterable[str] = (),
+    ) -> tuple[dm.Link, ...]:
         """What drives the signal with the instance path `path` (`top.u_core.u_alu.result_o`).
 
         The drivers are the assignments of the signal and the output ports of instances it is connected to.
@@ -518,18 +525,28 @@ class Project(dm._BaseModel):
         Every driver has the signals it reads (`nets`): ask for their drivers, to go further.
 
         The path starts with the top module (a name or full identifier), followed by the names of the instances
-        (with the labels of the generate blocks around) and the signal. Instance arrays and `for` generate
-        constructs are not unrolled: indices are ignored. A generate construct whose condition is false
-        for the parameter values (`params` of the top, defaults otherwise) is left out.
+        (with the labels of the generate blocks around) and the signal. A generate
+        construct is left out, if its condition is false for the parameter values (`params` of the top, defaults
+        otherwise). Labeled `for` generate constructs are unrolled: `top.g_st[1].data` is the signal of the
+        second iteration, the index is checked. Without index (`top.g_st.data`), a path stands for all iterations
+        (`multiple`). Instance arrays are not unrolled.
+
+        `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
+        (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
 
         Raises:
             ValueError: The path does not exist.
         """
-        conn = self._connectivity(params)
+        conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
         return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node))
 
-    def loads(self, path: str, params: Mapping[str, int | float | str | bool] | None = None) -> tuple[dm.Link, ...]:
+    def loads(
+        self,
+        path: str,
+        params: Mapping[str, int | float | str | bool] | None = None,
+        passthrough: Iterable[str] = (),
+    ) -> tuple[dm.Link, ...]:
         """What the signal with the instance path `path` drives. See [drivers][hdl_parser.project.Project.drivers].
 
         The loads are the assignments reading the signal, also by a condition (`control`), and the input ports of
@@ -538,17 +555,18 @@ class Project(dm._BaseModel):
         Raises:
             ValueError: The path does not exist.
         """
-        conn = self._connectivity(params)
+        conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
         return tuple(conn.link(node, step, driver=False) for step in conn.loads(node))
 
-    def trace(
+    def trace(  # noqa: PLR0913
         self,
         src: str,
         dst: str,
         params: Mapping[str, int | float | str | bool] | None = None,
         through_regs: bool = False,
         control: bool = True,
+        passthrough: Iterable[str] = (),
     ) -> tuple[dm.Hop, ...]:
         """Shortest connection from the signal `src` to the signal `dst`, both instance paths below the same top.
 
@@ -563,12 +581,15 @@ class Project(dm._BaseModel):
         Keyword Args:
             params: Values of the parameters of the top, by name. Its defaults are used otherwise.
             through_regs: Continue behind flip-flops.
-            control: Follow conditions (`if (en) y = a;` connects `en` to `y`), resets and clocks too.
+            control: Follow conditions (`if (en) y = a;` and `y = en ? a : b;` connect `en` to `y`), resets and
+                     clocks too.
+            passthrough: Cells which pass their inputs on to their outputs. See
+                         [drivers][hdl_parser.project.Project.drivers].
 
         Raises:
             ValueError: A path does not exist.
         """
-        conn = self._connectivity(params)
+        conn = self._connectivity(params, passthrough)
         source: Node = conn.locate(src)
         target: Node = conn.locate(dst)
         return conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))

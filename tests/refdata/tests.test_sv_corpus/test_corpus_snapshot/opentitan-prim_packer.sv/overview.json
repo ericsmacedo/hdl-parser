@@ -1667,8 +1667,10 @@
         {
           "target": "cnt_step",
           "reads": [
-            "cnt_incr_en",
             "inmask_ones"
+          ],
+          "conds": [
+            "cnt_incr_en"
           ],
           "generates": [
             {
@@ -1715,9 +1717,11 @@
         {
           "target": "shiftr_data",
           "reads": [
-            "valid_i",
             "data_i",
             "lod_idx"
+          ],
+          "conds": [
+            "valid_i"
           ],
           "loc": {
             "line": 170,
@@ -1729,9 +1733,11 @@
         {
           "target": "shiftr_mask",
           "reads": [
-            "valid_i",
             "mask_i",
             "lod_idx"
+          ],
+          "conds": [
+            "valid_i"
           ],
           "loc": {
             "line": 171,
@@ -1809,8 +1815,10 @@
         {
           "target": "valid_next",
           "reads": [
-            "pos_q",
             "flush_valid"
+          ],
+          "conds": [
+            "pos_q"
           ],
           "loc": {
             "line": 283,

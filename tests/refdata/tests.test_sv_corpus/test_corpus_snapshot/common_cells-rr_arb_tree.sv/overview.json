@@ -1432,9 +1432,11 @@
         {
           "target": "req_d",
           "reads": [
-            "lock_q",
             "req_q",
             "req_i"
+          ],
+          "conds": [
+            "lock_q"
           ],
           "generates": [
             {
@@ -1541,9 +1543,11 @@
           "target": "upper_mask",
           "select": "[i]",
           "reads": [
-            "i",
-            "rr_q",
-            "req_d"
+            "req_d",
+            "i"
+          ],
+          "conds": [
+            "rr_q"
           ],
           "generates": [
             {
@@ -1582,9 +1586,11 @@
           "target": "lower_mask",
           "select": "[i]",
           "reads": [
-            "i",
-            "rr_q",
-            "req_d"
+            "req_d",
+            "i"
+          ],
+          "conds": [
+            "rr_q"
           ],
           "generates": [
             {
@@ -1622,9 +1628,11 @@
         {
           "target": "next_idx",
           "reads": [
-            "upper_empty",
             "lower_idx",
             "upper_idx"
+          ],
+          "conds": [
+            "upper_empty"
           ],
           "generates": [
             {
@@ -1657,10 +1665,12 @@
         {
           "target": "rr_d",
           "reads": [
-            "gnt_i",
-            "req_o",
             "next_idx",
             "rr_q"
+          ],
+          "conds": [
+            "gnt_i",
+            "req_o"
           ],
           "generates": [
             {
@@ -1693,9 +1703,11 @@
         {
           "target": "rr_d",
           "reads": [
-            "gnt_i",
-            "req_o",
             "rr_q"
+          ],
+          "conds": [
+            "gnt_i",
+            "req_o"
           ],
           "generates": [
             {
@@ -1882,9 +1894,11 @@
           "target": "data_nodes",
           "select": "[Idx0]",
           "reads": [
-            "sel",
             "data_i",
             "l"
+          ],
+          "conds": [
+            "sel"
           ],
           "generates": [
             {
@@ -2381,9 +2395,11 @@
           "target": "index_nodes",
           "select": "[Idx0]",
           "reads": [
-            "sel",
             "index_nodes",
             "level"
+          ],
+          "conds": [
+            "sel"
           ],
           "generates": [
             {
@@ -2422,8 +2438,10 @@
           "target": "data_nodes",
           "select": "[Idx0]",
           "reads": [
-            "sel",
             "data_nodes"
+          ],
+          "conds": [
+            "sel"
           ],
           "generates": [
             {

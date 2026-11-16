@@ -3641,7 +3641,6 @@
             {
               "target": "ls_fsm_ns",
               "reads": [
-                "split_misaligned_access",
                 "WAIT_RVALID_MIS",
                 "IDLE"
               ],
@@ -3654,7 +3653,8 @@
                 "cpu_req_erred",
                 "cpu_req_valid",
                 "lsu_is_cap_i",
-                "data_gnt_i"
+                "data_gnt_i",
+                "split_misaligned_access"
               ],
               "loc": {
                 "line": 496,
@@ -3666,7 +3666,6 @@
             {
               "target": "ls_fsm_ns",
               "reads": [
-                "split_misaligned_access",
                 "WAIT_GNT_MIS",
                 "WAIT_GNT"
               ],
@@ -3679,7 +3678,8 @@
                 "cpu_req_erred",
                 "cpu_req_valid",
                 "lsu_is_cap_i",
-                "data_gnt_i"
+                "data_gnt_i",
+                "split_misaligned_access"
               ],
               "loc": {
                 "line": 498,
@@ -3867,7 +3867,6 @@
             {
               "target": "ls_fsm_ns",
               "reads": [
-                "data_gnt_i",
                 "IDLE",
                 "WAIT_GNT"
               ],
@@ -3875,7 +3874,8 @@
                 "ls_fsm_cs",
                 "WAIT_RVALID_MIS",
                 "data_rvalid_i",
-                "pmp_err_q"
+                "pmp_err_q",
+                "data_gnt_i"
               ],
               "loc": {
                 "line": 533,
@@ -5122,11 +5122,13 @@
         {
           "target": "data_offset",
           "reads": [
+            "data_addr"
+          ],
+          "conds": [
             "BaseIsaRV32IorCHERIoT",
             "cheriot_enable_i",
             "IbexMuBiOn",
-            "lsu_is_cap_i",
-            "data_addr"
+            "lsu_is_cap_i"
           ],
           "loc": {
             "line": 133,
@@ -5150,9 +5152,11 @@
         {
           "target": "addr_last_d",
           "reads": [
-            "addr_incr_req_o",
             "data_addr_w_aligned",
             "data_addr"
+          ],
+          "conds": [
+            "addr_incr_req_o"
           ],
           "loc": {
             "line": 260,
@@ -5426,11 +5430,13 @@
         {
           "target": "lsu_rdata_o",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
-            "resp_is_cap_q",
             "cap_lsw_data_q",
             "data_rdata_ext"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "resp_is_cap_q"
           ],
           "generates": [
             {
@@ -5449,6 +5455,14 @@
         {
           "target": "lsu_rcap_o",
           "reads": [
+            "data_tag_i",
+            "data_rdata_i",
+            "cap_lsw_tag_q",
+            "cap_lsw_data_q",
+            "resp_lc_clrperm_q",
+            "NULL_CAP"
+          ],
+          "conds": [
             "cheriot_enable_i",
             "IbexMuBiOn",
             "resp_is_cap_q",
@@ -5457,13 +5471,7 @@
             "CRX_WAIT_RESP2",
             "data_or_pmp_err",
             "data_intg_err",
-            "lsu_intg_err_q",
-            "data_tag_i",
-            "data_rdata_i",
-            "cap_lsw_tag_q",
-            "cap_lsw_data_q",
-            "resp_lc_clrperm_q",
-            "NULL_CAP"
+            "lsu_intg_err_q"
           ],
           "generates": [
             {
@@ -5834,9 +5842,11 @@
         {
           "target": "fcov_mis_2_en_d",
           "reads": [
-            "fcov_mis_rvalid_2",
-            "fcov_mis_rvalid_1",
             "fcov_mis_2_en_q"
+          ],
+          "conds": [
+            "fcov_mis_rvalid_2",
+            "fcov_mis_rvalid_1"
           ],
           "ifdefs": [
             "!DV_FCOV_DISABLE"
@@ -5851,10 +5861,12 @@
         {
           "target": "fcov_mis_bus_err_1_d",
           "reads": [
+            "fcov_mis_bus_err_1_q"
+          ],
+          "conds": [
             "fcov_mis_rvalid_2",
             "fcov_mis_rvalid_1",
-            "data_bus_err_i",
-            "fcov_mis_bus_err_1_q"
+            "data_bus_err_i"
           ],
           "ifdefs": [
             "!DV_FCOV_DISABLE"

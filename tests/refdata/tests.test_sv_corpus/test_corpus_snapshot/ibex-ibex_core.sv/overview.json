@@ -8049,15 +8049,15 @@
               "target": "rvfi_ext_stage_pre_mip",
               "select": "[0]",
               "reads": [
-                "instr_valid_id",
-                "captured_valid",
                 "cs_registers_i",
                 "captured_mip"
               ],
               "conds": [
                 "rst_ni",
                 "if_stage_i",
-                "rvfi_irq_valid"
+                "rvfi_irq_valid",
+                "instr_valid_id",
+                "captured_valid"
               ],
               "blocking": false,
               "ifdefs": [
@@ -8074,15 +8074,15 @@
               "target": "rvfi_ext_stage_nmi",
               "select": "[0]",
               "reads": [
-                "instr_valid_id",
-                "captured_valid",
                 "irq_nm_i",
                 "captured_nmi"
               ],
               "conds": [
                 "rst_ni",
                 "if_stage_i",
-                "rvfi_irq_valid"
+                "rvfi_irq_valid",
+                "instr_valid_id",
+                "captured_valid"
               ],
               "blocking": false,
               "ifdefs": [
@@ -8099,15 +8099,15 @@
               "target": "rvfi_ext_stage_nmi_int",
               "select": "[0]",
               "reads": [
-                "instr_valid_id",
-                "captured_valid",
                 "id_stage_i",
                 "captured_nmi_int"
               ],
               "conds": [
                 "rst_ni",
                 "if_stage_i",
-                "rvfi_irq_valid"
+                "rvfi_irq_valid",
+                "instr_valid_id",
+                "captured_valid"
               ],
               "blocking": false,
               "ifdefs": [
@@ -8124,15 +8124,15 @@
               "target": "rvfi_ext_stage_debug_req",
               "select": "[0]",
               "reads": [
-                "instr_valid_id",
-                "captured_valid",
                 "debug_req_i",
                 "captured_debug_req"
               ],
               "conds": [
                 "rst_ni",
                 "if_stage_i",
-                "rvfi_irq_valid"
+                "rvfi_irq_valid",
+                "instr_valid_id",
+                "captured_valid"
               ],
               "blocking": false,
               "ifdefs": [
@@ -9653,7 +9653,6 @@
               "target": "rvfi_stage_pc_wdata",
               "select": "[i]",
               "reads": [
-                "pc_set",
                 "branch_target_ex",
                 "pc_if",
                 "i"
@@ -9661,7 +9660,8 @@
               "conds": [
                 "rst_ni",
                 "i",
-                "rvfi_id_done"
+                "rvfi_id_done",
+                "pc_set"
               ],
               "blocking": false,
               "ifdefs": [
@@ -9678,14 +9678,14 @@
               "target": "rvfi_stage_mem_rmask",
               "select": "[i]",
               "reads": [
-                "data_we_o",
                 "rvfi_mem_mask_int",
                 "i"
               ],
               "conds": [
                 "rst_ni",
                 "i",
-                "rvfi_id_done"
+                "rvfi_id_done",
+                "data_we_o"
               ],
               "blocking": false,
               "ifdefs": [
@@ -9702,14 +9702,14 @@
               "target": "rvfi_stage_mem_wmask",
               "select": "[i]",
               "reads": [
-                "data_we_o",
                 "rvfi_mem_mask_int",
                 "i"
               ],
               "conds": [
                 "rst_ni",
                 "i",
-                "rvfi_id_done"
+                "rvfi_id_done",
+                "data_we_o"
               ],
               "blocking": false,
               "ifdefs": [
@@ -11067,14 +11067,14 @@
               "target": "rvfi_stage_mem_rmask",
               "select": "[i]",
               "reads": [
-                "rvfi_trap_wb",
                 "rvfi_stage_mem_rmask",
                 "i"
               ],
               "conds": [
                 "rst_ni",
                 "i",
-                "rvfi_wb_done"
+                "rvfi_wb_done",
+                "rvfi_trap_wb"
               ],
               "blocking": false,
               "ifdefs": [
@@ -11091,14 +11091,14 @@
               "target": "rvfi_stage_mem_wmask",
               "select": "[i]",
               "reads": [
-                "rvfi_trap_wb",
                 "rvfi_stage_mem_wmask",
                 "i"
               ],
               "conds": [
                 "rst_ni",
                 "i",
-                "rvfi_wb_done"
+                "rvfi_wb_done",
+                "rvfi_trap_wb"
               ],
               "blocking": false,
               "ifdefs": [
@@ -12576,12 +12576,12 @@
             {
               "target": "rvfi_rs1_cap_d",
               "reads": [
-                "rf_ren_a",
-                "g_cheriot_ex",
+                "g_cheriot_ex.u_ibex_cheriot_ex.rf_rcap_a",
                 "NULL_CAP"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_a"
               ],
               "ifdefs": [
                 "RVFI"
@@ -12596,12 +12596,12 @@
             {
               "target": "rvfi_rs2_cap_d",
               "reads": [
-                "rf_ren_b",
-                "g_cheriot_ex",
+                "g_cheriot_ex.u_ibex_cheriot_ex.rf_rcap_b",
                 "NULL_CAP"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_b"
               ],
               "ifdefs": [
                 "RVFI"
@@ -12667,11 +12667,11 @@
             {
               "target": "rvfi_rs1_data_d",
               "reads": [
-                "rf_ren_a",
                 "multdiv_operand_a_ex"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_a"
               ],
               "ifdefs": [
                 "RVFI"
@@ -12686,11 +12686,11 @@
             {
               "target": "rvfi_rs1_addr_d",
               "reads": [
-                "rf_ren_a",
                 "rf_raddr_a"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_a"
               ],
               "ifdefs": [
                 "RVFI"
@@ -12705,11 +12705,11 @@
             {
               "target": "rvfi_rs2_data_d",
               "reads": [
-                "rf_ren_b",
                 "multdiv_operand_b_ex"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_b"
               ],
               "ifdefs": [
                 "RVFI"
@@ -12724,11 +12724,11 @@
             {
               "target": "rvfi_rs2_addr_d",
               "reads": [
-                "rf_ren_b",
                 "rf_raddr_b"
               ],
               "conds": [
-                "instr_first_cycle_id"
+                "instr_first_cycle_id",
+                "rf_ren_b"
               ],
               "ifdefs": [
                 "RVFI"
@@ -13909,11 +13909,13 @@
         {
           "target": "core_busy_o",
           "reads": [
-            "ctrl_busy",
-            "if_busy",
-            "lsu_busy",
             "IbexMuBiOn",
             "IbexMuBiOff"
+          ],
+          "conds": [
+            "ctrl_busy",
+            "if_busy",
+            "lsu_busy"
           ],
           "generates": [
             {
@@ -14065,10 +14067,12 @@
         {
           "target": "branch_target_ex",
           "reads": [
-            "instr_valid_id",
-            "instr_is_cheriot_id",
             "branch_target_ex_cheriot",
             "branch_target_ex_rv32"
+          ],
+          "conds": [
+            "instr_valid_id",
+            "instr_is_cheriot_id"
           ],
           "generates": [
             {
@@ -15911,10 +15915,12 @@
           "target": "pmp_req_addr",
           "select": "[PMP_I]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "pc_if",
             "PMP_I"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -15939,10 +15945,12 @@
           "target": "pmp_req_addr",
           "select": "[PMP_I2]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "pc_if_inc",
             "PMP_I2"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -15967,10 +15975,12 @@
           "target": "pmp_req_addr",
           "select": "[PMP_D]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "data_addr_o",
             "PMP_D"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -16163,10 +16173,12 @@
           "target": "pmp_req_type",
           "select": "[PMP_D]",
           "reads": [
-            "data_we_o",
             "PMP_ACC_WRITE",
             "PMP_ACC_READ",
             "PMP_D"
+          ],
+          "conds": [
+            "data_we_o"
           ],
           "generates": [
             {
@@ -16207,10 +16219,12 @@
           "target": "pmp_req_err",
           "select": "[PMP_I]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "pmp_req_err_raw",
             "PMP_I"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -16235,10 +16249,12 @@
           "target": "pmp_req_err",
           "select": "[PMP_I2]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "pmp_req_err_raw",
             "PMP_I2"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -16263,10 +16279,12 @@
           "target": "pmp_req_err",
           "select": "[PMP_D]",
           "reads": [
-            "cheriot_enable_i",
-            "IbexMuBiOn",
             "pmp_req_err_raw",
             "PMP_D"
+          ],
+          "conds": [
+            "cheriot_enable_i",
+            "IbexMuBiOn"
           ],
           "generates": [
             {
@@ -16974,9 +16992,11 @@
         {
           "target": "rvfi_rd_wdata_wb",
           "reads": [
-            "rf_we_wb",
             "rf_wdata_wb",
             "rf_wdata_lsu"
+          ],
+          "conds": [
+            "rf_we_wb"
           ],
           "ifdefs": [
             "RVFI"
@@ -17485,8 +17505,10 @@
         {
           "target": "rvfi_stage_order_d",
           "reads": [
-            "dummy_instr_id",
             "rvfi_stage_order"
+          ],
+          "conds": [
+            "dummy_instr_id"
           ],
           "ifdefs": [
             "RVFI"
@@ -17712,9 +17734,11 @@
         {
           "target": "rvfi_intr_d",
           "reads": [
-            "instr_first_cycle_id",
             "rvfi_set_trap_pc_q",
             "rvfi_intr_q"
+          ],
+          "conds": [
+            "instr_first_cycle_id"
           ],
           "ifdefs": [
             "RVFI"
@@ -17848,7 +17872,7 @@
           "target": "fcov_pmp_region_ichan_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_I",
             "i_region"
           ],
@@ -17883,7 +17907,7 @@
           "target": "fcov_pmp_region_ichan2_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_I2",
             "i_region"
           ],
@@ -17918,7 +17942,7 @@
           "target": "fcov_pmp_region_dchan_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_D",
             "i_region"
           ],
@@ -17953,7 +17977,7 @@
           "target": "fcov_pmp_region_ichan_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_I",
             "i_region"
           ],
@@ -17990,7 +18014,7 @@
           "target": "fcov_pmp_region_ichan2_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_I2",
             "i_region"
           ],
@@ -18027,7 +18051,7 @@
           "target": "fcov_pmp_region_dchan_priority",
           "select": "[i_region]",
           "reads": [
-            "g_pmp",
+            "g_pmp.pmp_i.region_match_all",
             "PMP_D",
             "i_region"
           ],

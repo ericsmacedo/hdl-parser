@@ -1277,11 +1277,13 @@
         {
           "target": "wdepth_o",
           "reads": [
-            "full_wclk",
-            "wptr_msb",
-            "rptr_sync_msb",
             "wptr_value",
             "rptr_sync_value"
+          ],
+          "conds": [
+            "full_wclk",
+            "wptr_msb",
+            "rptr_sync_msb"
           ],
           "generates": [
             {
@@ -1376,11 +1378,13 @@
         {
           "target": "rdepth_o",
           "reads": [
-            "full_rclk",
-            "wptr_sync_msb",
-            "rptr_msb",
             "wptr_sync_value",
             "rptr_value"
+          ],
+          "conds": [
+            "full_rclk",
+            "wptr_sync_msb",
+            "rptr_msb"
           ],
           "generates": [
             {
@@ -1506,9 +1510,11 @@
         {
           "target": "rdata_o",
           "reads": [
-            "empty_rclk",
-            "rvalid_o",
             "rdata_int"
+          ],
+          "conds": [
+            "empty_rclk",
+            "rvalid_o"
           ],
           "generates": [
             {
@@ -1532,8 +1538,10 @@
         {
           "target": "rdata_o",
           "reads": [
-            "empty_rclk",
             "rdata_int"
+          ],
+          "conds": [
+            "empty_rclk"
           ],
           "generates": [
             {
@@ -1559,8 +1567,10 @@
         {
           "target": "rdata_o",
           "reads": [
-            "rvalid_o",
             "rdata_int"
+          ],
+          "conds": [
+            "rvalid_o"
           ],
           "generates": [
             {

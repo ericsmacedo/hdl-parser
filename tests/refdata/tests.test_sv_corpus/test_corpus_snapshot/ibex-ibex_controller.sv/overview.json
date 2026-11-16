@@ -3924,7 +3924,6 @@
             {
               "target": "exc_cause_o",
               "reads": [
-                "irq_nm_ext_i",
                 "ExcCauseIrqNm",
                 "irq_nm_int_cause"
               ],
@@ -3933,7 +3932,8 @@
                 "IRQ_TAKEN",
                 "handle_irq",
                 "irq_nm",
-                "nmi_mode_q"
+                "nmi_mode_q",
+                "irq_nm_ext_i"
               ],
               "loc": {
                 "line": 742,
@@ -4445,7 +4445,6 @@
             {
               "target": "exc_pc_mux_o",
               "reads": [
-                "debug_mode_q",
                 "EXC_PC_DBG_EXC",
                 "EXC_PC_EXC"
               ],
@@ -4457,7 +4456,8 @@
                 "load_err_q",
                 "cheriot_enable_i",
                 "IbexMuBiOn",
-                "cheriot_wb_err_q"
+                "cheriot_wb_err_q",
+                "debug_mode_q"
               ],
               "loc": {
                 "line": 836,
@@ -4704,7 +4704,6 @@
             {
               "target": "csr_mtval_o",
               "reads": [
-                "instr_fetch_err_plus2_i",
                 "pc_id_i"
               ],
               "conds": [
@@ -4719,7 +4718,8 @@
                 "instr_fetch_err_prio",
                 "BaseIsaRV32IorCHERIoT",
                 "instr_fetch_cheriot_acc_vio_i",
-                "instr_fetch_cheriot_bound_vio_i"
+                "instr_fetch_cheriot_bound_vio_i",
+                "instr_fetch_err_plus2_i"
               ],
               "loc": {
                 "line": 866,
@@ -4754,10 +4754,6 @@
             {
               "target": "csr_mtval_o",
               "reads": [
-                "BaseIsaRV32IorCHERIoT",
-                "cheriot_enable_i",
-                "IbexMuBiOn",
-                "instr_is_compressed_i",
                 "instr_compressed_i",
                 "instr_i"
               ],
@@ -4770,7 +4766,9 @@
                 "cheriot_enable_i",
                 "IbexMuBiOn",
                 "cheriot_wb_err_q",
-                "illegal_insn_prio"
+                "illegal_insn_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_is_compressed_i"
               ],
               "loc": {
                 "line": 871,
@@ -4782,8 +4780,6 @@
             {
               "target": "exc_cause_o",
               "reads": [
-                "priv_mode_i",
-                "PRIV_LVL_M",
                 "ExcCauseEcallMMode",
                 "ExcCauseEcallUMode"
               ],
@@ -4796,7 +4792,9 @@
                 "cheriot_enable_i",
                 "IbexMuBiOn",
                 "cheriot_wb_err_q",
-                "ecall_insn_prio"
+                "ecall_insn_prio",
+                "priv_mode_i",
+                "PRIV_LVL_M"
               ],
               "loc": {
                 "line": 876,
@@ -6808,11 +6806,13 @@
         {
           "target": "do_single_step_d",
           "reads": [
-            "instr_valid_i",
-            "dummy_instr_id_i",
             "debug_mode_q",
             "debug_single_step_i",
             "do_single_step_q"
+          ],
+          "conds": [
+            "instr_valid_i",
+            "dummy_instr_id_i"
           ],
           "loc": {
             "line": 464,
@@ -6858,11 +6858,13 @@
         {
           "target": "ebreak_into_debug",
           "reads": [
+            "debug_ebreakm_i",
+            "debug_ebreaku_i"
+          ],
+          "conds": [
             "priv_mode_i",
             "PRIV_LVL_M",
-            "debug_ebreakm_i",
-            "PRIV_LVL_U",
-            "debug_ebreaku_i"
+            "PRIV_LVL_U"
           ],
           "loc": {
             "line": 484,
@@ -6932,18 +6934,20 @@
         {
           "target": "debug_cause_d",
           "reads": [
-            "ebrk_insn_prio",
-            "ebreak_into_debug",
             "DBG_CAUSE_EBREAK",
-            "debug_req_i",
             "DBG_CAUSE_HALTREQ",
-            "do_single_step_d",
             "DBG_CAUSE_STEP",
-            "trigger_match_i",
-            "ctrl_fsm_cs",
-            "FLUSH",
             "DBG_CAUSE_TRIGGER",
             "DBG_CAUSE_NONE"
+          ],
+          "conds": [
+            "ebrk_insn_prio",
+            "ebreak_into_debug",
+            "debug_req_i",
+            "do_single_step_d",
+            "trigger_match_i",
+            "ctrl_fsm_cs",
+            "FLUSH"
           ],
           "loc": {
             "line": 524,

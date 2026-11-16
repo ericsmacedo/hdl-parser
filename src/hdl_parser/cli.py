@@ -315,6 +315,13 @@ opt_blackbox = click.option(
     help="Module names known to be missing (blackboxes, cells): no 'undefined-module' for them. Can be given "
     "multiple times.",
 )
+opt_passthrough = click.option(
+    "--passthrough",
+    multiple=True,
+    metavar="CELL",
+    help="Cell which passes its inputs on to its outputs: 'buf_wrap', or 'BUFX2:A->Y' for modules which are not "
+    "defined. Can be given multiple times.",
+)
 opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
 
 
@@ -649,15 +656,24 @@ _PATH_HELP = """PATH is the instance path of a signal: the top module, the insta
 )
 @click.argument("path")
 @opt_params
+@opt_passthrough
 @opt_project
 @opt_answer
 @pass_ctx
-def drivers(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):
+def drivers(  # noqa: PLR0913
+    ctx: Ctx,
+    path: str,
+    params: tuple[str, ...],
+    passthrough: tuple[str, ...],
+    limit: int | None,
+    compact: bool,
+    **options,
+):
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     values = _params(params)
     prj = load_project(**options)
-    _answer(lambda: query.drivers(prj, path, params=values, limit=limit), compact)
+    _answer(lambda: query.drivers(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
 
 
 @cli.command(
@@ -668,15 +684,24 @@ def drivers(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, com
 )
 @click.argument("path")
 @opt_params
+@opt_passthrough
 @opt_project
 @opt_answer
 @pass_ctx
-def loads(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):
+def loads(  # noqa: PLR0913
+    ctx: Ctx,
+    path: str,
+    params: tuple[str, ...],
+    passthrough: tuple[str, ...],
+    limit: int | None,
+    compact: bool,
+    **options,
+):
     """See `help`."""  # help is given to the decorator, as it is built from parts
     _quiet(ctx)
     values = _params(params)
     prj = load_project(**options)
-    _answer(lambda: query.loads(prj, path, params=values, limit=limit), compact)
+    _answer(lambda: query.loads(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
 
 
 @cli.command(
@@ -691,6 +716,7 @@ def loads(ctx: Ctx, path: str, params: tuple[str, ...], limit: int | None, compa
 @opt_params
 @click.option("--through-regs", is_flag=True, help="Continue behind flip-flops.")
 @click.option("--data-only", is_flag=True, help="Do not follow conditions, resets and clocks.")
+@opt_passthrough
 @opt_project
 @opt_answer
 @pass_ctx
@@ -701,6 +727,7 @@ def trace(  # noqa: PLR0913
     params: tuple[str, ...],
     through_regs: bool,
     data_only: bool,
+    passthrough: tuple[str, ...],
     limit: int | None,
     compact: bool,
     **options,
@@ -711,7 +738,14 @@ def trace(  # noqa: PLR0913
     prj = load_project(**options)
     _answer(
         lambda: query.trace(
-            prj, src, dst, params=values, through_regs=through_regs, control=not data_only, limit=limit
+            prj,
+            src,
+            dst,
+            params=values,
+            through_regs=through_regs,
+            control=not data_only,
+            limit=limit,
+            passthrough=passthrough,
         ),
         compact,
     )

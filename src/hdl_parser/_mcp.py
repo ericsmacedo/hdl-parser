@@ -47,7 +47,13 @@ _NAME = {"type": "string", "description": "Name or full identifier ('rtl/top.sv:
 _PATH = {
     "type": "string",
     "description": "Instance path of a signal: top module, instance names (with generate labels), signal: "
-    "'top.u_core.u_alu.result_o'.",
+    "'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'.",
+}
+_PASSTHROUGH = {
+    "type": "array",
+    "items": {"type": "string"},
+    "description": "Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: "
+    "'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'.",
 }
 _TOP_PARAMS = {
     "type": "object",
@@ -205,7 +211,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "the signals read ('nets') to go further.",
         "inputSchema": {
             "type": "object",
-            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT},
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
             "required": ["path"],
         },
     },
@@ -215,14 +221,15 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "of instances, the connection of an output port within the parent.",
         "inputSchema": {
             "type": "object",
-            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT},
+            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
             "required": ["path"],
         },
     },
     {
         "name": "trace",
         "description": "Shortest connection from one signal to another one below the same top, hop by hop with "
-        "kind and location. Stops behind flip-flops unless through_regs=true, and at undefined modules.",
+        "kind and location, with 'counts' of hops, flip-flops and conditions. Stops behind flip-flops unless "
+        "through_regs=true, and at undefined modules ('stopped_at').",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -235,6 +242,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
                     "description": "Follow conditions, resets and clocks too. Default true.",
                 },
                 "limit": {**_LIMIT, "description": "Number of hops. Default 100. 0: no limit."},
+                "passthrough": _PASSTHROUGH,
             },
             "required": ["src", "dst"],
         },
