@@ -213,11 +213,322 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "direction_register",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 68,
+                "col": 5,
+                "end_line": 68,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "output_register",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 69,
+                "col": 5,
+                "end_line": 69,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "wb_dat_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 70,
+                "col": 5,
+                "end_line": 70,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "ack",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 71,
+                "col": 5,
+                "end_line": 71,
+                "end_col": 16
+              }
+            },
+            {
+              "target": "output_register",
+              "reads": [
+                "wb_dat_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in",
+                "wb_adr_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 77,
+                "col": 9,
+                "end_line": 77,
+                "end_col": 62
+              }
+            },
+            {
+              "target": "direction_register",
+              "reads": [
+                "wb_dat_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in",
+                "wb_adr_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 79,
+                "col": 9,
+                "end_line": 79,
+                "end_col": 65
+              }
+            },
+            {
+              "target": "ack",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 82,
+                "col": 7,
+                "end_line": 82,
+                "end_col": 18
+              }
+            },
+            {
+              "target": "wb_dat_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "unsigned",
+                "input_register",
+                "wb_dat_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in",
+                "wb_adr_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 86,
+                "col": 9,
+                "end_line": 86,
+                "end_col": 93
+              }
+            },
+            {
+              "target": "wb_dat_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "unsigned",
+                "output_register",
+                "wb_dat_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in",
+                "wb_adr_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 88,
+                "col": 9,
+                "end_line": 88,
+                "end_col": 94
+              }
+            },
+            {
+              "target": "wb_dat_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "unsigned",
+                "direction_register",
+                "wb_dat_out"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in",
+                "wb_adr_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 90,
+                "col": 9,
+                "end_line": 90,
+                "end_col": 97
+              }
+            },
+            {
+              "target": "ack",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack",
+                "wb_we_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 93,
+                "col": 7,
+                "end_line": 93,
+                "end_col": 18
+              }
+            },
+            {
+              "target": "ack",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "wb_cyc_in",
+                "wb_stb_in",
+                "ack"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 96,
+                "col": 6,
+                "end_line": 96,
+                "end_col": 17
+              }
+            }
+          ],
           "loc": {
             "line": 64,
             "col": 2,
             "end_line": 100,
             "end_col": 23
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "gpio",
+          "select": "(i)",
+          "reads": [
+            "output_register",
+            "i"
+          ],
+          "conds": [
+            "direction_register",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "io_setup",
+              "cond": "i in 0 to NUM_GPIOS - 1"
+            }
+          ],
+          "loc": {
+            "line": 58,
+            "col": 3,
+            "end_line": 58,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "input_register",
+          "select": "(i)",
+          "reads": [
+            "gpio",
+            "i"
+          ],
+          "conds": [
+            "direction_register",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "io_setup",
+              "cond": "i in 0 to NUM_GPIOS - 1"
+            }
+          ],
+          "loc": {
+            "line": 59,
+            "col": 3,
+            "end_line": 59,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "wb_ack_out",
+          "reads": [
+            "ack",
+            "wb_cyc_in",
+            "wb_stb_in"
+          ],
+          "loc": {
+            "line": 62,
+            "col": 2,
+            "end_line": 62,
+            "end_col": 48
           }
         }
       ],

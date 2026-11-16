@@ -269,6 +269,140 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "enable",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 76,
+                "col": 7,
+                "end_line": 76,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "polarity",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 77,
+                "col": 7,
+                "end_line": 77,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "clkprsc",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 78,
+                "col": 7,
+                "end_line": 78,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "mode",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 79,
+                "col": 7,
+                "end_line": 79,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "enable",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 83,
+                "col": 11,
+                "end_line": 83,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "polarity",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 86,
+                "col": 11,
+                "end_line": 86,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "clkprsc",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 89,
+                "col": 11,
+                "end_line": 89,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "mode",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 92,
+                "col": 11,
+                "end_line": 92,
+                "end_col": 59
+              }
+            }
+          ],
           "comment": [
             "-- write access --"
           ],
@@ -290,6 +424,141 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "bus_rsp_o",
+              "select": ".ack",
+              "reads": [
+                "bus_req_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 102,
+                "col": 7,
+                "end_line": 102,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data",
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 103,
+                "col": 7,
+                "end_line": 103,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data(NUM_CHANNELS-1 downto 0)",
+              "reads": [
+                "enable"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 106,
+                "col": 26,
+                "end_line": 106,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data(NUM_CHANNELS-1 downto 0)",
+              "reads": [
+                "polarity"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 107,
+                "col": 26,
+                "end_line": 107,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data(2 downto 0)",
+              "reads": [
+                "clkprsc"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 108,
+                "col": 26,
+                "end_line": 108,
+                "end_col": 77
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data(NUM_CHANNELS-1 downto 0)",
+              "reads": [
+                "mode"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 109,
+                "col": 26,
+                "end_line": 109,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "bus_rsp_o",
+              "select": ".data",
+              "reads": [
+                "rdata_sum"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "bus_req_i",
+                "addr"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 110,
+                "col": 26,
+                "end_line": 110,
+                "end_col": 79
+              }
+            }
+          ],
           "comment": [
             "-- read access & bus handshake --"
           ],
@@ -311,6 +580,28 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "clken",
+              "reads": [
+                "clkgen_i",
+                "to_integer",
+                "unsigned",
+                "clkprsc"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 147,
+                "col": 7,
+                "end_line": 147,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "-- clock generator --"
           ],
@@ -328,6 +619,47 @@
           "events": [
             {
               "signal": "rdata"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "tmp_v",
+              "loc": {
+                "line": 155,
+                "col": 5,
+                "end_line": 155,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "tmp_v",
+              "reads": [
+                "tmp_v",
+                "rdata",
+                "i"
+              ],
+              "conds": [
+                "i"
+              ],
+              "loc": {
+                "line": 157,
+                "col": 7,
+                "end_line": 157,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "rdata_sum",
+              "reads": [
+                "tmp_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 159,
+                "col": 5,
+                "end_line": 159,
+                "end_col": 24
+              }
             }
           ],
           "comment": [
@@ -349,6 +681,32 @@
               "signal": "pwm"
             }
           ],
+          "assigns": [
+            {
+              "target": "pwm_o",
+              "blocking": false,
+              "loc": {
+                "line": 165,
+                "col": 5,
+                "end_line": 165,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pwm_o",
+              "select": "(NUM_CHANNELS-1 downto 0)",
+              "reads": [
+                "pwm"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 166,
+                "col": 5,
+                "end_line": 166,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "-- PWM output --"
           ],
@@ -357,6 +715,57 @@
             "col": 3,
             "end_line": 167,
             "end_col": 30
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "addr",
+          "reads": [
+            "bus_req_i"
+          ],
+          "loc": {
+            "line": 70,
+            "col": 3,
+            "end_line": 70,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "bus_rsp_o",
+          "select": ".err",
+          "loc": {
+            "line": 115,
+            "col": 3,
+            "end_line": 115,
+            "end_col": 24
+          }
+        },
+        {
+          "target": "cs",
+          "select": "(i)",
+          "reads": [
+            "bus_req_i",
+            "i"
+          ],
+          "conds": [
+            "bus_req_i",
+            "std_ulogic_vector",
+            "to_unsigned",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "pwm_channel_gen",
+              "cond": "i in 0 to NUM_CHANNELS-1"
+            }
+          ],
+          "loc": {
+            "line": 139,
+            "col": 5,
+            "end_line": 140,
+            "end_col": 110
           }
         }
       ],
@@ -971,6 +1380,76 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "cmp",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 218,
+                "col": 7,
+                "end_line": 218,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "top",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 219,
+                "col": 7,
+                "end_line": 219,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "cmp",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "cs_i",
+                "we_i",
+                "ben_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 223,
+                "col": 11,
+                "end_line": 223,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "top",
+              "reads": [
+                "wdata_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "cs_i",
+                "we_i",
+                "ben_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 226,
+                "col": 11,
+                "end_line": 226,
+                "end_col": 40
+              }
+            }
+          ],
           "comment": [
             "-- Register Interface ---------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -993,6 +1472,125 @@
           ],
           "clock": "clk_i",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "dir",
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 241,
+                "col": 9,
+                "end_line": 241,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "cnt",
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 242,
+                "col": 9,
+                "end_line": 242,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dir",
+              "reads": [
+                "dir",
+                "cmp_top",
+                "cmp_zero",
+                "mode_i"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 244,
+                "col": 9,
+                "end_line": 244,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "cnt",
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "clken_i",
+                "mode_i",
+                "cmp_top"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 247,
+                "col": 13,
+                "end_line": 247,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cnt",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "cnt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "clken_i",
+                "mode_i",
+                "cmp_top",
+                "dir"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 249,
+                "col": 13,
+                "end_line": 249,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "cnt",
+              "reads": [
+                "std_ulogic_vector",
+                "unsigned",
+                "cnt"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "clken_i",
+                "mode_i",
+                "cmp_top",
+                "dir"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 251,
+                "col": 13,
+                "end_line": 251,
+                "end_col": 57
+              }
+            }
+          ],
           "comment": [
             "-- PWM Counter ----------------------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1020,6 +1618,84 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "pwm_o",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 267,
+                "col": 7,
+                "end_line": 267,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "pwm_o",
+              "reads": [
+                "pol_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 270,
+                "col": 9,
+                "end_line": 270,
+                "end_col": 24
+              }
+            },
+            {
+              "target": "pwm_o",
+              "reads": [
+                "pol_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "unsigned",
+                "cnt",
+                "cmp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 272,
+                "col": 9,
+                "end_line": 272,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "pwm_o",
+              "reads": [
+                "pol_i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "en_i",
+                "unsigned",
+                "cnt",
+                "cmp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 274,
+                "col": 9,
+                "end_line": 274,
+                "end_col": 24
+              }
+            }
+          ],
           "comment": [
             "-- Output / Duty Cycle Control ------------------------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -1029,6 +1705,50 @@
             "col": 3,
             "end_line": 277,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rdata_o",
+          "reads": [
+            "top",
+            "cmp"
+          ],
+          "conds": [
+            "cs_i"
+          ],
+          "loc": {
+            "line": 233,
+            "col": 3,
+            "end_line": 233,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "cmp_zero",
+          "conds": [
+            "cnt"
+          ],
+          "loc": {
+            "line": 259,
+            "col": 3,
+            "end_line": 259,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "cmp_top",
+          "conds": [
+            "unsigned",
+            "cnt",
+            "top"
+          ],
+          "loc": {
+            "line": 260,
+            "col": 3,
+            "end_line": 260,
+            "end_col": 65
           }
         }
       ],

@@ -1969,7 +1969,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_no_cheriot_asr_err"
+              "name": "g_no_cheriot_asr_err",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -2114,7 +2117,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_no_intg_irq_int"
+              "name": "g_no_intg_irq_int",
+              "others": [
+                "MemECC"
+              ]
             }
           ],
           "loc": {
@@ -2131,7 +2137,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_cheriot_tieoff"
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
             }
           ],
           "loc": {
@@ -2219,6 +2228,247 @@
               "cond": "WritebackStage"
             }
           ],
+          "assigns": [
+            {
+              "target": "instr_fetch_err_prio",
+              "loc": {
+                "line": 302,
+                "col": 7,
+                "end_line": 302,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "illegal_insn_prio",
+              "loc": {
+                "line": 303,
+                "col": 7,
+                "end_line": 303,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ecall_insn_prio",
+              "loc": {
+                "line": 304,
+                "col": 7,
+                "end_line": 304,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ebrk_insn_prio",
+              "loc": {
+                "line": 305,
+                "col": 7,
+                "end_line": 305,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "store_err_prio",
+              "loc": {
+                "line": 306,
+                "col": 7,
+                "end_line": 306,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "load_err_prio",
+              "loc": {
+                "line": 307,
+                "col": 7,
+                "end_line": 307,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "cheriot_ex_err_prio",
+              "loc": {
+                "line": 308,
+                "col": 7,
+                "end_line": 308,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_wb_err_prio",
+              "loc": {
+                "line": 309,
+                "col": 7,
+                "end_line": 309,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_asr_err_prio",
+              "loc": {
+                "line": 310,
+                "col": 7,
+                "end_line": 310,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "store_err_prio",
+              "conds": [
+                "store_err_q"
+              ],
+              "loc": {
+                "line": 316,
+                "col": 9,
+                "end_line": 316,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "load_err_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q"
+              ],
+              "loc": {
+                "line": 318,
+                "col": 9,
+                "end_line": 318,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cheriot_wb_err_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 320,
+                "col": 9,
+                "end_line": 320,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "instr_fetch_err_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err"
+              ],
+              "loc": {
+                "line": 322,
+                "col": 9,
+                "end_line": 322,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "illegal_insn_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err",
+                "illegal_insn_q"
+              ],
+              "loc": {
+                "line": 324,
+                "col": 9,
+                "end_line": 324,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "ecall_insn_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn"
+              ],
+              "loc": {
+                "line": 326,
+                "col": 9,
+                "end_line": 326,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ebrk_insn_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn"
+              ],
+              "loc": {
+                "line": 328,
+                "col": 9,
+                "end_line": 328,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cheriot_ex_err_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_ex_err_q"
+              ],
+              "loc": {
+                "line": 330,
+                "col": 9,
+                "end_line": 330,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "cheriot_asr_err_prio",
+              "conds": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_ex_err_q",
+                "cheriot_asr_err_q"
+              ],
+              "loc": {
+                "line": 332,
+                "col": 9,
+                "end_line": 332,
+                "end_col": 37
+              }
+            }
+          ],
           "loc": {
             "line": 301,
             "col": 5,
@@ -2232,7 +2482,247 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_no_wb_exceptions"
+              "name": "g_no_wb_exceptions",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "instr_fetch_err_prio",
+              "loc": {
+                "line": 341,
+                "col": 7,
+                "end_line": 341,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "illegal_insn_prio",
+              "loc": {
+                "line": 342,
+                "col": 7,
+                "end_line": 342,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ecall_insn_prio",
+              "loc": {
+                "line": 343,
+                "col": 7,
+                "end_line": 343,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ebrk_insn_prio",
+              "loc": {
+                "line": 344,
+                "col": 7,
+                "end_line": 344,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "store_err_prio",
+              "loc": {
+                "line": 345,
+                "col": 7,
+                "end_line": 345,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "load_err_prio",
+              "loc": {
+                "line": 346,
+                "col": 7,
+                "end_line": 346,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "cheriot_wb_err_prio",
+              "loc": {
+                "line": 347,
+                "col": 7,
+                "end_line": 347,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_ex_err_prio",
+              "loc": {
+                "line": 348,
+                "col": 7,
+                "end_line": 348,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_asr_err_prio",
+              "loc": {
+                "line": 349,
+                "col": 7,
+                "end_line": 349,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "instr_fetch_err_prio",
+              "conds": [
+                "instr_fetch_err"
+              ],
+              "loc": {
+                "line": 352,
+                "col": 9,
+                "end_line": 352,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "illegal_insn_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q"
+              ],
+              "loc": {
+                "line": 354,
+                "col": 9,
+                "end_line": 354,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "ecall_insn_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn"
+              ],
+              "loc": {
+                "line": 356,
+                "col": 9,
+                "end_line": 356,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ebrk_insn_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn"
+              ],
+              "loc": {
+                "line": 358,
+                "col": 9,
+                "end_line": 358,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cheriot_ex_err_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_ex_err_q"
+              ],
+              "loc": {
+                "line": 360,
+                "col": 9,
+                "end_line": 360,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "store_err_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_ex_err_q",
+                "store_err_q"
+              ],
+              "loc": {
+                "line": 362,
+                "col": 9,
+                "end_line": 362,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "load_err_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_ex_err_q",
+                "store_err_q",
+                "load_err_q"
+              ],
+              "loc": {
+                "line": 364,
+                "col": 9,
+                "end_line": 364,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "cheriot_wb_err_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_ex_err_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 366,
+                "col": 9,
+                "end_line": 366,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "cheriot_asr_err_prio",
+              "conds": [
+                "instr_fetch_err",
+                "illegal_insn_q",
+                "ecall_insn",
+                "ebrk_insn",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_ex_err_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_wb_err_q",
+                "cheriot_asr_err_q"
+              ],
+              "loc": {
+                "line": 368,
+                "col": 9,
+                "end_line": 368,
+                "end_col": 37
+              }
             }
           ],
           "loc": {
@@ -2250,6 +2740,81 @@
               "kind": "if",
               "name": "g_intg_irq_int",
               "cond": "MemECC"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "mem_resp_intg_err_addr_d",
+              "reads": [
+                "mem_resp_intg_err_addr_q"
+              ],
+              "loc": {
+                "line": 404,
+                "col": 7,
+                "end_line": 404,
+                "end_col": 66
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_irq_set",
+              "loc": {
+                "line": 405,
+                "col": 7,
+                "end_line": 405,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_irq_clear",
+              "loc": {
+                "line": 406,
+                "col": 7,
+                "end_line": 406,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_irq_clear",
+              "conds": [
+                "mem_resp_intg_err_irq_pending_q",
+                "entering_nmi",
+                "irq_nm_ext_i"
+              ],
+              "loc": {
+                "line": 412,
+                "col": 11,
+                "end_line": 412,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_addr_d",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "mem_resp_intg_err_irq_pending_q",
+                "mem_resp_intg_err_i"
+              ],
+              "loc": {
+                "line": 417,
+                "col": 9,
+                "end_line": 417,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_irq_set",
+              "conds": [
+                "mem_resp_intg_err_irq_pending_q",
+                "mem_resp_intg_err_i"
+              ],
+              "loc": {
+                "line": 418,
+                "col": 9,
+                "end_line": 418,
+                "end_col": 48
+              }
             }
           ],
           "comment": [
@@ -2286,6 +2851,66 @@
               "cond": "MemECC"
             }
           ],
+          "assigns": [
+            {
+              "target": "mem_resp_intg_err_irq_pending_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 427,
+                "col": 9,
+                "end_line": 427,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_addr_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 428,
+                "col": 9,
+                "end_line": 428,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_irq_pending_q",
+              "reads": [
+                "mem_resp_intg_err_irq_pending_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 430,
+                "col": 9,
+                "end_line": 430,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "mem_resp_intg_err_addr_q",
+              "reads": [
+                "mem_resp_intg_err_addr_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 431,
+                "col": 9,
+                "end_line": 431,
+                "end_col": 69
+              }
+            }
+          ],
           "loc": {
             "line": 425,
             "col": 5,
@@ -2297,6 +2922,33 @@
           "id": "ibex_controller.gen_mfip_id",
           "name": "gen_mfip_id",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "mfip_id",
+              "loc": {
+                "line": 507,
+                "col": 5,
+                "end_line": 507,
+                "end_col": 20
+              }
+            },
+            {
+              "target": "mfip_id",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "i",
+                "irqs_i"
+              ],
+              "loc": {
+                "line": 511,
+                "col": 9,
+                "end_line": 511,
+                "end_col": 26
+              }
+            }
+          ],
           "comment": [
             "generate ID of fast interrupts, highest priority to lowest ID"
           ],
@@ -2324,6 +2976,40 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "debug_cause_q",
+              "reads": [
+                "DBG_CAUSE_NONE"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 532,
+                "col": 7,
+                "end_line": 532,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "debug_cause_q",
+              "reads": [
+                "debug_cause_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 534,
+                "col": 7,
+                "end_line": 534,
+                "end_col": 38
+              }
+            }
+          ],
           "loc": {
             "line": 530,
             "col": 3,
@@ -2334,6 +3020,2689 @@
         {
           "id": "ibex_controller.#always8",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "instr_req_o",
+              "loc": {
+                "line": 546,
+                "col": 5,
+                "end_line": 546,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_save_if_o",
+              "loc": {
+                "line": 548,
+                "col": 5,
+                "end_line": 548,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_save_id_o",
+              "loc": {
+                "line": 549,
+                "col": 5,
+                "end_line": 549,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_save_wb_o",
+              "loc": {
+                "line": 550,
+                "col": 5,
+                "end_line": 550,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_restore_mret_id_o",
+              "loc": {
+                "line": 551,
+                "col": 5,
+                "end_line": 551,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_restore_dret_id_o",
+              "loc": {
+                "line": 552,
+                "col": 5,
+                "end_line": 552,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "loc": {
+                "line": 553,
+                "col": 5,
+                "end_line": 553,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_mepcc_clrtag_o",
+              "loc": {
+                "line": 554,
+                "col": 5,
+                "end_line": 554,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "loc": {
+                "line": 555,
+                "col": 5,
+                "end_line": 555,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_BOOT"
+              ],
+              "loc": {
+                "line": 561,
+                "col": 5,
+                "end_line": 561,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "loc": {
+                "line": 562,
+                "col": 5,
+                "end_line": 562,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "nt_branch_mispredict_o",
+              "loc": {
+                "line": 563,
+                "col": 5,
+                "end_line": 563,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "exc_pc_mux_o",
+              "reads": [
+                "EXC_PC_IRQ"
+              ],
+              "loc": {
+                "line": 565,
+                "col": 5,
+                "end_line": 565,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseInsnAddrMisa"
+              ],
+              "loc": {
+                "line": 566,
+                "col": 5,
+                "end_line": 566,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "ctrl_fsm_cs"
+              ],
+              "loc": {
+                "line": 568,
+                "col": 5,
+                "end_line": 568,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "ctrl_busy_o",
+              "loc": {
+                "line": 570,
+                "col": 5,
+                "end_line": 570,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "halt_if",
+              "loc": {
+                "line": 572,
+                "col": 5,
+                "end_line": 572,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "retain_id",
+              "loc": {
+                "line": 573,
+                "col": 5,
+                "end_line": 573,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "flush_id",
+              "loc": {
+                "line": 574,
+                "col": 5,
+                "end_line": 574,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "debug_csr_save_o",
+              "loc": {
+                "line": 576,
+                "col": 5,
+                "end_line": 576,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "debug_mode_d",
+              "reads": [
+                "debug_mode_q"
+              ],
+              "loc": {
+                "line": 577,
+                "col": 5,
+                "end_line": 577,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "debug_mode_entering_o",
+              "loc": {
+                "line": 578,
+                "col": 5,
+                "end_line": 578,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "nmi_mode_d",
+              "reads": [
+                "nmi_mode_q"
+              ],
+              "loc": {
+                "line": 579,
+                "col": 5,
+                "end_line": 579,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "perf_tbranch_o",
+              "loc": {
+                "line": 581,
+                "col": 5,
+                "end_line": 581,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "perf_jump_o",
+              "loc": {
+                "line": 582,
+                "col": 5,
+                "end_line": 582,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "controller_run_o",
+              "loc": {
+                "line": 584,
+                "col": 5,
+                "end_line": 584,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "instr_req_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "RESET"
+              ],
+              "loc": {
+                "line": 588,
+                "col": 9,
+                "end_line": 588,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_BOOT"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "RESET"
+              ],
+              "loc": {
+                "line": 589,
+                "col": 9,
+                "end_line": 589,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "RESET"
+              ],
+              "loc": {
+                "line": 590,
+                "col": 9,
+                "end_line": 590,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "BOOT_SET"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "RESET"
+              ],
+              "loc": {
+                "line": 591,
+                "col": 9,
+                "end_line": 591,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "instr_req_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "BOOT_SET"
+              ],
+              "loc": {
+                "line": 596,
+                "col": 9,
+                "end_line": 596,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_BOOT"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "BOOT_SET"
+              ],
+              "loc": {
+                "line": 597,
+                "col": 9,
+                "end_line": 597,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "BOOT_SET"
+              ],
+              "loc": {
+                "line": 598,
+                "col": 9,
+                "end_line": 598,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "FIRST_FETCH"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "BOOT_SET"
+              ],
+              "loc": {
+                "line": 600,
+                "col": 9,
+                "end_line": 600,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "ctrl_busy_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "WAIT_SLEEP"
+              ],
+              "loc": {
+                "line": 604,
+                "col": 9,
+                "end_line": 604,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "instr_req_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "WAIT_SLEEP"
+              ],
+              "loc": {
+                "line": 605,
+                "col": 9,
+                "end_line": 605,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "WAIT_SLEEP"
+              ],
+              "loc": {
+                "line": 606,
+                "col": 9,
+                "end_line": 606,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "WAIT_SLEEP"
+              ],
+              "loc": {
+                "line": 607,
+                "col": 9,
+                "end_line": 607,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "SLEEP"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "WAIT_SLEEP"
+              ],
+              "loc": {
+                "line": 608,
+                "col": 9,
+                "end_line": 608,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "instr_req_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "SLEEP"
+              ],
+              "loc": {
+                "line": 614,
+                "col": 9,
+                "end_line": 614,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "SLEEP"
+              ],
+              "loc": {
+                "line": 615,
+                "col": 9,
+                "end_line": 615,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "SLEEP"
+              ],
+              "loc": {
+                "line": 616,
+                "col": 9,
+                "end_line": 616,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "FIRST_FETCH"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "SLEEP",
+                "irq_nm",
+                "irq_pending_i",
+                "debug_req_i",
+                "debug_mode_q",
+                "debug_single_step_i"
+              ],
+              "loc": {
+                "line": 621,
+                "col": 11,
+                "end_line": 621,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "ctrl_busy_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "SLEEP",
+                "irq_nm",
+                "irq_pending_i",
+                "debug_req_i",
+                "debug_mode_q",
+                "debug_single_step_i"
+              ],
+              "loc": {
+                "line": 624,
+                "col": 11,
+                "end_line": 624,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DECODE"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FIRST_FETCH",
+                "id_in_ready_o"
+              ],
+              "loc": {
+                "line": 631,
+                "col": 11,
+                "end_line": 631,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "IRQ_TAKEN"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FIRST_FETCH",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 640,
+                "col": 11,
+                "end_line": 640,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FIRST_FETCH",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 641,
+                "col": 11,
+                "end_line": 641,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DBG_TAKEN_IF"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FIRST_FETCH",
+                "enter_debug_mode"
+              ],
+              "loc": {
+                "line": 646,
+                "col": 11,
+                "end_line": 646,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FIRST_FETCH",
+                "enter_debug_mode"
+              ],
+              "loc": {
+                "line": 649,
+                "col": 11,
+                "end_line": 649,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "controller_run_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE"
+              ],
+              "loc": {
+                "line": 660,
+                "col": 9,
+                "end_line": 660,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_JUMP"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE"
+              ],
+              "loc": {
+                "line": 665,
+                "col": 9,
+                "end_line": 665,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "retain_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "special_req"
+              ],
+              "loc": {
+                "line": 673,
+                "col": 11,
+                "end_line": 673,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "FLUSH"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "special_req",
+                "ready_wb_i",
+                "wb_exception_o"
+              ],
+              "loc": {
+                "line": 682,
+                "col": 13,
+                "end_line": 682,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "reads": [
+                "instr_bp_taken_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "branch_set_i",
+                "jump_set_i",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_branch_req_i"
+              ],
+              "loc": {
+                "line": 689,
+                "col": 11,
+                "end_line": 689,
+                "end_col": 71
+              }
+            },
+            {
+              "target": "perf_tbranch_o",
+              "reads": [
+                "branch_set_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "branch_set_i",
+                "jump_set_i",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_branch_req_i"
+              ],
+              "loc": {
+                "line": 691,
+                "col": 11,
+                "end_line": 691,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "perf_jump_o",
+              "reads": [
+                "jump_set_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "branch_set_i",
+                "jump_set_i",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_branch_req_i"
+              ],
+              "loc": {
+                "line": 692,
+                "col": 11,
+                "end_line": 692,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "nt_branch_mispredict_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "instr_bp_taken_i",
+                "branch_not_set_i"
+              ],
+              "loc": {
+                "line": 699,
+                "col": 13,
+                "end_line": 699,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "enter_debug_mode",
+                "handle_irq",
+                "stall",
+                "id_wb_pending"
+              ],
+              "loc": {
+                "line": 706,
+                "col": 11,
+                "end_line": 706,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DBG_TAKEN_IF"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "stall",
+                "special_req",
+                "id_wb_pending",
+                "enter_debug_mode"
+              ],
+              "loc": {
+                "line": 712,
+                "col": 13,
+                "end_line": 712,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "stall",
+                "special_req",
+                "id_wb_pending",
+                "enter_debug_mode"
+              ],
+              "loc": {
+                "line": 715,
+                "col": 13,
+                "end_line": 715,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "IRQ_TAKEN"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "stall",
+                "special_req",
+                "id_wb_pending",
+                "enter_debug_mode",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 718,
+                "col": 13,
+                "end_line": 718,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DECODE",
+                "stall",
+                "special_req",
+                "id_wb_pending",
+                "enter_debug_mode",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 724,
+                "col": 13,
+                "end_line": 724,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_EXC"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN"
+              ],
+              "loc": {
+                "line": 731,
+                "col": 9,
+                "end_line": 731,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "exc_pc_mux_o",
+              "reads": [
+                "EXC_PC_IRQ"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN"
+              ],
+              "loc": {
+                "line": 732,
+                "col": 9,
+                "end_line": 732,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 735,
+                "col": 11,
+                "end_line": 735,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "csr_save_if_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 737,
+                "col": 11,
+                "end_line": 737,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq"
+              ],
+              "loc": {
+                "line": 738,
+                "col": 11,
+                "end_line": 738,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIrqNm",
+                "irq_nm_int_cause"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irq_nm_ext_i"
+              ],
+              "loc": {
+                "line": 742,
+                "col": 13,
+                "end_line": 744,
+                "end_col": 93
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "irq_nm_int_mtval"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irq_nm_int",
+                "irq_nm_ext_i"
+              ],
+              "loc": {
+                "line": 747,
+                "col": 15,
+                "end_line": 747,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "nmi_mode_d",
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q"
+              ],
+              "loc": {
+                "line": 750,
+                "col": 13,
+                "end_line": 750,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "mfip_id"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irqs_i"
+              ],
+              "loc": {
+                "line": 756,
+                "col": 13,
+                "end_line": 756,
+                "end_col": 89
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIrqExternalM"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irqs_i"
+              ],
+              "loc": {
+                "line": 758,
+                "col": 13,
+                "end_line": 758,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIrqSoftwareM"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irqs_i"
+              ],
+              "loc": {
+                "line": 760,
+                "col": 13,
+                "end_line": 760,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIrqTimerM"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN",
+                "handle_irq",
+                "irq_nm",
+                "nmi_mode_q",
+                "irqs_i"
+              ],
+              "loc": {
+                "line": 762,
+                "col": 13,
+                "end_line": 762,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DECODE"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "IRQ_TAKEN"
+              ],
+              "loc": {
+                "line": 766,
+                "col": 9,
+                "end_line": 766,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_EXC"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 770,
+                "col": 9,
+                "end_line": 770,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "exc_pc_mux_o",
+              "reads": [
+                "EXC_PC_DBD"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 771,
+                "col": 9,
+                "end_line": 771,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 775,
+                "col": 9,
+                "end_line": 775,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 776,
+                "col": 9,
+                "end_line": 776,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "csr_save_if_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 778,
+                "col": 9,
+                "end_line": 778,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "debug_csr_save_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 779,
+                "col": 9,
+                "end_line": 779,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 781,
+                "col": 9,
+                "end_line": 781,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "debug_mode_d",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 784,
+                "col": 9,
+                "end_line": 784,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "debug_mode_entering_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 785,
+                "col": 9,
+                "end_line": 785,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DECODE"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_IF"
+              ],
+              "loc": {
+                "line": 787,
+                "col": 9,
+                "end_line": 787,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 798,
+                "col": 9,
+                "end_line": 798,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_EXC"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 799,
+                "col": 9,
+                "end_line": 799,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 800,
+                "col": 9,
+                "end_line": 800,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "exc_pc_mux_o",
+              "reads": [
+                "EXC_PC_DBD"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 801,
+                "col": 9,
+                "end_line": 801,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID",
+                "ebreak_into_debug",
+                "debug_mode_q"
+              ],
+              "loc": {
+                "line": 807,
+                "col": 11,
+                "end_line": 807,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "csr_save_id_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID",
+                "ebreak_into_debug",
+                "debug_mode_q"
+              ],
+              "loc": {
+                "line": 808,
+                "col": 11,
+                "end_line": 808,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "debug_csr_save_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID",
+                "ebreak_into_debug",
+                "debug_mode_q"
+              ],
+              "loc": {
+                "line": 811,
+                "col": 11,
+                "end_line": 811,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "debug_mode_d",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 815,
+                "col": 9,
+                "end_line": 815,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "debug_mode_entering_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 816,
+                "col": 9,
+                "end_line": 816,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DECODE"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "DBG_TAKEN_ID"
+              ],
+              "loc": {
+                "line": 818,
+                "col": 9,
+                "end_line": 818,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH"
+              ],
+              "loc": {
+                "line": 823,
+                "col": 9,
+                "end_line": 823,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH"
+              ],
+              "loc": {
+                "line": 824,
+                "col": 9,
+                "end_line": 824,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DECODE"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH"
+              ],
+              "loc": {
+                "line": 825,
+                "col": 9,
+                "end_line": 825,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 834,
+                "col": 11,
+                "end_line": 834,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_EXC"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 835,
+                "col": 11,
+                "end_line": 835,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "exc_pc_mux_o",
+              "reads": [
+                "EXC_PC_DBG_EXC",
+                "EXC_PC_EXC"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "debug_mode_q"
+              ],
+              "loc": {
+                "line": 836,
+                "col": 11,
+                "end_line": 836,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "csr_save_id_o",
+              "reads": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 842,
+                "col": 13,
+                "end_line": 843,
+                "end_col": 87
+              }
+            },
+            {
+              "target": "csr_save_wb_o",
+              "reads": [
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 844,
+                "col": 13,
+                "end_line": 845,
+                "end_col": 84
+              }
+            },
+            {
+              "target": "csr_save_id_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 847,
+                "col": 13,
+                "end_line": 847,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q"
+              ],
+              "loc": {
+                "line": 850,
+                "col": 11,
+                "end_line": 850,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i"
+              ],
+              "loc": {
+                "line": 857,
+                "col": 17,
+                "end_line": 857,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i"
+              ],
+              "loc": {
+                "line": 858,
+                "col": 17,
+                "end_line": 858,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i",
+                "instr_fetch_cheriot_bound_vio_i"
+              ],
+              "loc": {
+                "line": 861,
+                "col": 17,
+                "end_line": 861,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i",
+                "instr_fetch_cheriot_bound_vio_i"
+              ],
+              "loc": {
+                "line": 862,
+                "col": 17,
+                "end_line": 862,
+                "end_col": 57
+              }
+            },
+            {
+              "target": "csr_mepcc_clrtag_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i",
+                "instr_fetch_cheriot_bound_vio_i"
+              ],
+              "loc": {
+                "line": 863,
+                "col": 17,
+                "end_line": 863,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseInstrAccessFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i",
+                "instr_fetch_cheriot_bound_vio_i"
+              ],
+              "loc": {
+                "line": 865,
+                "col": 17,
+                "end_line": 865,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "instr_fetch_err_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_fetch_cheriot_acc_vio_i",
+                "instr_fetch_cheriot_bound_vio_i",
+                "instr_fetch_err_plus2_i"
+              ],
+              "loc": {
+                "line": 866,
+                "col": 17,
+                "end_line": 866,
+                "end_col": 85
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIllegalInsn"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "illegal_insn_prio"
+              ],
+              "loc": {
+                "line": 870,
+                "col": 15,
+                "end_line": 870,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "instr_compressed_i",
+                "instr_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "illegal_insn_prio",
+                "BaseIsaRV32IorCHERIoT",
+                "instr_is_compressed_i"
+              ],
+              "loc": {
+                "line": 871,
+                "col": 15,
+                "end_line": 873,
+                "end_col": 93
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseEcallMMode",
+                "ExcCauseEcallUMode"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ecall_insn_prio",
+                "priv_mode_i",
+                "PRIV_LVL_M"
+              ],
+              "loc": {
+                "line": 876,
+                "col": 15,
+                "end_line": 877,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 884,
+                "col": 17,
+                "end_line": 884,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "csr_save_id_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 885,
+                "col": 17,
+                "end_line": 885,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "csr_save_cause_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 886,
+                "col": 17,
+                "end_line": 886,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DBG_TAKEN_ID"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 887,
+                "col": 17,
+                "end_line": 887,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "flush_id",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 888,
+                "col": 17,
+                "end_line": 888,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseBreakpoint"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 897,
+                "col": 17,
+                "end_line": 897,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "ebrk_insn_prio",
+                "debug_mode_q",
+                "ebreak_into_debug",
+                "BaseIsaRV32IorCHERIoT"
+              ],
+              "loc": {
+                "line": 901,
+                "col": 19,
+                "end_line": 901,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseStoreAddrMisaligned"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 908,
+                "col": 19,
+                "end_line": 908,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 909,
+                "col": 19,
+                "end_line": 909,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 911,
+                "col": 19,
+                "end_line": 911,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "cheriot_wb_err_info_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 912,
+                "col": 19,
+                "end_line": 912,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseStoreAccessFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q"
+              ],
+              "loc": {
+                "line": 915,
+                "col": 17,
+                "end_line": 915,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "store_err_prio",
+                "lsu_err_is_cheriot_q"
+              ],
+              "loc": {
+                "line": 916,
+                "col": 17,
+                "end_line": 916,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseLoadAddrMisaligned"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 922,
+                "col": 19,
+                "end_line": 922,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 923,
+                "col": 19,
+                "end_line": 923,
+                "end_col": 49
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 925,
+                "col": 19,
+                "end_line": 925,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "cheriot_wb_err_info_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 926,
+                "col": 19,
+                "end_line": 926,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseLoadAccessFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q"
+              ],
+              "loc": {
+                "line": 929,
+                "col": 17,
+                "end_line": 929,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "load_err_prio",
+                "lsu_err_is_cheriot_q"
+              ],
+              "loc": {
+                "line": 930,
+                "col": 17,
+                "end_line": 930,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_ex_err_prio"
+              ],
+              "loc": {
+                "line": 935,
+                "col": 17,
+                "end_line": 935,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "cheriot_ex_err_info_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_ex_err_prio"
+              ],
+              "loc": {
+                "line": 936,
+                "col": 17,
+                "end_line": 936,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseIllegalInsn"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_wb_err_prio",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 942,
+                "col": 19,
+                "end_line": 942,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "cheriot_wb_err_info_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_wb_err_prio",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 943,
+                "col": 19,
+                "end_line": 943,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_wb_err_prio",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 945,
+                "col": 19,
+                "end_line": 945,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "reads": [
+                "cheriot_wb_err_info_i"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_wb_err_prio",
+                "cheriot_wb_err_info_i"
+              ],
+              "loc": {
+                "line": 946,
+                "col": 19,
+                "end_line": 946,
+                "end_col": 70
+              }
+            },
+            {
+              "target": "exc_cause_o",
+              "reads": [
+                "ExcCauseCheriFault"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_asr_err_prio"
+              ],
+              "loc": {
+                "line": 951,
+                "col": 15,
+                "end_line": 951,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "csr_mtval_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "cheriot_asr_err_prio"
+              ],
+              "loc": {
+                "line": 952,
+                "col": 15,
+                "end_line": 952,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_ERET"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn"
+              ],
+              "loc": {
+                "line": 960,
+                "col": 13,
+                "end_line": 960,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn"
+              ],
+              "loc": {
+                "line": 961,
+                "col": 13,
+                "end_line": 961,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "csr_restore_mret_id_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn"
+              ],
+              "loc": {
+                "line": 962,
+                "col": 13,
+                "end_line": 962,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "nmi_mode_d",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "nmi_mode_q"
+              ],
+              "loc": {
+                "line": 964,
+                "col": 15,
+                "end_line": 964,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "pc_mux_o",
+              "reads": [
+                "PC_DRET"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "dret_insn"
+              ],
+              "loc": {
+                "line": 967,
+                "col": 13,
+                "end_line": 967,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "pc_set_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "dret_insn"
+              ],
+              "loc": {
+                "line": 968,
+                "col": 13,
+                "end_line": 968,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "debug_mode_d",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "dret_insn"
+              ],
+              "loc": {
+                "line": 969,
+                "col": 13,
+                "end_line": 969,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "csr_restore_dret_id_o",
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "dret_insn"
+              ],
+              "loc": {
+                "line": 970,
+                "col": 13,
+                "end_line": 970,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "WAIT_SLEEP"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "exc_req_q",
+                "store_err_q",
+                "load_err_q",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "cheriot_wb_err_q",
+                "mret_insn",
+                "dret_insn",
+                "wfi_insn"
+              ],
+              "loc": {
+                "line": 972,
+                "col": 13,
+                "end_line": 972,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "DBG_TAKEN_IF"
+              ],
+              "conds": [
+                "ctrl_fsm_cs",
+                "FLUSH",
+                "enter_debug_mode_prio_q",
+                "ebrk_insn_prio",
+                "ebreak_into_debug"
+              ],
+              "loc": {
+                "line": 991,
+                "col": 11,
+                "end_line": 991,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "instr_req_o",
+              "conds": [
+                "ctrl_fsm_cs"
+              ],
+              "loc": {
+                "line": 996,
+                "col": 9,
+                "end_line": 996,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "ctrl_fsm_ns",
+              "reads": [
+                "RESET"
+              ],
+              "conds": [
+                "ctrl_fsm_cs"
+              ],
+              "loc": {
+                "line": 997,
+                "col": 9,
+                "end_line": 997,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "halt_if",
+              "conds": [
+                "instr_exec_i"
+              ],
+              "loc": {
+                "line": 1003,
+                "col": 7,
+                "end_line": 1003,
+                "end_col": 22
+              }
+            }
+          ],
           "comment": [
             "///////////////////",
             "Core controller //",
@@ -2364,6 +5733,272 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "ctrl_fsm_cs",
+              "reads": [
+                "RESET"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1037,
+                "col": 7,
+                "end_line": 1037,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "nmi_mode_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1038,
+                "col": 7,
+                "end_line": 1038,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "do_single_step_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1039,
+                "col": 7,
+                "end_line": 1039,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "debug_mode_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1040,
+                "col": 7,
+                "end_line": 1040,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "enter_debug_mode_prio_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1041,
+                "col": 7,
+                "end_line": 1041,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "load_err_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1042,
+                "col": 7,
+                "end_line": 1042,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "store_err_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1043,
+                "col": 7,
+                "end_line": 1043,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "exc_req_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1044,
+                "col": 7,
+                "end_line": 1044,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "illegal_insn_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1045,
+                "col": 7,
+                "end_line": 1045,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "ctrl_fsm_cs",
+              "reads": [
+                "ctrl_fsm_ns"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1047,
+                "col": 7,
+                "end_line": 1047,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "nmi_mode_q",
+              "reads": [
+                "nmi_mode_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1048,
+                "col": 7,
+                "end_line": 1048,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "do_single_step_q",
+              "reads": [
+                "do_single_step_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1049,
+                "col": 7,
+                "end_line": 1049,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "debug_mode_q",
+              "reads": [
+                "debug_mode_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1050,
+                "col": 7,
+                "end_line": 1050,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "enter_debug_mode_prio_q",
+              "reads": [
+                "enter_debug_mode_prio_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1051,
+                "col": 7,
+                "end_line": 1051,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "load_err_q",
+              "reads": [
+                "load_err_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1052,
+                "col": 7,
+                "end_line": 1052,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "store_err_q",
+              "reads": [
+                "store_err_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1053,
+                "col": 7,
+                "end_line": 1053,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "exc_req_q",
+              "reads": [
+                "exc_req_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1054,
+                "col": 7,
+                "end_line": 1054,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "illegal_insn_q",
+              "reads": [
+                "illegal_insn_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1055,
+                "col": 7,
+                "end_line": 1055,
+                "end_col": 49
+              }
+            }
+          ],
           "comment": [
             "update registers"
           ],
@@ -2399,11 +6034,1161 @@
               "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
             }
           ],
+          "assigns": [
+            {
+              "target": "lsu_err_is_cheriot_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1062,
+                "col": 9,
+                "end_line": 1062,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cheriot_ex_err_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1063,
+                "col": 9,
+                "end_line": 1063,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cheriot_wb_err_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1064,
+                "col": 9,
+                "end_line": 1064,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "cheriot_asr_err_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1065,
+                "col": 9,
+                "end_line": 1065,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "lsu_err_is_cheriot_q",
+              "reads": [
+                "lsu_err_is_cheriot_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1067,
+                "col": 9,
+                "end_line": 1067,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "cheriot_ex_err_q",
+              "reads": [
+                "cheriot_ex_err_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1068,
+                "col": 9,
+                "end_line": 1068,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "cheriot_wb_err_q",
+              "reads": [
+                "cheriot_wb_err_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1069,
+                "col": 9,
+                "end_line": 1069,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "cheriot_asr_err_q",
+              "reads": [
+                "cheriot_asr_err_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 1070,
+                "col": 9,
+                "end_line": 1070,
+                "end_col": 51
+              }
+            }
+          ],
           "loc": {
             "line": 1060,
             "col": 5,
             "end_line": 1072,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "load_err_d",
+          "reads": [
+            "load_err_i"
+          ],
+          "loc": {
+            "line": 224,
+            "col": 10,
+            "end_line": 224,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "store_err_d",
+          "reads": [
+            "store_err_i"
+          ],
+          "loc": {
+            "line": 225,
+            "col": 10,
+            "end_line": 225,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "ecall_insn",
+          "reads": [
+            "ecall_insn_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 228,
+            "col": 10,
+            "end_line": 228,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "mret_insn",
+          "reads": [
+            "mret_insn_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 229,
+            "col": 10,
+            "end_line": 229,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "dret_insn",
+          "reads": [
+            "dret_insn_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 230,
+            "col": 10,
+            "end_line": 230,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "wfi_insn",
+          "reads": [
+            "wfi_insn_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 231,
+            "col": 10,
+            "end_line": 231,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "ebrk_insn",
+          "reads": [
+            "ebrk_insn_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 232,
+            "col": 10,
+            "end_line": 232,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "csr_pipe_flush",
+          "reads": [
+            "csr_pipe_flush_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 233,
+            "col": 10,
+            "end_line": 233,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "instr_fetch_err",
+          "reads": [
+            "instr_fetch_err_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 234,
+            "col": 10,
+            "end_line": 234,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "cheriot_ex_err",
+          "reads": [
+            "cheriot_ex_err_i",
+            "instr_is_cheriot_i",
+            "instr_valid_i"
+          ],
+          "loc": {
+            "line": 235,
+            "col": 10,
+            "end_line": 235,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "mret_cheriot_asr_err",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "csr_pcc_perm_sr_i",
+            "mret_insn"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_asr_err",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 238,
+            "col": 12,
+            "end_line": 238,
+            "end_col": 100
+          }
+        },
+        {
+          "target": "csr_cheriot_asr_err",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "csr_pcc_perm_sr_i",
+            "instr_valid_i",
+            "csr_access_i",
+            "illegal_insn_i",
+            "csr_cheriot_always_ok_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_cheriot_asr_err",
+              "cond": "BaseIsa == BaseIsaRV32IorCHERIoT"
+            }
+          ],
+          "loc": {
+            "line": 239,
+            "col": 12,
+            "end_line": 241,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "mret_cheriot_asr_err",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_cheriot_asr_err",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 243,
+            "col": 12,
+            "end_line": 243,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "csr_cheriot_asr_err",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_cheriot_asr_err",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 244,
+            "col": 12,
+            "end_line": 244,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "unused_cheriot_asr_inputs",
+          "reads": [
+            "csr_access_i",
+            "csr_cheriot_always_ok_i",
+            "csr_pcc_perm_sr_i",
+            "instr_fetch_cheriot_acc_vio_i",
+            "instr_fetch_cheriot_bound_vio_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_cheriot_asr_err",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 246,
+            "col": 12,
+            "end_line": 248,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "illegal_insn_d",
+          "reads": [
+            "illegal_insn_i",
+            "ctrl_fsm_cs",
+            "FLUSH"
+          ],
+          "loc": {
+            "line": 256,
+            "col": 10,
+            "end_line": 256,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "cheriot_ex_err_d",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "cheriot_ex_err",
+            "ctrl_fsm_cs",
+            "FLUSH"
+          ],
+          "loc": {
+            "line": 257,
+            "col": 10,
+            "end_line": 258,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "cheriot_asr_err_d",
+          "reads": [
+            "illegal_insn_i",
+            "csr_cheriot_asr_err",
+            "mret_cheriot_asr_err"
+          ],
+          "loc": {
+            "line": 260,
+            "col": 10,
+            "end_line": 260,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "exc_req_d",
+          "reads": [
+            "ecall_insn",
+            "ebrk_insn",
+            "illegal_insn_d",
+            "instr_fetch_err",
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "cheriot_ex_err",
+            "cheriot_asr_err_d",
+            "ctrl_fsm_cs",
+            "FLUSH"
+          ],
+          "loc": {
+            "line": 269,
+            "col": 10,
+            "end_line": 271,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "exc_req_nc",
+          "reads": [
+            "ecall_insn",
+            "ebrk_insn",
+            "illegal_insn_d",
+            "instr_fetch_err",
+            "cheriot_asr_err_d",
+            "ctrl_fsm_cs",
+            "FLUSH"
+          ],
+          "loc": {
+            "line": 272,
+            "col": 10,
+            "end_line": 273,
+            "end_col": 66
+          }
+        },
+        {
+          "target": "exc_req_lsu",
+          "reads": [
+            "store_err_i",
+            "load_err_i"
+          ],
+          "loc": {
+            "line": 276,
+            "col": 10,
+            "end_line": 276,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "exc_req_wb",
+          "reads": [
+            "exc_req_lsu",
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "cheriot_wb_err_i"
+          ],
+          "loc": {
+            "line": 277,
+            "col": 10,
+            "end_line": 277,
+            "end_col": 91
+          }
+        },
+        {
+          "target": "id_exception_o",
+          "reads": [
+            "exc_req_d"
+          ],
+          "loc": {
+            "line": 279,
+            "col": 10,
+            "end_line": 279,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "id_exception_nc_o",
+          "reads": [
+            "exc_req_nc"
+          ],
+          "loc": {
+            "line": 280,
+            "col": 10,
+            "end_line": 280,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "special_req_flush_only",
+          "reads": [
+            "wfi_insn",
+            "csr_pipe_flush"
+          ],
+          "loc": {
+            "line": 288,
+            "col": 10,
+            "end_line": 288,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "special_req_pc_change",
+          "reads": [
+            "mret_insn",
+            "dret_insn",
+            "exc_req_d",
+            "exc_req_wb"
+          ],
+          "loc": {
+            "line": 291,
+            "col": 10,
+            "end_line": 291,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "special_req",
+          "reads": [
+            "special_req_pc_change",
+            "special_req_flush_only"
+          ],
+          "loc": {
+            "line": 294,
+            "col": 10,
+            "end_line": 294,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "id_wb_pending",
+          "reads": [
+            "instr_valid_i",
+            "ready_wb_i"
+          ],
+          "loc": {
+            "line": 297,
+            "col": 10,
+            "end_line": 297,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "wb_exception_o",
+          "reads": [
+            "load_err_q",
+            "store_err_q",
+            "load_err_i",
+            "store_err_i",
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "cheriot_wb_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_wb_exceptions",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 337,
+            "col": 12,
+            "end_line": 338,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "wb_exception_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_wb_exceptions",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 371,
+            "col": 12,
+            "end_line": 371,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "entering_nmi",
+          "reads": [
+            "nmi_mode_d",
+            "nmi_mode_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 400,
+            "col": 12,
+            "end_line": 400,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "mem_resp_intg_err_irq_pending_d",
+          "reads": [
+            "mem_resp_intg_err_irq_pending_q",
+            "mem_resp_intg_err_irq_clear",
+            "mem_resp_intg_err_irq_set"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 422,
+            "col": 12,
+            "end_line": 423,
+            "end_col": 99
+          }
+        },
+        {
+          "target": "irq_nm_int",
+          "reads": [
+            "mem_resp_intg_err_irq_pending_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 437,
+            "col": 12,
+            "end_line": 437,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "irq_nm_int_cause",
+          "reads": [
+            "NMI_INT_CAUSE_ECC"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 438,
+            "col": 12,
+            "end_line": 438,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "irq_nm_int_mtval",
+          "reads": [
+            "mem_resp_intg_err_addr_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_intg_irq_int",
+              "cond": "MemECC"
+            }
+          ],
+          "loc": {
+            "line": 439,
+            "col": 12,
+            "end_line": 439,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "unused_mem_resp_intg_err_i",
+          "reads": [
+            "mem_resp_intg_err_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_intg_irq_int",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 443,
+            "col": 12,
+            "end_line": 443,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "irq_nm_int",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_intg_irq_int",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 446,
+            "col": 12,
+            "end_line": 446,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "irq_nm_int_cause",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_intg_irq_int",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 447,
+            "col": 12,
+            "end_line": 447,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "irq_nm_int_mtval",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_no_intg_irq_int",
+              "others": [
+                "MemECC"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 448,
+            "col": 12,
+            "end_line": 448,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "do_single_step_d",
+          "reads": [
+            "debug_mode_q",
+            "debug_single_step_i",
+            "do_single_step_q"
+          ],
+          "conds": [
+            "instr_valid_i",
+            "dummy_instr_id_i"
+          ],
+          "loc": {
+            "line": 464,
+            "col": 10,
+            "end_line": 465,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "enter_debug_mode_prio_d",
+          "reads": [
+            "debug_req_i",
+            "do_single_step_d",
+            "debug_mode_q",
+            "instr_gets_expanded_i",
+            "INSTR_EXPANDED",
+            "INSTR_EXPANDED_COMMIT"
+          ],
+          "loc": {
+            "line": 477,
+            "col": 10,
+            "end_line": 478,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "enter_debug_mode",
+          "reads": [
+            "enter_debug_mode_prio_d",
+            "trigger_match_i",
+            "debug_mode_q",
+            "instr_gets_expanded_i",
+            "INSTR_EXPANDED",
+            "INSTR_EXPANDED_COMMIT"
+          ],
+          "loc": {
+            "line": 479,
+            "col": 10,
+            "end_line": 480,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "ebreak_into_debug",
+          "reads": [
+            "debug_ebreakm_i",
+            "debug_ebreaku_i"
+          ],
+          "conds": [
+            "priv_mode_i",
+            "PRIV_LVL_M",
+            "PRIV_LVL_U"
+          ],
+          "loc": {
+            "line": 484,
+            "col": 10,
+            "end_line": 486,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "irq_nm",
+          "reads": [
+            "irq_nm_ext_i",
+            "irq_nm_int"
+          ],
+          "loc": {
+            "line": 490,
+            "col": 10,
+            "end_line": 490,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "irq_enabled",
+          "reads": [
+            "csr_mstatus_mie_i",
+            "priv_mode_i",
+            "PRIV_LVL_U"
+          ],
+          "loc": {
+            "line": 493,
+            "col": 10,
+            "end_line": 493,
+            "end_col": 71
+          }
+        },
+        {
+          "target": "handle_irq",
+          "reads": [
+            "debug_mode_q",
+            "debug_single_step_i",
+            "nmi_mode_q",
+            "irq_nm",
+            "irq_pending_i",
+            "irq_enabled",
+            "instr_gets_expanded_i",
+            "INSTR_EXPANDED_COMMIT"
+          ],
+          "loc": {
+            "line": 501,
+            "col": 10,
+            "end_line": 503,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "unused_irq_timer",
+          "reads": [
+            "irqs_i"
+          ],
+          "loc": {
+            "line": 516,
+            "col": 10,
+            "end_line": 516,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "debug_cause_d",
+          "reads": [
+            "DBG_CAUSE_EBREAK",
+            "DBG_CAUSE_HALTREQ",
+            "DBG_CAUSE_STEP",
+            "DBG_CAUSE_TRIGGER",
+            "DBG_CAUSE_NONE"
+          ],
+          "conds": [
+            "ebrk_insn_prio",
+            "ebreak_into_debug",
+            "debug_req_i",
+            "do_single_step_d",
+            "trigger_match_i",
+            "ctrl_fsm_cs",
+            "FLUSH"
+          ],
+          "loc": {
+            "line": 524,
+            "col": 10,
+            "end_line": 528,
+            "end_col": 83
+          }
+        },
+        {
+          "target": "debug_cause_o",
+          "reads": [
+            "debug_cause_q"
+          ],
+          "loc": {
+            "line": 538,
+            "col": 10,
+            "end_line": 538,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "flush_id_o",
+          "reads": [
+            "flush_id"
+          ],
+          "loc": {
+            "line": 1007,
+            "col": 10,
+            "end_line": 1007,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "debug_mode_o",
+          "reads": [
+            "debug_mode_q"
+          ],
+          "loc": {
+            "line": 1010,
+            "col": 10,
+            "end_line": 1010,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "nmi_mode_o",
+          "reads": [
+            "nmi_mode_q"
+          ],
+          "loc": {
+            "line": 1013,
+            "col": 10,
+            "end_line": 1013,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "stall",
+          "reads": [
+            "stall_id_i",
+            "stall_wb_i"
+          ],
+          "loc": {
+            "line": 1022,
+            "col": 10,
+            "end_line": 1022,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "id_in_ready_o",
+          "reads": [
+            "stall",
+            "halt_if",
+            "retain_id"
+          ],
+          "loc": {
+            "line": 1025,
+            "col": 10,
+            "end_line": 1025,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "instr_valid_clear_o",
+          "reads": [
+            "stall",
+            "retain_id",
+            "flush_id"
+          ],
+          "loc": {
+            "line": 1032,
+            "col": 10,
+            "end_line": 1032,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "unused_cheriot",
+          "reads": [
+            "lsu_err_is_cheriot_i",
+            "cheriot_ex_err_d",
+            "cheriot_wb_err_i",
+            "cheriot_asr_err_d"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1075,
+            "col": 12,
+            "end_line": 1076,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "lsu_err_is_cheriot_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1077,
+            "col": 12,
+            "end_line": 1077,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "cheriot_ex_err_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1078,
+            "col": 12,
+            "end_line": 1078,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "cheriot_wb_err_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1079,
+            "col": 12,
+            "end_line": 1079,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "cheriot_asr_err_q",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_cheriot_tieoff",
+              "others": [
+                "BaseIsa == BaseIsaRV32IorCHERIoT"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1080,
+            "col": 12,
+            "end_line": 1080,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "dbg_entry_with_trigger_match",
+          "reads": [
+            "trigger_match_i",
+            "debug_mode_q",
+            "ctrl_fsm_ns",
+            "DBG_TAKEN_IF",
+            "DBG_TAKEN_ID"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 1125,
+            "col": 10,
+            "end_line": 1126,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "rvfi_flush_next",
+          "reads": [
+            "ctrl_fsm_ns",
+            "FLUSH"
+          ],
+          "ifdefs": [
+            "RVFI"
+          ],
+          "loc": {
+            "line": 1143,
+            "col": 12,
+            "end_line": 1143,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "unused_cheriot_ctrl_inputs",
+          "reads": [
+            "cheriot_ex_valid_i",
+            "cheriot_ex_err_info_i",
+            "cheriot_wb_err_info_i",
+            "cheriot_branch_target_i"
+          ],
+          "loc": {
+            "line": 1147,
+            "col": 10,
+            "end_line": 1152,
+            "end_col": 4
           }
         }
       ],

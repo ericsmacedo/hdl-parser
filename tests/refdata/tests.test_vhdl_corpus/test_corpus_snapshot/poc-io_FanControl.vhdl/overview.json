@@ -440,6 +440,77 @@
               "cond": "VENDOR = VENDOR_XILINX"
             }
           ],
+          "assigns": [
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 153,
+                "col": 36,
+                "end_line": 153,
+                "end_col": 95
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 154,
+                "col": 45,
+                "end_line": 154,
+                "end_col": 104
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync",
+                "UserTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 155,
+                "col": 45,
+                "end_line": 155,
+                "end_col": 106
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync",
+                "UserTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 156,
+                "col": 27,
+                "end_line": 156,
+                "end_col": 66
+              }
+            }
+          ],
           "loc": {
             "line": 151,
             "col": 3,
@@ -468,11 +539,244 @@
               "cond": "VENDOR = VENDOR_ALTERA"
             }
           ],
+          "assigns": [
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 194,
+                "col": 36,
+                "end_line": 194,
+                "end_col": 95
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 195,
+                "col": 45,
+                "end_line": 195,
+                "end_col": 104
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync",
+                "UserTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 196,
+                "col": 45,
+                "end_line": 196,
+                "end_col": 106
+              }
+            },
+            {
+              "target": "PWM_PWMIn",
+              "reads": [
+                "to_slv"
+              ],
+              "conds": [
+                "StartUp",
+                "OverTemperature_sync",
+                "UserTemperature_sync"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 197,
+                "col": 27,
+                "end_line": 197,
+                "end_col": 66
+              }
+            }
+          ],
           "loc": {
             "line": 192,
             "col": 3,
             "end_line": 199,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "StartUp",
+          "reads": [
+            "TC_Timeout"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genXilinx",
+              "cond": "VENDOR = VENDOR_XILINX"
+            }
+          ],
+          "loc": {
+            "line": 149,
+            "col": 3,
+            "end_line": 149,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "OverTemperature_sync",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genAltera",
+              "cond": "VENDOR = VENDOR_ALTERA"
+            },
+            {
+              "kind": "if",
+              "name": "genDE4",
+              "cond": "str_imatch(BOARD_NAME, \"DE4\")"
+            }
+          ],
+          "loc": {
+            "line": 172,
+            "col": 4,
+            "end_line": 172,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "UserTemperature_sync",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genAltera",
+              "cond": "VENDOR = VENDOR_ALTERA"
+            },
+            {
+              "kind": "if",
+              "name": "genDE4",
+              "cond": "str_imatch(BOARD_NAME, \"DE4\")"
+            }
+          ],
+          "loc": {
+            "line": 173,
+            "col": 4,
+            "end_line": 173,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "StartUp",
+          "reads": [
+            "TC_Timeout"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genAltera",
+              "cond": "VENDOR = VENDOR_ALTERA"
+            }
+          ],
+          "loc": {
+            "line": 190,
+            "col": 3,
+            "end_line": 190,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "Fan_PWM",
+          "reads": [
+            "PWM_PWMOut"
+          ],
+          "conds": [
+            "rising_edge",
+            "Clock"
+          ],
+          "loc": {
+            "line": 218,
+            "col": 2,
+            "end_line": 218,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "TachoFrequency",
+          "reads": [
+            "TachoFrequency"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genNoTacho",
+              "cond": "not ENABLE_TACHO"
+            }
+          ],
+          "loc": {
+            "line": 223,
+            "col": 3,
+            "end_line": 223,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "Tacho_sync",
+          "reads": [
+            "Fan_Tacho"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genTacho",
+              "cond": "ENABLE_TACHO"
+            },
+            {
+              "kind": "if",
+              "name": "genNoSync",
+              "cond": "not ADD_INPUT_SYNCHRONIZERS"
+            }
+          ],
+          "loc": {
+            "line": 231,
+            "col": 4,
+            "end_line": 231,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "TachoFrequency",
+          "reads": [
+            "resize",
+            "Tacho_Freq",
+            "TachoFrequency"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "genTacho",
+              "cond": "ENABLE_TACHO"
+            }
+          ],
+          "loc": {
+            "line": 256,
+            "col": 3,
+            "end_line": 256,
+            "end_col": 73
           }
         }
       ],

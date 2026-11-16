@@ -160,6 +160,39 @@
           "clock_edge": "posedge",
           "reset": "asyncRst",
           "reset_edge": "posedge",
+          "assigns": [
+            {
+              "target": "syncRst",
+              "conds": [
+                "asyncRst"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 66,
+                "col": 10,
+                "end_line": 66,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "syncRst",
+              "reads": [
+                "syncInt"
+              ],
+              "conds": [
+                "asyncRst",
+                "rising_edge",
+                "clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 68,
+                "col": 10,
+                "end_line": 68,
+                "end_col": 41
+              }
+            }
+          ],
           "comment": [
             "-- Final stage does not have async constraints applied, can be duplicated to ease timing"
           ],

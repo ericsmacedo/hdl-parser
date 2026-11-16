@@ -295,7 +295,11 @@ def test_processes():
         ("top.g_a.p_gen", ["clk"], "negedge clk", ""),
     ]
     proc = module.processes[0]
-    assert plain(proc) == Process(
+    assert [(assign.target, assign.reads, assign.conds, assign.blocking) for assign in proc.assigns] == [
+        ("data_q", (), ("rst_n",), False),
+        ("data_q", ("data_d",), ("rst_n", "rising_edge", "clk"), False),
+    ]
+    assert plain(proc).model_copy(update={"assigns": ()}) == Process(
         name="p_reg",
         kind="process",
         events=(Event(signal="clk"), Event(signal="rst_n")),

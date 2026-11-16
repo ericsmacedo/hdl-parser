@@ -205,6 +205,39 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "first_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 17,
+                "col": 5,
+                "end_line": 17,
+                "end_col": 23,
+                "macro": "REG"
+              }
+            },
+            {
+              "target": "first_q",
+              "reads": [
+                "first_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 17,
+                "col": 5,
+                "end_line": 17,
+                "end_col": 23,
+                "macro": "REG"
+              }
+            }
+          ],
           "loc": {
             "line": 17,
             "col": 5,
@@ -230,6 +263,39 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "count_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 18,
+                "col": 5,
+                "end_line": 18,
+                "end_col": 25,
+                "macro": "REG"
+              }
+            },
+            {
+              "target": "count_q",
+              "reads": [
+                "count_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 18,
+                "col": 5,
+                "end_line": 18,
+                "end_col": 25,
+                "macro": "REG"
+              }
+            }
+          ],
           "loc": {
             "line": 18,
             "col": 5,
@@ -262,12 +328,83 @@
               "cond": "genvar i = 0; i < STAGES; i++"
             }
           ],
+          "assigns": [
+            {
+              "target": "stage_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 24,
+                "col": 9,
+                "end_line": 24,
+                "end_col": 27,
+                "macro": "REG"
+              }
+            },
+            {
+              "target": "stage_q",
+              "reads": [
+                "stage_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 24,
+                "col": 9,
+                "end_line": 24,
+                "end_col": 27,
+                "macro": "REG"
+              }
+            }
+          ],
           "loc": {
             "line": 24,
             "col": 9,
             "end_line": 24,
             "end_col": 27,
             "macro": "REG"
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "first_d",
+          "reads": [
+            "d_i"
+          ],
+          "loc": {
+            "line": 20,
+            "col": 12,
+            "end_line": 20,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "count_d",
+          "reads": [
+            "count_q"
+          ],
+          "loc": {
+            "line": 21,
+            "col": 12,
+            "end_line": 21,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "q_o",
+          "reads": [
+            "first_q"
+          ],
+          "loc": {
+            "line": 31,
+            "col": 12,
+            "end_line": 31,
+            "end_col": 25
           }
         }
       ],

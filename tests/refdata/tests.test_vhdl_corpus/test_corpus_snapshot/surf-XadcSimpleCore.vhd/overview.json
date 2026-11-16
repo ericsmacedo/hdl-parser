@@ -1823,6 +1823,84 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "drpClk",
+          "reads": [
+            "axilClk"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "DRP_COMMON_CLK_GEN",
+              "cond": "(COMMON_CLK_G)"
+            }
+          ],
+          "loc": {
+            "line": 334,
+            "col": 7,
+            "end_line": 334,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "drpRst",
+          "reads": [
+            "axilRst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "DRP_COMMON_CLK_GEN",
+              "cond": "(COMMON_CLK_G)"
+            }
+          ],
+          "loc": {
+            "line": 335,
+            "col": 7,
+            "end_line": 335,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "drpClk",
+          "reads": [
+            "xadcClk"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "DRP_ASYNC_CLK_GEN",
+              "cond": "(not COMMON_CLK_G)"
+            }
+          ],
+          "loc": {
+            "line": 339,
+            "col": 7,
+            "end_line": 339,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "drpRst",
+          "reads": [
+            "xadcRst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "DRP_ASYNC_CLK_GEN",
+              "cond": "(not COMMON_CLK_G)"
+            }
+          ],
+          "loc": {
+            "line": 340,
+            "col": 7,
+            "end_line": 340,
+            "end_col": 25
+          }
+        }
+      ],
       "insts": [
         {
           "id": "xadcsimplecore.u_axilitetodrp_1",

@@ -430,6 +430,365 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "rd_write_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 74,
+                "col": 5,
+                "end_line": 74,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "csr_write_out",
+              "reads": [
+                "CSR_WRITE_NONE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 75,
+                "col": 5,
+                "end_line": 75,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "count_instr_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 76,
+                "col": 5,
+                "end_line": 76,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "mem_op",
+              "reads": [
+                "MEMOP_TYPE_NONE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 77,
+                "col": 5,
+                "end_line": 77,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mem_size",
+              "reads": [
+                "mem_size_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 79,
+                "col": 5,
+                "end_line": 79,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "rd_data",
+              "reads": [
+                "rd_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 80,
+                "col": 5,
+                "end_line": 80,
+                "end_col": 27
+              }
+            },
+            {
+              "target": "rd_addr_out",
+              "reads": [
+                "rd_addr_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 81,
+                "col": 5,
+                "end_line": 81,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "mem_op",
+              "reads": [
+                "MEMOP_TYPE_NONE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 84,
+                "col": 6,
+                "end_line": 84,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "rd_write_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 85,
+                "col": 6,
+                "end_line": 85,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "csr_write_out",
+              "reads": [
+                "CSR_WRITE_REPLACE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 86,
+                "col": 6,
+                "end_line": 86,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "csr_addr_out",
+              "reads": [
+                "CSR_MEPC"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 87,
+                "col": 6,
+                "end_line": 87,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "csr_data_out",
+              "reads": [
+                "pc"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 88,
+                "col": 6,
+                "end_line": 88,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "count_instr_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 89,
+                "col": 6,
+                "end_line": 89,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "mem_op",
+              "reads": [
+                "mem_op_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 91,
+                "col": 6,
+                "end_line": 91,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "rd_write_out",
+              "reads": [
+                "rd_write_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 92,
+                "col": 6,
+                "end_line": 92,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_write_out",
+              "reads": [
+                "csr_write_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 93,
+                "col": 6,
+                "end_line": 93,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "csr_addr_out",
+              "reads": [
+                "csr_addr_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 94,
+                "col": 6,
+                "end_line": 94,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "csr_data_out",
+              "reads": [
+                "csr_data_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 95,
+                "col": 6,
+                "end_line": 95,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "count_instr_out",
+              "reads": [
+                "count_instr_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 96,
+                "col": 6,
+                "end_line": 96,
+                "end_col": 40
+              }
+            }
+          ],
           "loc": {
             "line": 70,
             "col": 2,
@@ -448,6 +807,291 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "exception_out",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 106,
+                "col": 5,
+                "end_line": 106,
+                "end_col": 26
+              }
+            },
+            {
+              "target": "exception_out",
+              "reads": [
+                "exception_in",
+                "to_std_logic",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 108,
+                "col": 5,
+                "end_line": 108,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 111,
+                "col": 6,
+                "end_line": 111,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie1",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 112,
+                "col": 6,
+                "end_line": 112,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".cause",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 113,
+                "col": 6,
+                "end_line": 113,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".badaddr",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 114,
+                "col": 6,
+                "end_line": 114,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 116,
+                "col": 6,
+                "end_line": 116,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie1",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 117,
+                "col": 6,
+                "end_line": 117,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".cause",
+              "reads": [
+                "CSR_CAUSE_NONE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 118,
+                "col": 6,
+                "end_line": 118,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".badaddr",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 119,
+                "col": 6,
+                "end_line": 119,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 121,
+                "col": 6,
+                "end_line": 121,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".ie1",
+              "reads": [
+                "exception_context_in"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 122,
+                "col": 6,
+                "end_line": 122,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".cause",
+              "reads": [
+                "CSR_CAUSE_NONE"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 123,
+                "col": 6,
+                "end_line": 123,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "exception_context_out",
+              "select": ".badaddr",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "exception_in",
+                "branch",
+                "BRANCH_SRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 124,
+                "col": 6,
+                "end_line": 124,
+                "end_col": 55
+              }
+            }
+          ],
           "loc": {
             "line": 102,
             "col": 2,
@@ -473,11 +1117,161 @@
               "signal": "mem_size"
             }
           ],
+          "assigns": [
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "unsigned",
+                "dmem_data_in",
+                "rd_data_out"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED",
+                "mem_size",
+                "MEMOP_SIZE_BYTE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 136,
+                "col": 7,
+                "end_line": 136,
+                "end_col": 103
+              }
+            },
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "signed",
+                "dmem_data_in",
+                "rd_data_out"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED",
+                "mem_size",
+                "MEMOP_SIZE_BYTE"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 138,
+                "col": 7,
+                "end_line": 138,
+                "end_col": 101
+              }
+            },
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "unsigned",
+                "dmem_data_in",
+                "rd_data_out"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED",
+                "mem_size",
+                "MEMOP_SIZE_HALFWORD"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 142,
+                "col": 7,
+                "end_line": 142,
+                "end_col": 104
+              }
+            },
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "std_logic_vector",
+                "resize",
+                "signed",
+                "dmem_data_in",
+                "rd_data_out"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED",
+                "mem_size",
+                "MEMOP_SIZE_HALFWORD"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 144,
+                "col": 7,
+                "end_line": 144,
+                "end_col": 102
+              }
+            },
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "dmem_data_in"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED",
+                "mem_size",
+                "MEMOP_SIZE_WORD"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 147,
+                "col": 6,
+                "end_line": 147,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "rd_data_out",
+              "reads": [
+                "rd_data"
+              ],
+              "conds": [
+                "mem_op",
+                "MEMOP_TYPE_LOAD",
+                "MEMOP_TYPE_LOAD_UNSIGNED"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 150,
+                "col": 4,
+                "end_line": 150,
+                "end_col": 27
+              }
+            }
+          ],
           "loc": {
             "line": 130,
             "col": 2,
             "end_line": 152,
             "end_col": 26
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "mem_op_out",
+          "reads": [
+            "mem_op"
+          ],
+          "loc": {
+            "line": 68,
+            "col": 2,
+            "end_line": 68,
+            "end_col": 23
           }
         }
       ],

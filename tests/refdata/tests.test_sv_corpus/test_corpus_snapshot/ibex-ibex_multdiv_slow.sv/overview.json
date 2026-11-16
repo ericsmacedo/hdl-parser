@@ -800,6 +800,252 @@
         {
           "id": "ibex_multdiv_slow.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "alu_operand_a_o",
+              "reads": [
+                "accum_window_q"
+              ],
+              "loc": {
+                "line": 97,
+                "col": 5,
+                "end_line": 97,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_a_bw_pp"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 102,
+                "col": 9,
+                "end_line": 102,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_a_bw_last_pp",
+                "op_a_bw_pp"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_MULH",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 106,
+                "col": 9,
+                "end_line": 106,
+                "end_col": 82
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 114,
+                "col": 13,
+                "end_line": 114,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 115,
+                "col": 13,
+                "end_line": 115,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 119,
+                "col": 13,
+                "end_line": 119,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_a_i"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 120,
+                "col": 13,
+                "end_line": 120,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 124,
+                "col": 13,
+                "end_line": 124,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_i"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 125,
+                "col": 13,
+                "end_line": 125,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 129,
+                "col": 13,
+                "end_line": 129,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "accum_window_q"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 130,
+                "col": 13,
+                "end_line": 130,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "reads": [
+                "accum_window_q"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 134,
+                "col": 13,
+                "end_line": 134,
+                "end_col": 60
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_shift_q"
+              ],
+              "conds": [
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 135,
+                "col": 13,
+                "end_line": 135,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "alu_operand_a_o",
+              "reads": [
+                "accum_window_q"
+              ],
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 140,
+                "col": 9,
+                "end_line": 140,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_operand_b_o",
+              "reads": [
+                "op_b_shift_q"
+              ],
+              "conds": [
+                "operator_i"
+              ],
+              "loc": {
+                "line": 141,
+                "col": 9,
+                "end_line": 141,
+                "end_col": 55
+              }
+            }
+          ],
           "loc": {
             "line": 96,
             "col": 3,
@@ -810,6 +1056,974 @@
         {
           "id": "ibex_multdiv_slow.#always2",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "multdiv_count_d",
+              "reads": [
+                "multdiv_count_q"
+              ],
+              "loc": {
+                "line": 175,
+                "col": 5,
+                "end_line": 175,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "accum_window_q"
+              ],
+              "loc": {
+                "line": 176,
+                "col": 5,
+                "end_line": 176,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "op_b_shift_q"
+              ],
+              "loc": {
+                "line": 177,
+                "col": 5,
+                "end_line": 177,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "op_a_shift_q"
+              ],
+              "loc": {
+                "line": 178,
+                "col": 5,
+                "end_line": 178,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "op_numerator_d",
+              "reads": [
+                "op_numerator_q"
+              ],
+              "loc": {
+                "line": 179,
+                "col": 5,
+                "end_line": 179,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "md_state_d",
+              "reads": [
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 180,
+                "col": 5,
+                "end_line": 180,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "multdiv_hold",
+              "loc": {
+                "line": 181,
+                "col": 5,
+                "end_line": 181,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "div_by_zero_d",
+              "reads": [
+                "div_by_zero_q"
+              ],
+              "loc": {
+                "line": 182,
+                "col": 5,
+                "end_line": 182,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "op_a_ext"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 188,
+                "col": 15,
+                "end_line": 188,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "op_a_ext",
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 189,
+                "col": 15,
+                "end_line": 190,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "op_b_ext"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 191,
+                "col": 15,
+                "end_line": 191,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL",
+                "data_ind_timing_i",
+                "op_b_ext"
+              ],
+              "loc": {
+                "line": 194,
+                "col": 15,
+                "end_line": 194,
+                "end_col": 99
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "op_a_ext"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 197,
+                "col": 15,
+                "end_line": 197,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "op_a_ext",
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 198,
+                "col": 15,
+                "end_line": 199,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "op_b_ext"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 200,
+                "col": 15,
+                "end_line": 200,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 201,
+                "col": 15,
+                "end_line": 201,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 208,
+                "col": 15,
+                "end_line": 208,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
+              ],
+              "loc": {
+                "line": 210,
+                "col": 15,
+                "end_line": 210,
+                "end_col": 95
+              }
+            },
+            {
+              "target": "div_by_zero_d",
+              "reads": [
+                "equal_to_zero_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 213,
+                "col": 15,
+                "end_line": 213,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "op_a_ext"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_REM"
+              ],
+              "loc": {
+                "line": 220,
+                "col": 15,
+                "end_line": 220,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_REM",
+                "data_ind_timing_i",
+                "equal_to_zero_i"
+              ],
+              "loc": {
+                "line": 222,
+                "col": 15,
+                "end_line": 222,
+                "end_col": 95
+              }
+            },
+            {
+              "target": "multdiv_count_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 226,
+                "col": 11,
+                "end_line": 226,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 231,
+                "col": 11,
+                "end_line": 231,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "op_numerator_d",
+              "reads": [
+                "alu_adder_i",
+                "op_a_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "sign_a"
+              ],
+              "loc": {
+                "line": 233,
+                "col": 11,
+                "end_line": 233,
+                "end_col": 58
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 234,
+                "col": 11,
+                "end_line": 234,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "op_numerator_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 239,
+                "col": 11,
+                "end_line": 239,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "alu_adder_i",
+                "op_b_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "sign_b"
+              ],
+              "loc": {
+                "line": 241,
+                "col": 11,
+                "end_line": 241,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 242,
+                "col": 11,
+                "end_line": 242,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "multdiv_count_d",
+              "reads": [
+                "multdiv_count_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 246,
+                "col": 11,
+                "end_line": 246,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "res_adder_l"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 249,
+                "col": 15,
+                "end_line": 249,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "op_a_shift_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 250,
+                "col": 15,
+                "end_line": 250,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "op_b_shift_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 251,
+                "col": 15,
+                "end_line": 251,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL",
+                "data_ind_timing_i",
+                "op_b_shift_d",
+                "multdiv_count_q"
+              ],
+              "loc": {
+                "line": 255,
+                "col": 15,
+                "end_line": 256,
+                "end_col": 80
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "res_adder_h"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 259,
+                "col": 15,
+                "end_line": 259,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "op_a_shift_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 260,
+                "col": 15,
+                "end_line": 260,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "op_b_shift_d",
+              "reads": [
+                "op_b_shift_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 261,
+                "col": 15,
+                "end_line": 261,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH",
+                "multdiv_count_q"
+              ],
+              "loc": {
+                "line": 262,
+                "col": 15,
+                "end_line": 262,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "next_remainder",
+                "op_numerator_q",
+                "multdiv_count_d"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM"
+              ],
+              "loc": {
+                "line": 266,
+                "col": 15,
+                "end_line": 266,
+                "end_col": 88
+              }
+            },
+            {
+              "target": "op_a_shift_d",
+              "reads": [
+                "next_quotient"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM"
+              ],
+              "loc": {
+                "line": 267,
+                "col": 15,
+                "end_line": 267,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV",
+                "MD_OP_REM",
+                "multdiv_count_q"
+              ],
+              "loc": {
+                "line": 268,
+                "col": 15,
+                "end_line": 268,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "res_adder_l"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 277,
+                "col": 15,
+                "end_line": 277,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 280,
+                "col": 15,
+                "end_line": 280,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "multdiv_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULL"
+              ],
+              "loc": {
+                "line": 281,
+                "col": 15,
+                "end_line": 281,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "res_adder_l"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 284,
+                "col": 15,
+                "end_line": 284,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 285,
+                "col": 15,
+                "end_line": 285,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 288,
+                "col": 15,
+                "end_line": 288,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "multdiv_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_MULH"
+              ],
+              "loc": {
+                "line": 289,
+                "col": 15,
+                "end_line": 289,
+                "end_col": 50
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "next_quotient"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 294,
+                "col": 15,
+                "end_line": 294,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV"
+              ],
+              "loc": {
+                "line": 295,
+                "col": 15,
+                "end_line": 295,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "next_remainder"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_REM"
+              ],
+              "loc": {
+                "line": 299,
+                "col": 15,
+                "end_line": 299,
+                "end_col": 61
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_REM"
+              ],
+              "loc": {
+                "line": 300,
+                "col": 15,
+                "end_line": 300,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 307,
+                "col": 11,
+                "end_line": 307,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "alu_adder_i",
+                "accum_window_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_DIV",
+                "div_change_sign"
+              ],
+              "loc": {
+                "line": 310,
+                "col": 15,
+                "end_line": 310,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "accum_window_d",
+              "reads": [
+                "alu_adder_i",
+                "accum_window_q"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q",
+                "operator_i",
+                "MD_OP_REM",
+                "rem_change_sign"
+              ],
+              "loc": {
+                "line": 312,
+                "col": 15,
+                "end_line": 312,
+                "end_col": 86
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 319,
+                "col": 11,
+                "end_line": 319,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "multdiv_hold",
+              "reads": [
+                "multdiv_ready_id_i"
+              ],
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 320,
+                "col": 11,
+                "end_line": 320,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "md_state_d",
+              "conds": [
+                "mult_sel_i",
+                "div_sel_i",
+                "md_state_q"
+              ],
+              "loc": {
+                "line": 324,
+                "col": 11,
+                "end_line": 324,
+                "end_col": 32
+              }
+            }
+          ],
           "loc": {
             "line": 174,
             "col": 3,
@@ -834,11 +2048,542 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "multdiv_count_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 339,
+                "col": 7,
+                "end_line": 339,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "op_b_shift_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 340,
+                "col": 7,
+                "end_line": 340,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "op_a_shift_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 341,
+                "col": 7,
+                "end_line": 341,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "md_state_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 342,
+                "col": 7,
+                "end_line": 342,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "div_by_zero_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 343,
+                "col": 7,
+                "end_line": 343,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "multdiv_count_q",
+              "reads": [
+                "multdiv_count_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "multdiv_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 345,
+                "col": 7,
+                "end_line": 345,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "op_b_shift_q",
+              "reads": [
+                "op_b_shift_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "multdiv_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 346,
+                "col": 7,
+                "end_line": 346,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "op_a_shift_q",
+              "reads": [
+                "op_a_shift_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "multdiv_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 347,
+                "col": 7,
+                "end_line": 347,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "md_state_q",
+              "reads": [
+                "md_state_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "multdiv_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 348,
+                "col": 7,
+                "end_line": 348,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "div_by_zero_q",
+              "reads": [
+                "div_by_zero_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "multdiv_en"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 349,
+                "col": 7,
+                "end_line": 349,
+                "end_col": 41
+              }
+            }
+          ],
           "loc": {
             "line": 337,
             "col": 3,
             "end_line": 351,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "res_adder_l",
+          "reads": [
+            "alu_adder_ext_i"
+          ],
+          "loc": {
+            "line": 77,
+            "col": 10,
+            "end_line": 77,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "res_adder_h",
+          "reads": [
+            "alu_adder_ext_i"
+          ],
+          "loc": {
+            "line": 79,
+            "col": 10,
+            "end_line": 79,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[0]",
+          "reads": [
+            "accum_window_d"
+          ],
+          "loc": {
+            "line": 86,
+            "col": 10,
+            "end_line": 86,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "imd_val_we_o",
+          "select": "[0]",
+          "reads": [
+            "multdiv_hold"
+          ],
+          "loc": {
+            "line": 87,
+            "col": 10,
+            "end_line": 87,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "accum_window_q",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 10,
+            "end_line": 88,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_imd_val0",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 89,
+            "col": 10,
+            "end_line": 89,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "imd_val_d_o",
+          "select": "[1]",
+          "reads": [
+            "op_numerator_d"
+          ],
+          "loc": {
+            "line": 91,
+            "col": 10,
+            "end_line": 91,
+            "end_col": 51
+          }
+        },
+        {
+          "target": "imd_val_we_o",
+          "select": "[1]",
+          "reads": [
+            "multdiv_en"
+          ],
+          "loc": {
+            "line": 92,
+            "col": 10,
+            "end_line": 92,
+            "end_col": 38
+          }
+        },
+        {
+          "target": "op_numerator_q",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 93,
+            "col": 10,
+            "end_line": 93,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_imd_val1",
+          "reads": [
+            "imd_val_q_i"
+          ],
+          "loc": {
+            "line": 94,
+            "col": 10,
+            "end_line": 94,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "b_0",
+          "reads": [
+            "op_b_shift_q"
+          ],
+          "loc": {
+            "line": 147,
+            "col": 10,
+            "end_line": 147,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "op_a_bw_pp",
+          "reads": [
+            "op_a_shift_q",
+            "op_b_shift_q",
+            "b_0"
+          ],
+          "loc": {
+            "line": 148,
+            "col": 10,
+            "end_line": 148,
+            "end_col": 98
+          }
+        },
+        {
+          "target": "op_a_bw_last_pp",
+          "reads": [
+            "op_a_shift_q",
+            "op_b_shift_q",
+            "b_0"
+          ],
+          "loc": {
+            "line": 149,
+            "col": 10,
+            "end_line": 149,
+            "end_col": 98
+          }
+        },
+        {
+          "target": "sign_a",
+          "reads": [
+            "op_a_i",
+            "signed_mode_i"
+          ],
+          "loc": {
+            "line": 152,
+            "col": 10,
+            "end_line": 152,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "sign_b",
+          "reads": [
+            "op_b_i",
+            "signed_mode_i"
+          ],
+          "loc": {
+            "line": 153,
+            "col": 10,
+            "end_line": 153,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "op_a_ext",
+          "reads": [
+            "sign_a",
+            "op_a_i"
+          ],
+          "loc": {
+            "line": 155,
+            "col": 10,
+            "end_line": 155,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "op_b_ext",
+          "reads": [
+            "sign_b",
+            "op_b_i"
+          ],
+          "loc": {
+            "line": 156,
+            "col": 10,
+            "end_line": 156,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "is_greater_equal",
+          "reads": [
+            "res_adder_h",
+            "accum_window_q"
+          ],
+          "conds": [
+            "op_b_shift_q"
+          ],
+          "loc": {
+            "line": 163,
+            "col": 10,
+            "end_line": 164,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "one_shift",
+          "reads": [
+            "multdiv_count_q"
+          ],
+          "loc": {
+            "line": 166,
+            "col": 10,
+            "end_line": 166,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "next_remainder",
+          "reads": [
+            "res_adder_h",
+            "accum_window_q"
+          ],
+          "conds": [
+            "is_greater_equal"
+          ],
+          "loc": {
+            "line": 168,
+            "col": 10,
+            "end_line": 168,
+            "end_col": 93
+          }
+        },
+        {
+          "target": "next_quotient",
+          "reads": [
+            "op_a_shift_q",
+            "one_shift"
+          ],
+          "conds": [
+            "is_greater_equal"
+          ],
+          "loc": {
+            "line": 169,
+            "col": 10,
+            "end_line": 169,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "div_change_sign",
+          "reads": [
+            "sign_a",
+            "sign_b",
+            "div_by_zero_q"
+          ],
+          "loc": {
+            "line": 171,
+            "col": 10,
+            "end_line": 171,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "rem_change_sign",
+          "reads": [
+            "sign_a"
+          ],
+          "loc": {
+            "line": 172,
+            "col": 10,
+            "end_line": 172,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "multdiv_en",
+          "reads": [
+            "mult_en_i",
+            "div_en_i",
+            "multdiv_hold"
+          ],
+          "loc": {
+            "line": 335,
+            "col": 10,
+            "end_line": 335,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "valid_o",
+          "reads": [
+            "md_state_q",
+            "operator_i",
+            "MD_OP_MULL",
+            "MD_OP_MULH"
+          ],
+          "loc": {
+            "line": 357,
+            "col": 10,
+            "end_line": 360,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "multdiv_result_o",
+          "reads": [
+            "accum_window_q",
+            "res_adder_l"
+          ],
+          "conds": [
+            "div_en_i"
+          ],
+          "loc": {
+            "line": 362,
+            "col": 10,
+            "end_line": 362,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "sva_fsm_idle",
+          "reads": [
+            "md_state_q"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 379,
+            "col": 10,
+            "end_line": 379,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "unused_sva_fsm_idle",
+          "reads": [
+            "sva_fsm_idle"
+          ],
+          "ifdefs": [
+            "INC_ASSERT"
+          ],
+          "loc": {
+            "line": 381,
+            "col": 10,
+            "end_line": 381,
+            "end_col": 44
           }
         }
       ],

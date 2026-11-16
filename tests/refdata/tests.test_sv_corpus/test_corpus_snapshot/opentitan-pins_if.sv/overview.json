@@ -554,6 +554,137 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "pins",
+          "select": "[i]",
+          "reads": [
+            "pins_o",
+            "i"
+          ],
+          "conds": [
+            "pins_oe",
+            "pins_pu",
+            "pins_pd"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_each_pin",
+              "cond": "genvar i = 0; i < Width; i++"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "VERILATOR"
+          ],
+          "loc": {
+            "line": 88,
+            "col": 12,
+            "end_line": 90,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "pins",
+          "select": "[i]",
+          "reads": [
+            "i"
+          ],
+          "conds": [
+            "pins_oe",
+            "pins_pu",
+            "pins_pd"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_each_pin",
+              "cond": "genvar i = 0; i < Width; i++"
+            },
+            {
+              "kind": "if",
+              "name": "gen_pull_strength_pull",
+              "cond": "PullStrength == \"Pull\""
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "!VERILATOR"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 29,
+            "end_line": 98,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "pins",
+          "select": "[i]",
+          "reads": [
+            "i"
+          ],
+          "conds": [
+            "pins_oe",
+            "pins_pu",
+            "pins_pd"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_each_pin",
+              "cond": "genvar i = 0; i < Width; i++"
+            },
+            {
+              "kind": "if",
+              "name": "gen_pull_strength_weak",
+              "cond": "PullStrength == \"Weak\"",
+              "others": [
+                "PullStrength == \"Pull\""
+              ]
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "!VERILATOR"
+          ],
+          "loc": {
+            "line": 101,
+            "col": 29,
+            "end_line": 102,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "pins",
+          "select": "[i]",
+          "reads": [
+            "pins_o",
+            "i"
+          ],
+          "conds": [
+            "pins_oe"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_each_pin",
+              "cond": "genvar i = 0; i < Width; i++"
+            }
+          ],
+          "ifdefs": [
+            "!SYNTHESIS",
+            "!VERILATOR"
+          ],
+          "loc": {
+            "line": 111,
+            "col": 12,
+            "end_line": 111,
+            "end_col": 51
+          }
+        }
+      ],
       "ifdefs": [
         "!SYNTHESIS"
       ],

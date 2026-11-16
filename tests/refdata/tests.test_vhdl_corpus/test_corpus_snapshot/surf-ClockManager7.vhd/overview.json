@@ -956,6 +956,212 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "rstInLoc",
+          "conds": [
+            "rstIn"
+          ],
+          "loc": {
+            "line": 134,
+            "col": 4,
+            "end_line": 134,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "drpRdy",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "MmcmEmu",
+              "cond": "(TYPE_G = \"MMCM\") and (SIMULATION_G = true)"
+            }
+          ],
+          "loc": {
+            "line": 258,
+            "col": 7,
+            "end_line": 258,
+            "end_col": 21
+          }
+        },
+        {
+          "target": "drpDo",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "MmcmEmu",
+              "cond": "(TYPE_G = \"MMCM\") and (SIMULATION_G = true)"
+            }
+          ],
+          "loc": {
+            "line": 259,
+            "col": 7,
+            "end_line": 259,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "drpRdy",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PllEmu",
+              "cond": "(TYPE_G = \"PLL\") and (SIMULATION_G = true)"
+            }
+          ],
+          "loc": {
+            "line": 345,
+            "col": 7,
+            "end_line": 345,
+            "end_col": 21
+          }
+        },
+        {
+          "target": "drpDo",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "PllEmu",
+              "cond": "(TYPE_G = \"PLL\") and (SIMULATION_G = true)"
+            }
+          ],
+          "loc": {
+            "line": 346,
+            "col": 7,
+            "end_line": 346,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "clkInLoc",
+          "reads": [
+            "clkIn"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "InputNoBufg",
+              "cond": "(not INPUT_BUFG_G)"
+            }
+          ],
+          "loc": {
+            "line": 357,
+            "col": 7,
+            "end_line": 357,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "clkFbIn",
+          "reads": [
+            "clkFbOut"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "FbNoBufg",
+              "cond": "(not FB_BUFG_G)"
+            }
+          ],
+          "loc": {
+            "line": 368,
+            "col": 7,
+            "end_line": 368,
+            "end_col": 27
+          }
+        },
+        {
+          "target": "clkOut",
+          "select": "(i)",
+          "reads": [
+            "clkOutLoc",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "OutBufgGen",
+              "cond": "(OUTPUT_BUFG_G)"
+            },
+            {
+              "kind": "for",
+              "name": "ClkOutGen",
+              "cond": "i in NUM_CLOCKS_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 377,
+            "col": 10,
+            "end_line": 377,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "clkOutLoc",
+          "select": "(i)",
+          "reads": [
+            "clkOutMmcm",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "NoOutBufgGen",
+              "cond": "(not OUTPUT_BUFG_G)"
+            },
+            {
+              "kind": "for",
+              "name": "ClkOutGen",
+              "cond": "i in NUM_CLOCKS_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 383,
+            "col": 10,
+            "end_line": 383,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "clkOut",
+          "select": "(i)",
+          "reads": [
+            "clkOutLoc",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "NoOutBufgGen",
+              "cond": "(not OUTPUT_BUFG_G)"
+            },
+            {
+              "kind": "for",
+              "name": "ClkOutGen",
+              "cond": "i in NUM_CLOCKS_G-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 384,
+            "col": 10,
+            "end_line": 384,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "locked",
+          "reads": [
+            "lockedLoc"
+          ],
+          "loc": {
+            "line": 388,
+            "col": 4,
+            "end_line": 388,
+            "end_col": 24
+          }
+        }
+      ],
       "insts": [
         {
           "id": "clockmanager7.u_axilitetodrp",

@@ -113,11 +113,57 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "reg_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 29,
+                "col": 13,
+                "end_line": 29,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "reg_q",
+              "reads": [
+                "reg_q",
+                "serial_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 31,
+                "col": 13,
+                "end_line": 31,
+                "end_col": 52
+              }
+            }
+          ],
           "loc": {
             "line": 27,
             "col": 5,
             "end_line": 33,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "serial_o",
+          "reads": [
+            "reg_q"
+          ],
+          "loc": {
+            "line": 35,
+            "col": 12,
+            "end_line": 35,
+            "end_col": 38
           }
         }
       ],

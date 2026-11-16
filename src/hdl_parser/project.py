@@ -36,6 +36,9 @@ It answers questions about the design, instead of single files:
 * Which modules are instantiated nowhere? [tops][hdl_parser.project.Project.tops]
 * Where is a module instantiated? [where_used][hdl_parser.project.Project.where_used]
 * What is the item with this identifier? [find][hdl_parser.project.Project.find]
+* What drives a signal, what does it drive, how is it connected to another one?
+  [drivers][hdl_parser.project.Project.drivers], [loads][hdl_parser.project.Project.loads],
+  [trace][hdl_parser.project.Project.trace]
 
 A file which cannot be read or parsed never stops the others: it is part of the project, with a diagnostic.
 """
@@ -51,6 +54,7 @@ from pathlib import Path
 from typing import Any, NamedTuple
 
 from . import datamodel as dm
+from ._conn import Connectivity, Graph, Node
 from ._diagnostics import Diagnostics
 from ._elab import Elaboration
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
@@ -489,6 +493,106 @@ class Project(dm._BaseModel):
             return dm.Value(expr=expr, unknown=f"'{scope}' is not defined in the project")
         elaboration = Elaboration(self)
         return elaboration.scope(definition, elaboration.top_overrides(params)).value_of(expr)
+
+    # --- connectivity ---
+
+    @cached_property
+    def _graphs(self) -> dict[str, Graph]:
+        return {}
+
+    def _graph(self, definition: Definition) -> Graph:
+        """Net graph of the module `definition`. Created on first use."""
+        graph = self._graphs.get(definition.id)
+        if graph is None:
+            graph = self._graphs[definition.id] = Graph(self, definition)
+        return graph
+
+    def _connectivity(
+        self, params: Mapping[str, int | float | str | bool] | None, passthrough: Iterable[str] = ()
+    ) -> Connectivity:
+        return Connectivity(self, Elaboration(self).top_overrides(params), passthrough)
+
+    def drivers(
+        self,
+        path: str,
+        params: Mapping[str, int | float | str | bool] | None = None,
+        passthrough: Iterable[str] = (),
+    ) -> tuple[dm.Link, ...]:
+        """What drives the signal with the instance path `path` (`top.u_core.u_alu.result_o`).
+
+        The drivers are the assignments of the signal and the output ports of instances it is connected to.
+        An input port is driven by the connection within the parent, or from outside of the design (the top).
+        Every driver has the signals it reads (`nets`): ask for their drivers, to go further.
+
+        The path starts with the top module (a name or full identifier), followed by the names of the instances
+        (with the labels of the generate blocks around) and the signal. A generate
+        construct is left out, if its condition is false for the parameter values (`params` of the top, defaults
+        otherwise). Labeled `for` generate constructs are unrolled: `top.g_st[1].data` is the signal of the
+        second iteration, the index is checked. Without index (`top.g_st.data`), a path stands for all iterations
+        (`multiple`). Instance arrays are not unrolled.
+
+        `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
+        (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
+
+        Raises:
+            ValueError: The path does not exist.
+        """
+        conn = self._connectivity(params, passthrough)
+        node = conn.locate(path)
+        return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node))
+
+    def loads(
+        self,
+        path: str,
+        params: Mapping[str, int | float | str | bool] | None = None,
+        passthrough: Iterable[str] = (),
+    ) -> tuple[dm.Link, ...]:
+        """What the signal with the instance path `path` drives. See [drivers][hdl_parser.project.Project.drivers].
+
+        The loads are the assignments reading the signal, also by a condition (`control`), and the input ports of
+        instances it is connected to. An output port is loaded by the connection within the parent.
+
+        Raises:
+            ValueError: The path does not exist.
+        """
+        conn = self._connectivity(params, passthrough)
+        node = conn.locate(path)
+        return tuple(conn.link(node, step, driver=False) for step in conn.loads(node))
+
+    def trace(  # noqa: PLR0913
+        self,
+        src: str,
+        dst: str,
+        params: Mapping[str, int | float | str | bool] | None = None,
+        through_regs: bool = False,
+        control: bool = True,
+        passthrough: Iterable[str] = (),
+    ) -> tuple[dm.Hop, ...]:
+        """Shortest connection from the signal `src` to the signal `dst`, both instance paths below the same top.
+
+        The search follows the loads of the signals: down through the input ports of instances, up through
+        output ports. It stops at blackboxes (modules which are not defined) and, by default, behind flip-flops.
+        The result starts with `src` and ends with `dst`. It is empty, if there is no connection.
+
+        Args:
+            src: Instance path of the signal to start at: `top.u_core.result_o`.
+            dst: Instance path of the signal to reach.
+
+        Keyword Args:
+            params: Values of the parameters of the top, by name. Its defaults are used otherwise.
+            through_regs: Continue behind flip-flops.
+            control: Follow conditions (`if (en) y = a;` and `y = en ? a : b;` connect `en` to `y`), resets and
+                     clocks too.
+            passthrough: Cells which pass their inputs on to their outputs. See
+                         [drivers][hdl_parser.project.Project.drivers].
+
+        Raises:
+            ValueError: A path does not exist.
+        """
+        conn = self._connectivity(params, passthrough)
+        source: Node = conn.locate(src)
+        target: Node = conn.locate(dst)
+        return conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
 
     def _children(
         self, parent: Definition, depth: int | None, path: tuple[str, ...]

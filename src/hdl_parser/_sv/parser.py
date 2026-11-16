@@ -29,8 +29,11 @@ it extracts information from. Everything else is skipped:
 
 * brackets are always consumed as balanced groups,
 * unknown module items are skipped up to their terminating `;`,
-* procedural code and other blocks are skipped up to their closing keyword,
+* `initial` blocks and other blocks are skipped up to their closing keyword,
 * nothing is ever skipped beyond `endmodule`.
+
+The statements of `always` blocks are walked, to extract their assignments. A statement which is not
+understood (i.e. a task call) is skipped and reported.
 
 Supporting a new construct means adding one branch to the related `_parse_*` function. Module items are
 dispatched by their leading keyword: a new one is a function decorated with `_handles`.
@@ -42,11 +45,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, NamedTuple
 
+from .. import _refs  # noqa: TID252
 from .. import datamodel as dm  # noqa: TID252
 from .._diagnostics import Diagnostics, shorten  # noqa: TID252
-from .._tokens import EOF, ID, KW, OPEN, Cursor, SourceMap, Token  # noqa: TID252
+from .._tokens import CLOSE, EOF, ID, KW, OPEN, Cursor, SourceMap, Token  # noqa: TID252
 from .preproc import Macros, expand_mapped, split_args
-from .tokenizer import MACRO, TYPE_KEYWORDS, tokenize
+from .tokenizer import MACRO, SYS, TYPE_KEYWORDS, tokenize
 
 LOGGER = logging.getLogger(__name__)
 
@@ -95,7 +99,6 @@ _DECLARATIONS = frozenset(
     (
         # fmt: off
         "alias",
-        "assign",
         "automatic",
         "bind",
         "deassign",
@@ -187,6 +190,7 @@ class _Inst(NamedTuple):
     dim: str
     params: list[_Con]
     cons: list[_Con]
+    wildcard: bool = False
 
 
 class _Macro(NamedTuple):
@@ -224,6 +228,17 @@ class _Function(NamedTuple):
     comment: list[str]
 
 
+class _Assign(NamedTuple):
+    """One Assignment. `first` and `last` span the whole assignment."""
+
+    first: Token
+    last: Token
+    target: _refs.Target
+    reads: tuple[str, ...]
+    conds: tuple[str, ...]
+    blocking: bool
+
+
 class _Process(NamedTuple):
     """One `always` Block. `first` and `last` span the whole block."""
 
@@ -235,6 +250,9 @@ class _Process(NamedTuple):
     checked: frozenset[str]
     generates: tuple[dm.Generate, ...]
     comment: list[str]
+    assigns: list[_Assign]
+    # token ranges of the statements, which are not understood
+    skipped: list[tuple[int, int]]
 
 
 @dataclass
@@ -280,6 +298,8 @@ class _Module:
     typedefs: list[_Typedef] = field(default_factory=list)
     functions: list[_Function] = field(default_factory=list)
     processes: list[_Process] = field(default_factory=list)
+    # continuous assignments with the generate constructs around
+    assigns: list[tuple[_Assign, tuple[dm.Generate, ...]]] = field(default_factory=list)
     insts: list[_Inst] = field(default_factory=list)
     macros: list[_Macro] = field(default_factory=list)
     # token ranges within the header, which are not understood
@@ -287,9 +307,18 @@ class _Module:
     # generate constructs around the current position, and whether they end with the next item (no `begin`)
     generates: list[dm.Generate] = field(default_factory=list)
     single: list[bool] = field(default_factory=list)
+    # the construct left last, the one left in front of the current item, and the conditions not met by the
+    # alternatives in front of the next `if` (`else if`)
+    closed: dm.Generate | None = None
+    previous: dm.Generate | None = None
+    others: tuple[str, ...] = ()
+    # labels of the generate blocks
+    labels: set[str] = field(default_factory=set)
 
     def open_generate(self, generate: dm.Generate, single: bool = False) -> None:
         """Enter `generate`. `single`: it has no `begin` and ends with the next item."""
+        if generate.name:
+            self.labels.add(generate.name)
         self.generates.append(generate)
         self.single.append(single)
 
@@ -297,7 +326,7 @@ class _Module:
         """Leave the innermost block (of `kind`, if given)."""
         self.close_single()
         if self.generates and kind in (None, self.generates[-1].kind):
-            self.generates.pop()
+            self.closed = self.generates.pop()
             self.single.pop()
             # constructs without `begin` end with their block: if (A) for (...) begin ... end
             self.close_single()
@@ -305,8 +334,15 @@ class _Module:
     def close_single(self) -> None:
         """Leave all constructs, which end with the item parsed last."""
         while self.single and self.single[-1]:
-            self.generates.pop()
+            self.closed = self.generates.pop()
             self.single.pop()
+
+    def alternatives(self) -> tuple[str, ...]:
+        """Conditions not met by an alternative (`else`), which follows the construct left in front."""
+        closed = self.previous
+        if closed is None or closed.kind != "if":
+            return ()
+        return (*closed.others, closed.cond)
 
 
 # --- types and declarations ---
@@ -725,9 +761,10 @@ def _is_instance(c: Cursor) -> bool:
     return toks[idx].text == "("
 
 
-def _parse_connections(c: Cursor) -> list[_Con]:
-    """Parse the parenthesized connections or parameter values of an instance."""
+def _parse_connections(c: Cursor) -> tuple[list[_Con], bool]:
+    """Parse the parenthesized connections or parameter values of an instance. Return them, and whether `.*` is used."""
     cons: list[_Con] = []
+    wildcard = False
     opening = c.next()
     while True:
         tok = c.peek()
@@ -745,6 +782,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
             port = c.next()
             if port.kind != ID:
                 # .* or garbage
+                wildcard = wildcard or port.text == "*"
                 continue
             comment = c.start_comment()
             if c.peek().text == "(":
@@ -762,7 +800,7 @@ def _parse_connections(c: Cursor) -> list[_Con]:
                 c.next()
             else:
                 cons.append(_Con(tok, c.toks[c.pos - 1], "", c.text(pos, c.pos).strip(), comment))
-    return cons
+    return cons, wildcard
 
 
 def _parse_instances(c: Cursor, generates: tuple[dm.Generate, ...]) -> list[_Inst]:
@@ -770,11 +808,12 @@ def _parse_instances(c: Cursor, generates: tuple[dm.Generate, ...]) -> list[_Ins
     insts: list[_Inst] = []
     c.sink = None
     module = c.next()
-    params = _parse_connections(c) if c.accept("#") else []
+    params = _parse_connections(c)[0] if c.accept("#") else []
     while True:
         name = c.next()
         dim = _parse_dims(c)
-        insts.append(_Inst(module, name, name, module, generates, dim, params, _parse_connections(c)))
+        cons, wildcard = _parse_connections(c)
+        insts.append(_Inst(module, name, name, module, generates, dim, params, cons, wildcard))
         if c.peek().text == "," and c.peek(1).kind == ID:
             c.next()
         else:
@@ -869,6 +908,286 @@ def _skip_statement(c: Cursor) -> None:  # noqa: C901, PLR0911, PLR0912, PLR0915
             c.skip_until(_SEMI)
             c.accept(";")
             return
+
+
+# --- assignments ---
+
+# A statement starting with one of these keywords is a declaration
+_DECL_STARTS = frozenset((*TYPE_KEYWORDS, "automatic", "static", "var", "const", "enum", "struct", "union", *_SIGNING))
+# Statements without anything to extract
+_NO_DRIVERS = frozenset(("deassign", "release", "disable", "return", "break", "continue", "typedef", *_PARAMS))
+# Operators of compound assignments: `+=`, `<<=`
+_COMPOUND = frozenset(("+", "-", "*", "/", "%", "&", "|", "^", "<<", ">>", "<<<", ">>>"))
+# The search for the assignment operator never continues beyond these keywords
+_STATEMENT_STOPS = frozenset(("begin", "end", "endcase", "if", "else", "case", "fork", *_JOINS, *_CASES))
+
+
+class _Walker:
+    """Assignments Within Procedural Code.
+
+    `conds` are the names read by the conditions around the current statement, from the outermost.
+    """
+
+    def __init__(self, c: Cursor):
+        self.c = c
+        self.assigns: list[_Assign] = []
+        self.conds: list[tuple[str, ...]] = []
+        self.skipped: list[tuple[int, int]] = []
+
+    def cond_reads(self) -> tuple[str, ...]:
+        return _refs.unique(name for cond in self.conds for name in cond)
+
+    def group(self) -> tuple[str, ...]:
+        """Consume the optional bracket group at the current position and return the names read within."""
+        c = self.c
+        if c.peek().text not in OPEN:
+            return ()
+        start = c.pos
+        c.skip_balanced()
+        return _refs.reads(c.toks[start : c.pos], paths=True)
+
+    def skip(self, start: int) -> None:
+        """Skip the statement from `start` up to its `;`, which is not understood."""
+        c = self.c
+        c.skip_until(_SEMI)
+        c.accept(";")
+        if c.pos > start:
+            self.skipped.append((start, c.pos))
+
+    def statement(self) -> None:  # noqa: C901, PLR0911, PLR0912, PLR0915
+        """Walk one procedural statement."""
+        c = self.c
+        while True:
+            tok = c.peek()
+            text = tok.text
+            kind = tok.kind
+            if kind == EOF:
+                return
+            if kind == KW:
+                if text in _HARD_STOPS or text in _JOINS or text in ("end", "endcase", "else"):
+                    return
+                if text in ("begin", "fork"):
+                    self.block(frozenset(("end",)) if text == "begin" else _JOINS)
+                    return
+                if text == "if":
+                    c.next()
+                    self.conds.append(self.group())
+                    self.statement()
+                    if c.accept("else"):
+                        self.statement()
+                    self.conds.pop()
+                    return
+                if text in _CASES:
+                    self.case()
+                    return
+                if text in ("for", "while", "repeat", "foreach"):
+                    c.next()
+                    self.conds.append(self.group())
+                    self.statement()
+                    self.conds.pop()
+                    return
+                if text == "do":
+                    c.next()
+                    self.statement()
+                    c.skip_until(_SEMI)
+                    c.accept(";")
+                    return
+                if text in ("unique", "unique0", "priority", "forever"):
+                    c.next()
+                elif text == "wait":
+                    c.next()
+                    if c.peek().text == "fork":
+                        c.next()
+                    self.group()
+                elif text in _ASSERTIONS:
+                    _skip_statement(c)
+                    return
+                elif text in ("assign", "force"):
+                    c.next()
+                    self.assignment()
+                    return
+                elif text in _DECL_STARTS:
+                    self.declaration()
+                    return
+                elif text in _NO_DRIVERS:
+                    c.skip_until(_SEMI)
+                    c.accept(";")
+                    return
+                else:
+                    self.skip(c.pos)
+                    return
+            elif kind == ID:
+                if c.peek(1).text == ":":
+                    # label
+                    c.next()
+                    c.next()
+                elif _type_ref_end(c, c.pos):
+                    self.declaration()
+                    return
+                else:
+                    self.assignment()
+                    return
+            elif text in ("@", "#", "##"):
+                # event or delay control
+                c.next()
+                if c.peek().text == "(":
+                    c.skip_balanced()
+                elif c.peek().text != ";":
+                    c.next()
+            elif text == ";":
+                c.next()
+                return
+            elif text in ("{", "++", "--"):
+                self.assignment()
+                return
+            elif kind == SYS and not text.startswith("$readmem"):
+                # system tasks drive nothing
+                c.skip_until(_SEMI)
+                c.accept(";")
+                return
+            else:
+                self.skip(c.pos)
+                return
+
+    def block(self, ends: frozenset[str]) -> None:
+        """`begin [: label] ... end [: label]`, likewise `fork ... join`."""
+        c = self.c
+        c.next()
+        _skip_label(c)
+        while True:
+            tok = c.peek()
+            if tok.kind == EOF or (tok.kind == KW and tok.text in _HARD_STOPS):
+                return
+            if tok.kind == KW and tok.text in ends:
+                c.next()
+                _skip_label(c)
+                return
+            pos = c.pos
+            self.statement()
+            if c.pos == pos:
+                # stray `end`, `else`, ...
+                c.next()
+
+    def case(self) -> None:
+        """`case (expression) [inside] item: statement ... endcase`."""
+        c = self.c
+        c.next()
+        selector = self.group()
+        while c.peek().text in ("inside", "matches"):
+            c.next()
+        while True:
+            tok = c.peek()
+            if tok.kind == EOF or (tok.kind == KW and tok.text in _HARD_STOPS):
+                return
+            if tok.text == "endcase":
+                c.next()
+                _skip_label(c)
+                return
+            pos = c.pos
+            if tok.text == "default":
+                c.next()
+                c.accept(":")
+                items: tuple[str, ...] = ()
+            else:
+                c.skip_until(frozenset((":",)))
+                items = _refs.reads(c.toks[pos : c.pos], paths=True)
+                if not c.accept(":"):
+                    c.skip_past(frozenset(("endcase",)), _CASES)
+                    self.skipped.append((pos, c.pos))
+                    return
+            self.conds.append(_refs.unique((*selector, *items)))
+            self.statement()
+            self.conds.pop()
+            if c.pos == pos:
+                c.next()
+
+    def declaration(self) -> None:
+        """Declaration of variables: `[automatic] type [dims] name [dims] [= value] {, ...};`."""
+        c = self.c
+        while c.peek().text in ("automatic", "static", "var", "const"):
+            c.next()
+        _parse_type(c)
+        _parse_dims(c)
+        while c.peek().kind == ID:
+            name = c.next()
+            _parse_dims(c)
+            if c.accept("="):
+                start = c.pos
+                c.skip_until(frozenset((",", ";")))
+                target = _refs.Target(name.text, "", ())
+                reads, control = _refs.split_reads(c.toks[start : c.pos], paths=True)
+                last = c.toks[c.pos - 1]
+                conds = _refs.unique((*self.cond_reads(), *control))
+                self.assigns.append(_Assign(name, last, target, reads, conds, True))
+            if not c.accept(","):
+                break
+        c.skip_until(_SEMI)
+        c.accept(";")
+
+    def assignment(self) -> None:
+        """`target = value;`, `target <= value;`, `target op= value;`, `target++;`. Anything else is skipped."""
+        c = self.c
+        toks = c.toks
+        start = c.pos
+        first = toks[start]
+        increment = first.text in ("++", "--")
+        if increment:
+            c.next()
+        lhs_start = c.pos
+        end, op = _assignment_operator(c, lhs_start, _SEMI)
+        if op is None:
+            self.skip(start)
+            return
+        lhs = toks[lhs_start:end]
+        compound = increment or op in ("++", "--")
+        if lhs and lhs[-1].text in _COMPOUND and lhs[-1].end == toks[end].start and op == "=":
+            compound = True
+            lhs = lhs[:-1]
+        c.skip_to(end + 1)
+        value_start = c.pos
+        c.skip_until(_SEMI)
+        value = toks[value_start : c.pos]
+        c.accept(";")
+        found = _refs.targets(lhs)
+        if not found:
+            self.skipped.append((start, c.pos))
+            return
+        last = toks[c.pos - 1]
+        reads, control = _refs.split_reads(value, paths=True)
+        conds = _refs.unique((*self.cond_reads(), *control))
+        for target in found:
+            own = (target.name,) if compound else ()
+            names = _refs.unique((*own, *reads, *target.reads))
+            self.assigns.append(_Assign(first, last, target, names, conds, op != "<="))
+
+
+def _assignment_operator(c: Cursor, start: int, stops: frozenset[str]) -> tuple[int, str | None]:
+    """Index and text of the assignment operator of the statement at `start`. `None`, if there is none."""
+    toks = c.toks
+    idx = start
+    while True:
+        tok = toks[idx]
+        text = tok.text
+        if text in OPEN:
+            idx = c.match(idx)
+            continue
+        if text in ("=", "<=", "++", "--"):
+            return idx, text
+        if (
+            text in stops
+            or text in CLOSE
+            or tok.kind == EOF
+            or (tok.kind == KW and (text in _HARD_STOPS or text in _STATEMENT_STOPS))
+        ):
+            return idx, None
+        idx += 1
+
+
+def _walk(c: Cursor) -> _Walker:
+    """Walk one procedural statement and return its assignments."""
+    walker = _Walker(c)
+    walker.statement()
+    return walker
 
 
 # --- module ---
@@ -1022,8 +1341,55 @@ def _handle_always(c: Cursor, mod: _Module) -> None:
     checked: frozenset[str] = frozenset()
     if toks[idx].text == "if" and toks[idx + 1].text == "(":
         checked = frozenset(tok.text for tok in toks[idx + 2 : c.match(idx + 1)] if tok.kind == ID)
-    _skip_statement(c)
-    mod.processes.append(_Process(first, toks[c.pos - 1], name, events, checked, tuple(mod.generates), comment))
+    walker = _walk(c)
+    mod.processes.append(
+        _Process(
+            first,
+            toks[c.pos - 1],
+            name,
+            events,
+            checked,
+            tuple(mod.generates),
+            comment,
+            walker.assigns,
+            walker.skipped,
+        )
+    )
+
+
+@_handles("assign")
+def _handle_assign(c: Cursor, mod: _Module) -> None:
+    """`assign [strength] [#delay] target = value {, target = value};`."""
+    toks = c.toks
+    c.next()
+    if c.peek().text == "(":
+        c.skip_balanced()
+    if c.peek().text == "#":
+        c.next()
+        if c.peek().text == "(":
+            c.skip_balanced()
+        else:
+            c.next()
+    generates = tuple(mod.generates)
+    while True:
+        start = c.pos
+        end, op = _assignment_operator(c, start, frozenset((",", ";")))
+        if op != "=":
+            break
+        lhs = toks[start:end]
+        c.skip_to(end + 1)
+        value_start = c.pos
+        c.skip_until(frozenset((",", ";")))
+        reads, control = _refs.split_reads(toks[value_start : c.pos], paths=True)
+        last = toks[c.pos - 1]
+        for target in _refs.targets(lhs):
+            names = _refs.unique((*reads, *target.reads))
+            assign = _Assign(toks[start], last, target, names, tuple(n for n in control if n not in names), True)
+            mod.assigns.append((assign, generates))
+        if not c.accept(","):
+            break
+    c.skip_until(_SEMI)
+    c.accept(";")
 
 
 @_handles(*_ASSERTIONS)
@@ -1043,27 +1409,34 @@ def _parse_cond(c: Cursor) -> str:
     return c.text(start, c.pos - 1).strip()
 
 
-def _open_generate(c: Cursor, mod: _Module, kind: dm.GenerateKind, cond: str = "") -> None:
+def _open_generate(
+    c: Cursor, mod: _Module, kind: dm.GenerateKind, cond: str = "", others: tuple[str, ...] = ()
+) -> None:
     """Enter the generate construct `kind`: a block, if `begin` follows, or just the next item."""
     if c.accept("begin"):
-        mod.open_generate(dm.Generate(kind=kind, name=_skip_label(c), cond=cond))
+        mod.open_generate(dm.Generate(kind=kind, name=_skip_label(c), cond=cond, others=others))
     else:
-        mod.open_generate(dm.Generate(kind=kind, cond=cond), single=True)
+        mod.open_generate(dm.Generate(kind=kind, cond=cond, others=others), single=True)
 
 
 @_handles(*_CONDITIONALS)
 def _handle_conditional(c: Cursor, mod: _Module) -> None:
     """`if (...) [begin [: label]]` and `for (...) [begin [: label]]`."""
     kind: dm.GenerateKind = "if" if c.next().text == "if" else "for"
-    _open_generate(c, mod, kind, _parse_cond(c))
+    others = mod.others if kind == "if" else ()
+    mod.others = ()
+    _open_generate(c, mod, kind, _parse_cond(c), others)
 
 
 @_handles("else")
 def _handle_else(c: Cursor, mod: _Module) -> None:
     """`else [begin [: label]]`. The `if` of `else if` is a generate construct on its own."""
     c.next()
-    if c.peek().text != "if":
-        _open_generate(c, mod, "else")
+    others = mod.alternatives()
+    if c.peek().text == "if":
+        mod.others = others
+    else:
+        _open_generate(c, mod, "else", others=others)
 
 
 @_handles(*_CASE_GENERATES)
@@ -1100,10 +1473,23 @@ def _handle_labeled(c: Cursor, mod: _Module) -> None:  # noqa: ARG001
     _skip_label(c)
 
 
+# Types of nets: the value of their declaration is a continuous assignment
+_NETS = frozenset(
+    ("wire", "tri", "tri0", "tri1", "triand", "trior", "trireg", "wand", "wor", "uwire", "supply0", "supply1")
+)
+
+
 def _parse_signals(c: Cursor, mod: _Module) -> None:
     """Parse the declaration of nets or variables: `type [dims] name [dims] [= value] {, ...};`."""
     generates = tuple(mod.generates)
-    mod.signals += [(decl, generates) for decl in _parse_item_decl(c)]
+    decls = _parse_item_decl(c)
+    mod.signals += [(decl, generates) for decl in decls]
+    for decl in decls:
+        if decl.default and decl.ptype in _NETS:
+            target = _refs.Target(decl.name.text, "", ())
+            reads, control = _refs.split_reads(_refs.tokens(decl.default), paths=True)
+            assign = _Assign(decl.name, decl.last, target, reads, control, True)
+            mod.assigns.append((assign, generates))
 
 
 @_handles(*TYPE_KEYWORDS, "enum", "struct", "union")
@@ -1164,9 +1550,12 @@ def _parse_body(c: Cursor, mod: _Module) -> bool:  # noqa: C901
     handlers = _BODY_HANDLERS
     depth = 0
     while True:
+        closed = mod.closed
+        mod.closed = None
         if len(mod.generates) == depth:
             # the item parsed last did not open a generate construct: it ends the ones without `begin`
             mod.close_single()
+        mod.previous = mod.closed or closed
         depth = len(mod.generates)
         tok = c.peek()
         text = tok.text
@@ -1413,6 +1802,48 @@ def _create_signals(mod: _Module, smap: SourceMap) -> tuple[dm.Signal, ...]:
     )
 
 
+def _create_assign(assign: _Assign, smap: SourceMap, generates: tuple[dm.Generate, ...] = ()) -> dm.Assignment:
+    return dm.Assignment(
+        target=assign.target.name,
+        select=assign.target.select,
+        reads=assign.reads,
+        conds=assign.conds,
+        blocking=assign.blocking,
+        generates=generates,
+        ifdefs=assign.first.ifdefs,
+        loc=smap.span(assign.first, assign.last),
+    )
+
+
+def _local_names(mod: _Module) -> frozenset[str]:
+    """Names of the module, which are no signals: parameters, enumeration members, functions, types."""
+    names = {decl.name.text for decl in mod.params}
+    for typedef in mod.typedefs:
+        names.add(typedef.name.text)
+        if typedef.kind == "enum":
+            names.update(member.name.text for member in typedef.members)
+    names.update(function.name.text for function in mod.functions)
+    return frozenset(names)
+
+
+def _without(assign: _Assign, names: frozenset[str], labels: frozenset[str]) -> _Assign:
+    """`assign` without the reads of `names`.
+
+    A hierarchical reference into a generate block (one of `labels`) is kept as written (`g[0].data`), any other one
+    stands for its base: `bus` of `bus.req`.
+    """
+
+    def refs(reads: tuple[str, ...]) -> tuple[str, ...]:
+        found = []
+        for name in reads:
+            base = _refs.base(name)
+            if base not in names:
+                found.append(name if base in labels and "." in name else base)
+        return _refs.unique(found)
+
+    return assign._replace(reads=refs(assign.reads), conds=refs(assign.conds))
+
+
 def _create_processes(processes: list[_Process], smap: SourceMap) -> tuple[dm.Process, ...]:
     result = []
     for process in processes:
@@ -1433,6 +1864,7 @@ def _create_processes(processes: list[_Process], smap: SourceMap) -> tuple[dm.Pr
                 reset=reset.signal if reset else "",
                 reset_edge=reset.edge if reset else "",
                 generates=process.generates,
+                assigns=tuple(_create_assign(assign, smap) for assign in process.assigns),
                 comment=tuple(process.comment),
                 ifdefs=process.first.ifdefs,
                 loc=smap.span(process.first, process.last),
@@ -1479,6 +1911,7 @@ def _create_insts(insts: list[_Inst], smap: SourceMap) -> tuple[dm.ModuleInstanc
             dim=inst.dim,
             params=_create_connections(inst.params, smap),
             connections=_create_connections(inst.cons, smap),
+            wildcard=inst.wildcard,
             ifdefs=inst.module.ifdefs,
             loc=smap.span(inst.first, inst.last, inst.name),
         )
@@ -1508,6 +1941,14 @@ def _report(c: Cursor, mods: list[_Module], pkgs: list[_Package], smap: SourceMa
                 "Ports or parameters may be missing.",
                 smap.span(c.toks[start], c.toks[end - 1]),
             )
+        for process in mod.processes:
+            for start, end in process.skipped:
+                diagnostics.add(
+                    "statement-skipped",
+                    f"{kind} '{name}': '{shorten(c.text(start, end))}' in '{process.first.text}' is not understood. "
+                    "What it drives is not known.",
+                    smap.span(c.toks[start], c.toks[end - 1]),
+                )
         if not mod.ended:
             diagnostics.add("missing-end", f"{kind} '{name}' has no 'end{kind}'.", smap.span(mod.first, mod.name))
     for tok in c.unclosed:
@@ -1566,6 +2007,12 @@ def parse(  # noqa: PLR0913
     modules = []
     interfaces = []
     for mod in mods:
+        names = _local_names(mod)
+        labels = frozenset(mod.labels)
+        processes = [
+            process._replace(assigns=[_without(assign, names, labels) for assign in process.assigns])
+            for process in mod.processes
+        ]
         fields: dict[str, Any] = {
             "name": mod.name.text,
             "params": _create_params(mod.params, "parameter", smap),
@@ -1574,7 +2021,10 @@ def parse(  # noqa: PLR0913
             "signals": _create_signals(mod, smap),
             "typedefs": _create_typedefs(mod.typedefs, smap),
             "functions": _create_functions(mod.functions, smap),
-            "processes": _create_processes(mod.processes, smap),
+            "processes": _create_processes(processes, smap),
+            "assigns": tuple(
+                _create_assign(_without(assign, names, labels), smap, generates) for assign, generates in mod.assigns
+            ),
             "insts": _create_insts(mod.insts, smap),
             "ifdefs": mod.first.ifdefs,
             "unresolved_macros": _create_macros(mod, smap),

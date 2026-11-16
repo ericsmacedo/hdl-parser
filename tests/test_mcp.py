@@ -63,7 +63,19 @@ def test_session(tmp_path):
     assert responses[0]["result"]["protocolVersion"] == "2025-03-26"
     assert responses[0]["result"]["serverInfo"]["name"] == "hdl-parser"
     names = [tool["name"] for tool in responses[1]["result"]["tools"]]
-    assert names == ["module", "hierarchy", "where_used", "find", "diagnostics", "elaborate", "evaluate", "reload"]
+    assert names == [
+        "module",
+        "hierarchy",
+        "where_used",
+        "find",
+        "diagnostics",
+        "elaborate",
+        "evaluate",
+        "drivers",
+        "loads",
+        "trace",
+        "reload",
+    ]
     result = responses[2]["result"]
     assert result["isError"] is False
     assert result["structuredContent"]["result"][0]["inst"] == "top.sv:top.u_sub"
@@ -156,3 +168,21 @@ def test_elaborate_tool(tmp_path):
     answer = server.handle(_call(2, "evaluate", expr="W * 2", scope="top"))["result"]["structuredContent"]
     assert answer["result"]["value"] == 16
     assert server.handle(_call(3, "elaborate", top="top", params=[1]))["result"]["isError"] is True
+
+
+def test_detail(tmp_path):
+    """Compact Answers By Default, Full On Request."""
+    (tmp_path / "top.sv").write_text("module top (input logic a, b, output logic y);\n  assign y = a;\nendmodule\n")
+    load = lambda: Project.from_dir(tmp_path)  # noqa: E731
+    compact, full, bad = (
+        response["result"]["structuredContent"]
+        for response in _session(
+            load,
+            _call(1, "module", name="top", fields=["ports"]),
+            _call(2, "module", name="top", fields=["ports"], detail="full"),
+            _call(3, "module", name="top", detail="none"),
+        )
+    )
+    assert compact["result"]["ports"]["columns"] == ["name", "direction", "ptype", "line"]
+    assert full["result"]["ports"][0]["id"] == "top.sv:top.a"
+    assert bad["error"]["code"] == "bad-argument"

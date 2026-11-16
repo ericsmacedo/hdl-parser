@@ -192,6 +192,20 @@
         {
           "id": "multi_unpacked_ports.#always1",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "data_out",
+              "reads": [
+                "data_in"
+              ],
+              "loc": {
+                "line": 20,
+                "col": 9,
+                "end_line": 20,
+                "end_col": 41
+              }
+            }
+          ],
           "comment": [
             "Combinational logic (packed operation)"
           ],
@@ -213,6 +227,46 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "result_x",
+              "select": "[i]",
+              "reads": [
+                "mem_a",
+                "i",
+                "mem_b"
+              ],
+              "conds": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 27,
+                "col": 13,
+                "end_line": 27,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "result_y",
+              "select": "[i]",
+              "reads": [
+                "mem_a",
+                "i",
+                "mem_b"
+              ],
+              "conds": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 28,
+                "col": 13,
+                "end_line": 28,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "Sequential logic (unpacked operations)"
           ],
@@ -345,11 +399,45 @@
         {
           "id": "tb.#always1",
           "kind": "always",
+          "assigns": [
+            {
+              "target": "clk",
+              "reads": [
+                "clk"
+              ],
+              "loc": {
+                "line": 48,
+                "col": 15,
+                "end_line": 48,
+                "end_col": 26
+              }
+            }
+          ],
           "loc": {
             "line": 48,
             "col": 5,
             "end_line": 48,
             "end_col": 26
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "mem_a",
+          "loc": {
+            "line": 39,
+            "col": 24,
+            "end_line": 40,
+            "end_col": 79
+          }
+        },
+        {
+          "target": "mem_b",
+          "loc": {
+            "line": 41,
+            "col": 24,
+            "end_line": 42,
+            "end_col": 79
           }
         }
       ],

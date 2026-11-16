@@ -1134,6 +1134,94 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "slv_resp_o",
+          "reads": [
+            "mst_resp_i",
+            "aw_full",
+            "aw_reflect_id",
+            "aw_empty",
+            "ar_full",
+            "ar_reflect_id",
+            "ar_empty"
+          ],
+          "loc": {
+            "line": 144,
+            "col": 10,
+            "end_line": 163,
+            "end_col": 4
+          }
+        },
+        {
+          "target": "aw_push",
+          "reads": [
+            "mst_req_o",
+            "slv_resp_o"
+          ],
+          "loc": {
+            "line": 166,
+            "col": 10,
+            "end_line": 166,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "aw_pop",
+          "reads": [
+            "slv_resp_o",
+            "mst_req_o"
+          ],
+          "loc": {
+            "line": 167,
+            "col": 10,
+            "end_line": 167,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "ar_push",
+          "reads": [
+            "mst_req_o",
+            "slv_resp_o"
+          ],
+          "loc": {
+            "line": 187,
+            "col": 10,
+            "end_line": 187,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "ar_pop",
+          "reads": [
+            "slv_resp_o",
+            "mst_req_o"
+          ],
+          "loc": {
+            "line": 188,
+            "col": 10,
+            "end_line": 188,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "mst_req_o",
+          "reads": [
+            "slv_req_i",
+            "aw_full",
+            "aw_empty",
+            "ar_full",
+            "ar_empty"
+          ],
+          "loc": {
+            "line": 207,
+            "col": 10,
+            "end_line": 226,
+            "end_col": 4
+          }
+        }
+      ],
       "insts": [
         {
           "id": "axi_to_axi_lite_id_reflect.i_aw_id_fifo",

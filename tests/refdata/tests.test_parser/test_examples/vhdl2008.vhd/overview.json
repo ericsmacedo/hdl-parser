@@ -104,7 +104,10 @@
             {
               "kind": "if",
               "name": "g_mode",
-              "cond": "g_fast : MODE = 0"
+              "cond": "MODE = 1",
+              "others": [
+                "MODE = 0"
+              ]
             }
           ],
           "loc": {
@@ -119,6 +122,40 @@
         {
           "id": "vhdl2008.#process1",
           "kind": "process",
+          "assigns": [
+            {
+              "target": "dout",
+              "reads": [
+                "a"
+              ],
+              "conds": [
+                "sel"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 52,
+                "col": 22,
+                "end_line": 52,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "dout",
+              "reads": [
+                "b"
+              ],
+              "conds": [
+                "sel"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 53,
+                "col": 22,
+                "end_line": 53,
+                "end_col": 32
+              }
+            }
+          ],
           "comment": [
             "-- process sensitive to all signals"
           ],
@@ -127,6 +164,71 @@
             "col": 3,
             "end_line": 55,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "a",
+          "reads": [
+            "tmp"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_mode",
+              "cond": "MODE = 1",
+              "others": [
+                "MODE = 0"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 32,
+            "col": 5,
+            "end_line": 32,
+            "end_col": 14
+          }
+        },
+        {
+          "target": "a",
+          "reads": [
+            "din"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_mode",
+              "others": [
+                "MODE = 0",
+                "MODE = 1"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 35,
+            "col": 5,
+            "end_line": 35,
+            "end_col": 14
+          }
+        },
+        {
+          "target": "b",
+          "reads": [
+            "a"
+          ],
+          "generates": [
+            {
+              "kind": "case",
+              "name": "g_sel",
+              "cond": "MODE"
+            }
+          ],
+          "loc": {
+            "line": 45,
+            "col": 7,
+            "end_line": 45,
+            "end_col": 14
           }
         }
       ],
@@ -174,7 +276,7 @@
             {
               "kind": "if",
               "name": "g_mode",
-              "cond": "g_fast : MODE = 0"
+              "cond": "MODE = 0"
             }
           ],
           "loc": {
@@ -227,7 +329,10 @@
             {
               "kind": "if",
               "name": "g_mode",
-              "cond": "g_fast : MODE = 0"
+              "cond": "MODE = 1",
+              "others": [
+                "MODE = 0"
+              ]
             }
           ],
           "loc": {

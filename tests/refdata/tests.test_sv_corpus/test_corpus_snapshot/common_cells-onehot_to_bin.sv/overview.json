@@ -108,6 +108,81 @@
           }
         }
       ],
+      "assigns": [
+        {
+          "target": "tmp_i",
+          "reads": [
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_jl",
+              "cond": "genvar j = 0; j < BIN_WIDTH; j++"
+            },
+            {
+              "kind": "for",
+              "name": "gen_il",
+              "cond": "genvar i = 0; i < ONEHOT_WIDTH; i++"
+            }
+          ],
+          "loc": {
+            "line": 26,
+            "col": 24,
+            "end_line": 26,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "tmp_mask",
+          "select": "[i]",
+          "reads": [
+            "tmp_i",
+            "j",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_jl",
+              "cond": "genvar j = 0; j < BIN_WIDTH; j++"
+            },
+            {
+              "kind": "for",
+              "name": "gen_il",
+              "cond": "genvar i = 0; i < ONEHOT_WIDTH; i++"
+            }
+          ],
+          "loc": {
+            "line": 27,
+            "col": 24,
+            "end_line": 27,
+            "end_col": 46
+          }
+        },
+        {
+          "target": "bin",
+          "select": "[j]",
+          "reads": [
+            "tmp_mask",
+            "onehot",
+            "j"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "gen_jl",
+              "cond": "genvar j = 0; j < BIN_WIDTH; j++"
+            }
+          ],
+          "loc": {
+            "line": 29,
+            "col": 16,
+            "end_line": 29,
+            "end_col": 45
+          }
+        }
+      ],
       "loc": {
         "line": 13,
         "col": 1,

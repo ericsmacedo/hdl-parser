@@ -1092,6 +1092,40 @@
               "cond": "USE_LITEDRAM"
             }
           ],
+          "assigns": [
+            {
+              "target": "soc_rst",
+              "conds": [
+                "ext_rst_n"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 304,
+                "col": 17,
+                "end_line": 304,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "soc_rst",
+              "reads": [
+                "dram_sys_rst",
+                "system_clk_locked"
+              ],
+              "conds": [
+                "ext_rst_n",
+                "rising_edge",
+                "system_clk"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 306,
+                "col": 17,
+                "end_line": 306,
+                "end_col": 66
+              }
+            }
+          ],
           "comment": [
             "-- Generate SoC reset"
           ],
@@ -1100,6 +1134,427 @@
             "col": 9,
             "end_line": 308,
             "end_col": 21
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "spi_flash_cs_n",
+          "reads": [
+            "spi_cs_n"
+          ],
+          "loc": {
+            "line": 196,
+            "col": 5,
+            "end_line": 196,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "spi_flash_mosi",
+          "reads": [
+            "spi_sdat_o"
+          ],
+          "conds": [
+            "spi_sdat_oe"
+          ],
+          "loc": {
+            "line": 197,
+            "col": 5,
+            "end_line": 197,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "spi_flash_miso",
+          "reads": [
+            "spi_sdat_o"
+          ],
+          "conds": [
+            "spi_sdat_oe"
+          ],
+          "loc": {
+            "line": 198,
+            "col": 5,
+            "end_line": 198,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "spi_flash_wp_n",
+          "reads": [
+            "spi_sdat_o"
+          ],
+          "conds": [
+            "spi_sdat_oe"
+          ],
+          "loc": {
+            "line": 199,
+            "col": 5,
+            "end_line": 199,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "spi_flash_hold_n",
+          "reads": [
+            "spi_sdat_o"
+          ],
+          "conds": [
+            "spi_sdat_oe"
+          ],
+          "loc": {
+            "line": 200,
+            "col": 5,
+            "end_line": 200,
+            "end_col": 74
+          }
+        },
+        {
+          "target": "spi_sdat_i",
+          "select": "(0)",
+          "reads": [
+            "spi_flash_mosi"
+          ],
+          "loc": {
+            "line": 201,
+            "col": 5,
+            "end_line": 201,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "spi_sdat_i",
+          "select": "(1)",
+          "reads": [
+            "spi_flash_miso"
+          ],
+          "loc": {
+            "line": 202,
+            "col": 5,
+            "end_line": 202,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "spi_sdat_i",
+          "select": "(2)",
+          "reads": [
+            "spi_flash_wp_n"
+          ],
+          "loc": {
+            "line": 203,
+            "col": 5,
+            "end_line": 203,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "spi_sdat_i",
+          "select": "(3)",
+          "reads": [
+            "spi_flash_hold_n"
+          ],
+          "loc": {
+            "line": 204,
+            "col": 5,
+            "end_line": 204,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "led0",
+          "reads": [
+            "soc_rst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 254,
+            "col": 2,
+            "end_line": 254,
+            "end_col": 18
+          }
+        },
+        {
+          "target": "led1",
+          "reads": [
+            "pll_rst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 255,
+            "col": 2,
+            "end_line": 255,
+            "end_col": 18
+          }
+        },
+        {
+          "target": "led2",
+          "reads": [
+            "system_clk_locked"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 256,
+            "col": 9,
+            "end_line": 256,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "led3",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 257,
+            "col": 2,
+            "end_line": 257,
+            "end_col": 14
+          }
+        },
+        {
+          "target": "ddram_clk_dummy",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "nodram",
+              "cond": "not USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 268,
+            "col": 9,
+            "end_line": 268,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "ddram_clk_p_vec",
+          "reads": [
+            "ddram_clk_p"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 297,
+            "col": 2,
+            "end_line": 297,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "ddram_clk_n_vec",
+          "reads": [
+            "ddram_clk_n"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 298,
+            "col": 2,
+            "end_line": 298,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "led0",
+          "reads": [
+            "soc_rst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 355,
+            "col": 9,
+            "end_line": 355,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "led1",
+          "reads": [
+            "pll_rst"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 356,
+            "col": 2,
+            "end_line": 356,
+            "end_col": 18
+          }
+        },
+        {
+          "target": "led2",
+          "reads": [
+            "dram_init_done",
+            "dram_init_error"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 357,
+            "col": 2,
+            "end_line": 357,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "led3",
+          "reads": [
+            "dram_init_error"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_dram",
+              "cond": "USE_LITEDRAM"
+            }
+          ],
+          "loc": {
+            "line": 358,
+            "col": 2,
+            "end_line": 358,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "wb_eth_cyc",
+          "reads": [
+            "wb_ext_io_in",
+            "wb_ext_is_eth"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 424,
+            "col": 9,
+            "end_line": 424,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "wb_eth_adr",
+          "reads": [
+            "wb_ext_io_in"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 427,
+            "col": 9,
+            "end_line": 427,
+            "end_col": 70
+          }
+        },
+        {
+          "target": "wb_eth_out",
+          "select": ".stall",
+          "reads": [
+            "wb_eth_out"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "has_liteeth",
+              "cond": "USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 430,
+            "col": 9,
+            "end_line": 430,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "ext_irq_eth",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "no_liteeth",
+              "cond": "not USE_LITEETH"
+            }
+          ],
+          "loc": {
+            "line": 435,
+            "col": 9,
+            "end_line": 435,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "wb_ext_io_out",
+          "reads": [
+            "wb_eth_out",
+            "wb_dram_ctrl_out"
+          ],
+          "conds": [
+            "wb_ext_is_eth"
+          ],
+          "loc": {
+            "line": 439,
+            "col": 5,
+            "end_line": 440,
+            "end_col": 39
           }
         }
       ],

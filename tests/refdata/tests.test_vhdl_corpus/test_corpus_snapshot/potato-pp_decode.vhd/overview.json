@@ -437,6 +437,174 @@
           ],
           "clock": "clk",
           "clock_edge": "posedge",
+          "assigns": [
+            {
+              "target": "instruction",
+              "reads": [
+                "RISCV_NOP"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 78,
+                "col": 5,
+                "end_line": 78,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "pc",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 79,
+                "col": 5,
+                "end_line": 79,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "count_instruction",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 80,
+                "col": 5,
+                "end_line": 80,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "count_instruction",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 82,
+                "col": 5,
+                "end_line": 82,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "instruction",
+              "reads": [
+                "RISCV_NOP"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "flush",
+                "instruction_ready"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 84,
+                "col": 5,
+                "end_line": 84,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "count_instruction",
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "flush",
+                "instruction_ready"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 85,
+                "col": 5,
+                "end_line": 85,
+                "end_col": 30
+              }
+            },
+            {
+              "target": "instruction",
+              "reads": [
+                "instruction_data"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "flush",
+                "instruction_ready"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 87,
+                "col": 5,
+                "end_line": 87,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "count_instruction",
+              "reads": [
+                "instruction_count"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "flush",
+                "instruction_ready"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 88,
+                "col": 5,
+                "end_line": 88,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "pc",
+              "reads": [
+                "instruction_address"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk",
+                "reset",
+                "stall",
+                "flush",
+                "instruction_ready"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 89,
+                "col": 5,
+                "end_line": 89,
+                "end_col": 31
+              }
+            }
+          ],
           "loc": {
             "line": 74,
             "col": 2,
@@ -453,11 +621,121 @@
               "signal": "immediate_value"
             }
           ],
+          "assigns": [
+            {
+              "target": "csr_addr",
+              "reads": [
+                "CSR_MEPC"
+              ],
+              "conds": [
+                "immediate_value",
+                "CSR_EPC_MRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 115,
+                "col": 4,
+                "end_line": 115,
+                "end_col": 25
+              }
+            },
+            {
+              "target": "csr_addr",
+              "reads": [
+                "immediate_value"
+              ],
+              "conds": [
+                "immediate_value",
+                "CSR_EPC_MRET"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 117,
+                "col": 4,
+                "end_line": 117,
+                "end_col": 45
+              }
+            }
+          ],
           "loc": {
             "line": 112,
             "col": 2,
             "end_line": 119,
             "end_col": 30
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "immediate",
+          "reads": [
+            "immediate_value"
+          ],
+          "loc": {
+            "line": 72,
+            "col": 2,
+            "end_line": 72,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "rs1_addr",
+          "reads": [
+            "instruction"
+          ],
+          "loc": {
+            "line": 95,
+            "col": 2,
+            "end_line": 95,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "rs2_addr",
+          "reads": [
+            "instruction"
+          ],
+          "loc": {
+            "line": 96,
+            "col": 2,
+            "end_line": 96,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "rd_addr",
+          "reads": [
+            "instruction"
+          ],
+          "loc": {
+            "line": 97,
+            "col": 2,
+            "end_line": 97,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "shamt",
+          "reads": [
+            "instruction"
+          ],
+          "loc": {
+            "line": 100,
+            "col": 2,
+            "end_line": 100,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "funct3",
+          "reads": [
+            "instruction"
+          ],
+          "loc": {
+            "line": 103,
+            "col": 2,
+            "end_line": 103,
+            "end_col": 38
           }
         }
       ],

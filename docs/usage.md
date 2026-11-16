@@ -77,7 +77,8 @@ architectures.
 | `signals`      | modules, interfaces          | Nets and variables (VHDL: signals)                                 |
 | `typedefs`     | modules, interfaces, packages| Types: enumerations, structs (VHDL: records) and aliases           |
 | `functions`    | modules, interfaces, packages| Signatures of functions and tasks (VHDL: procedures)               |
-| `processes`    | modules, interfaces          | `always` blocks (VHDL: processes) with their clock and reset       |
+| `processes`    | modules, interfaces          | `always` blocks (VHDL: processes) with clock, reset and assignments|
+| `assigns`      | modules, interfaces          | Continuous assignments (VHDL: concurrent signal assignments)       |
 | `insts`        | modules, interfaces          | Instances with parameter values, connections and generate blocks   |
 | `modports`     | interfaces                   | Modports with the direction of their signals                       |
 | `components`   | modules, packages            | Component declarations (VHDL)                                      |
@@ -104,6 +105,16 @@ returns one:
 ```
 
 Clock and reset of a block are never guessed: they are empty, if the code does not tell them.
+
+Every assignment knows its target, the names it reads and the names read by the conditions around:
+
+```python
+>>> [(assign.target, assign.reads, assign.conds, assign.blocking) for assign in process.assigns]
+[('data_q', (), ('rst_ni',), False), ('data_q', ('data_q',), ('rst_ni',), False)]
+
+```
+
+A statement which is not understood (i.e. a task call) is reported as `statement-skipped`.
 
 ## Projects
 
@@ -184,6 +195,27 @@ Nothing is ever guessed. What cannot be evaluated for sure has no value, but the
 Value(expr='ibex_pkg::PmpCfgRst', value=None, unknown="'ibex_pkg::PmpCfgRst' is not known: assignment pattern '{...}")
 
 ```
+
+### Connectivity
+
+`drivers` and `loads` tell what drives a signal and what it drives, `trace` how one signal reaches another one.
+A signal is addressed by its instance path below a top: `top.u_core.u_alu.result_o`. Generate constructs whose
+condition is false for the parameter values are left out.
+
+```python
+>>> [(link.kind, link.nets) for link in project.drivers("ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o")]
+[('ff', ('ibex_top.u_ibex_core.if_stage_i.instr_out',))]
+>>> [hop.net for hop in project.trace("ibex_top.rst_ni", "ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs")]
+['ibex_top.rst_ni', 'ibex_top.u_ibex_core.rst_ni', 'ibex_top.u_ibex_core.id_stage_i.rst_ni', 'ibex_top.u_ibex_core.id_stage_i.controller_i.rst_ni', 'ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs']
+
+```
+
+The granularity is the whole signal: the select of an assignment (`[3:0]`) is kept as text. Labeled `for`
+generate constructs are unrolled: `top.g_st[1].data` is the signal of the second iteration (the index is checked),
+`top.g_st.data` stands for all of them (`multiple`). Instance arrays are not unrolled. The select of `?:` is a
+condition, like the ones of `if` and `case`. The search of `trace` stops behind flip-flops (`through_regs`) and at
+modules which are not defined, but passes cells which pass their input on: wrappers of technology cells (one input,
+one output, driven by undefined cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`).
 
 See [Project][hdl_parser.project.Project] for a full reference.
 

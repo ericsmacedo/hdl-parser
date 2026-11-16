@@ -742,6 +742,38 @@
               "signal": "ctrl_i"
             }
           ],
+          "assigns": [
+            {
+              "target": "pmpcfg_we",
+              "blocking": false,
+              "loc": {
+                "line": 108,
+                "col": 5,
+                "end_line": 108,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "pmpcfg_we",
+              "select": "(to_integer(unsigned(ctrl_i.csr_addr(1 downto 0))))",
+              "reads": [
+                "to_integer",
+                "unsigned",
+                "ctrl_i"
+              ],
+              "conds": [
+                "ctrl_i",
+                "csr_pmpcfg0_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 110,
+                "col": 7,
+                "end_line": 110,
+                "end_col": 75
+              }
+            }
+          ],
           "comment": [
             "-- CSR Write Access: Configuration (PMPCFG) -----------------------------------------------",
             "-- -------------------------------------------------------------------------------------------"
@@ -776,6 +808,279 @@
               "cond": "i in 0 to NUM_REGIONS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "pmpcfg",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 121,
+                "col": 9,
+                "end_line": 121,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_r_c)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 126,
+                "col": 13,
+                "end_line": 126,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_w_c)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 127,
+                "col": 13,
+                "end_line": 127,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_x_c)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 128,
+                "col": 13,
+                "end_line": 128,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_r_c)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 130,
+                "col": 13,
+                "end_line": 130,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_w_c)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 131,
+                "col": 13,
+                "end_line": 131,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_x_c)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "ctrl_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 132,
+                "col": 13,
+                "end_line": 132,
+                "end_col": 73
+              }
+            },
+            {
+              "target": "mode_v",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg"
+              ],
+              "loc": {
+                "line": 135,
+                "col": 11,
+                "end_line": 135,
+                "end_col": 88
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_ah_c downto cfg_al_c)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "mode_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 140,
+                "col": 13,
+                "end_line": 140,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_ah_c downto cfg_al_c)",
+              "reads": [
+                "mode_v",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg",
+                "mode_v"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 142,
+                "col": 13,
+                "end_line": 142,
+                "end_col": 59
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(6 downto 5)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 145,
+                "col": 11,
+                "end_line": 145,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "pmpcfg",
+              "select": "(i)(cfg_l_c)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpcfg_we",
+                "i",
+                "pmpcfg"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 147,
+                "col": 11,
+                "end_line": 147,
+                "end_col": 72
+              }
+            }
+          ],
           "loc": {
             "line": 117,
             "col": 5,
@@ -790,6 +1095,38 @@
           "events": [
             {
               "signal": "ctrl_i"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "pmpaddr_we",
+              "blocking": false,
+              "loc": {
+                "line": 158,
+                "col": 5,
+                "end_line": 158,
+                "end_col": 35
+              }
+            },
+            {
+              "target": "pmpaddr_we",
+              "select": "(to_integer(unsigned(ctrl_i.csr_addr(3 downto 0))))",
+              "reads": [
+                "to_integer",
+                "unsigned",
+                "ctrl_i"
+              ],
+              "conds": [
+                "ctrl_i",
+                "csr_pmpaddr0_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 160,
+                "col": 7,
+                "end_line": 160,
+                "end_col": 76
+              }
             }
           ],
           "comment": [
@@ -826,6 +1163,71 @@
               "cond": "i in 0 to NUM_REGIONS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "pmpaddr",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 170,
+                "col": 9,
+                "end_line": 170,
+                "end_col": 39
+              }
+            },
+            {
+              "target": "pmpaddr",
+              "select": "(i)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpaddr_we",
+                "i",
+                "pmpcfg"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 175,
+                "col": 15,
+                "end_line": 175,
+                "end_col": 68
+              }
+            },
+            {
+              "target": "pmpaddr",
+              "select": "(i)",
+              "reads": [
+                "ctrl_i",
+                "i"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i",
+                "pmpaddr_we",
+                "i",
+                "pmpcfg"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 178,
+                "col": 13,
+                "end_line": 178,
+                "end_col": 66
+              }
+            }
+          ],
           "loc": {
             "line": 167,
             "col": 5,
@@ -846,6 +1248,62 @@
             },
             {
               "signal": "addr_rd"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "csr_o",
+              "reads": [
+                "cfg_rd32",
+                "to_integer",
+                "unsigned",
+                "ctrl_i"
+              ],
+              "conds": [
+                "ctrl_i",
+                "csr_pmpcfg0_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 192,
+                "col": 9,
+                "end_line": 192,
+                "end_col": 78
+              }
+            },
+            {
+              "target": "csr_o",
+              "reads": [
+                "addr_rd",
+                "to_integer",
+                "unsigned",
+                "ctrl_i"
+              ],
+              "conds": [
+                "ctrl_i",
+                "csr_pmpcfg0_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 194,
+                "col": 9,
+                "end_line": 194,
+                "end_col": 77
+              }
+            },
+            {
+              "target": "csr_o",
+              "conds": [
+                "ctrl_i",
+                "csr_pmpcfg0_c"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 197,
+                "col": 7,
+                "end_line": 197,
+                "end_col": 32
+              }
             }
           ],
           "comment": [
@@ -878,6 +1336,73 @@
               "cond": "i in 0 to NUM_REGIONS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "addr_rd",
+              "select": "(i)",
+              "reads": [
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 206,
+                "col": 7,
+                "end_line": 206,
+                "end_col": 37
+              }
+            },
+            {
+              "target": "addr_rd",
+              "select": "(i)(29 downto pmp_alsb_c)",
+              "reads": [
+                "pmpaddr",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 207,
+                "col": 7,
+                "end_line": 207,
+                "end_col": 76
+              }
+            },
+            {
+              "target": "addr_rd",
+              "select": "(i)(pmp_lsb_c-3 downto 0)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "pmpcfg",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 210,
+                "col": 11,
+                "end_line": 210,
+                "end_col": 63
+              }
+            },
+            {
+              "target": "addr_rd",
+              "select": "(i)(pmp_alsb_c-1 downto 0)",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "pmpcfg",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 213,
+                "col": 13,
+                "end_line": 213,
+                "end_col": 66
+              }
+            }
+          ],
           "loc": {
             "line": 204,
             "col": 5,
@@ -901,6 +1426,67 @@
               "kind": "for",
               "name": "mask_gen",
               "cond": "r in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "addr_mask",
+              "select": "(r)",
+              "reads": [
+                "addr_mask_napot",
+                "r"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 262,
+                "col": 13,
+                "end_line": 262,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "addr_mask",
+              "select": "(r)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i",
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 264,
+                "col": 13,
+                "end_line": 264,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "addr_mask",
+              "select": "(r)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 267,
+                "col": 11,
+                "end_line": 267,
+                "end_col": 43
+              }
             }
           ],
           "comment": [
@@ -938,6 +1524,84 @@
               "cond": "r in 0 to NUM_REGIONS-1"
             }
           ],
+          "assigns": [
+            {
+              "target": "match",
+              "select": "(r)",
+              "reads": [
+                "cmp_ge",
+                "r",
+                "cmp_lt"
+              ],
+              "conds": [
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 301,
+                "col": 11,
+                "end_line": 301,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "match",
+              "select": "(r)",
+              "reads": [
+                "cmp_ge",
+                "r"
+              ],
+              "conds": [
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 303,
+                "col": 11,
+                "end_line": 303,
+                "end_col": 55
+              }
+            },
+            {
+              "target": "match",
+              "select": "(r)",
+              "reads": [
+                "cmp_na",
+                "r"
+              ],
+              "conds": [
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 306,
+                "col": 9,
+                "end_line": 306,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "match",
+              "select": "(r)",
+              "reads": [
+                "r"
+              ],
+              "conds": [
+                "pmpcfg",
+                "r"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 308,
+                "col": 9,
+                "end_line": 308,
+                "end_col": 37
+              }
+            }
+          ],
           "comment": [
             "-- check region match according to configured mode --"
           ],
@@ -964,6 +1628,72 @@
           "clock_edge": "posedge",
           "reset": "rstn_i",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "i_err_o",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 345,
+                "col": 7,
+                "end_line": 345,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "d_err_o",
+              "conds": [
+                "rstn_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 346,
+                "col": 7,
+                "end_line": 346,
+                "end_col": 22
+              }
+            },
+            {
+              "target": "i_err_o",
+              "reads": [
+                "ctrl_i",
+                "fail_ex"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 348,
+                "col": 7,
+                "end_line": 348,
+                "end_col": 56
+              }
+            },
+            {
+              "target": "d_err_o",
+              "reads": [
+                "ctrl_i",
+                "fail_rw"
+              ],
+              "conds": [
+                "rstn_i",
+                "rising_edge",
+                "clk_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 349,
+                "col": 7,
+                "end_line": 349,
+                "end_col": 56
+              }
+            }
+          ],
           "comment": [
             "-- output buffer (ignore PMP rules when in debug-mode) --"
           ],
@@ -972,6 +1702,473 @@
             "col": 3,
             "end_line": 351,
             "end_col": 15
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "cfg_rd",
+          "select": "(i)",
+          "reads": [
+            "pmpcfg",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_read_back_gen",
+              "cond": "i in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 218,
+            "col": 5,
+            "end_line": 218,
+            "end_col": 28
+          }
+        },
+        {
+          "target": "cfg_rd",
+          "select": "(i)",
+          "reads": [
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_read_back_terminate",
+              "cond": "i in NUM_REGIONS to 15"
+            }
+          ],
+          "loc": {
+            "line": 224,
+            "col": 5,
+            "end_line": 224,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "addr_rd",
+          "select": "(i)",
+          "reads": [
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_read_back_terminate",
+              "cond": "i in NUM_REGIONS to 15"
+            }
+          ],
+          "loc": {
+            "line": 225,
+            "col": 5,
+            "end_line": 225,
+            "end_col": 35
+          }
+        },
+        {
+          "target": "cfg_rd32",
+          "select": "(i)",
+          "reads": [
+            "cfg_rd",
+            "i"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "csr_read_back_pack",
+              "cond": "i in 0 to 3"
+            }
+          ],
+          "loc": {
+            "line": 231,
+            "col": 5,
+            "end_line": 231,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "addr_mask_napot",
+          "select": "(r)(pmp_lsb_c)",
+          "reads": [
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "mask_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "if",
+              "name": "addr_mask_napot_seed_g0",
+              "cond": "(pmp_lsb_c <= 2)"
+            }
+          ],
+          "loc": {
+            "line": 243,
+            "col": 7,
+            "end_line": 243,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "addr_mask_napot",
+          "select": "(r)(pmp_lsb_c)",
+          "reads": [
+            "pmpaddr",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "mask_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "if",
+              "name": "addr_mask_napot_seed_gn",
+              "cond": "(pmp_lsb_c > 2)"
+            }
+          ],
+          "loc": {
+            "line": 247,
+            "col": 7,
+            "end_line": 247,
+            "end_col": 67
+          }
+        },
+        {
+          "target": "addr_mask_napot",
+          "select": "(r)(i)",
+          "reads": [
+            "addr_mask_napot",
+            "r",
+            "i",
+            "pmpaddr"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "mask_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "for",
+              "name": "addr_mask_napot_gen",
+              "cond": "i in pmp_lsb_c+1 to 31"
+            }
+          ],
+          "loc": {
+            "line": 253,
+            "col": 7,
+            "end_line": 253,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "cmp_na",
+          "select": "(r)(0)",
+          "reads": [
+            "r"
+          ],
+          "conds": [
+            "i_addr_i",
+            "addr_mask",
+            "r",
+            "pmpaddr"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 281,
+            "col": 5,
+            "end_line": 281,
+            "end_col": 156
+          }
+        },
+        {
+          "target": "cmp_na",
+          "select": "(r)(1)",
+          "reads": [
+            "r"
+          ],
+          "conds": [
+            "d_addr_i",
+            "addr_mask",
+            "r",
+            "pmpaddr"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            }
+          ],
+          "loc": {
+            "line": 282,
+            "col": 5,
+            "end_line": 282,
+            "end_col": 156
+          }
+        },
+        {
+          "target": "cmp_ge",
+          "select": "(r)",
+          "reads": [
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "if",
+              "name": "addr_match_r0_gen",
+              "cond": "(r = 0)"
+            }
+          ],
+          "loc": {
+            "line": 287,
+            "col": 7,
+            "end_line": 287,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "cmp_ge",
+          "select": "(r)(0)",
+          "reads": [
+            "r"
+          ],
+          "conds": [
+            "unsigned",
+            "i_addr_i",
+            "pmpaddr",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "if",
+              "name": "addr_match_rn_gen",
+              "cond": "(r > 0)"
+            }
+          ],
+          "loc": {
+            "line": 292,
+            "col": 7,
+            "end_line": 292,
+            "end_col": 143
+          }
+        },
+        {
+          "target": "cmp_ge",
+          "select": "(r)(1)",
+          "reads": [
+            "r"
+          ],
+          "conds": [
+            "unsigned",
+            "d_addr_i",
+            "pmpaddr",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "region_gen",
+              "cond": "r in 0 to NUM_REGIONS-1"
+            },
+            {
+              "kind": "if",
+              "name": "addr_match_rn_gen",
+              "cond": "(r > 0)"
+            }
+          ],
+          "loc": {
+            "line": 293,
+            "col": 7,
+            "end_line": 293,
+            "end_col": 143
+          }
+        },
+        {
+          "target": "cmp_lt",
+          "select": "(0)",
+          "conds": [
+            "unsigned",
+            "i_addr_i",
+            "pmpaddr"
+          ],
+          "loc": {
+            "line": 315,
+            "col": 3,
+            "end_line": 315,
+            "end_col": 145
+          }
+        },
+        {
+          "target": "cmp_lt",
+          "select": "(1)",
+          "conds": [
+            "unsigned",
+            "d_addr_i",
+            "pmpaddr"
+          ],
+          "loc": {
+            "line": 316,
+            "col": 3,
+            "end_line": 316,
+            "end_col": 145
+          }
+        },
+        {
+          "target": "allow_ex",
+          "select": "(r)",
+          "reads": [
+            "pmpcfg",
+            "r"
+          ],
+          "conds": [
+            "i_priv_i",
+            "priv_mode_m_c",
+            "pmpcfg",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "perm_gen",
+              "cond": "r in NUM_REGIONS-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 324,
+            "col": 5,
+            "end_line": 325,
+            "end_col": 39
+          }
+        },
+        {
+          "target": "allow_rw",
+          "select": "(r)",
+          "reads": [
+            "ctrl_i",
+            "pmpcfg",
+            "r"
+          ],
+          "conds": [
+            "d_priv_i",
+            "priv_mode_m_c",
+            "pmpcfg",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "perm_gen",
+              "cond": "r in NUM_REGIONS-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 327,
+            "col": 5,
+            "end_line": 328,
+            "end_col": 112
+          }
+        },
+        {
+          "target": "fail_ex",
+          "select": "(NUM_REGIONS)",
+          "conds": [
+            "i_priv_i",
+            "priv_mode_m_c"
+          ],
+          "loc": {
+            "line": 332,
+            "col": 3,
+            "end_line": 332,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "fail_rw",
+          "select": "(NUM_REGIONS)",
+          "conds": [
+            "d_priv_i",
+            "priv_mode_m_c"
+          ],
+          "loc": {
+            "line": 333,
+            "col": 3,
+            "end_line": 333,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "fail_ex",
+          "select": "(r)",
+          "reads": [
+            "allow_ex",
+            "r",
+            "fail_ex"
+          ],
+          "conds": [
+            "match",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "prio_gen",
+              "cond": "r in NUM_REGIONS-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 337,
+            "col": 5,
+            "end_line": 337,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "fail_rw",
+          "select": "(r)",
+          "reads": [
+            "allow_rw",
+            "r",
+            "fail_rw"
+          ],
+          "conds": [
+            "match",
+            "r"
+          ],
+          "generates": [
+            {
+              "kind": "for",
+              "name": "prio_gen",
+              "cond": "r in NUM_REGIONS-1 downto 0"
+            }
+          ],
+          "loc": {
+            "line": 338,
+            "col": 5,
+            "end_line": 338,
+            "end_col": 78
           }
         }
       ],

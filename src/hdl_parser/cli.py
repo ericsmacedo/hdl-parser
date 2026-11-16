@@ -287,6 +287,10 @@ def opt_project(func):
     return func
 
 
+def _set_full(ctx: click.Context, _param: click.Parameter, value: bool) -> None:
+    ctx.meta["full"] = value
+
+
 def opt_answer(func):
     """Options which size the answer of a query."""
     options = (
@@ -298,6 +302,13 @@ def opt_answer(func):
             "Left out entries are counted in 'omitted'.",
         ),
         click.option("--compact", "-c", is_flag=True, help="JSON on a single line."),
+        click.option(
+            "--full",
+            is_flag=True,
+            expose_value=False,
+            callback=_set_full,
+            help="Full answers: all identifiers, locations with columns, lists of objects instead of tables.",
+        ),
     )
     for option in reversed(options):
         func = option(func)
@@ -314,6 +325,13 @@ opt_blackbox = click.option(
     metavar="PATTERN",
     help="Module names known to be missing (blackboxes, cells): no 'undefined-module' for them. Can be given "
     "multiple times.",
+)
+opt_passthrough = click.option(
+    "--passthrough",
+    multiple=True,
+    metavar="CELL",
+    help="Cell which passes its inputs on to its outputs: 'buf_wrap', or 'BUFX2:A->Y' for modules which are not "
+    "defined. Can be given multiple times.",
 )
 opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
 
@@ -381,15 +399,28 @@ def _fields(fields: tuple[str, ...]) -> tuple[str, ...]:
     return tuple(name.strip() for item in fields for name in item.split(",") if name.strip())
 
 
+def _pretty(data: Any, indent: str = "") -> str:
+    """`data` as indented JSON. A list of plain values (i.e. a row of a table) is kept on one line."""
+    inner = indent + "  "
+    if isinstance(data, dict) and data:
+        items = [f"{inner}{json_.dumps(key)}: {_pretty(value, inner)}" for key, value in data.items()]
+        return "{\n" + ",\n".join(items) + f"\n{indent}}}"
+    if isinstance(data, list) and any(isinstance(value, dict | list) and value for value in data):
+        return "[\n" + ",\n".join(f"{inner}{_pretty(value, inner)}" for value in data) + f"\n{indent}]"
+    return json_.dumps(data)
+
+
 def _answer(func, compact: bool = False) -> None:
     """Print the answer of the query `func`. A failed query is an error object and exit code."""
     try:
-        answer = func()
+        context = click.get_current_context(silent=True)
+        full = bool(context and context.meta.get("full"))
+        answer = query.render(func(), "full" if full else "compact")
         code = EXIT_OK
     except query.QueryError as exc:
         answer = exc.to_dict()
         code = EXIT_NOT_FOUND if exc.code == "not-found" else EXIT_USAGE
-    print(json_.dumps(answer, indent=None if compact else 2))
+    print(json_.dumps(answer) if compact else _pretty(answer))
     if code:
         raise click.exceptions.Exit(code)
 
@@ -637,11 +668,118 @@ def evaluate(ctx: Ctx, expr: str, scope: str, params: tuple[str, ...], limit: in
     _answer(lambda: query.evaluate(prj, expr, scope, params=values), compact)
 
 
+_PATH_HELP = """PATH is the instance path of a signal: the top module, the instance names below (with the labels
+    of the generate blocks around) and the signal, separated by dots ('top.u_core.u_alu.result_o')."""
+
+
+@cli.command(
+    help=f"""What Drives A Signal As JSON.
+
+    {_PATH_HELP}
+{_PATHS_HELP}"""
+)
+@click.argument("path")
+@opt_params
+@opt_passthrough
+@opt_project
+@opt_answer
+@pass_ctx
+def drivers(  # noqa: PLR0913
+    ctx: Ctx,
+    path: str,
+    params: tuple[str, ...],
+    passthrough: tuple[str, ...],
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.drivers(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
+
+
+@cli.command(
+    help=f"""What A Signal Drives As JSON.
+
+    {_PATH_HELP}
+{_PATHS_HELP}"""
+)
+@click.argument("path")
+@opt_params
+@opt_passthrough
+@opt_project
+@opt_answer
+@pass_ctx
+def loads(  # noqa: PLR0913
+    ctx: Ctx,
+    path: str,
+    params: tuple[str, ...],
+    passthrough: tuple[str, ...],
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(lambda: query.loads(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
+
+
+@cli.command(
+    help=f"""Shortest Connection From Signal SRC To Signal DST As JSON.
+
+    SRC and DST are instance paths of signals below the same top ('top.u_core.u_alu.result_o').
+    The search stops behind flip-flops, unless '--through-regs' is given.
+{_PATHS_HELP}"""
+)
+@click.argument("src")
+@click.argument("dst")
+@opt_params
+@click.option("--through-regs", is_flag=True, help="Continue behind flip-flops.")
+@click.option("--data-only", is_flag=True, help="Do not follow conditions, resets and clocks.")
+@opt_passthrough
+@opt_project
+@opt_answer
+@pass_ctx
+def trace(  # noqa: PLR0913
+    ctx: Ctx,
+    src: str,
+    dst: str,
+    params: tuple[str, ...],
+    through_regs: bool,
+    data_only: bool,
+    passthrough: tuple[str, ...],
+    limit: int | None,
+    compact: bool,
+    **options,
+):
+    """See `help`."""  # help is given to the decorator, as it is built from parts
+    _quiet(ctx)
+    values = _params(params)
+    prj = load_project(**options)
+    _answer(
+        lambda: query.trace(
+            prj,
+            src,
+            dst,
+            params=values,
+            through_regs=through_regs,
+            control=not data_only,
+            limit=limit,
+            passthrough=passthrough,
+        ),
+        compact,
+    )
+
+
 @cli.command(
     help=f"""Serve The Queries As MCP Server On Standard Input And Output.
 
-    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate'
-    and 'reload'.
+    The tools are 'module', 'hierarchy', 'where_used', 'find', 'diagnostics', 'elaborate', 'evaluate',
+    'drivers', 'loads', 'trace' and 'reload'.
     Files which changed are parsed again on the next query.
 {_PATHS_HELP}"""
 )

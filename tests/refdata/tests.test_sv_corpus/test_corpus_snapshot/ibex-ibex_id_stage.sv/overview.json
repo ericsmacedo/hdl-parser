@@ -3038,7 +3038,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_nobtalu"
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
             }
           ],
           "loc": {
@@ -3055,7 +3058,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_nobtalu"
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
             }
           ],
           "loc": {
@@ -3072,7 +3078,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_branch_set_flop"
+              "name": "g_branch_set_flop",
+              "others": [
+                "BranchTargetALU && !DataIndTiming"
+              ]
             }
           ],
           "loc": {
@@ -3255,7 +3264,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3273,7 +3285,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3290,7 +3305,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3307,7 +3325,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3324,7 +3345,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3341,7 +3365,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3359,7 +3386,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3376,7 +3406,10 @@
           "generates": [
             {
               "kind": "else",
-              "name": "gen_no_stall_mem"
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
             }
           ],
           "loc": {
@@ -3444,6 +3477,87 @@
           "id": "ibex_id_stage.alu_operand_a_mux",
           "name": "alu_operand_a_mux",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "alu_operand_a",
+              "reads": [
+                "rf_rdata_a_fwd"
+              ],
+              "conds": [
+                "alu_op_a_mux_sel",
+                "OP_A_REG_A"
+              ],
+              "loc": {
+                "line": 360,
+                "col": 20,
+                "end_line": 360,
+                "end_col": 51
+              }
+            },
+            {
+              "target": "alu_operand_a",
+              "reads": [
+                "lsu_addr_last_i"
+              ],
+              "conds": [
+                "alu_op_a_mux_sel",
+                "OP_A_FWD"
+              ],
+              "loc": {
+                "line": 361,
+                "col": 20,
+                "end_line": 361,
+                "end_col": 52
+              }
+            },
+            {
+              "target": "alu_operand_a",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "alu_op_a_mux_sel",
+                "OP_A_CURRPC"
+              ],
+              "loc": {
+                "line": 362,
+                "col": 20,
+                "end_line": 362,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "alu_operand_a",
+              "reads": [
+                "imm_a"
+              ],
+              "conds": [
+                "alu_op_a_mux_sel",
+                "OP_A_IMM"
+              ],
+              "loc": {
+                "line": 363,
+                "col": 20,
+                "end_line": 363,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "alu_operand_a",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "alu_op_a_mux_sel"
+              ],
+              "loc": {
+                "line": 364,
+                "col": 20,
+                "end_line": 364,
+                "end_col": 44
+              }
+            }
+          ],
           "comment": [
             "Main ALU MUX for Operand A"
           ],
@@ -3463,6 +3577,55 @@
               "kind": "if",
               "name": "g_btalu_muxes",
               "cond": "BranchTargetALU"
+            }
+          ],
+          "assigns": [
+            {
+              "target": "bt_a_operand_o",
+              "reads": [
+                "rf_rdata_a_fwd"
+              ],
+              "conds": [
+                "bt_a_mux_sel",
+                "OP_A_REG_A"
+              ],
+              "loc": {
+                "line": 372,
+                "col": 22,
+                "end_line": 372,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "bt_a_operand_o",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "bt_a_mux_sel",
+                "OP_A_CURRPC"
+              ],
+              "loc": {
+                "line": 373,
+                "col": 22,
+                "end_line": 373,
+                "end_col": 47
+              }
+            },
+            {
+              "target": "bt_a_operand_o",
+              "reads": [
+                "pc_id_i"
+              ],
+              "conds": [
+                "bt_a_mux_sel"
+              ],
+              "loc": {
+                "line": 374,
+                "col": 22,
+                "end_line": 374,
+                "end_col": 47
+              }
             }
           ],
           "comment": [
@@ -3486,6 +3649,83 @@
               "cond": "BranchTargetALU"
             }
           ],
+          "assigns": [
+            {
+              "target": "bt_b_operand_o",
+              "reads": [
+                "imm_i_type"
+              ],
+              "conds": [
+                "bt_b_mux_sel",
+                "IMM_B_I"
+              ],
+              "loc": {
+                "line": 381,
+                "col": 26,
+                "end_line": 381,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "bt_b_operand_o",
+              "reads": [
+                "imm_b_type"
+              ],
+              "conds": [
+                "bt_b_mux_sel",
+                "IMM_B_B"
+              ],
+              "loc": {
+                "line": 382,
+                "col": 26,
+                "end_line": 382,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "bt_b_operand_o",
+              "reads": [
+                "imm_j_type"
+              ],
+              "conds": [
+                "bt_b_mux_sel",
+                "IMM_B_J"
+              ],
+              "loc": {
+                "line": 383,
+                "col": 26,
+                "end_line": 383,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "bt_b_operand_o",
+              "conds": [
+                "bt_b_mux_sel",
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
+              ],
+              "loc": {
+                "line": 384,
+                "col": 26,
+                "end_line": 384,
+                "end_col": 81
+              }
+            },
+            {
+              "target": "bt_b_operand_o",
+              "conds": [
+                "bt_b_mux_sel",
+                "instr_is_compressed_i"
+              ],
+              "loc": {
+                "line": 385,
+                "col": 26,
+                "end_line": 385,
+                "end_col": 81
+              }
+            }
+          ],
           "comment": [
             "Branch target ALU operand B mux"
           ],
@@ -3507,6 +3747,95 @@
               "cond": "BranchTargetALU"
             }
           ],
+          "assigns": [
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_i_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_I"
+              ],
+              "loc": {
+                "line": 392,
+                "col": 26,
+                "end_line": 392,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_s_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_S"
+              ],
+              "loc": {
+                "line": 393,
+                "col": 26,
+                "end_line": 393,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_u_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_U"
+              ],
+              "loc": {
+                "line": 394,
+                "col": 26,
+                "end_line": 394,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
+              ],
+              "loc": {
+                "line": 395,
+                "col": 26,
+                "end_line": 395,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_INCR_ADDR"
+              ],
+              "loc": {
+                "line": 396,
+                "col": 26,
+                "end_line": 396,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel"
+              ],
+              "loc": {
+                "line": 397,
+                "col": 26,
+                "end_line": 397,
+                "end_col": 40
+              }
+            }
+          ],
           "comment": [
             "Reduced main ALU immediate MUX for Operand B"
           ],
@@ -3524,7 +3853,131 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_nobtalu"
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_i_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_I"
+              ],
+              "loc": {
+                "line": 418,
+                "col": 26,
+                "end_line": 418,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_s_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_S"
+              ],
+              "loc": {
+                "line": 419,
+                "col": 26,
+                "end_line": 419,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_b_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_B"
+              ],
+              "loc": {
+                "line": 420,
+                "col": 26,
+                "end_line": 420,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_u_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_U"
+              ],
+              "loc": {
+                "line": 421,
+                "col": 26,
+                "end_line": 421,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "reads": [
+                "imm_j_type"
+              ],
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_J"
+              ],
+              "loc": {
+                "line": 422,
+                "col": 26,
+                "end_line": 422,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_INCR_PC",
+                "instr_is_compressed_i"
+              ],
+              "loc": {
+                "line": 423,
+                "col": 26,
+                "end_line": 423,
+                "end_col": 72
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel",
+                "IMM_B_INCR_ADDR"
+              ],
+              "loc": {
+                "line": 424,
+                "col": 26,
+                "end_line": 424,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "imm_b",
+              "conds": [
+                "imm_b_mux_sel"
+              ],
+              "loc": {
+                "line": 425,
+                "col": 26,
+                "end_line": 425,
+                "end_col": 40
+              }
             }
           ],
           "comment": [
@@ -3562,6 +4015,45 @@
               "cond": "genvar i = 0; i < 2; i++"
             }
           ],
+          "assigns": [
+            {
+              "target": "imd_val_q",
+              "select": "[i]",
+              "reads": [
+                "i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 448,
+                "col": 9,
+                "end_line": 448,
+                "end_col": 28
+              }
+            },
+            {
+              "target": "imd_val_q",
+              "select": "[i]",
+              "reads": [
+                "imd_val_d_ex_i",
+                "i"
+              ],
+              "conds": [
+                "rst_ni",
+                "imd_val_we_ex_i",
+                "i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 450,
+                "col": 9,
+                "end_line": 450,
+                "end_col": 43
+              }
+            }
+          ],
           "loc": {
             "line": 446,
             "col": 5,
@@ -3573,6 +4065,55 @@
           "id": "ibex_id_stage.rf_wdata_id_mux",
           "name": "rf_wdata_id_mux",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "rf_wdata_id_o",
+              "reads": [
+                "result_ex_i"
+              ],
+              "conds": [
+                "rf_wdata_sel",
+                "RF_WD_EX"
+              ],
+              "loc": {
+                "line": 467,
+                "col": 18,
+                "end_line": 467,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "rf_wdata_id_o",
+              "reads": [
+                "csr_rdata_i"
+              ],
+              "conds": [
+                "rf_wdata_sel",
+                "RF_WD_CSR"
+              ],
+              "loc": {
+                "line": 468,
+                "col": 18,
+                "end_line": 468,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "rf_wdata_id_o",
+              "reads": [
+                "result_ex_i"
+              ],
+              "conds": [
+                "rf_wdata_sel"
+              ],
+              "loc": {
+                "line": 469,
+                "col": 18,
+                "end_line": 469,
+                "end_col": 46
+              }
+            }
+          ],
           "comment": [
             "Register file write data mux"
           ],
@@ -3603,7 +4144,41 @@
           "generates": [
             {
               "kind": "else",
-              "name": "g_branch_set_flop"
+              "name": "g_branch_set_flop",
+              "others": [
+                "BranchTargetALU && !DataIndTiming"
+              ]
+            }
+          ],
+          "assigns": [
+            {
+              "target": "branch_set_raw_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 776,
+                "col": 9,
+                "end_line": 776,
+                "end_col": 34
+              }
+            },
+            {
+              "target": "branch_set_raw_q",
+              "reads": [
+                "branch_set_raw_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 780,
+                "col": 9,
+                "end_line": 780,
+                "end_col": 46
+              }
             }
           ],
           "loc": {
@@ -3630,6 +4205,37 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "branch_jump_set_done_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 798,
+                "col": 7,
+                "end_line": 798,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "branch_jump_set_done_q",
+              "reads": [
+                "branch_jump_set_done_d"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 800,
+                "col": 7,
+                "end_line": 800,
+                "end_col": 56
+              }
+            }
+          ],
           "loc": {
             "line": 796,
             "col": 3,
@@ -3661,6 +4267,37 @@
               "cond": "DataIndTiming"
             }
           ],
+          "assigns": [
+            {
+              "target": "branch_taken_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 822,
+                "col": 9,
+                "end_line": 822,
+                "end_col": 32
+              }
+            },
+            {
+              "target": "branch_taken_q",
+              "reads": [
+                "branch_decision_i"
+              ],
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 824,
+                "col": 9,
+                "end_line": 824,
+                "end_col": 45
+              }
+            }
+          ],
           "loc": {
             "line": 820,
             "col": 5,
@@ -3686,6 +4323,38 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "id_fsm_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 863,
+                "col": 7,
+                "end_line": 863,
+                "end_col": 31
+              }
+            },
+            {
+              "target": "id_fsm_q",
+              "reads": [
+                "id_fsm_d"
+              ],
+              "conds": [
+                "rst_ni",
+                "instr_executing"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 865,
+                "col": 7,
+                "end_line": 865,
+                "end_col": 28
+              }
+            }
+          ],
           "loc": {
             "line": 861,
             "col": 3,
@@ -3696,6 +4365,443 @@
         {
           "id": "ibex_id_stage.#always12",
           "kind": "always_comb",
+          "assigns": [
+            {
+              "target": "id_fsm_d",
+              "reads": [
+                "id_fsm_q"
+              ],
+              "loc": {
+                "line": 875,
+                "col": 5,
+                "end_line": 875,
+                "end_col": 40
+              }
+            },
+            {
+              "target": "rf_we_raw",
+              "reads": [
+                "rf_we_dec"
+              ],
+              "loc": {
+                "line": 876,
+                "col": 5,
+                "end_line": 876,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "stall_multdiv",
+              "loc": {
+                "line": 877,
+                "col": 5,
+                "end_line": 877,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "stall_jump",
+              "loc": {
+                "line": 878,
+                "col": 5,
+                "end_line": 878,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "stall_branch",
+              "loc": {
+                "line": 879,
+                "col": 5,
+                "end_line": 879,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "branch_set_raw_d",
+              "loc": {
+                "line": 880,
+                "col": 5,
+                "end_line": 880,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "branch_not_set",
+              "loc": {
+                "line": 881,
+                "col": 5,
+                "end_line": 881,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "jump_set_raw",
+              "loc": {
+                "line": 882,
+                "col": 5,
+                "end_line": 882,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "perf_branch_o",
+              "loc": {
+                "line": 883,
+                "col": 5,
+                "end_line": 883,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "lsu_req_dec"
+              ],
+              "loc": {
+                "line": 892,
+                "col": 17,
+                "end_line": 892,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "lsu_req_dec",
+                "lsu_req_done_i"
+              ],
+              "loc": {
+                "line": 894,
+                "col": 17,
+                "end_line": 894,
+                "end_col": 41
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "cheriot_lsu_req_dec",
+                "cheriot_enable_i",
+                "IbexMuBiOn"
+              ],
+              "loc": {
+                "line": 900,
+                "col": 19,
+                "end_line": 900,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "cheriot_lsu_req_dec",
+                "cheriot_enable_i",
+                "IbexMuBiOn",
+                "lsu_req_done_i"
+              ],
+              "loc": {
+                "line": 902,
+                "col": 19,
+                "end_line": 902,
+                "end_col": 42
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multdiv_en_dec",
+                "ex_valid_i"
+              ],
+              "loc": {
+                "line": 911,
+                "col": 17,
+                "end_line": 911,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "rf_we_raw",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multdiv_en_dec",
+                "ex_valid_i"
+              ],
+              "loc": {
+                "line": 912,
+                "col": 17,
+                "end_line": 912,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "stall_multdiv",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multdiv_en_dec",
+                "ex_valid_i"
+              ],
+              "loc": {
+                "line": 913,
+                "col": 17,
+                "end_line": 913,
+                "end_col": 38
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "branch_in_dec",
+                "data_ind_timing_i",
+                "branch_decision_i"
+              ],
+              "loc": {
+                "line": 921,
+                "col": 15,
+                "end_line": 922,
+                "end_col": 64
+              }
+            },
+            {
+              "target": "stall_branch",
+              "reads": [
+                "branch_decision_i",
+                "data_ind_timing_i"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "branch_in_dec"
+              ],
+              "loc": {
+                "line": 923,
+                "col": 15,
+                "end_line": 923,
+                "end_col": 93
+              }
+            },
+            {
+              "target": "branch_set_raw_d",
+              "reads": [
+                "branch_decision_i",
+                "data_ind_timing_i"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "branch_in_dec"
+              ],
+              "loc": {
+                "line": 924,
+                "col": 15,
+                "end_line": 924,
+                "end_col": 74
+              }
+            },
+            {
+              "target": "branch_not_set",
+              "reads": [
+                "branch_decision_i"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "branch_in_dec"
+              ],
+              "loc": {
+                "line": 927,
+                "col": 17,
+                "end_line": 927,
+                "end_col": 53
+              }
+            },
+            {
+              "target": "perf_branch_o",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "branch_in_dec"
+              ],
+              "loc": {
+                "line": 930,
+                "col": 15,
+                "end_line": 930,
+                "end_col": 36
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "jump_in_dec"
+              ],
+              "loc": {
+                "line": 935,
+                "col": 15,
+                "end_line": 935,
+                "end_col": 75
+              }
+            },
+            {
+              "target": "stall_jump",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "jump_in_dec"
+              ],
+              "loc": {
+                "line": 936,
+                "col": 15,
+                "end_line": 936,
+                "end_col": 48
+              }
+            },
+            {
+              "target": "jump_set_raw",
+              "reads": [
+                "jump_set_dec"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "jump_in_dec"
+              ],
+              "loc": {
+                "line": 937,
+                "col": 15,
+                "end_line": 937,
+                "end_col": 44
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q"
+              ],
+              "loc": {
+                "line": 940,
+                "col": 15,
+                "end_line": 940,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "rf_we_raw",
+              "reads": [
+                "rf_we_dec",
+                "ex_valid_i"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multdiv_en_dec"
+              ],
+              "loc": {
+                "line": 947,
+                "col": 13,
+                "end_line": 947,
+                "end_col": 54
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multicycle_done",
+                "ready_wb_i"
+              ],
+              "loc": {
+                "line": 951,
+                "col": 13,
+                "end_line": 951,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "stall_multdiv",
+              "reads": [
+                "multdiv_en_dec"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multicycle_done",
+                "ready_wb_i"
+              ],
+              "loc": {
+                "line": 953,
+                "col": 13,
+                "end_line": 953,
+                "end_col": 46
+              }
+            },
+            {
+              "target": "stall_branch",
+              "reads": [
+                "branch_in_dec"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multicycle_done",
+                "ready_wb_i"
+              ],
+              "loc": {
+                "line": 954,
+                "col": 13,
+                "end_line": 954,
+                "end_col": 45
+              }
+            },
+            {
+              "target": "stall_jump",
+              "reads": [
+                "jump_in_dec"
+              ],
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q",
+                "multicycle_done",
+                "ready_wb_i"
+              ],
+              "loc": {
+                "line": 955,
+                "col": 13,
+                "end_line": 955,
+                "end_col": 43
+              }
+            },
+            {
+              "target": "id_fsm_d",
+              "conds": [
+                "instr_executing_spec",
+                "id_fsm_q"
+              ],
+              "loc": {
+                "line": 960,
+                "col": 11,
+                "end_line": 960,
+                "end_col": 43
+              }
+            }
+          ],
           "comment": [
             "ID/EX stage can be in two states, FIRST_CYCLE and MULTI_CYCLE. An instruction enters",
             "MULTI_CYCLE if it requires multiple cycles to complete regardless of stalls and other",
@@ -3707,6 +4813,1986 @@
             "col": 3,
             "end_line": 964,
             "end_col": 6
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rf_ren_a",
+          "reads": [
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "illegal_insn_o",
+            "rf_ren_a_dec"
+          ],
+          "loc": {
+            "line": 292,
+            "col": 10,
+            "end_line": 292,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "rf_ren_b",
+          "reads": [
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "illegal_insn_o",
+            "rf_ren_b_dec"
+          ],
+          "loc": {
+            "line": 293,
+            "col": 10,
+            "end_line": 293,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "rf_ren_a_o",
+          "reads": [
+            "rf_ren_a"
+          ],
+          "loc": {
+            "line": 295,
+            "col": 10,
+            "end_line": 295,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "rf_ren_b_o",
+          "reads": [
+            "rf_ren_b"
+          ],
+          "loc": {
+            "line": 296,
+            "col": 10,
+            "end_line": 296,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "alu_op_a_mux_sel",
+          "reads": [
+            "OP_A_FWD",
+            "alu_op_a_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
+          ],
+          "loc": {
+            "line": 346,
+            "col": 10,
+            "end_line": 346,
+            "end_col": 89
+          }
+        },
+        {
+          "target": "alu_op_b_mux_sel",
+          "reads": [
+            "OP_B_IMM",
+            "alu_op_b_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
+          ],
+          "loc": {
+            "line": 347,
+            "col": 10,
+            "end_line": 347,
+            "end_col": 89
+          }
+        },
+        {
+          "target": "imm_b_mux_sel",
+          "reads": [
+            "IMM_B_INCR_ADDR",
+            "imm_b_mux_sel_dec"
+          ],
+          "conds": [
+            "lsu_addr_incr_req_i"
+          ],
+          "loc": {
+            "line": 348,
+            "col": 10,
+            "end_line": 348,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "imm_a",
+          "reads": [
+            "zimm_rs1_type"
+          ],
+          "conds": [
+            "imm_a_mux_sel",
+            "IMM_A_Z"
+          ],
+          "loc": {
+            "line": 355,
+            "col": 10,
+            "end_line": 355,
+            "end_col": 65
+          }
+        },
+        {
+          "target": "unused_a_mux_sel",
+          "reads": [
+            "bt_a_mux_sel"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 410,
+            "col": 12,
+            "end_line": 410,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "unused_b_mux_sel",
+          "reads": [
+            "bt_b_mux_sel"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 411,
+            "col": 12,
+            "end_line": 411,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "bt_a_operand_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 412,
+            "col": 12,
+            "end_line": 412,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "bt_b_operand_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nobtalu",
+              "others": [
+                "BranchTargetALU"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 413,
+            "col": 12,
+            "end_line": 413,
+            "end_col": 33
+          }
+        },
+        {
+          "target": "alu_operand_b",
+          "reads": [
+            "imm_b",
+            "rf_rdata_b_fwd"
+          ],
+          "conds": [
+            "alu_op_b_mux_sel",
+            "OP_B_IMM"
+          ],
+          "loc": {
+            "line": 439,
+            "col": 10,
+            "end_line": 439,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "imd_val_q_ex_o",
+          "reads": [
+            "imd_val_q"
+          ],
+          "loc": {
+            "line": 455,
+            "col": 10,
+            "end_line": 455,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "rf_we_id_o",
+          "reads": [
+            "rf_we_raw",
+            "instr_executing",
+            "illegal_csr_insn_i"
+          ],
+          "loc": {
+            "line": 462,
+            "col": 10,
+            "end_line": 462,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "instr_is_rv32lsu_id_o",
+          "reads": [
+            "lsu_req_dec"
+          ],
+          "loc": {
+            "line": 572,
+            "col": 10,
+            "end_line": 572,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "ex_valid_all",
+          "reads": [
+            "cheriot_ex_valid_i",
+            "ex_valid_i"
+          ],
+          "conds": [
+            "instr_is_cheriot_id_o"
+          ],
+          "loc": {
+            "line": 574,
+            "col": 10,
+            "end_line": 574,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "cheriot_load_o",
+          "reads": [
+            "cheriot_operator_o"
+          ],
+          "loc": {
+            "line": 576,
+            "col": 10,
+            "end_line": 576,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "cheriot_store_o",
+          "reads": [
+            "cheriot_operator_o"
+          ],
+          "loc": {
+            "line": 578,
+            "col": 10,
+            "end_line": 578,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "no_flush_csr_addr",
+          "reads": [
+            "csr_addr_o",
+            "CSR_MSCRATCH",
+            "CSR_MEPC"
+          ],
+          "loc": {
+            "line": 589,
+            "col": 10,
+            "end_line": 589,
+            "end_col": 72
+          }
+        },
+        {
+          "target": "csr_pipe_flush",
+          "reads": [
+            "csr_op_en_o",
+            "csr_op_o",
+            "CSR_OP_WRITE",
+            "CSR_OP_SET",
+            "CSR_OP_CLEAR",
+            "no_flush_csr_addr"
+          ],
+          "loc": {
+            "line": 591,
+            "col": 10,
+            "end_line": 593,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "illegal_dret_insn",
+          "reads": [
+            "dret_insn_dec",
+            "debug_mode_o"
+          ],
+          "loc": {
+            "line": 600,
+            "col": 10,
+            "end_line": 600,
+            "end_col": 60
+          }
+        },
+        {
+          "target": "illegal_umode_insn",
+          "reads": [
+            "priv_mode_i",
+            "PRIV_LVL_M",
+            "mret_insn_dec",
+            "csr_mstatus_tw_i",
+            "wfi_insn_dec"
+          ],
+          "loc": {
+            "line": 602,
+            "col": 10,
+            "end_line": 604,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "illegal_insn_o",
+          "reads": [
+            "instr_valid_i",
+            "illegal_insn_dec",
+            "illegal_csr_insn_i",
+            "illegal_dret_insn",
+            "illegal_umode_insn"
+          ],
+          "loc": {
+            "line": 606,
+            "col": 10,
+            "end_line": 607,
+            "end_col": 87
+          }
+        },
+        {
+          "target": "mem_resp_intg_err",
+          "reads": [
+            "lsu_load_resp_intg_err_i",
+            "lsu_store_resp_intg_err_i"
+          ],
+          "loc": {
+            "line": 609,
+            "col": 10,
+            "end_line": 609,
+            "end_col": 82
+          }
+        },
+        {
+          "target": "multdiv_en_dec",
+          "reads": [
+            "mult_en_dec",
+            "div_en_dec"
+          ],
+          "loc": {
+            "line": 726,
+            "col": 10,
+            "end_line": 726,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "lsu_req",
+          "reads": [
+            "data_req_allowed",
+            "lsu_req_dec"
+          ],
+          "conds": [
+            "instr_executing"
+          ],
+          "loc": {
+            "line": 729,
+            "col": 10,
+            "end_line": 729,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "mult_en_id",
+          "reads": [
+            "mult_en_dec"
+          ],
+          "conds": [
+            "instr_executing"
+          ],
+          "loc": {
+            "line": 730,
+            "col": 10,
+            "end_line": 730,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "div_en_id",
+          "reads": [
+            "div_en_dec"
+          ],
+          "conds": [
+            "instr_executing"
+          ],
+          "loc": {
+            "line": 731,
+            "col": 10,
+            "end_line": 731,
+            "end_col": 84
+          }
+        },
+        {
+          "target": "lsu_req_o",
+          "reads": [
+            "lsu_req"
+          ],
+          "loc": {
+            "line": 733,
+            "col": 10,
+            "end_line": 733,
+            "end_col": 43
+          }
+        },
+        {
+          "target": "lsu_we_o",
+          "reads": [
+            "lsu_we"
+          ],
+          "loc": {
+            "line": 734,
+            "col": 10,
+            "end_line": 734,
+            "end_col": 42
+          }
+        },
+        {
+          "target": "lsu_type_o",
+          "reads": [
+            "lsu_type"
+          ],
+          "loc": {
+            "line": 735,
+            "col": 10,
+            "end_line": 735,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "lsu_sign_ext_o",
+          "reads": [
+            "lsu_sign_ext"
+          ],
+          "loc": {
+            "line": 736,
+            "col": 10,
+            "end_line": 736,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "lsu_wdata_o",
+          "reads": [
+            "rf_rdata_b_fwd"
+          ],
+          "loc": {
+            "line": 737,
+            "col": 10,
+            "end_line": 737,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "csr_op_en_o",
+          "reads": [
+            "csr_access_o",
+            "instr_executing",
+            "instr_first_cycle",
+            "instr_id_done_o"
+          ],
+          "conds": [
+            "BaseIsaRV32IorCHERIoT",
+            "cheriot_enable_i",
+            "IbexMuBiOn"
+          ],
+          "loc": {
+            "line": 744,
+            "col": 10,
+            "end_line": 746,
+            "end_col": 61
+          }
+        },
+        {
+          "target": "alu_operator_ex_o",
+          "reads": [
+            "alu_operator"
+          ],
+          "loc": {
+            "line": 748,
+            "col": 10,
+            "end_line": 748,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "alu_operand_a_ex_o",
+          "reads": [
+            "alu_operand_a"
+          ],
+          "loc": {
+            "line": 749,
+            "col": 10,
+            "end_line": 749,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "alu_operand_b_ex_o",
+          "reads": [
+            "alu_operand_b"
+          ],
+          "loc": {
+            "line": 750,
+            "col": 10,
+            "end_line": 750,
+            "end_col": 53
+          }
+        },
+        {
+          "target": "mult_en_ex_o",
+          "reads": [
+            "mult_en_id"
+          ],
+          "loc": {
+            "line": 752,
+            "col": 10,
+            "end_line": 752,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "div_en_ex_o",
+          "reads": [
+            "div_en_id"
+          ],
+          "loc": {
+            "line": 753,
+            "col": 10,
+            "end_line": 753,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "multdiv_operator_ex_o",
+          "reads": [
+            "multdiv_operator"
+          ],
+          "loc": {
+            "line": 755,
+            "col": 10,
+            "end_line": 755,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "multdiv_signed_mode_ex_o",
+          "reads": [
+            "multdiv_signed_mode"
+          ],
+          "loc": {
+            "line": 756,
+            "col": 10,
+            "end_line": 756,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "multdiv_operand_a_ex_o",
+          "reads": [
+            "rf_rdata_a_fwd"
+          ],
+          "loc": {
+            "line": 757,
+            "col": 10,
+            "end_line": 757,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "multdiv_operand_b_ex_o",
+          "reads": [
+            "rf_rdata_b_fwd"
+          ],
+          "loc": {
+            "line": 758,
+            "col": 10,
+            "end_line": 758,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "branch_set_raw",
+          "reads": [
+            "branch_set_raw_d"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_branch_set_direct",
+              "cond": "BranchTargetALU && !DataIndTiming"
+            }
+          ],
+          "loc": {
+            "line": 767,
+            "col": 12,
+            "end_line": 767,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "branch_set_raw",
+          "reads": [
+            "branch_set_raw_d",
+            "branch_set_raw_q"
+          ],
+          "conds": [
+            "data_ind_timing_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_branch_set_flop",
+              "others": [
+                "BranchTargetALU && !DataIndTiming"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 787,
+            "col": 12,
+            "end_line": 788,
+            "end_col": 92
+          }
+        },
+        {
+          "target": "branch_jump_set_done_d",
+          "reads": [
+            "branch_set_raw",
+            "jump_set_raw",
+            "branch_jump_set_done_q",
+            "instr_valid_clear_o"
+          ],
+          "loc": {
+            "line": 793,
+            "col": 10,
+            "end_line": 794,
+            "end_col": 25
+          }
+        },
+        {
+          "target": "jump_set",
+          "reads": [
+            "jump_set_raw",
+            "branch_jump_set_done_q"
+          ],
+          "loc": {
+            "line": 811,
+            "col": 10,
+            "end_line": 811,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "branch_set",
+          "reads": [
+            "branch_set_raw",
+            "branch_jump_set_done_q"
+          ],
+          "loc": {
+            "line": 812,
+            "col": 10,
+            "end_line": 812,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "branch_taken",
+          "reads": [
+            "data_ind_timing_i",
+            "branch_taken_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_sec_branch_taken",
+              "cond": "DataIndTiming"
+            }
+          ],
+          "loc": {
+            "line": 828,
+            "col": 12,
+            "end_line": 828,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "branch_taken",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_nosec_branch_taken",
+              "others": [
+                "DataIndTiming"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 834,
+            "col": 12,
+            "end_line": 834,
+            "end_col": 31
+          }
+        },
+        {
+          "target": "nt_branch_addr_o",
+          "reads": [
+            "pc_id_i"
+          ],
+          "conds": [
+            "instr_is_compressed_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "g_calc_nt_addr",
+              "cond": "BranchPredictor"
+            }
+          ],
+          "loc": {
+            "line": 849,
+            "col": 12,
+            "end_line": 849,
+            "end_col": 80
+          }
+        },
+        {
+          "target": "nt_branch_addr_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "g_n_calc_nt_addr",
+              "others": [
+                "BranchPredictor"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 851,
+            "col": 12,
+            "end_line": 851,
+            "end_col": 36
+          }
+        },
+        {
+          "target": "multdiv_ready_id_o",
+          "reads": [
+            "ready_wb_i"
+          ],
+          "loc": {
+            "line": 967,
+            "col": 10,
+            "end_line": 967,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "stall_id",
+          "reads": [
+            "stall_ld_hz",
+            "stall_mem",
+            "stall_multdiv",
+            "stall_jump",
+            "stall_branch"
+          ],
+          "loc": {
+            "line": 974,
+            "col": 10,
+            "end_line": 974,
+            "end_col": 88
+          }
+        },
+        {
+          "target": "instr_done",
+          "reads": [
+            "stall_id",
+            "flush_id",
+            "instr_executing"
+          ],
+          "loc": {
+            "line": 982,
+            "col": 10,
+            "end_line": 982,
+            "end_col": 62
+          }
+        },
+        {
+          "target": "instr_first_cycle",
+          "reads": [
+            "instr_valid_i",
+            "id_fsm_q"
+          ],
+          "loc": {
+            "line": 986,
+            "col": 10,
+            "end_line": 986,
+            "end_col": 76
+          }
+        },
+        {
+          "target": "instr_first_cycle_id_o",
+          "reads": [
+            "instr_first_cycle"
+          ],
+          "loc": {
+            "line": 989,
+            "col": 10,
+            "end_line": 989,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "multicycle_done",
+          "reads": [
+            "stall_mem",
+            "ex_valid_all"
+          ],
+          "conds": [
+            "lsu_req_dec",
+            "cheriot_lsu_req_dec"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1003,
+            "col": 12,
+            "end_line": 1003,
+            "end_col": 93
+          }
+        },
+        {
+          "target": "outstanding_memory_access",
+          "reads": [
+            "outstanding_load_wb_i",
+            "outstanding_store_wb_i",
+            "lsu_resp_valid_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1006,
+            "col": 12,
+            "end_line": 1007,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "data_req_allowed",
+          "reads": [
+            "outstanding_memory_access"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1010,
+            "col": 12,
+            "end_line": 1010,
+            "end_col": 57
+          }
+        },
+        {
+          "target": "instr_kill",
+          "reads": [
+            "instr_fetch_err_i",
+            "wb_exception",
+            "id_exception_nc",
+            "controller_run"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1024,
+            "col": 12,
+            "end_line": 1027,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "instr_executing_spec",
+          "reads": [
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "controller_run",
+            "stall_ld_hz"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1045,
+            "col": 12,
+            "end_line": 1048,
+            "end_col": 47
+          }
+        },
+        {
+          "target": "instr_executing",
+          "reads": [
+            "instr_valid_i",
+            "instr_kill",
+            "stall_ld_hz",
+            "outstanding_memory_access"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1050,
+            "col": 12,
+            "end_line": 1053,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "cheriot_exec_id_o",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "instr_is_legal_cheriot",
+            "controller_run",
+            "wb_exception",
+            "stall_ld_hz",
+            "outstanding_memory_access"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1060,
+            "col": 12,
+            "end_line": 1066,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "stall_mem",
+          "reads": [
+            "instr_valid_i",
+            "outstanding_memory_access",
+            "lsu_req_dec",
+            "cheriot_lsu_req_dec",
+            "lsu_req_done_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1086,
+            "col": 12,
+            "end_line": 1087,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "rf_rd_a_wb_match",
+          "reads": [
+            "rf_waddr_wb_i",
+            "rf_raddr_a_o"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1094,
+            "col": 12,
+            "end_line": 1094,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "rf_rd_b_wb_match",
+          "reads": [
+            "rf_waddr_wb_i",
+            "rf_raddr_b_o"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1095,
+            "col": 12,
+            "end_line": 1095,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "rf_rd_a_wb_match_o",
+          "reads": [
+            "rf_rd_a_wb_match"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1097,
+            "col": 12,
+            "end_line": 1097,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "rf_rd_b_wb_match_o",
+          "reads": [
+            "rf_rd_b_wb_match"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1098,
+            "col": 12,
+            "end_line": 1098,
+            "end_col": 49
+          }
+        },
+        {
+          "target": "rf_rd_a_hz",
+          "reads": [
+            "rf_rd_a_wb_match",
+            "rf_ren_a"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1102,
+            "col": 12,
+            "end_line": 1102,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "rf_rd_b_hz",
+          "reads": [
+            "rf_rd_b_wb_match",
+            "rf_ren_b"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1103,
+            "col": 12,
+            "end_line": 1103,
+            "end_col": 52
+          }
+        },
+        {
+          "target": "rf_rdata_a_fwd",
+          "reads": [
+            "rf_wdata_fwd_wb_i",
+            "rf_rdata_a_i"
+          ],
+          "conds": [
+            "rf_rd_a_wb_match",
+            "rf_write_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1108,
+            "col": 12,
+            "end_line": 1108,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "rf_rdata_b_fwd",
+          "reads": [
+            "rf_wdata_fwd_wb_i",
+            "rf_rdata_b_i"
+          ],
+          "conds": [
+            "rf_rd_b_wb_match",
+            "rf_write_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1109,
+            "col": 12,
+            "end_line": 1109,
+            "end_col": 96
+          }
+        },
+        {
+          "target": "stall_ld_hz",
+          "reads": [
+            "outstanding_load_wb_i",
+            "rf_rd_a_hz",
+            "rf_rd_b_hz"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1111,
+            "col": 12,
+            "end_line": 1111,
+            "end_col": 75
+          }
+        },
+        {
+          "target": "unused_rf_we_or_load_valid",
+          "reads": [
+            "rf_we_or_load",
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "illegal_insn_o"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1114,
+            "col": 12,
+            "end_line": 1115,
+            "end_col": 77
+          }
+        },
+        {
+          "target": "instr_type_wb_o",
+          "reads": [
+            "WB_INSTR_OTHER",
+            "WB_INSTR_STORE",
+            "WB_INSTR_LOAD"
+          ],
+          "conds": [
+            "lsu_req_dec",
+            "lsu_we"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1117,
+            "col": 12,
+            "end_line": 1119,
+            "end_col": 58
+          }
+        },
+        {
+          "target": "instr_id_done_o",
+          "reads": [
+            "en_wb_o",
+            "ready_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1121,
+            "col": 12,
+            "end_line": 1121,
+            "end_col": 50
+          }
+        },
+        {
+          "target": "stall_wb",
+          "reads": [
+            "en_wb_o",
+            "ready_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1124,
+            "col": 12,
+            "end_line": 1124,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "perf_dside_wait_o",
+          "reads": [
+            "instr_valid_i",
+            "instr_kill",
+            "outstanding_memory_access",
+            "stall_ld_hz"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1126,
+            "col": 12,
+            "end_line": 1127,
+            "end_col": 73
+          }
+        },
+        {
+          "target": "expecting_load_resp_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1131,
+            "col": 12,
+            "end_line": 1131,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "expecting_store_resp_o",
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_stall_mem",
+              "cond": "WritebackStage"
+            }
+          ],
+          "loc": {
+            "line": 1132,
+            "col": 12,
+            "end_line": 1132,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "multicycle_done",
+          "reads": [
+            "lsu_resp_valid_i",
+            "ex_valid_all"
+          ],
+          "conds": [
+            "cheriot_lsu_req_dec",
+            "lsu_req_dec"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1135,
+            "col": 12,
+            "end_line": 1135,
+            "end_col": 99
+          }
+        },
+        {
+          "target": "data_req_allowed",
+          "reads": [
+            "instr_first_cycle"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1137,
+            "col": 12,
+            "end_line": 1137,
+            "end_col": 48
+          }
+        },
+        {
+          "target": "stall_mem",
+          "reads": [
+            "instr_valid_i",
+            "lsu_req_dec",
+            "cheriot_lsu_req_dec",
+            "lsu_resp_valid_i",
+            "instr_first_cycle"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1141,
+            "col": 12,
+            "end_line": 1143,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "stall_ld_hz",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1146,
+            "col": 12,
+            "end_line": 1146,
+            "end_col": 32
+          }
+        },
+        {
+          "target": "instr_executing_spec",
+          "reads": [
+            "instr_valid_i",
+            "instr_fetch_err_i",
+            "controller_run"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1149,
+            "col": 12,
+            "end_line": 1149,
+            "end_col": 86
+          }
+        },
+        {
+          "target": "instr_executing",
+          "reads": [
+            "instr_executing_spec"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1150,
+            "col": 12,
+            "end_line": 1150,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "cheriot_exec_id_o",
+          "reads": [
+            "cheriot_enable_i",
+            "IbexMuBiOn",
+            "instr_executing"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1151,
+            "col": 12,
+            "end_line": 1151,
+            "end_col": 85
+          }
+        },
+        {
+          "target": "rf_rdata_a_fwd",
+          "reads": [
+            "rf_rdata_a_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1158,
+            "col": 12,
+            "end_line": 1158,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "rf_rdata_b_fwd",
+          "reads": [
+            "rf_rdata_b_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1159,
+            "col": 12,
+            "end_line": 1159,
+            "end_col": 41
+          }
+        },
+        {
+          "target": "rf_rd_a_wb_match_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1161,
+            "col": 12,
+            "end_line": 1161,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "rf_rd_b_wb_match_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1162,
+            "col": 12,
+            "end_line": 1162,
+            "end_col": 37
+          }
+        },
+        {
+          "target": "expecting_load_resp_o",
+          "reads": [
+            "instr_valid_i",
+            "lsu_req_dec",
+            "instr_first_cycle",
+            "lsu_we"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1168,
+            "col": 12,
+            "end_line": 1168,
+            "end_col": 95
+          }
+        },
+        {
+          "target": "expecting_store_resp_o",
+          "reads": [
+            "instr_valid_i",
+            "lsu_req_dec",
+            "instr_first_cycle",
+            "lsu_we"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1169,
+            "col": 12,
+            "end_line": 1169,
+            "end_col": 95
+          }
+        },
+        {
+          "target": "unused_data_req_done_ex",
+          "reads": [
+            "lsu_req_done_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1182,
+            "col": 12,
+            "end_line": 1182,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "unused_rf_waddr_wb",
+          "reads": [
+            "rf_waddr_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1183,
+            "col": 12,
+            "end_line": 1183,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "unused_rf_write_wb",
+          "reads": [
+            "rf_write_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1184,
+            "col": 12,
+            "end_line": 1184,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "unused_outstanding_load_wb",
+          "reads": [
+            "outstanding_load_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1185,
+            "col": 12,
+            "end_line": 1185,
+            "end_col": 63
+          }
+        },
+        {
+          "target": "unused_outstanding_store_wb",
+          "reads": [
+            "outstanding_store_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1186,
+            "col": 12,
+            "end_line": 1186,
+            "end_col": 64
+          }
+        },
+        {
+          "target": "unused_wb_exception",
+          "reads": [
+            "wb_exception"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1187,
+            "col": 12,
+            "end_line": 1187,
+            "end_col": 54
+          }
+        },
+        {
+          "target": "unused_rf_wdata_fwd_wb",
+          "reads": [
+            "rf_wdata_fwd_wb_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1188,
+            "col": 12,
+            "end_line": 1188,
+            "end_col": 59
+          }
+        },
+        {
+          "target": "unused_cheriot_wb_signals",
+          "reads": [
+            "id_exception_nc",
+            "rf_we_or_load",
+            "instr_is_legal_cheriot"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1191,
+            "col": 12,
+            "end_line": 1191,
+            "end_col": 97
+          }
+        },
+        {
+          "target": "instr_type_wb_o",
+          "reads": [
+            "WB_INSTR_OTHER"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1193,
+            "col": 12,
+            "end_line": 1193,
+            "end_col": 44
+          }
+        },
+        {
+          "target": "stall_wb",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1194,
+            "col": 12,
+            "end_line": 1194,
+            "end_col": 34
+          }
+        },
+        {
+          "target": "perf_dside_wait_o",
+          "reads": [
+            "instr_executing",
+            "lsu_req_dec",
+            "lsu_resp_valid_i"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1196,
+            "col": 12,
+            "end_line": 1196,
+            "end_col": 81
+          }
+        },
+        {
+          "target": "instr_id_done_o",
+          "reads": [
+            "instr_done"
+          ],
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_stall_mem",
+              "others": [
+                "WritebackStage"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 1198,
+            "col": 12,
+            "end_line": 1198,
+            "end_col": 40
+          }
+        },
+        {
+          "target": "minstret_write",
+          "reads": [
+            "csr_access_o",
+            "csr_op_o",
+            "CSR_OP_WRITE",
+            "CSR_OP_SET",
+            "CSR_OP_CLEAR",
+            "csr_addr_o",
+            "CSR_MINSTRET",
+            "CSR_MINSTRETH"
+          ],
+          "loc": {
+            "line": 1205,
+            "col": 10,
+            "end_line": 1207,
+            "end_col": 56
+          }
+        },
+        {
+          "target": "instr_perf_count_id_o",
+          "reads": [
+            "ebrk_insn",
+            "ecall_insn_dec",
+            "illegal_insn_dec",
+            "illegal_csr_insn_i",
+            "instr_fetch_err_i",
+            "minstret_write",
+            "instr_gets_expanded_i",
+            "INSTR_EXPANDED",
+            "INSTR_EXPANDED_COMMIT"
+          ],
+          "loc": {
+            "line": 1209,
+            "col": 10,
+            "end_line": 1211,
+            "end_col": 78
+          }
+        },
+        {
+          "target": "en_wb_o",
+          "reads": [
+            "instr_done"
+          ],
+          "loc": {
+            "line": 1215,
+            "col": 10,
+            "end_line": 1215,
+            "end_col": 30
+          }
+        },
+        {
+          "target": "perf_mul_wait_o",
+          "reads": [
+            "stall_multdiv",
+            "mult_en_dec"
+          ],
+          "loc": {
+            "line": 1217,
+            "col": 10,
+            "end_line": 1217,
+            "end_col": 55
+          }
+        },
+        {
+          "target": "perf_div_wait_o",
+          "reads": [
+            "stall_multdiv",
+            "div_en_dec"
+          ],
+          "loc": {
+            "line": 1218,
+            "col": 10,
+            "end_line": 1218,
+            "end_col": 54
           }
         }
       ],

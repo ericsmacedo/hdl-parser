@@ -171,6 +171,38 @@
           "clock_edge": "posedge",
           "reset": "rst_ni",
           "reset_edge": "negedge",
+          "assigns": [
+            {
+              "target": "rdata_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 30,
+                "col": 7,
+                "end_line": 30,
+                "end_col": 29
+              }
+            },
+            {
+              "target": "rdata_q",
+              "reads": [
+                "wr_data_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "wr_en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 32,
+                "col": 7,
+                "end_line": 32,
+                "end_col": 28
+              }
+            }
+          ],
           "loc": {
             "line": 28,
             "col": 3,
@@ -202,11 +234,95 @@
               "cond": "ShadowCopy"
             }
           ],
+          "assigns": [
+            {
+              "target": "shadow_q",
+              "conds": [
+                "rst_ni"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 43,
+                "col": 9,
+                "end_line": 43,
+                "end_col": 33
+              }
+            },
+            {
+              "target": "shadow_q",
+              "reads": [
+                "wr_data_i"
+              ],
+              "conds": [
+                "rst_ni",
+                "wr_en_i"
+              ],
+              "blocking": false,
+              "loc": {
+                "line": 45,
+                "col": 9,
+                "end_line": 45,
+                "end_col": 32
+              }
+            }
+          ],
           "loc": {
             "line": 41,
             "col": 5,
             "end_line": 47,
             "end_col": 8
+          }
+        }
+      ],
+      "assigns": [
+        {
+          "target": "rd_data_o",
+          "reads": [
+            "rdata_q"
+          ],
+          "loc": {
+            "line": 36,
+            "col": 10,
+            "end_line": 36,
+            "end_col": 29
+          }
+        },
+        {
+          "target": "rd_error_o",
+          "reads": [
+            "rdata_q",
+            "shadow_q"
+          ],
+          "generates": [
+            {
+              "kind": "if",
+              "name": "gen_shadow",
+              "cond": "ShadowCopy"
+            }
+          ],
+          "loc": {
+            "line": 49,
+            "col": 12,
+            "end_line": 49,
+            "end_col": 45
+          }
+        },
+        {
+          "target": "rd_error_o",
+          "generates": [
+            {
+              "kind": "else",
+              "name": "gen_no_shadow",
+              "others": [
+                "ShadowCopy"
+              ]
+            }
+          ],
+          "loc": {
+            "line": 52,
+            "col": 12,
+            "end_line": 52,
+            "end_col": 29
           }
         }
       ],
