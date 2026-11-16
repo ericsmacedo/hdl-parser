@@ -39,7 +39,7 @@ Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 import logging
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Literal, TypeAlias
+from typing import Literal, NamedTuple, TypeAlias
 
 from . import datamodel as dm
 from ._diagnostics import Diagnostics
@@ -113,6 +113,8 @@ def parse_file(  # noqa: PLR0913
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
+    maybe_defined: Iterable[str] = (),
 ) -> dm.File:
     """Parse a HDL (SystemVerilog or VHDL) file.
 
@@ -135,6 +137,10 @@ def parse_file(  # noqa: PLR0913
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined: code which is
                         not compiled is removed, the remaining code is no longer tagged with this condition.
                         Conditions on any other macro are kept. Requires `expand_macros`.
+        closed_world: All definitions are known: a macro which is neither defined by `macros`, the file and its
+                      included files, nor named by `maybe_defined` is undefined, like for a compiler. Conditions on
+                      it are resolved too. Ends at an included file which is not found. Requires `resolve_ifdefs`.
+        maybe_defined: Names of macros which other files may define. Conditions on them stay unknown.
 
     Returns:
         Parsed Data
@@ -150,6 +156,8 @@ def parse_file(  # noqa: PLR0913
         macros=macros,
         inc_dirs=inc_dirs,
         resolve_ifdefs=resolve_ifdefs,
+        closed_world=closed_world,
+        maybe_defined=maybe_defined,
     )
 
 
@@ -161,6 +169,8 @@ def parse_text(  # noqa: PLR0913
     macros: Macros | None = None,
     inc_dirs: Iterable[Path | str] = (),
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
+    maybe_defined: Iterable[str] = (),
 ) -> dm.File:
     """Parse HDL (SystemVerilog or VHDL) text.
 
@@ -179,6 +189,10 @@ def parse_text(  # noqa: PLR0913
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined: code which is
                         not compiled is removed, the remaining code is no longer tagged with this condition.
                         Conditions on any other macro are kept. Requires `expand_macros`.
+        closed_world: All definitions are known: a macro which is neither defined by `macros`, the file and its
+                      included files, nor named by `maybe_defined` is undefined, like for a compiler. Conditions on
+                      it are resolved too. Ends at an included file which is not found. Requires `resolve_ifdefs`.
+        maybe_defined: Names of macros which other files may define. Conditions on them stay unknown.
 
     Returns:
         Parsed Data. `modules` is empty, if there is no module (i.e. a file with packages only).
@@ -188,6 +202,8 @@ def parse_text(  # noqa: PLR0913
         raise ValueError("'macros' requires 'expand_macros=True'.")
     if resolve_ifdefs and not expand_macros:
         raise ValueError("'resolve_ifdefs' requires 'expand_macros=True'.")
+    if closed_world and not resolve_ifdefs:
+        raise ValueError("'closed_world' requires 'resolve_ifdefs=True'.")
 
     if isinstance(file_path, str):
         file_path = Path(file_path)
@@ -207,6 +223,8 @@ def parse_text(  # noqa: PLR0913
             inc_dirs=map(Path, inc_dirs),
             resolve_ifdefs=resolve_ifdefs,
             diagnostics=diagnostics,
+            closed_world=closed_world,
+            maybe_defined=maybe_defined,
         )
         file = assign_ids(file)
 
@@ -223,6 +241,98 @@ def parse_text(  # noqa: PLR0913
                 macro.loc,
                 item=macro.id,
             )
+        _check_drivers(module, diagnostics, casefold=lang == "vhdl")
 
     update = {"path": file_path, "lang": "vhdl" if lang == "vhdl" else "sv", "diagnostics": diagnostics.finish(units)}
     return file.model_copy(update=update)
+
+
+_RESOLVED = frozenset(("tri", "tri0", "tri1", "triand", "trior", "trireg", "wand", "wor", "supply0", "supply1"))
+"""Net types resolving multiple drivers."""
+
+
+class _Driver(NamedTuple):
+    """One Statement Driving A Signal: A Continuous Assignment Or A Process."""
+
+    select: str
+    generates: tuple[dm.Generate, ...]
+    ifdefs: frozenset[str]
+    loc: dm.Location | None
+    process: int | None
+    """Index of the process. `None` for a continuous assignment."""
+
+
+def _conflict(one: _Driver, other: _Driver) -> bool:
+    """`one` and `other` may drive the same bits at the same time."""
+    if one.process is not None and one.process == other.process:
+        return False
+    if one.select and other.select and one.select != other.select:
+        # different bits, or not known
+        return False
+    # alternatives of a generate `if` or `case`, or constructs which may be active alone: assumed to be fine
+    depth = min(len(one.generates), len(other.generates))
+    if one.generates[:depth] != other.generates[:depth]:
+        return False
+    # alternatives of an `ifdef`
+    return not any(f"!{cond}" in other.ifdefs for cond in one.ifdefs) and not any(
+        f"!{cond}" in one.ifdefs for cond in other.ifdefs
+    )
+
+
+def _drivers(module: dm.Module, casefold: bool) -> dict[str, list[_Driver]]:
+    """Drivers of the signals and ports of `module`, by name (case folded with `casefold`).
+
+    Bidirectional ports and nets resolving multiple drivers are left out, as well as variables of processes.
+    """
+
+    def norm(name: str) -> str:
+        return name.casefold() if casefold else name
+
+    items: tuple[dm.Port | dm.Signal, ...] = (*module.ports, *module.signals)
+    declared = {
+        norm(item.name)
+        for item in items
+        if item.ptype not in _RESOLVED and not (isinstance(item, dm.Port) and item.direction == "inout")
+    }
+    drivers: dict[str, list[_Driver]] = {}
+    for assign in module.assigns:
+        target = norm(assign.target)
+        if target in declared:
+            driver = _Driver(assign.select, assign.generates, frozenset(assign.ifdefs), assign.loc, None)
+            drivers.setdefault(target, []).append(driver)
+    for idx, process in enumerate(module.processes):
+        seen: set[tuple[str, str]] = set()
+        for assign in process.assigns:
+            target = norm(assign.target)
+            # VHDL variables are assigned blocking
+            if target not in declared or (target, assign.select) in seen or (casefold and assign.blocking):
+                continue
+            seen.add((target, assign.select))
+            ifdefs = frozenset((*process.ifdefs, *assign.ifdefs))
+            drivers.setdefault(target, []).append(_Driver(assign.select, process.generates, ifdefs, assign.loc, idx))
+    return drivers
+
+
+def _check_drivers(module: dm.Module, diagnostics: Diagnostics, casefold: bool = False) -> None:
+    """Report signals and ports of `module`, which are driven by more than one statement.
+
+    Every continuous assignment is a driver, every process is one. Variables of a process and loop variables are
+    left out, as well as drivers of different bits, different generate constructs or different `` `ifdef ``
+    branches. Bidirectional ports and nets resolving multiple drivers (`tri`, `wand`, ...) are fine.
+    """
+    items: tuple[dm.Port | dm.Signal, ...] = (*module.ports, *module.signals)
+    by_name = {(item.name.casefold() if casefold else item.name): item for item in reversed(items)}
+    for target, drivers in _drivers(module, casefold).items():
+        involved = [
+            driver for driver in drivers if any(driver is not other and _conflict(driver, other) for other in drivers)
+        ]
+        if not involved:
+            continue
+        item = by_name[target]
+        lines = ", ".join(str(driver.loc.line) for driver in involved if driver.loc)
+        diagnostics.add(
+            "multiple-drivers",
+            f"'{item.name}' is driven by {len(involved)} statements (lines {lines}).",
+            involved[1].loc,
+            item=item.id,
+        )

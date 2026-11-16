@@ -30,7 +30,8 @@
 * Projects: hierarchy, where-used, values of parameters across files
 * Made for AI agents: small JSON answers with source locations (`hdl-parser module`, `hierarchy`, `where-used`,
   `find`, `diagnostics`) and an MCP server (`hdl-parser mcp`). See the
-  [Guide for AI Agents](https://hdl-parser.readthedocs.io/en/stable/agents/)
+  [Guide for AI Agents](https://hdl-parser.readthedocs.io/en/stable/agents/) and the agent skill in
+  [skills/hdl-parser](https://github.com/ericsmacedo/hdl-parser/blob/main/skills/hdl-parser/SKILL.md)
 * Standards: `IEEE 1800-2009 SystemVerilog`
 
 ## Limitations

@@ -21,6 +21,7 @@
 # SOFTWARE.
 """Command Line Interface."""
 
+import functools
 import json as json_
 import logging
 import sys
@@ -29,13 +30,16 @@ from pathlib import Path
 from typing import Any
 
 import click
+from click.core import ParameterSource
 from pydantic import BaseModel, ConfigDict
 from rich.console import Console
 from rich.logging import RichHandler
 
 from . import query
+from ._config import CONFIG_NAME, ConfigError, find_config, read_config
 from ._gen_templates import gen_instance, gen_markdown_table
 from ._mcp import serve
+from ._sv.preproc import defined_names
 from .datamodel import File
 from .filelistparser import parse_filelist
 from .parser import parse_defines, parse_file
@@ -74,6 +78,12 @@ opt_resolve_ifdefs = click.option(
     is_flag=True,
     help="Resolve `ifdef conditions on macros which are known to be defined. Requires '--expand-macros'.",
 )
+opt_closed_world = click.option(
+    "--closed-world",
+    is_flag=True,
+    help="All definitions are known: a macro which no file and no '--define' defines is undefined, and "
+    "`ifdef conditions on it are resolved too, like by a compiler. Requires '--resolve-ifdefs'.",
+)
 opt_inc_dirs = click.option(
     "--incdir",
     "-I",
@@ -87,7 +97,8 @@ opt_inc_dirs = click.option(
 
 def opt_parse(func):
     """Options which control the parser. See `_parse_files`."""
-    for option in (opt_resolve_ifdefs, opt_inc_dirs, opt_macro_files, opt_expand_macros, opt_filelists):
+    options = (opt_closed_world, opt_resolve_ifdefs, opt_inc_dirs, opt_macro_files, opt_expand_macros, opt_filelists)
+    for option in options:
         func = option(func)
     return func
 
@@ -150,11 +161,34 @@ class Ctx(BaseModel):
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
 @click.option("-v", "--verbose", count=True, help="Increase Verbosity.")
 @click.option("--no-color", is_flag=True, help="Disable Coloring.", envvar="UCDP_NO_COLOR")
+@click.option(
+    "--config",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help=f"Configuration file with the options of the project. By default '{CONFIG_NAME}' within the current "
+    "directory or its closest parent.",
+)
+@click.option("--no-config", is_flag=True, help=f"Ignore any '{CONFIG_NAME}'.")
 @click.version_option()
 @click.pass_context
-def cli(ctx, verbose=0, no_color=False):
+def cli(ctx, verbose=0, no_color=False, config: Path | None = None, no_config: bool = False):
     """Easy-To-Use SystemVerilog Parser."""
     ctx.obj = ctx.with_resource(Ctx.create(verbose=verbose, no_color=no_color))
+    if no_config:
+        return
+    path = config or find_config(Path.cwd())
+    if path is None:
+        return
+    try:
+        values = read_config(path)
+    except ConfigError as exc:
+        raise click.UsageError(str(exc)) from None
+    LOGGER.info("Configuration '%s'", path)
+    # the options of the commands working on a project. The command line takes precedence.
+    ctx.default_map = {
+        name: values
+        for name, command in ctx.command.commands.items()
+        if any(param.name == "cache_dir" for param in command.params)
+    }
 
 
 pass_ctx = click.make_pass_decorator(Ctx)
@@ -246,8 +280,28 @@ _PATHS_HELP = """
 """
 
 
+def _config_override(func):
+    """Files of the command line replace the ones of the configuration file."""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        ctx = click.get_current_context()
+        given = (ParameterSource.COMMANDLINE, ParameterSource.ENVIRONMENT)
+        if any(ctx.get_parameter_source(name) in given for name in ("paths", "filelist")):
+            defaults = {"paths": (), "filelist": None, "exclude": ()}
+            kwargs.update(
+                (name, default)
+                for name, default in defaults.items()
+                if ctx.get_parameter_source(name) == ParameterSource.DEFAULT_MAP
+            )
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def opt_project(func):
-    """Options which create the project."""
+    """Options which create the project. Their defaults are taken from the configuration file."""
+    func = _config_override(func)
     options = (
         click.argument("paths", nargs=-1, type=click.Path(exists=True, readable=True, path_type=Path)),
         click.option(
@@ -258,6 +312,7 @@ def opt_project(func):
         ),
         opt_expand_macros,
         opt_resolve_ifdefs,
+        opt_closed_world,
         opt_inc_dirs,
         click.option(
             "--define",
@@ -347,6 +402,7 @@ def load_project(  # noqa: PLR0913
     filelist: Path | None = None,
     expand_macros: bool = False,
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
     inc_dirs: tuple[Path, ...] = (),
     defines: tuple[str, ...] = (),
     root: Path | None = None,
@@ -358,6 +414,8 @@ def load_project(  # noqa: PLR0913
     """Create the project according to the options of `opt_project`."""
     if resolve_ifdefs and not expand_macros:
         raise click.UsageError("'--resolve-ifdefs' requires '--expand-macros'.")
+    if closed_world and not resolve_ifdefs:
+        raise click.UsageError("'--closed-world' requires '--resolve-ifdefs'.")
     if filelist and paths:
         raise click.UsageError("Give either PATHS or '--filelist'.")
     if not filelist and not paths:
@@ -371,6 +429,7 @@ def load_project(  # noqa: PLR0913
         "root": root,
         "expand_macros": expand_macros,
         "resolve_ifdefs": resolve_ifdefs,
+        "closed_world": closed_world,
         "defines": dict(_split_define(define) for define in defines),
         "inc_dirs": inc_dirs,
         "cache": cache_dir or cache,
@@ -814,17 +873,28 @@ def _parse_files(  # noqa: PLR0913
     macro_files: tuple[Path, ...] = (),
     inc_dirs: tuple[Path, ...] = (),
     resolve_ifdefs: bool = False,
+    closed_world: bool = False,
 ) -> Iterator[File]:
     """Parse all files according to the options of `opt_parse`."""
     for option, value in (("--macro-file", macro_files), ("--resolve-ifdefs", resolve_ifdefs)):
         if value and not expand_macros:
             raise click.UsageError(f"'{option}' requires '--expand-macros'.")
+    if closed_world and not resolve_ifdefs:
+        raise click.UsageError("'--closed-world' requires '--resolve-ifdefs'.")
     all_filepaths = list(filepaths)
     all_inc_dirs = list(inc_dirs)
     for filelist_path in filelist:
         parse_filelist(all_filepaths, all_inc_dirs, filelist_path)
     macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    # the macros the other files define
+    maybe_defined = defined_names(all_filepaths, all_inc_dirs) if closed_world else frozenset()
     for filepath in all_filepaths:
         yield parse_file(
-            filepath, expand_macros=expand_macros, macros=macros, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs
+            filepath,
+            expand_macros=expand_macros,
+            macros=macros,
+            inc_dirs=all_inc_dirs,
+            resolve_ifdefs=resolve_ifdefs,
+            closed_world=closed_world,
+            maybe_defined=maybe_defined,
         )

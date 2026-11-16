@@ -61,6 +61,7 @@ from . import datamodel as dm
 from ._conn import Connectivity, Graph, Node
 from ._diagnostics import Diagnostics, log_diagnostic
 from ._elab import Elaboration
+from ._sv.preproc import defined_names
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
 from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
@@ -185,6 +186,7 @@ class Project(dm._BaseModel):
         root: Path | str | None = None,
         expand_macros: bool = False,
         resolve_ifdefs: bool = False,
+        closed_world: bool = False,
         defines: dict[str, str] | None = None,
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
@@ -200,6 +202,9 @@ class Project(dm._BaseModel):
             root: Root directory. The common directory of all files by default.
             expand_macros: Expand macros with known definition.
             resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
+            closed_world: Resolve `` `ifdef `` conditions on macros which are never defined too - neither by
+                          `defines`, nor by any file of the project or a file it includes: these macros are
+                          undefined, like for a compiler. Requires `resolve_ifdefs`.
             defines: Macros defined for all files, by name: `{"SYNTHESIS": "", "WIDTH": "8"}`.
                      Used by `expand_macros` only.
             inc_dirs: Include directories. Used by `expand_macros` only.
@@ -213,7 +218,9 @@ class Project(dm._BaseModel):
                   effects (`if __name__ == "__main__":`), and pays off for many files only: a few files are
                   always parsed by this process.
         """
-        settings = dm.Settings(expand_macros=expand_macros, resolve_ifdefs=resolve_ifdefs, defines=defines or {})
+        settings = dm.Settings(
+            expand_macros=expand_macros, resolve_ifdefs=resolve_ifdefs, closed_world=closed_world, defines=defines or {}
+        )
         builder = _Builder(cls, root, settings, map(Path, inc_dirs), prefer, cache, jobs)
         return builder.build(map(Path, file_paths))
 
@@ -225,6 +232,7 @@ class Project(dm._BaseModel):
         env: Mapping[str, str] | None = None,
         expand_macros: bool = False,
         resolve_ifdefs: bool = False,
+        closed_world: bool = False,
         defines: dict[str, str] | None = None,
         inc_dirs: Iterable[Path | str] = (),
         prefer: dict[str, str] | None = None,
@@ -247,6 +255,7 @@ class Project(dm._BaseModel):
             env: Environment variables used by the filelist. The ones of the process by default.
             expand_macros: Expand macros with known definition.
             resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
+            closed_world: See [from_files][hdl_parser.project.Project.from_files].
             defines: Macros defined for all files, in addition to the ones of the filelist.
             inc_dirs: Include directories, in addition to the ones of the filelist.
             prefer: See [from_files][hdl_parser.project.Project.from_files].
@@ -257,6 +266,7 @@ class Project(dm._BaseModel):
         settings = dm.Settings(
             expand_macros=expand_macros,
             resolve_ifdefs=resolve_ifdefs,
+            closed_world=closed_world,
             defines={**filelist.defines, **(defines or {})},
             lib_exts=tuple(filelist.lib_exts) or DEFAULT_LIB_EXTS,
         )
@@ -666,7 +676,11 @@ class _Builder:
         self.settings = settings
         self.inc_dirs = [_absolute(inc_dir) for inc_dir in inc_dirs]
         self.prefer = prefer or {}
+        if settings.closed_world and not settings.resolve_ifdefs:
+            raise ValueError("'closed_world' requires 'resolve_ifdefs=True'.")
         self.macros: Macros | None = None
+        # names of the macros defined by the files, for the closed world
+        self.maybe_defined: frozenset[str] = frozenset()
         if settings.expand_macros and settings.defines:
             defines = (f"`define {name} {value}\n" for name, value in settings.defines.items())
             self.macros = parse_defines_text(*defines)
@@ -701,6 +715,9 @@ class _Builder:
             "prefer": self.prefer,
             "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
         }
+        if self.settings.closed_world:
+            sv_paths = (path for path in (*paths, *lib_paths) if LANGMAP.get(path.suffix, "sv") == "sv")
+            self.maybe_defined = defined_names(sv_paths, self.inc_dirs)
         self.cache = self._create_cache(root)
         files = self._parse(root, (*paths, *lib_paths))
         libraries = [_relative(path, root) for path in lib_paths]
@@ -733,7 +750,16 @@ class _Builder:
         directory = root / CACHE_DIR if self.cache_dir is True else _absolute(Path(self.cache_dir))
         settings = self.settings
         # everything, which has an influence on the result of a file
-        how = [settings.expand_macros, settings.resolve_ifdefs, settings.defines, [str(path) for path in self.inc_dirs]]
+        how: list[Any] = [
+            settings.expand_macros,
+            settings.resolve_ifdefs,
+            settings.defines,
+            [str(path) for path in self.inc_dirs],
+        ]
+        if settings.closed_world:
+            # a file depends on the macros all others define
+            names = "\n".join(sorted(self.maybe_defined)).encode()
+            how.append(hashlib.sha256(names).hexdigest())
         return _Cache(directory, root, self.inc_dirs, json.dumps(how, sort_keys=True))
 
     def _parse(self, root: Path, paths: Iterable[Path]) -> list[dm.File]:
@@ -744,7 +770,15 @@ class _Builder:
                 files[path] = self.cache.load(path)
         todo = [path for path, file in files.items() if file is None]
         settings = self.settings
-        job = _Job(root, settings.expand_macros, settings.resolve_ifdefs, self.macros, tuple(self.inc_dirs))
+        job = _Job(
+            root,
+            settings.expand_macros,
+            settings.resolve_ifdefs,
+            self.macros,
+            tuple(self.inc_dirs),
+            settings.closed_world,
+            self.maybe_defined,
+        )
         # the garbage collector finds nothing in the many items created, but takes its time to look at them
         collecting = gc.isenabled()
         gc.disable()
@@ -789,6 +823,8 @@ class _Job(NamedTuple):
     resolve_ifdefs: bool
     macros: Macros | None
     inc_dirs: tuple[Path, ...]
+    closed_world: bool = False
+    maybe_defined: frozenset[str] = frozenset()
 
 
 _FAILED = frozenset(("file-not-found", "file-unreadable", "parse-failed"))
@@ -805,6 +841,8 @@ def _parse_file(path: Path, job: _Job) -> dm.File:
             macros=job.macros,
             inc_dirs=job.inc_dirs,
             resolve_ifdefs=job.resolve_ifdefs,
+            closed_world=job.closed_world,
+            maybe_defined=job.maybe_defined,
         )
     except FileNotFoundError:
         return _failed(rel, "file-not-found", "file not found.")

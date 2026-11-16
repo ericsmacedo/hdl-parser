@@ -364,7 +364,9 @@ modules, the largest first, 'module' with summary=true the counts, 'find' locate
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
 'elaborate' gives the values of the parameters and the widths of the ports of an instance \
 ('path' below 'top'), 'evaluate' the value of an expression. 'drivers' and 'loads' tell what drives a signal \
-and what it drives, by instance path ('top.u_core.result_o'), 'trace' the connection between two signals."""
+and what it drives, by instance path ('top.u_core.result_o'), 'trace' the connection between two signals. \
+Values which cannot be computed have 'unknown' with the reason: never take them as 0. Code under an unresolved \
+`ifdef is tagged 'ifdefs' (see 'module' with fields 'assigns' or 'insts'); 'drivers' and 'trace' do not show it."""
 
 
 def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:
