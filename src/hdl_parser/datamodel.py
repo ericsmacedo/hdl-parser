@@ -107,14 +107,19 @@ class Diagnostic(_BaseModel):
     The codes `file-*`, `parse-failed`, `duplicate-definition`, `undefined-module` and `filelist-*` are reported
     by a [Project][hdl_parser.project.Project] only.
 
+    A problem of a file is located within the file: `loc` is within the parsed file, `file` the included file the
+    problem is located in. A problem of a project (filelist, file with macros, see
+    [Defines][hdl_parser.parser.Defines]) is located within its `file`: `loc` is within `file`.
+
     Attributes:
         code: Kind of problem. See table above.
         severity: `error`, `warning` or `info`.
         message: Description.
         loc: Source Location within the parsed file. A problem within an included file points to the
-             `` `include `` statement.
+             `` `include `` statement. For a problem of a project: within `file`.
         item: Identifier of the related item: the module the problem is located in, if not stated otherwise.
-        file: Included file or filelist the problem is located in. Empty, if located in the parsed file itself.
+        file: Included file the problem is located in. Empty, if located in the parsed file itself.
+              For a problem of a project: the filelist or the file with macros.
     """
 
     code: str

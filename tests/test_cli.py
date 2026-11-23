@@ -353,14 +353,44 @@ def test_report_filelist(runner, tmp_path):
         Path("design.f").write_text("a.sv\n-unknown\n")
         result = runner.invoke(cli, ["--no-color", "json", "-f", "design.f"])
     assert result.exit_code == 0
-    assert result.stderr == "WARNING design.f:2:1: design.f: option '-unknown' is not understood.\n"
+    assert result.stderr == "WARNING design.f:2:1: option '-unknown' is not understood.\n"
+
+
+def test_report_macro_file(runner, tmp_path):
+    """Problems Of A File With Macros Are Printed On Standard Error, Located Within It."""
+    with chdir(tmp_path):
+        Path("m.sv").write_text("module m;\nendmodule\n")
+        Path("defs.svh").write_text('`define A 1\n`include "missing.svh"\n')
+        result = runner.invoke(cli, ["--no-color", "json", "--expand-macros", "--macro-file", "defs.svh", "m.sv"])
+    assert result.exit_code == 0
+    assert result.stderr == "WARNING defs.svh:2:1: included file 'missing.svh' not found. Its macros are unknown.\n"
+
+
+@mark.parametrize("define", ("P(=1", "1X=2", "A-B"))
+def test_define_bad_name(runner, examples, define):
+    """A Macro Name Which Is Not One Is A Usage Error."""
+    result = runner.invoke(cli, ["project", "--expand-macros", "-D", define, str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 2
+    assert "is no macro name" in result.stderr
+
+
+def test_define_function_like(runner, examples):
+    """A Function-Like Macro Can Be Defined."""
+    result = runner.invoke(cli, ["project", "--expand-macros", "-D", "MAX(a,b)=a", str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 0
+    assert json.loads(result.stdout)["settings"]["defines"] == {"MAX(a,b)": "a"}
 
 
 def test_library_quiet(tmp_path):
     """The Library Does Not Print Diagnostics, They Are Returned."""
-    code = "import hdl_parser; print(len(hdl_parser.parse_text('module m (`A);\\nendmodule\\n').diagnostics))"
+    (tmp_path / "defs.svh").write_text('`include "missing.svh"\n')
+    code = (
+        "import hdl_parser; "
+        "print(len(hdl_parser.parse_text('module m (`A);\\nendmodule\\n').diagnostics)); "
+        "print(len(hdl_parser.parse_defines('defs.svh').diagnostics))"
+    )
     result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, capture_output=True, text=True, check=True)
-    assert result.stdout == "1\n"
+    assert result.stdout == "1\n1\n"
     assert result.stderr == ""
 
 

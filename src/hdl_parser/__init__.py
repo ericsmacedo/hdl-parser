@@ -62,11 +62,12 @@ from .datamodel import (
     Value,
 )
 from .filelistparser import parse_filelist
-from .parser import Macro, parse_defines, parse_defines_text, parse_file, parse_text
+from .parser import Defines, Macro, parse_defines, parse_defines_text, parse_file, parse_text
 from .project import Definition, Project
 
 __all__ = [
     "Assignment",
+    "Defines",
     "Definition",
     "Diagnostic",
     "Event",

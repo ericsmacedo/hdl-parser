@@ -59,7 +59,7 @@ from typing import Any, NamedTuple
 
 from . import datamodel as dm
 from ._conn import Connectivity, Graph, Node
-from ._diagnostics import Diagnostics, log_diagnostic
+from ._diagnostics import Diagnostics, log_diagnostic, silent
 from ._elab import Elaboration
 from ._sv.preproc import defined_names
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
@@ -165,8 +165,10 @@ class Project(dm._BaseModel):
         files: Files, in the given order.
         libraries: Paths of the files, which have been found through a library option of a filelist.
         prefer: File to be used for a module, interface or package which is defined more than once, by name.
-        diagnostics: Problems which are not related to one of the files, i.e. of a filelist.
-                     The problems of a file are located in its `diagnostics`.
+        diagnostics: Problems which are not related to one of the files, i.e. of a filelist or the defines.
+                     `file` is the file the problem is located in, `loc` the location within. Both are empty for a
+                     problem of the defines given by `settings`. The problems of a file are located in its
+                     `diagnostics`.
     """
 
     schema_version: int
@@ -679,11 +681,13 @@ class _Builder:
         if settings.closed_world and not settings.resolve_ifdefs:
             raise ValueError("'closed_world' requires 'resolve_ifdefs=True'.")
         self.macros: Macros | None = None
+        self.diagnostics: list[dm.Diagnostic] = []
         # names of the macros defined by the files, for the closed world
         self.maybe_defined: frozenset[str] = frozenset()
         if settings.expand_macros and settings.defines:
-            defines = (f"`define {name} {value}\n" for name, value in settings.defines.items())
-            self.macros = parse_defines_text(*defines)
+            defines = parse_defines_text(*(f"`define {name} {value}\n" for name, value in settings.defines.items()))
+            self.macros = defines.macros
+            self.diagnostics = defines.diagnostics
 
     def build(
         self,
@@ -713,7 +717,7 @@ class _Builder:
             "root": root,
             "settings": settings,
             "prefer": self.prefer,
-            "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
+            "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in (*self.diagnostics, *diagnostics)),
         }
         if self.settings.closed_world:
             sv_paths = (path for path in (*paths, *lib_paths) if LANGMAP.get(path.suffix, "sv") == "sv")
@@ -808,11 +812,15 @@ class _Builder:
                 LOGGER.debug("cannot parse by %d processes (%s): parsing by one.", jobs, exc)
             else:
                 files = [file for _, file in sorted(zip(order, parsed, strict=True), key=lambda pair: pair[0])]
-                # the processes are silent: report here, in the order of the files
-                for path, file in zip(paths, files, strict=True):
-                    _log(path, file)
+                for file in files:
+                    _log(file)
                 return files
-        return [_parse_file(path, job) for path in paths]
+        files = []
+        for path in paths:
+            file = _parse_file(path, job)
+            _log(file)
+            files.append(file)
+        return files
 
 
 class _Job(NamedTuple):
@@ -827,11 +835,16 @@ class _Job(NamedTuple):
     maybe_defined: frozenset[str] = frozenset()
 
 
-_FAILED = frozenset(("file-not-found", "file-unreadable", "parse-failed"))
-
-
 def _parse_file(path: Path, job: _Job) -> dm.File:
-    """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic."""
+    """Parse the file at `path`. A file which cannot be read or parsed is a file with a diagnostic.
+
+    Paths are relative to the root. Nothing is logged: see `_log`.
+    """
+    with silent():
+        return _parse_silent(path, job)
+
+
+def _parse_silent(path: Path, job: _Job) -> dm.File:
     root = job.root
     rel = Path(_relative(path, root))
     try:
@@ -852,14 +865,14 @@ def _parse_file(path: Path, job: _Job) -> dm.File:
         # never a crash: the other files are still of use
         return _failed(rel, "parse-failed", f"cannot parse file: {type(exc).__name__}: {exc}")
     includes = tuple(_relative(Path(include), root) for include in file.includes)
-    return file.model_copy(update={"path": rel, "includes": includes})
+    diagnostics = tuple(_relative_file(diagnostic, root) for diagnostic in file.diagnostics)
+    return file.model_copy(update={"path": rel, "includes": includes, "diagnostics": diagnostics})
 
 
-def _log(path: Path, file: dm.File) -> None:
-    """Log the diagnostics of `file`, parsed from `path` by another process, the way `_parse_file` does."""
+def _log(file: dm.File) -> None:
+    """Log the diagnostics of `file`, with paths relative to the root. By this process, in the order of the files."""
     for diagnostic in file.diagnostics:
-        context = file.file_id if diagnostic.code in _FAILED else str(path)
-        log_diagnostic(context, diagnostic)
+        log_diagnostic(file.file_id, diagnostic)
 
 
 # --- worker process ---
@@ -870,8 +883,6 @@ _WORKER_JOB: _Job | None = None
 def _init_worker(job: _Job) -> None:  # pragma: no cover
     global _WORKER_JOB  # noqa: PLW0603
     _WORKER_JOB = job
-    # reported by the main process
-    logging.getLogger(log_diagnostic.__module__).disabled = True
 
 
 def _work(path: Path) -> dm.File:  # pragma: no cover

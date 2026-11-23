@@ -24,6 +24,7 @@
 import functools
 import json as json_
 import logging
+import re
 import sys
 from collections.abc import Iterable, Iterator
 from pathlib import Path
@@ -447,10 +448,16 @@ def load_project(  # noqa: PLR0913
     return Project.from_files(paths, **kwargs)
 
 
+_RE_DEFINE_NAME = re.compile(r"[a-zA-Z_]\w*(?:\([^()]*\))?")
+"""Name of a macro, with its parameters, if it is function-like."""
+
+
 def _split_define(define: str) -> tuple[str, str]:
     name, _, value = define.partition("=")
     if not name:
         raise click.BadParameter(f"'{define}' has no name.", param_hint="'--define'")
+    if not _RE_DEFINE_NAME.fullmatch(name):
+        raise click.BadParameter(f"'{name}' is no macro name.", param_hint="'--define'")
     return name, value
 
 
@@ -469,6 +476,8 @@ _SEVERITY_STYLES = {"error": "red", "warning": "yellow", "info": "blue"}
 
 def _report(context: str, diagnostics: Iterable[Diagnostic]) -> None:
     """Print `diagnostics`, found while parsing `context`, on standard error. For the commands made for humans.
+
+    `context` is empty for problems of a filelist or the defines: they are located within their `file`.
 
     Infos are printed with `-v` only.
     """
@@ -906,17 +915,18 @@ def _parse_files(  # noqa: PLR0913
     all_inc_dirs = list(inc_dirs)
     for filelist_path in filelist:
         content = read_filelist(filelist_path)
-        _report(str(filelist_path), content.diagnostics)
+        _report("", content.diagnostics)
         all_filepaths += [path for path in (*content.files, *content.lib_files) if path not in all_filepaths]
         all_inc_dirs += [path for path in content.inc_dirs if path not in all_inc_dirs]
-    macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    defines = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
+    _report("", defines.diagnostics)
     # the macros the other files define
     maybe_defined = defined_names(all_filepaths, all_inc_dirs) if closed_world else frozenset()
     for filepath in all_filepaths:
         file = parse_file(
             filepath,
             expand_macros=expand_macros,
-            macros=macros,
+            macros=defines.macros,
             inc_dirs=all_inc_dirs,
             resolve_ifdefs=resolve_ifdefs,
             closed_world=closed_world,

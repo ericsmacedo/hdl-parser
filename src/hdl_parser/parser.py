@@ -45,7 +45,7 @@ from . import datamodel as dm
 from ._diagnostics import Diagnostics
 from ._ids import assign_ids
 from ._sv.parser import parse as parse_sv
-from ._sv.preproc import Macro, Macros, collect_defines, read_text
+from ._sv.preproc import Defines, Macro, Macros, collect_defines, read_text  # noqa: F401 (Macro: re-exported)
 from ._vhdl.parser import parse as parse_vhdl
 
 LOGGER = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ LANGMAP: dict[str, Lang] = {
 
 def parse_defines(
     *file_paths: Path | str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
-) -> dict[str, Macro]:
+) -> Defines:
     """Read `` `define `` macros from SystemVerilog files.
 
     Args:
@@ -74,7 +74,8 @@ def parse_defines(
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
-        Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
+        The macros (`macros`), to be handed over to [hdl_parser.parser.parse_file][] or
+        [hdl_parser.parser.parse_text][], and the problems (`diagnostics`).
 
     The files are read in the given order, from top to bottom: a later `` `define `` replaces an earlier one,
     `` `undef `` and `` `include `` statements are followed.
@@ -85,9 +86,7 @@ def parse_defines(
     )
 
 
-def parse_defines_text(
-    *texts: str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
-) -> dict[str, Macro]:
+def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False) -> Defines:
     """Read `` `define `` macros from SystemVerilog text.
 
     Args:
@@ -98,7 +97,8 @@ def parse_defines_text(
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
-        Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
+        The macros (`macros`), to be handed over to [hdl_parser.parser.parse_file][] or
+        [hdl_parser.parser.parse_text][], and the problems (`diagnostics`, without location).
 
     See [hdl_parser.parser.parse_defines][] for limitations.
     """

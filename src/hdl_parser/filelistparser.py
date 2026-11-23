@@ -155,7 +155,8 @@ class _Reader:
 
     def _report(self, path: Path, number: int, line: str, code: str, message: str) -> None:
         loc = dm.Location(line=number, col=1, end_line=number, end_col=len(line) + 1) if number else None
-        diagnostics = Diagnostics(str(path))
+        # a problem of the project, located within the filelist
+        diagnostics = Diagnostics("")
         diagnostics.add(code, message, loc, file=str(path))
         self.filelist.diagnostics += diagnostics.items
 

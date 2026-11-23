@@ -28,7 +28,9 @@ DEBUG level: the diagnostics are part of the result, the log is for tracing only
 """
 
 import logging
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 
 from . import datamodel as dm
 
@@ -68,46 +70,58 @@ def shorten(text: str, width: int = 40) -> str:
 
 
 def format_diagnostic(context: str, diagnostic: dm.Diagnostic) -> str:
-    """`diagnostic`, found while parsing `context`, as `context:line:col: [file: ]message`."""
-    loc = diagnostic.loc
-    where = f"{context}:{loc.line}:{loc.col}" if loc else context
-    if diagnostic.file:
-        where = f"{where}: {diagnostic.file}"
-    return f"{where}: {diagnostic.message}"
+    """`diagnostic`, found while parsing `context`, as `context:line:col: [file: ]message`.
 
-
-_LOGLEVELS = {"error": logging.ERROR, "warning": logging.WARNING, "info": logging.INFO}
-
-
-def log_diagnostic(context: str, diagnostic: dm.Diagnostic, returned: bool = True) -> None:
-    """Log `diagnostic`, found while parsing `context`.
-
-    A diagnostic `returned` to the caller is logged at DEBUG level, whatever its severity: a library user should not
-    get it on standard error too. One which is not returned is logged at its severity, as that is the only report.
+    A problem of a project (filelist, defines) is located within its `file`: `file:line:col: message`.
     """
-    message = format_diagnostic(context, diagnostic)
-    if returned:
-        LOGGER.debug("%s", message)
-    else:
-        LOGGER.log(_LOGLEVELS[diagnostic.severity], "%s", message)
+    loc = diagnostic.loc
+    file = diagnostic.file
+    if not context or file == context:
+        context, file = file, ""
+    where = f"{context}:{loc.line}:{loc.col}" if context and loc else context
+    if file:
+        where = f"{where}: {file}"
+    return f"{where}: {diagnostic.message}" if where else diagnostic.message
+
+
+_SILENT: ContextVar[bool] = ContextVar("silent", default=False)
+
+
+@contextmanager
+def silent() -> Iterator[None]:
+    """Diagnostics are not logged, as the caller logs them itself (see `log_diagnostic`)."""
+    token = _SILENT.set(True)
+    try:
+        yield
+    finally:
+        _SILENT.reset(token)
+
+
+def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
+    """Log `diagnostic`, found while parsing `context`, at DEBUG level, whatever its severity.
+
+    Every diagnostic is returned to the caller. A library user should not get it on standard error too.
+    """
+    LOGGER.debug("%s", format_diagnostic(context, diagnostic))
 
 
 class Diagnostics:
-    """Problems Found While Parsing `context` (the file path, or `<text>`).
+    """Problems Found While Parsing `context`.
 
-    `returned`: the items are returned to the caller. Otherwise the log is the only report. See `log_diagnostic`.
+    `context` is the parsed file, `<text>`, or empty for the problems of a project: they are located within their
+    `file` (a filelist, a file with macros).
     """
 
-    def __init__(self, context: str, returned: bool = True):
+    def __init__(self, context: str):
         self.context = context
-        self.returned = returned
         self.items: list[dm.Diagnostic] = []
 
     def add(self, code: str, message: str, loc: dm.Location | None = None, file: str = "", item: str = "") -> None:
         """Report the problem `code` at `loc`. See [Diagnostic][hdl_parser.datamodel.Diagnostic] for the arguments."""
         severity = SEVERITIES[code]
         self.items.append(dm.Diagnostic(code=code, severity=severity, message=message, loc=loc, file=file, item=item))
-        log_diagnostic(self.context, self.items[-1], returned=self.returned)
+        if not _SILENT.get():
+            log_diagnostic(self.context, self.items[-1])
 
     def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
         """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""

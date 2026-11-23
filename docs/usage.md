@@ -168,8 +168,9 @@ Problems are part of the document: in `diagnostics` of the project and of every 
 message and location. Standard error stays empty; `-v` traces the diagnostics there.
 
 The commands for humans (`info`, `json`, `gen-sv-instance`) print warnings and errors on standard error, infos with
-`-v`. The library never prints a diagnostic of a file: it is returned in `diagnostics` and logged at DEBUG level only.
-Problems of `parse_defines` have no other report and are logged at their severity.
+`-v`. The library never prints a diagnostic: every one is returned and logged at DEBUG level only. The problems of a
+file are in its `diagnostics`, the ones of a filelist or the defines in `diagnostics` of the project (and of the
+results of `read_filelist` and `parse_defines`), located within their `file`.
 
 ### Configuration File
 
@@ -308,8 +309,10 @@ Macros which are not defined by the file or its included files, have to be hande
 !!! example "Python"
 
     ```python
-    >>> macros = hdl_parser.parse_defines("examples/sv/macros.svh")
-    >>> file = hdl_parser.parse_text("module top (`CLK_RST_PORTS); endmodule", expand_macros=True, macros=macros)
+    >>> defines = hdl_parser.parse_defines("examples/sv/macros.svh")
+    >>> defines.diagnostics
+    []
+    >>> file = hdl_parser.parse_text("module top (`CLK_RST_PORTS); endmodule", expand_macros=True, macros=defines.macros)
     >>> [port.name for port in file.modules[0].ports]
     ['clk_i', 'rst_ni']
 

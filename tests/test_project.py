@@ -28,7 +28,7 @@ from pathlib import Path
 
 from pytest import fixture, mark
 
-from hdl_parser import HierarchyNode, Module, Project, Use, parse_file
+from hdl_parser import HierarchyNode, Location, Module, Project, Use, parse_file
 from hdl_parser import project as project_module
 
 from .conftest import PRJ_PATH
@@ -410,6 +410,36 @@ def test_defines(tmp_path):
         ("b", "", ()),
     ]
     assert project.settings.defines == {"WITH_A": "", "WIDTH": "8"}
+    assert project.diagnostics == ()
+
+
+def test_defines_diagnostics(tmp_path):
+    """Problems Of The Defines Are Problems Of The Project, Without Location."""
+    _write(tmp_path, {"top.sv": "module top;\nendmodule\n"})
+    (tmp_path / "design.f").write_text("top.sv\n-unknown\n")
+    project = Project.from_filelist(tmp_path / "design.f", defines={"P(": "1", "1X": "2"}, expand_macros=True)
+    assert [(diag.code, diag.message, diag.loc, diag.file) for diag in project.diagnostics] == [
+        ("macro-bad-define", "cannot parse definition of macro `P. Skipped.", None, ""),
+        ("macro-bad-define", "cannot parse definition '`define 1X 2'. Skipped.", None, ""),
+        (
+            "filelist-unknown",
+            "option '-unknown' is not understood.",
+            Location(line=2, col=1, end_line=2, end_col=9),
+            "design.f",
+        ),
+    ]
+
+
+def test_include_diagnostics_relative(tmp_path, caplog):
+    """The Included File Of A Diagnostic Is Relative To The Root, Like The Log Message."""
+    _write(
+        tmp_path, {"rtl/top.sv": '`include "inc.svh"\nmodule top;\nendmodule\n', "rtl/inc.svh": '`include "nope.svh"\n'}
+    )
+    project = Project.from_dir(tmp_path, expand_macros=True)
+    top = next(file for file in project.files if file.file_id == "rtl/top.sv")
+    assert [(diag.code, diag.file) for diag in top.diagnostics] == [("include-not-found", "rtl/inc.svh")]
+    messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+    assert "rtl/top.sv:1:1: rtl/inc.svh: included file 'nope.svh' not found. Its macros are unknown." in messages
 
 
 def test_json(design):
