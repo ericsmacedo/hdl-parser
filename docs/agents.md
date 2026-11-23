@@ -15,7 +15,7 @@ the source. It is meant to be called by AI agents and scripts: on the command li
   `omitted`, the full number is `total`. Nothing is dropped silently.
 * `--fields` selects fields, also of the items of a list (`ports.direction`), `--summary` gives names and counts
   only. Start small, then ask for more.
-* **Problems are data**, not failures: see `diagnostics`. Warnings are logged on standard error with `-v` only.
+* **Problems are data**, not failures: see `diagnostics`. Standard error stays empty; `-v` traces them there.
 * Code created by a macro points at the macro call: its `loc` names the `macro` (`--full`).
 * Nothing is guessed: what cannot be known is left out or reported.
 

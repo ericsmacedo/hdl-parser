@@ -21,13 +21,13 @@
 # SOFTWARE.
 """Test Macro Examples In All Modes."""
 
-import logging
 import re
 
 from pytest import mark, param
 from test2ref import assert_refdata
 
 from hdl_parser import parse_file
+from hdl_parser._diagnostics import format_diagnostic
 from hdl_parser._sv.preproc import expand
 
 from .conftest import EXAMPLES_PATH
@@ -66,10 +66,12 @@ def test_examples_found():
 def test_macro_examples(tmp_path, caplog, path, mode):
     """Parse Macro Example And Compare With 'refdata': Result, Messages And Preprocessed Text."""
     kwargs = MODES[mode]
-    with caplog.at_level(logging.WARNING):
-        file = parse_file(path, **kwargs)
+    file = parse_file(path, **kwargs)
     (tmp_path / "overview.json").write_text(file.overview)
-    messages = [record.getMessage().replace(f"{path}: ", "") for record in caplog.records]
+    # the warnings, in the order they are logged
+    infos = {format_diagnostic(str(path), diag) for diag in file.diagnostics if diag.severity == "info"}
+    records = (record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics")
+    messages = [message.replace(f"{path}: ", "") for message in records if message not in infos]
     (tmp_path / "messages.txt").write_text("".join(f"{message}\n" for message in messages))
     source = path.read_text()
     if kwargs:

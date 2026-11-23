@@ -146,6 +146,6 @@ def test_no_module(tmp_path, caplog, text):
     assert plain(parse_text(text)) == File(path=None, modules=())
     file_path = tmp_path / "file.sv"
     file_path.write_text(text)
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         assert plain(parse_file(file_path)) == File(path=file_path, modules=())
     assert f"{file_path}: no module found." in caplog.text

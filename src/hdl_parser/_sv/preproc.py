@@ -471,7 +471,7 @@ def collect_defines(
     A macro which is defined with different content under unknown conditions is ambiguous and therefore skipped.
     """
     # the problems are just logged
-    diagnostics = Diagnostics("<defines>")
+    diagnostics = Diagnostics("<defines>", returned=False)
     preproc = _Preprocessor(diagnostics, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
     for text in texts:
         preproc.process(text, "<text>")

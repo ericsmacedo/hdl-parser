@@ -165,7 +165,11 @@ Its format is the JSON Schema printed by `hdl-parser schema`, which is also publ
 [schema/project.schema.json](schema/project.schema.json) (`Project.json_schema()` in Python).
 `schema_version` is incremented on every change which is not backward compatible.
 Problems are part of the document: in `diagnostics` of the project and of every file, with code, severity,
-message and location. Warnings on standard error are for humans only.
+message and location. Standard error stays empty; `-v` traces the diagnostics there.
+
+The commands for humans (`info`, `json`, `gen-sv-instance`) print warnings and errors on standard error, infos with
+`-v`. The library never prints a diagnostic of a file: it is returned in `diagnostics` and logged at DEBUG level only.
+Problems of `parse_defines` have no other report and are logged at their severity.
 
 ### Configuration File
 

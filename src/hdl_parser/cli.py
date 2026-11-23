@@ -25,7 +25,7 @@ import functools
 import json as json_
 import logging
 import sys
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from pathlib import Path
 from typing import Any
 
@@ -34,14 +34,16 @@ from click.core import ParameterSource
 from pydantic import BaseModel, ConfigDict
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.markup import escape
 
-from . import query
+from . import _diagnostics, query
 from ._config import CONFIG_NAME, ConfigError, find_config, read_config
+from ._diagnostics import format_diagnostic
 from ._gen_templates import gen_instance, gen_markdown_table
 from ._mcp import serve
 from ._sv.preproc import defined_names
-from .datamodel import File
-from .filelistparser import parse_filelist
+from .datamodel import Diagnostic, File
+from .filelistparser import read_filelist
 from .parser import parse_defines, parse_file
 from .project import Project
 
@@ -452,14 +454,33 @@ def _split_define(define: str) -> tuple[str, str]:
     return name, value
 
 
-def _quiet(ctx: Ctx) -> None:
-    """Problems are part of the JSON answer. Log them on request only (`-v`)."""
-    if ctx.verbose:
+def _trace(ctx: Ctx) -> None:
+    """Problems are part of the JSON answer. Their DEBUG log messages are shown on request only (`-v`)."""
+    if not ctx.verbose:
         return
-    logger = logging.getLogger("hdl_parser._diagnostics")
+    logger = logging.getLogger(_diagnostics.__name__)
     level = logger.level
-    logger.setLevel(logging.ERROR)
+    logger.setLevel(logging.DEBUG)
     click.get_current_context().call_on_close(lambda: logger.setLevel(level))
+
+
+_SEVERITY_STYLES = {"error": "red", "warning": "yellow", "info": "blue"}
+
+
+def _report(context: str, diagnostics: Iterable[Diagnostic]) -> None:
+    """Print `diagnostics`, found while parsing `context`, on standard error. For the commands made for humans.
+
+    Infos are printed with `-v` only.
+    """
+    ctx = click.get_current_context().find_object(Ctx)
+    verbose = ctx.verbose if ctx else 0
+    stderr = _create_console(stderr=True, no_color=ctx.no_color if ctx else None, highlight=False)
+    for diagnostic in diagnostics:
+        if diagnostic.severity == "info" and not verbose:
+            continue
+        style = _SEVERITY_STYLES[diagnostic.severity]
+        text = escape(format_diagnostic(context, diagnostic))
+        stderr.print(f"[{style}]{diagnostic.severity.upper()}[/{style}] {text}", soft_wrap=True)
 
 
 def _fields(fields: tuple[str, ...]) -> tuple[str, ...]:
@@ -504,7 +525,7 @@ def _answer(func, compact: bool = False) -> None:
 @pass_ctx
 def project(ctx: Ctx, **options) -> None:
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     print(load_project(**options).overview)
 
 
@@ -522,7 +543,7 @@ def project(ctx: Ctx, **options) -> None:
 @pass_ctx
 def module(ctx: Ctx, name: str, fields: tuple[str, ...], summary: bool, limit: int | None, compact: bool, **options):  # noqa: PLR0913
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)
     _answer(lambda: query.module(prj, name, fields=_fields(fields), limit=limit, summary=summary), compact)
 
@@ -553,7 +574,7 @@ def hierarchy(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)
     _answer(
         lambda: query.hierarchy(
@@ -575,7 +596,7 @@ def hierarchy(  # noqa: PLR0913
 @pass_ctx
 def where_used(ctx: Ctx, name: str, limit: int | None, compact: bool, **options):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)
     _answer(lambda: query.where_used(prj, name, limit=limit), compact)
 
@@ -599,7 +620,7 @@ def find(  # noqa: PLR0913
     ctx: Ctx, pattern: str, kinds: tuple[str, ...], fields: tuple[str, ...], limit: int | None, compact: bool, **options
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)
     _answer(lambda: query.find(prj, pattern, kinds=kinds, limit=limit, fields=_fields(fields)), compact)
 
@@ -630,7 +651,7 @@ def diagnostics(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)
     _answer(
         lambda: query.diagnostics(
@@ -706,7 +727,7 @@ def elaborate(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     values = _params(params)
     prj = load_project(**options)
     _answer(
@@ -729,7 +750,7 @@ def elaborate(  # noqa: PLR0913
 @pass_ctx
 def evaluate(ctx: Ctx, expr: str, scope: str, params: tuple[str, ...], limit: int | None, compact: bool, **options):  # noqa: ARG001, PLR0913
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     values = _params(params)
     prj = load_project(**options)
     _answer(lambda: query.evaluate(prj, expr, scope, params=values), compact)
@@ -761,7 +782,7 @@ def drivers(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     values = _params(params)
     prj = load_project(**options)
     _answer(lambda: query.drivers(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
@@ -789,7 +810,7 @@ def loads(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     values = _params(params)
     prj = load_project(**options)
     _answer(lambda: query.loads(prj, path, params=values, limit=limit, passthrough=passthrough), compact)
@@ -824,7 +845,7 @@ def trace(  # noqa: PLR0913
     **options,
 ):
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     values = _params(params)
     prj = load_project(**options)
     _answer(
@@ -855,7 +876,7 @@ def trace(  # noqa: PLR0913
 @pass_ctx
 def mcp(ctx: Ctx, blackboxes: tuple[str, ...], **options) -> None:
     """See `help`."""  # help is given to the decorator, as it is built from parts
-    _quiet(ctx)
+    _trace(ctx)
     prj = load_project(**options)  # usage errors are reported right away
     serve(lambda: load_project(**options), sys.stdin, sys.stdout, prj, blackboxes=blackboxes)
 
@@ -884,12 +905,15 @@ def _parse_files(  # noqa: PLR0913
     all_filepaths = list(filepaths)
     all_inc_dirs = list(inc_dirs)
     for filelist_path in filelist:
-        parse_filelist(all_filepaths, all_inc_dirs, filelist_path)
+        content = read_filelist(filelist_path)
+        _report(str(filelist_path), content.diagnostics)
+        all_filepaths += [path for path in (*content.files, *content.lib_files) if path not in all_filepaths]
+        all_inc_dirs += [path for path in content.inc_dirs if path not in all_inc_dirs]
     macros = parse_defines(*macro_files, inc_dirs=all_inc_dirs, resolve_ifdefs=resolve_ifdefs)
     # the macros the other files define
     maybe_defined = defined_names(all_filepaths, all_inc_dirs) if closed_world else frozenset()
     for filepath in all_filepaths:
-        yield parse_file(
+        file = parse_file(
             filepath,
             expand_macros=expand_macros,
             macros=macros,
@@ -898,3 +922,5 @@ def _parse_files(  # noqa: PLR0913
             closed_world=closed_world,
             maybe_defined=maybe_defined,
         )
+        _report(str(filepath), file.diagnostics)
+        yield file

@@ -23,7 +23,8 @@
 """Diagnostics.
 
 The preprocessor and the parsers report problems to [Diagnostics][hdl_parser._diagnostics.Diagnostics].
-Every problem becomes a [Diagnostic][hdl_parser.datamodel.Diagnostic] of the parsed file and a log message.
+Every problem becomes a [Diagnostic][hdl_parser.datamodel.Diagnostic] of the parsed file and a log message at
+DEBUG level: the diagnostics are part of the result, the log is for tracing only.
 """
 
 import logging
@@ -59,8 +60,6 @@ SEVERITIES: dict[str, dm.Severity] = {
 }
 """Severity of all diagnostic codes. Documented at [Diagnostic][hdl_parser.datamodel.Diagnostic]."""
 
-_LOGLEVELS = {"error": logging.ERROR, "warning": logging.WARNING, "info": logging.INFO}
-
 
 def shorten(text: str, width: int = 40) -> str:
     """Return `text` on a single line, limited to `width` characters. Used to quote source code."""
@@ -68,27 +67,47 @@ def shorten(text: str, width: int = 40) -> str:
     return text if len(text) <= width else f"{text[: width - 3]}..."
 
 
-def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
-    """Log `diagnostic`, found while parsing `context`."""
+def format_diagnostic(context: str, diagnostic: dm.Diagnostic) -> str:
+    """`diagnostic`, found while parsing `context`, as `context:line:col: [file: ]message`."""
     loc = diagnostic.loc
     where = f"{context}:{loc.line}:{loc.col}" if loc else context
     if diagnostic.file:
         where = f"{where}: {diagnostic.file}"
-    LOGGER.log(_LOGLEVELS[diagnostic.severity], "%s: %s", where, diagnostic.message)
+    return f"{where}: {diagnostic.message}"
+
+
+_LOGLEVELS = {"error": logging.ERROR, "warning": logging.WARNING, "info": logging.INFO}
+
+
+def log_diagnostic(context: str, diagnostic: dm.Diagnostic, returned: bool = True) -> None:
+    """Log `diagnostic`, found while parsing `context`.
+
+    A diagnostic `returned` to the caller is logged at DEBUG level, whatever its severity: a library user should not
+    get it on standard error too. One which is not returned is logged at its severity, as that is the only report.
+    """
+    message = format_diagnostic(context, diagnostic)
+    if returned:
+        LOGGER.debug("%s", message)
+    else:
+        LOGGER.log(_LOGLEVELS[diagnostic.severity], "%s", message)
 
 
 class Diagnostics:
-    """Problems Found While Parsing `context` (the file path, or `<text>`)."""
+    """Problems Found While Parsing `context` (the file path, or `<text>`).
 
-    def __init__(self, context: str):
+    `returned`: the items are returned to the caller. Otherwise the log is the only report. See `log_diagnostic`.
+    """
+
+    def __init__(self, context: str, returned: bool = True):
         self.context = context
+        self.returned = returned
         self.items: list[dm.Diagnostic] = []
 
     def add(self, code: str, message: str, loc: dm.Location | None = None, file: str = "", item: str = "") -> None:
         """Report the problem `code` at `loc`. See [Diagnostic][hdl_parser.datamodel.Diagnostic] for the arguments."""
         severity = SEVERITIES[code]
         self.items.append(dm.Diagnostic(code=code, severity=severity, message=message, loc=loc, file=file, item=item))
-        log_diagnostic(self.context, self.items[-1])
+        log_diagnostic(self.context, self.items[-1], returned=self.returned)
 
     def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
         """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""

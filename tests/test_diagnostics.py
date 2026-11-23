@@ -58,10 +58,10 @@ def test_clean():
 def test_no_module(caplog):
     """A File Without Module And Package Is An Information."""
     assert parse_text("package p; endpackage").diagnostics == ()
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         file = parse_text("`define P 1", file_path="p.sv")
     assert file.diagnostics == (Diagnostic(code="no-module", severity="info", message="no module found."),)
-    assert "INFO" in caplog.text
+    assert [record.levelno for record in caplog.records] == [logging.DEBUG]
     assert "p.sv: no module found." in caplog.text
 
 
@@ -75,7 +75,7 @@ def test_macro_not_expanded(caplog):
     assert diag.loc == Location(line=2, col=3, end_line=2, end_col=12)
     assert diag.item == "top.`PORTS"
     assert file.find(diag.item) is file.modules[0].unresolved_macros[0]
-    assert "WARNING" in caplog.text
+    assert [record.levelno for record in caplog.records] == [logging.DEBUG]
     assert "top.sv:2:3: module 'top': macro `PORTS in module header is not expanded." in caplog.text
     assert '"diagnostics"' in file.overview
 

@@ -362,7 +362,7 @@ module m #(
     `BODY_MACRO(q)
 endmodule
 """
-    with caplog.at_level(logging.WARNING):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         module = parse_text(text, file_path="file.sv").modules[0]
     assert plain(module.unresolved_macros) == (
         MacroCall(name="PARAMS", args=("A", "f(1, 2)")),
@@ -495,7 +495,7 @@ def test_include(tmp_path, caplog):
     (tmp_path / "comment.svh").write_text("`define A input not_included\n")
 
     # 'common.svh' is not found
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         module = parse_file(top).modules[0]
     assert [port.name for port in module.ports] == ["a"]
     assert plain(module.unresolved_macros) == (MacroCall(name="B"),)
@@ -556,8 +556,9 @@ def test_conflict_is_reported_on_use(caplog):
         "module m (input [`W:0] a, input [`W:0] b);\nendmodule\n"
     )
     assert _ports(text) == ["input [`W:0] a", "input [`W:0] b"]
-    assert caplog.text.count("macro `W has conflicting definitions. Not expanded.") == 1
-    assert "`X" not in caplog.text
+    messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+    assert sum("macro `W has conflicting definitions. Not expanded." in message for message in messages) == 1
+    assert not any("`X" in message for message in messages)
 
 
 def test_unresolved_multiline_args():

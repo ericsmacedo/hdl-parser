@@ -160,7 +160,7 @@ def test_missing_and_unreadable_files(design, caplog):
     assert none.modules == directory.modules == ()
     assert [module.name for module in leaf.modules] == ["leaf"]
     assert (vhdl.lang, vhdl.diagnostics[0].code) == ("vhdl", "file-not-found")
-    assert "ERROR" in caplog.text
+    assert {record.levelno for record in caplog.records} == {logging.DEBUG}
     assert "rtl/none.sv: file not found." in caplog.text
 
 
@@ -878,7 +878,8 @@ def _jobs(tmp_path, jobs, **kwargs):
 
 
 def _messages(caplog) -> list[tuple[int, str]]:
-    return [(record.levelno, record.getMessage()) for record in caplog.records if record.levelno > logging.DEBUG]
+    records = caplog.records
+    return [(record.levelno, record.getMessage()) for record in records if record.name == "hdl_parser._diagnostics"]
 
 
 @mark.parametrize("jobs", (2, None))
@@ -886,7 +887,7 @@ def test_jobs(tmp_path, caplog, monkeypatch, jobs):
     """Several Processes Give The Same Result And The Same Messages."""
     monkeypatch.setattr(project_module, "_cpu_count", lambda: 3)
     _many(tmp_path)
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         serial = _jobs(tmp_path, 1)
     expected = _messages(caplog)
     assert any("nowhere.svh" in message for _, message in expected)
@@ -901,7 +902,7 @@ def test_jobs(tmp_path, caplog, monkeypatch, jobs):
         return original(*args, **kwargs)
 
     monkeypatch.setattr(project_module, "ProcessPoolExecutor", executor)
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         parallel = _jobs(tmp_path, jobs)
     assert pools == [jobs or 3]
     assert parallel == serial
