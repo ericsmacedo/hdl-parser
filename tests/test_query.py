@@ -106,9 +106,12 @@ def test_module_empty_lists(small):
     assert result["ports"] == []
     assert query.module(small, "leaf", fields=["insts.name"])["result"]["insts"] == []
     compact = query.render(query.module(small, "leaf", fields=["insts"]))
-    assert compact["result"]["insts"] == {"columns": [], "rows": []}
+    # the columns of an empty table are the fields of its items
+    assert compact["result"]["insts"]["rows"] == []
+    assert compact["result"]["insts"]["columns"][:3] == ["id", "name", "module"]
     insts = query.render(query.module(small, "sub", fields=["insts"]))["result"]["insts"]
-    assert insts["rows"][0][insts["columns"].index("params")] == {"columns": [], "rows": []}
+    params = insts["rows"][0][insts["columns"].index("params")]
+    assert params == {"columns": ["id", "port", "con", "comment", "ifdefs", "line"], "rows": []}
     assert insts["rows"][0][insts["columns"].index("ifdefs")] == []
 
 
@@ -472,6 +475,38 @@ def test_cli_full(runner):
         compact = runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1"]).stdout
     assert full["result"]["ports"][0]["loc"]["col"] == 3
     assert json.loads(compact)["result"]["ports"] == {
-        "columns": ["id", "name", "direction", "ptype", "ifdefs", "comment", "line"],
-        "rows": [["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", [], [], 12]],
+        "columns": [
+            "id",
+            "name",
+            "direction",
+            "ptype",
+            "dtype",
+            "dim",
+            "dim_unpacked",
+            "default",
+            "ifdefs",
+            "comment",
+            "line",
+        ],
+        "rows": [["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", None, None, None, None, [], [], 12]],
     }
+
+
+def test_columns_by_query(runner):
+    """The Columns Of A Table Depend On The Query And Its Arguments, Not On The Entries Returned."""
+
+    def columns(*args):
+        with chdir(IBEX):
+            answer = json.loads(runner.invoke(cli, list(args)).stdout)
+        result = answer["result"]
+        return result["columns"] if "columns" in result else result["ports"]["columns"]
+
+    # a port with all fields given (dim) comes after one without
+    assert columns("module", "ibex_alu", "-F", "ports", "-n", "1") == columns(
+        "module", "ibex_alu", "-F", "ports", "-n", "0"
+    )
+    # a flip-flop with a clock or not
+    assert columns("drivers", "ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o") == columns(
+        "drivers", "ibex_top.u_ibex_core.alu_operator_ex"
+    )
+    assert columns("find", "clk", "-k", "port", "-n", "1") == columns("find", "clk", "-k", "port", "-n", "0")

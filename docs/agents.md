@@ -65,9 +65,9 @@ hdl-parser hierarchy
 {
   "query": "hierarchy",
   "result": {
-    "columns": ["id", "name", "kind", "file", "line", "insts"],
+    "columns": ["id", "name", "kind", "file", "partial", "line", "insts", "library"],
     "rows": [
-      ["ibex_top.sv:ibex_top", "ibex_top", "module", "ibex_top.sv", 15, 85]
+      ["ibex_top.sv:ibex_top", "ibex_top", "module", "ibex_top.sv", null, 15, 85, null]
     ]
   },
   "total": 1
@@ -127,10 +127,10 @@ hdl-parser module ibex_alu --fields ports --limit 2
     "kind": "module",
     "name": "ibex_alu",
     "ports": {
-      "columns": ["id", "name", "direction", "ptype", "dim", "ifdefs", "comment", "line"],
+      "columns": ["id", "name", "direction", "ptype", "dtype", "dim", "dim_unpacked", "default", "ifdefs", "comment", "line"],
       "rows": [
-        ["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", null, [], [], 12],
-        ["operand_a_i", "operand_a_i", "input", "logic", "[31:0]", [], [], 13]
+        ["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", null, null, null, null, [], [], 12],
+        ["operand_a_i", "operand_a_i", "input", "logic", null, "[31:0]", null, null, [], [], 13]
       ]
     }
   },
@@ -157,34 +157,37 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
     "module": "ibex_ex_block",
     "line": 11,
     "children": {
-      "columns": ["name", "module", "line", "children"],
+      "columns": ["name", "module", "line", "children", "truncated"],
       "rows": [
         [
           "alu_i",
           "ibex_alu",
           110,
           {
-            "columns": [],
+            "columns": ["name", "module", "line", "children", "truncated"],
             "rows": []
-          }
+          },
+          null
         ],
         [
           "multdiv_i",
           "ibex_multdiv_slow",
           131,
           {
-            "columns": [],
+            "columns": ["name", "module", "line", "children", "truncated"],
             "rows": []
-          }
+          },
+          null
         ],
         [
           "multdiv_i",
           "ibex_multdiv_fast",
           156,
           {
-            "columns": [],
+            "columns": ["name", "module", "line", "children", "truncated"],
             "rows": []
-          }
+          },
+          null
         ]
       ]
     }
@@ -227,10 +230,10 @@ hdl-parser find operator --kind port --limit 2
 {
   "query": "find",
   "result": {
-    "columns": ["id", "name", "kind", "file", "direction", "ptype", "line"],
+    "columns": ["id", "name", "kind", "file", "direction", "ptype", "dtype", "dim", "dim_unpacked", "default", "line"],
     "rows": [
-      ["ibex_alu.sv:ibex_alu.operator_i", "operator_i", "port", "ibex_alu.sv", "input", "ibex_pkg::alu_op_e", 12],
-      ["ibex_decoder.sv:ibex_decoder.alu_operator_o", "alu_operator_o", "port", "ibex_decoder.sv", "output", "ibex_pkg::alu_op_e", 64]
+      ["ibex_alu.sv:ibex_alu.operator_i", "operator_i", "port", "ibex_alu.sv", "input", "ibex_pkg::alu_op_e", null, null, null, null, 12],
+      ["ibex_decoder.sv:ibex_decoder.alu_operator_o", "alu_operator_o", "port", "ibex_decoder.sv", "output", "ibex_pkg::alu_op_e", null, null, null, null, 64]
     ]
   },
   "total": 11,
@@ -262,14 +265,19 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
     "line": 72
   },
   "result": {
-    "columns": ["kind", "nets", "conds", "clock", "item", "file", "line"],
+    "columns": ["kind", "nets", "conds", "clock", "control", "select", "item", "external", "multiple", "unknown", "file", "line"],
     "rows": [
       [
         "ff",
         ["ibex_top.u_ibex_core.if_stage_i.instr_out"],
         ["ibex_top.u_ibex_core.if_stage_i.if_id_pipe_reg_we"],
         "ibex_top.u_ibex_core.if_stage_i.clk_i",
+        null,
+        null,
         "ibex_if_stage.sv:ibex_if_stage.g_instr_rdata_nr.#always6",
+        null,
+        null,
+        null,
         "ibex_if_stage.sv",
         659
       ]
@@ -295,11 +303,11 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
 {
   "query": "trace",
   "result": {
-    "columns": ["net", "kind", "item", "file", "line"],
+    "columns": ["net", "kind", "control", "select", "item", "file", "line"],
     "rows": [
-      ["ibex_top.rst_ni", null, null, null, null],
-      ["ibex_top.u_ibex_core.rst_ni", "inst", "ibex_top.sv:ibex_top.u_ibex_core", "ibex_top.sv", 412],
-      ["ibex_top.u_ibex_core.id_stage_i.rst_ni", "inst", "ibex_core.sv:ibex_core.id_stage_i", "ibex_core.sv", 672]
+      ["ibex_top.rst_ni", null, null, null, null, null, null],
+      ["ibex_top.u_ibex_core.rst_ni", "inst", null, null, "ibex_top.sv:ibex_top.u_ibex_core", "ibex_top.sv", 412],
+      ["ibex_top.u_ibex_core.id_stage_i.rst_ni", "inst", null, null, "ibex_core.sv:ibex_core.id_stage_i", "ibex_core.sv", 672]
     ]
   },
   "total": 5,
@@ -327,9 +335,9 @@ hdl-parser diagnostics --severity warning --limit 1
 {
   "query": "diagnostics",
   "result": {
-    "columns": ["file", "code", "severity", "message", "line", "item"],
+    "columns": ["file", "code", "severity", "message", "line", "item", "parsed"],
     "rows": [
-      ["ibex_core.sv", "undefined-module", "warning", "module 'prim_buf' of instance 'u_fetch_enable_buf' is not defined in the project.", 500, "ibex_core.sv:ibex_core.g_core_busy_secure.u_fetch_enable_buf"]
+      ["ibex_core.sv", "undefined-module", "warning", "module 'prim_buf' of instance 'u_fetch_enable_buf' is not defined in the project.", 500, "ibex_core.sv:ibex_core.g_core_busy_secure.u_fetch_enable_buf", null]
     ]
   },
   "total": 37,

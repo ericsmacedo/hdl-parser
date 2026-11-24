@@ -185,6 +185,18 @@ def test_detail(tmp_path):
             _call(3, "module", name="top", detail="none"),
         )
     )
-    assert compact["result"]["ports"]["columns"] == ["id", "name", "direction", "ptype", "ifdefs", "comment", "line"]
+    assert compact["result"]["ports"]["columns"] == [
+        "id",
+        "name",
+        "direction",
+        "ptype",
+        "dtype",
+        "dim",
+        "dim_unpacked",
+        "default",
+        "ifdefs",
+        "comment",
+        "line",
+    ]
     assert full["result"]["ports"][0]["id"] == "top.sv:top.a"
     assert bad["error"]["code"] == "bad-argument"
