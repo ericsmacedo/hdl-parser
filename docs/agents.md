@@ -7,12 +7,15 @@ the source. It is meant to be called by AI agents and scripts: on the command li
 
 * Every item has a **full identifier** `<file>:<id>` (`rtl/top.sv:top.u_sub`) and a **source line** `line`.
   The file is relative to the root of the project. An identifier can be handed to every query instead of a name.
-* Answers are **compact**: the identifier of an item within another one is left out, if it is the one around
-  followed by its name, and relative otherwise (`#always1`). A non-empty list of objects is always a **table**:
-  `{"columns": [...], "rows": [[...]]}`, `null` for a field an item has not. `--full` (MCP: `detail: "full"`)
-  gives every identifier, the location with columns (`loc`) and lists of objects.
+* Answers are **compact**: the identifier of an item within another one is relative to it (`clk_i`,
+  `#always1`). A list of objects is always a **table**, even if it is empty: `{"columns": [...], "rows": [[...]]}`,
+  `null` for a field an item has not. `--full` (MCP: `detail: "full"`) gives every identifier, the location with
+  columns (`loc`) and lists of objects.
+* The **shape** of an answer depends on the query and its arguments, not on the data: a list is there, even if
+  it is empty. Fields with their default value (`""`, `false`) are left out, `null` within a table.
 * Every list is **limited** to 100 entries (`--limit`, `0` for no limit). What is left out is counted in
-  `omitted`, the full number is `total`. Nothing is dropped silently.
+  `omitted`, the full number is `total`. `module` and `elaborate` count it by field in `omitted_by` too.
+  Nothing is dropped silently.
 * `--fields` selects fields, also of the items of a list (`ports.direction`), `--summary` gives names and counts
   only. Start small, then ask for more.
 * **Problems are data**, not failures: see `diagnostics`. Standard error stays empty; `-v` traces them there.
@@ -93,8 +96,14 @@ hdl-parser module ibex_alu --summary
       "ports": 11,
       "localparams": 4,
       "signals": 74,
+      "typedefs": 0,
+      "functions": 0,
       "processes": 21,
       "assigns": 60,
+      "components": 0,
+      "insts": 0,
+      "ifdefs": 0,
+      "unresolved_macros": 0,
       "imports": 1
     }
   }
@@ -103,7 +112,7 @@ hdl-parser module ibex_alu --summary
 
 ### Which ports does it have?
 
-Two ports are returned as table, the other nine are counted in `omitted`. Lines start at 1. `--fields
+Two ports are returned as table, the other nine are counted in `omitted` (by field: `omitted_by`). Lines start at 1. `--fields
 ports.name,ports.direction` would return these columns only.
 
 ```bash
@@ -118,14 +127,15 @@ hdl-parser module ibex_alu --fields ports --limit 2
     "kind": "module",
     "name": "ibex_alu",
     "ports": {
-      "columns": ["name", "direction", "ptype", "line", "dim"],
+      "columns": ["id", "name", "direction", "ptype", "dim", "ifdefs", "comment", "line"],
       "rows": [
-        ["operator_i", "input", "ibex_pkg::alu_op_e", 12, null],
-        ["operand_a_i", "input", "logic", 13, "[31:0]"]
+        ["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", null, [], [], 12],
+        ["operand_a_i", "operand_a_i", "input", "logic", "[31:0]", [], [], 13]
       ]
     }
   },
-  "omitted": {
+  "omitted": 9,
+  "omitted_by": {
     "ports": 9
   }
 }
@@ -147,11 +157,35 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
     "module": "ibex_ex_block",
     "line": 11,
     "children": {
-      "columns": ["name", "module", "line"],
+      "columns": ["name", "module", "line", "children"],
       "rows": [
-        ["alu_i", "ibex_alu", 110],
-        ["multdiv_i", "ibex_multdiv_slow", 131],
-        ["multdiv_i", "ibex_multdiv_fast", 156]
+        [
+          "alu_i",
+          "ibex_alu",
+          110,
+          {
+            "columns": [],
+            "rows": []
+          }
+        ],
+        [
+          "multdiv_i",
+          "ibex_multdiv_slow",
+          131,
+          {
+            "columns": [],
+            "rows": []
+          }
+        ],
+        [
+          "multdiv_i",
+          "ibex_multdiv_fast",
+          156,
+          {
+            "columns": [],
+            "rows": []
+          }
+        ]
       ]
     }
   }
@@ -176,6 +210,7 @@ hdl-parser where-used ibex_alu
     ]
   },
   "total": 1,
+  "defined": true,
   "module": "ibex_alu.sv:ibex_alu"
 }
 ```
@@ -340,7 +375,8 @@ All tools are read-only (`readOnlyHint`).
   `path` (`u_core.u_alu`), `params` of the top, `names` patterns, `unknown` for the values not known, with
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
-* `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then.
+* `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then,
+  and `module` (the definition used) is missing.
 * `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `params` of the top
   and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
   constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for

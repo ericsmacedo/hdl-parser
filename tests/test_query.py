@@ -80,7 +80,9 @@ def test_module(small):
 def test_module_summary(small):
     """Names And Counts Only."""
     result = query.module(small, "top", summary=True)["result"]
-    assert result["counts"] == {"params": 1, "ports": 2, "insts": 3}
+    # every list is counted, the empty ones too
+    assert {key: number for key, number in result["counts"].items() if number} == {"params": 1, "ports": 2, "insts": 3}
+    assert result["counts"]["functions"] == 0
     assert "ports" not in result
 
 
@@ -89,16 +91,31 @@ def test_module_fields_limit(small):
     answer = query.module(small, "top", fields=["ports", "insts"], limit=1)
     assert set(answer["result"]) == {"id", "kind", "name", "ports", "insts"}
     assert len(answer["result"]["ports"]) == 1
-    assert answer["omitted"] == {"ports": 1, "insts": 2}
+    assert answer["omitted"] == 3
+    assert answer["omitted_by"] == {"ports": 1, "insts": 2}
     with raises(query.QueryError) as error:
         query.module(small, "top", fields=["prots"])
     assert error.value.code == "bad-argument"
     assert "ports" in error.value.suggestions
 
 
+def test_module_empty_lists(small):
+    """Empty Lists Are Returned, Not Left Out: As Empty Tables Within Compact Answers."""
+    result = query.module(small, "leaf", fields=["insts", "ports"])["result"]
+    assert result["insts"] == []
+    assert result["ports"] == []
+    assert query.module(small, "leaf", fields=["insts.name"])["result"]["insts"] == []
+    compact = query.render(query.module(small, "leaf", fields=["insts"]))
+    assert compact["result"]["insts"] == {"columns": [], "rows": []}
+    insts = query.render(query.module(small, "sub", fields=["insts"]))["result"]["insts"]
+    assert insts["rows"][0][insts["columns"].index("params")] == {"columns": [], "rows": []}
+    assert insts["rows"][0][insts["columns"].index("ifdefs")] == []
+
+
 def test_module_package(small):
     """Packages, By Name And Full Identifier."""
-    assert query.module(small, "pkg", summary=True)["result"]["counts"] == {"params": 2}
+    counts = query.module(small, "pkg", summary=True)["result"]["counts"]
+    assert {key: number for key, number in counts.items() if number} == {"params": 2}
     assert query.module(small, "pkg.sv:pkg")["result"]["kind"] == "package"
 
 
@@ -150,7 +167,9 @@ def test_hierarchy_limit(small):
         "name": "top",
         "module": "top",
         "truncated": True,
-        "children": [{"name": "u_a", "module": "sub", "children": [{"name": "u_leaf", "module": "leaf"}]}],
+        "children": [
+            {"name": "u_a", "module": "sub", "children": [{"name": "u_leaf", "module": "leaf", "children": []}]}
+        ],
     }
     assert answer["omitted"] == 3
 
@@ -158,7 +177,7 @@ def test_hierarchy_limit(small):
 def test_hierarchy_depth_fields(small):
     """Depth And Fields."""
     result = query.hierarchy(small, "top", depth=0, fields=["module"])["result"]
-    assert result == {"name": "top", "module": "top", "truncated": True}
+    assert result == {"name": "top", "module": "top", "truncated": True, "children": []}
     with raises(query.QueryError):
         query.hierarchy(small, "top", fields=["foo"])
     with raises(query.QueryError) as error:
@@ -280,7 +299,7 @@ def test_ibex(ibex):
     assert query.where_used(ibex, "ibex_alu")["result"][0]["inst"] == "ibex_ex_block.sv:ibex_ex_block.alu_i"
     answer = query.hierarchy(ibex, "ibex_core", depth=1, summary=True)
     assert "omitted" not in answer
-    assert all(set(child) <= {"name", "module", "truncated"} for child in answer["result"]["children"])
+    assert all(set(child) <= {"name", "module", "truncated", "children"} for child in answer["result"]["children"])
 
 
 def test_vhdl_bodies(tmp_path):
@@ -317,7 +336,10 @@ def test_hierarchy_tops_sorted(tmp_path):
     assert [(top["name"], top["insts"]) for top in answer["result"]] == [("big", 4)]
     assert answer["leaves"] == 1
     assert [top["name"] for top in query.hierarchy(project, leaves=True)["result"]] == ["big", "lonely"]
-    assert query.hierarchy(project, "big", text=True)["tree"] == "big\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
+    assert (
+        query.hierarchy(project, "big", text=True)["tree"]
+        == "big (big)\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
+    )
     assert query.hierarchy(project, text=True) == {
         "query": "hierarchy",
         "tree": "c.sv:big (4 insts)",
@@ -333,6 +355,8 @@ def test_where_used_undefined(small):
     """Modules Which Are Not Defined Are Found By Their Instances."""
     answer = query.where_used(small, "missing")
     assert answer["defined"] is False
+    assert "module" not in answer
+    assert query.where_used(small, "sub")["defined"] is True
     assert answer["result"][0]["inst"] == "top.sv:top.u_m"
     assert answer["result"][0]["module"] == "top.sv:top"
 
@@ -407,8 +431,12 @@ def test_render():
             "name": "top",
             "line": 1,
             "ports": {
-                "columns": ["name", "direction", "line", "comment"],
-                "rows": [["clk", "input", 2, None], ["d", "input", 3, None], ["q", "output", None, ["data"]]],
+                "columns": ["id", "name", "direction", "line", "comment"],
+                "rows": [
+                    ["clk", "clk", "input", 2, None],
+                    ["d", "d", "input", 3, None],
+                    ["q", "q", "output", None, ["data"]],
+                ],
             },
             "processes": {"columns": ["id", "kind"], "rows": [["#always1", "always_ff"]]},
         },
@@ -417,7 +445,11 @@ def test_render():
     assert query.render({"result": [{"a": 1}, {"b": 2}]}) == {
         "result": {"columns": ["a", "b"], "rows": [[1, None], [None, 2]]}
     }
-    assert query.render({"result": [], "names": ["a"]}) == {"result": [], "names": ["a"]}
+    # an empty list of objects is an empty table, an empty list of anything else stays a list
+    assert query.render({"result": query._Objects(), "names": []}) == {
+        "result": {"columns": [], "rows": []},
+        "names": [],
+    }
     with raises(query.QueryError):
         query.render(answer, "short")
 
@@ -440,6 +472,6 @@ def test_cli_full(runner):
         compact = runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1"]).stdout
     assert full["result"]["ports"][0]["loc"]["col"] == 3
     assert json.loads(compact)["result"]["ports"] == {
-        "columns": ["name", "direction", "ptype", "line"],
-        "rows": [["operator_i", "input", "ibex_pkg::alu_op_e", 12]],
+        "columns": ["id", "name", "direction", "ptype", "ifdefs", "comment", "line"],
+        "rows": [["operator_i", "operator_i", "input", "ibex_pkg::alu_op_e", [], [], 12]],
     }
