@@ -125,6 +125,19 @@ def test_errors(tmp_path, monkeypatch):
     assert responses[8]["result"]["structuredContent"]["result"]["name"] == "top"
 
 
+def test_bad_arguments(tmp_path):
+    """Unknown Arguments List The Valid Ones, Missing Ones Are Named."""
+    server = Server(_project(tmp_path))
+    error = server.handle(_call(1, "find", net="x"))["result"]["structuredContent"]["error"]
+    assert error["code"] == "bad-argument"
+    assert error["message"].startswith("unknown arguments: net. Valid: ")
+    assert "pattern" in error["suggestions"]
+    error = server.handle(_call(2, "trace", src="top.a"))["result"]["structuredContent"]["error"]
+    assert error == {"code": "bad-argument", "message": "missing required arguments: dst."}
+    error = server.handle(_call(3, "evaluate", expr="1"))["result"]["structuredContent"]["error"]
+    assert error == {"code": "bad-argument", "message": "missing required arguments: scope."}
+
+
 def test_changed_files(tmp_path):
     """Changed Files Are Read Again, New Files On Reload."""
     server = Server(_project(tmp_path))

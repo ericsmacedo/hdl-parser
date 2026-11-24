@@ -699,7 +699,10 @@ def evaluate(
     """
     if not (project.definitions(scope) or (":" in scope and project.find(scope) is not None)):
         raise QueryError("not-found", f"'{scope}' is not defined in the project.", _similar_units(project, scope))
-    value = project.evaluate(expr, scope, params=params)
+    try:
+        value = project.evaluate(expr, scope, params=params)
+    except ValueError as exc:
+        raise QueryError("bad-argument", str(exc)) from exc
     return {"query": "evaluate", "result": value.model_dump(mode="json", exclude_defaults=True)}
 
 
@@ -737,7 +740,7 @@ def drivers(
     """
     conn, node = _locate(project, path, params, passthrough=passthrough)
     select = conn.path_select(path)
-    links = [conn.link(node, step, driver=True) for step in conn.drivers(node, conn.select_bits(node, select))]
+    links = [conn.link(node, step, driver=True) for step in conn.drivers(node, _select_bits(conn, node, select))]
     return _links("drivers", conn, node, links, limit, select)
 
 
@@ -752,11 +755,12 @@ def loads(
 
     Every load has the signals it drives (`nets`), with the `select` of the driven one. `control` marks a load,
     which reads the signal by a condition or as clock only. A select of the signal (`top.data[5]`) keeps the loads
-    which may read one of its bits: an assignment reads the whole signal, as far as known.
+    which may read one of its bits. One whose bits are not known has `bits` `unchecked`: every assignment, it reads
+    names only. A select out of the declared range of the signal is a `bad-argument`.
     """
     conn, node = _locate(project, path, params, passthrough=passthrough)
     select = conn.path_select(path)
-    links = [conn.link(node, step, driver=False) for step in conn.loads(node, conn.select_bits(node, select))]
+    links = [conn.link(node, step, driver=False) for step in conn.loads(node, _select_bits(conn, node, select))]
     return _links("loads", conn, node, links, limit, select)
 
 
@@ -795,8 +799,8 @@ def trace(  # noqa: PLR0913
     _, target = _locate(project, dst, params, conn)
     if _top(source[0]) is not _top(target[0]):
         raise QueryError("bad-argument", "'src' and 'dst' must be located below the same top.")
-    src_bits = conn.select_bits(source, conn.path_select(src))
-    dst_bits = conn.select_bits(target, conn.path_select(dst))
+    src_bits = _select_bits(conn, source, conn.path_select(src))
+    dst_bits = _select_bits(conn, target, conn.path_select(dst))
     found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
     hops = [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
@@ -844,6 +848,13 @@ def _locate(
         raise QueryError("bad-argument", str(exc)) from exc
 
 
+def _select_bits(conn: Connectivity, node: Node, select: str) -> tuple[int, int] | None:
+    try:
+        return conn.select_bits(node, select)
+    except ValueError as exc:
+        raise QueryError("bad-argument", str(exc)) from exc
+
+
 def _links(  # noqa: PLR0913
     query: str, conn: Connectivity, node: Node, links: list[dm.Link], limit: int | None, select: str = ""
 ) -> dict[str, Any]:
@@ -864,8 +875,13 @@ def _links(  # noqa: PLR0913
     return {
         "query": query,
         "net": info,
-        **_list_answer(query, result, len(entries), omitted, tuple(dm.Link.model_fields)),
+        # 'bits' is a column, if the signal is given with a select only
+        **_list_answer(query, result, len(entries), omitted, _link_fields(bool(select))),
     }
+
+
+def _link_fields(select: bool) -> tuple[str, ...]:
+    return tuple(field for field in dm.Link.model_fields if select or field != "bits")
 
 
 def _dump(model: dm.Link | dm.Hop) -> dict[str, Any]:

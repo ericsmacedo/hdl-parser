@@ -90,7 +90,7 @@ Value of an expression ('$clog2(DEPTH)+1', 'pkg::WIDTH') within a module, interf
 
 ## `drivers`
 
-What drives a signal: assignments (with the signals they read and their conditions), output ports of instances, the connection of an input port within the parent. Ask for the drivers of the signals read ('nets') to go further. A select within a generate loop is evaluated per iteration ('[4*i+:4]': one driver with '[3:0]', one with '[7:4]'). A select of the signal ('top.data[5]') keeps the drivers of its bits.
+What drives a signal: assignments (with the signals they read and their conditions), output ports of instances, the connection of an input port within the parent. Ask for the drivers of the signals read ('nets') to go further. A select within a generate loop is evaluated per iteration ('[4*i+:4]': one driver with '[3:0]', one with '[7:4]'). A select of the signal ('top.data[5]') keeps the drivers of its bits; one whose bits are not known has bits='unchecked'. A select out of the range of the signal is a bad-argument.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
@@ -101,7 +101,7 @@ What drives a signal: assignments (with the signals they read and their conditio
 
 ## `loads`
 
-What a signal drives: assignments reading it (also by a condition: 'control'), input ports of instances, the connection of an output port within the parent. The 'select' of the driven signal is evaluated per iteration of a generate loop. A select of the signal ('top.data[5]') keeps the loads which may read its bits (an assignment is kept: the bits it reads are not known).
+What a signal drives: assignments reading it (also by a condition: 'control'), input ports of instances, the connection of an output port within the parent. The 'select' of the driven signal is evaluated per iteration of a generate loop. A select of the signal ('top.data[5]') keeps the loads which may read its bits; one whose bits are not known has bits='unchecked': every assignment, it reads names only.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
