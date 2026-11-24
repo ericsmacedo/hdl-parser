@@ -180,7 +180,7 @@ def test_parse_defines_text_diagnostics(caplog):
     assert _diags(defines) == [("macro-bad-define", None, "")]
     assert [
         (record.levelno, record.getMessage()) for record in caplog.records if record.name == "hdl_parser._diagnostics"
-    ] == [(logging.DEBUG, "cannot parse definition of macro `A. Skipped.")]
+    ] == [(logging.DEBUG, "WARNING cannot parse definition of macro `A. Skipped.")]
 
 
 def test_parse_defines_example():

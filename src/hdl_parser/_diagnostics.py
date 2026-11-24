@@ -102,8 +102,9 @@ def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
     """Log `diagnostic`, found while parsing `context`, at DEBUG level, whatever its severity.
 
     Every diagnostic is returned to the caller. A library user should not get it on standard error too.
+    The message starts with the severity: `WARNING file:line:col: message`.
     """
-    LOGGER.debug("%s", format_diagnostic(context, diagnostic))
+    LOGGER.debug("%s %s", diagnostic.severity.upper(), format_diagnostic(context, diagnostic))
 
 
 class Diagnostics:

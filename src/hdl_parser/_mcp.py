@@ -129,17 +129,23 @@ TOOLS: tuple[dict[str, Any], ...] = (
     {
         "name": "diagnostics",
         "description": "Problems found in the design: undefined modules, macros not expanded, files which cannot "
-        "be read, ... with code, severity, message and location.",
+        "be read, ... with code, severity, message and location: 'file' and 'line' are where the problem is. "
+        "A problem within an included file is reported once, 'parsed' lists the files including it.",
         "inputSchema": {
             "type": "object",
             "properties": {
                 "severity": {"type": "string", "enum": list(query.SEVERITIES), "description": "Minimum severity."},
                 "codes": {"type": "array", "items": {"type": "string"}},
-                "file": {"type": "string", "description": "Path of a file, relative to the root, or a pattern."},
+                "file": {
+                    "type": "string",
+                    "description": "Path of a file, relative to the root, or a pattern: the problems located in it "
+                    "or found by parsing it.",
+                },
                 "exclude": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "Patterns of files whose problems are left out: 'lib/stdcells/*'.",
+                    "description": "Patterns of files whose problems are left out: 'lib/stdcells/*'. A problem "
+                    "found by parsing other files too is kept for them.",
                 },
                 "blackboxes": {
                     "type": "array",

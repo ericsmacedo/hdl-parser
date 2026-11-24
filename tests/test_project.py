@@ -460,7 +460,9 @@ def test_include_diagnostics_relative(tmp_path, caplog):
     top = next(file for file in project.files if file.file_id == "rtl/top.sv")
     assert [(diag.code, diag.file) for diag in top.diagnostics] == [("include-not-found", "rtl/inc.svh")]
     messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
-    assert "rtl/top.sv: rtl/inc.svh:1:1: included file 'nope.svh' not found. Its macros are unknown." in messages
+    assert (
+        "WARNING rtl/top.sv: rtl/inc.svh:1:1: included file 'nope.svh' not found. Its macros are unknown." in messages
+    )
 
 
 def test_json(design):
@@ -786,6 +788,22 @@ def _cached(tmp_path, **kwargs):
     return Project.from_dir(tmp_path, expand_macros=True, inc_dirs=[tmp_path / "inc"], cache=True, **kwargs)
 
 
+def test_cache_traced(tmp_path, caplog):
+    """The Problems Of Files Taken From The Cache Are Traced Like The Ones Of Parsed Files."""
+    _write(tmp_path, {"top.sv": '`include "missing.svh"\nmodule top;\nendmodule\n'})
+
+    def messages():
+        found = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+        caplog.clear()
+        return found
+
+    _cached(tmp_path)
+    cold = messages()
+    assert cold == ["WARNING top.sv:1:1: included file 'missing.svh' not found. Its macros are unknown."]
+    _cached(tmp_path)
+    assert messages() == cold
+
+
 def test_cache(tmp_path, parsed):
     """Files Are Parsed Once. The Result Is The Same."""
     _write(tmp_path, CACHED)
@@ -942,7 +960,7 @@ def test_jobs(tmp_path, caplog, monkeypatch, jobs):
         serial = _jobs(tmp_path, 1)
     expected = _messages(caplog)
     assert any("nowhere.svh" in message for _, message in expected)
-    assert any(message == "rtl/missing.sv: file not found." for _, message in expected)
+    assert any(message == "ERROR rtl/missing.sv: file not found." for _, message in expected)
     caplog.clear()
 
     pools = []

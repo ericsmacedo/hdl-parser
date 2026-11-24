@@ -327,7 +327,7 @@ def test_query_quiet(tmp_path):
     assert quiet.stderr == ""
     verbose = _run("--no-color", "-v", "where-used", "top", "-c", cwd=tmp_path)
     assert verbose.returncode == 0
-    assert "DEBUG top.sv:2:3: module 'sub' of instance 'u_sub' is not defined" in verbose.stderr
+    assert "DEBUG WARNING top.sv:2:3: module 'sub' of instance 'u_sub' is not defined" in verbose.stderr
     assert quiet.stdout == verbose.stdout
 
 

@@ -27,7 +27,6 @@ from pytest import mark, param
 from test2ref import assert_refdata
 
 from hdl_parser import parse_file
-from hdl_parser._diagnostics import format_diagnostic
 from hdl_parser._sv.preproc import expand
 
 from .conftest import EXAMPLES_PATH
@@ -69,9 +68,8 @@ def test_macro_examples(tmp_path, caplog, path, mode):
     file = parse_file(path, **kwargs)
     (tmp_path / "overview.json").write_text(file.overview)
     # the warnings, in the order they are logged
-    infos = {format_diagnostic(str(path), diag) for diag in file.diagnostics if diag.severity == "info"}
     records = (record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics")
-    messages = [message.replace(f"{path}: ", "") for message in records if message not in infos]
+    messages = [message.replace(f"{path}: ", "") for message in records if not message.startswith("INFO ")]
     (tmp_path / "messages.txt").write_text("".join(f"{message}\n" for message in messages))
     source = path.read_text()
     if kwargs:

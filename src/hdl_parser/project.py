@@ -797,7 +797,11 @@ class _Builder:
             files[path] = file
             if self.cache is not None:
                 self.cache.store(path, file)
-        return list(files.values())  # type: ignore[arg-type]
+        result: list[dm.File] = list(files.values())  # type: ignore[arg-type]
+        # parsed or taken from the cache: all are reported, in the order of the files
+        for file in result:
+            _log(file)
+        return result
 
     def _parse_files(self, paths: list[Path], job: "_Job") -> list[dm.File]:
         """Parse the files at `paths`, by several processes if this pays off."""
@@ -813,16 +817,8 @@ class _Builder:
                 # no processes here (sandbox, missing semaphores, ...)
                 LOGGER.debug("cannot parse by %d processes (%s): parsing by one.", jobs, exc)
             else:
-                files = [file for _, file in sorted(zip(order, parsed, strict=True), key=lambda pair: pair[0])]
-                for file in files:
-                    _log(file)
-                return files
-        files = []
-        for path in paths:
-            file = _parse_file(path, job)
-            _log(file)
-            files.append(file)
-        return files
+                return [file for _, file in sorted(zip(order, parsed, strict=True), key=lambda pair: pair[0])]
+        return [_parse_file(path, job) for path in paths]
 
 
 class _Job(NamedTuple):

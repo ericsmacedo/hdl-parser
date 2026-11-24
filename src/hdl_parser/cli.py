@@ -633,12 +633,25 @@ def find(  # noqa: PLR0913
 
 @cli.command(
     help=f"""Problems Found In The Design As JSON.
-{_PATHS_HELP}"""
+{_PATHS_HELP}
+    'file' and 'line' are where a problem is. A problem within an included file is listed once:
+    'parsed' names the files including it.
+"""
 )
 @click.option("--severity", type=click.Choice(query.SEVERITIES), help="Minimum severity. Everything by default.")
 @click.option("--code", "codes", multiple=True, help="Code of the problems. Can be given multiple times.")
-@click.option("--file", "file_", help="Path of a file, relative to the root, or a pattern ('rtl/*').")
-@click.option("--exclude-file", "excludes", multiple=True, help="Pattern of files whose problems are left out.")
+@click.option(
+    "--file",
+    "file_",
+    help="Path of a file, relative to the root, or a pattern ('rtl/*'): the problems located in it, or found by "
+    "parsing it.",
+)
+@click.option(
+    "--exclude-file",
+    "excludes",
+    multiple=True,
+    help="Pattern of files whose problems are left out. A problem found by parsing other files too is kept for them.",
+)
 @opt_blackbox
 @click.option("--group-by", type=click.Choice(("code", "file", "module")), help="Number of problems by group.")
 @opt_project
