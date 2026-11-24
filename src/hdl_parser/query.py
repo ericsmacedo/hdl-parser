@@ -56,7 +56,7 @@ import difflib
 import re
 from collections.abc import Iterable
 from fnmatch import fnmatchcase
-from typing import Any, get_args
+from typing import Any, ForwardRef, get_args
 
 import pydantic as pyd
 
@@ -914,12 +914,21 @@ def _with_lists(model: pyd.BaseModel, data: dict[str, Any], exclude: set[str]) -
 
 
 def _models(annotation: Any) -> tuple[type[pyd.BaseModel], ...]:
-    """The models of `annotation`, if it is a tuple of models."""
-    args = [arg for arg in get_args(annotation) if arg is not Ellipsis]
+    """The models of `annotation`, if it is a tuple of models.
+
+    Forward references (`tuple["Port", ...]`) are names of the data model: Python 3.10 leaves them unresolved.
+    """
+    args = [_resolve(arg) for arg in get_args(annotation) if arg is not Ellipsis]
     for arg in args:
         if not (isinstance(arg, type) and issubclass(arg, pyd.BaseModel)):
             return ()
     return tuple(args)
+
+
+def _resolve(arg: Any) -> Any:
+    if isinstance(arg, ForwardRef):
+        arg = arg.__forward_arg__
+    return getattr(dm, arg, arg) if isinstance(arg, str) else arg
 
 
 def _item_dict(file: dm.File, item: dm.Item) -> dict[str, Any]:
