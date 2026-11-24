@@ -115,7 +115,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "type": "object",
             "properties": {
                 "pattern": {"type": "string"},
-                "kinds": {
+                "kind": {
                     "type": "array",
                     "items": {"type": "string", "enum": sorted(set(query.KINDS.values()))},
                     "description": "Kinds of items. All by default.",
@@ -135,19 +135,19 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "type": "object",
             "properties": {
                 "severity": {"type": "string", "enum": list(query.SEVERITIES), "description": "Minimum severity."},
-                "codes": {"type": "array", "items": {"type": "string"}},
+                "code": {"type": "array", "items": {"type": "string"}},
                 "file": {
                     "type": "string",
                     "description": "Path of a file, relative to the root, or a pattern: the problems located in it "
                     "or found by parsing it.",
                 },
-                "exclude": {
+                "exclude_file": {
                     "type": "array",
                     "items": {"type": "string"},
                     "description": "Patterns of files whose problems are left out: 'lib/stdcells/*'. A problem "
                     "found by parsing other files too is kept for them.",
                 },
-                "blackboxes": {
+                "blackbox": {
                     "type": "array",
                     "items": {"type": "string"},
                     "description": "Patterns of module names known to be missing: no 'undefined-module' for them.",
@@ -171,7 +171,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "properties": {
                 "top": _NAME,
                 "path": {"type": "string", "description": "Instance names below the top, i.e. 'u_core.u_alu'."},
-                "params": {
+                "param": {
                     "type": "object",
                     "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
                     "description": "Values of the parameters of the top, by name. Defaults otherwise.",
@@ -181,7 +181,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
                     "minimum": 0,
                     "description": "Instance levels below the node returned too. Default 0: the node only.",
                 },
-                "names": {
+                "name": {
                     "type": "array",
                     "items": {"type": "string"},
                     "description": "Patterns of names of parameters and ports: 'WIDTH', '*_i'. All by default.",
@@ -201,7 +201,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "properties": {
                 "expr": {"type": "string"},
                 "scope": {**_NAME, "description": "Module, interface or package. Name or full identifier."},
-                "params": {
+                "param": {
                     "type": "object",
                     "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
                     "description": "Values of the parameters of the scope, by name. Defaults otherwise.",
@@ -217,7 +217,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "the signals read ('nets') to go further.",
         "inputSchema": {
             "type": "object",
-            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
+            "properties": {"path": _PATH, "param": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
             "required": ["path"],
         },
     },
@@ -227,7 +227,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "of instances, the connection of an output port within the parent.",
         "inputSchema": {
             "type": "object",
-            "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
+            "properties": {"path": _PATH, "param": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
             "required": ["path"],
         },
     },
@@ -241,12 +241,9 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "properties": {
                 "src": {**_PATH, "description": "Instance path of the signal to start at."},
                 "dst": {**_PATH, "description": "Instance path of the signal to reach."},
-                "params": _TOP_PARAMS,
+                "param": _TOP_PARAMS,
                 "through_regs": {"type": "boolean", "description": "Continue behind flip-flops."},
-                "control": {
-                    "type": "boolean",
-                    "description": "Follow conditions, resets and clocks too. Default true.",
-                },
+                "data_only": {"type": "boolean", "description": "Do not follow conditions, resets and clocks."},
                 "limit": {**_LIMIT, "description": "Number of hops. Default 100. 0: no limit."},
                 "passthrough": _PASSTHROUGH,
             },
@@ -280,6 +277,26 @@ _QUERIES: dict[str, Callable[..., dict[str, Any]]] = {
     "loads": query.loads,
     "trace": query.trace,
 }
+
+_ARGUMENTS: dict[str, dict[str, str]] = {
+    "find": {"kind": "kinds"},
+    "diagnostics": {"code": "codes", "exclude_file": "exclude", "blackbox": "blackboxes"},
+    "elaborate": {"param": "params", "name": "names"},
+    "evaluate": {"param": "params"},
+    "drivers": {"param": "params"},
+    "loads": {"param": "params"},
+    "trace": {"param": "params"},
+}
+"""Arguments of a tool, named like the options of the command line, by the argument name of its query."""
+
+
+def _query_arguments(name: str, arguments: dict[str, Any]) -> dict[str, Any]:
+    """The arguments of the tool `name` as the ones of its query."""
+    renames = _ARGUMENTS.get(name, {})
+    result = {renames.get(key, key): value for key, value in arguments.items()}
+    if "data_only" in result:
+        result["control"] = not result.pop("data_only")
+    return result
 
 
 class Server:
@@ -346,11 +363,11 @@ class Server:
         if unknown:
             return _result(id_, _content({"error": {"code": "bad-argument", "message": f"unknown: {unknown}"}}, True))
         if name == "diagnostics" and self.blackboxes:
-            arguments = {**arguments, "blackboxes": (*self.blackboxes, *arguments.get("blackboxes", ()))}
+            arguments = {**arguments, "blackbox": (*self.blackboxes, *arguments.get("blackbox", ()))}
         try:
             _check(tool["inputSchema"]["properties"], arguments)
             detail = arguments.pop("detail", "compact")
-            answer = query.render(func(self.project, **arguments), detail)
+            answer = query.render(func(self.project, **_query_arguments(tool["name"], arguments)), detail)
         except query.QueryError as exc:
             return _result(id_, _content(exc.to_dict(), True))
         except Exception as exc:
@@ -367,7 +384,7 @@ within another one is left out, if it is the one around plus its name, and relat
 may be a table {columns, rows}. detail='full' gives every identifier and 'loc' with columns. \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
-with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
+with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude_file. \
 'elaborate' gives the values of the parameters and the widths of the ports of an instance \
 ('path' below 'top'), 'evaluate' the value of an expression. 'drivers' and 'loads' tell what drives a signal \
 and what it drives, by instance path ('top.u_core.result_o'), 'trace' the connection between two signals. \
