@@ -318,6 +318,13 @@ def test_hierarchy_tops_sorted(tmp_path):
     assert answer["leaves"] == 1
     assert [top["name"] for top in query.hierarchy(project, leaves=True)["result"]] == ["big", "lonely"]
     assert query.hierarchy(project, "big", text=True)["tree"] == "big\n  u1 (mid)\n    u (inv)\n  u2 (mid)\n    u (inv)"
+    assert query.hierarchy(project, text=True) == {
+        "query": "hierarchy",
+        "tree": "c.sv:big (4 insts)",
+        "total": 1,
+        "leaves": 1,
+    }
+    assert query.hierarchy(project, leaves=True, text=True)["tree"] == "c.sv:big (4 insts)\nd.sv:lonely (0 insts)"
     with raises(query.QueryError):
         query.hierarchy(project, "big", depth=-1)
 
@@ -377,7 +384,7 @@ def test_elaborate(tmp_path):
 
 
 def test_render():
-    """Compact Answers: Relative Identifiers, Lines, Tables If Smaller."""
+    """Compact Answers: Relative Identifiers, Lines, Tables."""
     answer = {
         "query": "module",
         "result": {
@@ -403,11 +410,14 @@ def test_render():
                 "columns": ["name", "direction", "line", "comment"],
                 "rows": [["clk", "input", 2, None], ["d", "input", 3, None], ["q", "output", None, ["data"]]],
             },
-            "processes": [{"id": "#always1", "kind": "always_ff"}],
+            "processes": {"columns": ["id", "kind"], "rows": [["#always1", "always_ff"]]},
         },
     }
-    # a table is no smaller: kept as list
-    assert query.render({"result": [{"a": 1}, {"b": 2}]}) == {"result": [{"a": 1}, {"b": 2}]}
+    # every non-empty list of objects is a table, whatever its size: the shape does not depend on the data
+    assert query.render({"result": [{"a": 1}, {"b": 2}]}) == {
+        "result": {"columns": ["a", "b"], "rows": [[1, None], [None, 2]]}
+    }
+    assert query.render({"result": [], "names": ["a"]}) == {"result": [], "names": ["a"]}
     with raises(query.QueryError):
         query.render(answer, "short")
 
@@ -429,7 +439,7 @@ def test_cli_full(runner):
         full = json.loads(runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1", "--full"]).stdout)
         compact = runner.invoke(cli, ["module", "ibex_alu", "-F", "ports", "-n", "1"]).stdout
     assert full["result"]["ports"][0]["loc"]["col"] == 3
-    assert '"rows": [\n' not in compact
-    assert json.loads(compact)["result"]["ports"] == [
-        {"name": "operator_i", "direction": "input", "ptype": "ibex_pkg::alu_op_e", "line": 12}
-    ]
+    assert json.loads(compact)["result"]["ports"] == {
+        "columns": ["name", "direction", "ptype", "line"],
+        "rows": [["operator_i", "input", "ibex_pkg::alu_op_e", 12]],
+    }

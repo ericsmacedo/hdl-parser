@@ -53,7 +53,6 @@ A name which is not found raises [QueryError][hdl_parser.query.QueryError], with
 """
 
 import difflib
-import json
 import re
 from collections.abc import Iterable
 from fnmatch import fnmatchcase
@@ -219,6 +218,8 @@ def hierarchy(  # noqa: PLR0913
         leaves: Top modules without instances are returned too. They are left out by default and counted in
                 `leaves`, as they are mostly unused library cells, unless no top has instances.
         text: The tree as indented text (`tree`), one line per node: `<name> (<module>)`. Much smaller than JSON.
+              Without `top`, the top modules, one line each: `<id> (<insts> insts)`, followed by `library` for a
+              top found through a library option.
 
     The top modules are sorted by their number of instances (`insts`, all levels), the largest first.
     `library` marks a top found through a library option of a filelist.
@@ -229,7 +230,7 @@ def hierarchy(  # noqa: PLR0913
     if depth is not None and depth < 0:
         raise QueryError("bad-argument", "depth must not be negative.")
     if top is None:
-        return _tops(project, limit, leaves)
+        return _tops(project, limit, leaves, text)
     node = project.hierarchy(top, depth=depth)
     if node is None:
         raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
@@ -247,7 +248,7 @@ def hierarchy(  # noqa: PLR0913
     return answer
 
 
-def _tops(project: Project, limit: int | None, leaves: bool) -> dict[str, Any]:
+def _tops(project: Project, limit: int | None, leaves: bool, text: bool) -> dict[str, Any]:
     counts: dict[str, int] = {}
 
     def count(definition: Definition, path: tuple[str, ...]) -> int:
@@ -278,9 +279,17 @@ def _tops(project: Project, limit: int | None, leaves: bool) -> dict[str, Any]:
     tops.sort(key=lambda entry: -entry["insts"])
     result, omitted = _limit(tops, limit)
     answer = _list_answer("hierarchy", result, len(tops), omitted)
+    if text:
+        answer = {"query": "hierarchy", "tree": "\n".join(map(_top_line, result)), **answer}
+        del answer["result"]
     if left_out:
         answer["leaves"] = left_out
     return answer
+
+
+def _top_line(entry: dict[str, Any]) -> str:
+    line = f"{entry['id']} ({entry['insts']} insts)"
+    return f"{line} library" if entry.get("library") else line
 
 
 def _lines(node: dict[str, Any], level: int) -> Iterable[str]:
@@ -820,7 +829,7 @@ def render(answer: dict[str, Any], detail: str = "compact") -> dict[str, Any]:
     * A source location is its first line: `"line": 12` instead of `"loc": {...}`.
     * The identifier of an item within another one is left out, if it is the one of the item around followed by
       its name (`top.sv:top.clk` within `top.sv:top`), and relative otherwise (`#always1`).
-    * A list of objects is a table, if that is smaller: `{"columns": [...], "rows": [[...], ...]}`. A field which
+    * A non-empty list of objects is always a table: `{"columns": [...], "rows": [[...], ...]}`. A field which
       an item has not, is `null`.
     """
     if detail not in DETAILS:
@@ -833,7 +842,7 @@ def render(answer: dict[str, Any], detail: str = "compact") -> dict[str, Any]:
 def _compact(data: Any, parent: str) -> Any:
     if isinstance(data, list):
         items = [_compact(value, parent) for value in data]
-        return _table(items) if len(items) > 1 and all(isinstance(item, dict) for item in items) else items
+        return _table(items) if items and all(isinstance(item, dict) for item in items) else items
     if not isinstance(data, dict):
         return data
     result: dict[str, Any] = {}
@@ -850,13 +859,11 @@ def _compact(data: Any, parent: str) -> Any:
     return result
 
 
-def _table(items: list[dict[str, Any]]) -> Any:
-    """`items` as table, if that is smaller."""
+def _table(items: list[dict[str, Any]]) -> dict[str, Any]:
+    """`items` as table."""
     keys = dict.fromkeys(key for item in items for key in item)
     columns = [key for key in ("id", "name") if key in keys] + [key for key in keys if key not in ("id", "name")]
-    table = {"columns": columns, "rows": [[item.get(column) for column in columns] for item in items]}
-    size = len(json.dumps(table, separators=(",", ":")))
-    return table if size < len(json.dumps(items, separators=(",", ":"))) else items
+    return {"columns": columns, "rows": [[item.get(column) for column in columns] for item in items]}
 
 
 # --- helpers ---

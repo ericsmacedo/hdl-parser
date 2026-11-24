@@ -8,7 +8,7 @@ the source. It is meant to be called by AI agents and scripts: on the command li
 * Every item has a **full identifier** `<file>:<id>` (`rtl/top.sv:top.u_sub`) and a **source line** `line`.
   The file is relative to the root of the project. An identifier can be handed to every query instead of a name.
 * Answers are **compact**: the identifier of an item within another one is left out, if it is the one around
-  followed by its name, and relative otherwise (`#always1`). A list of objects may be a **table**:
+  followed by its name, and relative otherwise (`#always1`). A non-empty list of objects is always a **table**:
   `{"columns": [...], "rows": [[...]]}`, `null` for a field an item has not. `--full` (MCP: `detail: "full"`)
   gives every identifier, the location with columns (`loc`) and lists of objects.
 * Every list is **limited** to 100 entries (`--limit`, `0` for no limit). What is left out is counted in
@@ -51,7 +51,8 @@ All examples are run within `tests/corpus/sv/ibex` of the repository, a RISC-V c
 
 Without `--top`, `hierarchy` gives the modules which are instantiated nowhere, the largest first (`insts`:
 number of instances at all levels). Tops without instances (mostly unused library cells) are left out and
-counted in `leaves`; `--leaves` returns them too. `--text` gives a tree as indented text, much smaller than JSON.
+counted in `leaves`; `--leaves` returns them too. `--text` gives the tree, or without `--top` the
+top modules, as indented text, much smaller than JSON.
 
 ```bash
 hdl-parser hierarchy
@@ -60,16 +61,12 @@ hdl-parser hierarchy
 ```json
 {
   "query": "hierarchy",
-  "result": [
-    {
-      "id": "ibex_top.sv:ibex_top",
-      "kind": "module",
-      "file": "ibex_top.sv",
-      "name": "ibex_top",
-      "line": 15,
-      "insts": 85
-    }
-  ],
+  "result": {
+    "columns": ["id", "name", "kind", "file", "line", "insts"],
+    "rows": [
+      ["ibex_top.sv:ibex_top", "ibex_top", "module", "ibex_top.sv", 15, 85]
+    ]
+  },
   "total": 1
 }
 ```
@@ -172,14 +169,12 @@ hdl-parser where-used ibex_alu
 ```json
 {
   "query": "where-used",
-  "result": [
-    {
-      "inst": "ibex_ex_block.sv:ibex_ex_block.alu_i",
-      "module": "ibex_ex_block.sv:ibex_ex_block",
-      "file": "ibex_ex_block.sv",
-      "line": 110
-    }
-  ],
+  "result": {
+    "columns": ["inst", "module", "file", "line"],
+    "rows": [
+      ["ibex_ex_block.sv:ibex_ex_block.alu_i", "ibex_ex_block.sv:ibex_ex_block", "ibex_ex_block.sv", 110]
+    ]
+  },
   "total": 1,
   "module": "ibex_alu.sv:ibex_alu"
 }
@@ -231,17 +226,20 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
     "file": "ibex_if_stage.sv",
     "line": 72
   },
-  "result": [
-    {
-      "kind": "ff",
-      "nets": ["ibex_top.u_ibex_core.if_stage_i.instr_out"],
-      "conds": ["ibex_top.u_ibex_core.if_stage_i.if_id_pipe_reg_we"],
-      "clock": "ibex_top.u_ibex_core.if_stage_i.clk_i",
-      "item": "ibex_if_stage.sv:ibex_if_stage.g_instr_rdata_nr.#always6",
-      "file": "ibex_if_stage.sv",
-      "line": 659
-    }
-  ],
+  "result": {
+    "columns": ["kind", "nets", "conds", "clock", "item", "file", "line"],
+    "rows": [
+      [
+        "ff",
+        ["ibex_top.u_ibex_core.if_stage_i.instr_out"],
+        ["ibex_top.u_ibex_core.if_stage_i.if_id_pipe_reg_we"],
+        "ibex_top.u_ibex_core.if_stage_i.clk_i",
+        "ibex_if_stage.sv:ibex_if_stage.g_instr_rdata_nr.#always6",
+        "ibex_if_stage.sv",
+        659
+      ]
+    ]
+  },
   "total": 1
 }
 ```
@@ -261,25 +259,14 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
 ```json
 {
   "query": "trace",
-  "result": [
-    {
-      "net": "ibex_top.rst_ni"
-    },
-    {
-      "net": "ibex_top.u_ibex_core.rst_ni",
-      "kind": "inst",
-      "item": "ibex_top.sv:ibex_top.u_ibex_core",
-      "file": "ibex_top.sv",
-      "line": 412
-    },
-    {
-      "net": "ibex_top.u_ibex_core.id_stage_i.rst_ni",
-      "kind": "inst",
-      "item": "ibex_core.sv:ibex_core.id_stage_i",
-      "file": "ibex_core.sv",
-      "line": 672
-    }
-  ],
+  "result": {
+    "columns": ["net", "kind", "item", "file", "line"],
+    "rows": [
+      ["ibex_top.rst_ni", null, null, null, null],
+      ["ibex_top.u_ibex_core.rst_ni", "inst", "ibex_top.sv:ibex_top.u_ibex_core", "ibex_top.sv", 412],
+      ["ibex_top.u_ibex_core.id_stage_i.rst_ni", "inst", "ibex_core.sv:ibex_core.id_stage_i", "ibex_core.sv", 672]
+    ]
+  },
   "total": 5,
   "omitted": 2,
   "found": true,
@@ -304,16 +291,12 @@ hdl-parser diagnostics --severity warning --limit 1
 ```json
 {
   "query": "diagnostics",
-  "result": [
-    {
-      "file": "ibex_core.sv",
-      "code": "undefined-module",
-      "severity": "warning",
-      "message": "module 'prim_buf' of instance 'u_fetch_enable_buf' is not defined in the project.",
-      "line": 500,
-      "item": "ibex_core.sv:ibex_core.g_core_busy_secure.u_fetch_enable_buf"
-    }
-  ],
+  "result": {
+    "columns": ["file", "code", "severity", "message", "line", "item"],
+    "rows": [
+      ["ibex_core.sv", "undefined-module", "warning", "module 'prim_buf' of instance 'u_fetch_enable_buf' is not defined in the project.", 500, "ibex_core.sv:ibex_core.g_core_busy_secure.u_fetch_enable_buf"]
+    ]
+  },
   "total": 37,
   "omitted": 36,
   "counts": {

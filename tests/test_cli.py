@@ -35,7 +35,7 @@ from test2ref import assert_refdata, configure
 from hdl_parser.cli import cli
 from hdl_parser.project import SCHEMA_VERSION, Project
 
-from .conftest import EXAMPLES_PATH, PRJ_PATH
+from .conftest import EXAMPLES_PATH, PRJ_PATH, objects
 
 configure(ignore_spaces=True)
 
@@ -452,7 +452,7 @@ def test_mcp(runner, tmp_path):
     result = runner.invoke(cli, ["mcp", str(tmp_path)], input=stdin)
     assert result.exit_code == 0
     responses = [json.loads(line) for line in result.stdout.splitlines()]
-    assert responses[1]["result"]["structuredContent"]["result"][0]["id"] == "top.sv:top"
+    assert objects(responses[1]["result"]["structuredContent"]["result"])[0]["id"] == "top.sv:top"
 
 
 def test_mcp_usage(runner, tmp_path):

@@ -92,7 +92,10 @@ TOOLS: tuple[dict[str, Any], ...] = (
                 },
                 "text": {
                     "type": "boolean",
-                    "description": "The tree as indented text 'name (module)', much smaller than JSON.",
+                    "description": (
+                        "The tree as indented text 'name (module)', much smaller than JSON. "
+                        "Without 'top': the top modules, one per line."
+                    ),
                 },
             },
         },
@@ -364,7 +367,7 @@ INSTRUCTIONS = """\
 Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
 '<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source 'line'. Answers are compact: the identifier of an item \
 within another one is left out, if it is the one around plus its name, and relative otherwise; a list of objects \
-may be a table {columns, rows}. detail='full' gives every identifier and 'loc' with columns. \
+is always a table {columns, rows}, if not empty. detail='full' gives every identifier and 'loc' with columns. \
 Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
 modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude. \
