@@ -444,6 +444,9 @@ def test_mcp(design):
     arguments = {"src": "top.a_i", "dst": "top.y_o", "through_regs": True}
     response = server.handle({**call, "params": {"name": "trace", "arguments": arguments}})
     assert response["result"]["structuredContent"]["found"] is True
+    arguments = {"src": "top.clk_i", "dst": "top.u_sub.q", "data_only": True}
+    response = server.handle({**call, "params": {"name": "trace", "arguments": arguments}})
+    assert response["result"]["structuredContent"]["found"] is False
     response = server.handle({**call, "params": {"name": "loads", "arguments": {"path": "top.x"}}})
     assert response["result"]["isError"] is True
 

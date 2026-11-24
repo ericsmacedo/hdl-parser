@@ -372,20 +372,21 @@ hdl-parser module ibex_alux
 
 `hdl-parser mcp` serves the same queries as tools on standard input and output: `module`, `hierarchy`,
 `where_used`, `find`, `diagnostics`, `elaborate`, `evaluate`, `drivers`, `loads`, `trace` and `reload`. It takes the
-same options to create the project.
+same options to create the project. The arguments of a tool are named like the options of its command
+(`--exclude-file`: `exclude_file`); an option given multiple times is a list (`--kind`: `kind`).
 Files which changed are read again on the next call, `reload` reads the project again (i.e. after files
 were added). Answers are the same JSON, in `structuredContent` and as text. A failed query has `isError`.
 All tools are read-only (`readOnlyHint`).
 
-* `diagnostics` with `group_by` (`code`, `file`, `module`) gives counts first; `exclude` drops files by pattern,
-  `blackboxes` drops `undefined-module` for known blackboxes. `--blackbox PATTERN` applies to every call.
+* `diagnostics` with `group_by` (`code`, `file`, `module`) gives counts first; `exclude_file` drops files by pattern,
+  `blackbox` drops `undefined-module` for known blackboxes. `--blackbox PATTERN` applies to every call.
 * `elaborate` gives the values of the parameters and the widths of the ports (bits) of one instance: `top`,
-  `path` (`u_core.u_alu`), `params` of the top, `names` patterns, `unknown` for the values not known, with
+  `path` (`u_core.u_alu`), `param` of the top, `name` patterns, `unknown` for the values not known, with
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then,
   and `module` (the definition used) is missing.
-* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `params` of the top
+* `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `param` of the top
   and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
   constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for
   all of them (`multiple`). The granularity is the whole signal: the select (`[3:0]`) is given as text.

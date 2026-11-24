@@ -1,7 +1,8 @@
 # hdl-parser Reference
 
 All MCP tools with their arguments. The command line query of the same name (`where_used`: `where-used`) takes
-the same arguments as options; run `hdl-parser <query> --help` for their spelling. Every tool but `reload` also
+the same arguments as options of the same name (`exclude_file`: `--exclude-file`), a list by repeating the option
+(`--kind module --kind port`); run `hdl-parser <query> --help` for the short forms. Every tool but `reload` also
 takes `detail`: `compact` (default) or `full`.
 
 ## `module`
@@ -45,7 +46,7 @@ Items by name. Without wildcard: part of the name, not case sensitive. With wild
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `pattern` (required) | string |  |
-| `kinds` | array of string: `connection`, `function`, `instance`, `interface`, `macro`, `member`, `modport`, `module`, `package`, `param`, `port`, `process`, `signal`, `typedef` | Kinds of items. All by default. |
+| `kind` | array of string: `connection`, `function`, `instance`, `interface`, `macro`, `member`, `modport`, `module`, `package`, `param`, `port`, `process`, `signal`, `typedef` | Kinds of items. All by default. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
 | `fields` | array of string | Fields to be returned. All by default. |
 
@@ -56,10 +57,10 @@ Problems found in the design: undefined modules, macros not expanded, files whic
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `severity` | string: `error`, `warning`, `info` | Minimum severity. |
-| `codes` | array of string |  |
+| `code` | array of string |  |
 | `file` | string | Path of a file, relative to the root, or a pattern: the problems located in it or found by parsing it. |
-| `exclude` | array of string | Patterns of files whose problems are left out: 'lib/stdcells/*'. A problem found by parsing other files too is kept for them. |
-| `blackboxes` | array of string | Patterns of module names known to be missing: no 'undefined-module' for them. |
+| `exclude_file` | array of string | Patterns of files whose problems are left out: 'lib/stdcells/*'. A problem found by parsing other files too is kept for them. |
+| `blackbox` | array of string | Patterns of module names known to be missing: no 'undefined-module' for them. |
 | `group_by` | string: `code`, `file`, `module` | Number of problems by group instead of the problems. Start with this. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
 
@@ -71,9 +72,9 @@ Values of the parameters and widths of the ports (in bits) of one instance, with
 | -------- | ---- | ----------- |
 | `top` (required) | string | Name or full identifier ('rtl/top.sv:top'). |
 | `path` | string | Instance names below the top, i.e. 'u_core.u_alu'. |
-| `params` | object | Values of the parameters of the top, by name. Defaults otherwise. |
+| `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `depth` | integer | Instance levels below the node returned too. Default 0: the node only. |
-| `names` | array of string | Patterns of names of parameters and ports: 'WIDTH', '*_i'. All by default. |
+| `name` | array of string | Patterns of names of parameters and ports: 'WIDTH', '*_i'. All by default. |
 | `unknown` | boolean | Only values which are not known, with the reason. |
 | `limit` | integer | Number of nodes, and of parameters and ports of every node. |
 
@@ -85,7 +86,7 @@ Value of an expression ('$clog2(DEPTH)+1', 'pkg::WIDTH') within a module, interf
 | -------- | ---- | ----------- |
 | `expr` (required) | string |  |
 | `scope` (required) | string | Module, interface or package. Name or full identifier. |
-| `params` | object | Values of the parameters of the scope, by name. Defaults otherwise. |
+| `param` | object | Values of the parameters of the scope, by name. Defaults otherwise. |
 
 ## `drivers`
 
@@ -94,7 +95,7 @@ What drives a signal: assignments (with the signals they read and their conditio
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `path` (required) | string | Instance path of a signal: top module, instance names (with generate labels), signal: 'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'. |
-| `params` | object | Values of the parameters of the top, by name. Defaults otherwise. |
+| `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
 | `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
 
@@ -105,7 +106,7 @@ What a signal drives: assignments reading it (also by a condition: 'control'), i
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `path` (required) | string | Instance path of a signal: top module, instance names (with generate labels), signal: 'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'. |
-| `params` | object | Values of the parameters of the top, by name. Defaults otherwise. |
+| `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
 | `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
 
@@ -117,9 +118,9 @@ Shortest connection from one signal to another one below the same top, hop by ho
 | -------- | ---- | ----------- |
 | `src` (required) | string | Instance path of the signal to start at. |
 | `dst` (required) | string | Instance path of the signal to reach. |
-| `params` | object | Values of the parameters of the top, by name. Defaults otherwise. |
+| `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `through_regs` | boolean | Continue behind flip-flops. |
-| `control` | boolean | Follow conditions, resets and clocks too. Default true. |
+| `data_only` | boolean | Do not follow conditions, resets and clocks. |
 | `limit` | integer | Number of hops. Default 100. 0: no limit. |
 | `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
 
