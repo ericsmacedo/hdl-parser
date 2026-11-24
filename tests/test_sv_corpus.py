@@ -84,7 +84,7 @@ def test_examples_invariants(path):
 # --- macro expansion ---
 
 # Defines of a typical synthesis flow
-FLOW_MACROS = parse_defines_text("`define SYNTHESIS\n`define RVFI\n`define INC_ASSERT\n")
+FLOW_MACROS = parse_defines_text("`define SYNTHESIS\n`define RVFI\n`define INC_ASSERT\n").macros
 
 
 _NOT_COMPILED = frozenset(f"!{name}" for name in FLOW_MACROS)
@@ -168,7 +168,7 @@ def test_corpus_rvfi():
     # not defined: nothing changes
     assert parse_file(path, **kwargs).modules[0].ports == ports
     # defined: no longer conditional
-    macros = parse_defines_text("`define RVFI")
+    macros = parse_defines_text("`define RVFI").macros
     resolved = parse_file(path, macros=macros, **kwargs).modules[0].ports
     assert [port.name for port in resolved] == [port.name for port in ports]
     assert all(port.ifdefs == () for port in resolved if port.name in rvfi)

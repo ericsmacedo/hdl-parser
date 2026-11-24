@@ -57,12 +57,11 @@ import json
 import re
 from collections.abc import Iterable
 from fnmatch import fnmatchcase
-from pathlib import Path
 from typing import Any
 
 from . import datamodel as dm
 from ._conn import Connectivity, Node, PathError
-from .project import Definition, Project, _relative
+from .project import Definition, Project
 
 DEFAULT_LIMIT = 100
 """Default number of entries of every list within an answer."""
@@ -440,15 +439,20 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
 ) -> dict[str, Any]:
     """Problems found in the project, in the order of the files.
 
+    Every problem is located where it is: `file` and `loc` (`line`). A problem within an included file is found
+    by parsing the files including it: they are listed in `parsed`. It is reported once.
+
     Args:
         project: Project.
 
     Keyword Args:
         severity: Minimum severity: `error`, `warning` or `info` (everything, the default).
         codes: Codes to be returned (`undefined-module`, ...). All by default.
-        file: Path of a file, or a pattern on the paths (`rtl/*`). All files by default.
+        file: Path of a file, or a pattern on the paths (`rtl/*`): the problems located in it, or found by parsing
+              it. All files by default.
         limit: Number of problems.
-        exclude: Patterns on the paths of files, whose problems are left out (`lib/stdcells/*`).
+        exclude: Patterns on the paths of files, whose problems are left out (`lib/stdcells/*`): the problems located
+                 in them, or found by parsing them only.
         blackboxes: Patterns on module names, which are known not to be part of the project (blackboxes,
                     hard macros, cells): their `undefined-module` problems are left out.
         group_by: `code`, `file` or `module` (the undefined module): the number of problems by group,
@@ -460,7 +464,8 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
         raise QueryError("bad-argument", f"unknown severity '{severity}'.", SEVERITIES)
     if group_by is not None and group_by not in _GROUPS:
         raise QueryError("bad-argument", f"unknown group '{group_by}'.", _GROUPS)
-    if file is not None and not _WILDCARD.search(file):
+    located = {diagnostic.file for _, diagnostic in project.iter_diagnostics() if diagnostic.file}
+    if file is not None and not _WILDCARD.search(file) and file not in located:
         found_file = project.file(file)
         if found_file is None:
             raise QueryError("not-found", f"'{file}' is no file of the project.", _similar_files(project, file))
@@ -470,26 +475,24 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
     excluded = tuple(exclude)
     boxes = tuple(blackboxes)
     modules = {file.full_id(inst): inst.module for file, inst in project._undefined} if boxes or group_by else {}
-    found = []
+    found: list[dict[str, Any]] = []
+    # problems within an included file, by location: found once, by several files
+    shared: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     for file_id, diagnostic in project.iter_diagnostics():
         if diagnostic.severity not in allowed or (wanted and diagnostic.code not in wanted):
             continue
-        if file is not None and not fnmatchcase(file_id, file):
+        # the file the problem is located in, and the parsed file, if it is another one
+        paths = (diagnostic.file or file_id, file_id) if file_id else (diagnostic.file,)
+        if file is not None and not any(fnmatchcase(path, file) for path in paths):
             continue
-        if any(fnmatchcase(file_id, pattern) for pattern in excluded):
+        if any(fnmatchcase(path, pattern) for path in paths for pattern in excluded):
             continue
         module_name = modules.get(f"{file_id}:{diagnostic.item}") if diagnostic.code == "undefined-module" else None
         if module_name and any(fnmatchcase(module_name, pattern) for pattern in boxes):
             continue
-        data = diagnostic.model_dump(mode="json", exclude_defaults=True)
-        if file_id:
-            # the location is within the parsed file, `file` of a diagnostic is the included file
-            if "file" in data:
-                included = Path(data.pop("file"))
-                data["included"] = _relative(included, project.root) if included.is_absolute() else included.as_posix()
-            if "item" in data:
-                data["item"] = f"{file_id}:{data['item']}"
-            data = {"file": file_id, **data}
+        data = _diagnostic_entry(file_id, diagnostic, shared)
+        if data is None:
+            continue
         if group_by == "module":
             data["module"] = module_name
         found.append(data)
@@ -511,6 +514,29 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
 
 
 _GROUPS = ("code", "file", "module")
+
+
+def _diagnostic_entry(
+    file_id: str, diagnostic: dm.Diagnostic, shared: dict[tuple[str, str, str, str], dict[str, Any]]
+) -> dict[str, Any] | None:
+    """Entry of `diagnostic` of the file `file_id` (empty for the project): located where the problem is.
+
+    A problem within an included file is added to `parsed` of the entry in `shared`, if it has been found before.
+    Then the result is `None`.
+    """
+    data = diagnostic.model_dump(mode="json", exclude_defaults=True)
+    if file_id and "item" in data:
+        data["item"] = f"{file_id}:{data['item']}"
+    where = diagnostic.file or file_id
+    data = {"file": where, **{key: value for key, value in data.items() if key != "file"}}
+    if file_id and diagnostic.file:
+        key = (diagnostic.code, where, str(diagnostic.loc), diagnostic.message)
+        if key in shared:
+            shared[key]["parsed"].append(file_id)
+            return None
+        data["parsed"] = [file_id]
+        shared[key] = data
+    return data
 
 
 # --- elaborate ---

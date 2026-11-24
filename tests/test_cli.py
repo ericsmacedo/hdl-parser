@@ -23,6 +23,8 @@
 """Test Command Line Interface."""
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 from click.testing import CliRunner
@@ -311,14 +313,85 @@ def test_query(tmp_path, runner, args):
     assert_refdata(test_query, tmp_path, flavor="-".join(args).replace(",", "_"))
 
 
-def test_query_quiet(runner, caplog):
+def _run(*args: str, cwd: Path) -> subprocess.CompletedProcess:
+    """Run in another process: the log handlers of pytest are not there."""
+    code = "import sys; from hdl_parser.cli import cli; sys.exit(cli())"
+    return subprocess.run([sys.executable, "-c", code, *args], cwd=cwd, capture_output=True, text=True, check=False)
+
+
+def test_query_quiet(tmp_path):
     """Problems Are Part Of The Answer, Logged With '-v' Only."""
-    with chdir(IBEX):
-        quiet = runner.invoke(cli, ["where-used", "ibex_alu"])
-        assert "not defined" not in caplog.text
-        verbose = runner.invoke(cli, ["-v", "where-used", "ibex_alu"])
-        assert "not defined" in caplog.text
+    (tmp_path / "top.sv").write_text("module top;\n  sub u_sub ();\nendmodule\n")
+    quiet = _run("--no-color", "where-used", "top", "-c", cwd=tmp_path)
+    assert quiet.returncode == 0
+    assert quiet.stderr == ""
+    verbose = _run("--no-color", "-v", "where-used", "top", "-c", cwd=tmp_path)
+    assert verbose.returncode == 0
+    assert "DEBUG WARNING top.sv:2:3: module 'sub' of instance 'u_sub' is not defined" in verbose.stderr
     assert quiet.stdout == verbose.stdout
+
+
+@mark.parametrize("cmd", ("json", "info", "gen-sv-instance"))
+def test_report(runner, tmp_path, cmd):
+    """The Commands For Humans Print Warnings On Standard Error. Infos With '-v' Only."""
+    with chdir(tmp_path):
+        Path("m.sv").write_text("module m (`A);\nendmodule\n")
+        Path("pkg.sv").write_text("package pkg;\nendpackage\n")
+        Path("empty.sv").touch()
+        result = runner.invoke(cli, ["--no-color", cmd, "m.sv", "pkg.sv", "empty.sv"])
+        assert result.exit_code == 0
+        warning = "macro `A in module header is not expanded. Ports or parameters may be missing."
+        assert result.stderr == f"WARNING m.sv:1:11: module 'm': {warning}\n"
+        verbose = runner.invoke(cli, ["--no-color", "-v", cmd, "empty.sv"])
+        assert "INFO empty.sv: no module found." in verbose.stderr
+
+
+def test_report_filelist(runner, tmp_path):
+    """Problems Of A Filelist Are Printed On Standard Error."""
+    with chdir(tmp_path):
+        Path("a.sv").write_text("module a;\nendmodule\n")
+        Path("design.f").write_text("a.sv\n-unknown\n")
+        result = runner.invoke(cli, ["--no-color", "json", "-f", "design.f"])
+    assert result.exit_code == 0
+    assert result.stderr == "WARNING design.f:2:1: option '-unknown' is not understood.\n"
+
+
+def test_report_macro_file(runner, tmp_path):
+    """Problems Of A File With Macros Are Printed On Standard Error, Located Within It."""
+    with chdir(tmp_path):
+        Path("m.sv").write_text("module m;\nendmodule\n")
+        Path("defs.svh").write_text('`define A 1\n`include "missing.svh"\n')
+        result = runner.invoke(cli, ["--no-color", "json", "--expand-macros", "--macro-file", "defs.svh", "m.sv"])
+    assert result.exit_code == 0
+    assert result.stderr == "WARNING defs.svh:2:1: included file 'missing.svh' not found. Its macros are unknown.\n"
+
+
+@mark.parametrize("define", ("P(=1", "1X=2", "A-B"))
+def test_define_bad_name(runner, examples, define):
+    """A Macro Name Which Is Not One Is A Usage Error."""
+    result = runner.invoke(cli, ["project", "--expand-macros", "-D", define, str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 2
+    assert "is no macro name" in result.stderr
+
+
+def test_define_function_like(runner, examples):
+    """A Function-Like Macro Can Be Defined."""
+    result = runner.invoke(cli, ["project", "--expand-macros", "-D", "MAX(a,b)=a", str(examples / "sv" / "adder.sv")])
+    assert result.exit_code == 0
+    assert json.loads(result.stdout)["settings"]["defines"] == {"MAX(a,b)": "a"}
+
+
+def test_library_quiet(tmp_path):
+    """The Library Does Not Print Diagnostics, They Are Returned."""
+    (tmp_path / "defs.svh").write_text('`include "missing.svh"\n')
+    code = (
+        "import hdl_parser; "
+        "print(len(hdl_parser.parse_text('module m (`A);\\nendmodule\\n').diagnostics)); "
+        "print(len(hdl_parser.parse_defines('defs.svh').diagnostics))"
+    )
+    result = subprocess.run([sys.executable, "-c", code], cwd=tmp_path, capture_output=True, text=True, check=True)
+    assert result.stdout == "1\n1\n"
+    assert result.stderr == ""
 
 
 def test_query_filelist(runner):

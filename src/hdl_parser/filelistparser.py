@@ -48,8 +48,11 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import pydantic as pyd
+
 from . import datamodel as dm
 from ._diagnostics import Diagnostics
+from ._sv.preproc import RE_DEFINE_NAME
 
 LOGGER = logging.getLogger(__name__)
 
@@ -67,8 +70,7 @@ DEFAULT_LIB_EXTS = (".v", ".sv")
 """Extensions of the files within library directories, if the filelist does not state them."""
 
 
-@dataclass
-class FileList:
+class FileList(pyd.BaseModel):
     """Content Of A Filelist, Including The Filelists It Names.
 
     Attributes:
@@ -78,8 +80,23 @@ class FileList:
         lib_files: Library files. Not part of `files`.
         lib_dirs: Library directories.
         lib_exts: Extensions of the files within library directories.
-        diagnostics: Problems: everything which is not understood. `file` is the filelist, `loc` the line.
+        diagnostics: Problems: everything which is not understood. Located within their `file`, the filelist.
     """
+
+    model_config = pyd.ConfigDict(frozen=True, extra="forbid")
+
+    files: tuple[Path, ...] = ()
+    inc_dirs: tuple[Path, ...] = ()
+    defines: dict[str, str] = {}
+    lib_files: tuple[Path, ...] = ()
+    lib_dirs: tuple[Path, ...] = ()
+    lib_exts: tuple[str, ...] = ()
+    diagnostics: tuple[dm.Diagnostic, ...] = ()
+
+
+@dataclass
+class _Content:
+    """Content of `FileList`, while it is read."""
 
     files: list[Path] = field(default_factory=list)
     inc_dirs: list[Path] = field(default_factory=list)
@@ -101,13 +118,13 @@ def read_filelist(filelist_path: Path | str, env: Mapping[str, str] | None = Non
 
     A filelist which cannot be read is reported in `diagnostics` (`filelist-not-found`).
     """
-    filelist = FileList()
-    reader = _Reader(filelist, os.environ if env is None else env)
+    content = _Content()
+    reader = _Reader(content, os.environ if env is None else env)
     reader.read(Path(filelist_path))
-    return filelist
+    return FileList(**vars(content))
 
 
-def parse_filelist(filepaths: list[Path], inc_dirs: list[Path], filepath: Path) -> None:
+def parse_filelist(filepaths: list[Path], inc_dirs: list[Path], filepath: Path) -> FileList:
     """Read File List File.
 
     Args:
@@ -115,11 +132,14 @@ def parse_filelist(filepaths: list[Path], inc_dirs: list[Path], filepath: Path) 
         inc_dirs: Include Directories Container.
         filepath: File to be parsed.
 
-    See [read_filelist][hdl_parser.filelistparser.read_filelist] for everything else a filelist contains.
+    Returns:
+        Everything the filelist contains, including its problems (`diagnostics`).
+        See [read_filelist][hdl_parser.filelistparser.read_filelist].
     """
     filelist = read_filelist(filepath)
     filepaths += [path for path in (*filelist.files, *filelist.lib_files) if path not in filepaths]
     inc_dirs += [path for path in filelist.inc_dirs if path not in inc_dirs]
+    return filelist
 
 
 def _add(items: list, item) -> None:
@@ -130,7 +150,7 @@ def _add(items: list, item) -> None:
 class _Reader:
     """Read Filelists Into `filelist`."""
 
-    def __init__(self, filelist: FileList, env: Mapping[str, str]):
+    def __init__(self, filelist: _Content, env: Mapping[str, str]):
         self.filelist = filelist
         self.env = env
         # filelists which are just read, variables which have been reported
@@ -155,9 +175,18 @@ class _Reader:
 
     def _report(self, path: Path, number: int, line: str, code: str, message: str) -> None:
         loc = dm.Location(line=number, col=1, end_line=number, end_col=len(line) + 1) if number else None
-        diagnostics = Diagnostics(str(path))
+        # a problem of the project, located within the filelist
+        diagnostics = Diagnostics("")
         diagnostics.add(code, message, loc, file=str(path))
         self.filelist.diagnostics += diagnostics.items
+
+    def _define(self, path: Path, number: int, line: str, text: str) -> None:
+        """Add the macro `NAME` or `NAME=VALUE`. One which has no valid name is reported."""
+        name, _, value = text.partition("=")
+        if RE_DEFINE_NAME.fullmatch(name):
+            self.filelist.defines[name] = value
+        else:
+            self._report(path, number, line, "macro-bad-define", f"cannot parse definition '{text}'. Skipped.")
 
     def _defined(self, path: Path, number: int, line: str) -> bool:
         """All environment variables of `line` are defined. The ones which are not are reported."""
@@ -197,7 +226,8 @@ class _Reader:
                     for value in values:
                         _add(filelist.inc_dirs, basedir / value)
                 elif name == "define":
-                    filelist.defines.update(_parse_define(value) for value in values if not value.startswith("="))
+                    for value in values:
+                        self._define(path, number, line, value)
                 elif name == "libext":
                     for value in values:
                         _add(filelist.lib_exts, value)
@@ -212,7 +242,7 @@ class _Reader:
                 _add(filelist.inc_dirs, basedir / arg)
                 idx += 1
             elif word in _DEFINE:
-                filelist.defines.update((_parse_define(arg),))
+                self._define(path, number, line, arg)
                 idx += 1
             elif word == "-v":
                 _add(filelist.lib_files, basedir / arg)
@@ -240,9 +270,3 @@ def _split(text: str) -> list[str]:
     except ValueError:
         # a quote which is never closed
         return text.split()
-
-
-def _parse_define(text: str) -> tuple[str, str]:
-    """Parse `NAME` or `NAME=VALUE`."""
-    name, _, value = text.partition("=")
-    return name, value

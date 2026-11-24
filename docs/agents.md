@@ -15,7 +15,7 @@ the source. It is meant to be called by AI agents and scripts: on the command li
   `omitted`, the full number is `total`. Nothing is dropped silently.
 * `--fields` selects fields, also of the items of a list (`ports.direction`), `--summary` gives names and counts
   only. Start small, then ask for more.
-* **Problems are data**, not failures: see `diagnostics`. Warnings are logged on standard error with `-v` only.
+* **Problems are data**, not failures: see `diagnostics`. Standard error stays empty; `-v` traces them there.
 * Code created by a macro points at the macro call: its `loc` names the `macro` (`--full`).
 * Nothing is guessed: what cannot be known is left out or reported.
 
@@ -294,6 +294,8 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
 ### Can I trust the answers? What is missing?
 
 Modules which are not part of the project, macros which are not expanded, files which cannot be read: all are listed here, with location.
+`file` and `line` are where the problem is. A problem within an included file is listed once, `parsed` names the
+files including it.
 
 ```bash
 hdl-parser diagnostics --severity warning --limit 1

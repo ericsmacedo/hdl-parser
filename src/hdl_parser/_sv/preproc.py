@@ -62,8 +62,9 @@ from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
-from .._diagnostics import Diagnostics  # noqa: TID252
+from .._diagnostics import Diagnostics, shorten  # noqa: TID252
 from .._tokens import Segment, SourceMap  # noqa: TID252
+from ..datamodel import Diagnostic, Location  # noqa: TID252
 
 LOGGER = logging.getLogger(__name__)
 
@@ -76,6 +77,7 @@ _RE_SCAN = re.compile(
     | (?P<string>"(?:\\.|[^"\\\n])*")
     | `include[ \t]*"(?P<include>[^"\n]*)"
     | `define[ \t]+(?P<dname>[a-zA-Z_]\w*)(?P<define>(?:\\\r?\n|[^\n])*)
+    | `define\b(?P<baddefine>(?:\\\r?\n|[^\n])*)
     | `undef[ \t]+(?P<undef>[a-zA-Z_]\w*)
     | `(?P<cond>ifdef|ifndef|elsif)\b(?:\s*(?P<cname>[a-zA-Z_]\w*))?
     | `(?P<condend>else|endif)\b
@@ -135,6 +137,9 @@ class Macro:
 Macros = Mapping[str, Macro]
 """Macros by name."""
 
+RE_DEFINE_NAME = re.compile(r"[a-zA-Z_]\w*(?:\(\s*(?:[a-zA-Z_]\w*\s*(?:,\s*[a-zA-Z_]\w*\s*)*)?\))?")
+"""Name of a macro, with its parameters, if it is function-like: `NAME`, `MAX(a, b)`."""
+
 
 @dataclass
 class _Cond:
@@ -190,16 +195,24 @@ class _Preprocessor:
         self.segments: list[Segment] = []
         self.out_len = 0
         self.call: Segment | None = None
-        # problems are located at the outermost directive or macro call: its range within the main text.
-        # `smap` creates the location. Without, problems have no location.
+        # Problems within the main text are located at the outermost directive or macro call: its range within
+        # the main text. `smap` creates the location.
         self.site: tuple[int, int] | None = None
         self.smap: SourceMap | None = None
+        # Problems within an included file (or a file with macros) are located within it: the texts of the files
+        # which are just read, and the current directive within the innermost one (text, start, end, file).
+        self.file_texts: list[str] = []
+        self.file_site: tuple[str, int, int, str] | None = None
+        # location of the definitions which made a macro ambiguous
+        self.conflicts: dict[str, tuple[Location | None, str]] = {}
 
     def process_file(self, file_path: Path, out: list[str] | None = None) -> None:
         """Process the file at `file_path`."""
         text = read_text(file_path)
         self.including.append(file_path.resolve())
+        self.file_texts.append(text)
         self.process(text, str(file_path), file_path.parent, out)
+        self.file_texts.pop()
         self.including.pop()
 
     def process(self, text: str, context: str, basedir: Path | None = None, out: list[str] | None = None) -> None:  # noqa: C901, PLR0912
@@ -230,14 +243,21 @@ class _Preprocessor:
                 outermost = self.site is None
                 if outermost:
                     self.site = (start, mat.end())
+                file_site = self.file_site
+                if self.file_texts and text is self.file_texts[-1]:
+                    self.file_site = (text, start, mat.end(), context)
                 if kind == "macro":
                     pos = self._macro(text, mat, pos, context, basedir, out)
                 elif kind == "define":
                     self._define(mat.group("dname"), mat.group("define"), context)
+                elif kind == "baddefine":
+                    statement = shorten(mat.group())
+                    self._report("macro-bad-define", f"cannot parse definition '{statement}'. Skipped.", context)
                 elif kind == "undef":
                     self._undef(mat.group("undef"))
                 else:
                     self._include(mat.group("include"), context, basedir)
+                self.file_site = file_site
                 if outermost:
                     self.site = None
         if out is not None and self.state != _INACTIVE:
@@ -269,9 +289,23 @@ class _Preprocessor:
 
     def _report(self, code: str, message: str, context: str) -> None:
         """Report problem `code` within `context` (the main text or an included file)."""
-        loc = self.smap.source_location(*self.site) if self.smap and self.site else None
-        file = "" if context == self.diagnostics.context else context
+        loc, file = self._where(context)
         self.diagnostics.add(code, message, loc, file=file)
+
+    def _where(self, context: str) -> tuple[Location | None, str]:
+        """Location and file of a problem within `context`, at the current directive or macro call.
+
+        The problem is located where it is: `file` is empty for the main text, `loc` is within `file`.
+        """
+        if context == self.diagnostics.context:
+            # main text: at the outermost directive or macro call
+            loc = self.smap.source_location(*self.site) if self.smap and self.site else None
+            return loc, ""
+        if self.file_site is None:
+            # text, which is no file
+            return None, ""
+        text, start, end, file = self.file_site
+        return _location(text, start, end), file
 
     def _emit(
         self, out: list[str], chunk: str, src_start: int, src_end: int | None = None, macro: str | None = None
@@ -382,6 +416,7 @@ class _Preprocessor:
         elif name not in self.ambiguous and self.macros.setdefault(name, replace(macro, conditional=True)) != macro:
             LOGGER.debug("%s: macro `%s has conflicting definitions.", context, name)
             self.ambiguous.add(name)
+            self.conflicts[name] = self._where(context)
             del self.macros[name]
 
     def _undef(self, name: str) -> None:
@@ -464,14 +499,14 @@ def collect_defines(
     file_paths: Iterable[Path] = (),
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
-) -> dict[str, Macro]:
-    """Collect all `` `define `` macros from `texts` and `file_paths`, in the given order.
+) -> tuple[dict[str, Macro], tuple[Diagnostic, ...]]:
+    """Collect all `` `define `` macros from `texts` and `file_paths`, in the given order. Return them and the problems.
 
     Included files are searched next to the including file and in `inc_dirs`.
     A macro which is defined with different content under unknown conditions is ambiguous and therefore skipped.
     """
-    # the problems are just logged
-    diagnostics = Diagnostics("<defines>")
+    # problems of the project: located within their file
+    diagnostics = Diagnostics("")
     preproc = _Preprocessor(diagnostics, inc_dirs=inc_dirs, resolve_ifdefs=resolve_ifdefs)
     for text in texts:
         preproc.process(text, "<text>")
@@ -480,8 +515,9 @@ def collect_defines(
         preproc.process_file(file_path)
         preproc.reset_conds()
     for name in sorted(preproc.ambiguous):
-        diagnostics.add("macro-ambiguous", f"macro `{name} has conflicting definitions. Skipped.")
-    return preproc.macros
+        loc, file = preproc.conflicts.get(name, (None, ""))
+        diagnostics.add("macro-ambiguous", f"macro `{name} has conflicting definitions. Skipped.", loc, file=file)
+    return preproc.macros, tuple(diagnostics.items)
 
 
 def expand(
@@ -688,3 +724,12 @@ def defined_names(file_paths: Iterable[Path], inc_dirs: Iterable[Path] = ()) -> 
                         todo.append(directory / name)
                         break
     return frozenset(names)
+
+
+def _location(text: str, start: int, end: int) -> Location:
+    """Location of `text[start:end]`."""
+    line = text.count("\n", 0, start) + 1
+    col = start - text.rfind("\n", 0, start)
+    end_line = line + text.count("\n", start, end)
+    end_col = end - text.rfind("\n", 0, end)
+    return Location(line=line, col=col, end_line=end_line, end_col=end_col)

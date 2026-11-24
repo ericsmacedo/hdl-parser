@@ -26,9 +26,9 @@ import logging
 import re
 from pathlib import Path
 
-from pytest import fixture, mark
+from pytest import fixture, mark, raises
 
-from hdl_parser import HierarchyNode, Module, Project, Use, parse_file
+from hdl_parser import HierarchyNode, Location, Module, Project, Use, parse_file
 from hdl_parser import project as project_module
 
 from .conftest import PRJ_PATH
@@ -160,7 +160,7 @@ def test_missing_and_unreadable_files(design, caplog):
     assert none.modules == directory.modules == ()
     assert [module.name for module in leaf.modules] == ["leaf"]
     assert (vhdl.lang, vhdl.diagnostics[0].code) == ("vhdl", "file-not-found")
-    assert "ERROR" in caplog.text
+    assert {record.levelno for record in caplog.records} == {logging.DEBUG}
     assert "rtl/none.sv: file not found." in caplog.text
 
 
@@ -410,6 +410,59 @@ def test_defines(tmp_path):
         ("b", "", ()),
     ]
     assert project.settings.defines == {"WITH_A": "", "WIDTH": "8"}
+    assert project.diagnostics == ()
+
+
+@mark.parametrize(
+    "defines, message",
+    (
+        ({"P(": "1"}, "'P(' of 'defines' is no macro name."),
+        ({"1X": "2"}, "'1X' of 'defines' is no macro name."),
+        ({"A": "1\n`define B"}, "value of 'A' of 'defines' has more than one line."),
+    ),
+)
+def test_defines_invalid(tmp_path, defines, message):
+    """Defines Which Cannot Be Defined Are An Error, Like Other Invalid Settings."""
+    with raises(ValueError, match=re.escape(message)):
+        Project.from_dir(tmp_path, defines=defines)
+
+
+def test_defines_function_like(tmp_path):
+    """A Function-Like Macro Is Defined By Its Name With Parameters."""
+    _write(tmp_path, {"top.sv": "module top (input [`MAX(3, 7):0] a);\nendmodule\n"})
+    project = Project.from_dir(tmp_path, defines={"MAX(a, b)": "b"}, expand_macros=True)
+    assert project.files[0].modules[0].ports[0].dim == "[7:0]"
+    assert project.diagnostics == ()
+
+
+def test_filelist_bad_define(tmp_path):
+    """A Define Of A Filelist Without Valid Name Is A Problem Of The Filelist."""
+    _write(tmp_path, {"top.sv": "module top;\nendmodule\n"})
+    (tmp_path / "design.f").write_text("top.sv\n+define+1X=2\n")
+    project = Project.from_filelist(tmp_path / "design.f", expand_macros=True)
+    assert project.settings.defines == {}
+    assert [(diag.code, diag.message, diag.loc, diag.file) for diag in project.diagnostics] == [
+        (
+            "macro-bad-define",
+            "cannot parse definition '1X=2'. Skipped.",
+            Location(line=2, col=1, end_line=2, end_col=13),
+            "design.f",
+        )
+    ]
+
+
+def test_include_diagnostics_relative(tmp_path, caplog):
+    """The Included File Of A Diagnostic Is Relative To The Root, Like The Log Message."""
+    _write(
+        tmp_path, {"rtl/top.sv": '`include "inc.svh"\nmodule top;\nendmodule\n', "rtl/inc.svh": '`include "nope.svh"\n'}
+    )
+    project = Project.from_dir(tmp_path, expand_macros=True)
+    top = next(file for file in project.files if file.file_id == "rtl/top.sv")
+    assert [(diag.code, diag.file) for diag in top.diagnostics] == [("include-not-found", "rtl/inc.svh")]
+    messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+    assert (
+        "WARNING rtl/top.sv: rtl/inc.svh:1:1: included file 'nope.svh' not found. Its macros are unknown." in messages
+    )
 
 
 def test_json(design):
@@ -735,6 +788,22 @@ def _cached(tmp_path, **kwargs):
     return Project.from_dir(tmp_path, expand_macros=True, inc_dirs=[tmp_path / "inc"], cache=True, **kwargs)
 
 
+def test_cache_traced(tmp_path, caplog):
+    """The Problems Of Files Taken From The Cache Are Traced Like The Ones Of Parsed Files."""
+    _write(tmp_path, {"top.sv": '`include "missing.svh"\nmodule top;\nendmodule\n'})
+
+    def messages():
+        found = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+        caplog.clear()
+        return found
+
+    _cached(tmp_path)
+    cold = messages()
+    assert cold == ["WARNING top.sv:1:1: included file 'missing.svh' not found. Its macros are unknown."]
+    _cached(tmp_path)
+    assert messages() == cold
+
+
 def test_cache(tmp_path, parsed):
     """Files Are Parsed Once. The Result Is The Same."""
     _write(tmp_path, CACHED)
@@ -878,7 +947,8 @@ def _jobs(tmp_path, jobs, **kwargs):
 
 
 def _messages(caplog) -> list[tuple[int, str]]:
-    return [(record.levelno, record.getMessage()) for record in caplog.records if record.levelno > logging.DEBUG]
+    records = caplog.records
+    return [(record.levelno, record.getMessage()) for record in records if record.name == "hdl_parser._diagnostics"]
 
 
 @mark.parametrize("jobs", (2, None))
@@ -886,11 +956,11 @@ def test_jobs(tmp_path, caplog, monkeypatch, jobs):
     """Several Processes Give The Same Result And The Same Messages."""
     monkeypatch.setattr(project_module, "_cpu_count", lambda: 3)
     _many(tmp_path)
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         serial = _jobs(tmp_path, 1)
     expected = _messages(caplog)
     assert any("nowhere.svh" in message for _, message in expected)
-    assert any(message == "rtl/missing.sv: file not found." for _, message in expected)
+    assert any(message == "ERROR rtl/missing.sv: file not found." for _, message in expected)
     caplog.clear()
 
     pools = []
@@ -901,7 +971,7 @@ def test_jobs(tmp_path, caplog, monkeypatch, jobs):
         return original(*args, **kwargs)
 
     monkeypatch.setattr(project_module, "ProcessPoolExecutor", executor)
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         parallel = _jobs(tmp_path, jobs)
     assert pools == [jobs or 3]
     assert parallel == serial

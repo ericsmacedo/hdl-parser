@@ -55,7 +55,7 @@ def _ports(text, **kwargs):
 
 def test_define_object_like():
     """Macro Without Arguments."""
-    macros = parse_defines_text("`define WIDTH 8\n`define EMPTY\n`define EXPR (WIDTH + 1) // comment\n")
+    macros = parse_defines_text("`define WIDTH 8\n`define EMPTY\n`define EXPR (WIDTH + 1) // comment\n").macros
     assert macros == {
         "WIDTH": Macro(name="WIDTH", body="8"),
         "EMPTY": Macro(name="EMPTY", body=""),
@@ -66,7 +66,9 @@ def test_define_object_like():
 
 def test_define_function_like():
     """Macro With Arguments."""
-    macros = parse_defines_text('`define PORT(name, width=8, msg="a,b") input [width-1:0] name\n`define NOARGS() x\n')
+    macros = parse_defines_text(
+        '`define PORT(name, width=8, msg="a,b") input [width-1:0] name\n`define NOARGS() x\n'
+    ).macros
     assert macros == {
         "PORT": Macro(
             name="PORT", body="input [width-1:0] name", params=(("name", None), ("width", "8"), ("msg", '"a,b"'))
@@ -82,7 +84,7 @@ def test_define_multiline():
         "    input  a, // line comment \\\n"
         "    output b  /* block comment */\n"
         "wire not_part_of_macro;\n"
-    )
+    ).macros
     assert macros["PORTS"].body == "input  a, \n    output b  /* block comment */"
 
 
@@ -90,7 +92,7 @@ def test_define_in_comment_or_string():
     """Defines Within Comments Or Strings Are No Defines."""
     macros = parse_defines_text(
         '// `define A 1\n/*\n`define B 2\n*/\ninitial $display("`define C 3");\n`define D "//"\n'
-    )
+    ).macros
     assert macros == {"D": Macro(name="D", body='"//"')}
 
 
@@ -100,7 +102,7 @@ def test_define_conflict(caplog):
         "`ifdef FPGA\n`define W 8\n`else\n`define W 16\n`endif\n"
         "`define SAME 1\n`ifdef A\n`define SAME 1 // again\n`endif\n"
     )
-    macros = parse_defines_text(text)
+    macros = parse_defines_text(text).macros
     assert macros == {"SAME": Macro(name="SAME", body="1")}
     assert "macro `W has conflicting definitions" in caplog.text
 
@@ -111,7 +113,7 @@ def test_define_order():
         "`ifdef FPGA\n`define W 8\n`else\n`define W 16\n`endif\n`define W 32\n"
         "`define X 1\n`define X 2\n`define Y\n`undef Y\n`undef Z\n"
     )
-    assert parse_defines_text(text) == {"W": Macro(name="W", body="32"), "X": Macro(name="X", body="2")}
+    assert parse_defines_text(text).macros == {"W": Macro(name="W", body="32"), "X": Macro(name="X", body="2")}
     # in between
     text = (
         "`define P input a\nmodule m (`P);\nendmodule\n"
@@ -125,7 +127,7 @@ def test_define_order():
 
 def test_define_broken(caplog):
     """Defines Which Cannot Be Parsed Are Skipped."""
-    assert parse_defines_text("`define A(x y\n`define B(1) y\n`define C 1\n") == {"C": Macro(name="C", body="1")}
+    assert parse_defines_text("`define A(x y\n`define B(1) y\n`define C 1\n").macros == {"C": Macro(name="C", body="1")}
     assert "cannot parse definition of macro `A" in caplog.text
     assert "cannot parse definition of macro `B" in caplog.text
 
@@ -136,13 +138,54 @@ def test_parse_defines(tmp_path):
     one.write_text("`define ONE 1")
     two = tmp_path / "two.svh"
     two.write_text("`define TWO 2\n")
-    assert parse_defines() == {}
-    assert parse_defines(one, str(two)) == {"ONE": Macro(name="ONE", body="1"), "TWO": Macro(name="TWO", body="2")}
+    assert parse_defines().macros == {}
+    assert parse_defines(one, str(two)).macros == {
+        "ONE": Macro(name="ONE", body="1"),
+        "TWO": Macro(name="TWO", body="2"),
+    }
+
+
+def _diags(defines):
+    return [
+        (diag.code, diag.loc and (diag.loc.line, diag.loc.col, diag.loc.end_col), diag.file)
+        for diag in defines.diagnostics
+    ]
+
+
+def test_parse_defines_diagnostics(tmp_path):
+    """Problems Of The Defines Are Returned, Located Within The File They Are In."""
+    defs = tmp_path / "defs.svh"
+    defs.write_text(
+        '`define WIDTH 8\n`define 1BAD 3\n`include "missing.svh"\n`include "inc.svh"\n'
+        "`ifdef X\n`define W 1\n`else\n`define W 2\n`endif\n"
+    )
+    inc = tmp_path / "inc.svh"
+    inc.write_text("// comment\n  `define P(x 1\n")
+    defines = parse_defines(defs)
+    assert defines.macros == {"WIDTH": Macro(name="WIDTH", body="8")}
+    assert _diags(defines) == [
+        ("macro-bad-define", (2, 1, 15), str(defs)),
+        ("include-not-found", (3, 1, 23), str(defs)),
+        ("macro-bad-define", (2, 3, 16), str(inc)),
+        ("macro-ambiguous", (8, 1, 12), str(defs)),
+    ]
+    assert defines.diagnostics[0].message == "cannot parse definition '`define 1BAD 3'. Skipped."
+    assert defines.diagnostics[2].message == "cannot parse definition of macro `P. Skipped."
+    assert defines.diagnostics[3].message == "macro `W has conflicting definitions. Skipped."
+
+
+def test_parse_defines_text_diagnostics(caplog):
+    """Problems Of Text Have No Location. They Are Logged At DEBUG Level Only."""
+    defines = parse_defines_text("`define A(x y\n`define A 1\n`A(\n")
+    assert _diags(defines) == [("macro-bad-define", None, "")]
+    assert [
+        (record.levelno, record.getMessage()) for record in caplog.records if record.name == "hdl_parser._diagnostics"
+    ] == [(logging.DEBUG, "WARNING cannot parse definition of macro `A. Skipped.")]
 
 
 def test_parse_defines_example():
     """Include Guard Does Not Harm."""
-    macros = parse_defines(MACROS_SVH)
+    macros = parse_defines(MACROS_SVH).macros
     assert plain(tuple(macros)) == ("MACROS_SVH", "CLK_RST_PORTS", "STREAM_PORTS")
     assert plain(macros["STREAM_PORTS"].params) == (
         ("prefix", None),
@@ -180,7 +223,7 @@ def test_define_after_use():
 
 def test_external_macros():
     """Macros Handed Over."""
-    macros = parse_defines_text("`define PORTS(n) input logic n``_i, output logic n``_o")
+    macros = parse_defines_text("`define PORTS(n) input logic n``_i, output logic n``_o").macros
     text = "module m (`PORTS(a), `PORTS( b ));\nendmodule\n"
     assert _ports(text, macros=macros) == ["input logic a_i", "output logic a_o", "input logic b_i", "output logic b_o"]
 
@@ -189,7 +232,7 @@ def test_external_macros_precedence():
     """Macros Handed Over Take Precedence Over Macros In File."""
     text = "`define PORTS input a\nmodule m (`PORTS);\nendmodule\n"
     assert _ports(text) == ["input a"]
-    assert _ports(text, macros=parse_defines_text("`define PORTS input b")) == ["input b"]
+    assert _ports(text, macros=parse_defines_text("`define PORTS input b").macros) == ["input b"]
 
 
 def test_args():
@@ -219,7 +262,7 @@ endmodule
 
 def test_arg_is_not_replaced_in_string():
     """Arguments Are Replaced In Stringification Only."""
-    macros = parse_defines_text('`define M(x) parameter string A = "x", parameter string B = `"x``_y`"')
+    macros = parse_defines_text('`define M(x) parameter string A = "x", parameter string B = `"x``_y`"').macros
     file = parse_text("module m #(`M(foo)) ();\nendmodule\n", macros=macros)
     assert [(param.name, param.default) for param in file.modules[0].params] == [("A", '"x"'), ("B", '"foo_y"')]
 
@@ -362,7 +405,7 @@ module m #(
     `BODY_MACRO(q)
 endmodule
 """
-    with caplog.at_level(logging.WARNING):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         module = parse_text(text, file_path="file.sv").modules[0]
     assert plain(module.unresolved_macros) == (
         MacroCall(name="PARAMS", args=("A", "f(1, 2)")),
@@ -437,7 +480,7 @@ def test_example():
     module = parse_text(text).modules[0]
     assert [port.name for port in module.ports] == ["busy_o"]
     assert [macro.name for macro in module.unresolved_macros] == ["CLK_RST_PORTS", "STREAM_PORTS", "STREAM_PORTS"]
-    assert _ports(text, macros=parse_defines(MACROS_SVH)) == EXAMPLE_PORTS
+    assert _ports(text, macros=parse_defines(MACROS_SVH).macros) == EXAMPLE_PORTS
     assert _ports(text, inc_dirs=[MACROS_SVH.parent]) == EXAMPLE_PORTS
 
 
@@ -495,21 +538,21 @@ def test_include(tmp_path, caplog):
     (tmp_path / "comment.svh").write_text("`define A input not_included\n")
 
     # 'common.svh' is not found
-    with caplog.at_level(logging.INFO):
+    with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         module = parse_file(top).modules[0]
     assert [port.name for port in module.ports] == ["a"]
     assert plain(module.unresolved_macros) == (MacroCall(name="B"),)
     assert "included file 'missing.svh' not found" in caplog.text
-    assert "local.svh: included file 'common.svh' not found" in caplog.text
+    assert "local.svh:1:1: included file 'common.svh' not found" in caplog.text
 
     for inc_dirs in ([inc], [str(inc)], [tmp_path / "missing", inc]):
         module = parse_file(top, inc_dirs=inc_dirs).modules[0]
         assert [port.name for port in module.ports] == ["a", "b"]
         assert plain(module.unresolved_macros) == ()
 
-    assert plain(tuple(parse_defines(top, inc_dirs=[inc]))) == ("B", "A")
-    assert plain(tuple(parse_defines_text(top.read_text(), inc_dirs=[tmp_path, inc]))) == ("B", "A")
-    assert parse_defines_text(top.read_text()) == {}
+    assert plain(tuple(parse_defines(top, inc_dirs=[inc]).macros)) == ("B", "A")
+    assert plain(tuple(parse_defines_text(top.read_text(), inc_dirs=[tmp_path, inc]).macros)) == ("B", "A")
+    assert parse_defines_text(top.read_text()).macros == {}
 
 
 def test_include_precedence(tmp_path):
@@ -519,7 +562,7 @@ def test_include_precedence(tmp_path):
     top.write_text('`include "inc.svh"\n`define P input b\nmodule top (`P, `Q);\nendmodule\n')
     module = parse_file(top).modules[0]
     assert [port.name for port in module.ports] == ["b", "q"]
-    module = parse_file(top, macros=parse_defines_text("`define P input c")).modules[0]
+    module = parse_file(top, macros=parse_defines_text("`define P input c").macros).modules[0]
     assert [port.name for port in module.ports] == ["c", "q"]
 
 
@@ -530,7 +573,7 @@ def test_include_encoding(tmp_path):
     top.write_text('`include "inc.svh"\nmodule top (`P);\nendmodule\n')
     port = parse_file(top).modules[0].ports[0]
     assert plain((port.name, port.comment)) == ("a", ("\xe4",))
-    assert parse_defines(tmp_path / "inc.svh")["P"].body == "input a /* \xe4 */"
+    assert parse_defines(tmp_path / "inc.svh").macros["P"].body == "input a /* \xe4 */"
 
 
 def test_include_unreadable(tmp_path, caplog, monkeypatch):
@@ -556,8 +599,9 @@ def test_conflict_is_reported_on_use(caplog):
         "module m (input [`W:0] a, input [`W:0] b);\nendmodule\n"
     )
     assert _ports(text) == ["input [`W:0] a", "input [`W:0] b"]
-    assert caplog.text.count("macro `W has conflicting definitions. Not expanded.") == 1
-    assert "`X" not in caplog.text
+    messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
+    assert sum("macro `W has conflicting definitions. Not expanded." in message for message in messages) == 1
+    assert not any("`X" in message for message in messages)
 
 
 def test_unresolved_multiline_args():
@@ -599,7 +643,7 @@ def test_off_by_default(caplog):
     ]
 
     with raises(ValueError, match="'macros' requires 'expand_macros=True'"):
-        hdl_parser.parse_text(text, macros=parse_defines(MACROS_SVH))
+        hdl_parser.parse_text(text, macros=parse_defines(MACROS_SVH).macros)
 
 
 def test_comments_in_args():

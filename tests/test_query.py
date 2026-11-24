@@ -226,16 +226,41 @@ def test_diagnostics(small):
 
 
 def test_diagnostics_included(tmp_path):
-    """The Included File Is Named Separately, A Filelist Problem Has No Parsed File."""
-    (tmp_path / "inc.svh").write_text("`define BAD(\n")
-    (tmp_path / "top.sv").write_text('`include "inc.svh"\nmodule top; endmodule\n')
-    (tmp_path / "top.f").write_text("top.sv\n-unknown\n")
+    """Every Problem Is Located Where It Is. One Within An Included File Is Reported Once, By The Files Parsed."""
+    (tmp_path / "inc.svh").write_text("// bad\n`define BAD(\n")
+    for name in ("top", "other"):
+        (tmp_path / f"{name}.sv").write_text(f'`include "inc.svh"\nmodule {name}; endmodule\n')
+    (tmp_path / "top.f").write_text("top.sv\nother.sv\n-unknown\n")
     project = Project.from_filelist(tmp_path / "top.f", expand_macros=True)
-    result = query.diagnostics(project)["result"]
-    by_code = {entry["code"]: entry for entry in result}
-    assert by_code["filelist-unknown"]["file"] == "top.f"
-    assert by_code["macro-bad-define"]["file"] == "top.sv"
-    assert by_code["macro-bad-define"]["included"] == "inc.svh"
+    answer = query.diagnostics(project)
+    assert answer["result"] == [
+        {
+            "file": "top.f",
+            "code": "filelist-unknown",
+            "severity": "warning",
+            "message": "option '-unknown' is not understood.",
+            "loc": {"line": 3, "col": 1, "end_line": 3, "end_col": 9},
+        },
+        {
+            "file": "inc.svh",
+            "code": "macro-bad-define",
+            "severity": "warning",
+            "message": "cannot parse definition of macro `BAD. Skipped.",
+            "loc": {"line": 2, "col": 1, "end_line": 2, "end_col": 13},
+            "parsed": ["top.sv", "other.sv"],
+        },
+    ]
+    assert answer["counts"] == {"error": 0, "warning": 2, "info": 0}
+    assert query.diagnostics(project, group_by="file")["result"] == [
+        {"file": "top.f", "count": 1},
+        {"file": "inc.svh", "count": 1},
+    ]
+    # the problems located in a file, or found by parsing it
+    for name, parsed in (("inc.svh", ["top.sv", "other.sv"]), ("other.sv", ["other.sv"]), ("o*.sv", ["other.sv"])):
+        (entry,) = query.diagnostics(project, file=name)["result"]
+        assert entry["parsed"] == parsed
+    assert query.diagnostics(project, exclude=["inc.svh"])["total"] == 1
+    assert query.diagnostics(project, exclude=["top.sv"])["result"][1]["parsed"] == ["other.sv"]
 
 
 @mark.parametrize("limit", (None, 0, 5))

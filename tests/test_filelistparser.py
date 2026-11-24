@@ -98,20 +98,27 @@ rtl/top.sv
 """
     )
     filelist = read_filelist(tmp_path / "design.f")
-    assert filelist.files == [
+    assert list(filelist.files) == [
         tmp_path / "rtl" / "top.sv",
         tmp_path / "rtl" / "with space.sv",
         tmp_path / "rtl" / "sv.sv",
         tmp_path / "sub" / "sub.sv",
     ]
-    assert filelist.inc_dirs == [tmp_path / "inc1", tmp_path / "inc2", tmp_path / "inc3", tmp_path / "sub" / "inc"]
-    # a `+` ends a value
-    assert filelist.defines == {"SYNTHESIS": "", "WIDTH": "8", "EXPR": "(1", "2)": "", "TECH": "generic", "EMPTY": ""}
-    assert filelist.lib_files == [tmp_path / "lib" / "cells.v"]
-    assert filelist.lib_dirs == [tmp_path / "lib" / "dir", tmp_path / "lib" / "other"]
-    assert filelist.lib_exts == [".v", ".sv"]
+    assert list(filelist.inc_dirs) == [
+        tmp_path / "inc1",
+        tmp_path / "inc2",
+        tmp_path / "inc3",
+        tmp_path / "sub" / "inc",
+    ]
+    # a `+` ends a value. The remainder is no macro name.
+    assert filelist.defines == {"SYNTHESIS": "", "WIDTH": "8", "EXPR": "(1", "TECH": "generic", "EMPTY": ""}
+    assert list(filelist.lib_files) == [tmp_path / "lib" / "cells.v"]
+    assert list(filelist.lib_dirs) == [tmp_path / "lib" / "dir", tmp_path / "lib" / "other"]
+    assert list(filelist.lib_exts) == [".v", ".sv"]
     # a filelist naming itself is read once
-    assert filelist.diagnostics == []
+    assert _codes(filelist) == [("macro-bad-define", 9)]
+    assert filelist.diagnostics[0].message == "cannot parse definition '2)'. Skipped."
+    assert filelist.diagnostics[0].file == str(tmp_path / "design.f")
 
 
 def test_read_filelist_variables(tmp_path):
@@ -120,8 +127,8 @@ def test_read_filelist_variables(tmp_path):
         "$ROOT/a.sv\n${ROOT}/b.sv\n$(ROOT)/c.sv\n$NONE/d.sv\n+incdir+${NONE}/inc\n$OTHER/e.sv\n"
     )
     filelist = read_filelist(tmp_path / "design.f", env={"ROOT": "/root"})
-    assert filelist.files == [_rooted(tmp_path, f"root/{name}.sv") for name in "abc"]
-    assert filelist.inc_dirs == []
+    assert list(filelist.files) == [_rooted(tmp_path, f"root/{name}.sv") for name in "abc"]
+    assert list(filelist.inc_dirs) == []
     assert _codes(filelist) == [("filelist-variable", 4), ("filelist-variable", 6)]
     diag = filelist.diagnostics[0]
     assert diag.message == "environment variable 'NONE' is not defined. All lines using it are skipped."
@@ -134,23 +141,23 @@ def test_read_filelist_backslash(tmp_path):
         "rtl\\top.sv\n+incdir+$INC\n-y $LIB\n\"${LIB}\\cells.v\"\n'my dir\\a.sv'\n", encoding="utf-8"
     )
     filelist = read_filelist(tmp_path / "design.f", env={"INC": "C:\\work\\inc", "LIB": "my lib\\'dir'"})
-    assert filelist.diagnostics == []
+    assert list(filelist.diagnostics) == []
     assert [str(path) for path in filelist.files] == [
         str(tmp_path / "rtl\\top.sv"),
         str(tmp_path / "my lib\\'dir'\\cells.v"),
         str(tmp_path / "my dir\\a.sv"),
     ]
-    assert filelist.inc_dirs == [tmp_path / "C:\\work\\inc"]
-    assert filelist.lib_dirs == [tmp_path / "my lib\\'dir'"]
+    assert list(filelist.inc_dirs) == [tmp_path / "C:\\work\\inc"]
+    assert list(filelist.lib_dirs) == [tmp_path / "my lib\\'dir'"]
 
 
 def test_read_filelist_no_argument(tmp_path):
     """An Option Without Its Argument Is Reported, And Adds Nothing."""
     (tmp_path / "design.f").write_text("a.sv\n-f\n-v\n-y\n-incdir\n-D\n+incdir+\n+define+\n+define+=1\n")
     filelist = read_filelist(tmp_path / "design.f")
-    assert filelist.files == [tmp_path / "a.sv"]
-    assert (filelist.inc_dirs, filelist.lib_files, filelist.lib_dirs, filelist.defines) == ([], [], [], {})
-    assert _codes(filelist) == [("filelist-unknown", number) for number in range(2, 7)]
+    assert list(filelist.files) == [tmp_path / "a.sv"]
+    assert (filelist.inc_dirs, filelist.lib_files, filelist.lib_dirs, filelist.defines) == ((), (), (), {})
+    assert _codes(filelist) == [*(("filelist-unknown", number) for number in range(2, 7)), ("macro-bad-define", 9)]
     assert filelist.diagnostics[0].message == "option '-f' has no argument."
 
 
@@ -158,7 +165,7 @@ def test_read_filelist_environment(tmp_path, monkeypatch):
     """The Environment Of The Process Is Used By Default."""
     monkeypatch.setenv("HDL_PARSER_TEST_ROOT", "/from/env")
     (tmp_path / "design.f").write_text("$HDL_PARSER_TEST_ROOT/a.sv\n")
-    assert read_filelist(tmp_path / "design.f").files == [_rooted(tmp_path, "from/env/a.sv")]
+    assert list(read_filelist(tmp_path / "design.f").files) == [_rooted(tmp_path, "from/env/a.sv")]
 
 
 def test_read_filelist_problems(tmp_path, caplog):
@@ -184,31 +191,31 @@ def test_read_filelist_problems(tmp_path, caplog):
     assert "design.f:1:1: " in caplog.text
     missing = read_filelist(tmp_path / "none.f")
     assert _codes(missing) == [("filelist-not-found", 0)]
-    assert missing.files == []
+    assert list(missing.files) == []
 
 
 def test_veer_filelist():
     """A Real Filelist With Macros, Include Directories, Library Files And Directories."""
     filelist = read_filelist(FILELISTS / "veer_el2" / "flist", env={"RV_ROOT": "/veer"})
-    assert filelist.diagnostics == []
+    assert list(filelist.diagnostics) == []
     assert len(filelist.files) == 52
     assert filelist.files[0] == _rooted(FILELISTS, "veer/design/lib/el2_assert.sv")
     assert filelist.defines == {"RV_OPENSOURCE": ""}
-    assert filelist.inc_dirs == [_rooted(FILELISTS, "veer/testbench"), _rooted(FILELISTS, "veer/design/include")]
+    assert list(filelist.inc_dirs) == [_rooted(FILELISTS, "veer/testbench"), _rooted(FILELISTS, "veer/design/include")]
     assert [path.name for path in filelist.lib_files] == [
         "beh_lib.sv",
         "mem_lib.sv",
         "axi_lsu_dma_bridge.sv",
         "user_cells.sv",
     ]
-    assert filelist.lib_dirs == [_rooted(FILELISTS, "veer/design/lib")]
-    assert filelist.lib_exts == [".v", ".sv"]
+    assert list(filelist.lib_dirs) == [_rooted(FILELISTS, "veer/design/lib")]
+    assert list(filelist.lib_exts) == [".v", ".sv"]
     # the library directory within a comment is none
     assert "SYNOPSYS_SYN_ROOT" in (FILELISTS / "veer_el2" / "flist").read_text()
 
     undefined = read_filelist(FILELISTS / "veer_el2" / "flist", env={})
     assert _codes(undefined) == [("filelist-variable", 4)]
-    assert undefined.files == []
+    assert list(undefined.files) == []
     assert undefined.defines == {"RV_OPENSOURCE": ""}
 
 
@@ -226,10 +233,10 @@ def test_cva6_filelist():
 def test_ibex_filelists():
     """Real Filelists: Plain Names, And Variables With Include Directories."""
     core = read_filelist(IBEX / "ibex_core.f")
-    assert core.diagnostics == []
+    assert list(core.diagnostics) == []
     assert len(core.files) == 17
     assert all(path.is_file() for path in core.files)
     dv = read_filelist(IBEX / "ibex_dv.f", env={"PRJ_DIR": "/ibex", "LOWRISC_IP_DIR": "/lowrisc"})
-    assert dv.diagnostics == []
+    assert list(dv.diagnostics) == []
     assert (len(dv.files), len(dv.inc_dirs)) == (114, 18)
     assert dv.files[0] == _rooted(IBEX, "lowrisc/ip/prim_generic/rtl/prim_pkg.sv")

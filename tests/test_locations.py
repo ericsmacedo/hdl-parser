@@ -198,7 +198,7 @@ module top (
 );
 endmodule
 """
-    macros = parse_defines_text("`define FEATURE")
+    macros = parse_defines_text("`define FEATURE").macros
     mod = parse_text(text, expand_macros=True, macros=macros, resolve_ifdefs=True).modules[0]
     a, c = mod.ports
     assert a.loc == Location(line=3, col=3, end_line=3, end_col=17)

@@ -34,12 +34,16 @@ Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 
 * [hdl_parser.parser.parse_defines][]
 * [hdl_parser.parser.parse_defines_text][]
+
+Both return [Defines][hdl_parser.parser.Defines]: the macros and the problems.
 """
 
 import logging
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Literal, NamedTuple, TypeAlias
+
+import pydantic as pyd
 
 from . import datamodel as dm
 from ._diagnostics import Diagnostics
@@ -61,9 +65,24 @@ LANGMAP: dict[str, Lang] = {
 }
 
 
+class Defines(pyd.BaseModel):
+    """Macros Read From Files Or Text, By [parse_defines][hdl_parser.parser.parse_defines].
+
+    Attributes:
+        macros: Macros by name. To be handed over to [parse_file][hdl_parser.parser.parse_file].
+        diagnostics: Problems. Located within their `file`, the file with macros or the one it includes.
+                     Problems of text have neither `file` nor `loc`.
+    """
+
+    model_config = pyd.ConfigDict(frozen=True, extra="forbid")
+
+    macros: dict[str, Macro] = {}
+    diagnostics: tuple[dm.Diagnostic, ...] = ()
+
+
 def parse_defines(
     *file_paths: Path | str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
-) -> dict[str, Macro]:
+) -> Defines:
     """Read `` `define `` macros from SystemVerilog files.
 
     Args:
@@ -74,20 +93,20 @@ def parse_defines(
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
-        Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
+        The macros (`macros`), to be handed over to [hdl_parser.parser.parse_file][] or
+        [hdl_parser.parser.parse_text][], and the problems (`diagnostics`).
 
     The files are read in the given order, from top to bottom: a later `` `define `` replaces an earlier one,
     `` `undef `` and `` `include `` statements are followed.
     Macros with different definitions under unknown `` `ifdef `` conditions are skipped.
     """
-    return collect_defines(
+    macros, diagnostics = collect_defines(
         file_paths=map(Path, file_paths), inc_dirs=map(Path, inc_dirs), resolve_ifdefs=resolve_ifdefs
     )
+    return Defines(macros=macros, diagnostics=diagnostics)
 
 
-def parse_defines_text(
-    *texts: str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False
-) -> dict[str, Macro]:
+def parse_defines_text(*texts: str, inc_dirs: Iterable[Path | str] = (), resolve_ifdefs: bool = False) -> Defines:
     """Read `` `define `` macros from SystemVerilog text.
 
     Args:
@@ -98,11 +117,13 @@ def parse_defines_text(
         resolve_ifdefs: Resolve `` `ifdef `` conditions on macros which are known to be defined.
 
     Returns:
-        Macros, to be handed over to [hdl_parser.parser.parse_file][] or [hdl_parser.parser.parse_text][].
+        The macros (`macros`), to be handed over to [hdl_parser.parser.parse_file][] or
+        [hdl_parser.parser.parse_text][], and the problems (`diagnostics`, without location).
 
     See [hdl_parser.parser.parse_defines][] for limitations.
     """
-    return collect_defines(texts=texts, inc_dirs=map(Path, inc_dirs), resolve_ifdefs=resolve_ifdefs)
+    macros, diagnostics = collect_defines(texts=texts, inc_dirs=map(Path, inc_dirs), resolve_ifdefs=resolve_ifdefs)
+    return Defines(macros=macros, diagnostics=diagnostics)
 
 
 def parse_file(  # noqa: PLR0913

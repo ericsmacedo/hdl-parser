@@ -68,7 +68,7 @@ def test_select_macro():
     assert [port.name for port in module.ports] == ["clk"]
     assert plain(module.unresolved_macros) == (MacroCall(name="BUS_PORTS"),)
     # handed over. these macros are never touched
-    macros = parse_defines_text("`define USE_AXI")
+    macros = parse_defines_text("`define USE_AXI").macros
     assert _ports("`undef USE_AXI\n" + BUS, macros=macros) == [("awvalid", ()), ("awready", ()), ("clk", ())]
     # off by default
     module = hdl_parser.parse_text("`define USE_AXI\n" + BUS, expand_macros=True).modules[0]
@@ -189,7 +189,7 @@ endmodule
 """
     assert _ports(text) == [("c", ()), ("with_c", ("C",)), ("with_d", ("D",)), ("z", ())]
 
-    macros = parse_defines_text("`ifdef U\n`define C\n`endif\n`define D\n", resolve_ifdefs=True)
+    macros = parse_defines_text("`ifdef U\n`define C\n`endif\n`define D\n", resolve_ifdefs=True).macros
     assert [(macro.name, macro.conditional) for macro in macros.values()] == [("C", True), ("D", False)]
     assert macros["C"] == Macro(name="C", body="")
     assert _lines("`ifdef C\n1\n`endif\n`ifdef D\n2\n`endif", macros=macros) == ["`ifdef C", "1", "`endif", "2"]
@@ -198,11 +198,11 @@ endmodule
 def test_conditional_conflict():
     """A Definition Under An Unknown Condition Conflicts With The One Before."""
     text = "`define W 8\n`ifdef U\n`define W 8\n`define X 1\n`endif\n`ifdef V\n`define W 16\n`define X 1\n`endif\n"
-    macros = parse_defines_text(text + "`ifdef W\n`define W_IS_DEFINED\n`endif\n", resolve_ifdefs=True)
+    macros = parse_defines_text(text + "`ifdef W\n`define W_IS_DEFINED\n`endif\n", resolve_ifdefs=True).macros
     assert [(macro.name, macro.conditional) for macro in macros.values()] == [("X", True), ("W_IS_DEFINED", True)]
     # a definition which is compiled for sure, ends the conflict
-    assert plain(tuple(parse_defines_text(text + "`define W 32\n", resolve_ifdefs=True))) == ("X", "W")
-    assert plain(tuple(parse_defines_text(text + "`undef W\n`undef X\n", resolve_ifdefs=True))) == ()
+    assert plain(tuple(parse_defines_text(text + "`define W 32\n", resolve_ifdefs=True).macros)) == ("X", "W")
+    assert plain(tuple(parse_defines_text(text + "`undef W\n`undef X\n", resolve_ifdefs=True).macros)) == ()
 
 
 def test_guard(tmp_path):
@@ -215,7 +215,7 @@ def test_guard(tmp_path):
         "`ifndef OTHER\n`define NO_GUARD\n`endif\n"
         "`endif\n"
     )
-    macros = parse_defines(tmp_path / "inc.svh", resolve_ifdefs=True)
+    macros = parse_defines(tmp_path / "inc.svh", resolve_ifdefs=True).macros
     assert [(macro.name, macro.conditional) for macro in macros.values()] == [
         ("INC_SVH", False),
         ("USE_AXI", False),
@@ -231,7 +231,7 @@ def test_guard(tmp_path):
     module = parse_file(top).modules[0]
     assert [(port.name, port.dim) for port in module.ports] == [("awvalid", ""), ("awready", ""), ("clk", "[16-1:0]")]
     # the default is not used, if the macro is defined already
-    module = parse_file(top, macros=parse_defines_text("`define WIDTH 4")).modules[0]
+    module = parse_file(top, macros=parse_defines_text("`define WIDTH 4").macros).modules[0]
     assert module.ports[-1].dim == "[4-1:0]"
     # the directives of the guard are kept
     text = "`ifndef M_SV\n`define M_SV\nmodule m (input a);\nendmodule\n`endif\n"
@@ -251,7 +251,7 @@ def test_include(tmp_path):
     (tmp_path / "b.svh").write_text("`define B input b\n")
     module = parse_file(top).modules[0]
     assert [(port.name, port.ifdefs) for port in module.ports] == [("a", ()), ("b", ()), ("z", ())]
-    assert plain(tuple(parse_defines(top, resolve_ifdefs=True))) == ("BEFORE", "A", "AFTER", "B")
+    assert plain(tuple(parse_defines(top, resolve_ifdefs=True).macros)) == ("BEFORE", "A", "AFTER", "B")
 
 
 def test_macro_body():

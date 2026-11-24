@@ -23,11 +23,14 @@
 """Diagnostics.
 
 The preprocessor and the parsers report problems to [Diagnostics][hdl_parser._diagnostics.Diagnostics].
-Every problem becomes a [Diagnostic][hdl_parser.datamodel.Diagnostic] of the parsed file and a log message.
+Every problem becomes a [Diagnostic][hdl_parser.datamodel.Diagnostic] of the parsed file and a log message at
+DEBUG level: the diagnostics are part of the result, the log is for tracing only.
 """
 
 import logging
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 
 from . import datamodel as dm
 
@@ -59,8 +62,6 @@ SEVERITIES: dict[str, dm.Severity] = {
 }
 """Severity of all diagnostic codes. Documented at [Diagnostic][hdl_parser.datamodel.Diagnostic]."""
 
-_LOGLEVELS = {"error": logging.ERROR, "warning": logging.WARNING, "info": logging.INFO}
-
 
 def shorten(text: str, width: int = 40) -> str:
     """Return `text` on a single line, limited to `width` characters. Used to quote source code."""
@@ -68,17 +69,50 @@ def shorten(text: str, width: int = 40) -> str:
     return text if len(text) <= width else f"{text[: width - 3]}..."
 
 
-def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
-    """Log `diagnostic`, found while parsing `context`."""
+def format_diagnostic(context: str, diagnostic: dm.Diagnostic) -> str:
+    """`diagnostic`, found while parsing `context`, as `context:line:col: message`.
+
+    A problem located within an included file: `context: file:line:col: message`.
+    A problem of a project (`context` is empty): `file:line:col: message`.
+    """
     loc = diagnostic.loc
-    where = f"{context}:{loc.line}:{loc.col}" if loc else context
-    if diagnostic.file:
-        where = f"{where}: {diagnostic.file}"
-    LOGGER.log(_LOGLEVELS[diagnostic.severity], "%s: %s", where, diagnostic.message)
+    file = diagnostic.file
+    where = file or context
+    if where and loc:
+        where = f"{where}:{loc.line}:{loc.col}"
+    if file and context and file != context:
+        where = f"{context}: {where}"
+    return f"{where}: {diagnostic.message}" if where else diagnostic.message
+
+
+_SILENT: ContextVar[bool] = ContextVar("silent", default=False)
+
+
+@contextmanager
+def silent() -> Iterator[None]:
+    """Diagnostics are not logged, as the caller logs them itself (see `log_diagnostic`)."""
+    token = _SILENT.set(True)
+    try:
+        yield
+    finally:
+        _SILENT.reset(token)
+
+
+def log_diagnostic(context: str, diagnostic: dm.Diagnostic) -> None:
+    """Log `diagnostic`, found while parsing `context`, at DEBUG level, whatever its severity.
+
+    Every diagnostic is returned to the caller. A library user should not get it on standard error too.
+    The message starts with the severity: `WARNING file:line:col: message`.
+    """
+    LOGGER.debug("%s %s", diagnostic.severity.upper(), format_diagnostic(context, diagnostic))
 
 
 class Diagnostics:
-    """Problems Found While Parsing `context` (the file path, or `<text>`)."""
+    """Problems Found While Parsing `context`.
+
+    `context` is the parsed file, `<text>`, or empty for the problems of a project: they are located within their
+    `file` (a filelist, a file with macros).
+    """
 
     def __init__(self, context: str):
         self.context = context
@@ -88,16 +122,22 @@ class Diagnostics:
         """Report the problem `code` at `loc`. See [Diagnostic][hdl_parser.datamodel.Diagnostic] for the arguments."""
         severity = SEVERITIES[code]
         self.items.append(dm.Diagnostic(code=code, severity=severity, message=message, loc=loc, file=file, item=item))
-        log_diagnostic(self.context, self.items[-1])
+        if not _SILENT.get():
+            log_diagnostic(self.context, self.items[-1])
 
     def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
-        """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""
+        """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in.
+
+        The ones located within an included file follow, by file. They are related to no unit.
+        """
         modules = tuple(units)
 
         def position(loc: dm.Location | None) -> tuple[int, int]:
             return (loc.line, loc.col) if loc else (0, 0)
 
         def module_id(diag: dm.Diagnostic) -> str:
+            if diag.file:
+                return ""
             for mod in modules:
                 if (
                     mod.loc
@@ -109,5 +149,5 @@ class Diagnostics:
 
         return tuple(
             diag if diag.item else diag.model_copy(update={"item": module_id(diag)})
-            for diag in sorted(self.items, key=lambda diag: position(diag.loc))
+            for diag in sorted(self.items, key=lambda diag: (diag.file, position(diag.loc)))
         )
