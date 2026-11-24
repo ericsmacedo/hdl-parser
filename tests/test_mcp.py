@@ -29,6 +29,8 @@ import json
 from hdl_parser import Project
 from hdl_parser._mcp import PROTOCOL_VERSIONS, TOOLS, Server, serve
 
+from .conftest import objects
+
 
 def _project(tmp_path):
     (tmp_path / "top.sv").write_text("module top;\n  sub u_sub ();\nendmodule\n")
@@ -78,7 +80,7 @@ def test_session(tmp_path):
     ]
     result = responses[2]["result"]
     assert result["isError"] is False
-    assert result["structuredContent"]["result"][0]["inst"] == "top.sv:top.u_sub"
+    assert objects(result["structuredContent"]["result"])[0]["inst"] == "top.sv:top.u_sub"
     assert json.loads(result["content"][0]["text"]) == result["structuredContent"]
     assert responses[3]["result"] == {}
 
@@ -157,17 +159,22 @@ def test_annotations_and_checks(tmp_path):
     assert error["structuredContent"]["error"]["code"] == "bad-argument"
     assert server.handle(_call(2, "hierarchy", depth="x"))["result"]["isError"] is True
     assert server.handle(_call(3, "diagnostics"))["result"]["structuredContent"]["total"] == 0
+    error = server.handle(_call(4, "find", pattern="top", kinds=["module"]))["result"]["structuredContent"]
+    assert error["error"]["code"] == "bad-argument"
 
 
 def test_elaborate_tool(tmp_path):
     """Elaborate And Evaluate As Tools."""
     (tmp_path / "top.sv").write_text("module top #(parameter W = 8) (input logic [W-1:0] a);\nendmodule\n")
     server = Server(lambda: Project.from_dir(tmp_path))
-    answer = server.handle(_call(1, "elaborate", top="top", params={"W": 3}))["result"]["structuredContent"]
+    answer = server.handle(_call(1, "elaborate", top="top", param={"W": 3}))["result"]["structuredContent"]
     assert answer["result"]["ports"]["a"]["value"] == 3
+    answer = server.handle(_call(4, "elaborate", top="top", name=["W"]))["result"]["structuredContent"]
+    assert set(answer["result"]["params"]) == {"W"}
+    assert "ports" not in answer["result"] or not answer["result"]["ports"]
     answer = server.handle(_call(2, "evaluate", expr="W * 2", scope="top"))["result"]["structuredContent"]
     assert answer["result"]["value"] == 16
-    assert server.handle(_call(3, "elaborate", top="top", params=[1]))["result"]["isError"] is True
+    assert server.handle(_call(3, "elaborate", top="top", param=[1]))["result"]["isError"] is True
 
 
 def test_detail(tmp_path):
@@ -183,6 +190,18 @@ def test_detail(tmp_path):
             _call(3, "module", name="top", detail="none"),
         )
     )
-    assert compact["result"]["ports"]["columns"] == ["name", "direction", "ptype", "line"]
+    assert compact["result"]["ports"]["columns"] == [
+        "id",
+        "name",
+        "direction",
+        "ptype",
+        "dtype",
+        "dim",
+        "dim_unpacked",
+        "default",
+        "ifdefs",
+        "comment",
+        "line",
+    ]
     assert full["result"]["ports"][0]["id"] == "top.sv:top.a"
     assert bad["error"]["code"] == "bad-argument"

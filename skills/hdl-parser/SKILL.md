@@ -75,10 +75,10 @@ conditions) - judge a path by these.
 
 ## 3. Read the answers right
 
-- **Limited lists:** every list holds 100 entries at most. `omitted` counts what was left out, `total` the full
-  number. Never conclude "there is no X" while something is `omitted`: raise `--limit` (0: all) or filter.
-- **Shape:** a list of objects may come as a table `{"columns": [...], "rows": [[...]]}`; `null` marks a field
-  an item does not have. `--full` (MCP: `detail: "full"`) gives full identifiers, `loc` with columns, and lists
+- **Limited lists:** every list holds 100 entries at most. `omitted` counts what was left out (`module`,
+  `elaborate`: by field in `omitted_by`), `total` the full number. Never conclude "there is no X" while something is `omitted`: raise `--limit` (0: all) or filter.
+- **Shape:** a list of objects is always a table `{"columns": [...], "rows": [[...]]}`, even if it is empty;
+  `null` marks a field an item does not have (its default). Lists are there, even if empty. `--full` (MCP: `detail: "full"`) gives full identifiers, `loc` with columns, and lists
   of objects.
 - **Unknown is not zero:** `elaborate` and `evaluate` never guess. A value which cannot be computed (constant
   functions, assignment patterns `'{...}`) has `unknown` with the reason. Report it as unknown, or compute it

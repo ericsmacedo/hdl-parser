@@ -32,7 +32,7 @@ from hdl_parser import Project, parse_text, query
 from hdl_parser._mcp import Server
 from hdl_parser.cli import cli
 
-from .conftest import PRJ_PATH
+from .conftest import PRJ_PATH, objects
 
 CORPUS = PRJ_PATH / "tests" / "corpus"
 
@@ -422,15 +422,15 @@ def test_cli(runner, design):
     root = str(design.root)
     result = runner.invoke(cli, ["drivers", "top.u_sub.q", root])
     assert result.exit_code == 0
-    assert json.loads(result.stdout)["result"][0]["kind"] == "ff"
+    assert objects(json.loads(result.stdout)["result"])[0]["kind"] == "ff"
     result = runner.invoke(cli, ["loads", "top.u_sub.clk_i", root, "-c"])
-    assert json.loads(result.stdout)["result"][0]["control"] is True
+    assert objects(json.loads(result.stdout)["result"])[0]["control"] is True
     result = runner.invoke(cli, ["trace", "top.a_i", "top.y_o", "--through-regs", root])
     assert json.loads(result.stdout)["found"] is True
     result = runner.invoke(cli, ["trace", "top.clk_i", "top.u_sub.q", "--data-only", root])
     assert json.loads(result.stdout)["found"] is False
     result = runner.invoke(cli, ["drivers", "top.y_o", "-p", "USE_B=1", root])
-    assert json.loads(result.stdout)["result"][0]["kind"] == "assign"
+    assert objects(json.loads(result.stdout)["result"])[0]["kind"] == "assign"
     result = runner.invoke(cli, ["drivers", "top.nope", root])
     assert result.exit_code == 3
 
@@ -440,10 +440,13 @@ def test_mcp(design):
     server = Server(lambda: design, design)
     call = {"jsonrpc": "2.0", "id": 1, "method": "tools/call"}
     response = server.handle({**call, "params": {"name": "drivers", "arguments": {"path": "top.s"}}})
-    assert response["result"]["structuredContent"]["result"][0]["kind"] == "inst"
+    assert objects(response["result"]["structuredContent"]["result"])[0]["kind"] == "inst"
     arguments = {"src": "top.a_i", "dst": "top.y_o", "through_regs": True}
     response = server.handle({**call, "params": {"name": "trace", "arguments": arguments}})
     assert response["result"]["structuredContent"]["found"] is True
+    arguments = {"src": "top.clk_i", "dst": "top.u_sub.q", "data_only": True}
+    response = server.handle({**call, "params": {"name": "trace", "arguments": arguments}})
+    assert response["result"]["structuredContent"]["found"] is False
     response = server.handle({**call, "params": {"name": "loads", "arguments": {"path": "top.x"}}})
     assert response["result"]["isError"] is True
 

@@ -53,11 +53,12 @@ A name which is not found raises [QueryError][hdl_parser.query.QueryError], with
 """
 
 import difflib
-import json
 import re
 from collections.abc import Iterable
 from fnmatch import fnmatchcase
-from typing import Any
+from typing import Any, ForwardRef, get_args
+
+import pydantic as pyd
 
 from . import datamodel as dm
 from ._conn import Connectivity, Node, PathError, base_key
@@ -131,7 +132,7 @@ def module(
                 `id`, `kind` and `name` are always returned. `ports.direction` selects a field of the items of a
                 list: their `id` and `name` are always returned.
         limit: Number of entries of every list (ports, instances, ...). The ones left out are counted
-               in `omitted`, by field.
+               in `omitted`, and by field in `omitted_by`.
         summary: Lists are replaced by their number of entries (`counts`).
 
     The answer is `{"result": {...}}`. `others` lists further definitions of the same name, by identifier.
@@ -158,8 +159,7 @@ def module(
                 if left:
                     omitted[key] = left
         answer["result"] = unit
-        if omitted:
-            answer["omitted"] = omitted
+        _omitted(answer, omitted)
     if len(definitions) > 1:
         answer["others"] = [definition.id for definition in definitions[1:]]
     return answer
@@ -218,8 +218,12 @@ def hierarchy(  # noqa: PLR0913
         summary: Every node has `name` and `module` only.
         leaves: Top modules without instances are returned too. They are left out by default and counted in
                 `leaves`, as they are mostly unused library cells, unless no top has instances.
-        text: The tree as indented text (`tree`), one line per node: `<name> (<module>)`. Much smaller than JSON.
+        text: The tree as indented text (`tree`), one line per node: `<name> (<module>)`, followed by ` ...`, if
+              instances within are left out (`truncated`). Much smaller than JSON.
+              Without `top`, the top modules, one line each: `<id> (<insts> insts)`, followed by `library` for a
+              top found through a library option.
 
+    Every node has `children`, empty if there are none.
     The top modules are sorted by their number of instances (`insts`, all levels), the largest first.
     `library` marks a top found through a library option of a filelist.
 
@@ -229,7 +233,7 @@ def hierarchy(  # noqa: PLR0913
     if depth is not None and depth < 0:
         raise QueryError("bad-argument", "depth must not be negative.")
     if top is None:
-        return _tops(project, limit, leaves)
+        return _tops(project, limit, leaves, text)
     node = project.hierarchy(top, depth=depth)
     if node is None:
         raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
@@ -247,7 +251,7 @@ def hierarchy(  # noqa: PLR0913
     return answer
 
 
-def _tops(project: Project, limit: int | None, leaves: bool) -> dict[str, Any]:
+def _tops(project: Project, limit: int | None, leaves: bool, text: bool) -> dict[str, Any]:
     counts: dict[str, int] = {}
 
     def count(definition: Definition, path: tuple[str, ...]) -> int:
@@ -277,16 +281,24 @@ def _tops(project: Project, limit: int | None, leaves: bool) -> dict[str, Any]:
         tops.append(entry)
     tops.sort(key=lambda entry: -entry["insts"])
     result, omitted = _limit(tops, limit)
-    answer = _list_answer("hierarchy", result, len(tops), omitted)
+    order = (*_brief_fields((dm.Module, dm.Interface, dm.Package)), "insts", "library")
+    answer = _list_answer("hierarchy", result, len(tops), omitted, order)
+    if text:
+        answer = {"query": "hierarchy", "tree": "\n".join(map(_top_line, result)), **answer}
+        del answer["result"]
     if left_out:
         answer["leaves"] = left_out
     return answer
 
 
+def _top_line(entry: dict[str, Any]) -> str:
+    line = f"{entry['id']} ({entry['insts']} insts)"
+    return f"{line} library" if entry.get("library") else line
+
+
 def _lines(node: dict[str, Any], level: int) -> Iterable[str]:
     indent = "  " * level
-    module = node.get("module", "")
-    line = f"{indent}{node['name']}" if module == node["name"] else f"{indent}{node['name']} ({module})"
+    line = f"{indent}{node['name']} ({node['module']})"
     if node.get("truncated"):
         line += " ..."
     yield line
@@ -319,8 +331,8 @@ def _node(
         if budget[0] is not None:
             budget[0] -= 1
         children.append(_node(project, child, names, budget, omitted))
-    if children:
-        data["children"] = children
+    order = tuple(key for key in _NODE_FIELDS if not names or key in (*names, "name", "truncated", "children"))
+    data["children"] = _Objects(children, order)
     return data
 
 
@@ -337,8 +349,8 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
     Every entry has the full identifier of the instance (`inst`), the module it is located in (`module`),
     its file and location. `module` of the answer is the identifier of the definition, which is used.
 
-    A module which is not defined in the project (a blackbox, a hard macro, a cell) is found by the module
-    name of its instances. `module` of the answer is missing then and `defined` is `false`.
+    `defined` tells, whether the module is defined in the project. A module which is not (a blackbox, a hard
+    macro, a cell) is found by the module name of its instances: `module` of the answer is missing then.
     """
     definition = project.resolve(name) or project.resolve(name, casefold=True)
     if definition is None:
@@ -360,13 +372,17 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
             for file, inst in undefined
         ]
         result, omitted = _limit(uses, limit)
-        return {**_list_answer("where-used", result, len(uses), omitted), "defined": False}
+        return {**_list_answer("where-used", result, len(uses), omitted, _USE_FIELDS), "defined": False}
     uses = [
         {"inst": use.inst, "module": use.module, "file": _file_of(use.inst), **_loc(use.loc)}
         for use in project.where_used(definition.id)
     ]
     result, omitted = _limit(uses, limit)
-    return {**_list_answer("where-used", result, len(uses), omitted), "module": definition.id}
+    answer = _list_answer("where-used", result, len(uses), omitted, _USE_FIELDS)
+    return {**answer, "defined": True, "module": definition.id}
+
+
+_USE_FIELDS = ("inst", "module", "file", "loc")
 
 
 def _parent_id(full_id: str) -> str:
@@ -420,8 +436,12 @@ def find(
         for item in file.iter_items()
         if (not wanted or _kind(item) in wanted) and match(file, item)
     ]
+    order = _brief_fields(model for model, kind in KINDS.items() if not wanted or kind in wanted)
+    names = tuple(fields)
+    if names:
+        order = tuple(field for field in order if field in names or field in _ALWAYS)
     result, omitted = _limit(found, limit)
-    return _list_answer("find", result, len(found), omitted)
+    return _list_answer("find", result, len(found), omitted, order)
 
 
 # --- diagnostics ---
@@ -505,10 +525,11 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
                 groups[key] = groups.get(key, 0) + 1
         ordered = [{group_by: key, "count": number} for key, number in sorted(groups.items(), key=lambda kv: -kv[1])]
         result, omitted = _limit(ordered, limit)
-        answer = _list_answer("diagnostics", result, len(ordered), omitted)
+        answer = _list_answer("diagnostics", result, len(ordered), omitted, (group_by, "count"))
     else:
         result, omitted = _limit(found, limit)
-        answer = _list_answer("diagnostics", result, len(found), omitted)
+        order = ("file", *(name for name in dm.Diagnostic.model_fields if name != "file"), "parsed")
+        answer = _list_answer("diagnostics", result, len(found), omitted, order)
     answer["counts"] = counts
     return answer
 
@@ -568,7 +589,9 @@ def elaborate(  # noqa: PLR0913
         limit: Number of nodes, and number of parameters and of ports of every node.
 
     Every value has the expression as written (`expr`) and its `value`, or the reason why it is not known
-    (`unknown`). For a port, `value` is its number of bits. Nothing is guessed.
+    (`unknown`). For a port, `value` is its number of bits. Nothing is guessed. Every node has `params`, `ports`
+    and `children`, empty if there are none. What is left out is counted in `omitted`, and by field (`params`,
+    `ports`, `nodes`) in `omitted_by`.
     """
     if depth < 0:
         raise QueryError("bad-argument", "depth must not be negative.")
@@ -608,8 +631,7 @@ def elaborate(  # noqa: PLR0913
         "query": "elaborate",
         "result": _elab_node(node, patterns, unknown, limit, budget, omitted),
     }
-    if omitted:
-        answer["omitted"] = omitted
+    _omitted(answer, omitted)
     return answer
 
 
@@ -634,8 +656,7 @@ def _elab_node(  # noqa: PLR0913
             and (not unknown or value.value is None)
         ]
         kept, left = _limit(values, limit)
-        if kept:
-            data[key] = dict(kept)
+        data[key] = dict(kept)
         if left:
             omitted[key] = omitted.get(key, 0) + left
     children = []
@@ -648,11 +669,24 @@ def _elab_node(  # noqa: PLR0913
         if budget[0] is not None:
             budget[0] -= 1
         children.append(_elab_node(child, patterns, unknown, limit, budget, omitted))
-    if children:
-        data["children"] = children
+    data["children"] = _Objects(children, _ELAB_FIELDS)
     if truncated:
         data["truncated"] = True
     return data
+
+
+_ELAB_FIELDS = (
+    "name",
+    "module",
+    "inst",
+    "definition",
+    "multiple",
+    "unknown",
+    "params",
+    "ports",
+    "children",
+    "truncated",
+)
 
 
 def evaluate(
@@ -766,7 +800,7 @@ def trace(  # noqa: PLR0913
     found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
     hops = [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
-    answer = _list_answer("trace", result, len(hops), omitted)
+    answer = _list_answer("trace", result, len(hops), omitted, tuple(dm.Hop.model_fields))
     answer["found"] = bool(hops)
     if hops:
         answer["counts"] = {
@@ -784,7 +818,7 @@ def trace(  # noqa: PLR0913
         where = " and ".join(stops) or "with all loads followed"
         answer["hint"] = f"No connection. The search follows loads: it stopped {where}."
         if stopped:
-            answer["stopped_at"] = stopped
+            answer["stopped_at"] = _Objects(stopped, ("net", "item", "reason", "file", "line"))
     return answer
 
 
@@ -827,11 +861,15 @@ def _links(  # noqa: PLR0913
         info.update(_loc(net.item.loc))
     if conn.multiple(node):
         info["multiple"] = True
-    return {"query": query, "net": info, **_list_answer(query, result, len(entries), omitted)}
+    return {
+        "query": query,
+        "net": info,
+        **_list_answer(query, result, len(entries), omitted, tuple(dm.Link.model_fields)),
+    }
 
 
 def _dump(model: dm.Link | dm.Hop) -> dict[str, Any]:
-    return model.model_dump(mode="json", exclude_defaults=True)
+    return _model_dict(model)
 
 
 # --- rendering ---
@@ -847,10 +885,13 @@ def render(answer: dict[str, Any], detail: str = "compact") -> dict[str, Any]:
     `compact` gives the same information with fewer tokens:
 
     * A source location is its first line: `"line": 12` instead of `"loc": {...}`.
-    * The identifier of an item within another one is left out, if it is the one of the item around followed by
-      its name (`top.sv:top.clk` within `top.sv:top`), and relative otherwise (`#always1`).
-    * A list of objects is a table, if that is smaller: `{"columns": [...], "rows": [[...], ...]}`. A field which
-      an item has not, is `null`.
+    * The identifier of an item within another one is relative to it: `clk` for `top.sv:top.clk` within
+      `top.sv:top`, `#always1`.
+    * A list of objects is always a table, even if it is empty: `{"columns": [...], "rows": [[...], ...]}`.
+      A field which an item has not, is `null`.
+
+    The shape of an answer depends on the query and its arguments, never on the data: a list is a list, even
+    if it is empty, and a count is a number.
     """
     if detail not in DETAILS:
         raise QueryError("bad-argument", f"detail must be one of: {', '.join(DETAILS)}.")
@@ -862,16 +903,17 @@ def render(answer: dict[str, Any], detail: str = "compact") -> dict[str, Any]:
 def _compact(data: Any, parent: str) -> Any:
     if isinstance(data, list):
         items = [_compact(value, parent) for value in data]
-        return _table(items) if len(items) > 1 and all(isinstance(item, dict) for item in items) else items
+        if (isinstance(data, _Objects) or items) and all(isinstance(item, dict) for item in items):
+            order = tuple("line" if name == "loc" else name for name in getattr(data, "order", ()))
+            return _table(items, order)
+        return items
     if not isinstance(data, dict):
         return data
     result: dict[str, Any] = {}
     full_id = data.get("id") if isinstance(data.get("id"), str) else None
     for key, value in data.items():
         if key == "id" and full_id is not None and parent and full_id.startswith(f"{parent}."):
-            relative = full_id[len(parent) + 1 :]
-            if relative != data.get("name"):
-                result["id"] = relative
+            result["id"] = full_id[len(parent) + 1 :]
         elif key == "loc" and isinstance(value, dict) and "line" not in data:
             result["line"] = value.get("line")
         else:
@@ -879,13 +921,14 @@ def _compact(data: Any, parent: str) -> Any:
     return result
 
 
-def _table(items: list[dict[str, Any]]) -> Any:
-    """`items` as table, if that is smaller."""
-    keys = dict.fromkeys(key for item in items for key in item)
+def _table(items: list[dict[str, Any]], order: tuple[str, ...] = ()) -> dict[str, Any]:
+    """`items` as table. The columns are the fields `order`, whether the items have them or not.
+
+    Fields of the items, which are not listed in `order`, are added behind.
+    """
+    keys = list(dict.fromkeys((*order, *(key for item in items for key in item))))
     columns = [key for key in ("id", "name") if key in keys] + [key for key in keys if key not in ("id", "name")]
-    table = {"columns": columns, "rows": [[item.get(column) for column in columns] for item in items]}
-    size = len(json.dumps(table, separators=(",", ":")))
-    return table if size < len(json.dumps(items, separators=(",", ":"))) else items
+    return {"columns": columns, "rows": [[item.get(column) for column in columns] for item in items]}
 
 
 # --- helpers ---
@@ -895,9 +938,61 @@ def _kind(item: dm.Item) -> str:
     return KINDS[type(item)]
 
 
+class _Objects(list):
+    """A list of objects: a table within compact answers, even if it is empty.
+
+    `order` is the order of the fields of the objects, which is the one of the columns of the table.
+    """
+
+    def __init__(self, items: Iterable[Any] = (), order: tuple[str, ...] = ()):
+        super().__init__(items)
+        self.order = order
+
+
+def _model_dict(model: pyd.BaseModel, exclude: set[str] | None = None) -> dict[str, Any]:
+    """`model` as JSON compatible dictionary: fields with default values are left out, but lists."""
+    return _with_lists(model, model.model_dump(mode="json", exclude_defaults=True, exclude=exclude), exclude or set())
+
+
+def _with_lists(model: pyd.BaseModel, data: dict[str, Any], exclude: set[str]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for name, field in type(model).model_fields.items():
+        if name in exclude:
+            continue
+        value = getattr(model, name)
+        if isinstance(value, tuple):
+            items = data.get(name, [])
+            models = _models(field.annotation)
+            if models:
+                order = tuple(dict.fromkeys(name for model in models for name in model.model_fields))
+                items = _Objects((_with_lists(sub, item, set()) for sub, item in zip(value, items, strict=True)), order)
+            result[name] = items
+        elif name in data:
+            result[name] = _with_lists(value, data[name], set()) if isinstance(value, pyd.BaseModel) else data[name]
+    return result
+
+
+def _models(annotation: Any) -> tuple[type[pyd.BaseModel], ...]:
+    """The models of `annotation`, if it is a tuple of models.
+
+    Forward references (`tuple["Port", ...]`) are names of the data model: Python 3.10 leaves them unresolved.
+    """
+    args = [_resolve(arg) for arg in get_args(annotation) if arg is not Ellipsis]
+    for arg in args:
+        if not (isinstance(arg, type) and issubclass(arg, pyd.BaseModel)):
+            return ()
+    return tuple(args)
+
+
+def _resolve(arg: Any) -> Any:
+    if isinstance(arg, ForwardRef):
+        arg = arg.__forward_arg__
+    return getattr(dm, arg, arg) if isinstance(arg, str) else arg
+
+
 def _item_dict(file: dm.File, item: dm.Item) -> dict[str, Any]:
     """`item` as JSON compatible dictionary, with full identifiers."""
-    data = _full_ids(file, item.model_dump(mode="json", exclude_defaults=True))
+    data = _full_ids(file, _model_dict(item))
     return {"id": data.pop("id"), "kind": _kind(item), "file": file.file_id, **data}
 
 
@@ -905,8 +1000,24 @@ def _full_ids(file: dm.File, data: Any) -> Any:
     if isinstance(data, dict):
         return {key: file.full_id(value) if key == "id" else _full_ids(file, value) for key, value in data.items()}
     if isinstance(data, list):
-        return [_full_ids(file, value) for value in data]
+        values = (_full_ids(file, value) for value in data)
+        return _Objects(values, data.order) if isinstance(data, _Objects) else list(values)
     return data
+
+
+def _scalar_fields(model: type[pyd.BaseModel]) -> tuple[str, ...]:
+    """The fields of `model`, which are no lists or dictionaries."""
+    return tuple(
+        name
+        for name, field in model.model_fields.items()
+        if not any(word in str(field.annotation) for word in ("tuple", "dict"))
+    )
+
+
+def _brief_fields(models: Iterable[type[pyd.BaseModel]]) -> tuple[str, ...]:
+    """The fields of [_brief][hdl_parser.query._brief] for items of the types `models`."""
+    scalars = (name for model in models for name in _scalar_fields(model) if name not in ("id", "name", "loc"))
+    return tuple(dict.fromkeys(("id", "kind", "name", "file", *scalars, "loc")))
 
 
 def _brief(file: dm.File, item: dm.Item) -> dict[str, Any]:
@@ -948,7 +1059,10 @@ def _select_items(data: dict[str, Any], fields: tuple[str, ...]) -> dict[str, An
             # the whole items are asked for, too
             continue
         wanted = keep | {"id", "name"}
-        data[key] = [{field: value for field, value in item.items() if field in wanted} for item in data[key]]
+        data[key] = _Objects(
+            ({field: value for field, value in item.items() if field in wanted} for item in data[key]),
+            tuple(field for field in getattr(data[key], "order", ()) if field in wanted),
+        )
     return data
 
 
@@ -964,11 +1078,22 @@ def _limit(items: list[Any], limit: int | None) -> tuple[list[Any], int]:
     number = _resolve_limit(limit)
     if number is None or len(items) <= number:
         return items, 0
-    return items[:number], len(items) - number
+    kept = _Objects(items[:number], items.order) if isinstance(items, _Objects) else items[:number]
+    return kept, len(items) - number
 
 
-def _list_answer(query: str, result: list[Any], total: int, omitted: int) -> dict[str, Any]:
-    answer: dict[str, Any] = {"query": query, "result": result, "total": total}
+def _omitted(answer: dict[str, Any], omitted: dict[str, int]) -> None:
+    """Count the entries left out in `answer`: `omitted` in total, `omitted_by` field."""
+    if omitted:
+        answer["omitted"] = sum(omitted.values())
+        answer["omitted_by"] = omitted
+
+
+def _list_answer(
+    query: str, result: list[Any], total: int, omitted: int, order: tuple[str, ...] = ()
+) -> dict[str, Any]:
+    """Answer of a list of objects `result`: `order` are the fields of the objects, the columns of the table."""
+    answer: dict[str, Any] = {"query": query, "result": _Objects(result, order), "total": total}
     if omitted:
         answer["omitted"] = omitted
     return answer

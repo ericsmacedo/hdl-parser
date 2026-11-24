@@ -51,6 +51,11 @@ def enforce_terminal_size(monkeypatch):
     monkeypatch.setenv("HDL_PARSER_WIDTH", "75")
 
 
+def objects(table):
+    """The rows of a compact table `{"columns": [...], "rows": [[...]]}` as objects."""
+    return [dict(zip(table["columns"], row, strict=True)) for row in table["rows"]]
+
+
 def plain(obj):
     """Return `obj` (data model object, tuple or list of them) without source locations, identifiers and diagnostics."""
     if isinstance(obj, tuple | list):
