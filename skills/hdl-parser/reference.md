@@ -17,7 +17,7 @@ One module, interface or package: parameters, ports, instances, signals, types, 
 
 ## `hierarchy`
 
-Instance tree below the module 'top'. Without 'top': the top modules of the design.
+Instance tree below the module 'top'. Without 'top': the top modules of the design. Names have the labels of the generate blocks around: 'g_lane.u_sub'.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
@@ -65,12 +65,12 @@ Problems found in the design: undefined modules, macros not expanded, files whic
 
 ## `elaborate`
 
-Values of the parameters and widths of the ports (in bits) of one instance, with the parameter values given down the hierarchy applied. Names are resolved across files and packages. Nothing is guessed: what is not known has 'unknown' with the reason.
+Values of the parameters and widths of the ports (in bits) of one instance, with the parameter values given down the hierarchy applied. Names are resolved across files and packages. Nothing is guessed: what is not known has 'unknown' with the reason. For generate loops with known indices, one node per iteration: 'g_lane[1].u_sub'.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `top` (required) | string | Name or full identifier ('rtl/top.sv:top'). |
-| `path` | string | Instance names below the top, i.e. 'u_core.u_alu'. |
+| `path` | string | Instance names below the top, with generate labels: 'u_core.u_alu', 'g_lane[1].u_sub'. |
 | `params` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `depth` | integer | Instance levels below the node returned too. Default 0: the node only. |
 | `names` | array of string | Patterns of names of parameters and ports: 'WIDTH', '*_i'. All by default. |
@@ -89,7 +89,7 @@ Value of an expression ('$clog2(DEPTH)+1', 'pkg::WIDTH') within a module, interf
 
 ## `drivers`
 
-What drives a signal: assignments (with the signals they read and their conditions), output ports of instances, the connection of an input port within the parent. Ask for the drivers of the signals read ('nets') to go further.
+What drives a signal: assignments (with the signals they read and their conditions), output ports of instances, the connection of an input port within the parent. Ask for the drivers of the signals read ('nets') to go further. A select within a generate loop is evaluated per iteration ('[4*i+:4]': one driver with '[3:0]', one with '[7:4]'). A select of the signal ('top.data[5]') keeps the drivers of its bits.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |

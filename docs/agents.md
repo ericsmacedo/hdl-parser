@@ -153,8 +153,8 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
       "columns": ["name", "module", "line"],
       "rows": [
         ["alu_i", "ibex_alu", 110],
-        ["multdiv_i", "ibex_multdiv_slow", 131],
-        ["multdiv_i", "ibex_multdiv_fast", 156]
+        ["gen_multdiv_slow.multdiv_i", "ibex_multdiv_slow", 131],
+        ["gen_multdiv_fast.multdiv_i", "ibex_multdiv_fast", 156]
       ]
     }
   }

@@ -491,6 +491,9 @@ class Project(dm._BaseModel):
         Names are resolved across files: parameters, local parameters, members of enumerations, and the
         packages which are imported or named (`pkg::WIDTH`).
 
+        Labeled `for` generate constructs with known indices are unrolled: one node per iteration (`g_st[1].u_sub`),
+        with the parameter values of that iteration. Generate constructs whose condition is false are left out.
+
         Nothing is ever guessed. What cannot be evaluated for sure has no value, but the reason: a function call,
         a name without known value, a package which is not part of the project, ...
 
@@ -504,9 +507,8 @@ class Project(dm._BaseModel):
         definition = self.resolve(top) or self.resolve(top, casefold=True)
         if definition is None:
             return None
-        elaboration = Elaboration(self)
-        scope = elaboration.scope(definition, elaboration.top_overrides(params))
-        return elaboration.node(scope, definition.unit.name, "", False, depth, (definition.id,))
+        conn = self._connectivity(params)
+        return conn.node(conn.top(definition.id), depth)  # type: ignore[arg-type]
 
     def evaluate(self, expr: str, scope: str, params: Mapping[str, int | float | str | bool] | None = None) -> dm.Value:
         """Value of the expression `expr` within the module, interface or package `scope` (a name or full identifier).
@@ -558,6 +560,9 @@ class Project(dm._BaseModel):
         second iteration, the index is checked. Without index (`top.g_st.data`), a path stands for all iterations
         (`multiple`). Instance arrays are not unrolled.
 
+        A select of the signal (`top.data[5]`, `top.data[7:4]`) keeps the drivers which may drive one of its bits.
+        A select of a driver within a `for` generate is evaluated per iteration: `[4*i+:4]` gives `[3:0]`, `[7:4]`.
+
         `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
         (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
 
@@ -566,7 +571,8 @@ class Project(dm._BaseModel):
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
-        return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node))
+        bits = conn.select_bits(node, conn.path_select(path))
+        return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node, bits))
 
     def loads(
         self,
@@ -641,7 +647,7 @@ class Project(dm._BaseModel):
                 )
             nodes.append(
                 dm.HierarchyNode(
-                    name=inst.name,
+                    name=".".join((*(generate.name for generate in inst.generates if generate.name), inst.name)),
                     module=inst.module,
                     inst=file.full_id(inst),
                     definition=definition.id if definition else "",

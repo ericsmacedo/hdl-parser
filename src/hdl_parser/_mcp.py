@@ -74,7 +74,8 @@ TOOLS: tuple[dict[str, Any], ...] = (
     },
     {
         "name": "hierarchy",
-        "description": "Instance tree below the module 'top'. Without 'top': the top modules of the design.",
+        "description": "Instance tree below the module 'top'. Without 'top': the top modules of the design. "
+        "Names have the labels of the generate blocks around: 'g_lane.u_sub'.",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -165,12 +166,17 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "name": "elaborate",
         "description": "Values of the parameters and widths of the ports (in bits) of one instance, with the "
         "parameter values given down the hierarchy applied. Names are resolved across files and packages. "
-        "Nothing is guessed: what is not known has 'unknown' with the reason.",
+        "Nothing is guessed: what is not known has 'unknown' with the reason. For generate loops with known "
+        "indices, one node per iteration: 'g_lane[1].u_sub'.",
         "inputSchema": {
             "type": "object",
             "properties": {
                 "top": _NAME,
-                "path": {"type": "string", "description": "Instance names below the top, i.e. 'u_core.u_alu'."},
+                "path": {
+                    "type": "string",
+                    "description": "Instance names below the top, with generate labels: 'u_core.u_alu', "
+                    "'g_lane[1].u_sub'.",
+                },
                 "params": {
                     "type": "object",
                     "additionalProperties": {"type": ["integer", "number", "string", "boolean"]},
@@ -214,7 +220,9 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "name": "drivers",
         "description": "What drives a signal: assignments (with the signals they read and their conditions), "
         "output ports of instances, the connection of an input port within the parent. Ask for the drivers of "
-        "the signals read ('nets') to go further.",
+        "the signals read ('nets') to go further. A select within a generate loop is evaluated per iteration "
+        "('[4*i+:4]': one driver with '[3:0]', one with '[7:4]'). A select of the signal ('top.data[5]') keeps "
+        "the drivers of its bits.",
         "inputSchema": {
             "type": "object",
             "properties": {"path": _PATH, "params": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},

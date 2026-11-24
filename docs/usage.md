@@ -133,8 +133,8 @@ and answers questions about the design instead of single files:
 >>> tree = project.hierarchy("ibex_ex_block")
 >>> [(node.name, node.module, node.definition) for node in tree.children]  # doctest: +NORMALIZE_WHITESPACE
 [('alu_i', 'ibex_alu', 'ibex_alu.sv:ibex_alu'),
- ('multdiv_i', 'ibex_multdiv_slow', 'ibex_multdiv_slow.sv:ibex_multdiv_slow'),
- ('multdiv_i', 'ibex_multdiv_fast', 'ibex_multdiv_fast.sv:ibex_multdiv_fast')]
+ ('gen_multdiv_slow.multdiv_i', 'ibex_multdiv_slow', 'ibex_multdiv_slow.sv:ibex_multdiv_slow'),
+ ('gen_multdiv_fast.multdiv_i', 'ibex_multdiv_fast', 'ibex_multdiv_fast.sv:ibex_multdiv_fast')]
 >>> project.find("ibex_alu.sv:ibex_alu.operator_i").ptype
 'ibex_pkg::alu_op_e'
 

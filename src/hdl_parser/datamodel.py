@@ -782,11 +782,14 @@ class HierarchyNode(_BaseModel):
     """One Instance Within The Hierarchy Of A Project, Or Its Top.
 
     Attributes:
-        name: Name of the instance. Name of the module for the top.
+        name: Name of the instance within its parent, with the labels of the generate blocks around: `u_sub`,
+              `g_a.u_sub`. [Project.elaborate][hdl_parser.project.Project.elaborate] unrolls labeled `for`
+              generate constructs with known indices: `g_st[1].u_sub`. Name of the module for the top.
         module: Name of the module.
         inst: Full identifier of the instance (`rtl/top.sv:top.u_sub`). Empty for the top.
         definition: Full identifier of the module (`rtl/sub.sv:sub`). Empty, if it is not defined in the project.
-        multiple: The instance is created multiple times: it is an array, or located in a `for` generate.
+        multiple: The instance is created multiple times: it is an array, or located in a `for` generate, which is
+                  not unrolled.
         children: The instances within the module.
         truncated: The instances within are left out: the depth limit is reached, or the module contains itself.
         params: Values of the parameters and local parameters of this instance, by name. Just set by
@@ -847,7 +850,8 @@ class Link(_BaseModel):
         conds: Driver: instance paths of the signals read by the conditions around (`if`, `case`).
         clock: Instance path of the clock of a flip-flop. Empty, if not known.
         control: Load: the signal is read by a condition or as clock only.
-        select: Select of the driven signal, as written: `[3:0]`. Empty for the whole signal.
+        select: Select of the driven signal, as written: `[3:0]`. Within a `for` generate, as evaluated for the
+                iteration: `[7:4]` of `[4*i+:4]`. Empty for the whole signal.
         item: Full identifier of the process, the instance or the module (continuous assignment).
         external: A port of the top: driven or loaded outside of the design.
         multiple: A signal stands for multiple ones (of an instance array, or a `for` generate without index).

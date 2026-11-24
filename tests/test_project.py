@@ -197,14 +197,14 @@ def test_hierarchy(design):
         "  u_mid: rtl/mid.sv:mid",
         "    u_leaf: rtl/leaf.sv:leaf",
         "    u_bus: rtl/leaf.sv:bus_if",
-        "  u_leaf: rtl/leaf.sv:leaf [multiple]",
+        "  g_leaf.u_leaf: rtl/leaf.sv:leaf [multiple]",
         "  u_arr: rtl/leaf.sv:leaf [multiple]",
         "  u_missing: ?",
     ]
     assert _tree(project.hierarchy("top", depth=1)) == [
         "top: rtl/top.sv:top",
         "  u_mid: rtl/mid.sv:mid ...",
-        "  u_leaf: rtl/leaf.sv:leaf [multiple]",
+        "  g_leaf.u_leaf: rtl/leaf.sv:leaf [multiple]",
         "  u_arr: rtl/leaf.sv:leaf [multiple]",
         "  u_missing: ?",
     ]
@@ -214,7 +214,11 @@ def test_hierarchy(design):
     assert project.hierarchy("none") is None
     node = project.hierarchy("top").children[1]
     assert node == HierarchyNode(
-        name="u_leaf", module="leaf", inst="rtl/top.sv:top.g_leaf.u_leaf", definition="rtl/leaf.sv:leaf", multiple=True
+        name="g_leaf.u_leaf",
+        module="leaf",
+        inst="rtl/top.sv:top.g_leaf.u_leaf",
+        definition="rtl/leaf.sv:leaf",
+        multiple=True,
     )
     assert project.find(node.inst).name == "u_leaf"
 
@@ -500,12 +504,12 @@ def test_ibex_filelist():
     assert children["cs_registers_i"].definition == "ibex_cs_registers.sv:ibex_cs_registers"
     assert [(node.name, node.definition) for node in children["ex_block_i"].children] == [
         ("alu_i", "ibex_alu.sv:ibex_alu"),
-        ("multdiv_i", "ibex_multdiv_slow.sv:ibex_multdiv_slow"),
-        ("multdiv_i", "ibex_multdiv_fast.sv:ibex_multdiv_fast"),
+        ("gen_multdiv_slow.multdiv_i", "ibex_multdiv_slow.sv:ibex_multdiv_slow"),
+        ("gen_multdiv_fast.multdiv_i", "ibex_multdiv_fast.sv:ibex_multdiv_fast"),
     ]
     # the filelist of the project does not name everything
     assert children["wb_stage_i"].definition == ""
-    assert children["u_fetch_enable_buf"].definition == ""
+    assert children["g_core_busy_secure.u_fetch_enable_buf"].definition == ""
 
     uses = project.where_used("ibex_counter")
     assert [use.module for use in uses] == ["ibex_cs_registers.sv:ibex_cs_registers"] * 3
@@ -621,7 +625,9 @@ def test_corpus(path):
         assert project.where_used(top.id) == ()
         for node in _nodes(project.hierarchy(top.id)):
             if node.inst:
-                assert project.find(node.inst).name == node.name
+                # the name has the labels of the generate blocks around
+                assert node.inst.lower().endswith(f".{node.name.lower()}")
+                assert project.find(node.inst).name == node.name.rpartition(".")[2]
             if node.definition:
                 definition = project.find(node.definition)
                 assert definition.name.lower() == node.module.lower()
