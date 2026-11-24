@@ -66,16 +66,15 @@ def design(tmp_path) -> Path:
 
 
 def _assigns(output: str) -> list[int]:
-    """Lines of the assignments: a list of objects, or a table."""
-    assigns = json.loads(output)["result"].get("assigns", [])
-    if isinstance(assigns, dict):
-        idx = assigns["columns"].index("line")
-        return [row[idx] for row in assigns["rows"]]
-    return [assign["line"] for assign in assigns]
+    """Lines of the assignments: a table."""
+    assigns = json.loads(output)["result"]["assigns"]
+    idx = assigns["columns"].index("line")
+    return [row[idx] for row in assigns["rows"]]
 
 
 def _insts(output: str) -> list:
-    return json.loads(output)["result"].get("insts", [])
+    """Rows of the instances: a table."""
+    return json.loads(output)["result"]["insts"]["rows"]
 
 
 def test_find(design):

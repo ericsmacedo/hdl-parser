@@ -29,6 +29,8 @@ import json
 from hdl_parser import Project
 from hdl_parser._mcp import PROTOCOL_VERSIONS, TOOLS, Server, serve
 
+from .conftest import objects
+
 
 def _project(tmp_path):
     (tmp_path / "top.sv").write_text("module top;\n  sub u_sub ();\nendmodule\n")
@@ -78,7 +80,7 @@ def test_session(tmp_path):
     ]
     result = responses[2]["result"]
     assert result["isError"] is False
-    assert result["structuredContent"]["result"][0]["inst"] == "top.sv:top.u_sub"
+    assert objects(result["structuredContent"]["result"])[0]["inst"] == "top.sv:top.u_sub"
     assert json.loads(result["content"][0]["text"]) == result["structuredContent"]
     assert responses[3]["result"] == {}
 
@@ -188,6 +190,18 @@ def test_detail(tmp_path):
             _call(3, "module", name="top", detail="none"),
         )
     )
-    assert compact["result"]["ports"]["columns"] == ["name", "direction", "ptype", "line"]
+    assert compact["result"]["ports"]["columns"] == [
+        "id",
+        "name",
+        "direction",
+        "ptype",
+        "dtype",
+        "dim",
+        "dim_unpacked",
+        "default",
+        "ifdefs",
+        "comment",
+        "line",
+    ]
     assert full["result"]["ports"][0]["id"] == "top.sv:top.a"
     assert bad["error"]["code"] == "bad-argument"

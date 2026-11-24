@@ -92,7 +92,10 @@ TOOLS: tuple[dict[str, Any], ...] = (
                 },
                 "text": {
                     "type": "boolean",
-                    "description": "The tree as indented text 'name (module)', much smaller than JSON.",
+                    "description": (
+                        "The tree as indented text 'name (module)', much smaller than JSON. "
+                        "Without 'top': the top modules, one per line."
+                    ),
                 },
             },
         },
@@ -380,10 +383,11 @@ class Server:
 INSTRUCTIONS = """\
 Questions about the SystemVerilog and VHDL design of this project. Every item has a full identifier \
 '<file>:<id>' (i.e. 'rtl/top.sv:top.u_sub') and a source 'line'. Answers are compact: the identifier of an item \
-within another one is left out, if it is the one around plus its name, and relative otherwise; a list of objects \
-may be a table {columns, rows}. detail='full' gives every identifier and 'loc' with columns. \
-Lists are limited: what is left out is counted in 'omitted'. Start small: 'hierarchy' without 'top' gives the top \
-modules, the largest first, 'module' with summary=true the counts, 'find' locates items by name. 'diagnostics' \
+within another one is relative to it; a list of objects is always a table {columns, rows}, even if it is empty; \
+lists are there, even if empty. detail='full' gives every identifier and 'loc' with columns. \
+Lists are limited: what is left out is counted in 'omitted', by field in 'omitted_by'. \
+Start small: 'hierarchy' without 'top' gives the top modules, the largest first, 'module' with summary=true \
+the counts, 'find' locates items by name. 'diagnostics' \
 with group_by='code' or 'file' tells what may be missing or wrong, then filter by code, file or exclude_file. \
 'elaborate' gives the values of the parameters and the widths of the ports of an instance \
 ('path' below 'top'), 'evaluate' the value of an expression. 'drivers' and 'loads' tell what drives a signal \

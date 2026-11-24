@@ -561,7 +561,11 @@ def module(ctx: Ctx, name: str, fields: tuple[str, ...], summary: bool, limit: i
 @click.option("--top", "-t", help="Name or full identifier of the module.")
 @click.option("--depth", "-d", type=click.IntRange(min=0), help="Number of instance levels below the top.")
 @click.option("--leaves", is_flag=True, help="Without '--top': top modules without instances too.")
-@click.option("--text", is_flag=True, help="The tree as indented text, much smaller than JSON.")
+@click.option(
+    "--text",
+    is_flag=True,
+    help="The tree as indented text, much smaller than JSON. Without '--top': the top modules, one per line.",
+)
 @opt_project
 @opt_fields
 @opt_summary
