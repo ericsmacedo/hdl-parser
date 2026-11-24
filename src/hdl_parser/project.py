@@ -61,7 +61,7 @@ from . import datamodel as dm
 from ._conn import Connectivity, Graph, Node
 from ._diagnostics import Diagnostics, log_diagnostic, silent
 from ._elab import Elaboration
-from ._sv.preproc import defined_names
+from ._sv.preproc import RE_DEFINE_NAME, defined_names
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
 from .parser import LANGMAP, Macros, parse_defines_text, parse_file
 
@@ -165,10 +165,8 @@ class Project(dm._BaseModel):
         files: Files, in the given order.
         libraries: Paths of the files, which have been found through a library option of a filelist.
         prefer: File to be used for a module, interface or package which is defined more than once, by name.
-        diagnostics: Problems which are not related to one of the files, i.e. of a filelist or the defines.
-                     `file` is the file the problem is located in, `loc` the location within. Both are empty for a
-                     problem of the defines given by `settings`. The problems of a file are located in its
-                     `diagnostics`.
+        diagnostics: Problems which are not related to one of the files, i.e. of a filelist. Located within their
+                     `file`, the filelist. The problems of a file are located in its `diagnostics`.
     """
 
     schema_version: int
@@ -680,14 +678,18 @@ class _Builder:
         self.prefer = prefer or {}
         if settings.closed_world and not settings.resolve_ifdefs:
             raise ValueError("'closed_world' requires 'resolve_ifdefs=True'.")
+        for name, value in settings.defines.items():
+            if not RE_DEFINE_NAME.fullmatch(name):
+                raise ValueError(f"'{name}' of 'defines' is no macro name.")
+            if "\n" in value:
+                raise ValueError(f"value of '{name}' of 'defines' has more than one line.")
         self.macros: Macros | None = None
-        self.diagnostics: list[dm.Diagnostic] = []
         # names of the macros defined by the files, for the closed world
         self.maybe_defined: frozenset[str] = frozenset()
         if settings.expand_macros and settings.defines:
-            defines = parse_defines_text(*(f"`define {name} {value}\n" for name, value in settings.defines.items()))
-            self.macros = defines.macros
-            self.diagnostics = defines.diagnostics
+            # valid names and values: no problems
+            defines = (f"`define {name} {value}\n" for name, value in settings.defines.items())
+            self.macros = parse_defines_text(*defines).macros
 
     def build(
         self,
@@ -717,7 +719,7 @@ class _Builder:
             "root": root,
             "settings": settings,
             "prefer": self.prefer,
-            "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in (*self.diagnostics, *diagnostics)),
+            "diagnostics": tuple(_relative_file(diagnostic, root) for diagnostic in diagnostics),
         }
         if self.settings.closed_world:
             sv_paths = (path for path in (*paths, *lib_paths) if LANGMAP.get(path.suffix, "sv") == "sv")

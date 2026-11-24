@@ -26,7 +26,7 @@ import logging
 import re
 from pathlib import Path
 
-from pytest import fixture, mark
+from pytest import fixture, mark, raises
 
 from hdl_parser import HierarchyNode, Location, Module, Project, Use, parse_file
 from hdl_parser import project as project_module
@@ -413,20 +413,41 @@ def test_defines(tmp_path):
     assert project.diagnostics == ()
 
 
-def test_defines_diagnostics(tmp_path):
-    """Problems Of The Defines Are Problems Of The Project, Without Location."""
+@mark.parametrize(
+    "defines, message",
+    (
+        ({"P(": "1"}, "'P(' of 'defines' is no macro name."),
+        ({"1X": "2"}, "'1X' of 'defines' is no macro name."),
+        ({"A": "1\n`define B"}, "value of 'A' of 'defines' has more than one line."),
+    ),
+)
+def test_defines_invalid(tmp_path, defines, message):
+    """Defines Which Cannot Be Defined Are An Error, Like Other Invalid Settings."""
+    with raises(ValueError, match=re.escape(message)):
+        Project.from_dir(tmp_path, defines=defines)
+
+
+def test_defines_function_like(tmp_path):
+    """A Function-Like Macro Is Defined By Its Name With Parameters."""
+    _write(tmp_path, {"top.sv": "module top (input [`MAX(3, 7):0] a);\nendmodule\n"})
+    project = Project.from_dir(tmp_path, defines={"MAX(a, b)": "b"}, expand_macros=True)
+    assert project.files[0].modules[0].ports[0].dim == "[7:0]"
+    assert project.diagnostics == ()
+
+
+def test_filelist_bad_define(tmp_path):
+    """A Define Of A Filelist Without Valid Name Is A Problem Of The Filelist."""
     _write(tmp_path, {"top.sv": "module top;\nendmodule\n"})
-    (tmp_path / "design.f").write_text("top.sv\n-unknown\n")
-    project = Project.from_filelist(tmp_path / "design.f", defines={"P(": "1", "1X": "2"}, expand_macros=True)
+    (tmp_path / "design.f").write_text("top.sv\n+define+1X=2\n")
+    project = Project.from_filelist(tmp_path / "design.f", expand_macros=True)
+    assert project.settings.defines == {}
     assert [(diag.code, diag.message, diag.loc, diag.file) for diag in project.diagnostics] == [
-        ("macro-bad-define", "cannot parse definition of macro `P. Skipped.", None, ""),
-        ("macro-bad-define", "cannot parse definition '`define 1X 2'. Skipped.", None, ""),
         (
-            "filelist-unknown",
-            "option '-unknown' is not understood.",
-            Location(line=2, col=1, end_line=2, end_col=9),
+            "macro-bad-define",
+            "cannot parse definition '1X=2'. Skipped.",
+            Location(line=2, col=1, end_line=2, end_col=13),
             "design.f",
-        ),
+        )
     ]
 
 
@@ -439,7 +460,7 @@ def test_include_diagnostics_relative(tmp_path, caplog):
     top = next(file for file in project.files if file.file_id == "rtl/top.sv")
     assert [(diag.code, diag.file) for diag in top.diagnostics] == [("include-not-found", "rtl/inc.svh")]
     messages = [record.getMessage() for record in caplog.records if record.name == "hdl_parser._diagnostics"]
-    assert "rtl/top.sv:1:1: rtl/inc.svh: included file 'nope.svh' not found. Its macros are unknown." in messages
+    assert "rtl/top.sv: rtl/inc.svh:1:1: included file 'nope.svh' not found. Its macros are unknown." in messages
 
 
 def test_json(design):

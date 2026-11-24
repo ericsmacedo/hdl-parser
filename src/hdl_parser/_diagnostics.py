@@ -70,17 +70,18 @@ def shorten(text: str, width: int = 40) -> str:
 
 
 def format_diagnostic(context: str, diagnostic: dm.Diagnostic) -> str:
-    """`diagnostic`, found while parsing `context`, as `context:line:col: [file: ]message`.
+    """`diagnostic`, found while parsing `context`, as `context:line:col: message`.
 
-    A problem of a project (filelist, defines) is located within its `file`: `file:line:col: message`.
+    A problem located within an included file: `context: file:line:col: message`.
+    A problem of a project (`context` is empty): `file:line:col: message`.
     """
     loc = diagnostic.loc
     file = diagnostic.file
-    if not context or file == context:
-        context, file = file, ""
-    where = f"{context}:{loc.line}:{loc.col}" if context and loc else context
-    if file:
-        where = f"{where}: {file}"
+    where = file or context
+    if where and loc:
+        where = f"{where}:{loc.line}:{loc.col}"
+    if file and context and file != context:
+        where = f"{context}: {where}"
     return f"{where}: {diagnostic.message}" if where else diagnostic.message
 
 
@@ -124,13 +125,18 @@ class Diagnostics:
             log_diagnostic(self.context, self.items[-1])
 
     def finish(self, units: Iterable[dm.Module | dm.Package]) -> tuple[dm.Diagnostic, ...]:
-        """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in."""
+        """Return all diagnostics in the order of the file, related to the unit (module, ...) they are located in.
+
+        The ones located within an included file follow, by file. They are related to no unit.
+        """
         modules = tuple(units)
 
         def position(loc: dm.Location | None) -> tuple[int, int]:
             return (loc.line, loc.col) if loc else (0, 0)
 
         def module_id(diag: dm.Diagnostic) -> str:
+            if diag.file:
+                return ""
             for mod in modules:
                 if (
                     mod.loc
@@ -142,5 +148,5 @@ class Diagnostics:
 
         return tuple(
             diag if diag.item else diag.model_copy(update={"item": module_id(diag)})
-            for diag in sorted(self.items, key=lambda diag: position(diag.loc))
+            for diag in sorted(self.items, key=lambda diag: (diag.file, position(diag.loc)))
         )

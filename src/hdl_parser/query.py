@@ -483,7 +483,7 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
             continue
         data = diagnostic.model_dump(mode="json", exclude_defaults=True)
         if file_id:
-            # the location is within the parsed file, `file` of a diagnostic is the included file
+            # `file` of a diagnostic is the included file the problem is located in. The location is within.
             if "file" in data:
                 included = Path(data.pop("file"))
                 data["included"] = _relative(included, project.root) if included.is_absolute() else included.as_posix()

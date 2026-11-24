@@ -311,7 +311,7 @@ Macros which are not defined by the file or its included files, have to be hande
     ```python
     >>> defines = hdl_parser.parse_defines("examples/sv/macros.svh")
     >>> defines.diagnostics
-    []
+    ()
     >>> file = hdl_parser.parse_text("module top (`CLK_RST_PORTS); endmodule", expand_macros=True, macros=defines.macros)
     >>> [port.name for port in file.modules[0].ports]
     ['clk_i', 'rst_ni']

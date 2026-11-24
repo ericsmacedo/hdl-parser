@@ -137,19 +137,8 @@ class Macro:
 Macros = Mapping[str, Macro]
 """Macros by name."""
 
-
-@dataclass
-class Defines:
-    """Macros Read From Files Or Text.
-
-    Attributes:
-        macros: Macros by name. To be handed over to [hdl_parser.parser.parse_file][].
-        diagnostics: Problems. `file` is the file with the macros (or the included one) the problem is located in,
-                     `loc` the location within. Both are empty for problems of text.
-    """
-
-    macros: dict[str, Macro] = field(default_factory=dict)
-    diagnostics: list[Diagnostic] = field(default_factory=list)
+RE_DEFINE_NAME = re.compile(r"[a-zA-Z_]\w*(?:\(\s*(?:[a-zA-Z_]\w*\s*(?:,\s*[a-zA-Z_]\w*\s*)*)?\))?")
+"""Name of a macro, with its parameters, if it is function-like: `NAME`, `MAX(a, b)`."""
 
 
 @dataclass
@@ -206,11 +195,11 @@ class _Preprocessor:
         self.segments: list[Segment] = []
         self.out_len = 0
         self.call: Segment | None = None
-        # problems are located at the outermost directive or macro call: its range within the main text.
-        # `smap` creates the location.
+        # Problems within the main text are located at the outermost directive or macro call: its range within
+        # the main text. `smap` creates the location.
         self.site: tuple[int, int] | None = None
         self.smap: SourceMap | None = None
-        # Without `smap` (the defines), problems are located within the file they are in: the texts of the files
+        # Problems within an included file (or a file with macros) are located within it: the texts of the files
         # which are just read, and the current directive within the innermost one (text, start, end, file).
         self.file_texts: list[str] = []
         self.file_site: tuple[str, int, int, str] | None = None
@@ -304,13 +293,16 @@ class _Preprocessor:
         self.diagnostics.add(code, message, loc, file=file)
 
     def _where(self, context: str) -> tuple[Location | None, str]:
-        """Location and file of a problem within `context`, at the current directive or macro call."""
-        if self.smap is not None:
-            # at the outermost one, within the main text
-            loc = self.smap.source_location(*self.site) if self.site else None
-            return loc, "" if context == self.diagnostics.context else context
-        # within the file the problem is in. Text is no file.
+        """Location and file of a problem within `context`, at the current directive or macro call.
+
+        The problem is located where it is: `file` is empty for the main text, `loc` is within `file`.
+        """
+        if context == self.diagnostics.context:
+            # main text: at the outermost directive or macro call
+            loc = self.smap.source_location(*self.site) if self.smap and self.site else None
+            return loc, ""
         if self.file_site is None:
+            # text, which is no file
             return None, ""
         text, start, end, file = self.file_site
         return _location(text, start, end), file
@@ -507,8 +499,8 @@ def collect_defines(
     file_paths: Iterable[Path] = (),
     inc_dirs: Iterable[Path] = (),
     resolve_ifdefs: bool = False,
-) -> Defines:
-    """Collect all `` `define `` macros from `texts` and `file_paths`, in the given order.
+) -> tuple[dict[str, Macro], tuple[Diagnostic, ...]]:
+    """Collect all `` `define `` macros from `texts` and `file_paths`, in the given order. Return them and the problems.
 
     Included files are searched next to the including file and in `inc_dirs`.
     A macro which is defined with different content under unknown conditions is ambiguous and therefore skipped.
@@ -525,7 +517,7 @@ def collect_defines(
     for name in sorted(preproc.ambiguous):
         loc, file = preproc.conflicts.get(name, (None, ""))
         diagnostics.add("macro-ambiguous", f"macro `{name} has conflicting definitions. Skipped.", loc, file=file)
-    return Defines(macros=preproc.macros, diagnostics=diagnostics.items)
+    return preproc.macros, tuple(diagnostics.items)
 
 
 def expand(

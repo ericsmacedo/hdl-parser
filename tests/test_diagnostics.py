@@ -126,15 +126,19 @@ def test_include(tmp_path, caplog):
     path = tmp_path / "top.sv"
     path.write_text(text)
     file = parse_file(path, expand_macros=True)
-    assert _codes(file) == ["macro-bad-define", "include-not-found", "include-not-found"]
-    bad, deeper, missing = file.diagnostics
-    # problems of the included file point to the include statement
-    assert _text_at(text, bad.loc) == '`include "defs.svh"'
-    assert bad.file == deeper.file == str(tmp_path / "defs.svh")
-    assert "deeper.svh" in deeper.message
+    # the ones of the parsed file first, then the ones of the included files
+    assert _codes(file) == ["include-not-found", "macro-bad-define", "include-not-found"]
+    missing, bad, deeper = file.diagnostics
     assert _text_at(text, missing.loc) == '`include "missing.svh"'
     assert missing.file == ""
-    assert f"{path}:1:1: {tmp_path / 'defs.svh'}: cannot parse definition of macro `P." in caplog.text
+    # problems of the included file are located within it
+    defs = (tmp_path / "defs.svh").read_text()
+    assert bad.file == deeper.file == str(tmp_path / "defs.svh")
+    assert _text_at(defs, bad.loc) == "`define P(a input a"
+    assert _text_at(defs, deeper.loc) == '`include "deeper.svh"'
+    assert "deeper.svh" in deeper.message
+    assert bad.item == deeper.item == ""
+    assert f"{path}: {tmp_path / 'defs.svh'}:1:1: cannot parse definition of macro `P." in caplog.text
     assert f"{path}:2:1: included file 'missing.svh' not found." in caplog.text
 
 

@@ -24,7 +24,6 @@
 import functools
 import json as json_
 import logging
-import re
 import sys
 from collections.abc import Iterable, Iterator
 from pathlib import Path
@@ -42,7 +41,7 @@ from ._config import CONFIG_NAME, ConfigError, find_config, read_config
 from ._diagnostics import format_diagnostic
 from ._gen_templates import gen_instance, gen_markdown_table
 from ._mcp import serve
-from ._sv.preproc import defined_names
+from ._sv.preproc import RE_DEFINE_NAME, defined_names
 from .datamodel import Diagnostic, File
 from .filelistparser import read_filelist
 from .parser import parse_defines, parse_file
@@ -448,16 +447,14 @@ def load_project(  # noqa: PLR0913
     return Project.from_files(paths, **kwargs)
 
 
-_RE_DEFINE_NAME = re.compile(r"[a-zA-Z_]\w*(?:\([^()]*\))?")
-"""Name of a macro, with its parameters, if it is function-like."""
-
-
 def _split_define(define: str) -> tuple[str, str]:
     name, _, value = define.partition("=")
     if not name:
         raise click.BadParameter(f"'{define}' has no name.", param_hint="'--define'")
-    if not _RE_DEFINE_NAME.fullmatch(name):
+    if not RE_DEFINE_NAME.fullmatch(name):
         raise click.BadParameter(f"'{name}' is no macro name.", param_hint="'--define'")
+    if "\n" in value:
+        raise click.BadParameter(f"value of '{name}' has more than one line.", param_hint="'--define'")
     return name, value
 
 

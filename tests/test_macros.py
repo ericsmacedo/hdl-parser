@@ -543,7 +543,7 @@ def test_include(tmp_path, caplog):
     assert [port.name for port in module.ports] == ["a"]
     assert plain(module.unresolved_macros) == (MacroCall(name="B"),)
     assert "included file 'missing.svh' not found" in caplog.text
-    assert "local.svh: included file 'common.svh' not found" in caplog.text
+    assert "local.svh:1:1: included file 'common.svh' not found" in caplog.text
 
     for inc_dirs in ([inc], [str(inc)], [tmp_path / "missing", inc]):
         module = parse_file(top, inc_dirs=inc_dirs).modules[0]
