@@ -585,12 +585,16 @@ class Project(dm._BaseModel):
         The loads are the assignments reading the signal, also by a condition (`control`), and the input ports of
         instances it is connected to. An output port is loaded by the connection within the parent.
 
+        A select of the signal (`top.data[5]`) keeps the loads which may read one of its bits. The bits read by an
+        assignment are not known: it is kept. The select of the driven signal is evaluated per iteration.
+
         Raises:
             ValueError: The path does not exist.
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
-        return tuple(conn.link(node, step, driver=False) for step in conn.loads(node))
+        bits = conn.select_bits(node, conn.path_select(path))
+        return tuple(conn.link(node, step, driver=False) for step in conn.loads(node, bits))
 
     def trace(  # noqa: PLR0913
         self,
@@ -608,8 +612,9 @@ class Project(dm._BaseModel):
         The result starts with `src` and ends with `dst`. It is empty, if there is no connection.
 
         Args:
-            src: Instance path of the signal to start at: `top.u_core.result_o`.
-            dst: Instance path of the signal to reach.
+            src: Instance path of the signal to start at: `top.u_core.result_o`. A select (`top.data[5]`) keeps the
+                 loads which may read one of its bits.
+            dst: Instance path of the signal to reach. A select keeps the loads which may drive one of its bits.
 
         Keyword Args:
             params: Values of the parameters of the top, by name. Its defaults are used otherwise.
@@ -625,7 +630,10 @@ class Project(dm._BaseModel):
         conn = self._connectivity(params, passthrough)
         source: Node = conn.locate(src)
         target: Node = conn.locate(dst)
-        return conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
+        src_bits = conn.select_bits(source, conn.path_select(src))
+        dst_bits = conn.select_bits(target, conn.path_select(dst))
+        found = conn.trace(source, target, through_regs, control, src_bits, dst_bits)
+        return conn.hops(found)
 
     def _children(
         self, parent: Definition, depth: int | None, path: tuple[str, ...]

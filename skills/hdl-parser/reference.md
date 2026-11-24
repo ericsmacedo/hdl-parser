@@ -100,7 +100,7 @@ What drives a signal: assignments (with the signals they read and their conditio
 
 ## `loads`
 
-What a signal drives: assignments reading it (also by a condition: 'control'), input ports of instances, the connection of an output port within the parent.
+What a signal drives: assignments reading it (also by a condition: 'control'), input ports of instances, the connection of an output port within the parent. The 'select' of the driven signal is evaluated per iteration of a generate loop. A select of the signal ('top.data[5]') keeps the loads which may read its bits (an assignment is kept: the bits it reads are not known).
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
@@ -111,7 +111,7 @@ What a signal drives: assignments reading it (also by a condition: 'control'), i
 
 ## `trace`
 
-Shortest connection from one signal to another one below the same top, hop by hop with kind and location, with 'counts' of hops, flip-flops and conditions. Stops behind flip-flops unless through_regs=true, and at undefined modules ('stopped_at').
+Shortest connection from one signal to another one below the same top, hop by hop with kind and location, with 'counts' of hops, flip-flops and conditions. Stops behind flip-flops unless through_regs=true, and at undefined modules ('stopped_at'). Selects ('top.data[5]') restrict the start to the loads reading those bits, the end to the loads driving them.
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |

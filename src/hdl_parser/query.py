@@ -716,12 +716,14 @@ def loads(
 ) -> dict[str, Any]:
     """What the signal with the instance path `path` drives. See [drivers][hdl_parser.query.drivers].
 
-    Every load has the signals it drives (`nets`). `control` marks a load, which reads the signal by a condition
-    or as clock only.
+    Every load has the signals it drives (`nets`), with the `select` of the driven one. `control` marks a load,
+    which reads the signal by a condition or as clock only. A select of the signal (`top.data[5]`) keeps the loads
+    which may read one of its bits: an assignment reads the whole signal, as far as known.
     """
     conn, node = _locate(project, path, params, passthrough=passthrough)
-    links = [conn.link(node, step, driver=False) for step in conn.loads(node)]
-    return _links("loads", conn, node, links, limit)
+    select = conn.path_select(path)
+    links = [conn.link(node, step, driver=False) for step in conn.loads(node, conn.select_bits(node, select))]
+    return _links("loads", conn, node, links, limit, select)
 
 
 def trace(  # noqa: PLR0913
@@ -749,15 +751,19 @@ def trace(  # noqa: PLR0913
         passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
-    (`kind`, `item`, location). `counts` tells the number of `hops`, the ones by flip-flops (`ff`) and the ones by
-    conditions (`control`): a path with many of these is a weak connection. The search stops at modules which
-    are not defined (blackboxes): `stopped_at` names them, if there is no connection.
+    (`kind`, `item`, location, the `select` driven). A select of `src` or `dst` (`top.data[5]`) restricts the
+    start to the loads reading one of its bits, and the end to the loads driving one of them. `counts` tells the
+    number of `hops`, the ones by flip-flops (`ff`) and the ones by conditions (`control`): a path with many of
+    these is a weak connection. The search stops at modules which are not defined (blackboxes): `stopped_at`
+    names them, if there is no connection.
     """
     conn, source = _locate(project, src, params, passthrough=passthrough)
     _, target = _locate(project, dst, params, conn)
     if _top(source[0]) is not _top(target[0]):
         raise QueryError("bad-argument", "'src' and 'dst' must be located below the same top.")
-    found = conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
+    src_bits = conn.select_bits(source, conn.path_select(src))
+    dst_bits = conn.select_bits(target, conn.path_select(dst))
+    found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
     hops = [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
     answer = _list_answer("trace", result, len(hops), omitted)

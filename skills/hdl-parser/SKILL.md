@@ -65,7 +65,8 @@ the next call; call `reload` after files were added.
 
 Signals are addressed by **instance path**: top module, instance names (with the labels of generate blocks), signal:
 `top.u_core.g_lane[1].data`. `hierarchy` names instances with their labels (`g_lane.u_sub`); `elaborate` unrolls
-loops (`--path 'g_lane[1].u_sub'`). `drivers top.data[5]` keeps the drivers of bit 5. Modules by name or full identifier `<file>:<id>` (`rtl/top.sv:top`). Every item in
+loops (`--path 'g_lane[1].u_sub'`). A select (`top.data[5]`) keeps the drivers, loads, and
+trace ends of bit 5; selects within loops are evaluated per iteration. Modules by name or full identifier `<file>:<id>` (`rtl/top.sv:top`). Every item in
 an answer has `line` (and `file`), so open the source at that line only when needed.
 
 To follow a signal step by step: `drivers` returns the signals each driver reads (`nets`) and its conditions

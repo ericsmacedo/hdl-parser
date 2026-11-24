@@ -407,6 +407,27 @@ endmodule
     assert [link["select"] for link in query.drivers(project, "top.m[3:0]")["result"]] == ["[3:0]"]
     answer = query.drivers(project, "top.p[6]")
     assert [(link["nets"], link["select"]) for link in answer["result"]] == [(["top.g[1].u.d"], "[7:4]")]
+    # loads: the select of the driven signal per iteration, the bits read by the instances
+    answer = query.loads(project, "top.x")
+    assert [(link["nets"], link.get("select")) for link in answer["result"]] == [
+        (["top.m"], "[3:0]"),
+        (["top.m"], "[7:4]"),
+        (["top.g[0].u.a"], None),
+        (["top.g[1].u.a"], None),
+    ]
+    answer = query.loads(project, "top.x[5]")
+    assert answer["net"]["select"] == "[5]"
+    # the bits read by an assignment are not known: kept
+    assert [link["nets"] for link in answer["result"]] == [["top.m"], ["top.m"], ["top.g[1].u.a"]]
+    answer = query.loads(project, "top.g[1].u.d")
+    assert [(link["nets"], link["select"]) for link in answer["result"]] == [(["top.p"], "[7:4]")]
+    # trace: the start by the bits read, the end by the bits driven
+    hops = query.trace(project, "top.x[1]", "top.p")["result"]
+    assert [hop["net"] for hop in hops] == ["top.x", "top.g[0].u.a", "top.g[0].u.d", "top.p"]
+    assert hops[-1]["select"] == "[3:0]"
+    hops = query.trace(project, "top.x", "top.p[6]")["result"]
+    assert [hop["net"] for hop in hops] == ["top.x", "top.g[1].u.a", "top.g[1].u.d", "top.p"]
+    assert hops[-1]["select"] == "[7:4]"
 
 
 def test_render():

@@ -850,8 +850,9 @@ class Link(_BaseModel):
         conds: Driver: instance paths of the signals read by the conditions around (`if`, `case`).
         clock: Instance path of the clock of a flip-flop. Empty, if not known.
         control: Load: the signal is read by a condition or as clock only.
-        select: Select of the driven signal, as written: `[3:0]`. Within a `for` generate, as evaluated for the
-                iteration: `[7:4]` of `[4*i+:4]`. Empty for the whole signal.
+        select: Select of the driven signal (the signal itself for a driver, the one of `nets` for a load), as
+                written: `[3:0]`. Within a `for` generate, as evaluated for the iteration: `[7:4]` of `[4*i+:4]`.
+                Empty for the whole signal.
         item: Full identifier of the process, the instance or the module (continuous assignment).
         external: A port of the top: driven or loaded outside of the design.
         multiple: A signal stands for multiple ones (of an instance array, or a `for` generate without index).
@@ -881,7 +882,8 @@ class Hop(_BaseModel):
         net: Instance path of the signal.
         kind: Kind of the load reaching it (see [Link][hdl_parser.datamodel.Link]). Empty for the first one.
         control: The signal in front is read by a condition or as clock only.
-        select: Select of this signal, as driven: `[3:0]`.
+        select: Select of this signal, as driven: `[3:0]`. Within a `for` generate, as evaluated for the
+                iteration: `[7:4]` of `[4*i+:4]`.
         item: Full identifier of the process, instance or module of the load.
         file: File of `loc`.
         loc: Source Location of the assignment or connection.

@@ -161,6 +161,8 @@ class Pin(NamedTuple):
         writes: Keys of the nets driven by the connection, with their select.
         con: The connection. `None` for a connection by `.*`.
         formal: Name of the port, as written by a connection by name.
+        read_selects: Keys of the nets read by the connection, with their select, as far as the connection is a
+                      name with a select or a concatenation of them: `x[4*i+:4]`.
     """
 
     name: str
@@ -173,6 +175,7 @@ class Pin(NamedTuple):
     writes: tuple[tuple[str, str], ...]
     con: dm.Connection | None
     formal: str = ""
+    read_selects: tuple[tuple[str, str], ...] = ()
 
     @property
     def generates(self) -> tuple[dm.Generate, ...]:
@@ -408,15 +411,21 @@ class Graph:
             self.nets.setdefault(self.key(expr), Net(expr, "implicit", "", file))
         reads: tuple[str, ...] = ()
         writes: tuple[tuple[str, str], ...] = ()
+        read_selects: tuple[tuple[str, str], ...] = ()
         if expr and expr.lower() != "open":
             if direction in ("input", "inout", "unknown"):
                 keys = (self.resolve(name, inst.generates) for name in _refs.reads_text(expr, lang, paths=True))
                 reads = _refs.unique(key for key in keys if key)
+                parts = (
+                    (self.resolve(part.name, inst.generates), part.select) for part in _refs.targets_text(expr, lang)
+                )
+                read_selects = tuple((key, select) for key, select in parts if key)
             if direction in ("output", "inout", "unknown"):
                 targets = _refs.targets_text(expr, lang)
                 found = ((self.resolve(target.name, inst.generates), target.select) for target in targets)
                 writes = tuple((key, select) for key, select in found if key)
-        return Pin(name, file, inst, child, port.name if port else "", direction, reads, writes, con, formal)
+        port_name = port.name if port else ""
+        return Pin(name, file, inst, child, port_name, direction, reads, writes, con, formal, read_selects)
 
 
 def _process_kind(process: dm.Process) -> str:
@@ -534,9 +543,11 @@ class Step(NamedTuple):
         clock: The clock of a flip-flop.
         record: The assignment or pin. `None` for a port of the top, and across a defined pass-through cell.
         inst: The instance the record is located in.
-        select: Driver: the select of the driven net, as evaluated within an iteration of a loop: `[7:4]`.
-                `None`: as written by the record.
-        bits: Driver: the bits driven (lowest, highest). `None` for the whole net, or if not known.
+        select: The select of the driven net (the net of a driver, the one of `nets` of a load), as evaluated
+                within an iteration of a loop: `[7:4]`. `None`: as written by the record.
+        bits: The bits of the net (lowest, highest), which are driven by a driver, read by a load. `None` for the
+              whole net, or if not known.
+        driven: Load: the bits of the driven net (`nets`). `None` for the whole net, or if not known.
     """
 
     kind: str
@@ -548,6 +559,7 @@ class Step(NamedTuple):
     inst: Inst | None = None
     select: str | None = None
     bits: tuple[int, int] | None = None
+    driven: tuple[int, int] | None = None
 
 
 class Through(NamedTuple):
@@ -974,34 +986,40 @@ class Connectivity:
         if net.kind == "port" and net.direction in ("output", "inout"):
             yield from self._cell(inst, net, driver=True)
 
-    def loads(self, node: Node) -> Iterator[Step]:
-        """Loads of the net `node`."""
+    def loads(self, node: Node, bits: tuple[int, int] | None = None) -> Iterator[Step]:
+        """Loads of the net `node`. With `bits` (lowest, highest), only those which may read one of them.
+
+        A select within a `for` generate is evaluated per iteration: one step per distinct select.
+        """
         inst, key = node
         graph = self.graph(inst.definition)
         base = base_key(key)
+        steps: list[Step] = []
         for record in graph.loads.get(base, ()):
             ctxs = self._iterations(inst, record, self._record_context(inst, record, key))
+            ctxs = [ctx for ctx in ctxs if self.active(inst, record.generates, ctx)]
+            found: list[Step] = []
             if isinstance(record, Assign):
                 reads = [read for read in record.reads if base_key(read) == base]
                 conds = [cond for cond in record.conds if base_key(cond) == base]
-                dsts: list[Node] = []
-                data = False
                 for ctx in ctxs:
                     by_data = any(_matches(self.concrete(inst, read, ctx), key) for read in reads)
                     by_cond = any(_matches(self.concrete(inst, cond, ctx), key) for cond in conds)
-                    if (by_data or by_cond) and self.active(inst, record.generates, ctx):
-                        data = data or by_data
-                        dsts.append((inst, self.concrete(inst, record.dst, ctx)))
-                if dsts:
-                    yield Step(record.kind, tuple(dict.fromkeys(dsts)), control=not data, record=record, inst=inst)
+                    if by_data or by_cond:
+                        dst = (inst, self.concrete(inst, record.dst, ctx))
+                        step = Step(record.kind, (dst,), control=not by_data, record=record, inst=inst)
+                        # the select of the driven net
+                        step = self._selected(inst, record, step, ctx, record.assign.select)
+                        found.append(step._replace(bits=None, driven=step.bits))
             else:
-                steps = [
-                    self._pin_step(inst, record, ctx, driver=False)
-                    for ctx in ctxs
-                    if self.active(inst, record.generates, ctx)
-                    and any(_matches(self.concrete(inst, read, ctx), key) for read in record.reads)
-                ]
-                yield from _merge(steps)
+                for ctx in ctxs:
+                    if any(_matches(self.concrete(inst, read, ctx), key) for read in record.reads):
+                        step = self._pin_step(inst, record, ctx, driver=False)
+                        select = next((select for read, select in record.read_selects if _matches(read, key)), "")
+                        # the bits read of the net
+                        found.append(self._selected(inst, record, step, ctx, select)._replace(select=None))
+            steps += _merge(found)
+        yield from (step for step in steps if _overlaps(step.bits, bits))
         net = graph.nets[base]
         if net.kind == "port" and net.direction in ("output", "inout"):
             yield from self._across(inst, net, reads=False)
@@ -1096,7 +1114,12 @@ class Connectivity:
             if pin.port and key(pin.port) == key(net.name):
                 nets = pin.reads if reads else tuple(key for key, _ in pin.writes)
                 others = tuple((parent, self.concrete(parent, other, inst.ctx)) for other in nets)
-                yield Step("port", others, record=pin, inst=parent)
+                step = Step("port", others, record=pin, inst=parent)
+                if not reads and len(pin.writes) == 1:
+                    # the select of the driven net within the parent
+                    step = self._selected(parent, pin, step, inst.ctx, pin.writes[0][1])
+                    step = step._replace(bits=None, driven=step.bits)
+                yield step
 
     def through(self, definition: "Definition") -> Through | None:
         """`definition` as pass-through cell. `None`, if it is none."""
@@ -1141,12 +1164,20 @@ class Connectivity:
 
     # --- trace ---
 
-    def trace(  # noqa: C901
-        self, src: Node, dst: Node, through_regs: bool = False, control: bool = True
+    def trace(  # noqa: C901, PLR0913
+        self,
+        src: Node,
+        dst: Node,
+        through_regs: bool = False,
+        control: bool = True,
+        src_bits: tuple[int, int] | None = None,
+        dst_bits: tuple[int, int] | None = None,
     ) -> list[tuple[Node, Step | None]]:
         """Connection of loads from `src` to `dst`: the nets with the step reaching them. Empty, if there is none.
 
         The connection with the fewest steps is taken, but data first: a step by a condition counts as many.
+        `src_bits` and `dst_bits` (lowest, highest) restrict the start to the loads, which may read one of them,
+        and the end to the loads, which may drive one of them.
         `stops` and `ff_stops` tell, where the search stopped.
         """
         target = (dst[0].path, dst[1])
@@ -1160,13 +1191,17 @@ class Connectivity:
         queue: list[tuple[int, int, tuple[str, str]]] = [(0, 0, start)]
         count = 0
         done: set[tuple[str, str]] = set()
+
+        def is_target(ident: tuple[str, str]) -> bool:
+            return ident == target or (_matches(ident[1], target[1]) and ident[0] == target[0] and self._any(dst))
+
         while queue and len(came) < _MAX_NODES:
             cost, _, ident = heapq.heappop(queue)
             if ident in done:
                 continue
             done.add(ident)
             _, _, node, reached_by = came[ident]
-            if ident == target or (_matches(ident[1], target[1]) and ident[0] == target[0] and self._any(dst)):
+            if is_target(ident):
                 hops: list[tuple[Node, Step | None]] = []
                 current: tuple[str, str] | None = ident
                 while current is not None:
@@ -1177,7 +1212,7 @@ class Connectivity:
             if reached_by is not None and reached_by.kind == "ff" and not through_regs:
                 self.ff_stops += 1
                 continue
-            for step in self.loads(node):
+            for step in self.loads(node, src_bits if ident == start else None):
                 if step.control and not control:
                     continue
                 if step.kind == "unknown" and len(self.stops) < _MAX_STOPS:
@@ -1185,6 +1220,9 @@ class Connectivity:
                 step_cost = cost + (_CONTROL_COST if step.control else 1)
                 for nxt in step.nets:
                     nxt_ident = (nxt[0].path, nxt[1])
+                    if is_target(nxt_ident) and not _overlaps(step.driven, dst_bits):
+                        # drives other bits of the target
+                        continue
                     if nxt_ident not in came or came[nxt_ident][0] > step_cost:
                         came[nxt_ident] = (step_cost, ident, nxt, step)
                         count += 1
@@ -1219,15 +1257,17 @@ class Connectivity:
             process = record.process
             module = step.inst.definition.id if step.inst else ""
             fields["item"] = record.file.full_id(process) if process else module
-            fields["select"] = (record.assign.select if step.select is None else step.select) if driver else ""
+            # the select of the driven net: the one of the driver, the one of `nets` of a load
+            fields["select"] = record.assign.select if step.select is None else step.select
             fields["file"] = record.file.file_id
             fields["loc"] = record.assign.loc
         else:
             fields["item"] = record.file.full_id(record.inst)
             fields["file"] = record.file.file_id
             fields["loc"] = record.con.loc if record.con else record.inst.loc
-            if driver and step.kind not in ("port", "passthrough"):
-                written = next((select for key, select in record.writes if _matches(key, node[1])), "")
+            if (driver and step.kind not in ("port", "passthrough")) or (not driver and step.kind == "port"):
+                net = node[1] if driver else step.nets[0][1] if len(step.nets) == 1 else ""
+                written = next((select for key, select in record.writes if _matches(key, net)), "")
                 fields["select"] = written if step.select is None else step.select
             if step.kind == "unknown":
                 fields["unknown"] = (
@@ -1245,10 +1285,9 @@ class Connectivity:
             if step is not None:
                 link = self.link(node, step, driver=False)
                 fields.update(kind=link.kind, control=link.control, item=link.item, file=link.file, loc=link.loc)
+                fields["select"] = link.select
                 record = step.record
-                if isinstance(record, Assign):
-                    fields["select"] = record.assign.select
-                elif record is not None and step.kind == "port":
+                if step.kind == "port" and step.select is None and isinstance(record, Pin):
                     fields["select"] = next((select for key, select in record.writes if _matches(key, node[1])), "")
             result.append(dm.Hop(**fields))
         return tuple(result)
@@ -1278,7 +1317,7 @@ def _merge(steps: list[Step]) -> Iterator[Step]:
     """`steps` of the iterations of one record: one step per kind and select, with the nets of all of them."""
     kinds: dict[tuple, Step] = {}
     for step in steps:
-        ident = (step.kind, step.select, step.bits)
+        ident = (step.kind, step.select, step.bits, step.driven)
         first = kinds.get(ident)
         if first is None:
             kinds[ident] = step
@@ -1287,6 +1326,7 @@ def _merge(steps: list[Step]) -> Iterator[Step]:
                 nets=tuple(dict.fromkeys((*first.nets, *step.nets))),
                 conds=tuple(dict.fromkeys((*first.conds, *step.conds))),
                 clock=first.clock or step.clock,
+                control=first.control and step.control,
             )
     yield from kinds.values()
 
