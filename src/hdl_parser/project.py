@@ -491,6 +491,9 @@ class Project(dm._BaseModel):
         Names are resolved across files: parameters, local parameters, members of enumerations, and the
         packages which are imported or named (`pkg::WIDTH`).
 
+        Labeled `for` generate constructs with known indices are unrolled: one node per iteration (`g_st[1].u_sub`),
+        with the parameter values of that iteration. Generate constructs whose condition is false are left out.
+
         Nothing is ever guessed. What cannot be evaluated for sure has no value, but the reason: a function call,
         a name without known value, a package which is not part of the project, ...
 
@@ -504,9 +507,8 @@ class Project(dm._BaseModel):
         definition = self.resolve(top) or self.resolve(top, casefold=True)
         if definition is None:
             return None
-        elaboration = Elaboration(self)
-        scope = elaboration.scope(definition, elaboration.top_overrides(params))
-        return elaboration.node(scope, definition.unit.name, "", False, depth, (definition.id,))
+        conn = self._connectivity(params)
+        return conn.node(conn.top(definition.id), depth)  # type: ignore[arg-type]
 
     def evaluate(self, expr: str, scope: str, params: Mapping[str, int | float | str | bool] | None = None) -> dm.Value:
         """Value of the expression `expr` within the module, interface or package `scope` (a name or full identifier).
@@ -558,6 +560,9 @@ class Project(dm._BaseModel):
         second iteration, the index is checked. Without index (`top.g_st.data`), a path stands for all iterations
         (`multiple`). Instance arrays are not unrolled.
 
+        A select of the signal (`top.data[5]`, `top.data[7:4]`) keeps the drivers which may drive one of its bits.
+        A select of a driver within a `for` generate is evaluated per iteration: `[4*i+:4]` gives `[3:0]`, `[7:4]`.
+
         `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
         (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
 
@@ -566,7 +571,8 @@ class Project(dm._BaseModel):
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
-        return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node))
+        bits = conn.select_bits(node, conn.path_select(path))
+        return tuple(conn.link(node, step, driver=True) for step in conn.drivers(node, bits))
 
     def loads(
         self,
@@ -579,12 +585,16 @@ class Project(dm._BaseModel):
         The loads are the assignments reading the signal, also by a condition (`control`), and the input ports of
         instances it is connected to. An output port is loaded by the connection within the parent.
 
+        A select of the signal (`top.data[5]`) keeps the loads which may read one of its bits. The bits read by an
+        assignment are not known: it is kept. The select of the driven signal is evaluated per iteration.
+
         Raises:
             ValueError: The path does not exist.
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
-        return tuple(conn.link(node, step, driver=False) for step in conn.loads(node))
+        bits = conn.select_bits(node, conn.path_select(path))
+        return tuple(conn.link(node, step, driver=False) for step in conn.loads(node, bits))
 
     def trace(  # noqa: PLR0913
         self,
@@ -602,8 +612,9 @@ class Project(dm._BaseModel):
         The result starts with `src` and ends with `dst`. It is empty, if there is no connection.
 
         Args:
-            src: Instance path of the signal to start at: `top.u_core.result_o`.
-            dst: Instance path of the signal to reach.
+            src: Instance path of the signal to start at: `top.u_core.result_o`. A select (`top.data[5]`) keeps the
+                 loads which may read one of its bits.
+            dst: Instance path of the signal to reach. A select keeps the loads which may drive one of its bits.
 
         Keyword Args:
             params: Values of the parameters of the top, by name. Its defaults are used otherwise.
@@ -619,7 +630,10 @@ class Project(dm._BaseModel):
         conn = self._connectivity(params, passthrough)
         source: Node = conn.locate(src)
         target: Node = conn.locate(dst)
-        return conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
+        src_bits = conn.select_bits(source, conn.path_select(src))
+        dst_bits = conn.select_bits(target, conn.path_select(dst))
+        found = conn.trace(source, target, through_regs, control, src_bits, dst_bits)
+        return conn.hops(found)
 
     def _children(
         self, parent: Definition, depth: int | None, path: tuple[str, ...]
@@ -641,7 +655,7 @@ class Project(dm._BaseModel):
                 )
             nodes.append(
                 dm.HierarchyNode(
-                    name=inst.name,
+                    name=".".join((*(generate.name for generate in inst.generates if generate.name), inst.name)),
                     module=inst.module,
                     inst=file.full_id(inst),
                     definition=definition.id if definition else "",

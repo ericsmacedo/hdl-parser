@@ -161,6 +161,8 @@ class Pin(NamedTuple):
         writes: Keys of the nets driven by the connection, with their select.
         con: The connection. `None` for a connection by `.*`.
         formal: Name of the port, as written by a connection by name.
+        read_selects: Keys of the nets read by the connection, with their select, as far as the connection is a
+                      name with a select or a concatenation of them: `x[4*i+:4]`.
     """
 
     name: str
@@ -173,6 +175,7 @@ class Pin(NamedTuple):
     writes: tuple[tuple[str, str], ...]
     con: dm.Connection | None
     formal: str = ""
+    read_selects: tuple[tuple[str, str], ...] = ()
 
     @property
     def generates(self) -> tuple[dm.Generate, ...]:
@@ -408,15 +411,21 @@ class Graph:
             self.nets.setdefault(self.key(expr), Net(expr, "implicit", "", file))
         reads: tuple[str, ...] = ()
         writes: tuple[tuple[str, str], ...] = ()
+        read_selects: tuple[tuple[str, str], ...] = ()
         if expr and expr.lower() != "open":
             if direction in ("input", "inout", "unknown"):
                 keys = (self.resolve(name, inst.generates) for name in _refs.reads_text(expr, lang, paths=True))
                 reads = _refs.unique(key for key in keys if key)
+                parts = (
+                    (self.resolve(part.name, inst.generates), part.select) for part in _refs.targets_text(expr, lang)
+                )
+                read_selects = tuple((key, select) for key, select in parts if key)
             if direction in ("output", "inout", "unknown"):
                 targets = _refs.targets_text(expr, lang)
                 found = ((self.resolve(target.name, inst.generates), target.select) for target in targets)
                 writes = tuple((key, select) for key, select in found if key)
-        return Pin(name, file, inst, child, port.name if port else "", direction, reads, writes, con, formal)
+        port_name = port.name if port else ""
+        return Pin(name, file, inst, child, port_name, direction, reads, writes, con, formal, read_selects)
 
 
 def _process_kind(process: dm.Process) -> str:
@@ -534,6 +543,11 @@ class Step(NamedTuple):
         clock: The clock of a flip-flop.
         record: The assignment or pin. `None` for a port of the top, and across a defined pass-through cell.
         inst: The instance the record is located in.
+        select: The select of the driven net (the net of a driver, the one of `nets` of a load), as evaluated
+                within an iteration of a loop: `[7:4]`. `None`: as written by the record.
+        bits: The bits of the net (lowest, highest), which are driven by a driver, read by a load. `None` for the
+              whole net, or if not known.
+        driven: Load: the bits of the driven net (`nets`). `None` for the whole net, or if not known.
     """
 
     kind: str
@@ -543,6 +557,9 @@ class Step(NamedTuple):
     clock: Node | None = None
     record: Driver | None = None
     inst: Inst | None = None
+    select: str | None = None
+    bits: tuple[int, int] | None = None
+    driven: tuple[int, int] | None = None
 
 
 class Through(NamedTuple):
@@ -628,22 +645,72 @@ class Connectivity:
             overrides = self.elab.overrides(scope, inst, file.lang, definition)  # type: ignore[arg-type]
             child_scope = self.elab.scope(definition, overrides)
             self.elab.parents[id(child_scope)] = parent.scope
-            labels: list[str] = []
-            names: list[str] = []
-            unrolled = True
-            for generate in inst.generates:
-                if not generate.name:
-                    unrolled = unrolled and generate.kind != "for"
-                    continue
-                labels.append(generate.name)
-                index = ctx.get(graph.key(".".join(labels))) if generate.kind == "for" else None
-                names.append(generate.name if index is None else f"{generate.name}[{index}]")
-                unrolled = unrolled and (generate.kind != "for" or index is not None)
-            name = ".".join((*names, inst.name))
+            name, unrolled = self.inst_name(parent, inst, ctx)
             multiple = parent.multiple or bool(inst.dim) or not unrolled
             child = Inst(f"{parent.path}.{name}", definition, child_scope, parent, file, inst, multiple, ctx)
         parent.children[ident] = child
         return child
+
+    def inst_name(self, parent: Inst, inst: dm.ModuleInstance, ctx: Context) -> tuple[str, bool]:
+        """Name of `inst` within `parent` in the iteration `ctx`: `g_a[1].u_sub`. And whether all loops are known."""
+        graph = self.graph(parent.definition)
+        labels: list[str] = []
+        names: list[str] = []
+        unrolled = True
+        for generate in inst.generates:
+            if not generate.name:
+                unrolled = unrolled and generate.kind != "for"
+                continue
+            labels.append(generate.name)
+            index = ctx.get(graph.key(".".join(labels))) if generate.kind == "for" else None
+            names.append(generate.name if index is None else f"{generate.name}[{index}]")
+            unrolled = unrolled and (generate.kind != "for" or index is not None)
+        return ".".join((*names, inst.name)), unrolled
+
+    def node(self, inst: Inst, depth: int | None, path: tuple[str, ...] = ()) -> dm.HierarchyNode:
+        """Elaborated [HierarchyNode][hdl_parser.datamodel.HierarchyNode] of `inst` and the instances within.
+
+        Labeled `for` generate constructs with known indices are unrolled: one node per iteration (`g[1].u_sub`),
+        with the parameter values of that iteration. Generate constructs, whose condition is false, are left out.
+        """
+        definition = inst.definition
+        path = (*path, definition.id)
+        children: list[dm.HierarchyNode] = []
+        truncated = False
+        if depth == 0:
+            truncated = any(True for _ in definition.insts)
+        else:
+            below = None if depth is None else depth - 1
+            for file, sub in definition.insts:
+                children.extend(
+                    self._node(inst, file, sub, ctx, below, path)
+                    for ctx in self.contexts(inst, sub.generates, {})
+                    if self.active(inst, sub.generates, ctx)
+                )
+        return dm.HierarchyNode(
+            name=definition.unit.name,
+            module=definition.unit.name,
+            definition=definition.id,
+            children=tuple(children),
+            truncated=truncated,
+            params=inst.scope.all_params(),
+            ports=inst.scope.all_ports(),
+        )
+
+    def _node(  # noqa: PLR0913
+        self, parent: Inst, file: dm.File, inst: dm.ModuleInstance, ctx: Context, depth: int | None, path: tuple
+    ) -> dm.HierarchyNode:
+        name, unrolled = self.inst_name(parent, inst, ctx)
+        fields: dict[str, Any] = {"name": name, "module": inst.module, "inst": file.full_id(inst)}
+        fields["multiple"] = bool(inst.dim) or not unrolled
+        child = self.child(parent, file, inst, ctx)
+        if child is None:
+            # not defined, or the module contains itself
+            definition = self.project._resolve_inst(file, inst)
+            return dm.HierarchyNode(
+                **fields, definition=definition.id if definition else "", truncated=definition is not None
+            )
+        return self.node(child, depth, path).model_copy(update=fields)
 
     def bound(self, inst: Inst, ctx: Context) -> Scope | _Bound:
         """Scope of `inst`, with the values of the variables of the loops `ctx`."""
@@ -722,12 +789,10 @@ class Connectivity:
 
     def locate(self, path: str) -> Node:
         """The net with the instance path `path`: `top.u_core.result_o`. Raises `PathError`."""
-        if ":" in path:
-            file_id, _, local = path.rpartition(":")
-            top_name, *rest = local.split(".")
+        file_id, local = _split_file(path)
+        top_name, *rest = local.split(".")
+        if file_id:
             top_name = f"{file_id}:{top_name}"
-        else:
-            top_name, *rest = path.split(".")
         steps = [_parts(step.strip())[0] for step in rest]
         top_name = _INDEX.sub("", top_name)
         inst = self.top(top_name)
@@ -890,85 +955,118 @@ class Connectivity:
 
     # --- drivers and loads ---
 
-    def drivers(self, node: Node) -> Iterator[Step]:
-        """Drivers of the net `node`."""
+    def drivers(self, node: Node, bits: tuple[int, int] | None = None) -> Iterator[Step]:
+        """Drivers of the net `node`. With `bits` (lowest, highest), only those which may drive one of them.
+
+        A select within a `for` generate is evaluated per iteration: one step per distinct select.
+        """
         inst, key = node
         graph = self.graph(inst.definition)
+        steps: list[Step] = []
         for record in graph.drivers.get(base_key(key), ()):
             ctxs = self._iterations(inst, record, self._record_context(inst, record, key))
+            ctxs = [ctx for ctx in ctxs if self.active(inst, record.generates, ctx)]
             if isinstance(record, Assign):
-                nets: list[Node] = []
-                conds: list[Node] = []
-                clock: Node | None = None
-                found = False
-                for ctx in ctxs:
-                    if not _matches(self.concrete(inst, record.dst, ctx), key):
-                        continue
-                    if not self.active(inst, record.generates, ctx):
-                        continue
-                    found = True
-                    nets += [(inst, self.concrete(inst, read, ctx)) for read in record.reads]
-                    conds += [(inst, self.concrete(inst, cond, ctx)) for cond in record.conds]
-                    if record.clock:
-                        clock = clock or (inst, self.concrete(inst, record.clock, ctx))
-                if found:
-                    nets_ = tuple(dict.fromkeys(nets))
-                    yield Step(record.kind, nets_, tuple(dict.fromkeys(conds)), clock=clock, record=record, inst=inst)
+                ctxs = [ctx for ctx in ctxs if _matches(self.concrete(inst, record.dst, ctx), key)]
+                found = [self._assign_step(inst, record, ctx) for ctx in ctxs]
             else:
-                steps = [
-                    self._pin_step(inst, record, ctx, driver=True)
+                ctxs = [
+                    ctx
                     for ctx in ctxs
-                    if self.active(inst, record.generates, ctx)
-                    and any(_matches(self.concrete(inst, write, ctx), key) for write, _ in record.writes)
+                    if any(_matches(self.concrete(inst, write, ctx), key) for write, _ in record.writes)
                 ]
-                yield from _merge(steps)
+                select = next((select for write, select in record.writes if _matches(write, key)), "")
+                found = [self._pin_step(inst, record, ctx, driver=True) for ctx in ctxs]
+                found = [self._selected(inst, record, step, ctx, select) for step, ctx in zip(found, ctxs, strict=True)]
+            steps += _merge(found)
+        yield from (step for step in steps if _overlaps(step.bits, bits))
         net = graph.nets[base_key(key)]
         if net.kind == "port" and net.direction in ("input", "inout"):
             yield from self._across(inst, net, reads=True)
         if net.kind == "port" and net.direction in ("output", "inout"):
             yield from self._cell(inst, net, driver=True)
 
-    def loads(self, node: Node) -> Iterator[Step]:
-        """Loads of the net `node`."""
+    def loads(self, node: Node, bits: tuple[int, int] | None = None) -> Iterator[Step]:
+        """Loads of the net `node`. With `bits` (lowest, highest), only those which may read one of them.
+
+        A select within a `for` generate is evaluated per iteration: one step per distinct select.
+        """
         inst, key = node
         graph = self.graph(inst.definition)
         base = base_key(key)
+        steps: list[Step] = []
         for record in graph.loads.get(base, ()):
             ctxs = self._iterations(inst, record, self._record_context(inst, record, key))
+            ctxs = [ctx for ctx in ctxs if self.active(inst, record.generates, ctx)]
+            found: list[Step] = []
             if isinstance(record, Assign):
                 reads = [read for read in record.reads if base_key(read) == base]
                 conds = [cond for cond in record.conds if base_key(cond) == base]
-                dsts: list[Node] = []
-                data = False
                 for ctx in ctxs:
                     by_data = any(_matches(self.concrete(inst, read, ctx), key) for read in reads)
                     by_cond = any(_matches(self.concrete(inst, cond, ctx), key) for cond in conds)
-                    if (by_data or by_cond) and self.active(inst, record.generates, ctx):
-                        data = data or by_data
-                        dsts.append((inst, self.concrete(inst, record.dst, ctx)))
-                if dsts:
-                    yield Step(record.kind, tuple(dict.fromkeys(dsts)), control=not data, record=record, inst=inst)
+                    if by_data or by_cond:
+                        dst = (inst, self.concrete(inst, record.dst, ctx))
+                        step = Step(record.kind, (dst,), control=not by_data, record=record, inst=inst)
+                        # the select of the driven net
+                        step = self._selected(inst, record, step, ctx, record.assign.select)
+                        found.append(step._replace(bits=None, driven=step.bits))
             else:
-                steps = [
-                    self._pin_step(inst, record, ctx, driver=False)
-                    for ctx in ctxs
-                    if self.active(inst, record.generates, ctx)
-                    and any(_matches(self.concrete(inst, read, ctx), key) for read in record.reads)
-                ]
-                yield from _merge(steps)
+                for ctx in ctxs:
+                    if any(_matches(self.concrete(inst, read, ctx), key) for read in record.reads):
+                        step = self._pin_step(inst, record, ctx, driver=False)
+                        select = next((select for read, select in record.read_selects if _matches(read, key)), "")
+                        # the bits read of the net
+                        found.append(self._selected(inst, record, step, ctx, select)._replace(select=None))
+            steps += _merge(found)
+        yield from (step for step in steps if _overlaps(step.bits, bits))
         net = graph.nets[base]
         if net.kind == "port" and net.direction in ("output", "inout"):
             yield from self._across(inst, net, reads=False)
         if net.kind == "port" and net.direction in ("input", "inout"):
             yield from self._cell(inst, net, driver=False)
 
+    def _assign_step(self, inst: Inst, record: Assign, ctx: Context) -> Step:
+        """Step of the assignment `record` within the iteration `ctx`."""
+        nets = tuple((inst, self.concrete(inst, read, ctx)) for read in record.reads)
+        conds = tuple((inst, self.concrete(inst, cond, ctx)) for cond in record.conds)
+        clock = (inst, self.concrete(inst, record.clock, ctx)) if record.clock else None
+        step = Step(record.kind, nets, conds, clock=clock, record=record, inst=inst)
+        return self._selected(inst, record, step, ctx, record.assign.select)
+
+    def _selected(self, inst: Inst, record: Driver, step: Step, ctx: Context, select: str) -> Step:
+        """`step` with the bits driven by `select`, and the select as evaluated within a loop."""
+        if not select:
+            return step
+        found = _select(self.bound(inst, ctx), select, inst.definition.file.lang)
+        if found is None:
+            return step
+        low, high, text = found
+        looped = bool(self.graph(inst.definition).loop_paths(record.generates))
+        return step._replace(bits=(low, high), select=text if looped else None)
+
+    @staticmethod
+    def path_select(path: str) -> str:
+        """Select of the signal of the instance path `path`, as written: `[5]` of `top.data[5]`."""
+        return _parts(_split_file(path)[1].split(".")[-1].strip())[-1][1]
+
+    def select_bits(self, node: Node, select: str) -> tuple[int, int] | None:
+        """Bits (lowest, highest) selected by `select` of the net `node`. `None`, if not known."""
+        inst, key = node
+        found = _select(self.bound(inst, _context(key)), select, inst.definition.file.lang) if select else None
+        return found[:2] if found else None
+
     def _iterations(self, inst: Inst, record: Driver, ctx: Context) -> list[Context]:
-        """The iterations of the loops of `record`, which are not given by `ctx`: one context each.
+        """The iterations of the loops of `record`, which are not given by `ctx`: one context each."""
+        return self.contexts(inst, record.generates, ctx)
+
+    def contexts(self, inst: Inst, generates: tuple[dm.Generate, ...], ctx: Context) -> list[Context]:
+        """The iterations of the loops of `generates` within `inst`, which are not given by `ctx`: one context each.
 
         A loop whose range is not known is left without index, as are all, if there are too many iterations.
         """
         found = [ctx]
-        for path in self.graph(inst.definition).loop_paths(record.generates):
+        for path in self.graph(inst.definition).loop_paths(generates):
             if path in ctx:
                 continue
             expanded = []
@@ -1016,7 +1114,12 @@ class Connectivity:
             if pin.port and key(pin.port) == key(net.name):
                 nets = pin.reads if reads else tuple(key for key, _ in pin.writes)
                 others = tuple((parent, self.concrete(parent, other, inst.ctx)) for other in nets)
-                yield Step("port", others, record=pin, inst=parent)
+                step = Step("port", others, record=pin, inst=parent)
+                if not reads and len(pin.writes) == 1:
+                    # the select of the driven net within the parent
+                    step = self._selected(parent, pin, step, inst.ctx, pin.writes[0][1])
+                    step = step._replace(bits=None, driven=step.bits)
+                yield step
 
     def through(self, definition: "Definition") -> Through | None:
         """`definition` as pass-through cell. `None`, if it is none."""
@@ -1061,12 +1164,20 @@ class Connectivity:
 
     # --- trace ---
 
-    def trace(  # noqa: C901
-        self, src: Node, dst: Node, through_regs: bool = False, control: bool = True
+    def trace(  # noqa: C901, PLR0913
+        self,
+        src: Node,
+        dst: Node,
+        through_regs: bool = False,
+        control: bool = True,
+        src_bits: tuple[int, int] | None = None,
+        dst_bits: tuple[int, int] | None = None,
     ) -> list[tuple[Node, Step | None]]:
         """Connection of loads from `src` to `dst`: the nets with the step reaching them. Empty, if there is none.
 
         The connection with the fewest steps is taken, but data first: a step by a condition counts as many.
+        `src_bits` and `dst_bits` (lowest, highest) restrict the start to the loads, which may read one of them,
+        and the end to the loads, which may drive one of them.
         `stops` and `ff_stops` tell, where the search stopped.
         """
         target = (dst[0].path, dst[1])
@@ -1080,13 +1191,17 @@ class Connectivity:
         queue: list[tuple[int, int, tuple[str, str]]] = [(0, 0, start)]
         count = 0
         done: set[tuple[str, str]] = set()
+
+        def is_target(ident: tuple[str, str]) -> bool:
+            return ident == target or (_matches(ident[1], target[1]) and ident[0] == target[0] and self._any(dst))
+
         while queue and len(came) < _MAX_NODES:
             cost, _, ident = heapq.heappop(queue)
             if ident in done:
                 continue
             done.add(ident)
             _, _, node, reached_by = came[ident]
-            if ident == target or (_matches(ident[1], target[1]) and ident[0] == target[0] and self._any(dst)):
+            if is_target(ident):
                 hops: list[tuple[Node, Step | None]] = []
                 current: tuple[str, str] | None = ident
                 while current is not None:
@@ -1097,7 +1212,7 @@ class Connectivity:
             if reached_by is not None and reached_by.kind == "ff" and not through_regs:
                 self.ff_stops += 1
                 continue
-            for step in self.loads(node):
+            for step in self.loads(node, src_bits if ident == start else None):
                 if step.control and not control:
                     continue
                 if step.kind == "unknown" and len(self.stops) < _MAX_STOPS:
@@ -1105,6 +1220,9 @@ class Connectivity:
                 step_cost = cost + (_CONTROL_COST if step.control else 1)
                 for nxt in step.nets:
                     nxt_ident = (nxt[0].path, nxt[1])
+                    if is_target(nxt_ident) and not _overlaps(step.driven, dst_bits):
+                        # drives other bits of the target
+                        continue
                     if nxt_ident not in came or came[nxt_ident][0] > step_cost:
                         came[nxt_ident] = (step_cost, ident, nxt, step)
                         count += 1
@@ -1139,15 +1257,18 @@ class Connectivity:
             process = record.process
             module = step.inst.definition.id if step.inst else ""
             fields["item"] = record.file.full_id(process) if process else module
-            fields["select"] = record.assign.select if driver else ""
+            # the select of the driven net: the one of the driver, the one of `nets` of a load
+            fields["select"] = record.assign.select if step.select is None else step.select
             fields["file"] = record.file.file_id
             fields["loc"] = record.assign.loc
         else:
             fields["item"] = record.file.full_id(record.inst)
             fields["file"] = record.file.file_id
             fields["loc"] = record.con.loc if record.con else record.inst.loc
-            if driver and step.kind not in ("port", "passthrough"):
-                fields["select"] = next((select for key, select in record.writes if _matches(key, node[1])), "")
+            if (driver and step.kind not in ("port", "passthrough")) or (not driver and step.kind == "port"):
+                net = node[1] if driver else step.nets[0][1] if len(step.nets) == 1 else ""
+                written = next((select for key, select in record.writes if _matches(key, net)), "")
+                fields["select"] = written if step.select is None else step.select
             if step.kind == "unknown":
                 fields["unknown"] = (
                     f"module '{record.inst.module}' is not defined in the project"
@@ -1164,10 +1285,9 @@ class Connectivity:
             if step is not None:
                 link = self.link(node, step, driver=False)
                 fields.update(kind=link.kind, control=link.control, item=link.item, file=link.file, loc=link.loc)
+                fields["select"] = link.select
                 record = step.record
-                if isinstance(record, Assign):
-                    fields["select"] = record.assign.select
-                elif record is not None and step.kind == "port":
+                if step.kind == "port" and step.select is None and isinstance(record, Pin):
                     fields["select"] = next((select for key, select in record.writes if _matches(key, node[1])), "")
             result.append(dm.Hop(**fields))
         return tuple(result)
@@ -1194,15 +1314,85 @@ class Connectivity:
 
 
 def _merge(steps: list[Step]) -> Iterator[Step]:
-    """`steps` of the iterations of one record: one step per kind, with the nets of all of them."""
-    kinds: dict[str, Step] = {}
+    """`steps` of the iterations of one record: one step per kind and select, with the nets of all of them."""
+    kinds: dict[tuple, Step] = {}
     for step in steps:
-        if step.kind in kinds:
-            first = kinds[step.kind]
-            kinds[step.kind] = first._replace(nets=tuple(dict.fromkeys((*first.nets, *step.nets))))
+        ident = (step.kind, step.select, step.bits, step.driven)
+        first = kinds.get(ident)
+        if first is None:
+            kinds[ident] = step
         else:
-            kinds[step.kind] = step
+            kinds[ident] = first._replace(
+                nets=tuple(dict.fromkeys((*first.nets, *step.nets))),
+                conds=tuple(dict.fromkeys((*first.conds, *step.conds))),
+                clock=first.clock or step.clock,
+                control=first.control and step.control,
+            )
     yield from kinds.values()
+
+
+def _split_file(path: str) -> tuple[str, str]:
+    """File identifier and the rest of the path: `("rtl/top.sv", "top.data[3:0]")`. Selects keep their colons."""
+    depth = 0
+    cut = -1
+    for pos, char in enumerate(path):
+        if char in "[(":
+            depth += 1
+        elif char in "])":
+            depth -= 1
+        elif char == ":" and depth == 0:
+            cut = pos
+    return (path[:cut], path[cut + 1 :]) if cut >= 0 else ("", path)
+
+
+def _overlaps(bits: tuple[int, int] | None, other: tuple[int, int] | None) -> bool:
+    """The bits may overlap: either is not known (or the whole net), or they share a bit."""
+    return bits is None or other is None or (bits[0] <= other[1] and other[0] <= bits[1])
+
+
+_SV_SELECT = re.compile(r"\[([^\[\]]+)\]")
+_SV_PART = re.compile(r"(.+?)([+-]):(.+)", re.DOTALL)
+_SV_RANGE = re.compile(r"(.+?)(?<!:):(?!:)(.+)", re.DOTALL)
+_VHDL_SELECT = re.compile(r"\((.+?)(?:\s+(to|downto)\s+(.+))?\)", re.DOTALL | re.IGNORECASE)
+
+
+def _select(scope: Scope | _Bound, select: str, lang: str) -> tuple[int, int, str] | None:  # noqa: PLR0911
+    """Bits (lowest, highest) of the select `select` of one dimension, and its text as evaluated: `[7:4]`.
+
+    `None`, if it is not known: an expression which cannot be evaluated, several dimensions, a field, ...
+    """
+    text = select.strip()
+
+    def value(expr: str) -> int:
+        return int(scope.evaluate(expr.strip()).value)  # type: ignore[arg-type]
+
+    try:
+        if lang == "vhdl":
+            mat = _VHDL_SELECT.fullmatch(text)
+            if mat is None:
+                return None
+            first = value(mat.group(1))
+            if mat.group(2) is None:
+                return first, first, f"({first})"
+            last = value(mat.group(3))
+            return min(first, last), max(first, last), f"({first} {mat.group(2).lower()} {last})"
+        mat = _SV_SELECT.fullmatch(text)
+        if mat is None or "?" in mat.group(1):
+            return None
+        inner = mat.group(1)
+        part = _SV_PART.fullmatch(inner)
+        if part is not None:
+            base, width = value(part.group(1)), value(part.group(3))
+            low, high = (base, base + width - 1) if part.group(2) == "+" else (base - width + 1, base)
+            return low, high, f"[{high}:{low}]"
+        span = _SV_RANGE.fullmatch(inner)
+        if span is not None:
+            first, last = value(span.group(1)), value(span.group(2))
+            return min(first, last), max(first, last), f"[{first}:{last}]"
+        first = value(inner)
+    except (Unknown, TypeError, ValueError, ZeroDivisionError):
+        return None
+    return first, first, f"[{first}]"
 
 
 def _similar(name: str, names: list[str]) -> tuple[str, ...]:

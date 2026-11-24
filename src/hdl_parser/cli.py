@@ -729,7 +729,9 @@ def _scalar(text: str) -> int | float | str | bool:
 {_PATHS_HELP}"""
 )
 @click.argument("top")
-@click.option("--path", default="", help="Instance names below TOP, separated by dots: 'u_core.u_alu'.")
+@click.option(
+    "--path", default="", help="Instance names below TOP, separated by dots: 'u_core.u_alu', 'g_lane[1].u_sub'."
+)
 @opt_params
 @click.option("--depth", "-d", type=click.IntRange(min=0), default=0, help="Instance levels below, default 0.")
 @click.option("--name", "names", multiple=True, help="Pattern of names of parameters and ports.")

@@ -61,7 +61,7 @@ from typing import Any, ForwardRef, get_args
 import pydantic as pyd
 
 from . import datamodel as dm
-from ._conn import Connectivity, Node, PathError
+from ._conn import Connectivity, Node, PathError, base_key
 from .project import Definition, Project
 
 DEFAULT_LIMIT = 100
@@ -580,7 +580,8 @@ def elaborate(  # noqa: PLR0913
         top: Name or full identifier of the top module.
 
     Keyword Args:
-        path: Instance names below `top`, separated by dots: `u_core.u_alu`. The top itself by default.
+        path: Instance names below `top`, separated by dots, with the labels of the generate blocks around:
+              `u_core.u_alu`, `g_st[1].u_sub`. The top itself by default.
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
         depth: Number of instance levels below the node, which are returned too. Default 0: the node only.
         names: Patterns of the names of the parameters and ports to be returned. All by default.
@@ -601,14 +602,28 @@ def elaborate(  # noqa: PLR0913
         raise QueryError("bad-argument", str(exc)) from exc
     if node is None:
         raise QueryError("not-found", f"'{top}' is no module of the project.", _similar_units(project, top))
-    for index, step in enumerate(steps):
-        child = next((child for child in node.children if child.name == step), None)
-        if child is None:
+    index = 0
+    while index < len(steps):
+        # the name of a child may span steps: `g_st[1].u_sub`
+        found = next(
+            (
+                (end, child)
+                for end in range(len(steps), index, -1)
+                for child in node.children
+                if child.name == ".".join(steps[index:end])
+            ),
+            None,
+        )
+        if found is None:
             where = ".".join(steps[:index]) or top
+            wanted = ".".join(steps[index:])
+            choices = [child.name for child in node.children]
+            # the iterations of an unrolled loop first: `g[0].u`, `g[1].u` for `g.u`
+            same = [name for name in choices if base_key(name) == base_key(wanted)]
             raise QueryError(
-                "not-found", f"'{where}' has no instance '{step}'.", [child.name for child in node.children]
+                "not-found", f"'{where}' has no instance '{wanted}'.", same or _similar(wanted, choices) or choices
             )
-        node = child
+        index, node = found
     patterns = tuple(names)
     budget = [_resolve_limit(limit)]
     omitted: dict[str, int] = {}
@@ -704,7 +719,8 @@ def drivers(
         project: Project.
         path: The top module (name or full identifier), the instance names below (with the labels of the generate
               blocks around) and the signal, separated by dots. The index of a `for` generate block selects one
-              iteration (`top.g_st[1].data`), all of them without (`multiple`).
+              iteration (`top.g_st[1].data`), all of them without (`multiple`). A select of the signal
+              (`top.data[5]`) keeps the drivers which may drive one of its bits.
 
     Keyword Args:
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
@@ -714,12 +730,15 @@ def drivers(
     `net` describes the signal: its `path`, `kind` (`port`, `signal`, `variable` of a process, `implicit`),
     `direction`, identifier and location. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
     `port`, `unknown`), the signals it reads (`nets`), the ones read by its conditions (`conds`), the process,
-    instance or module (`item`) and the location. Ask for the drivers of `nets` to go further.
+    instance or module (`item`) and the location. The `select` of a driver within a `for` generate is evaluated
+    per iteration (`[4*i+:4]` gives one driver with `[3:0]` and one with `[7:4]`). Ask for the drivers of `nets` to
+    go further.
     See [Link][hdl_parser.datamodel.Link].
     """
     conn, node = _locate(project, path, params, passthrough=passthrough)
-    links = [conn.link(node, step, driver=True) for step in conn.drivers(node)]
-    return _links("drivers", conn, node, links, limit)
+    select = conn.path_select(path)
+    links = [conn.link(node, step, driver=True) for step in conn.drivers(node, conn.select_bits(node, select))]
+    return _links("drivers", conn, node, links, limit, select)
 
 
 def loads(
@@ -731,12 +750,14 @@ def loads(
 ) -> dict[str, Any]:
     """What the signal with the instance path `path` drives. See [drivers][hdl_parser.query.drivers].
 
-    Every load has the signals it drives (`nets`). `control` marks a load, which reads the signal by a condition
-    or as clock only.
+    Every load has the signals it drives (`nets`), with the `select` of the driven one. `control` marks a load,
+    which reads the signal by a condition or as clock only. A select of the signal (`top.data[5]`) keeps the loads
+    which may read one of its bits: an assignment reads the whole signal, as far as known.
     """
     conn, node = _locate(project, path, params, passthrough=passthrough)
-    links = [conn.link(node, step, driver=False) for step in conn.loads(node)]
-    return _links("loads", conn, node, links, limit)
+    select = conn.path_select(path)
+    links = [conn.link(node, step, driver=False) for step in conn.loads(node, conn.select_bits(node, select))]
+    return _links("loads", conn, node, links, limit, select)
 
 
 def trace(  # noqa: PLR0913
@@ -764,15 +785,19 @@ def trace(  # noqa: PLR0913
         passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
-    (`kind`, `item`, location). `counts` tells the number of `hops`, the ones by flip-flops (`ff`) and the ones by
-    conditions (`control`): a path with many of these is a weak connection. The search stops at modules which
-    are not defined (blackboxes): `stopped_at` names them, if there is no connection.
+    (`kind`, `item`, location, the `select` driven). A select of `src` or `dst` (`top.data[5]`) restricts the
+    start to the loads reading one of its bits, and the end to the loads driving one of them. `counts` tells the
+    number of `hops`, the ones by flip-flops (`ff`) and the ones by conditions (`control`): a path with many of
+    these is a weak connection. The search stops at modules which are not defined (blackboxes): `stopped_at`
+    names them, if there is no connection.
     """
     conn, source = _locate(project, src, params, passthrough=passthrough)
     _, target = _locate(project, dst, params, conn)
     if _top(source[0]) is not _top(target[0]):
         raise QueryError("bad-argument", "'src' and 'dst' must be located below the same top.")
-    found = conn.hops(conn.trace(source, target, through_regs=through_regs, control=control))
+    src_bits = conn.select_bits(source, conn.path_select(src))
+    dst_bits = conn.select_bits(target, conn.path_select(dst))
+    found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
     hops = [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
     answer = _list_answer("trace", result, len(hops), omitted, tuple(dm.Hop.model_fields))
@@ -819,11 +844,15 @@ def _locate(
         raise QueryError("bad-argument", str(exc)) from exc
 
 
-def _links(query: str, conn: Connectivity, node: Node, links: list[dm.Link], limit: int | None) -> dict[str, Any]:
+def _links(  # noqa: PLR0913
+    query: str, conn: Connectivity, node: Node, links: list[dm.Link], limit: int | None, select: str = ""
+) -> dict[str, Any]:
     entries = [_dump(link) for link in links]
     result, omitted = _limit(entries, limit)
     net = conn.net(node)
     info: dict[str, Any] = {"path": conn.path(node), "kind": net.kind}
+    if select:
+        info["select"] = select
     if net.direction:
         info["direction"] = net.direction
     if net.item is not None and net.file is not None:

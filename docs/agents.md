@@ -143,7 +143,7 @@ hdl-parser module ibex_alu --fields ports --limit 2
 
 ### What is instantiated below a module?
 
-Two instances share a name, as they are located in different `generate` branches. Use `--depth` and `--limit` on large designs.
+Instances within `generate` blocks are named with the labels of the blocks. Use `--depth` and `--limit` on large designs.
 
 ```bash
 hdl-parser hierarchy --top ibex_ex_block --fields module,loc
@@ -170,7 +170,7 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
           null
         ],
         [
-          "multdiv_i",
+          "gen_multdiv_slow.multdiv_i",
           "ibex_multdiv_slow",
           131,
           {
@@ -180,7 +180,7 @@ hdl-parser hierarchy --top ibex_ex_block --fields module,loc
           null
         ],
         [
-          "multdiv_i",
+          "gen_multdiv_fast.multdiv_i",
           "ibex_multdiv_fast",
           156,
           {

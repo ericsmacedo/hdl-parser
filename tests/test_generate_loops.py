@@ -123,8 +123,14 @@ def test_register_file(ibex):
     (link,) = ibex.loads("ibex_register_file_ff.wdata_a_i")
     assert link.nets == tuple(f"{REGFILE}.g_rf_flops[{index}].rf_reg_q" for index in range(1, 32))
     assert not link.multiple
-    (by_loop, _) = ibex.drivers(f"{REGFILE}.rf_reg")
-    assert len(by_loop.nets) == 31
+    # a select by the loop variable: one driver per iteration, the select evaluated
+    by_loop = ibex.drivers(f"{REGFILE}.rf_reg")
+    assert [(link.select, link.nets) for link in by_loop[:-1]] == [
+        (f"[{index}]", (f"{REGFILE}.g_rf_flops[{index}].rf_reg_q",)) for index in range(1, 32)
+    ]
+    assert by_loop[-1].select == "[0]"
+    # a select of the signal: the drivers of its bits
+    assert [link.nets for link in ibex.drivers(f"{REGFILE}.rf_reg[5]")] == [(f"{REGFILE}.g_rf_flops[5].rf_reg_q",)]
     assert [hop.net for hop in ibex.trace("ibex_register_file_ff.wdata_a_i", f"{REGFILE}.g_rf_flops[7].rf_reg_q")] == [
         "ibex_register_file_ff.wdata_a_i",
         f"{REGFILE}.g_rf_flops[7].rf_reg_q",
@@ -134,32 +140,40 @@ def test_register_file(ibex):
     assert write.multiple
 
 
+_LEVELS = [("[0]", 90), ("[1]", 90), ("[2]", 90)]
+
+
 @mark.parametrize(
     ("width", "expected"),
     (
-        # last level: two inputs per node, the others: the nodes below
-        (8, [("lzc.gen_lzc.in_tmp",), ("lzc.gen_lzc.sel_nodes",)]),
+        # last level: two inputs per node (line 72), the others: the nodes below (line 90)
+        (8, [("[3]", 72), ("[4]", 72), ("[5]", 72), ("[6]", 72), *_LEVELS]),
         # a single input left over: `g_base`
-        (7, [("lzc.gen_lzc.in_tmp",), ("lzc.gen_lzc.in_tmp",), ("lzc.gen_lzc.sel_nodes",)]),
+        (7, [("[3]", 72), ("[4]", 72), ("[5]", 72), ("[6]", 79), *_LEVELS]),
         # out of range: `g_out_of_range` assigns a constant
-        (6, [("lzc.gen_lzc.in_tmp",), (), ("lzc.gen_lzc.sel_nodes",)]),
+        (6, [("[3]", 72), ("[4]", 72), ("[5]", 72), ("[6]", 84), *_LEVELS]),
         # a single level: the last one only
-        (2, [("lzc.gen_lzc.in_tmp",)]),
+        (2, [("[0]", 72)]),
     ),
 )
 def test_conditions_by_iteration(common_cells, width, expected):
-    """`if` Generate Constructs Within Nested Loops Depend On The Variables Of The Loops."""
+    """`if` Generate Constructs Within Nested Loops Depend On The Variables Of The Loops: One Driver Per Index."""
     links = common_cells.drivers("lzc.gen_lzc.sel_nodes", params={"WIDTH": width})
-    assert [link.nets for link in links] == expected
+    assert [(link.select, link.loc.line) for link in links] == expected
+    (link,) = common_cells.drivers("lzc.gen_lzc.sel_nodes[6]", params={"WIDTH": 6})
+    assert (link.nets, link.loc.line) == ((), 84)
 
 
 def test_instances_in_loop(common_cells):
     """Instances Within A Loop: One Per Iteration, Not Connected To Each Other."""
     src = "cdc_fifo_gray_src"
-    (link,) = common_cells.drivers(f"{src}.rptr")
-    assert link.nets == tuple(f"{src}.gen_sync[{index}].i_sync.serial_o" for index in range(4))
-    (link,) = common_cells.drivers(f"{src}.rptr", params={"LOG_DEPTH": 1})
-    assert len(link.nets) == 2
+    links = common_cells.drivers(f"{src}.rptr")
+    assert [(link.select, link.nets) for link in links] == [
+        (f"[{index}]", (f"{src}.gen_sync[{index}].i_sync.serial_o",)) for index in range(4)
+    ]
+    assert len(common_cells.drivers(f"{src}.rptr", params={"LOG_DEPTH": 1})) == 2
+    (link,) = common_cells.drivers(f"{src}.rptr[2]")
+    assert link.nets == (f"{src}.gen_sync[2].i_sync.serial_o",)
     hops = common_cells.trace(f"{src}.async_rptr_i", f"{src}.gen_sync[2].i_sync.serial_o", through_regs=True)
     assert [hop.net for hop in hops] == [
         f"{src}.async_rptr_i",
@@ -179,8 +193,11 @@ def test_vhdl(surf):
     """VHDL: Indices In Parentheses, `downto`, Instances Of Undefined Entities."""
     with raises(ValueError, match=r"has no index 2: the indices are 0\.\.1"):
         surf.drivers("Jesd204bRx.generateRxLanes(2).JesdRx_INST.nSync_o", params={"L_G": 2})
-    (link,) = surf.drivers("Jesd204bRx.s_nSyncVecEn", params={"L_G": 2})
-    assert link.nets == ("Jesd204bRx.s_nSyncVec", "Jesd204bRx.s_enableRx")
+    links = surf.drivers("Jesd204bRx.s_nSyncVecEn", params={"L_G": 2})
+    assert [link.select for link in links] == ["(1)", "(0)"]
+    assert links[0].nets == ("Jesd204bRx.s_nSyncVec", "Jesd204bRx.s_enableRx")
+    (link,) = surf.drivers("Jesd204bRx.s_nSyncVecEn(0)", params={"L_G": 2})
+    assert link.select == "(0)"
     # the bound is a generic without default: an index which cannot be checked is taken
     poc = Project.from_dir(CORPUS / "vhdl" / "poc")
     (link,) = poc.drivers("arith_addw.genBlocks(5).aa")

@@ -410,6 +410,60 @@ def test_elaborate(tmp_path):
         query.evaluate(project, "1", "nope")
 
 
+def test_generate_paths(tmp_path):
+    """Instances In Loops: Labeled In The Hierarchy, One Per Iteration Elaborated. Selects Per Iteration."""
+    (tmp_path / "top.sv").write_text(
+        """\
+module leaf #(parameter int W = 4) (input logic [W-1:0] a, output logic [W-1:0] d);
+  assign d = a;
+endmodule
+module top (input logic [7:0] x, output logic [7:0] m, output logic [7:0] p);
+  for (genvar i = 0; i < 2; i++) begin : g
+    leaf #(.W(4 + i)) u (.a(x[4*i+:4]), .d(p[4*i+:4]));
+    assign m[4*i+:4] = x[4*i+:4];
+  end
+endmodule
+"""
+    )
+    project = Project.from_dir(tmp_path)
+    (child,) = query.hierarchy(project, "top")["result"]["children"]
+    assert (child["name"], child["multiple"]) == ("g.u", True)
+    result = query.elaborate(project, "top", path="g[1].u")["result"]
+    assert (result["name"], result["params"]["W"]["value"], result["ports"]["d"]["value"]) == ("g[1].u", 5, 5)
+    with raises(query.QueryError) as error:
+        query.elaborate(project, "top", path="g.u")
+    assert error.value.suggestions == ("g[0].u", "g[1].u")
+    answer = query.drivers(project, "top.m")
+    assert [(link["select"], link["loc"]["line"]) for link in answer["result"]] == [("[3:0]", 7), ("[7:4]", 7)]
+    answer = query.drivers(project, "top.m[5]")
+    assert answer["net"]["select"] == "[5]"
+    assert [link["select"] for link in answer["result"]] == ["[7:4]"]
+    assert [link["select"] for link in query.drivers(project, "top.m[3:0]")["result"]] == ["[3:0]"]
+    answer = query.drivers(project, "top.p[6]")
+    assert [(link["nets"], link["select"]) for link in answer["result"]] == [(["top.g[1].u.d"], "[7:4]")]
+    # loads: the select of the driven signal per iteration, the bits read by the instances
+    answer = query.loads(project, "top.x")
+    assert [(link["nets"], link.get("select")) for link in answer["result"]] == [
+        (["top.m"], "[3:0]"),
+        (["top.m"], "[7:4]"),
+        (["top.g[0].u.a"], None),
+        (["top.g[1].u.a"], None),
+    ]
+    answer = query.loads(project, "top.x[5]")
+    assert answer["net"]["select"] == "[5]"
+    # the bits read by an assignment are not known: kept
+    assert [link["nets"] for link in answer["result"]] == [["top.m"], ["top.m"], ["top.g[1].u.a"]]
+    answer = query.loads(project, "top.g[1].u.d")
+    assert [(link["nets"], link["select"]) for link in answer["result"]] == [(["top.p"], "[7:4]")]
+    # trace: the start by the bits read, the end by the bits driven
+    hops = query.trace(project, "top.x[1]", "top.p")["result"]
+    assert [hop["net"] for hop in hops] == ["top.x", "top.g[0].u.a", "top.g[0].u.d", "top.p"]
+    assert hops[-1]["select"] == "[3:0]"
+    hops = query.trace(project, "top.x", "top.p[6]")["result"]
+    assert [hop["net"] for hop in hops] == ["top.x", "top.g[1].u.a", "top.g[1].u.d", "top.p"]
+    assert hops[-1]["select"] == "[7:4]"
+
+
 def test_render():
     """Compact Answers: Relative Identifiers, Lines, Tables."""
     answer = {

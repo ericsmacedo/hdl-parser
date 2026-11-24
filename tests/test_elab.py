@@ -28,6 +28,7 @@ import re
 from pytest import fixture, mark
 
 from hdl_parser import HierarchyNode, Project, Value
+from hdl_parser._conn import base_key
 
 from .conftest import PRJ_PATH
 
@@ -95,6 +96,12 @@ module top #(
   leaf u_default ();
   for (genvar i = 0; i < 2; i++) begin : g_loop
     leaf #(.WIDTH(i + 1)) u_loop ();
+  end
+  for (genvar j = 0; j < UNKNOWN; j++) begin : g_open
+    leaf #(.WIDTH(j + 1)) u_open ();
+  end
+  if (W == 0) begin : g_off
+    leaf u_off ();
   end
 endmodule
 """,
@@ -186,10 +193,15 @@ def test_sv_instances(sv):
     assert unknown.ports["data_i"].unknown == "'WIDTH' is not known: 'UNKNOWN' is not known"
     assert unknown.ports["clk_i"].value == 1
     assert _child(top, "u_default").params["WIDTH"].value == 8
-    # the value depends on the loop
-    loop = _child(top, "u_loop")
+    # the loop is unrolled: the value depends on the iteration
+    for index in (0, 1):
+        loop = _child(top, f"g_loop[{index}].u_loop")
+        assert (loop.inst, loop.multiple) == ("top.sv:top.g_loop.u_loop", False)
+        assert loop.params["WIDTH"].value == index + 1
+    # the indices of the loop are not known
+    loop = _child(top, "g_open.u_open")
     assert loop.multiple
-    assert loop.params["WIDTH"].unknown == "'i' is not known"
+    assert loop.params["WIDTH"].unknown == "'j' is not known"
 
 
 def test_sv_unit_imports(tmp_path):
@@ -235,8 +247,13 @@ def test_depth(sv):
         "u_ordered",
         "u_unknown",
         "u_default",
-        "u_loop",
+        "g_loop[0].u_loop",
+        "g_loop[1].u_loop",
+        "g_open.u_open",
     ]
+    # without values: one node per instance, labeled
+    names = [child.name for child in sv.hierarchy("top").children]
+    assert names[-3:] == ["g_loop.u_loop", "g_open.u_open", "g_off.u_off"]
 
 
 def test_evaluate(sv):
@@ -394,6 +411,16 @@ def test_mixed_language(vhdl):
 # ---------------------------------------------------------------------------------------------------------------------
 
 
+def _matched(node: HierarchyNode, plain: HierarchyNode):
+    """The elaborated nodes, each checked against its node of the plain hierarchy."""
+    yield node
+    by_inst = {child.inst: child for child in plain.children}
+    for child in node.children:
+        plain_child = by_inst[child.inst]
+        assert (base_key(child.name), child.definition) == (plain_child.name, plain_child.definition)
+        yield from _matched(child, plain_child)
+
+
 def _nodes(node: HierarchyNode):
     yield node
     for child in node.children:
@@ -457,8 +484,7 @@ def test_corpus(path):
     for top in project.tops():
         tree = project.elaborate(top.id)
         plain = project.hierarchy(top.id)
-        for node, plain_node in zip(_nodes(tree), _nodes(plain), strict=True):
-            assert (node.name, node.inst, node.definition) == (plain_node.name, plain_node.inst, plain_node.definition)
+        for node in _matched(tree, plain):
             for value in (*node.params.values(), *node.ports.values()):
                 values += 1
                 assert (value.value is None) == bool(value.unknown), value
