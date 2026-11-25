@@ -464,6 +464,56 @@ endmodule
     assert hops[-1]["select"] == "[7:4]"
 
 
+def test_bad_selects_and_params(tmp_path):
+    """Selects Out Of Range And Unknown Parameters Are Rejected. Unchecked Bits Are Marked."""
+    (tmp_path / "top.sv").write_text(
+        """\
+module top #(parameter int W = 12) (input logic [W-1:0] x, input logic [3:0] i, output logic [W-1:0] m);
+  logic [7:0] mem [4];
+  assign m = x;
+  assign mem[0] = x[7:0];
+  assign mem[1] = x[i +: 4];
+endmodule
+"""
+    )
+    project = Project.from_dir(tmp_path)
+    for path in ("top.m[12]", "top.m[13:4]", "top.mem[4]"):
+        with raises(query.QueryError, match="out of the range") as error:
+            query.drivers(project, path)
+        assert error.value.code == "bad-argument"
+    with raises(query.QueryError, match="out of the range"):
+        query.loads(project, "top.x[12]")
+    with raises(query.QueryError, match="out of the range"):
+        query.trace(project, "top.x[12]", "top.m")
+    # the range by the parameters given
+    assert query.drivers(project, "top.m[12]", params={"W": 16})["total"] == 1
+    assert query.drivers(project, "top.m[11]")["total"] == 1
+    assert query.drivers(project, "top.mem[3]")["total"] == 0
+    # an unknown parameter
+    for call in (
+        lambda: query.evaluate(project, "W", "top", params={"NOPE": 3}),
+        lambda: query.elaborate(project, "top", params={"NOPE": 3}),
+        lambda: query.drivers(project, "top.m", params={"NOPE": 3}),
+    ):
+        with raises(query.QueryError, match=r"'top' has no parameter 'NOPE'\. Parameters: W\.") as error:
+            call()
+        assert error.value.code == "bad-argument"
+    assert query.evaluate(project, "W", "top", params={"W": 3})["result"]["value"] == 3
+    # bits: the bits read by an assignment, a select which cannot be evaluated
+    rows = query.loads(project, "top.x[5]")["result"]
+    assert [(row["nets"], row["bits"]) for row in rows] == [
+        (["top.m"], "unchecked"),
+        (["top.mem"], "unchecked"),
+        (["top.mem"], "unchecked"),
+    ]
+    assert all("bits" not in row for row in query.loads(project, "top.x")["result"])
+    answer = query.render(query.drivers(project, "top.m"))
+    assert "bits" not in answer["result"]["columns"]
+    answer = query.render(query.drivers(project, "top.m[1]"))
+    assert "bits" in answer["result"]["columns"]
+    assert answer["result"]["rows"][0][answer["result"]["columns"].index("bits")] is None
+
+
 def test_render():
     """Compact Answers: Relative Identifiers, Lines, Tables."""
     answer = {

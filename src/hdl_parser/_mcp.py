@@ -225,7 +225,8 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "output ports of instances, the connection of an input port within the parent. Ask for the drivers of "
         "the signals read ('nets') to go further. A select within a generate loop is evaluated per iteration "
         "('[4*i+:4]': one driver with '[3:0]', one with '[7:4]'). A select of the signal ('top.data[5]') keeps "
-        "the drivers of its bits.",
+        "the drivers of its bits; one whose bits are not known has bits='unchecked'. A select out of the range of "
+        "the signal is a bad-argument.",
         "inputSchema": {
             "type": "object",
             "properties": {"path": _PATH, "param": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
@@ -237,7 +238,7 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "description": "What a signal drives: assignments reading it (also by a condition: 'control'), input ports "
         "of instances, the connection of an output port within the parent. The 'select' of the driven signal is "
         "evaluated per iteration of a generate loop. A select of the signal ('top.data[5]') keeps the loads which "
-        "may read its bits (an assignment is kept: the bits it reads are not known).",
+        "may read its bits; one whose bits are not known has bits='unchecked': every assignment, it reads names only.",
         "inputSchema": {
             "type": "object",
             "properties": {"path": _PATH, "param": _TOP_PARAMS, "limit": _LIMIT, "passthrough": _PASSTHROUGH},
@@ -373,13 +374,10 @@ class Server:
         if func is None:
             return _error(id_, -32602, f"Unknown tool: {name}")
         tool = next(tool for tool in TOOLS if tool["name"] == name)
-        unknown = sorted(set(arguments) - set(tool["inputSchema"]["properties"]))
-        if unknown:
-            return _result(id_, _content({"error": {"code": "bad-argument", "message": f"unknown: {unknown}"}}, True))
-        if name == "diagnostics" and self.blackboxes:
-            arguments = {**arguments, "blackbox": (*self.blackboxes, *arguments.get("blackbox", ()))}
         try:
-            _check(tool["inputSchema"]["properties"], arguments)
+            _check(tool["inputSchema"], arguments)
+            if name == "diagnostics" and self.blackboxes:
+                arguments = {**arguments, "blackbox": (*self.blackboxes, *arguments.get("blackbox", ()))}
             detail = arguments.pop("detail", "compact")
             answer = query.render(func(self.project, **_query_arguments(tool["name"], arguments)), detail)
         except query.QueryError as exc:
@@ -407,8 +405,18 @@ Values which cannot be computed have 'unknown' with the reason: never take them 
 `ifdef is tagged 'ifdefs' (see 'module' with fields 'assigns' or 'insts'); 'drivers' and 'trace' do not show it."""
 
 
-def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:
-    """Check `arguments` against the types and minimums of `properties`."""
+def _check(schema: dict[str, Any], arguments: dict[str, Any]) -> None:
+    """Check `arguments` against the names, required names, types and minimums of the input `schema`."""
+    properties = schema["properties"]
+    names = sorted(properties)
+    unknown = sorted(set(arguments) - set(properties))
+    if unknown:
+        raise query.QueryError(
+            "bad-argument", f"unknown arguments: {', '.join(unknown)}. Valid: {', '.join(names)}.", names
+        )
+    missing = [key for key in schema.get("required", ()) if key not in arguments]
+    if missing:
+        raise query.QueryError("bad-argument", f"missing required arguments: {', '.join(missing)}.")
     types: dict[str, Any] = {
         "integer": int,
         "boolean": bool,
@@ -417,15 +425,15 @@ def _check(properties: dict[str, Any], arguments: dict[str, Any]) -> None:
         "object": dict,
     }
     for key, value in arguments.items():
-        schema = properties[key]
-        expected = types.get(schema.get("type", ""))
+        prop = properties[key]
+        expected = types.get(prop.get("type", ""))
         valid = expected is None or (isinstance(value, expected) and not (expected is int and isinstance(value, bool)))
         if not valid:
-            raise query.QueryError("bad-argument", f"'{key}' must be of type {schema['type']}.")
-        if "minimum" in schema and value < schema["minimum"]:
-            raise query.QueryError("bad-argument", f"'{key}' must be at least {schema['minimum']}.")
-        if "enum" in schema and value not in schema["enum"]:
-            raise query.QueryError("bad-argument", f"'{key}' must be one of {schema['enum']}.", schema["enum"])
+            raise query.QueryError("bad-argument", f"'{key}' must be of type {prop['type']}.")
+        if "minimum" in prop and value < prop["minimum"]:
+            raise query.QueryError("bad-argument", f"'{key}' must be at least {prop['minimum']}.")
+        if "enum" in prop and value not in prop["enum"]:
+            raise query.QueryError("bad-argument", f"'{key}' must be one of {prop['enum']}.", prop["enum"])
 
 
 def serve(

@@ -389,7 +389,9 @@ All tools are read-only (`readOnlyHint`).
 * `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `param` of the top
   and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
   constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for
-  all of them (`multiple`). The granularity is the whole signal: the select (`[3:0]`) is given as text.
+  all of them (`multiple`). A select of the signal (`top.data[5]`) keeps the drivers and loads of its bits; one
+  whose bits are not known has `bits: "unchecked"` (every assignment among the loads: it reads names only). A
+  select out of the declared range, and a `param` which is no parameter of the top, are a `bad-argument`.
   Procedural statements which are not understood (task calls) are reported as `statement-skipped`.
 * `--cache-dir DIR` keeps the cache outside the root, i.e. outside a shared work area.
 

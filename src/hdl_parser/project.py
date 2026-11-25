@@ -503,6 +503,9 @@ class Project(dm._BaseModel):
         Keyword Args:
             params: Values of the parameters of the top, by name. Its defaults are used otherwise.
             depth: Number of instance levels below the top. Everything by default.
+
+        Raises:
+            ValueError: A name of `params` is no parameter of the top.
         """
         definition = self.resolve(top) or self.resolve(top, casefold=True)
         if definition is None:
@@ -515,13 +518,14 @@ class Project(dm._BaseModel):
 
         `params`: Values of the parameters of `scope`, by name. Its defaults are used otherwise.
         An expression which cannot be evaluated for sure has no value, but the reason.
+        Raises `ValueError` for a name in `params`, which is no parameter of `scope`.
         """
         definition = self.resolve(scope) or self.resolve(scope, casefold=True) or self.resolve_package(scope)
         definition = definition or self.resolve_package(scope, casefold=True)
         if definition is None:
             return dm.Value(expr=expr, unknown=f"'{scope}' is not defined in the project")
         elaboration = Elaboration(self)
-        return elaboration.scope(definition, elaboration.top_overrides(params)).value_of(expr)
+        return elaboration.top_scope(definition, elaboration.top_overrides(params)).value_of(expr)
 
     # --- connectivity ---
 
@@ -561,13 +565,14 @@ class Project(dm._BaseModel):
         (`multiple`). Instance arrays are not unrolled.
 
         A select of the signal (`top.data[5]`, `top.data[7:4]`) keeps the drivers which may drive one of its bits.
-        A select of a driver within a `for` generate is evaluated per iteration: `[4*i+:4]` gives `[3:0]`, `[7:4]`.
+        A driver whose bits are not known is kept, with `bits="unchecked"`. A select of a driver within a `for`
+        generate is evaluated per iteration: `[4*i+:4]` gives `[3:0]`, `[7:4]`.
 
         `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
         (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
 
         Raises:
-            ValueError: The path does not exist.
+            ValueError: The path does not exist, its select is out of range, or a name of `params` is no parameter.
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
@@ -586,10 +591,11 @@ class Project(dm._BaseModel):
         instances it is connected to. An output port is loaded by the connection within the parent.
 
         A select of the signal (`top.data[5]`) keeps the loads which may read one of its bits. The bits read by an
-        assignment are not known: it is kept. The select of the driven signal is evaluated per iteration.
+        assignment are not known: it is kept, with `bits="unchecked"`. The select of the driven signal is evaluated
+        per iteration.
 
         Raises:
-            ValueError: The path does not exist.
+            ValueError: The path does not exist, its select is out of range, or a name of `params` is no parameter.
         """
         conn = self._connectivity(params, passthrough)
         node = conn.locate(path)
@@ -625,7 +631,7 @@ class Project(dm._BaseModel):
                          [drivers][hdl_parser.project.Project.drivers].
 
         Raises:
-            ValueError: A path does not exist.
+            ValueError: A path does not exist, a select is out of range, or a name of `params` is no parameter.
         """
         conn = self._connectivity(params, passthrough)
         source: Node = conn.locate(src)

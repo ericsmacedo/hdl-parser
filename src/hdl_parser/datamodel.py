@@ -856,6 +856,9 @@ class Link(_BaseModel):
         item: Full identifier of the process, the instance or the module (continuous assignment).
         external: A port of the top: driven or loaded outside of the design.
         multiple: A signal stands for multiple ones (of an instance array, or a `for` generate without index).
+        bits: `unchecked`, if the signal is given with a select (`top.data[5]`), but the bits driven or read are not
+              known: the driver or load is kept, although it may not drive or read one of the selected bits. Every
+              assignment reading the signal is `unchecked`: the bits it reads are not known.
         unknown: Why the other side is not known: i.e. the module is not defined in the project.
         file: File of `loc`.
         loc: Source Location of the assignment or connection.
@@ -870,6 +873,7 @@ class Link(_BaseModel):
     item: str = ""
     external: bool = False
     multiple: bool = False
+    bits: Literal["", "unchecked"] = ""
     unknown: str = ""
     file: str = ""
     loc: Location | None = None

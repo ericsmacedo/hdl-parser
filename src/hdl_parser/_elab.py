@@ -427,6 +427,22 @@ class Elaboration:
                 overrides[param.name] = parent.value_of(con.con, lang)
         return overrides
 
+    def top_scope(self, definition: "Definition", overrides: Mapping[str, dm.Value]) -> Scope:
+        """Scope of the top `definition`, with the parameter values `overrides` given by the user.
+
+        Raises `ValueError` for a name which is no parameter of `definition`.
+        """
+        scope = Scope(self, definition, overrides)
+        declared = {scope.key(param.name) for unit in scope.units for param in unit.params}
+        unknown = sorted(name for name in overrides if scope.key(name) not in declared)
+        if unknown:
+            valid = sorted(param.name for param in definition.unit.params)
+            raise ValueError(
+                f"'{definition.unit.name}' has no parameter {', '.join(repr(name) for name in unknown)}. "
+                f"Parameters: {', '.join(valid) or 'none'}."
+            )
+        return scope
+
     def top_overrides(self, params: Mapping[str, Scalar] | None) -> dict[str, dm.Value]:
         """Values of the parameters of the top, as given."""
         return {name: dm.Value(expr=str(value), value=value) for name, value in (params or {}).items()}

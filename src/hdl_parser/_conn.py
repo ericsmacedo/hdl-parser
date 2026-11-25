@@ -548,6 +548,8 @@ class Step(NamedTuple):
         bits: The bits of the net (lowest, highest), which are driven by a driver, read by a load. `None` for the
               whole net, or if not known.
         driven: Load: the bits of the driven net (`nets`). `None` for the whole net, or if not known.
+        unchecked: The bits are not known: a select, which cannot be evaluated, or the bits read by an assignment.
+                   Set by `drivers` and `loads` only, if they are asked for bits.
     """
 
     kind: str
@@ -560,6 +562,7 @@ class Step(NamedTuple):
     select: str | None = None
     bits: tuple[int, int] | None = None
     driven: tuple[int, int] | None = None
+    unchecked: bool = False
 
 
 class Through(NamedTuple):
@@ -618,7 +621,7 @@ class Connectivity:
         if definition is None:
             return None
         if definition.id not in self.tops:
-            scope = self.elab.scope(definition, self.params)
+            scope = self.elab.top_scope(definition, self.params)
             self.tops[definition.id] = Inst(definition.unit.name, definition, scope)
         return self.tops[definition.id]
 
@@ -979,7 +982,7 @@ class Connectivity:
                 found = [self._pin_step(inst, record, ctx, driver=True) for ctx in ctxs]
                 found = [self._selected(inst, record, step, ctx, select) for step, ctx in zip(found, ctxs, strict=True)]
             steps += _merge(found)
-        yield from (step for step in steps if _overlaps(step.bits, bits))
+        yield from _filtered(steps, bits)
         net = graph.nets[base_key(key)]
         if net.kind == "port" and net.direction in ("input", "inout"):
             yield from self._across(inst, net, reads=True)
@@ -1010,7 +1013,8 @@ class Connectivity:
                         step = Step(record.kind, (dst,), control=not by_data, record=record, inst=inst)
                         # the select of the driven net
                         step = self._selected(inst, record, step, ctx, record.assign.select)
-                        found.append(step._replace(bits=None, driven=step.bits))
+                        # the bits read of the net are not known: the reads are names only
+                        found.append(step._replace(bits=None, driven=step.bits, unchecked=True))
             else:
                 for ctx in ctxs:
                     if any(_matches(self.concrete(inst, read, ctx), key) for read in record.reads):
@@ -1019,7 +1023,7 @@ class Connectivity:
                         # the bits read of the net
                         found.append(self._selected(inst, record, step, ctx, select)._replace(select=None))
             steps += _merge(found)
-        yield from (step for step in steps if _overlaps(step.bits, bits))
+        yield from _filtered(steps, bits)
         net = graph.nets[base]
         if net.kind == "port" and net.direction in ("output", "inout"):
             yield from self._across(inst, net, reads=False)
@@ -1040,7 +1044,7 @@ class Connectivity:
             return step
         found = _select(self.bound(inst, ctx), select, inst.definition.file.lang)
         if found is None:
-            return step
+            return step._replace(unchecked=True)
         low, high, text = found
         looped = bool(self.graph(inst.definition).loop_paths(record.generates))
         return step._replace(bits=(low, high), select=text if looped else None)
@@ -1051,10 +1055,44 @@ class Connectivity:
         return _parts(_split_file(path)[1].split(".")[-1].strip())[-1][1]
 
     def select_bits(self, node: Node, select: str) -> tuple[int, int] | None:
-        """Bits (lowest, highest) selected by `select` of the net `node`. `None`, if not known."""
+        """Bits (lowest, highest) selected by `select` of the net `node`. `None`, if not known.
+
+        Raises `ValueError`, if the select is out of the declared range of the net.
+        """
         inst, key = node
-        found = _select(self.bound(inst, _context(key)), select, inst.definition.file.lang) if select else None
-        return found[:2] if found else None
+        if not select:
+            return None
+        scope = self.bound(inst, _context(key))
+        found = _select(scope, select, inst.definition.file.lang)
+        if found is None:
+            return None
+        declared = self._declared(inst, key, scope)
+        if declared is not None and not (declared[0] <= found[0] and found[1] <= declared[1]):
+            name = key.rsplit(".", 1)[-1]
+            raise ValueError(
+                f"'{select.strip()}' is out of the range of '{name}': its indices are {declared[0]}..{declared[1]}."
+            )
+        return found[:2]
+
+    def _declared(self, inst: Inst, key: str, scope: Scope | _Bound) -> tuple[int, int] | None:
+        """Indices (lowest, highest) of the first dimension of the net `key`, as declared. `None`, if not known."""
+        net = self.graph(inst.definition).nets.get(base_key(key))
+        item = net.item if net is not None else None
+        if item is None:
+            return None
+        dims = item.dim_unpacked or item.dim
+        mat = _FIRST_DIM.match(dims)
+        if mat is None:
+            return None
+        span = _SV_RANGE.fullmatch(mat.group(1))
+        if span is None:
+            # '[N]': N elements, unpacked only
+            size = self._index(scope, mat.group(1))
+            return (0, size - 1) if size is not None and item.dim_unpacked else None
+        first, last = self._index(scope, span.group(1)), self._index(scope, span.group(2))
+        if first is None or last is None:
+            return None
+        return min(first, last), max(first, last)
 
     def _iterations(self, inst: Inst, record: Driver, ctx: Context) -> list[Context]:
         """The iterations of the loops of `record`, which are not given by `ctx`: one context each."""
@@ -1244,6 +1282,7 @@ class Connectivity:
             "clock": self.path(step.clock) if step.clock else "",
             "control": step.control,
             "multiple": self.multiple(node) or any(self.multiple(other) for other in step.nets),
+            "bits": "unchecked" if step.unchecked else "",
         }
         record = step.record
         if record is None and step.kind == "passthrough" and step.inst is not None:
@@ -1345,12 +1384,22 @@ def _split_file(path: str) -> tuple[str, str]:
     return (path[:cut], path[cut + 1 :]) if cut >= 0 else ("", path)
 
 
+def _filtered(steps: list[Step], bits: tuple[int, int] | None) -> Iterator[Step]:
+    """The steps, which may drive or read one of `bits`. Without `bits`, all of them, none `unchecked`."""
+    for step in steps:
+        if bits is None:
+            yield step._replace(unchecked=False)
+        elif _overlaps(step.bits, bits):
+            yield step
+
+
 def _overlaps(bits: tuple[int, int] | None, other: tuple[int, int] | None) -> bool:
     """The bits may overlap: either is not known (or the whole net), or they share a bit."""
     return bits is None or other is None or (bits[0] <= other[1] and other[0] <= bits[1])
 
 
 _SV_SELECT = re.compile(r"\[([^\[\]]+)\]")
+_FIRST_DIM = re.compile(r"\s*\[([^\[\]]+)\]")
 _SV_PART = re.compile(r"(.+?)([+-]):(.+)", re.DOTALL)
 _SV_RANGE = re.compile(r"(.+?)(?<!:):(?!:)(.+)", re.DOTALL)
 _VHDL_SELECT = re.compile(r"\((.+?)(?:\s+(to|downto)\s+(.+))?\)", re.DOTALL | re.IGNORECASE)
