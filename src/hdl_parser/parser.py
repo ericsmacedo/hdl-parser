@@ -38,8 +38,10 @@ Use [hdl_parser.parser.parse_defines][] to read macros from other files:
 Both return [Defines][hdl_parser.parser.Defines]: the macros and the problems.
 """
 
+import gc
 import logging
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Literal, NamedTuple, TypeAlias
 
@@ -226,46 +228,67 @@ def parse_text(  # noqa: PLR0913
     if closed_world and not resolve_ifdefs:
         raise ValueError("'closed_world' requires 'resolve_ifdefs=True'.")
 
-    if isinstance(file_path, str):
-        file_path = Path(file_path)
+    # the garbage collector finds nothing in the many items created, but takes its time to look at them
+    with _paused_gc():
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
 
-    if lang is None and file_path:
-        lang = LANGMAP.get(file_path.suffix)
+        if lang is None and file_path:
+            lang = LANGMAP.get(file_path.suffix)
 
-    diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
-    if lang == "vhdl":
-        file = assign_ids(parse_vhdl(text, diagnostics), casefold=True)
-    else:
-        file = parse_sv(
-            text,
-            file_path=file_path,
-            expand_macros=expand_macros,
-            macros=macros,
-            inc_dirs=map(Path, inc_dirs),
-            resolve_ifdefs=resolve_ifdefs,
-            diagnostics=diagnostics,
-            closed_world=closed_world,
-            maybe_defined=maybe_defined,
-        )
-        file = assign_ids(file)
-
-    units: tuple[dm.Module | dm.Package, ...] = (*file.modules, *file.interfaces, *file.packages)
-    if not units:
-        # this is fine: included files, classes, ...
-        diagnostics.add("no-module", "no module found.")
-    for module in (*file.modules, *file.interfaces):
-        for macro in module.unresolved_macros:
-            diagnostics.add(
-                "macro-not-expanded",
-                f"module '{module.name}': macro `{macro.name} in module header is not expanded. "
-                "Ports or parameters may be missing.",
-                macro.loc,
-                item=macro.id,
+        diagnostics = Diagnostics(str(file_path) if file_path else "<text>")
+        if lang == "vhdl":
+            file = assign_ids(parse_vhdl(text, diagnostics), casefold=True)
+        else:
+            file = parse_sv(
+                text,
+                file_path=file_path,
+                expand_macros=expand_macros,
+                macros=macros,
+                inc_dirs=map(Path, inc_dirs),
+                resolve_ifdefs=resolve_ifdefs,
+                diagnostics=diagnostics,
+                closed_world=closed_world,
+                maybe_defined=maybe_defined,
             )
-        _check_drivers(module, diagnostics, casefold=lang == "vhdl")
+            file = assign_ids(file)
 
-    update = {"path": file_path, "lang": "vhdl" if lang == "vhdl" else "sv", "diagnostics": diagnostics.finish(units)}
-    return file.model_copy(update=update)
+        units: tuple[dm.Module | dm.Package, ...] = (*file.modules, *file.interfaces, *file.packages)
+        if not units:
+            # this is fine: included files, classes, ...
+            diagnostics.add("no-module", "no module found.")
+        for module in (*file.modules, *file.interfaces):
+            for macro in module.unresolved_macros:
+                diagnostics.add(
+                    "macro-not-expanded",
+                    f"module '{module.name}': macro `{macro.name} in module header is not expanded. "
+                    "Ports or parameters may be missing.",
+                    macro.loc,
+                    item=macro.id,
+                )
+            _check_drivers(module, diagnostics, casefold=lang == "vhdl")
+
+        update = {
+            "path": file_path,
+            "lang": "vhdl" if lang == "vhdl" else "sv",
+            "diagnostics": diagnostics.finish(units),
+        }
+        return file.model_copy(update=update)
+
+
+@contextmanager
+def _paused_gc() -> Iterator[None]:
+    """Pause the cyclic garbage collector, restore its previous state at the end.
+
+    Parsing creates many objects without reference cycles: looking at them takes a long time and finds nothing.
+    """
+    collecting = gc.isenabled()
+    gc.disable()
+    try:
+        yield
+    finally:
+        if collecting:
+            gc.enable()
 
 
 _RESOLVED = frozenset(("tri", "tri0", "tri1", "triand", "trior", "trireg", "wand", "wor", "supply0", "supply1"))

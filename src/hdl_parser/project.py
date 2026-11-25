@@ -43,7 +43,6 @@ It answers questions about the design, instead of single files:
 A file which cannot be read or parsed never stops the others: it is part of the project, with a diagnostic.
 """
 
-import gc
 import hashlib
 import json
 import logging
@@ -63,7 +62,7 @@ from ._diagnostics import Diagnostics, log_diagnostic, silent
 from ._elab import Elaboration
 from ._sv.preproc import RE_DEFINE_NAME, defined_names
 from .filelistparser import DEFAULT_LIB_EXTS, read_filelist
-from .parser import LANGMAP, Macros, parse_defines_text, parse_file
+from .parser import LANGMAP, Macros, _paused_gc, parse_defines_text, parse_file
 
 SCHEMA_VERSION = 1
 """Version of the JSON document of a project. Incremented on changes, which are not backward compatible."""
@@ -806,13 +805,8 @@ class _Builder:
             self.maybe_defined,
         )
         # the garbage collector finds nothing in the many items created, but takes its time to look at them
-        collecting = gc.isenabled()
-        gc.disable()
-        try:
+        with _paused_gc():
             parsed = self._parse_files(todo, job)
-        finally:
-            if collecting:
-                gc.enable()
         for path, file in zip(todo, parsed, strict=True):
             files[path] = file
             if self.cache is not None:
