@@ -21,12 +21,14 @@
 # SOFTWARE.
 """Test Parser."""
 
+import gc
 import logging
 
 from pytest import mark, raises
 from test2ref import assert_refdata
 
 from hdl_parser import File, Module, Port, parse_file, parse_text
+from hdl_parser import parser as parser_module
 
 from .conftest import EXAMPLES, plain
 
@@ -149,3 +151,31 @@ def test_no_module(tmp_path, caplog, text):
     with caplog.at_level(logging.DEBUG, logger="hdl_parser._diagnostics"):
         assert plain(parse_file(file_path)) == File(path=file_path, modules=())
     assert f"{file_path}: no module found." in caplog.text
+
+
+@mark.parametrize("enabled", [True, False])
+def test_parse_text_gc(monkeypatch, enabled):
+    """Parsing pauses the garbage collector and restores its state, also on an error."""
+    states = []
+    real = parser_module.parse_sv
+
+    def parse_sv(*args, **kwargs):
+        states.append(gc.isenabled())
+        return real(*args, **kwargs)
+
+    (gc.enable if enabled else gc.disable)()
+    try:
+        monkeypatch.setattr(parser_module, "parse_sv", parse_sv)
+        parse_text("module top; endmodule")
+        assert states == [False]
+        assert gc.isenabled() == enabled
+
+        def failing(*args, **kwargs):
+            raise RuntimeError("failed")
+
+        monkeypatch.setattr(parser_module, "parse_sv", failing)
+        with raises(RuntimeError):
+            parse_text("module top; endmodule")
+        assert gc.isenabled() == enabled
+    finally:
+        gc.enable()
