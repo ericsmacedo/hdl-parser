@@ -13,7 +13,7 @@
 [![PRs done](https://img.shields.io/github/issues-pr-closed/ericsmacedo/hdl-parser.svg)](https://github.com/ericsmacedo/hdl-parser/pulls?q=is%3Apr+is%3Aclosed)
 
 
-# Easy-To-Use SystemVerilog Parser
+# Easy-To-Use SystemVerilog And VHDL Parser
 
 * [Documentation](https://hdl-parser.readthedocs.io/en/stable/)
 * [PyPI](https://pypi.org/project/hdl-parser/)
@@ -22,21 +22,25 @@
 
 ## Features
 
-* Extract Port Lists
-* Extract Parameters
-* Extract Submodule Instances and their connections
-* `ifdef` support
+* SystemVerilog, Verilog and VHDL
+* Extract ports, parameters, signals, types, functions, processes and continuous assignments
+* Extract submodule instances and their connections
+* `ifdef` support, optionally resolved (`--resolve-ifdefs`, `--closed-world`)
 * Optional expansion of macros (ports, parameters and instances created by macros)
-* Projects: hierarchy, where-used, values of parameters across files
+* Projects: hierarchy, where-used, diagnostics across files, configured by `hdl-parser.toml`
+* Elaboration: values of parameters and widths of ports per instance (`elaborate`, `evaluate`)
+* Connectivity: drivers and loads of signals and bits across the hierarchy, and how one signal reaches another
+  (`drivers`, `loads`, `trace`)
 * Made for AI agents: small JSON answers with source locations (`hdl-parser module`, `hierarchy`, `where-used`,
-  `find`, `diagnostics`) and an MCP server (`hdl-parser mcp`). See the
+  `find`, `diagnostics`, `elaborate`, `evaluate`, `drivers`, `loads`, `trace`) and an MCP server (`hdl-parser mcp`). See the
   [Guide for AI Agents](https://hdl-parser.readthedocs.io/en/stable/agents/) and the agent skill in
   [skills/hdl-parser](https://github.com/ericsmacedo/hdl-parser/blob/main/skills/hdl-parser/SKILL.md)
-* Standards: `IEEE 1800-2009 SystemVerilog`
+* Standards: `IEEE 1800-2009 SystemVerilog`, VHDL
 
 ## Limitations
 
-* **No Syntax Checks** - Source Code files must be syntactically correct
+* **No Syntax Checks** - Source code is not checked. Code which is not syntactically correct may give incomplete
+  results; what is not understood is reported as diagnostic
 * **No Full Parser** - This parser intends to be simple and just extract some information from the source code. **Fast and Simple.**
 
 ## Installation

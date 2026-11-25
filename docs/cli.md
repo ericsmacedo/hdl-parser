@@ -2,7 +2,8 @@
 
 This page provides documentation for our command line tools.
 
-The commands `project`, `module`, `hierarchy`, `where-used`, `find` and `diagnostics` print JSON and have
+The commands `project`, `module`, `hierarchy`, `where-used`, `find`, `diagnostics`, `elaborate`, `evaluate`,
+`drivers`, `loads` and `trace` print JSON and have
 these exit codes (see the [Guide for AI Agents](agents.md)):
 
 | Code | Meaning                                         |

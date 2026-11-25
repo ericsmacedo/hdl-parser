@@ -247,7 +247,8 @@ A signal is addressed by its instance path: the top, the instance names (with th
 around) and the signal. The index of a `for` generate block selects one iteration (`top.g_st[1].data`), it is
 checked against the range of the loop. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
 `port`, `passthrough`, `unknown`), the signals it reads (`nets`) and the ones its conditions read (`conds`). Ask for their drivers to
-go further. `loads` is the other direction: what the signal drives.
+go further. `loads` is the other direction: what the signal drives. A select (`top.data[5]`) keeps the drivers
+and loads of these bits; `select` is the part of the signal each one drives, evaluated per iteration of a loop.
 
 ```bash
 hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
@@ -292,7 +293,7 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
 `trace` gives the shortest connection between two signals, hop by hop, data before conditions (`if`, `case`
 and the select of `?:` are conditions). `counts` tells the hops, and how many of them are flip-flops or
 conditions: judge the path by them. It stops behind flip-flops, unless `--through-regs` is given, and at
-modules which are not defined (`stopped_at` names them). Wrappers of technology cells (one input, one output,
+modules which are not defined (`stopped_at` names them). `--data-only` does not follow conditions, resets and clocks. Wrappers of technology cells (one input, one output,
 driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`.
 
 ```bash

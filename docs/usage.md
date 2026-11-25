@@ -197,14 +197,16 @@ It applies to the commands working on a project (`project`, `module`, ..., `mcp`
 files (`json`, `info`, `gen-sv-instance`). The command line takes precedence: an option given there replaces
 the value of the file (`-D` replaces all `defines`), and files given there replace `filelist` and `paths`.
 
-Narrow questions with small answers (`hdl-parser module`, `hierarchy`, `where-used`, `find`, `diagnostics`)
-and the MCP server (`hdl-parser mcp`) are described in the [Guide for AI Agents](agents.md).
+Narrow questions with small answers (`hdl-parser module`, `hierarchy`, `where-used`, `find`, `diagnostics`,
+`elaborate`, `evaluate`, `drivers`, `loads`, `trace`) and the MCP server (`hdl-parser mcp`) are described in the [Guide for AI Agents](agents.md).
 
 ### Values Of Parameters
 
 `elaborate` is the hierarchy with the values of all parameters and the number of bits of all ports, per instance.
 The values given by an instance (`#(.WIDTH(8))`, `generic map (WIDTH => 8)`) are applied down the hierarchy.
 Names are resolved across files: parameters, local parameters, enumerations and packages.
+Labeled `for` generate constructs with known indices are unrolled, one node per iteration (`g_st[1].u_sub`) with the
+parameter values of that iteration; generate constructs whose condition is false are left out.
 
 ```python
 >>> project = Project.from_dir("tests/corpus/sv/ibex")
@@ -243,12 +245,27 @@ condition is false for the parameter values are left out.
 
 ```
 
-The granularity is the whole signal: the select of an assignment (`[3:0]`) is kept as text. Labeled `for`
+Instances within generate blocks are named with the labels of the blocks (`top.g_st.u_sub`). Labeled `for`
 generate constructs are unrolled: `top.g_st[1].data` is the signal of the second iteration (the index is checked),
-`top.g_st.data` stands for all of them (`multiple`). Instance arrays are not unrolled. The select of `?:` is a
-condition, like the ones of `if` and `case`. The search of `trace` stops behind flip-flops (`through_regs`) and at
-modules which are not defined, but passes cells which pass their input on: wrappers of technology cells (one input,
-one output, driven by undefined cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`).
+`top.g_st.data` stands for all of them (`multiple`). Instance arrays are not unrolled.
+
+Every driver and load has the `select` of the driven signal. A select within a `for` generate is evaluated per
+iteration: `[4*i+:4]` gives one driver with `[3:0]` and one with `[7:4]`. A select of the signal (`top.data[5]`,
+`top.data[7:4]`) keeps the drivers and loads of its bits. One whose bits are not known is kept with
+`bits="unchecked"`: every assignment among the loads, as the bits it reads are not part of the model. A select out
+of the declared range raises `ValueError`, like a `params` name which is no parameter of the top. For `trace`, a
+select of the start keeps the loads reading those bits, a select of the end the ones driving them.
+
+```python
+>>> [(link.select, link.nets) for link in project.drivers("ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o[3:0]")]
+[('', ('ibex_top.u_ibex_core.if_stage_i.instr_out',))]
+
+```
+
+The select of `?:` is a condition, like the ones of `if` and `case`. The search of `trace` stops behind flip-flops
+(`through_regs`) and at modules which are not defined, follows conditions, resets and clocks unless `data_only`, and
+passes cells which pass their input on: wrappers of technology cells (one input, one output, driven by undefined
+cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`).
 
 See [Project][hdl_parser.project.Project] for a full reference.
 
