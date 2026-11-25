@@ -2,7 +2,7 @@
 
 > Fast, tolerant parser for SystemVerilog and VHDL. It answers narrow questions on a design (modules, ports,
 > parameters, instances, hierarchy, where a module is used, drivers and loads of signals, problems found) with small JSON answers, which
-> point into the source: every item has a full identifier `<file>:<id>` and a location `loc`.
+> point into the source: every item has a full identifier `<file>:<id>` and a source `line` (`loc` with `--full`).
 
 Use it on the command line or as MCP server (`hdl-parser mcp`). Every query reads all SystemVerilog and VHDL
 files below the current directory, or the files, directory or filelist (`-f top.f`) given.
@@ -12,13 +12,15 @@ files below the current directory, or the files, directory or filelist (`-f top.
 - `hdl-parser where-used <name>`: all instances of a module, with location.
 - `hdl-parser find <pattern> --kind port`: items by name (part of the name, or wildcards).
 - `hdl-parser diagnostics --severity warning`: what may be missing or wrong.
-- `hdl-parser drivers top.u_core.result_o`, `loads ...`: what drives a signal, what it drives (instance paths).
-- `hdl-parser trace <src> <dst>`: how one signal reaches another one, hop by hop.
-- `hdl-parser elaborate <top> --path u_a.u_b`: parameter values and port widths of one instance.
+- `hdl-parser drivers top.u_core.result_o`, `loads ...`: what drives a signal, what it drives (instance paths,
+  with generate labels and iterations: `top.g_lane[1].data`; a select keeps its bits: `top.data[5]`).
+- `hdl-parser trace <src> <dst>`: how one signal reaches another one, hop by hop. `--through-regs`, `--data-only`.
+- `hdl-parser elaborate <top> --path u_a.g[1].u_b`: parameter values and port widths of one instance.
 - `hdl-parser evaluate '<expr>' <module>`: value of an expression, i.e. `'$clog2(DEPTH)+1'`.
 - `hdl-parser project`: everything as one JSON document. `hdl-parser schema`: its JSON Schema.
 
 Lists are limited to 100 entries (`--limit`, 0 for no limit), the rest is counted in `omitted`.
+A list of objects is always a table `{"columns": [...], "rows": [...]}`, even if empty.
 Exit codes: 0 answer, 1 internal failure, 2 usage or bad argument, 3 name not found (with suggestions).
 Macros are not expanded by default: `--expand-macros` (`-e`), `-D NAME=VALUE`, `-I <dir>`.
 `-r` removes `` `ifdef `` branches which are not compiled, `--closed-world` treats macros defined nowhere as

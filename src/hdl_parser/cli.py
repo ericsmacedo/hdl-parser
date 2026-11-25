@@ -173,7 +173,7 @@ class Ctx(BaseModel):
 @click.version_option()
 @click.pass_context
 def cli(ctx, verbose=0, no_color=False, config: Path | None = None, no_config: bool = False):
-    """Easy-To-Use SystemVerilog Parser."""
+    """Easy-To-Use SystemVerilog And VHDL Parser."""
     ctx.obj = ctx.with_resource(Ctx.create(verbose=verbose, no_color=no_color))
     if no_config:
         return

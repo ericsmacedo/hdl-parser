@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Easy-To-Use SystemVerilog Parser.
+"""Easy-To-Use SystemVerilog And VHDL Parser.
 
 Usage is simple. Parse your input with one of these methods:
 
@@ -32,6 +32,10 @@ Macros are expanded on request, if their definition is known. Macros from other 
 * [hdl_parser.parse_defines][]
 
 You receive a [hdl_parser.File][] object holding all information.
+
+A whole design (files, a directory or a filelist) is read by [hdl_parser.Project][]: hierarchy, where-used,
+values of parameters, drivers and loads of signals. [hdl_parser.query][] answers the same questions as small
+JSON compatible dictionaries, like the command line and the MCP server.
 """
 
 from .datamodel import (
