@@ -66,8 +66,7 @@ the next call; call `reload` after files were added.
 Signals are addressed by **instance path**: top module, instance names (with the labels of generate blocks), signal:
 `top.u_core.g_lane[1].data`. `hierarchy` names instances with their labels (`g_lane.u_sub`); `elaborate` unrolls
 loops (`--path 'g_lane[1].u_sub'`). A select (`top.data[5]`) keeps the drivers, loads, and
-trace ends of bit 5; selects within loops are evaluated per iteration. Rows with `bits: "unchecked"` (every
-assignment among the loads) may not touch bit 5: check them in the source. Modules by name or full identifier `<file>:<id>` (`rtl/top.sv:top`). Every item in
+trace ends of bit 5; selects within loops are evaluated per iteration (see Limits). Modules by name or full identifier `<file>:<id>` (`rtl/top.sv:top`). Every item in
 an answer has `line` (and `file`), so open the source at that line only when needed.
 
 To follow a signal step by step: `drivers` returns the signals each driver reads (`nets`) and its conditions
@@ -94,7 +93,19 @@ conditions) - judge a path by these.
 - **Macros:** without `expand_macros`, `` `MACRO `` calls are kept as text and ports created by macros are
   missing (`macro-not-expanded`).
 
-## 4. Command line tips
+## 4. Limits
+
+The tool is not a full elaborator. Where it stops, check the source:
+
+- **Bits:** a select (`top.data[5]`) filters by bit only on instance connections. Assignments read names, not
+  bits: such rows come back with `bits: "unchecked"` and may not touch bit 5. `trace` hops do not carry the
+  marker.
+- **Generate loops:** only labeled `for` loops with a constant range are unrolled (`g[1].u`). Unlabeled loops
+  and loops with a range that cannot be evaluated stay one node with `multiple: true`.
+- **`ifdef`:** without `closed_world`, both branches are kept; instances and drivers of both appear.
+- **Port widths:** in `elaborate`, a port's `value` is its number of bits; `expr` is its type and dimensions.
+
+## 5. Command line tips
 
 - `-n N` limits lists, `-F a,b` selects fields (also `ports.name`), `-s` summary, `-c` one line JSON.
 - Files given on the command line replace the ones of `hdl-parser.toml`; `--no-config` ignores it,
