@@ -809,6 +809,8 @@ def trace(  # noqa: PLR0913
     control: bool = True,
     limit: int | None = None,
     passthrough: list[str] | tuple[str, ...] = (),
+    boundaries: bool = False,
+    text: bool = False,
 ) -> dict[str, Any]:
     """Shortest connection from the signal `src` to the signal `dst`: instance paths below the same top.
 
@@ -823,6 +825,11 @@ def trace(  # noqa: PLR0913
         control: Follow conditions (`if`, `case`, `?:`), resets and clocks too. Data only otherwise.
         limit: Number of hops.
         passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
+        boundaries: The module boundaries only: `src`, `dst` and the hops into and out of instances (`inst`,
+                    `port`, `passthrough`). Every hop has the number of hops folded in front of it
+                    (`folded`), and the flip-flops (`folded_ff`) and conditions (`folded_control`) among them.
+        text: The hops as text (`path`), one line per hop instead of `result`:
+              `<net> (<kind>)`, with `control` and the folded hops, if there are any.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
     (`kind`, `item`, location, the `select` driven). A select of `src` or `dst` (`top.data[5]`) restricts the
@@ -838,9 +845,13 @@ def trace(  # noqa: PLR0913
     src_bits = _select_bits(conn, source, conn.path_select(src))
     dst_bits = _select_bits(conn, target, conn.path_select(dst))
     found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
-    hops = [_dump(hop) for hop in found]
+    hops = _boundaries(found) if boundaries else [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
-    answer = _list_answer("trace", result, len(hops), omitted, tuple(dm.Hop.model_fields))
+    order = (*dm.Hop.model_fields, *(_FOLDED if boundaries else ()))
+    answer = _list_answer("trace", result, len(hops), omitted, order)
+    if text:
+        answer = {"query": "trace", "path": "\n".join(map(_hop_line, result)), **answer}
+        del answer["result"]
     answer["found"] = bool(hops)
     if hops:
         answer["counts"] = {
@@ -860,6 +871,39 @@ def trace(  # noqa: PLR0913
         if stopped:
             answer["stopped_at"] = _Objects(stopped, ("net", "item", "reason", "file", "line"))
     return answer
+
+
+_BOUNDARIES = ("inst", "port", "passthrough")
+_FOLDED = ("folded", "folded_ff", "folded_control")
+
+
+def _boundaries(hops: tuple[dm.Hop, ...]) -> list[dict[str, Any]]:
+    """The first and the last of `hops`, and the ones across module boundaries, with the hops folded in front."""
+    result = []
+    folded: list[dm.Hop] = []
+    for index, hop in enumerate(hops):
+        if 0 < index < len(hops) - 1 and hop.kind not in _BOUNDARIES:
+            folded.append(hop)
+            continue
+        counts = (len(folded), sum(one.kind == "ff" for one in folded), sum(one.control for one in folded))
+        result.append({**_dump(hop), **dict(zip(_FOLDED, counts, strict=True))})
+        folded = []
+    return result
+
+
+def _hop_line(hop: dict[str, Any]) -> str:
+    """`hop` as line of text: `<net> (<kind>, control, <n> hops folded: <f> ff, <c> control)`."""
+    notes = [hop["kind"]] if hop.get("kind") else []
+    if hop.get("control"):
+        notes.append("control")
+    number = hop.get("folded")
+    if number:
+        folded = f"{number} {'hop' if number == 1 else 'hops'} folded"
+        counts = [
+            f"{hop[key]} {name}" for key, name in (("folded_ff", "ff"), ("folded_control", "control")) if hop[key]
+        ]
+        notes.append(f"{folded}: {', '.join(counts)}" if counts else folded)
+    return f"{hop['net']} ({', '.join(notes)})" if notes else hop["net"]
 
 
 def _top(inst: Any) -> Any:

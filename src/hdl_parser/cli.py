@@ -859,6 +859,13 @@ def loads(  # noqa: PLR0913
 @opt_params
 @click.option("--through-regs", is_flag=True, help="Continue behind flip-flops.")
 @click.option("--data-only", is_flag=True, help="Do not follow conditions, resets and clocks.")
+@click.option(
+    "--boundaries",
+    "-b",
+    is_flag=True,
+    help="Module boundaries only: the hops into and out of instances, with the number of hops folded between.",
+)
+@click.option("--text", is_flag=True, help="The hops as text, one line per hop, much smaller than JSON.")
 @opt_passthrough
 @opt_project
 @opt_answer
@@ -870,6 +877,8 @@ def trace(  # noqa: PLR0913
     params: tuple[str, ...],
     through_regs: bool,
     data_only: bool,
+    boundaries: bool,
+    text: bool,
     passthrough: tuple[str, ...],
     limit: int | None,
     compact: bool,
@@ -889,6 +898,8 @@ def trace(  # noqa: PLR0913
             control=not data_only,
             limit=limit,
             passthrough=passthrough,
+            boundaries=boundaries,
+            text=text,
         ),
         compact,
     )

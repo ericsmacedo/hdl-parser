@@ -121,6 +121,8 @@ Shortest connection from one signal to another one below the same top, hop by ho
 | `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `through_regs` | boolean | Continue behind flip-flops. |
 | `data_only` | boolean | Do not follow conditions, resets and clocks. |
+| `boundaries` | boolean | Module boundaries only: the hops into and out of instances, with the number of hops folded in front of each ('folded', 'folded_ff', 'folded_control'). |
+| `text` | boolean | The hops as text ('path'), one line per hop, much smaller than JSON. |
 | `limit` | integer | Number of hops. Default 100. 0: no limit. |
 | `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. The module name may be a pattern: 'BUFX*:A->Y'. |
 

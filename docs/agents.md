@@ -322,6 +322,29 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
 }
 ```
 
+A long path is easier to read by its module boundaries: `--boundaries` keeps `src`, `dst` and the hops into and out
+of instances (`inst`, `port`, `passthrough`). Every hop tells the hops folded in front of it (`folded`), and the
+flip-flops (`folded_ff`) and conditions (`folded_control`) among them; `counts` stays the one of the whole path.
+`--text` gives the hops as text (`path`), one line per hop:
+
+```bash
+hdl-parser trace ibex_top.data_rdata_i ibex_top.u_ibex_core.rf_wdata_wb --boundaries --text
+```
+
+```json
+{
+  "query": "trace",
+  "path": "ibex_top.data_rdata_i\nibex_top.u_ibex_core.data_rdata_i (inst, 2 hops folded)\nibex_top.u_ibex_core.load_store_unit_i.data_rdata_i (inst)\nibex_top.u_ibex_core.rf_wdata_lsu (port, 3 hops folded)\nibex_top.u_ibex_core.wb_stage_i.rf_wdata_lsu_i (inst)\nibex_top.u_ibex_core.rf_wdata_wb (port, 2 hops folded)",
+  "total": 6,
+  "found": true,
+  "counts": {
+    "hops": 12,
+    "ff": 0,
+    "control": 0
+  }
+}
+```
+
 ### Can I trust the answers? What is missing?
 
 Modules which are not part of the project, macros which are not expanded, files which cannot be read: all are listed here, with location.

@@ -271,6 +271,15 @@ TOOLS: tuple[dict[str, Any], ...] = (
                 "param": _TOP_PARAMS,
                 "through_regs": {"type": "boolean", "description": "Continue behind flip-flops."},
                 "data_only": {"type": "boolean", "description": "Do not follow conditions, resets and clocks."},
+                "boundaries": {
+                    "type": "boolean",
+                    "description": "Module boundaries only: the hops into and out of instances, with the number "
+                    "of hops folded in front of each ('folded', 'folded_ff', 'folded_control').",
+                },
+                "text": {
+                    "type": "boolean",
+                    "description": "The hops as text ('path'), one line per hop, much smaller than JSON.",
+                },
                 "limit": {**_LIMIT, "description": "Number of hops. Default 100. 0: no limit."},
                 "passthrough": _PASSTHROUGH,
             },
