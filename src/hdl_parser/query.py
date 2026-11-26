@@ -351,7 +351,13 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
 
     `defined` tells, whether the module is defined in the project. A module which is not (a blackbox, a hard
     macro, a cell) is found by the module name of its instances: `module` of the answer is missing then.
+
+    With wildcards (`*`, `?`, `[...]`), `name` is a pattern on the module names (`BUFX*`) or on the full
+    identifiers of the definitions: the places all matching modules are instantiated at, defined or not. Every
+    entry has the module used (`used`): the identifier of its definition, or its name if it is not defined.
     """
+    if _WILDCARD.search(name):
+        return _where_used_pattern(project, name, limit)
     definition = project.resolve(name) or project.resolve(name, casefold=True)
     if definition is None:
         undefined = [
@@ -362,15 +368,7 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
         if not undefined:
             names = (*(unit.name for _, unit in _units(project)), *(inst.module for _, inst in project._undefined))
             raise QueryError("not-found", f"'{name}' is neither defined nor instantiated.", _similar(name, names))
-        uses = [
-            {
-                "inst": file.full_id(inst),
-                "module": _parent_id(file.full_id(inst)),
-                "file": file.file_id,
-                **_loc(inst.loc),
-            }
-            for file, inst in undefined
-        ]
+        uses = [_undefined_use(file, inst) for file, inst in undefined]
         result, omitted = _limit(uses, limit)
         return {**_list_answer("where-used", result, len(uses), omitted, _USE_FIELDS), "defined": False}
     uses = [
@@ -380,6 +378,42 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
     result, omitted = _limit(uses, limit)
     answer = _list_answer("where-used", result, len(uses), omitted, _USE_FIELDS)
     return {**answer, "defined": True, "module": definition.id}
+
+
+def _where_used_pattern(project: Project, pattern: str, limit: int | None) -> dict[str, Any]:
+    uses: list[dict[str, Any]] = []
+    for definition in project._all_modules:
+        if fnmatchcase(definition.unit.name, pattern) or fnmatchcase(definition.id, pattern):
+            uses += [
+                {
+                    "used": definition.id,
+                    "inst": use.inst,
+                    "module": use.module,
+                    "file": _file_of(use.inst),
+                    **_loc(use.loc),
+                }
+                for use in project.where_used(definition.id)
+            ]
+    uses += [
+        {"used": inst.module, **_undefined_use(file, inst)}
+        for file, inst in project._undefined
+        if fnmatchcase(inst.module, pattern)
+    ]
+    result, omitted = _limit(uses, limit)
+    return _list_answer("where-used", result, len(uses), omitted, ("used", *_USE_FIELDS))
+
+
+def _matches(name: str, patterns: Iterable[str]) -> bool:
+    return any(fnmatchcase(name, pattern) for pattern in patterns)
+
+
+def _undefined_use(file: dm.File, inst: dm.ModuleInstance) -> dict[str, Any]:
+    return {
+        "inst": file.full_id(inst),
+        "module": _parent_id(file.full_id(inst)),
+        "file": file.file_id,
+        **_loc(inst.loc),
+    }
 
 
 _USE_FIELDS = ("inst", "module", "file", "loc")
@@ -467,7 +501,7 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
 
     Keyword Args:
         severity: Minimum severity: `error`, `warning` or `info` (everything, the default).
-        codes: Codes to be returned (`undefined-module`, ...). All by default.
+        codes: Codes or patterns on the codes to be returned (`undefined-module`, `macro-*`). All by default.
         file: Path of a file, or a pattern on the paths (`rtl/*`): the problems located in it, or found by parsing
               it. All files by default.
         limit: Number of problems.
@@ -491,7 +525,7 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
             raise QueryError("not-found", f"'{file}' is no file of the project.", _similar_files(project, file))
         file = found_file.file_id
     allowed = SEVERITIES[: SEVERITIES.index(severity) + 1] if severity else SEVERITIES
-    wanted = set(codes)
+    wanted = tuple(codes)
     excluded = tuple(exclude)
     boxes = tuple(blackboxes)
     modules = {file.full_id(inst): inst.module for file, inst in project._undefined} if boxes or group_by else {}
@@ -499,7 +533,9 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
     # problems within an included file, by location: found once, by several files
     shared: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     for file_id, diagnostic in project.iter_diagnostics():
-        if diagnostic.severity not in allowed or (wanted and diagnostic.code not in wanted):
+        if diagnostic.severity not in allowed or (
+            wanted and not any(fnmatchcase(diagnostic.code, pattern) for pattern in wanted)
+        ):
             continue
         # the file the problem is located in, and the parsed file, if it is another one
         paths = (diagnostic.file or file_id, file_id) if file_id else (diagnostic.file,)
@@ -728,7 +764,7 @@ def drivers(
     Keyword Args:
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
         limit: Number of drivers.
-        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
 
     `net` describes the signal: its `path`, `kind` (`port`, `signal`, `variable` of a process, `implicit`),
     `direction`, identifier and location. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
@@ -773,6 +809,8 @@ def trace(  # noqa: PLR0913
     control: bool = True,
     limit: int | None = None,
     passthrough: list[str] | tuple[str, ...] = (),
+    boundaries: bool = False,
+    text: bool = False,
 ) -> dict[str, Any]:
     """Shortest connection from the signal `src` to the signal `dst`: instance paths below the same top.
 
@@ -786,7 +824,12 @@ def trace(  # noqa: PLR0913
         through_regs: Continue behind flip-flops. The search stops there by default.
         control: Follow conditions (`if`, `case`, `?:`), resets and clocks too. Data only otherwise.
         limit: Number of hops.
-        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
+        boundaries: The module boundaries only: `src`, `dst` and the hops into and out of instances (`inst`,
+                    `port`, `passthrough`). Every hop has the number of hops folded in front of it
+                    (`folded`), and the flip-flops (`folded_ff`) and conditions (`folded_control`) among them.
+        text: The hops as text (`path`), one line per hop instead of `result`:
+              `<net> (<kind>)`, with `control` and the folded hops, if there are any.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
     (`kind`, `item`, location, the `select` driven). A select of `src` or `dst` (`top.data[5]`) restricts the
@@ -802,9 +845,13 @@ def trace(  # noqa: PLR0913
     src_bits = _select_bits(conn, source, conn.path_select(src))
     dst_bits = _select_bits(conn, target, conn.path_select(dst))
     found = conn.hops(conn.trace(source, target, through_regs, control, src_bits, dst_bits))
-    hops = [_dump(hop) for hop in found]
+    hops = _boundaries(found) if boundaries else [_dump(hop) for hop in found]
     result, omitted = _limit(hops, limit)
-    answer = _list_answer("trace", result, len(hops), omitted, tuple(dm.Hop.model_fields))
+    order = (*dm.Hop.model_fields, *(_FOLDED if boundaries else ()))
+    answer = _list_answer("trace", result, len(hops), omitted, order)
+    if text:
+        answer = {"query": "trace", "path": "\n".join(map(_hop_line, result)), **answer}
+        del answer["result"]
     answer["found"] = bool(hops)
     if hops:
         answer["counts"] = {
@@ -824,6 +871,39 @@ def trace(  # noqa: PLR0913
         if stopped:
             answer["stopped_at"] = _Objects(stopped, ("net", "item", "reason", "file", "line"))
     return answer
+
+
+_BOUNDARIES = ("inst", "port", "passthrough")
+_FOLDED = ("folded", "folded_ff", "folded_control")
+
+
+def _boundaries(hops: tuple[dm.Hop, ...]) -> list[dict[str, Any]]:
+    """The first and the last of `hops`, and the ones across module boundaries, with the hops folded in front."""
+    result = []
+    folded: list[dm.Hop] = []
+    for index, hop in enumerate(hops):
+        if 0 < index < len(hops) - 1 and hop.kind not in _BOUNDARIES:
+            folded.append(hop)
+            continue
+        counts = (len(folded), sum(one.kind == "ff" for one in folded), sum(one.control for one in folded))
+        result.append({**_dump(hop), **dict(zip(_FOLDED, counts, strict=True))})
+        folded = []
+    return result
+
+
+def _hop_line(hop: dict[str, Any]) -> str:
+    """`hop` as line of text: `<net> (<kind>, control, <n> hops folded: <f> ff, <c> control)`."""
+    notes = [hop["kind"]] if hop.get("kind") else []
+    if hop.get("control"):
+        notes.append("control")
+    number = hop.get("folded")
+    if number:
+        folded = f"{number} {'hop' if number == 1 else 'hops'} folded"
+        counts = [
+            f"{hop[key]} {name}" for key, name in (("folded_ff", "ff"), ("folded_control", "control")) if hop[key]
+        ]
+        notes.append(f"{folded}: {', '.join(counts)}" if counts else folded)
+    return f"{hop['net']} ({', '.join(notes)})" if notes else hop["net"]
 
 
 def _top(inst: Any) -> Any:

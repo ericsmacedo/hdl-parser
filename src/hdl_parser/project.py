@@ -567,7 +567,7 @@ class Project(dm._BaseModel):
         A driver whose bits are not known is kept, with `bits="unchecked"`. A select of a driver within a `for`
         generate is evaluated per iteration: `[4*i+:4]` gives `[3:0]`, `[7:4]`.
 
-        `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`
+        `passthrough`: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
         (the ports are needed for modules, which are not defined). See [Link][hdl_parser.datamodel.Link].
 
         Raises:

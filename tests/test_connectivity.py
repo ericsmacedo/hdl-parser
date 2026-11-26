@@ -612,8 +612,49 @@ def test_passthrough(stages):
         query.trace(stages, "top.x_i", "top.s_o", passthrough=["BUFX2:A"])
 
 
+def test_passthrough_patterns(stages):
+    """Pass-Through Cells Given By Patterns: The Name First, Then The First Matching Pattern."""
+    hops = stages.trace("top.x_i", "top.s_o", passthrough=["BUFX*:A->Y"])
+    assert [(hop.net, hop.kind) for hop in hops] == [("top.x_i", ""), ("top.s_o", "passthrough")]
+    (link,) = stages.drivers("top.s_o", passthrough=["BUF?[0-9]"])
+    assert (link.kind, link.nets) == ("passthrough", ("top.x_i",))
+    # the name wins over a pattern, the first pattern over the later ones
+    assert stages.drivers("top.s_o", passthrough=["BUF*:B->Y", "BUFX2:A->Y"])[0].nets == ("top.x_i",)
+    assert stages.drivers("top.s_o", passthrough=["BUF*:B->Y", "BUFX*:A->Y"])[0].nets == ()
+    assert stages.drivers("top.s_o", passthrough=["INV*"])[0].kind == "unknown"
+
+
 def test_trace_counts(stages):
     """Hops, Flip-Flops And Conditions Of A Trace."""
     answer = query.trace(stages, "top.en_i", "top.z_o")
     assert answer["counts"] == {"hops": 1, "ff": 0, "control": 1}
     assert query.trace(stages, "top.en_i", "top.z_o", control=False)["found"] is False
+
+
+def test_trace_boundaries(stages):
+    """Module Boundaries Only, With The Hops Folded In Front, As Text."""
+    answer = query.trace(stages, "top.x_i", "top.q", boundaries=True)
+    assert [(hop["net"], hop.get("kind"), hop["folded"]) for hop in answer["result"]] == [
+        ("top.x_i", None, 0),
+        ("top.g_st[0].u_st.d", "inst", 1),
+        ("top.g_st[0].out", "port", 1),
+        ("top.q", "assign", 0),
+    ]
+    assert answer["result"][1]["loc"]["line"] == 8
+    assert answer["total"] == 4
+    assert answer["counts"] == {"hops": 5, "ff": 0, "control": 0}
+    assert query.render(answer)["result"]["columns"][-3:] == ["folded", "folded_ff", "folded_control"]
+    answer = query.trace(stages, "top.x_i", "top.q", boundaries=True, text=True)
+    assert "result" not in answer
+    assert answer["path"] == (
+        "top.x_i\ntop.g_st[0].u_st.d (inst, 1 hop folded)\ntop.g_st[0].out (port, 1 hop folded)\ntop.q (assign)"
+    )
+    assert query.trace(stages, "top.x_i", "top.q", text=True)["path"].splitlines()[1] == "top.g_st[0].vl (assign)"
+    assert query.trace(stages, "top.en_i", "top.z_o", text=True)["path"] == "top.en_i\ntop.z_o (comb, control)"
+    assert query.trace(stages, "top.x_i", "top.r_o", boundaries=True)["total"] == 4
+
+
+def test_hop_line():
+    """A Hop As Text, With The Flip-Flops And Conditions Folded In Front."""
+    hop = {"net": "top.u_a.d", "kind": "inst", "folded": 3, "folded_ff": 1, "folded_control": 2}
+    assert query._hop_line(hop) == "top.u_a.d (inst, 3 hops folded: 1 ff, 2 control)"

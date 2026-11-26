@@ -294,7 +294,7 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
 and the select of `?:` are conditions). `counts` tells the hops, and how many of them are flip-flops or
 conditions: judge the path by them. It stops behind flip-flops, unless `--through-regs` is given, and at
 modules which are not defined (`stopped_at` names them). `--data-only` does not follow conditions, resets and clocks. Wrappers of technology cells (one input, one output,
-driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`.
+driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`, or a family of cells with `--passthrough 'BUFX*:A->Y'`.
 
 ```bash
 hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs --limit 3
@@ -318,6 +318,29 @@ hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ct
     "hops": 4,
     "ff": 1,
     "control": 1
+  }
+}
+```
+
+A long path is easier to read by its module boundaries: `--boundaries` keeps `src`, `dst` and the hops into and out
+of instances (`inst`, `port`, `passthrough`). Every hop tells the hops folded in front of it (`folded`), and the
+flip-flops (`folded_ff`) and conditions (`folded_control`) among them; `counts` stays the one of the whole path.
+`--text` gives the hops as text (`path`), one line per hop:
+
+```bash
+hdl-parser trace ibex_top.data_rdata_i ibex_top.u_ibex_core.rf_wdata_wb --boundaries --text
+```
+
+```json
+{
+  "query": "trace",
+  "path": "ibex_top.data_rdata_i\nibex_top.u_ibex_core.data_rdata_i (inst, 2 hops folded)\nibex_top.u_ibex_core.load_store_unit_i.data_rdata_i (inst)\nibex_top.u_ibex_core.rf_wdata_lsu (port, 3 hops folded)\nibex_top.u_ibex_core.wb_stage_i.rf_wdata_lsu_i (inst)\nibex_top.u_ibex_core.rf_wdata_wb (port, 2 hops folded)",
+  "total": 6,
+  "found": true,
+  "counts": {
+    "hops": 12,
+    "ff": 0,
+    "control": 0
   }
 }
 ```
@@ -386,7 +409,8 @@ All tools are read-only (`readOnlyHint`).
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then,
-  and `module` (the definition used) is missing.
+  and `module` (the definition used) is missing. With wildcards (`BUFX*`) it lists the instances of all matching
+  modules, defined or not, each with the module used (`used`).
 * `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `param` of the top
   and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
   constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for

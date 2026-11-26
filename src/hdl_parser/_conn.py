@@ -48,6 +48,7 @@ modules with one input and one output, whose output has no driver but blackboxes
 import heapq
 import re
 from collections.abc import Iterable, Iterator
+from fnmatch import fnmatchcase
 from typing import TYPE_CHECKING, Any, NamedTuple
 
 from . import _refs
@@ -573,7 +574,11 @@ class Through(NamedTuple):
 
 
 def parse_passthrough(specs: Iterable[str]) -> dict[str, Through]:
-    """Pass-through cells by module name: `buf_wrap`, or with ports `BUFX2:A->Y`, `MUX2:A,B,S->Y`."""
+    """Pass-through cells by module name: `buf_wrap`, or with ports `BUFX2:A->Y`, `MUX2:A,B,S->Y`.
+
+    The module name may be a pattern (`BUFX*`, `CLKBUF?`, `DLY[12]`), see
+    [find_passthrough][hdl_parser._conn.find_passthrough].
+    """
     cells: dict[str, Through] = {}
     for spec in specs:
         module, _, ports = spec.partition(":")
@@ -585,6 +590,17 @@ def parse_passthrough(specs: Iterable[str]) -> dict[str, Through]:
             frozenset(name.strip() for name in outputs.split(",") if name.strip()),
         )
     return cells
+
+
+def find_passthrough(cells: dict[str, Through], module: str) -> Through | None:
+    """The pass-through cell `module` of `cells`: given by its name, else by the first pattern matching it."""
+    cell = cells.get(module)
+    if cell is not None:
+        return cell
+    for pattern, cell in cells.items():
+        if fnmatchcase(module, pattern):
+            return cell
+    return None
 
 
 class Connectivity:
@@ -1125,7 +1141,7 @@ class Connectivity:
         if child is not None and pin.port:
             port = self.graph(child.definition).key(pin.port)
             return Step("inst", ((child, port),), record=pin, inst=inst)
-        cell = self.passthrough.get(pin.inst.module) if child is None else None
+        cell = find_passthrough(self.passthrough, pin.inst.module) if child is None else None
         if cell is not None:
             # a pass-through cell, which is not defined: across to the pins on the other side
             mine = (cell.outputs if driver else cell.inputs) if cell.inputs else frozenset()
@@ -1170,7 +1186,7 @@ class Connectivity:
         ports = [net for net in graph.nets.values() if net.kind == "port"]
         inputs = frozenset(graph.key(net.name) for net in ports if net.direction == "input")
         outputs = frozenset(graph.key(net.name) for net in ports if net.direction == "output")
-        cell = self.passthrough.get(definition.unit.name)
+        cell = find_passthrough(self.passthrough, definition.unit.name)
         if cell is not None:
             if cell.inputs:
                 return Through(

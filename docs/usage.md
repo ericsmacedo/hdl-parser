@@ -189,7 +189,7 @@ cache_dir = "~/.cache/hdl-parser/my_design"   # or: cache = true
 jobs = 8
 root = "."
 blackbox = ["*_cell_*"]          # --blackbox of 'diagnostics' and 'mcp'
-passthrough = ["buf_wrap"]       # --passthrough of 'drivers', 'loads' and 'trace'
+passthrough = ["buf_wrap", "BUFX*:A->Y"]  # --passthrough of 'drivers', 'loads' and 'trace'
 exclude_problems = ["lib/*"]     # --exclude-file of 'diagnostics'
 ```
 
@@ -265,7 +265,9 @@ select of the start keeps the loads reading those bits, a select of the end the 
 The select of `?:` is a condition, like the ones of `if` and `case`. The search of `trace` stops behind flip-flops
 (`through_regs`) and at modules which are not defined, follows conditions, resets and clocks unless `data_only`, and
 passes cells which pass their input on: wrappers of technology cells (one input, one output, driven by undefined
-cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`).
+cells only) and the cells given as `passthrough` (`["BUFX2:A->Y"]`). The module name may be a pattern
+(`["BUFX*:A->Y"]`): a name given as such wins over a pattern, the first matching pattern over later ones.
+`query.trace(..., boundaries=True)` keeps the module boundaries only, with the number of hops folded between them.
 
 See [Project][hdl_parser.project.Project] for a full reference.
 
