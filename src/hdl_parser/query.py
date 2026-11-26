@@ -351,7 +351,13 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
 
     `defined` tells, whether the module is defined in the project. A module which is not (a blackbox, a hard
     macro, a cell) is found by the module name of its instances: `module` of the answer is missing then.
+
+    With wildcards (`*`, `?`, `[...]`), `name` is a pattern on the module names (`BUFX*`) or on the full
+    identifiers of the definitions: the places all matching modules are instantiated at, defined or not. Every
+    entry has the module used (`used`): the identifier of its definition, or its name if it is not defined.
     """
+    if _WILDCARD.search(name):
+        return _where_used_pattern(project, name, limit)
     definition = project.resolve(name) or project.resolve(name, casefold=True)
     if definition is None:
         undefined = [
@@ -362,15 +368,7 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
         if not undefined:
             names = (*(unit.name for _, unit in _units(project)), *(inst.module for _, inst in project._undefined))
             raise QueryError("not-found", f"'{name}' is neither defined nor instantiated.", _similar(name, names))
-        uses = [
-            {
-                "inst": file.full_id(inst),
-                "module": _parent_id(file.full_id(inst)),
-                "file": file.file_id,
-                **_loc(inst.loc),
-            }
-            for file, inst in undefined
-        ]
+        uses = [_undefined_use(file, inst) for file, inst in undefined]
         result, omitted = _limit(uses, limit)
         return {**_list_answer("where-used", result, len(uses), omitted, _USE_FIELDS), "defined": False}
     uses = [
@@ -380,6 +378,42 @@ def where_used(project: Project, name: str, limit: int | None = None) -> dict[st
     result, omitted = _limit(uses, limit)
     answer = _list_answer("where-used", result, len(uses), omitted, _USE_FIELDS)
     return {**answer, "defined": True, "module": definition.id}
+
+
+def _where_used_pattern(project: Project, pattern: str, limit: int | None) -> dict[str, Any]:
+    uses: list[dict[str, Any]] = []
+    for definition in project._all_modules:
+        if fnmatchcase(definition.unit.name, pattern) or fnmatchcase(definition.id, pattern):
+            uses += [
+                {
+                    "used": definition.id,
+                    "inst": use.inst,
+                    "module": use.module,
+                    "file": _file_of(use.inst),
+                    **_loc(use.loc),
+                }
+                for use in project.where_used(definition.id)
+            ]
+    uses += [
+        {"used": inst.module, **_undefined_use(file, inst)}
+        for file, inst in project._undefined
+        if fnmatchcase(inst.module, pattern)
+    ]
+    result, omitted = _limit(uses, limit)
+    return _list_answer("where-used", result, len(uses), omitted, ("used", *_USE_FIELDS))
+
+
+def _matches(name: str, patterns: Iterable[str]) -> bool:
+    return any(fnmatchcase(name, pattern) for pattern in patterns)
+
+
+def _undefined_use(file: dm.File, inst: dm.ModuleInstance) -> dict[str, Any]:
+    return {
+        "inst": file.full_id(inst),
+        "module": _parent_id(file.full_id(inst)),
+        "file": file.file_id,
+        **_loc(inst.loc),
+    }
 
 
 _USE_FIELDS = ("inst", "module", "file", "loc")
@@ -467,7 +501,7 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
 
     Keyword Args:
         severity: Minimum severity: `error`, `warning` or `info` (everything, the default).
-        codes: Codes to be returned (`undefined-module`, ...). All by default.
+        codes: Codes or patterns on the codes to be returned (`undefined-module`, `macro-*`). All by default.
         file: Path of a file, or a pattern on the paths (`rtl/*`): the problems located in it, or found by parsing
               it. All files by default.
         limit: Number of problems.
@@ -491,7 +525,7 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
             raise QueryError("not-found", f"'{file}' is no file of the project.", _similar_files(project, file))
         file = found_file.file_id
     allowed = SEVERITIES[: SEVERITIES.index(severity) + 1] if severity else SEVERITIES
-    wanted = set(codes)
+    wanted = tuple(codes)
     excluded = tuple(exclude)
     boxes = tuple(blackboxes)
     modules = {file.full_id(inst): inst.module for file, inst in project._undefined} if boxes or group_by else {}
@@ -499,7 +533,9 @@ def diagnostics(  # noqa: C901, PLR0912, PLR0913
     # problems within an included file, by location: found once, by several files
     shared: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     for file_id, diagnostic in project.iter_diagnostics():
-        if diagnostic.severity not in allowed or (wanted and diagnostic.code not in wanted):
+        if diagnostic.severity not in allowed or (
+            wanted and not any(fnmatchcase(diagnostic.code, pattern) for pattern in wanted)
+        ):
             continue
         # the file the problem is located in, and the parsed file, if it is another one
         paths = (diagnostic.file or file_id, file_id) if file_id else (diagnostic.file,)
@@ -728,7 +764,7 @@ def drivers(
     Keyword Args:
         params: Values of the parameters of the top, by name. Its defaults are used otherwise.
         limit: Number of drivers.
-        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
 
     `net` describes the signal: its `path`, `kind` (`port`, `signal`, `variable` of a process, `implicit`),
     `direction`, identifier and location. Every driver has its `kind` (`assign`, `comb`, `ff`, `latch`, `inst`,
@@ -786,7 +822,7 @@ def trace(  # noqa: PLR0913
         through_regs: Continue behind flip-flops. The search stops there by default.
         control: Follow conditions (`if`, `case`, `?:`), resets and clocks too. Data only otherwise.
         limit: Number of hops.
-        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`.
+        passthrough: Cells which pass their inputs on to their outputs: `buf_wrap`, `BUFX2:A->Y`, `BUFX*:A->Y`.
 
     The answer has `found`, and the hops from `src` to `dst`: every hop is a signal with the load reaching it
     (`kind`, `item`, location, the `select` driven). A select of `src` or `dst` (`top.data[5]`) restricts the

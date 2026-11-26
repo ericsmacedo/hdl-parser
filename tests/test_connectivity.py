@@ -612,6 +612,18 @@ def test_passthrough(stages):
         query.trace(stages, "top.x_i", "top.s_o", passthrough=["BUFX2:A"])
 
 
+def test_passthrough_patterns(stages):
+    """Pass-Through Cells Given By Patterns: The Name First, Then The First Matching Pattern."""
+    hops = stages.trace("top.x_i", "top.s_o", passthrough=["BUFX*:A->Y"])
+    assert [(hop.net, hop.kind) for hop in hops] == [("top.x_i", ""), ("top.s_o", "passthrough")]
+    (link,) = stages.drivers("top.s_o", passthrough=["BUF?[0-9]"])
+    assert (link.kind, link.nets) == ("passthrough", ("top.x_i",))
+    # the name wins over a pattern, the first pattern over the later ones
+    assert stages.drivers("top.s_o", passthrough=["BUF*:B->Y", "BUFX2:A->Y"])[0].nets == ("top.x_i",)
+    assert stages.drivers("top.s_o", passthrough=["BUF*:B->Y", "BUFX*:A->Y"])[0].nets == ()
+    assert stages.drivers("top.s_o", passthrough=["INV*"])[0].kind == "unknown"
+
+
 def test_trace_counts(stages):
     """Hops, Flip-Flops And Conditions Of A Trace."""
     answer = query.trace(stages, "top.en_i", "top.z_o")

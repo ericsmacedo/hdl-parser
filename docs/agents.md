@@ -294,7 +294,7 @@ hdl-parser drivers ibex_top.u_ibex_core.if_stage_i.instr_rdata_id_o
 and the select of `?:` are conditions). `counts` tells the hops, and how many of them are flip-flops or
 conditions: judge the path by them. It stops behind flip-flops, unless `--through-regs` is given, and at
 modules which are not defined (`stopped_at` names them). `--data-only` does not follow conditions, resets and clocks. Wrappers of technology cells (one input, one output,
-driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`.
+driven by undefined cells only) are passed through; give others with `--passthrough BUFX2:A->Y`, or a family of cells with `--passthrough 'BUFX*:A->Y'`.
 
 ```bash
 hdl-parser trace ibex_top.rst_ni ibex_top.u_ibex_core.id_stage_i.controller_i.ctrl_fsm_cs --limit 3
@@ -386,7 +386,8 @@ All tools are read-only (`readOnlyHint`).
   the reason. `evaluate` gives the value of an expression within a module or package. Same as
   `hdl-parser elaborate TOP --path ... -p W=8` and `hdl-parser evaluate EXPR SCOPE`.
 * `where_used` works for modules which are not defined (blackboxes, hard macros): `defined` is `false` then,
-  and `module` (the definition used) is missing.
+  and `module` (the definition used) is missing. With wildcards (`BUFX*`) it lists the instances of all matching
+  modules, defined or not, each with the module used (`used`).
 * `drivers`, `loads` and `trace` take instance paths of signals (`top.u_core.result_o`), `param` of the top
   and `passthrough` cells. Generate constructs whose condition is false are left out. Labeled `for` generate
   constructs are unrolled (`top.g_st[1].data`); without index, and for instance arrays, an answer stands for

@@ -36,7 +36,7 @@ All places a module or interface is instantiated at, with file and location. Wor
 
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
-| `name` (required) | string | Name or full identifier ('rtl/top.sv:top'). |
+| `name` (required) | string | Name or full identifier ('rtl/top.sv:top'), or a pattern ('BUFX*'): the instances of all matching modules, each with the module used ('used'). |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
 
 ## `find`
@@ -57,7 +57,7 @@ Problems found in the design: undefined modules, macros not expanded, files whic
 | Argument | Type | Description |
 | -------- | ---- | ----------- |
 | `severity` | string: `error`, `warning`, `info` | Minimum severity. |
-| `code` | array of string |  |
+| `code` | array of string | Codes of the problems, or patterns: 'macro-*'. |
 | `file` | string | Path of a file, relative to the root, or a pattern: the problems located in it or found by parsing it. |
 | `exclude_file` | array of string | Patterns of files whose problems are left out: 'lib/stdcells/*'. A problem found by parsing other files too is kept for them. |
 | `blackbox` | array of string | Patterns of module names known to be missing: no 'undefined-module' for them. |
@@ -97,7 +97,7 @@ What drives a signal: assignments (with the signals they read and their conditio
 | `path` (required) | string | Instance path of a signal: top module, instance names (with generate labels), signal: 'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'. |
 | `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
-| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
+| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. The module name may be a pattern: 'BUFX*:A->Y'. |
 
 ## `loads`
 
@@ -108,7 +108,7 @@ What a signal drives: assignments reading it (also by a condition: 'control'), i
 | `path` (required) | string | Instance path of a signal: top module, instance names (with generate labels), signal: 'top.u_core.u_alu.result_o'. The index of a for generate block selects one iteration: 'top.g_st[1].data'. |
 | `param` | object | Values of the parameters of the top, by name. Defaults otherwise. |
 | `limit` | integer | Number of entries of every list. Default 100. 0: no limit. |
-| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
+| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. The module name may be a pattern: 'BUFX*:A->Y'. |
 
 ## `trace`
 
@@ -122,7 +122,7 @@ Shortest connection from one signal to another one below the same top, hop by ho
 | `through_regs` | boolean | Continue behind flip-flops. |
 | `data_only` | boolean | Do not follow conditions, resets and clocks. |
 | `limit` | integer | Number of hops. Default 100. 0: no limit. |
-| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. |
+| `passthrough` | array of string | Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: 'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. The module name may be a pattern: 'BUFX*:A->Y'. |
 
 ## `reload`
 
@@ -156,7 +156,7 @@ Command line options of every project query and of `mcp`, and the keys of `hdl-p
 | `--cache-dir` | `cache_dir` | Keep the results in this directory. |
 | `-j`, `--jobs` | `jobs` | Number of processes parsing. One per CPU by default. |
 | `--blackbox` | `blackbox` | Modules known to be missing (`diagnostics`, `mcp`). |
-| `--passthrough` | `passthrough` | Cells passing inputs to outputs (`drivers`, `loads`, `trace`). |
+| `--passthrough` | `passthrough` | Cells passing inputs to outputs, module names may be patterns (`drivers`, `loads`, `trace`). |
 | `--exclude-file` | `exclude_problems` | Files whose problems are left out (`diagnostics`). |
 | `--config FILE`, `--no-config` | | Before the query: another configuration file, or none. |
 

@@ -53,7 +53,8 @@ _PASSTHROUGH = {
     "type": "array",
     "items": {"type": "string"},
     "description": "Cells which pass their inputs on to their outputs, i.e. wrappers of technology cells: "
-    "'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'.",
+    "'buf_wrap', or with ports for modules which are not defined: 'BUFX2:A->Y'. The module name may be a "
+    "pattern: 'BUFX*:A->Y'.",
 }
 _TOP_PARAMS = {
     "type": "object",
@@ -107,7 +108,14 @@ TOOLS: tuple[dict[str, Any], ...] = (
         "Works for modules which are not defined in the project (blackboxes, hard macros) too.",
         "inputSchema": {
             "type": "object",
-            "properties": {"name": _NAME, "limit": _LIMIT},
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name or full identifier ('rtl/top.sv:top'), or a pattern ('BUFX*'): the "
+                    "instances of all matching modules, each with the module used ('used').",
+                },
+                "limit": _LIMIT,
+            },
             "required": ["name"],
         },
     },
@@ -139,7 +147,11 @@ TOOLS: tuple[dict[str, Any], ...] = (
             "type": "object",
             "properties": {
                 "severity": {"type": "string", "enum": list(query.SEVERITIES), "description": "Minimum severity."},
-                "code": {"type": "array", "items": {"type": "string"}},
+                "code": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Codes of the problems, or patterns: 'macro-*'.",
+                },
                 "file": {
                     "type": "string",
                     "description": "Path of a file, relative to the root, or a pattern: the problems located in it "

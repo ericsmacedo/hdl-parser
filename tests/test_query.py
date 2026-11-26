@@ -239,6 +239,8 @@ def test_diagnostics(small):
     assert answer["counts"] == {"error": 0, "warning": 1, "info": 0}
     assert query.diagnostics(small, severity="error")["result"] == []
     assert query.diagnostics(small, codes=["no-module"])["total"] == 0
+    assert query.diagnostics(small, codes=["undefined-*"])["total"] == 1
+    assert query.diagnostics(small, codes=["macro-*", "undefined-module"])["total"] == 1
     assert query.diagnostics(small, file="sub.sv")["total"] == 0
     with raises(query.QueryError):
         query.diagnostics(small, severity="fatal")
@@ -362,6 +364,23 @@ def test_where_used_undefined(small):
     assert query.where_used(small, "sub")["defined"] is True
     assert answer["result"][0]["inst"] == "top.sv:top.u_m"
     assert answer["result"][0]["module"] == "top.sv:top"
+
+
+def test_where_used_pattern(small):
+    """With Wildcards: The Instances Of All Matching Modules, Defined Or Not."""
+    answer = query.where_used(small, "[sm]*")
+    assert [(use["used"], use["inst"]) for use in answer["result"]] == [
+        ("sub.sv:sub", "top.sv:top.u_a"),
+        ("sub.sv:sub", "top.sv:top.u_b"),
+        ("missing", "top.sv:top.u_m"),
+    ]
+    assert answer["result"][0]["module"] == "top.sv:top"
+    assert answer["result"][2]["file"] == "top.sv"
+    assert "defined" not in answer
+    assert [use["inst"] for use in query.where_used(small, "leaf.sv:*")["result"]] == ["sub.sv:sub.u_leaf"]
+    answer = query.where_used(small, "[sl]*", limit=1)
+    assert (answer["total"], answer["omitted"]) == (3, 2)
+    assert query.where_used(small, "nope*")["result"] == []
 
 
 def test_diagnostics_group_exclude_blackbox(small):

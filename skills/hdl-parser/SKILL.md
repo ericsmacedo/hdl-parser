@@ -55,13 +55,13 @@ the next call; call `reload` after files were added.
 | Where do I start? Which modules are on top? | `hierarchy` (no top): tops, the largest first |
 | What is below a module? | `hierarchy --top X --depth 1` (`--text` for a compact tree) |
 | What does a module look like? | `module X --summary`, then `module X --fields ports,params` |
-| Where is a module instantiated? | `where-used X` (also for undefined modules) |
+| Where is a module instantiated? | `where-used X` (also for undefined modules; `'BUFX*'` for all matching) |
 | Where is a name defined? | `find pattern --kind port` (part of the name; `*` wildcards match the full identifier) |
 | Which value does a parameter have, how wide is a port, in this instance? | `elaborate TOP --path u_a.u_b --name 'WIDTH*'` |
 | What is `$clog2(DEPTH)+1` in this module? | `evaluate '$clog2(DEPTH)+1' MODULE -p DEPTH=40` |
 | What drives this signal? What does it drive? | `drivers top.u_a.sig`, `loads top.u_a.sig` |
 | How does A reach B? | `trace top.a top.u_x.b` (`--through-regs` to continue behind flip-flops) |
-| Can I trust the answers? | `diagnostics --group-by code`, then `--code X` or `--file 'rtl/*'` |
+| Can I trust the answers? | `diagnostics --group-by code`, then `--code X` (`'macro-*'`) or `--file 'rtl/*'` |
 
 Signals are addressed by **instance path**: top module, instance names (with the labels of generate blocks), signal:
 `top.u_core.g_lane[1].data`. `hierarchy` names instances with their labels (`g_lane.u_sub`); `elaborate` unrolls

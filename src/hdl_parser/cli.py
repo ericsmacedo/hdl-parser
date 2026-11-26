@@ -394,7 +394,7 @@ opt_passthrough = click.option(
     multiple=True,
     metavar="CELL",
     help="Cell which passes its inputs on to its outputs: 'buf_wrap', or 'BUFX2:A->Y' for modules which are not "
-    "defined. Can be given multiple times.",
+    "defined. The module name may be a pattern: 'BUFX*:A->Y'. Can be given multiple times.",
 )
 opt_summary = click.option("--summary", "-s", is_flag=True, help="Names and counts only.")
 
@@ -597,7 +597,8 @@ def hierarchy(  # noqa: PLR0913
 @cli.command(
     help=f"""All Instances Of A Module As JSON.
 
-    NAME is a name or a full identifier ('rtl/top.sv:top').
+    NAME is a name or a full identifier ('rtl/top.sv:top'). With wildcards ('*', '?', '[...]') it is a pattern
+    ('BUFX*'): the instances of all matching modules, each with the module used ('used').
 {_PATHS_HELP}"""
 )
 @click.argument("name")
@@ -643,7 +644,12 @@ def find(  # noqa: PLR0913
 """
 )
 @click.option("--severity", type=click.Choice(query.SEVERITIES), help="Minimum severity. Everything by default.")
-@click.option("--code", "codes", multiple=True, help="Code of the problems. Can be given multiple times.")
+@click.option(
+    "--code",
+    "codes",
+    multiple=True,
+    help="Code of the problems, or a pattern ('macro-*'). Can be given multiple times.",
+)
 @click.option(
     "--file",
     "file_",
